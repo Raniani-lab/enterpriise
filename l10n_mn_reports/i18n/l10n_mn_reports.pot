@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.2alpha1+e\n"
+"Project-Id-Version: Odoo Server saas~16.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-23 08:10+0000\n"
-"PO-Revision-Date: 2023-02-23 08:10+0000\n"
+"POT-Creation-Date: 2023-09-04 12:37+0000\n"
+"PO-Revision-Date: 2023-09-04 12:37+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,8 +16,27 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "1 Cash flow from operating activities"
+msgstr ""
+
+#. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line1
-msgid "1. Amount of total income (1=2+...+6)"
+msgid "1. Amount of total income (1=2+...+5)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "1.1 Cash income total (+)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca
+msgid "1.1 Current Assets"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -26,222 +45,820 @@ msgid "1.1. Amount of tax-exempt income (2)"
 msgstr ""
 
 #. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca1
+msgid "1.1.1 Cash and cash equivalents"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "1.1.1 Income from the sale of goods and services"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "1.1.2 Revenue from rights commissions, fees and payments"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca2
+msgid "1.1.2 Trade Receivables"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "1.1.3 Money received from the insured spouse"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca3
+msgid "1.1.3 Tax and Social security contributions receivables"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca4
+msgid "1.1.4 Other Non-Trade Receivables"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "1.1.4 Tax refunds"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca5
+msgid "1.1.5 Other Financial Assets"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "1.1.5 Subsidy and financing income"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca6
+msgid "1.1.6 Inventory"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "1.1.6 Other cash income"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca7
+msgid "1.1.7 Prepaid expenses/bills"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca8
+msgid "1.1.8 Other Current Assets"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca9
+msgid "1.1.9 Non-current assets held for sale (assets for sale)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "1.2 Amount of monetary expenditure (-)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancenca
+msgid "1.2 Non-current Assets"
+msgstr ""
+
+#. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line3
 msgid "1.2. Amount of income subject to tax at a special rate (3)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line4
-msgid "1.3. Amount of income tax deducted for others according to the law (4)"
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancenca1
+msgid "1.2.1 Fixed Assets"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line5
-msgid "1.4. Amount of other income (5)"
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "1.2.1 Paid to Employees"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancenca2
+msgid "1.2.2 Intangible Assets"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "1.2.2 Paid to the Social Insurance Institution"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancenca3
+msgid "1.2.3 Biological Assets"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "1.2.3 Paid for the purchase of inventory"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancenca4
+msgid "1.2.4 Long-term Investment"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "1.2.4 Paid for Operating Expenses"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancenca5
+msgid "1.2.5 Exploration and evaluation assets"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "1.2.5 Paid for fuel, transportation fees, and spare parts"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancenca6
+msgid "1.2.6 Deferred tax assets"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "1.2.6 Interest paid"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "1.2.7 Paid to the tax authorities"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancenca7
+msgid "1.2.7 Real estate for investment"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancenca8
+msgid "1.2.8 Other Non-current Assets"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "1.2.8 Paid for insurance"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "1.2.9 Other monetary expenses"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line4
+msgid ""
+"1.3 Amount of other income (unrealized income from foreign exchange rate "
+"difference, etc.) (4)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line5_new
+msgid "1.4 Taxable income at the common rate (5=6+...+16)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line6
-msgid "1.5. Amount of income taxable at common rate (6)"
+msgid "1.4.1 Income from sales of goods, works and services (6)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line7
-msgid "1.5.1. Income from sales of basic production and work services (7)"
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line15
+msgid "1.4.10 Actual income from foreign exchange rate difference (15)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line16
-msgid "1.5.10. Income from sale of movable property (16)"
+msgid "1.4.11 Other taxable income (16)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line17
-msgid "1.5.11. Other taxable income (17)"
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line7
+msgid ""
+"1.4.2 Income from technical, management, consulting and other services (7)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line8
-msgid "1.5.2. Income from sales of auxiliary production and work services (8)"
+msgid "1.4.3 Income from the use and rental of real estate (8)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line9
-msgid "1.5.3. Income from sale of shares and securities (9)"
+msgid "1.4.4 Income from use and rental of movable property (9)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line10
 msgid ""
-"1.5.4. Goods, work and services received from others without payment (10)"
+"1.4.5 Income from goods, work and services received from others without "
+"payment (10)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line11
-msgid "1.5.5. Income from the sale of intangible assets (11)"
+msgid ""
+"1.4.6 Income from interest, interest /fines, penalties/, compensation for "
+"damages received from the person who failed to fulfill his obligations under"
+" the contract (11)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line12
-msgid ""
-"1.5.6. Income from technical, management consulting and other services (12)"
+msgid "1.4.7 Income from paid puzzles, gambling games, cash lotteries (12)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line13
 msgid ""
-"1.5.7. Interest and damages received from the person who failed to fulfill "
-"his obligations under the contract compensation income (13)"
+"1.4.8 Income from the sale of shares, securities and other financial "
+"instruments (13)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line14
-msgid "1.5.8. Actual income from foreign exchange rate differences (14)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line15
-msgid "1.5.9. Rental income from movable and immovable property (15)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line26
-msgid "10. Adjusted taxable income amount (26=24+25)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line27
 msgid ""
-"11. The amount transferred from the tax loss of the previous year to the "
-"reporting period (27)"
+"1.4.9 Income from the sale or transfer of other intangible assets and "
+"movable property /except for the income specified in clauses 10.1.2 and "
+"10.1.3 of the law/ (14)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line28
-msgid "12. Amount of income to be taxed at the common rate (28=26-27)"
+msgid "10. Amount of income to be taxed at the common rate (28=26-27)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line29
-msgid "13. Tax imposed (29=28*10%)"
+msgid ""
+"11. Taxes that have been imposed (28 * percentage specified in 20.1 and "
+"20.2.7 of the law) (29=28*10%)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line30
-msgid "14. Deductible tax amount (30)"
+msgid "12. Deductible tax according to Article 22.5 of the Law (30)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line31
-msgid "15. OFFICIAL TAX TO BE PAYABLE BY TOTAL PERCENTAGE (31=29-30)"
+msgid "13. OFFICIAL TAX TO BE PAYABLE AS A TOTAL PERCENTAGE (31=29-30)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line32
 msgid ""
-"16. Erotic publications, literature, recordings sold, used, "
-"performancesRevenue from services rendered (32)"
+"14. Income subject to tax at a special rate "
+"(32=33+38+39+40+41+42+44+45+47+49)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line34
-msgid "17. Income from paid puzzles, gambling games, cash lotteries(34)"
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line33_new
+msgid ""
+"15. Income from the sale and transfer of rights granted by the state "
+"organization (33)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line38
+msgid "16. Income from rights fees (38)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line39
-msgid "18. Interest income (39)"
+msgid "17. Dividend income (39)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line40
+msgid ""
+"18. Funds returned in accordance with Article 9.11 of the Law on "
+"Environmental Impact Assessment and Article 11.1.4, 12.5 of the Law on "
+"Petroleum (40)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line41
-msgid ""
-"19. Dividends and interest income earned in a foreign country with a double "
-"tax treaty(41)"
+msgid "19. Income from insurance compensation (41)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "2 Cash flows from investing activities"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line17_new
+msgid "2. Amount of total expenses (17=18+19+20)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "2.1 Amount of cash income (+)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line18
-msgid "2. Cost of goods sold (18)"
+msgid "2.1 Cost of goods sold (18)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line43
-msgid "20. Income earned in a foreign country (43)"
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceliab
+msgid "2.1 Liabilities"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "2.1.1 Income from sale of fixed assets"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab
+msgid "2.1.1 Short-term liabilities"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab1
+msgid "2.1.1.1 Trade Payables"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab10
+msgid "2.1.1.10 Other short-term liabilities"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab11
+msgid ""
+"2.1.1.11 Liabilities related to non-current assets held for sale (assets for"
+" sale)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab2
+msgid "2.1.1.2 Salary Payables"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab3
+msgid "2.1.1.3 Tax Payables"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab4
+msgid "2.1.1.4 Payables for Social Security"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab5
+msgid "2.1.1.5 Short term loan"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab6
+msgid "2.1.1.6 Interest payments"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab7
+msgid "2.1.1.7 Dividend Payable"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab8
+msgid "2.1.1.8 Prepaid income"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab9
+msgid "2.1.1.9 Contingent liabilities"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "2.1.2 Income from the sale of intangible assets"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancencliab
+msgid "2.1.2 Long-term liabilities"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancencliab1
+msgid "2.1.2.1 Long-term loan"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancencliab2
+msgid "2.1.2.2 Contingent liabilities"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancencliab3
+msgid "2.1.2.3 Deferred tax debt"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balancencliab4
+msgid "2.1.2.4 Other long-term liabilities"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "2.1.3 Income from sale of investments"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "2.1.4 Income from the sale of other long-term assets"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "2.1.5 Repayment of loans and cash advances granted to others"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "2.1.6 Interest income received"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "2.1.7 Dividends Received"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line19
+msgid "2.2 Administrative and selling expenses (19)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "2.2 Amount of monetary expenditure (-)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity
+msgid "2.2 Owners' equity"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity1
+msgid "2.2.1 Equity - State owned"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "2.2.1 Paid for acquisition and possession of fixed assets"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity2
+msgid "2.2.2 Equity - Private"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "2.2.2 Paid for the acquisition and possession of intangible assets"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity3
+msgid "2.2.3 Ownership - Equity"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "2.2.3 Paid for acquisition of investment"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid ""
+"2.2.4 Paid for the acquisition and possession of other long-term assets"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity4
+msgid "2.2.4 Treasure Shares"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "2.2.5 Loans and advances to others"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity5
+msgid "2.2.5 Share Premium"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity6
+msgid "2.2.6 Property Revaluation Reserve"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity7
+msgid "2.2.7 General Reserve"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity8
+msgid "2.2.8 Other part of Owners' Equity"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity9
+msgid "2.2.9 Retained earnings"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity9_current_year_earning
+msgid "2.2.9.1 Retained earnings for the current period"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity9_previous_year_earning
+msgid "2.2.9.2 Retained earnings from previous periods"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line20
+msgid "2.3 Non-core operating expenses (20)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line42
+msgid "20. Interest income (42)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line44
+msgid ""
+"21. Interest income from loans and debt instruments drawn from foreign and "
+"domestic sources of commercial banks of Mongolia (44)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line45
 msgid ""
-"21. AMOUNT OF OFFICIAL TAX TO BE PAYABLE AT A SPECIAL "
-"RATE(45=33+38+40+42+44)"
+"22. Does not hold a special license for the exploration or exploitation of "
+"minerals, radioactive minerals, or oil /This includes the persons specified "
+"in Articles 4.1.12 and 30.1 of this law./ Primary and secondary markets for "
+"foreign and domestic securities of taxpayers located in Mongolia Interest "
+"income of taxpayers who have purchased publicly traded debt instruments and "
+"unit rights (45)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line46
-msgid "22. Dividend income (46)"
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line47
+msgid "23. Income from the sale and transfer of immovable property (47)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line48
-msgid "23. Income from rights fees (48)"
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line49
+msgid "24. Earnings from paid puzzles, gambling games, cash lotteries (49)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_lineD
-msgid "23. TOTAL PAYABLE TAX AMOUNT (55=31+45+54)"
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line51
+msgid "25. OFFICIAL TAX IMPOSED AT A SPECIAL RATE (51=37+43+46+48+50)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line50
-msgid "24. Income from sale of rights (50)"
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line52_new
+msgid "26. Tax withheld from others according to the law (52)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line52
-msgid "25. Income from sale of immovable property (52)"
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line53_new
+msgid ""
+"27. Taxes paid in foreign countries to be deducted from the applicable tax "
+"(53)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line54
+msgid "28. AMOUNT OF PAYABLE TAX (54=31+51-52-53)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line55
 msgid ""
-"26. AMOUNT OF OFFICIAL TAX DEDUCTIBLE TO OTHERS ACCORDING TO THE LAW "
-"(54=47+49+51+53)"
+"29. The amount calculated for tax refund according to Article 22.1 of the "
+"Law (55)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line19
-msgid "3. Management and sales activity expenses (19)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line20
-msgid "4. Expenses of non-core activities (20)"
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "3 Cash flow from financing activities"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line21
-msgid "5. Profit before tax +, loss - (21=1-18-19-20)"
+msgid "3. Profit before tax +, loss - (21=1-17)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line22
-msgid "6. Amount of expenses not deductible from taxable income (22)"
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "3.1 Amount of cash income (+)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line23
-msgid "7. Amount of reduction of taxable income (23)"
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "3.1.1 Received from borrowing and issuing debt securities"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "3.1.2 Received from the issuance of shares and other equity securities"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "3.1.3 Miscellaneous Donations"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "3.2 Amount of monetary expenditure (-)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "3.2.1 Amounts paid for loans and debt securities"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "3.2.2 Payables for finance leases"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "3.2.3 Paid for repurchase of shares"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "3.2.4 Dividends Paid"
+msgstr ""
+
+#. module: l10n_mn_reports
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "3.2.5 Various donations, assistance and fines paid"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line57
+msgid ""
+"30. Exemption from income tax for enterprises with reduced rent payments "
+"(News HM(10) column 27 total amount) (57)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line58
+msgid ""
+"31. Information on exemption from corporate income tax / Amount of column 5,"
+" line 31 of XM-02(12)/ (58)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line59
+msgid "32. Total tax amount to be paid (59=31-(57+58)+51-52-53)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line22_new
+msgid "4. Amount to increase profit and loss before paying tax (22)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line23_new
+msgid "5. Amount to reduce profit and loss before paying taxes (23)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line24
-msgid "8. Amount of taxable income (24=21+22-23)"
+msgid "6. Taxable income (24=21+22-23)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line25
-msgid "9. Excess of voluntary insurance premiums (25)"
+msgid "7. Excess of voluntary insurance premiums (25)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line26
+msgid "8. Adjusted taxable income amount (26=24+25)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line27_new
+msgid ""
+"9. The amount transferred during the reporting period from the losses "
+"confirmed by the tax authorities in the tax returns of previous years (27)"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -255,58 +872,62 @@ msgid "A. Calculation of tax at common rate"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab1
-msgid "Accounts payable"
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceta
+msgid "ASSETS"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca2
-msgid "Accounts receivable"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity9
-msgid "Accumulated profit"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity5
-msgid "Additional paid-in capital"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_net
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
 msgid "All net cash flows"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line47
-msgid "Amount of VAT to be deducted in that month (47=39-40)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_fin_in
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_inv_in
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper_in
-msgid "Amount of cash income (+)"
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line37d
+msgid ""
+"Amount excluding VAT paid for import purchases for the preparation of fixed "
+"assets applicable to the month: exploratory valuation assets (40)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line35
-msgid "Amount of imported goods and services (Amount without VAT) (35)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_inv_out
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper_out
-msgid "Amount of money spent (-)"
+msgid "Amount of imported goods and services /Amount without VAT/ (34)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line36
 msgid ""
-"Amounts paid for goods, works and services purchased from the domestic "
-"market ( Amount without VAT) (36)"
+"Amount paid for goods, works, and services purchased from the domestic "
+"market /Amount without VAT/ (35)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line38
+msgid ""
+"Amount without VAT of goods and services purchased from livestock and "
+"agricultural producers (41)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line37a
+msgid ""
+"Amount without VAT paid for import purchases for the preparation of fixed "
+"assets for the month: buildings and structures (37)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line37b
+msgid ""
+"Amount without VAT paid for import purchases for the preparation of fixed "
+"assets for the month: machinery and equipment (38)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line37c
+msgid ""
+"Amounts without VAT paid for import purchases for the preparation of fixed "
+"assets for the month: other fixed assets (39)"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -335,67 +956,58 @@ msgid "Balance Sheet"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancenca3
-msgid "Biological capital"
-msgstr ""
-
-#. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line22
 msgid ""
-"Budget funding, subsidies, and incentives provided by the government (22)"
+"Budget funding, subsidies, and incentive income provided by the government "
+"(21)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line51
-msgid ""
-"Buy financial leases on the domestic market with financial leases.rent paid "
-"on acquisition (51)"
+#: model:account.report.line,name:l10n_mn_reports.tax_report_lineC
+msgid "C. Computation of taxes withheld by others according to law"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity6
-msgid "Capital revaluation surplus"
+#: model:account.report.line,name:l10n_mn_reports.vat_report_lineD
+msgid "C. OFFICIAL CALCULATION OF VALUE ADDED TAX FOR THE MONTH"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_fin_out
-msgid "Cash Out Amount (-)"
+#: model:account.report.line,name:l10n_mn_reports.vat_report_lineC
+msgid "C. VAT CALCULATION FOR FINANCIAL LEASE AND FINANCING DEALINGS"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca1
-msgid "Cash and cash equivalents"
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "Cash flows from unclassified activities"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_fin
-msgid "Cash flow from financing activities"
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "Cash in"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper
-msgid "Cash flow from operating activities"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_inv
-msgid "Cash flows from investing activities"
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "Cash out"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line50
-msgid "Charged VAT (50=(48+49)*10%)"
+msgid "Charged VAT (52=(50+51)*10%)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_cashbalance
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
 msgid "Closing balance of cash and cash equivalents"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab9
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancencliab2
-msgid "Contingent liabilities"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -405,12 +1017,7 @@ msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_gross_profit_cost
-msgid "Cost of sales"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca
-msgid "Current assets"
+msgid "Cost of Sales"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -419,55 +1026,26 @@ msgid "D. CORRECTION TO PREVIOUS MONTH'S REPORT"
 msgstr ""
 
 #. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_lineD
+msgid ""
+"D. Calculation of tax deductions and exemptions from corporate income tax "
+"according to the Law on deductions and exemptions from corporate income tax "
+"(56)"
+msgstr ""
+
+#. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line53
-msgid "Deductible VAT (53=(51+52)*10%)"
+msgid "Deductible VAT (55=(53+54)*10%)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line59
-msgid "Deductible VAT (59=58*10%)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancenca6
-msgid "Deferred tax assets"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancencliab3
-msgid "Deferred tax debt"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab7
-msgid "Dividend Payable"
+msgid "Deductible VAT (61)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_income_devidend
-msgid "Dividend income"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line42
-msgid ""
-"Dividends and interest income earned in a foreign country with a double tax "
-"treaty percentage tax (42=41 x contractual percentage)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_fin_out4
-msgid "Dividends paid"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_inv_in7
-msgid "Dividends received"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line35
-msgid "Documentable costs (35)"
+msgid "Dividend Income"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -476,56 +1054,22 @@ msgid "E. OFFICIAL CALCULATION OF VALUE ADDED TAX FOR THE MONTH"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line13
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "Exchange rate differences"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line51
 msgid ""
-"Electricity,\n"
-"Revenues from heat, gas, water supply, sewerage, postal, telecommunication and other services (13)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line33
-msgid ""
-"Erotic publications, literature, videos were sold, used, performances were "
-"heldservice income tax (33=32*40%)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_ex
-msgid "Exchange rate difference"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancenca5
-msgid "Exploration and evaluation assets"
+"Financial Leases Rents paid for domestic market purchases under financial "
+"leases (53)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_expense_finance
-msgid "Financial costs"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line48
-msgid ""
-"Financial lease items on the domestic market under financial leasesales "
-"revenue (48)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancenca1
-msgid "Fixed assets"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line44
-msgid ""
-"For exempted production and services specified in Article 13 of the LawVAT "
-"paid on imported goods and services (44)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity7
-msgid "Foreign currency translation reserve"
+msgid "Financial expenses"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -534,18 +1078,13 @@ msgid "Foreign exchange gain (loss)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_lineD
-msgid "G. OFFICIAL CALCULATION OF VALUE ADDED TAX FOR THE MONTH"
-msgstr ""
-
-#. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_gainloss_asset
-msgid "Gain (loss) on capital asset write-off"
+msgid "Gain (loss) on fixed asset write-off"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_gainloss_intangible
-msgid "Gain (loss) on derecognition of intangible assets"
+msgid "Gain (loss) on intangible asset write-off"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -559,81 +1098,58 @@ msgid "General and administrative expenses"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca61
-msgid "Goods"
+#: model:account.report.line,name:l10n_mn_reports.report_line_gross_profit
+msgid "Gross Profit (loss)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line38
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line35_new
 msgid ""
-"Goods and services purchased from livestock and agricultural producersAmount"
-" without VAT (38)"
+"In case of purchase or transfer from others, the payment paid for the sale "
+"or transfer according to the agreement and evidenced by the transfer "
+"document (35)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line34
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line34_new
 msgid ""
-"Goods and works purchased with VAT from BAU purchased in that month, service"
-" amount (34=35+...+38)"
+"In the event that a right is granted by a state organization, payments and "
+"fees that can be proven by documents paid to a state organization in "
+"connection with obtaining a right (34)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca65
-msgid "Goods available to the agent"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line45
-msgid ""
-"Goods imported for exploration and pre-exploitation operations, VAT paid on "
-"services (45)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca66
-msgid "Goods on the way"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line24
-msgid ""
-"Hairdressing, beauty, maintenance, laundry, dry cleaningservice income (24)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line37
-msgid ""
-"Imported goods purchased at the time of registration as a tax payer, amount "
-"without VAT for services (37)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line11
-msgid "Income from Natoria services (11)"
+#: model:account.report.line,name:l10n_mn_reports.report_line_profit_tax
+msgid "Income Tax"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line23
-msgid "Income from advocacy and legal advice services (23)"
+msgid "Income from advocacy and legal advice services (22)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line25
 msgid ""
 "Income from all types of services other than those specified in Article 13 "
-"of the Law(25)"
+"of the Law (24)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line19
-msgid "Income from brokerage services (19)"
+msgid "Income from brokerage services (18)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line49
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line18
+msgid "Income from cash lotteries and paid guessing games (17)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line13
 msgid ""
-"Income from factoring and forfaiting and similar transaction services\n"
-"(49)"
+"Income from electricity, heat, gas, water supply, sewerage, postal, "
+"telecommunications and other services (12)"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -642,37 +1158,42 @@ msgid "Income from goods transferred for debt payment (9)"
 msgstr ""
 
 #. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line24
+msgid ""
+"Income from hairdressing, beauty, maintenance, laundry and dry cleaning "
+"services (23)"
+msgstr ""
+
+#. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line20
 msgid ""
-"Income from interest, fines and penalties received due to the wrongful "
-"actions of others(20)"
+"Income from interest, fines and penalties received due to wrongful actions "
+"of others (19)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line12
 msgid ""
 "Income from performing work and providing services calculated for debt "
-"payment (12)"
+"payment (11)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line21
-msgid "Income from property valuation services (21)"
+msgid "Income from property valuation services (20)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_inv_in1
-msgid "Income from sale of fixed assets"
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line16
+msgid ""
+"Income from rental and ownership of immovable and movable property (15)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_inv_in3
-msgid "Income from sale of investment"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_inv_in4
-msgid "Income from sale of other long-term assets"
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line48
+msgid ""
+"Income from sale of financial lease items in the domestic market under "
+"financial lease (50)"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -681,144 +1202,65 @@ msgid "Income from sales of goods subject to VAT (4=5+...+9)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper_in1
-msgid "Income from the sale of goods and services"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_inv_in2
-msgid "Income from the sale of intangible assets"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line10
-msgid "Income from work and services per VAT (10=11+...+25)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line26
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line14
 msgid ""
-"Income of domestic goods, works and services per VAT for the month (26=4+10)"
+"Income from services for leasing, owning and using goods in other forms (13)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_profit_root
-msgid "Income results"
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line15
+msgid ""
+"Income from services for renting, owning and using hotels and similar "
+"premises (14)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_profit_tax
-msgid "Income tax"
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line29
+msgid "Income from services subject to 0% value added tax (28)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_cashinit
-msgid "Initial balance of cash and cash equivalents"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancenca2
-msgid "Intangible assets"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_income_interest
-msgid "Interest income"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_inv_in6
-msgid "Interest income received"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab6
-msgid "Interest payments"
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line28
+msgid "Income from the sale of goods subject to zero value added tax (27)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line17
 msgid ""
-"Inventions, product designs, works subject to copyright, Income from the "
-"transfer, lease or sale of trademarks and know-how (17)"
+"Income from the transfer, rental, or sale of inventions, product designs, "
+"copyrighted works, trademarks, and know-how (16)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca6
-msgid "Inventory"
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line10
+msgid "Income from work and services per VAT (10=11+...+24)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line46
-msgid ""
-"Irrespective of the taxable goods and services of the reporting periodVAT "
-"paid on imported goods and services (46)"
+#. odoo-python
+#: code:addons/l10n_mn_reports/models/account_cash_flow_report.py:0
+#, python-format
+msgid "Initial balance of cash and cash equivalents"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_income_interest
+msgid "Interest Income"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_balancele
-msgid "LIABILITIES AND OWNERS' EQUITY"
+msgid "LIABILITIES AND EQUITIES"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceliab
-msgid "Liabilities"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab11
-msgid ""
-"Liabilities related to non-current assets held for sale (assets for sale)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_inv_out5
-msgid "Loans and advances to others"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancenca4
-msgid "Long term investment"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancencliab1
-msgid "Long term loan"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancencliab
-msgid "Long-term liabilities"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line18
-msgid "Money lotteries, paid guessing gamesearnings from work (18)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_fin_out1
-msgid "Money paid for loans and debt securities"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper_in3
-msgid "Money received from the insurance spouse"
+#: model:ir.model,name:l10n_mn_reports.model_l10n_mn_cash_flow_report_handler
+msgid "Mongolian Cash Flow Report Custom Handler"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_net_profit
-msgid "Net profit (loss) for the reporting period"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancenca
-msgid "Non-current Assets"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca9
-msgid "Non-current assets held for sale (sale group property)"
+msgid "Net profit (loss) for the current period"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -827,13 +1269,8 @@ msgid "OFF BALANCE SHEET ACCOUNTS"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_gainloss_other
-msgid "Other Profit (Loss)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper_in6
-msgid "Other cash income"
+#: model:account.report.line,name:l10n_mn_reports.report_line_income_other
+msgid "Other Income"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -843,170 +1280,33 @@ msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_expense_other
-msgid "Other cost"
+msgid "Other expenses"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca5
-msgid "Other financial assets"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_income_other
-msgid "Other income"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancencliab4
-msgid "Other long-term liabilities"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper_out9
-msgid "Other monetary expenses"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancenca7
-msgid "Other non-current assets"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity8
-msgid "Other parts of the owner's property"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca4
-msgid "Other receivables"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab10
-msgid "Other short-term liabilities"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca8
-msgid "Other working capital"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity
-msgid "Owner's property"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceta
-msgid "PROPERTY"
+#: model:account.report.line,name:l10n_mn_reports.report_line_gainloss_other
+msgid "Other gain (loss)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line57
-msgid "Paid VAT (57=56*10%)"
+msgid "Paid VAT (59)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_inv_out1
-msgid "Paid for acquiring fixed assets"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_fin_out2
-msgid "Paid for finance leases"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper_out5
-msgid "Paid for fuel, transportation, and spare parts"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line42
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line52
 msgid ""
-"Paid for goods and services received for personal or employee useVAT (42)"
+"Payments made for the purchase of factoring and forfeiting equivalents (54)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line43
-msgid ""
-"Paid for imported goods and services for the preparation of fixed assetsVAT "
-"(43)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper_out8
-msgid "Paid for insurance"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper_out6
-msgid "Paid for interest"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper_out4
-msgid "Paid for operating expenses"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper_out3
-msgid "Paid for the purchase of inventory"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper_out2
-msgid "Paid to Social Security"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_inv_out4
-msgid "Paid to acquire and hold other long-term assets"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_inv_out2
-msgid "Paid to acquire intangible assets"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_inv_out3
-msgid "Paid to acquire investment"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_fin_out3
-msgid "Paid to buy back shares"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper_out1
-msgid "Paid to employees"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper_out7
-msgid "Paid to the tax authorities"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab4
-msgid "Payment of Social Security"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab2
-msgid "Payment of wages"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity4
-msgid "Pocket stock"
+#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca31
+msgid "Prepaid Taxes"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_balanceca72
-msgid "Prepaid billing"
+msgid "Prepaid bills"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -1015,18 +1315,8 @@ msgid "Prepaid expenses"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca7
-msgid "Prepaid expenses/bills"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab8
-msgid "Prepaid income"
-msgstr ""
-
-#. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_balanceca32
-msgid "Prepaid insurance"
+msgid "Prepaid insurance Social security contributions"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -1045,78 +1335,23 @@ msgid "Profit (loss) before tax"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report,name:l10n_mn_reports.account_report_profit_and_loss
+#: model:account.report.line,name:l10n_mn_reports.report_profit_root
 msgid "Profit and Loss"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity3
-msgid "Property - Equity"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity2
-msgid "Property - Private"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity1
-msgid "Property - State"
+#: model:account.report,name:l10n_mn_reports.account_report_profit_and_loss
+msgid "Profit and Loss Report"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line58
-msgid "Purchase returns and discounts (58)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca62
-msgid "Raw material"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_fin_in1
-msgid "Received from loans and debt securities"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_fin_in2
-msgid "Received from the issuance of shares and other equity securities"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line52
-msgid ""
-"Regardless of the taxable goods and services of the reporting periodVAT paid"
-" on imported goods and services (52)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line16
-msgid ""
-"Rental and possession and use of immovable and movable propertyservice "
-"income (16)"
+msgid "Purchase returns and discounts (60)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_income_loan
-msgid "Rental income"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line15
-msgid ""
-"Renting, owning and using hotels and similar premisesservice income (15)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_inv_in5
-msgid "Repayment of loans and cash advances to others"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper_in2
-msgid "Revenue from royalties, fees and charges"
+msgid "Rental Income"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -1130,13 +1365,10 @@ msgid "Revenue from sales of other goods (6)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line28
-msgid "Revenue from the sale of exported goods (28)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line29
-msgid "Revenue from the sale of exported services (29)"
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line49
+msgid ""
+"Revenue from similar transaction services such as factoring and forfeiting "
+"(51)"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -1145,14 +1377,26 @@ msgid "Revenue from the sale of rights (7)"
 msgstr ""
 
 #. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line26
+msgid ""
+"Revenue of domestic goods, works and services per VAT for the month "
+"(25=4+10)"
+msgstr ""
+
+#. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line30
 msgid ""
-"Revenue of export goods, works and services per VAT for the month(30=28+29)"
+"Revenue of export goods, works and services per VAT for the month (29=27+28)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_income_loyalty
-msgid "Royalty revenue"
+msgid "Royalty Income"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.report_line_gross_profit_sale
+msgid "Sales Revenue (NET)"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -1161,28 +1405,8 @@ msgid "Sales and marketing expenses"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_gross_profit_sale
-msgid "Sales revenue (net)"
-msgstr ""
-
-#. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line56
-msgid "Sales revenue returns and discounts (56)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_line14
-msgid "Services for leasing, owning and using goods in other formsincome (14)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab5
-msgid "Short term loan"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab
-msgid "Short-term liabilities"
+msgid "Sales revenue returns and discounts (58)"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -1191,53 +1415,48 @@ msgid "Statement of cash flows"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper_in5
-msgid "Subsidy and financing income"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca63
-msgid "Supply materials"
-msgstr ""
-
-#. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line60
-msgid "TOTAL PAYMENT APPROPRIATE VAT (60=54-57)"
+msgid "TOTAL PAYMENT APPROPRIATE VAT (62=56+61)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line61
-msgid "TOTAL RECOVERY VAT (61=55-59)"
+msgid "TOTAL RECOVERY VAT (63=57+59)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca3
-msgid "Tax and VAT receivables"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab3
-msgid "Tax debt"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line53
-msgid "Tax deducted from income from sale of immovable property (53=52*2%)"
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line37bis
+msgid "Tax assessed in addition to assessment"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line27
-msgid "Tax imposed (27=26*10%)"
+msgid "Tax imposed (26=25*10%)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line31
-msgid "Tax imposed (31=30*0%)"
+msgid "Tax imposed (30=29*0%)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line38
-msgid "Tax imposed (38=37x40%)"
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line43
+msgid "Tax imposed (43=(38+39+40+41+42)*10%)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line46
+msgid "Tax imposed (46=(44+45)*5%)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line48
+msgid "Tax imposed (48=47*2%)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line50
+msgid "Tax imposed (50=49*40%)"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -1246,50 +1465,44 @@ msgid "Tax on discontinued operations"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line40
-msgid "Tax on interest income (40=39x10%)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca31
-msgid "Tax paid in advance"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper_in4
-msgid "Tax refund"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line51
-msgid "Tax withheld from rights sale income (51=50*30%)"
-msgstr ""
-
-#. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line37
-msgid "Taxable income (37=34-35-36)"
+msgid ""
+"Tax on proceeds from the sale and transfer of rights ((36 * 10%) + "
+"Additional tax on assessment) (37)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.tax_report_line36
+msgid "Taxable income (36=33-34-35)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line47
+msgid "The amount of VAT to be deducted in that month (49=42-43)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line34
+msgid ""
+"The amount of goods, works and services purchased with VAT from BAU "
+"purchased in that month (33=34+...+41)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line32
-msgid "Total VAT tax imposed in that month (32=27+31)"
+msgid "Total VAT tax imposed in that month (31=26+30)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line33
-msgid "Total amount of goods and services purchased in that month (33)"
+msgid "Total amount of goods and services purchased in that month (32)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line3
 msgid ""
-"Total goods, works and services subject to value added taxsales revenue "
-"(3=4+10+30)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_gross_profit
-msgid "Total profit loss)"
+"Total revenue from sales of goods, works and services subject to value added"
+" tax (3=4+10+29)"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -1298,18 +1511,8 @@ msgid "Total sales revenue for that month (1=2+3)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_lineC
-msgid "V. Computation of taxes withheld by others according to law"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.vat_report_lineC
-msgid "V. VAT CALCULATION FOR FINANCIAL LEASE AND FINANCING DEALINGS"
-msgstr ""
-
-#. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line63
-msgid "VAT REFUNDED IN THE FINAL CALCULATION (63=60-61)"
+msgid "VAT RECOVERED IN FINAL CALCULATION (65=63-62)"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -1319,22 +1522,46 @@ msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line62
-msgid "VAT TO BE PAYABLE IN THE FINAL CALCULATION (62=60-61)"
+msgid "VAT TO BE PAYABLE IN THE FINAL CALCULATION (64=62-63)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line42
+msgid "VAT paid on goods and services for personal and employee use (45)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line44
+msgid ""
+"VAT paid on goods and services imported for exempted production and services"
+" under Article 13 of the Act (46)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line45
+msgid "VAT paid on imported goods and services for pre-use operations (47)"
+msgstr ""
+
+#. module: l10n_mn_reports
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line46
+msgid ""
+"VAT paid on imported goods and services regardless of taxable goods and "
+"services during the reporting period (48)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line41
-msgid "VAT paid on passenger cars and their spare parts (41)"
+msgid "VAT paid on passenger cars and their spare parts (44)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line54
-msgid "VAT payable in that month (54=32+50)"
+msgid "VAT payable in that month (56=31+52)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line55
-msgid "VAT to be refunded in that month (50=47+53)"
+msgid "VAT to be refunded in that month (57=49+55)"
 msgstr ""
 
 #. module: l10n_mn_reports
@@ -1343,47 +1570,22 @@ msgid "VAT-exempt sales for the month specified in Article 13 of the Law (2)"
 msgstr ""
 
 #. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line36
-msgid "Value of money and goods given to Honjvor (36)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_cashflow_fin_in3
-msgid "Various donations"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line47
-msgid "Withholding tax on dividend income (47=46*10%)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line44
+#: model:account.report.line,name:l10n_mn_reports.vat_report_line37
 msgid ""
-"Withholding tax on income earned in foreign countries (44=43 * percentage "
-"prescribed by law)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.tax_report_line49
-msgid "Withholding tax on rights fee income (49=48*10%)"
-msgstr ""
-
-#. module: l10n_mn_reports
-#: model:account.report.line,name:l10n_mn_reports.report_line_balanceca64
-msgid "Work in progress"
+"VAT-free amount of imported goods and services at the time of registration "
+"as a withholding tax payer (36)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line40
 msgid ""
-"· Amount of non-deductible VAT paid on purchased goods, works and "
-"services(40=41+...+46)"
+"· Amount of non-deductible VAT paid on purchased goods, works and services "
+"(43=44+..+48)"
 msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line39
 msgid ""
 "· Total amount of VAT paid on purchased goods, works and services "
-"(39=34*10%)"
+"(42=33*10%)"
 msgstr ""

@@ -50,19 +50,16 @@ class CashFlowReportCustomHandler(models.AbstractModel):
         for aml_data in self._compute_liquidity_balance(report, options, currency_table_query, payment_account_ids, 'strict_range'):
             self._add_report_data('closing_balance', aml_data, layout_data, report_data)
 
-        tags_ids = {
-            'operating': self.env.ref('account.account_tag_operating').id,
-            'investing': self.env.ref('account.account_tag_investing').id,
-            'financing': self.env.ref('account.account_tag_financing').id,
-        }
+        tags_ids = self._get_tags_ids()
+        cashflow_tag_ids = self._get_cashflow_tag_ids()
 
         # Process liquidity moves
-        for aml_groupby_account in self._get_liquidity_moves(report, options, currency_table_query, payment_account_ids, payment_move_ids, tags_ids.values()):
+        for aml_groupby_account in self._get_liquidity_moves(report, options, currency_table_query, payment_account_ids, payment_move_ids, cashflow_tag_ids):
             for aml_data in aml_groupby_account.values():
                 self._dispatch_aml_data(tags_ids, aml_data, layout_data, report_data)
 
         # Process reconciled moves
-        for aml_groupby_account in self._get_reconciled_moves(report, options, currency_table_query, payment_account_ids, payment_move_ids, tags_ids.values()):
+        for aml_groupby_account in self._get_reconciled_moves(report, options, currency_table_query, payment_account_ids, payment_move_ids, cashflow_tag_ids):
             for aml_data in aml_groupby_account.values():
                 self._dispatch_aml_data(tags_ids, aml_data, layout_data, report_data)
 
@@ -120,6 +117,18 @@ class CashFlowReportCustomHandler(models.AbstractModel):
         report_data[layout_line_id]['aml_groupby_account'][aml_account_id]['balance'][aml_column_group_key] += aml_balance
 
         _report_update_parent(layout_line_id, aml_column_group_key, aml_balance, layout_data, report_data)
+
+    def _get_tags_ids(self):
+        ''' Get a dict to pass on to _dispatch_aml_data containing information mapping account tags to report lines. '''
+        return {
+            'operating': self.env.ref('account.account_tag_operating').id,
+            'investing': self.env.ref('account.account_tag_investing').id,
+            'financing': self.env.ref('account.account_tag_financing').id,
+        }
+
+    def _get_cashflow_tag_ids(self):
+        ''' Get the list of account tags that are relevant for the cash flow report. '''
+        return self._get_tags_ids().values()
 
     def _dispatch_aml_data(self, tags_ids, aml_data, layout_data, report_data):
         # Dispatch the aml_data in the correct layout_line

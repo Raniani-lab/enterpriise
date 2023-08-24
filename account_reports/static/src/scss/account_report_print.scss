@@ -100,9 +100,17 @@
         }
     }
 
+    .date {
+        word-break: keep-all !important;
+        white-space: nowrap;    
+    }
+
     .number{
+        word-break: keep-all !important;
+        white-space: nowrap;    
         font-weight: normal !important;
         color: black !important;
+        text-align: right;
     }
     .total td{
         font-weight: bold !important;

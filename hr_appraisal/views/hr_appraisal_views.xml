@@ -117,7 +117,7 @@
                             </div>
                         </div>
                     </page>
-                    <page string="Private Note" invisible="employee_user_id == uid">
+                    <page string="Private Note" name="private_note" invisible="employee_user_id == uid">
                         <field name="note" readonly="state == 'done' or ('uid' not in manager_user_ids and not is_manager)"
                                 placeholder="Private note (only accessible to people set as managers)"/>
                     </page>

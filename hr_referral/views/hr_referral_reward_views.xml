@@ -123,7 +123,7 @@
                         <group name="image" />
                     </group>
                     <notebook>
-                        <page string="Description">
+                        <page string="Description" name="description">
                             <field name="description" widget="html" nolabel="1"/>
                         </page>
                     </notebook>

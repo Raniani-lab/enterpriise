@@ -27,13 +27,13 @@
                 <field name="disabled_children_number" invisible="not disabled_children_bool or children &lt;= 0" help="Number of dependent children declared as disabled"/>
                 <field name="children" invisible="1"/>
             </xpath>
-            <xpath expr="//separator[@name='emergency']" position="before">
-                    <field name="other_dependent_people" groups="hr.group_hr_user" invisible="company_country_code != 'BE'"/>
-                    <field name="other_senior_dependent" invisible="not other_dependent_people"/>
-                    <field name="other_disabled_senior_dependent" invisible="not other_dependent_people or other_senior_dependent &lt;= 0"/>
-                    <field name="other_juniors_dependent" invisible="not other_dependent_people"/>
-                    <field name="other_disabled_juniors_dependent" invisible="not other_dependent_people or other_juniors_dependent &lt;= 0"/>
-            </xpath>
+            <field name="children" position="after">
+                <field name="other_dependent_people" groups="hr.group_hr_user" invisible="company_country_code != 'BE'"/>
+                <field name="other_senior_dependent" invisible="not other_dependent_people"/>
+                <field name="other_disabled_senior_dependent" invisible="not other_dependent_people or other_senior_dependent &lt;= 0"/>
+                <field name="other_juniors_dependent" invisible="not other_dependent_people"/>
+                <field name="other_disabled_juniors_dependent" invisible="not other_dependent_people or other_juniors_dependent &lt;= 0"/>
+            </field>
             <xpath expr="//group[@name='departure']" position="attributes">
                 <attribute name="invisible">active and not departure_reason_id</attribute>
             </xpath>

@@ -23,7 +23,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
 
     @api.model
     def _l10n_no_prepare_saft_report_values(self, report, options):
-        template_vals = report._saft_prepare_report_values(options)
+        template_vals = self._saft_prepare_report_values(report, options)
 
         template_vals.update({
             'xmlns': 'urn:StandardAuditFile-Taxation-Financial:NO',
@@ -45,10 +45,6 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             'file_content': "\n".join(re.split(r'\n\s*\n', content)).encode(),
             'file_type': 'xml',
         }
-
-
-class AccountGeneralLedger(models.AbstractModel):
-    _inherit = "account.report"
 
     def _saft_get_account_type(self, account):
         # OVERRIDE account_saft/models/account_general_ledger

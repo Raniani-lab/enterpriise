@@ -46,7 +46,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
 
     @api.model
     def _l10n_ro_saft_check_report_values(self, report, options):
-        values = report._saft_prepare_report_values(options)
+        values = self._saft_prepare_report_values(report, options)
 
         return [
             *self._l10n_ro_saft_check_header_values(options, values),
@@ -57,7 +57,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
 
     @api.model
     def _l10n_ro_saft_prepare_report_values(self, report, options):
-        values = report._saft_prepare_report_values(options)
+        values = self._saft_prepare_report_values(report, options)
 
         self._l10n_ro_saft_fill_header_values(options, values)
         self._l10n_ro_saft_fill_partner_values(values)
@@ -454,10 +454,6 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             payment_vals['move_vals_list'].append(move_vals)
 
         values['payment_vals'] = payment_vals
-
-
-class AccountGeneralLedger(models.AbstractModel):
-    _inherit = 'account.report'
 
     def _saft_get_account_type(self, account_type):
         # EXTENDS account_saft/models/account_general_ledger.py

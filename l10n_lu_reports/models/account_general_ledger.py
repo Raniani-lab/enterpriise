@@ -140,7 +140,7 @@ class AccountGeneralLedger(models.AbstractModel):
 
     @api.model
     def _l10n_lu_prepare_saft_report_values(self, report, options):
-        template_vals = report._saft_prepare_report_values(options)
+        template_vals = self._saft_prepare_report_values(report, options)
 
         template_vals.update({
             'xmlns': 'urn:OECD:StandardAuditFile-Taxation/2.00',

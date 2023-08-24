@@ -21,7 +21,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
 
     @api.model
     def _l10n_lt_saft_prepare_report_values(self, report, options):
-        template_vals = report._saft_prepare_report_values(options)
+        template_vals = self._saft_prepare_report_values(report, options)
 
         # The lithuanian version of the SAF-T requires account code to be provided along with the opening/closing
         # credit/debit of customers and suppliers
@@ -114,10 +114,6 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             'file_content': "\n".join(re.split(r'\n\s*\n', content)).encode(),
             'file_type': 'xml',
         }
-
-
-class AccountGeneralLedger(models.AbstractModel):
-    _inherit = "account.report"
 
     def _saft_get_account_type(self, account_type):
         # OVERRIDE account_saft/models/account_general_ledger

@@ -43,10 +43,6 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             'res_id': self.env.company.id,
         }
 
-
-class AccountGeneralLedger(models.AbstractModel):
-    _inherit = "account.report"
-
     def _saft_get_account_type(self, account_type):
         """To be overridden if specific account types are needed.
         Some countries need to specify an account type, unique to the saf-t report.
@@ -55,7 +51,7 @@ class AccountGeneralLedger(models.AbstractModel):
         return False
 
     @api.model
-    def _saft_fill_report_general_ledger_values(self, options, values):
+    def _saft_fill_report_general_ledger_values(self, report, options, values):
         res = {
             'total_debit_in_period': 0.0,
             'total_credit_in_period': 0.0,
@@ -66,10 +62,9 @@ class AccountGeneralLedger(models.AbstractModel):
         }
 
         # Fill 'account_vals_list'.
-        handler = self.env['account.general.ledger.report.handler']
-        accounts_results = handler._query_values(self, options)
+        accounts_results = self._query_values(report, options)
         rslts_array = tuple((account, res_col_gr[options['single_column_group']]) for account, res_col_gr in accounts_results)
-        init_bal_res = handler._get_initial_balance_values(self, tuple(account.id for account, results in rslts_array), options)
+        init_bal_res = self._get_initial_balance_values(report, tuple(account.id for account, results in rslts_array), options)
         initial_balances_map = {}
         initial_balance_gen = ((account, init_bal_dict.get(options['single_column_group'])) for account, init_bal_dict in init_bal_res.values())
         for account, initial_balance in initial_balance_gen:
@@ -88,7 +83,7 @@ class AccountGeneralLedger(models.AbstractModel):
                 'closing_balance': closing_balance,
             })
         # Fill 'total_debit_in_period', 'total_credit_in_period', 'move_vals_list'.
-        tables, where_clause, where_params = self._query_get(options, 'strict_range')
+        tables, where_clause, where_params = report._query_get(options, 'strict_range')
         lang = self.env.user.lang or get_lang(self.env).code
         tax_name = f"COALESCE(tax.name->>'{lang}', tax.name->>'en_US')" if \
             self.pool['account.tax'].name.translate else 'tax.name'
@@ -196,10 +191,10 @@ class AccountGeneralLedger(models.AbstractModel):
         values.update(res)
 
     @api.model
-    def _saft_fill_report_tax_details_values(self, options, values):
+    def _saft_fill_report_tax_details_values(self, report, options, values):
         tax_vals_map = {}
 
-        tables, where_clause, where_params = self._query_get(options, 'strict_range')
+        tables, where_clause, where_params = report._query_get(options, 'strict_range')
         tax_details_query, tax_details_params = self.env['account.move.line']._get_query_tax_details(tables, where_clause, where_params)
         if self.pool['account.tax'].name.translate:
             lang = self.env.user.lang or get_lang(self.env).code
@@ -293,7 +288,7 @@ class AccountGeneralLedger(models.AbstractModel):
 
         if all_partners:
             domain = [('partner_id', 'in', tuple(all_partners.ids))]
-            tables, where_clause, where_params = self._query_get(new_options, 'strict_range', domain=domain)
+            tables, where_clause, where_params = report._query_get(new_options, 'strict_range', domain=domain)
             self._cr.execute(f'''
                 SELECT
                     account_move_line.partner_id,
@@ -366,7 +361,7 @@ class AccountGeneralLedger(models.AbstractModel):
         values.update(res)
 
     @api.model
-    def _saft_prepare_report_values(self, options):
+    def _saft_prepare_report_values(self, report, options):
         def format_float(amount, digits=2):
             return float_repr(amount or 0.0, precision_digits=digits)
 
@@ -392,7 +387,7 @@ class AccountGeneralLedger(models.AbstractModel):
             'format_float': format_float,
             'format_date': format_date,
         }
-        self._saft_fill_report_general_ledger_values(options, template_values)
-        self._saft_fill_report_tax_details_values(options, template_values)
+        self._saft_fill_report_general_ledger_values(report, options, template_values)
+        self._saft_fill_report_tax_details_values(report, options, template_values)
         self._saft_fill_report_partner_ledger_values(options, template_values)
         return template_values

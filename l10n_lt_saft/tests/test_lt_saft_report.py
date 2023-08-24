@@ -117,4 +117,4 @@ class TestLtSaftReport(TestAccountReportsCommon):
         report = self.env.ref('account_reports.general_ledger_report')
         account_selection = [selection[0] for selection in self.env["account.account"]._fields["account_type"].selection]
         for account_type in account_selection:
-            report._saft_get_account_type(account_type)
+            self.env[report.custom_handler_model_name]._saft_get_account_type(account_type)

@@ -3,7 +3,7 @@
 
 import core from "@web/legacy/js/services/core";
 import publicWidget from "@web/legacy/js/public/public_widget";
-import localStorage from "@web/legacy/js/core/local_storage";
+import { browser } from "@web/core/browser/browser";
 import NotificationRequestPopup from "@social_push_notifications/js/push_notification_request_popup";
 
 publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
@@ -202,7 +202,7 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
             let expirationDate = new Date();
             expirationDate.setDate(expirationDate.getDate() + 7);
             Object.assign(config, {'expirationDate': expirationDate});
-            localStorage.setItem(
+            browser.localStorage.setItem(
                 'social_push_notifications.notification_request_config',
                 JSON.stringify(config)
             );
@@ -240,7 +240,7 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
                 token: token
             }
         }).then(function () {
-            localStorage.setItem('social_push_notifications.configuration', JSON.stringify({
+            browser.localStorage.setItem('social_push_notifications.configuration', JSON.stringify({
                 'token': token,
             }));
         });
@@ -280,7 +280,7 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
     _askPermission: async function (nextAskPermissionKeySuffix, forcedPopupConfig) {
         var self = this;
 
-        var nextAskPermission = localStorage.getItem('social_push_notifications.next_ask_permission' +
+        var nextAskPermission = browser.localStorage.getItem('social_push_notifications.next_ask_permission' +
             (nextAskPermissionKeySuffix ? '.' + nextAskPermissionKeySuffix : ''));
         if (nextAskPermission && new Date() < new Date(nextAskPermission)) {
             return;
@@ -343,7 +343,7 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
         notificationRequestPopup.on('deny', null, function () {
             var nextAskPermissionDate = new Date();
             nextAskPermissionDate.setDate(nextAskPermissionDate.getDate() + 7);
-            localStorage.setItem('social_push_notifications.next_ask_permission' +
+            browser.localStorage.setItem('social_push_notifications.next_ask_permission' +
                 (nextAskPermissionKeySuffix ? '.' + nextAskPermissionKeySuffix : ''),
                 nextAskPermissionDate);
         });
@@ -379,7 +379,7 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
     },
 
     _getJSONLocalStorageItem: function (key) {
-        var value = localStorage.getItem(key);
+        var value = browser.localStorage.getItem(key);
         if (value) {
             return JSON.parse(value);
         }

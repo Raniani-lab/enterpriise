@@ -178,12 +178,20 @@ class Payslip(models.Model):
 
             if remaining_days or remaining_hours:
                 work_entry_type = self.env.ref('hr_payroll.hr_work_entry_type_out_of_contract')
+                existing = False
                 for worked_days in res:
                     if worked_days['work_entry_type_id'] == work_entry_type.id:
                         worked_days['number_of_days'] += remaining_days
                         worked_days['number_of_hours'] += remaining_hours
+                        existing = True
                         break
-
+                if not existing:
+                    res.append({
+                        'sequence': work_entry_type.sequence,
+                        'work_entry_type_id': work_entry_type.id,
+                        'number_of_days': remaining_days,
+                        'number_of_hours': remaining_hours,
+                    })
         return res
 
     def _get_total_non_full_pay(self):

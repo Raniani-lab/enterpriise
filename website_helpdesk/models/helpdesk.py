@@ -112,13 +112,10 @@ class HelpdeskTeam(models.Model):
         without_website = self - with_website
         without_website.website_menu_id.unlink()
 
-        if not with_website:
-            return
-
         team_count_data = self.env['helpdesk.team']._read_group([
             ('use_website_helpdesk_form', '=', True),
-        ], ['website_id'], ['__count'])
-        team_count = {website.id: count for website, count in team_count_data}
+        ], ['website_id'], ['__count', 'id:recordset'])
+        team_count = {website.id: count for website, count, teams in team_count_data}
 
         for team in with_website:
             if not team.website_menu_id:
@@ -132,6 +129,22 @@ class HelpdeskTeam(models.Model):
                         'website_id': team.website_id.id,
                     })
                     team.website_menu_id = menu.id
+
+        for team_count, teams in ((team_count, teams) for _, team_count, teams in team_count_data):
+            # Rename team menu from "{Team Name}" -> "Help"
+            if team_count == 1:
+                team = teams.filtered(
+                    lambda t: t.website_menu_id.name == t.name
+                )
+                if team:
+                    team.website_menu_id.name = _('Help')
+            # Rename team menu from "Help" -> "{Team Name}"
+            elif team_count > 1:
+                teams = teams.filtered(
+                    lambda t: t.website_menu_id.name != t.name
+                )
+                for team in teams:
+                    team.website_menu_id.name = team.name
 
     @api.depends('name', 'use_website_helpdesk_form', 'company_id')
     def _compute_form_url(self):

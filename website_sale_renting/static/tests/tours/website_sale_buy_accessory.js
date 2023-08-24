@@ -11,12 +11,12 @@ registry.category("web_tour.tours").add('shop_buy_accessory_rental_product', {
         tourUtils.goToCart({quantity: 1}),
         {
             content: "Verify there are 1 quantity of Parent product",
-            trigger: '#cart_products tbody td.td-qty div.css_quantity input[value=1]',
-            run: function () {}, // it's a check
+            trigger: '#cart_products div div.css_quantity input[value=1]',
+            isCheck: true,
         },
         {
             content: "Add Accessory product to cart via the quick add button",
-            trigger: 'a:contains("Add to Cart")',
+            trigger: 'a:contains("Add to cart")',
         },
         {
             content: "Check product added to the cart",

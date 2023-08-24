@@ -24,15 +24,15 @@ class WebsiteSaleRenting(WebsiteSale):
         order_sudo._cart_update_renting_period(start_date, end_date)
 
         values = {}
-        values['cart_lines'] = request.env['ir.ui.view']._render_template(
+        values['website_sale.cart_lines'] = request.env['ir.ui.view']._render_template(
             'website_sale.cart_lines', {
                 'website_sale_order': order_sudo,
                 'date': fields.Date.today(),
                 'suggested_products': order_sudo._cart_accessories(),
             }
         )
-        values['short_cart_summary'] = request.env['ir.ui.view']._render_template(
-            'website_sale.short_cart_summary', {
+        values['website_sale.total'] = request.env['ir.ui.view']._render_template(
+            'website_sale.total', {
                 'website_sale_order': order_sudo,
             }
         )

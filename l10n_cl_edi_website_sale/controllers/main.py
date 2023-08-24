@@ -13,36 +13,6 @@ class L10nCLWebsiteSale(WebsiteSale):
         return order.company_id.country_code == 'CL' \
                and request.env['ir.config_parameter'].sudo().get_param('sale.automatic_invoice') == 'True'
 
-    def _cart_values(self, **kw):
-        # OVERRIDE: Add flag in cart template (step 10)
-        res = super()._cart_values(**kw)
-        res['l10n_cl_show_extra_info'] = self._l10n_cl_is_extra_info_needed()
-        return res
-
-    def _get_country_related_render_values(self, kw, render_values):
-        # OVERRIDE: Add flag in address template (step 20)
-        vals = super()._get_country_related_render_values(kw, render_values)
-        vals['l10n_cl_show_extra_info'] = self._l10n_cl_is_extra_info_needed()
-        return vals
-
-    def checkout_values(self, **kw):
-        # OVERRIDE: Add flag in checkout template (step 20, when address is filled)
-        vals = super().checkout_values(**kw)
-        vals['l10n_cl_show_extra_info'] = self._l10n_cl_is_extra_info_needed()
-        return vals
-
-    def _extra_info_values(self, **kw):
-        # OVERRIDE: Add flag in extra info template (step 30)
-        vals = super()._extra_info_values(**kw)
-        vals['l10n_cl_show_extra_info'] = self._l10n_cl_is_extra_info_needed()
-        return vals
-
-    def _get_shop_payment_values(self, order, **kwargs):
-        # OVERRIDE: Add flag in payment template (step 40)
-        vals = super()._get_shop_payment_values(order, **kwargs)
-        vals['l10n_cl_show_extra_info'] = self._l10n_cl_is_extra_info_needed()
-        return vals
-
     @http.route()
     def address(self, **kw):
         if self._l10n_cl_is_extra_info_needed():

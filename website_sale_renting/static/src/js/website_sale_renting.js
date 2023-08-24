@@ -2,6 +2,7 @@
 
 import { WebsiteSale } from '@website_sale/js/website_sale';
 import { RentingMixin } from '@website_sale_renting/js/renting_mixin';
+import wSaleUtils from "@website_sale/js/website_sale_utils";
 import '@website_sale_renting/js/variant_mixin';
 import {
     deserializeDateTime,
@@ -25,8 +26,7 @@ WebsiteSale.include({
             '/shop/cart/update_renting',
             this._getSerializedRentingDates()
         );
-        $(".js_cart_lines").first().before(values['cart_lines']).end().remove();
-        $(".js_cart_summary").replaceWith(values['short_cart_summary']);
+        wSaleUtils.updateCartNavBar(values);
         const format = this._isDurationWithHours() ? formatDateTime : formatDate;
         document.querySelector("input[name=renting_start_date]").value = format(deserializeDateTime(start_date));
         document.querySelector("input[name=renting_end_date]").value = format(deserializeDateTime(end_date));

@@ -41,13 +41,13 @@ registry.category("web_tour.tours").add('shop_buy_rental_product_comparison', {
         tourUtils.goToCart({quantity: 1}),
         {
             content: "Verify there is a Computer",
-            trigger: '#cart_products tbody td.td-product_name a strong:contains("Computer")',
-            run: function () {}, // it's a check
+            trigger: '#cart_products div a h6:contains("Computer")',
+            isCheck: true,
         },
         {
             content: "Verify there are 1 quantity of Computers",
-            trigger: '#cart_products tbody td.td-qty div.css_quantity input[value=1]',
-            run: function () {}, // it's a check
+            trigger: '#cart_products div div.css_quantity input[value=1]',
+            isCheck: true,
         },
         {
             content: "go to checkout",
@@ -56,7 +56,7 @@ registry.category("web_tour.tours").add('shop_buy_rental_product_comparison', {
         },
         {
             content: "verify checkout page",
-            trigger: 'a[href*="shop/payment"] .active',
+            trigger: 'span div.o_wizard_step_active:contains("Payment")',
             isCheck: true,
         },
     ]

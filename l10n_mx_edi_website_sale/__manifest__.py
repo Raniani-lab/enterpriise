@@ -23,7 +23,7 @@
         'l10n_mx_edi_sale',
     ],
     'data': [
-        'data/templates.xml',
+        'views/templates.xml',
     ],
     'assets': {
         'web.assets_frontend': [

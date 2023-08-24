@@ -64,7 +64,7 @@ export class MrpDisplayRecord extends Component {
                 (qc) => qc.data.test_type === "register_production"
             );
         }
-        this.quantityToProduce = this.record.product_qty || this.record.qty_production;
+        this.quantityToProduce = this.record.product_qty || this.record.qty_remaining;
         this.displayUOM = this.props.groups.uom;
     }
 
@@ -79,7 +79,7 @@ export class MrpDisplayRecord extends Component {
         }
         const title = _t("Register Production: %s", this.props.production.data.product_id[1]);
         const reload = () => this.env.reload();
-        const params = { body: '', record: this.props.production, reload, title };
+        const params = { body: '', record: this.props.production, reload, title, qtyToProduce: this.record.qty_remaining };
         this.dialog.add(MrpRegisterProductionDialog, params);
     }
 

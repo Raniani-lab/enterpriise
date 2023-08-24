@@ -4,11 +4,19 @@ import { MrpQualityCheckConfirmationDialog } from "./mrp_quality_check_confirmat
 
 export class MrpRegisterProductionDialog extends MrpQualityCheckConfirmationDialog {
     static template = "mrp_workorder.MrpRegisterProductionDialog";
+    static props = {
+        ...MrpQualityCheckConfirmationDialog.props,
+        qtyToProduce: { optional: true, type: Number },
+    }
 
     setup() {
         super.setup();
         const { product_qty, product_tracking } = this.recordData;
-        this.quantityToProduce = product_tracking === "serial" ? 1 : product_qty;
+        if (this.props.qtyToProduce) {
+            this.quantityToProduce = this.props.qtyToProduce;
+        } else {
+            this.quantityToProduce = product_tracking === "serial" ? 1 : product_qty;
+        }
     }
 
     async doActionAndClose(action, saveModel = true, reloadChecks = false) {

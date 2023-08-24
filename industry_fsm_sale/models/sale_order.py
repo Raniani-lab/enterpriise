@@ -15,7 +15,7 @@ class SaleOrder(models.Model):
         orders = super().create(vals)
         for sale_order in orders:
             if sale_order.task_id:
-                message = escape(_("Quotation created: %s")) % sale_order._get_html_link()
+                message = escape(_("Extra Quotation Created: %s")) % sale_order._get_html_link()
                 sale_order.task_id.message_post(body=message)
         return orders
 

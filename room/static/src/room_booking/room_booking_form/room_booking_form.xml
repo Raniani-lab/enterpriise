@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <t t-name="room.RoomBookingForm">
+        <div class="o_room_scheduler d-flex flex-column h-100" t-ref="root">
+            <div class="p-1">
+                <input t-model.lazy.trim="state.bookingName"
+                       placeholder="Booking Name"
+                       class="form-control w-auto d-inline-block bg-white shadow-sm rounded-pill lh-1"/>
+                <span class="float-end mt-2 me-2">
+                    <t t-out="formattedMonth"/>
+                </span>
+            </div>
+            <div class="d-flex mx-2">
+                <button t-on-click="onPreviousWeekClick" class="btn rounded bg-700 text-white"
+                    t-att-disabled="today > weekInterval.start">
+                    <i class="oi oi-chevron-left" title="Previous Week"/>
+                </button>
+                <t t-foreach="weekIntervalDays" t-as="day" t-key="day.start.toFormat('d')">
+                    <button class="btn ms-1 flex-grow-1 rounded text-white"
+                        t-att-class="day.start.equals(state.selectedDay) ? 'bg-500': 'bg-700'"
+                        t-att-disabled="today > day.start"
+                        t-on-click="() => this.state.selectedDay = day.start">
+                        <t t-out="day.start.toLocaleString(dayFormat)"/>
+                    </button>
+                </t>
+                <button t-on-click="onNextWeekClick" class="btn rounded bg-700 text-white ms-1">
+                    <i class="oi oi-lg oi-chevron-right my-auto" title="Next Week"/>
+                </button>
+            </div>
+            <div class="flex-fill overflow-scroll my-1 text-white">
+                <div class="container">
+                    <div class="o_room_scheduler_slots row row-cols-6 flex-grow-1">
+                        <!-- Use ISOTime as key to preserve uniqueness of these keys even the day of switching to winter time
+                        (in that case we could have two slots with the same hour, so we need a formatting that
+                        takes this edge case into account) -->
+                        <t t-foreach="slots" t-as="slot" t-key="slot.start.toISOTime()">
+                            <div class="col gx-0 border border-light rounded d-flex flex-column justify-content-center align-items-center"
+                                 t-att-class="slot.isInSelectedInterval ? 'bg-400' : slot.canBeEndDate ? 'bg-500' : slot.isBooked ? 'bg-danger' : 'bg-700'"
+                                 t-att-id="'slot' + slot.start.toFormat('HHmm')"
+                                 t-on-click="() => this.onSlotClick(slot)">
+                                <div t-out="slot.start.toLocaleString(timeFormat)"/>
+                                <div t-if="slot.description" class="rounded border border-dark py-1 px-3 mt-3" t-out="slot.description"/>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex">
+                <button class="btn btn-danger py-3 flex-grow-1" t-on-click="props.cancel">
+                    Cancel
+                </button>
+                <button t-if="state.bookingEnd" class="btn btn-success py-3 flex-grow-1" t-on-click="confirm">
+                    <t t-if="props.bookingToEdit">
+                        Save
+                    </t>
+                    <t t-else="">
+                        Schedule
+                    </t>
+                </button>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <t t-name="room.RoomBookingView">
+        <div class="h-100 d-flex">
+            <div class="o_room_booking_main w-75 position-relative">
+                <t t-if="state.scheduleBooking or state.bookingToEdit">
+                    <RoomBookingForm bookings="state.bookings" createBooking.bind="scheduleBooking" cancel.bind="resetBookingForm" editBooking.bind="editBooking" bookingName="state.bookingName" bookingToEdit="state.bookingToEdit"/>
+                </t>
+                <div t-else="" class="h-100 d-flex flex-column justify-content-between align-items-center text-white fs-2"
+                     t-attf-style="background-image: linear-gradient(#{bgColor}, #{bgColor}), url('#{manageRoomUrl}/background')">
+                    <div class="o_room_top">
+                        <RoomDisplayTime/>
+                    </div>
+                    <div class="flex-fill d-flex flex-column align-items-center justify-content-around">
+                        <t t-if="!state.currentBooking">
+                            <t t-if="state.scheduleBookingQuickCreate">
+                                Booking Now
+                                <div>
+                                    <input t-model.lazy.trim="state.bookingName" class="form-control w-auto m-auto border-0 text-center bg-white-50 rounded-pill fs-4" placeholder="Booking Name"/>
+                                    <div class="d-flex justify-content-center mt-5 mb-3">
+                                        <button class="btn btn-info py-2 px-3 mx-1"
+                                            t-if="!nextBooking || nextBooking.interval.start > now.plus({minutes: 15})"
+                                            t-on-click="() => this.quickCreateBooking(15)">
+                                            15 min
+                                        </button>
+                                        <div t-else="" class="text-bg-danger p-1 fs-6">
+                                            The next booking is starting soon.
+                                        </div>
+                                        <button class="btn btn-info py-2 px-3 mx-1"
+                                            t-if="!nextBooking || nextBooking.interval.start > now.plus({minutes: 30})"
+                                            t-on-click="() => this.quickCreateBooking(30)">
+                                            30 min
+                                        </button>
+                                        <button class="btn btn-info py-2 px-3 mx-1"
+                                            t-if="!nextBooking || nextBooking.interval.start > now.plus({minutes: 60})"
+                                            t-on-click="() => this.quickCreateBooking(60)">
+                                            1 hour
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="d-flex w-100">
+                                    <span class="border flex-grow-1 align-self-center"/>
+                                    <span class="mx-3">Or</span>
+                                    <span class="border flex-grow-1 align-self-center"/>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                Available
+                                <i class="o_room_quick_book fa fa-plus-circle fa-3x opacity-75" title="Book now"
+                                    t-on-click="() => this.state.scheduleBookingQuickCreate = true"/>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            Booked
+                            <RoomBookingRemainingTime endTime="state.currentBooking.interval.end"/>
+                            <t t-out="state.currentBooking.name"/>
+                        </t>
+                        <button class="btn btn-info py-2 px-3" t-on-click="() => this.state.scheduleBooking = true">
+                            Schedule Booking
+                        </button>
+                    </div>
+                    <div class="o_room_bottom align-self-stretch d-flex align-items-center">
+                        <button t-if="state.scheduleBookingQuickCreate" class="btn btn-danger w-100 py-3" t-on-click="resetBookingForm">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="o_room_sidebar w-25 shadow border-start">
+                <t t-call="room.RoomBookingSidebar"/>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="room.RoomBookingSidebar">
+        <div class="h-100 d-flex flex-column justify-content-between">
+            <!-- todo: check rtl -->
+            <div class="px-2 mt-2 border-bottom">
+                <h4 t-out="props.name"/>
+                <div class="text-muted mb-3" t-if="props.description" t-out="roomDescription"/>
+            </div>
+            <div t-if="state.bookings.length === 0" class="text-center text">
+                <h5>No Bookings Planned</h5>
+                <span class="text-muted">This room is as free as a fish in a sea of endless possibilities</span>
+            </div>
+            <div t-else="" class="flex-fill overflow-y-auto pt-1">
+                <!-- Today section is shown even if there are no bookings for this day -->
+                <h6 class="w-100 ps-1 text-capitalize" t-out="state.currentDate.toRelativeCalendar()"/>
+                <t t-set="previous_date" t-value="state.currentDate"/>
+                <t t-foreach="state.bookings" t-as="booking" t-key="booking.id">
+                    <t t-if="booking.interval.start.startOf('day') > previous_date">
+                        <div t-if="booking_first" class="text-center text-muted">
+                            No Bookings for Today
+                        </div>
+                        <h6 class="w-100 ps-1 mt-3" t-out="booking.interval.start.toLocaleString(dateFormat)"/>
+                        <t t-set="previous_date" t-value="booking.interval.start.startOf('day')"/>
+                    </t>
+                    <div class="m-1 py-1 px-2 rounded shadow-sm border"
+                        t-att-class="{'border-info border-2': state.bookingToEdit?.id === booking.id}"
+                        t-on-click="() => state.bookingToEdit = booking">
+                        <span t-out="booking.interval.start.toLocaleString(timeFormat)"/>
+                        <i class="oi oi-arrow-right mx-1"/>
+                        <span t-out="booking.interval.end.toLocaleString(timeFormat)"/>
+                        <i class="oi oi-close float-end text-danger fs-4"
+                            t-on-click.stop="() => this.deleteBooking(booking.id)"/>
+                        <div class="text-muted" t-out="booking.name"/>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

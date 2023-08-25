@@ -1,0 +1,27 @@
+html {
+    font-size: 24px;
+}
+.o_room_booking_frontend {
+    #wrapwrap {
+        // prevent website's background image to be displayed
+        background-image: none;
+    }
+    main {
+        height: 100%;
+    }
+    .o_room_booking_main {
+        > div {
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .o_room_remaining_time {
+            width: 5em;
+        }
+    }
+    .o_room_scheduler {
+        .o_room_scheduler_slots .col {
+            aspect-ratio: 1; // Square slots
+        }
+    }
+}

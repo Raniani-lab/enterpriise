@@ -35,13 +35,12 @@ class SaleOrderLogReport(models.Model):
     )
     event_date = fields.Date(readonly=True)
     contract_number = fields.Integer("Active Subscriptions Change", readonly=True)
-    currency_id = fields.Many2one('res.currency', string='Currency', readonly=True)
     pricelist_id = fields.Many2one('product.pricelist', 'Pricelist', readonly=True)
-    amount_signed = fields.Monetary("MRR Change", readonly=True)
+    amount_signed = fields.Monetary("MRR Change", readonly=True, currency_field='log_currency_id')
     mrr_change_normalized = fields.Monetary('MRR Change (normalized)', readonly=True)
     arr_change_normalized = fields.Monetary('ARR Change (normalized)', readonly=True)
-    recurring_monthly = fields.Monetary('Monthly Recurring Revenue', readonly=True)
-    recurring_yearly = fields.Monetary('Annual Recurring Revenue', readonly=True)
+    recurring_monthly = fields.Monetary('Monthly Recurring Revenue', readonly=True, currency_field='log_currency_id')
+    recurring_yearly = fields.Monetary('Annual Recurring Revenue', readonly=True, currency_field='log_currency_id')
     template_id = fields.Many2one('sale.order.template', 'Subscription Template', readonly=True)
     recurrence_id = fields.Many2one('sale.temporal.recurrence', 'Recurrence', readonly=True)
     country_id = fields.Many2one('res.country', 'Customer Country', readonly=True)
@@ -60,6 +59,7 @@ class SaleOrderLogReport(models.Model):
     end_date = fields.Date(readonly=True)
     close_reason_id = fields.Many2one("sale.order.close.reason", string="Close Reason", readonly=True)
     currency_id = fields.Many2one('res.currency', compute='_compute_currency_id')
+    log_currency_id = fields.Many2one('res.currency')
 
     @api.depends_context('allowed_company_ids')
     def _compute_currency_id(self):
@@ -111,7 +111,7 @@ class SaleOrderLogReport(models.Model):
             log.amount_signed * 12 * r2.rate/r1.rate AS arr_change_normalized,
             r1.rate AS currency_rate,
             r2.rate AS user_rate,
-            log.currency_id AS LOG_cur_id,
+            log.currency_id AS log_currency_id,
             log.company_id AS log_cmp,
             CASE
                 WHEN event_type = '0_creation' THEN 1

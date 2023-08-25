@@ -56,7 +56,7 @@
                        sum="MRR"
                        optional="show"/>
                 <field name="recurring_monthly" string="New MRR" optional="show"/>
-                <field name="currency_id" optional="show"/>
+                <field name="log_currency_id" optional="show" string="Currency"/>
                 <field name="subscription_state" optional="hide"/>
             </tree>
         </field>

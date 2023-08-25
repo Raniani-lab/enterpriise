@@ -68,12 +68,6 @@
     }
 }
 
-.o_field_many2one {
-    input[type="text"]:disabled{
-        background-color:#FFF;
-    }
-}
-
 .ui-autocomplete .ui-menu-item {
     &.o_m2o_dropdown_option > a {
         color: $o-brand-primary;

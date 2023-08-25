@@ -34,8 +34,6 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/src/webclient/navbar/navbar.scss',
         ],
         'web.assets_backend': [
-            ('replace', 'web/static/src/legacy/scss/fields_extra.scss', 'web_enterprise/static/src/legacy/scss/fields.scss'),
-
             'web_enterprise/static/src/legacy/scss/dropdown.scss',
             'web_enterprise/static/src/legacy/scss/control_panel_mobile.scss',
             'web_enterprise/static/src/legacy/scss/modal_mobile.scss',

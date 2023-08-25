@@ -1001,7 +1001,7 @@ class AccountMove(models.Model):
         customer_values = self._l10n_mx_edi_get_customer_cfdi_values(self.partner_id, to_public=self.l10n_mx_edi_cfdi_to_public)
         customer = customer_values['customer']
         cfdi_values['receptor'] = customer_values
-        cfdi_values['lugar_expedicion'] = customer_values['domicilio_fiscal_receptor']
+        cfdi_values['lugar_expedicion'] = customer_values['issued_address'].zip
 
         # Date.
         if self.invoice_date >= fields.Date.context_today(self) and self.invoice_date == self.l10n_mx_edi_post_time.date():
@@ -1347,7 +1347,7 @@ class AccountMove(models.Model):
         customer_values = invoice_values_list[0]['receptor']
         customer = customer_values['customer']
         cfdi_values['receptor'] = customer_values
-        cfdi_values['lugar_expedicion'] = customer_values['domicilio_fiscal_receptor']
+        cfdi_values['lugar_expedicion'] = customer_values['issued_address'].zip
 
         # Bank information.
         payment_method_code = self.l10n_mx_edi_payment_method_id.code

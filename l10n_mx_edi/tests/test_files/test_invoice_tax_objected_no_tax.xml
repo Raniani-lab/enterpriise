@@ -17,7 +17,7 @@
                   TipoDeComprobante="I"
                   Exportacion="01"
                   MetodoPago="PPD"
-                  LugarExpedicion="26670">
+                  LugarExpedicion="85134">
     <cfdi:Emisor Rfc="EKU9003173C9" Nombre="ESCUELA KEMPER URGATE" RegimenFiscal="601"/>
     <cfdi:Receptor Rfc="XIA190128J61"
                    Nombre="PARTNER_MX"

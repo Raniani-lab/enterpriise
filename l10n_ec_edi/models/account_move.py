@@ -428,8 +428,7 @@ class AccountMove(models.Model):
 
     def _l10n_ec_get_invoice_edi_data(self):
         def line_discount(line):
-            currency_rate = line.balance / line.amount_currency if line.amount_currency != 0 else 1
-            return line.currency_id.round(currency_rate * (((line.discount * line.price_unit) * line.quantity) / 100.0))
+            return line.currency_id.round(line._l10n_ec_prepare_edi_vals_to_export_USD()['price_discount'])
 
         data = {
             'taxes_data': self._l10n_ec_get_taxes_grouped(),

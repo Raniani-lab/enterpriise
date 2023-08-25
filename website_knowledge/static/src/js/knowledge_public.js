@@ -87,7 +87,7 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
         const container = this.el.querySelector('.o_knowledge_tree');
         try {
             const htmlTree = await this._rpc({
-                route: '/knowledge/public_sidebar/search',
+                route: '/knowledge/public_sidebar/',
                 params: {
                     search_term: searchTerm,
                     active_article_id: this.$id,

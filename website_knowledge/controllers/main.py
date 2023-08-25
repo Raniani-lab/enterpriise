@@ -51,78 +51,22 @@ class KnowledgeWebsiteController(KnowledgeController):
             'show_sidebar': show_sidebar
         })
 
-    def _prepare_public_root_articles_domain(self):
-        """ Public root articles are root articles that are published and in the workspace
-        """
-        return [("parent_id", "=", False), ("category", "=", "workspace"), ("website_published", "=", True)]
-
     # ------------------------
     # Articles tree generation
     # ------------------------
 
     @http.route('/knowledge/public_sidebar', type='json', auth='public')
-    def get_public_sidebar(self, active_article_id=False, unfolded_articles_ids=False):
-        """ Prepares all the info needed to render the article tree view side panel in portal
-
-        :param int active_article_id: used to highlight the given article_id in the template;
-        :param unfolded_articles_ids: List of IDs used to display the children
-          of the given article ids. Unfolded articles are saved into local storage.
-          When reloading/opening the article page, previously unfolded articles
-          nodes must be opened;
+    def get_public_sidebar(self, active_article_id=False, unfolded_articles_ids=False, search_term=False):
+        """ Public access for the sidebar.
+        If a search_term is given, show the articles matching this search_term in the sidebar.
+        In that case, unfolded_articles_ids is ignored (the children of the matching articles
+        are not shown).
         """
-        # Sudo to speed up the search, as permissions will be computed anyways
-        # when getting the visible articles
-        root_articles_ids = request.env['knowledge.article'].sudo().search(
-            self._prepare_public_root_articles_domain(), order="sequence, id"
-        ).ids
-
-        active_article_ancestor_ids = []
-        unfolded_ids = unfolded_articles_ids or []
-
-        # Add active article and its parents in list of unfolded articles
-        active_article = request.env['knowledge.article'].sudo().browse(active_article_id)
-        if active_article and active_article.parent_id:
-            active_article_ancestor_ids = active_article._get_ancestor_ids()
-            unfolded_ids += active_article_ancestor_ids
-
-        all_visible_articles = request.env['knowledge.article'].get_visible_articles(root_articles_ids, unfolded_ids)
-
-        return request.env['ir.qweb']._render('website_knowledge.public_sidebar', {
-            "active_article_id": active_article_id,
-            "active_article_ancestor_ids": active_article_ancestor_ids,
-            "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
-            "articles_displayed_offset": 0,
-            "all_visible_articles": all_visible_articles,
-            "root_articles": all_visible_articles.filtered(lambda article: not article.parent_id),
-            "unfolded_articles_ids": unfolded_ids,
-        })
-
-    @http.route('/knowledge/public_sidebar/search', type='json', auth='public')
-    def get_public_sidebar_search(self, search_term, active_article_id=False):
-        """ Frontend access for left panel when making a search.
-            Renders articles based on search term and ordered alphabetically.
-
-            The tree is completely flattened (no sections nor child articles) to avoid noise
-            (unnecessary parents display when children are matching) and redondancy (duplicated articles
-            because of the favorite tree).
-
-            :param int active_article_id: used to highlight the given article_id in the template;
-            :param string search_term: user search term to filter the articles on;
-        """
-
-        # Get all the visible articles based on the search term
-        all_visible_articles = request.env['knowledge.article'].search(
-            expression.AND([[('is_article_item', '=', False)], [('name', 'ilike', search_term)]]),
-            order='name',
-            limit=self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
-        )
-
-        return request.env['ir.qweb']._render('website_knowledge.public_sidebar', {
-            "search_tree": True,  # Display the flatenned tree instead of the basic tree with sections
-            "active_article_id": active_article_id,
-            "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
-            'articles': all_visible_articles,
-        })
+        if search_term:
+            public_sidebar_values = self._prepare_public_sidebar_search_values(search_term, active_article_id)
+        else:
+            public_sidebar_values = self._prepare_public_sidebar_values(active_article_id, unfolded_articles_ids)
+        return request.env['ir.qweb']._render('website_knowledge.public_sidebar', public_sidebar_values)
 
     @http.route('/knowledge/public_sidebar/load_more', type='json', auth='public')
     def public_sidebar_load_more(self, limit, offset, active_article_id=False, parent_id=False):
@@ -213,3 +157,73 @@ class KnowledgeWebsiteController(KnowledgeController):
             "articles_displayed_offset": 0,
             "has_parent": True,
         })
+
+    # --------------------
+    # Articles tree utils
+    # --------------------
+
+    def _prepare_public_root_articles_domain(self):
+        """ Public root articles are root articles that are published and in the workspace
+        """
+        return [("parent_id", "=", False), ("category", "=", "workspace"), ("website_published", "=", True)]
+
+    def _prepare_public_sidebar_values(self, active_article_id, unfolded_articles_ids):
+        """ Prepares all the info needed to render the sidebar in public
+
+        :param int active_article_id: used to highlight the given article_id in the template;
+        :param unfolded_articles_ids: List of IDs used to display the children
+          of the given article ids. Unfolded articles are saved into local storage.
+          When reloading/opening the article page, previously unfolded articles
+          nodes must be opened;
+        """
+        # Sudo to speed up the search, as permissions will be computed anyways
+        # when getting the visible articles
+        root_articles_ids = request.env['knowledge.article'].sudo().search(
+            self._prepare_public_root_articles_domain(), order="sequence, id"
+        ).ids
+
+        active_article_ancestor_ids = []
+        unfolded_ids = unfolded_articles_ids or []
+
+        # Add active article and its parents in list of unfolded articles
+        active_article = request.env['knowledge.article'].sudo().browse(active_article_id)
+        if active_article and active_article.parent_id:
+            active_article_ancestor_ids = active_article._get_ancestor_ids()
+            unfolded_ids += active_article_ancestor_ids
+
+        all_visible_articles = request.env['knowledge.article'].get_visible_articles(root_articles_ids, unfolded_ids)
+
+        return {
+            "active_article_id": active_article_id,
+            "active_article_ancestor_ids": active_article_ancestor_ids,
+            "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
+            "articles_displayed_offset": 0,
+            "all_visible_articles": all_visible_articles,
+            "root_articles": all_visible_articles.filtered(lambda article: not article.parent_id),
+            "unfolded_articles_ids": unfolded_ids,
+        }
+
+    def _prepare_public_sidebar_search_values(self, search_term, active_article_id=False):
+        """  Prepares all the info needed to render the sidebar given the search_term in public.
+
+            The tree is completely flattened (no sections nor child articles) to avoid noise
+            (unnecessary parents display when children are matching) and redondancy (duplicated articles
+            because of the favorite tree).
+
+            :param int active_article_id: used to highlight the given article_id in the template;
+            :param string search_term: user search term to filter the articles on;
+        """
+
+        # Get all the visible articles based on the search term
+        all_visible_articles = request.env['knowledge.article'].search(
+            expression.AND([[('is_article_item', '=', False)], [('name', 'ilike', search_term)]]),
+            order='name',
+            limit=self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
+        )
+
+        return {
+            "search_tree": True,  # Display the flatenned tree instead of the basic tree with sections
+            "active_article_id": active_article_id,
+            "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
+            'articles': all_visible_articles,
+        }

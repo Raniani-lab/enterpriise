@@ -23,8 +23,6 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
     setup() {
         super.setup();
 
-        /** @type {import("@mail/core/common/thread_service").ThreadService} */
-        this.threadService = useService("mail.thread");
         /** @type {import("@mail/core/common/store_service").Store} */
         this.store = useState(useService("mail.store"));
         this.dialog = useService("dialog");

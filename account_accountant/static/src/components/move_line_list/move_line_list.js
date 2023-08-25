@@ -14,8 +14,6 @@ import { SIZES } from '@web/core/ui/ui_service';
 export class AccountMoveLineListController extends ListController {
     setup() {
         super.setup();
-        /** @type {import("@mail/core/common/attachment_service").AttachmentService} */
-        this.attachmentService = useService("mail.attachment");
         /** @type {import("@mail/core/common/thread_service").ThreadService} */
         this.threadService = useService("mail.thread");
         /** @type {import("@mail/core/common/store_service").Store} */

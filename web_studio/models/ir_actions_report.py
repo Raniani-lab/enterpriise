@@ -42,7 +42,7 @@ class IrActionsReport(models.Model):
 
     def _get_rendering_context(self, report, docids, data):
         ctx = super()._get_rendering_context(report, docids, data)
-        if self.env.context.get("studio") and not ctx["docs"]:
+        if self.env.context.get("studio") and not ctx.get("docs"):
             # TODO or not ?: user inputed values in data ?
             doc = self.env[report.model].new({})
             ctx["docs"] = doc

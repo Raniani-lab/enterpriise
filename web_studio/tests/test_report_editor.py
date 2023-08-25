@@ -1,6 +1,7 @@
 import json
 
 from odoo import Command
+from odoo.addons.base.models.ir_actions_report import IrActionsReport
 from odoo.addons.web_studio.controllers.main import WebStudioController
 from odoo.addons.web_studio.controllers.report import WebStudioReportController
 from odoo.addons.web.controllers.report import ReportController
@@ -309,6 +310,18 @@ class TestReportEditorUIUnit(HttpCase):
                <p>edited with odoo editor 2</p>
              </t>
         """)
+
+    def test_basic_report_edition_without_datas(self):
+        passed_in_rendering_context = False
+
+        def _get_rendering_context_mock(self, report, docids, data):
+            nonlocal passed_in_rendering_context
+            passed_in_rendering_context = True
+            return {'reason': 'Something went wrong.'}
+        self.patch(IrActionsReport, '_get_rendering_context', _get_rendering_context_mock)
+
+        self.start_tour(self.tour_url, "web_studio.test_basic_report_edition", login="admin")
+        self.assertTrue(passed_in_rendering_context)
 
     def test_basic_report_edition_xml(self):
         self.start_tour(self.tour_url, "web_studio.test_basic_report_edition_xml", login="admin")

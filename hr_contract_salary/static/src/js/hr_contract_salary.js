@@ -490,7 +490,6 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
 
     async onchangePersonalInfo(event) {
         let newValue;
-        // YTI TODO: We could factorize the way we retrieve an input value
         if (event.target.type === 'radio') {
             const target = $("input[name='" + event.target.name + "']").toArray().filter(elem => elem.checked);
             newValue = $(target).data('value');

@@ -60,7 +60,6 @@ class DataMergeGroup(models.Model):
             group.divergent_fields = ','.join(diff_fields)
             group.similarity = min(1, len(data) / len(read_fields))
 
-    # YTI TODO: Move this on the data_merge.record model
     def discard_records(self, records=None):
         domain = [('group_id', '=', self.id)]
 
@@ -110,7 +109,6 @@ class DataMergeGroup(models.Model):
     ###########
     ### Merge
     ###########
-    # YTI TODO: Move this on the data_merge.record model
     @api.model
     def merge_multiple_records(self, group_records):
         group_ids = self.browse([int(group_id) for group_id in group_records.keys()])

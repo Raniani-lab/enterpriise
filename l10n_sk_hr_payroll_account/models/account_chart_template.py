@@ -11,7 +11,6 @@ class AccountChartTemplate(models.AbstractModel):
 
     def _configure_payroll_account_sk(self, companies):
         account_codes = [
-            # YTI TODO: Configure accounts
         ]
         default_account = False
         rules_mapping = defaultdict(dict)
@@ -19,7 +18,6 @@ class AccountChartTemplate(models.AbstractModel):
         #           SK Employee Payroll Structure          #
         # ================================================ #
 
-        # YTI TODO: Setup Accounts
         self._configure_payroll_account(
             companies,
             "SK",

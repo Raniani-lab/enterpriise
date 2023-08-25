@@ -24,9 +24,6 @@ def uninstall_hook(env):
     ir.actions.act_window.view that would be unlinked properly
     when uninstalling timesheet_grid, here we clean the view_mode
     manually.
-
-    YTI TODO: But in master, define ir.actions.act_window.view instead,
-    so that they are removed with the module installation.
     """
     root_menu = env.ref('hr_timesheet.timesheet_menu_root', raise_if_not_found=False)
     if root_menu and root_menu.active:

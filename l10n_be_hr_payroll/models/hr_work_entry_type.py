@@ -17,7 +17,6 @@ class HrWorkEntryType(models.Model):
     representation_fees = fields.Boolean(
         string="Representation Fees",
         help="Work entries counts for representation fees")
-    # YTI TODO: Make a new model for dmfa prestation type
     # CODE - LABEL
     # 1   toutes les données relatives au temps de travail couvertes par une rémunération avec cotisations ONSS, à l'exception des vacances légales et complémentaires des ouvriers
     #    - travail effectif normal (également le travail adapté avec perte de salaire);

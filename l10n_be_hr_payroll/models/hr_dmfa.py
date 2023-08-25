@@ -292,16 +292,6 @@ class DMFAWorker(DMFANode):
             DMFAWorkerContributionTemporaryUnemployment(contribution_payslips, basis, self.quarter_start)
         ]
 
-        # Check if special cotisations on termination fees are needed
-        # https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/special_contributions/other_specialcontributions/terminationfeecontribution.html
-        # pour les travailleurs à temps partiel [(A/C)*D/5]*260
-        # où:
-        # A = montant du salaire brut qui doit être renseigné sous le code rémunération Dmfa 1.
-        # B = nombre de jours déclarés sous le code prestation DmfA 1
-        # C = nombre d'heures déclarées sous code prestation 1
-        # D = nombre moyen d'heures/semaine de la personne de référence
-        # YTI TODO
-
         return contributions
 
     def _prepare_occupations(self, contracts, quarter_start, quarter_end):
@@ -364,7 +354,6 @@ class DMFAWorker(DMFANode):
             payslips = self.payslips.filtered(lambda p: p.contract_id in occupation_contracts)
             termination_payslips = payslips.filtered(lambda p: p.struct_id.code == 'CP200TERM')
             if termination_payslips:
-                # YTI TODO master: Store the supposed notice period even for termination fees
                 # Le salaire et les données relatives aux prestations se rapportant à une indemnité
                 # payée suite à une rupture irrégulière de contrat de travail doivent toujours être
                 # repris sur une ligne d'occupation distincte (donc séparée des données se
@@ -726,7 +715,6 @@ class DMFAOccupation(DMFANode):
         # |   41 | Indemnité pour responsabilités supplémentaires d'un membre du parlement/gouvernement fédéral ou régional                                                                                                                                                                                  |
         # |   51 | Indemnité payée à un membre du personnel nommé à titre définitif qui est totalement absent dans le cadre d'une mesure de réorganisation du temps de travail                                                                                                                               |
         # +------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-        # YTI TODO: Add a field dmfa_remuneration_code on hr.salary.rule
         regular_gross = self.env.ref('l10n_be_hr_payroll.cp200_employees_salary_gross_salary')
         student_struct = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_student_regular_pay')
         regular_gross_student = self.env['hr.salary.rule'].search([
@@ -827,7 +815,6 @@ class DMFAOccupationInformation(DMFANode):
         self.mobility_budget = -1
         self.flemish_training_hours = -1
         if self.display_info:
-            # YTI TODO: Manage Flemish Training Hours work_entry_type_flemish_training_time_off
             self.flemish_training_hours = 400
             self.display_info = True
         self.regional_aid_measure = -1

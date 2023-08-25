@@ -73,7 +73,6 @@ class AccountChartTemplate(models.AbstractModel):
         ])
         rules_mapping[net_rule]['credit'] = '2300'
 
-        # YTI TODO: Setup Accounts
         self._configure_payroll_account(
             companies,
             "US",

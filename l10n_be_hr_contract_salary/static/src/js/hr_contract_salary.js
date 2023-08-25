@@ -48,7 +48,6 @@ hrContractSalary.include({
         const res = await this._super(...arguments);
         this.onchangeChildren();
         this.onchangeHospital();
-        // YTI TODO: There is probably a way to remove this crap
         $("input[name='insured_relative_children']").parent().addClass('d-none');
         $("input[name='insured_relative_adults']").parent().addClass('d-none');
         $("input[name='insured_relative_spouse']").parent().addClass('d-none');
@@ -66,7 +65,6 @@ hrContractSalary.include({
             text: 'Additional Information'
         }));
         this.onchangeAmbulatory();
-        // YTI TODO: There is probably a way to remove this crap
         $("input[name='l10n_be_ambulatory_insured_children']").parent().addClass('d-none');
         $("input[name='l10n_be_ambulatory_insured_adults']").parent().addClass('d-none');
         $("input[name='l10n_be_ambulatory_insured_spouse']").parent().addClass('d-none');

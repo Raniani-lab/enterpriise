@@ -237,6 +237,8 @@ function useDocumentsViewFilePreviewer({
     const bus = env.documentsView.bus;
     /** @type {import("@documents/core/document_service").DocumentService} */
     const documentService = useService("document.document");
+    /** @type {import("@mail/core/common/store_service").Store} */
+    const store = useService("mail.store");
 
     const onOpenDocumentsPreview = async ({
         documents,
@@ -296,7 +298,7 @@ function useDocumentsViewFilePreviewer({
         )
             .filter(isRecordPreviewable)
             .map((rec) => {
-                return documentService.insert({
+                return store.Document.insert({
                     id: rec.resId,
                     attachment: {
                         id: rec.data.attachment_id[0],

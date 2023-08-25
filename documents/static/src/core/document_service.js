@@ -27,7 +27,7 @@ export class DocumentService {
                 document.id = data.id;
             }
             if ("attachment" in data) {
-                document.attachment = this.attachmentService.insert(data.attachment);
+                document.attachment = this.store.Attachment.insert(data.attachment);
             }
             if ("name" in data) {
                 document.name = data.name;

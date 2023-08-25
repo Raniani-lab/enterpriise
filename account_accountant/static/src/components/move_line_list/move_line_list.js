@@ -18,6 +18,8 @@ export class AccountMoveLineListController extends ListController {
         this.attachmentService = useService("mail.attachment");
         /** @type {import("@mail/core/common/thread_service").ThreadService} */
         this.threadService = useService("mail.thread");
+        /** @type {import("@mail/core/common/store_service").Store} */
+        this.store = useState(useService("mail.store"));
         this.ui = useService("ui");
         this.attachmentPreviewState = useState({
             previewEnabled: !this.env.searchModel.context.disable_preview && this.ui.size >= SIZES.XXL,
@@ -47,7 +49,7 @@ export class AccountMoveLineListController extends ListController {
             this.attachmentPreviewState.thread = null;
             return;
         }
-        const thread = this.threadService.insert({
+        const thread = this.store.Thread.insert({
             attachments: accountMoveLineData.data.move_attachment_ids.records.map((attachment) => ({
                 id: attachment.resId,
                 mimetype: attachment.data.mimetype,

@@ -193,10 +193,13 @@ class AccountBankStatementLine(models.Model):
 
         # Retrieve the partner from the partner name.
         if self.partner_name:
+            # using 'complete_name' instead of 'name',
+            # as 'complete_name' is the first search criteria in _rec_names_search,
+            # and trigram indexed accordingly.
             domains = product(
                 [
-                    ('name', '=ilike', self.partner_name),
-                    ('name', 'ilike', self.partner_name),
+                    ('complete_name', '=ilike', self.partner_name),
+                    ('complete_name', 'ilike', self.partner_name),
                 ],
                 [
                     ('company_id', 'parent_of', self.company_id.id),

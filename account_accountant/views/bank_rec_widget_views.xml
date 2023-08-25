@@ -174,7 +174,7 @@
                                         <field name="payment_ref"/>
                                     </div>
                                     <div id="row2_col2">
-                                        <div class="o_field_many2manytags o_field_widget d-flex flex-row flex-nowrap">
+                                        <div class="o_field_many2many_tags o_field_widget d-flex flex-row flex-nowrap">
                                             <span t-if="record.to_check.raw_value" class="badge text-bg-warning fw-normal">To check</span>
                                             <div t-if="record.is_reconciled.raw_value" class="badge text-bg-success fw-normal" title="Matched">
                                                 <i class="fa fa-check"/>

@@ -32,7 +32,4 @@ div.o_field_widget.o_fsm_product_quantity {
             margin: 0;
         }
     }
-    .o_kanban_tags_section .o_field_many2manytags > span {
-        @include o-text-overflow;
-    }
 }

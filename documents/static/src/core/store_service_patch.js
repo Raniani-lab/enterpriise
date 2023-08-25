@@ -6,6 +6,8 @@ import { patch } from "@web/core/utils/patch";
 
 patch(Store.prototype, {
     hasDocumentsUserGroup: false,
-    /** @type {Object.<number, import("@documents/core/document_model").Document>} */
-    documents: {},
+    Document: {
+        /** @type {Object.<number, import("@documents/core/document_model").Document>} */
+        records: {},
+    },
 });

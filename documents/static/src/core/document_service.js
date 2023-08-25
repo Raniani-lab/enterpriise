@@ -20,7 +20,7 @@ export class DocumentService {
      * @returns {Document}
      */
     insert(data) {
-        let document = this.store.documents[data.id];
+        let document = this.store.Document.records[data.id];
         if (!document) {
             document = new Document();
             if ("id" in data) {
@@ -45,9 +45,9 @@ export class DocumentService {
                 document.record = data.record;
             }
             document._store = this.store;
-            this.store.documents[data.id] = document;
+            this.store.Document.records[data.id] = document;
             // Get reactive version.
-            document = this.store.documents[data.id];
+            document = this.store.Document.records[data.id];
         }
         // return reactive version
         return document;

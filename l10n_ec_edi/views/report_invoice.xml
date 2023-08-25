@@ -28,6 +28,9 @@
                         <t t-if="o.partner_id.l10n_latam_identification_type_id" t-out="o.partner_id.l10n_latam_identification_type_id.name" id="inv_tax_id_label"/>
                         <t t-else="">RUC/Cédula</t>: <span t-field="o.partner_id.vat"/>
                     </div>
+                    <div>
+                        <t t-out="o.partner_id.street"/>
+                    </div>
                 </p>
             </div>
             <div class="col-auto col-3 mw-100 mb-2" t-if="o.reversed_entry_id" name="modified_document">

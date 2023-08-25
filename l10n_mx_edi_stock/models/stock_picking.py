@@ -231,12 +231,13 @@ class Picking(models.Model):
         def format_float(val, digits=2):
             return '%.*f' % (digits, val)
 
-        company = self.company_id
+        # Note: We can't receive an error here since it has already been checked in '_l10n_mx_edi_prepare_picking_cfdi'.
+        company = self.env['l10n_mx_edi.document']._get_company_cfdi(self.company_id)['company']
         certificate = company.l10n_mx_edi_certificate_ids.sudo()._get_valid_certificate()
 
         name_numbers = list(re.finditer(r'\d+', self.name))
-        partner = self.picking_type_id.warehouse_id.partner_id or self.company_id.partner_id
-        mx_tz = partner._l10n_mx_edi_get_cfdi_timezone()
+        issued_address = self.picking_type_id.warehouse_id.partner_id or self.company_id.partner_id.commercial_partner_id
+        mx_tz = issued_address._l10n_mx_edi_get_cfdi_timezone()
         date_fmt = '%Y-%m-%dT%H:%M:%S'
 
         origin_type, origin_uuids = None, []
@@ -247,6 +248,7 @@ class Picking(models.Model):
                 origin_uuids = split_origin[1].split(',')
 
         return {
+            'company': company,
             'certificate': certificate,
             'certificate_number': certificate.serial_number,
             'certificate_key': certificate.sudo()._get_data()[0].decode('utf-8'),
@@ -257,8 +259,8 @@ class Picking(models.Model):
             'origin_type': origin_type,
             'origin_uuids': origin_uuids,
             'serie': re.sub(r'\W+', '', self.name[:name_numbers[-1].start()]),
-            'lugar_expedicion': partner.zip,
-            'supplier': self.company_id,
+            'lugar_expedicion': issued_address.zip,
+            'supplier': company,
             'customer': self.partner_id.commercial_partner_id,
             'moves': self.move_ids.filtered(lambda ml: ml.quantity_done > 0),
             'format_float': format_float,
@@ -279,8 +281,14 @@ class Picking(models.Model):
         self.ensure_one()
 
         # == Check the config ==
+        company_values = self.env['l10n_mx_edi.document']._get_company_cfdi(self.company_id)
+        if company_values.get('errors'):
+            return company_values
+
+        company = company_values['company']
+
         errors = self._l10n_mx_edi_cfdi_check_external_trade_config() \
-                 + self.company_id._l10n_mx_edi_cfdi_check_config() \
+                 + company._l10n_mx_edi_cfdi_check_config() \
                  + self._l10n_mx_edi_cfdi_check_picking_config()
         if errors:
             return {'errors': errors}
@@ -398,7 +406,8 @@ class Picking(models.Model):
             )
             return
 
-        company = self.company_id
+        # Note: We can't receive an error here since it has already been checked in '_l10n_mx_edi_prepare_picking_cfdi'.
+        company = self.env['l10n_mx_edi.document']._get_company_cfdi(self.company_id)['company']
         pac_name = company.l10n_mx_edi_pac
 
         # == Check credentials ==
@@ -439,11 +448,15 @@ class Picking(models.Model):
         if self.l10n_mx_edi_cfdi_state != 'sent':
             return
 
-        company = self.company_id
+        # == Check the config ==
+        company_values = self.env['l10n_mx_edi.document']._get_company_cfdi(self.company_id)
+        if company_values.get('errors'):
+            return company_values
+
+        company = company_values['company']
         pac_name = company.l10n_mx_edi_pac
 
-        # == Check the config ==
-        errors = self.company_id._l10n_mx_edi_cfdi_check_config() + self._l10n_mx_edi_cfdi_check_picking_config()
+        errors = company._l10n_mx_edi_cfdi_check_config() + self._l10n_mx_edi_cfdi_check_picking_config()
         if errors:
             self._l10n_mx_edi_cfdi_document_cancel_failed(
                 "\n".join(errors),
@@ -463,7 +476,7 @@ class Picking(models.Model):
 
         # == Check PAC ==
         cancel_results = getattr(self.env['l10n_mx_edi.document'], f'_{pac_name}_cancel')(
-            self.company_id,
+            company,
             credentials,
             self.l10n_mx_edi_cfdi_uuid,
             uuid_replace=self.l10n_mx_edi_cfdi_cancel_picking_id.l10n_mx_edi_cfdi_uuid,

@@ -21,13 +21,6 @@ class TestMXEdiStockCommon(TestMxEdiCommon):
             'l10n_mx_edi_pac': 'finkok',
         })
 
-        cls.new_wh = cls.env['stock.warehouse'].create({
-            'name': 'New Warehouse',
-            'reception_steps': 'one_step',
-            'delivery_steps': 'ship_only',
-            'code': 'NWH',
-        })
-
         cls.customer_location = cls.env.ref('stock.stock_location_customers')
 
         cls.product_c = cls.env['product.product'].create({
@@ -80,11 +73,20 @@ class TestMXEdiStockCommon(TestMxEdiCommon):
             ],
         })
 
-    def _create_picking(self):
+    def _create_warehouse(self, **kwargs):
+        return self.env['stock.warehouse'].create({
+            'name': 'New Warehouse',
+            'reception_steps': 'one_step',
+            'delivery_steps': 'ship_only',
+            'code': 'NWH',
+            **kwargs,
+        })
+
+    def _create_picking(self, warehouse, **kwargs):
         picking = self.env['stock.picking'].create({
-            'location_id': self.new_wh.lot_stock_id.id,
+            'location_id': warehouse.lot_stock_id.id,
             'location_dest_id': self.customer_location.id,
-            'picking_type_id': self.new_wh.out_type_id.id,
+            'picking_type_id': warehouse.out_type_id.id,
             'partner_id': self.partner_a.id,
             'l10n_mx_edi_transport_type': '01',
             'l10n_mx_edi_vehicle_id': self.vehicle_pedro.id,
@@ -98,13 +100,15 @@ class TestMXEdiStockCommon(TestMxEdiCommon):
             'product_uom_qty': 10,
             'product_uom': self.product_c.uom_id.id,
             'picking_id': picking.id,
-            'location_id': self.new_wh.lot_stock_id.id,
+            'location_id': warehouse.lot_stock_id.id,
             'location_dest_id': self.customer_location.id,
             'state': 'confirmed',
             'description_picking': self.product_c.name,
+            'company_id': warehouse.company_id.id,
+            **kwargs,
         })
 
-        self.env['stock.quant']._update_available_quantity(self.product_c, self.new_wh.lot_stock_id, 10.0)
+        self.env['stock.quant']._update_available_quantity(self.product_c, warehouse.lot_stock_id, 10.0)
         picking.action_assign()
         picking.move_ids[0].move_line_ids[0].qty_done = 10
         picking._action_done()

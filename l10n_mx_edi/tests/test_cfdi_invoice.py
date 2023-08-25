@@ -332,3 +332,20 @@ class TestCFDIInvoice(TestMxEdiCommon):
         with self.with_mocked_pac_sign_success():
             invoice._l10n_mx_edi_cfdi_invoice_try_send()
         self._assert_invoice_cfdi(invoice, 'test_invoice_tax_0_tasa')
+
+    @freeze_time('2017-01-01')
+    def test_invoice_company_branch(self):
+        self.env.company.write({
+            'child_ids': [Command.create({
+                'name': 'Branch A',
+                'zip': '85120',
+            })],
+        })
+        self.cr.precommit.run()  # load the CoA
+
+        branch = self.env.company.child_ids
+        invoice = self._create_invoice(company_id=branch.id)
+
+        with self.with_mocked_pac_sign_success():
+            invoice._l10n_mx_edi_cfdi_invoice_try_send()
+        self._assert_invoice_cfdi(invoice, 'test_invoice_company_branch')

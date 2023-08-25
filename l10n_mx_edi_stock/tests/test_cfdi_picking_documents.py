@@ -9,7 +9,8 @@ from freezegun import freeze_time
 class TestCFDIPickingWorkflow(TestMXEdiStockCommon):
 
     def test_picking_workflow(self):
-        picking = self._create_picking()
+        warehouse = self._create_warehouse()
+        picking = self._create_picking(warehouse)
 
         # No pac found.
         self.env.company.l10n_mx_edi_pac = None

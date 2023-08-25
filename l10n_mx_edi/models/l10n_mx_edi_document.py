@@ -116,6 +116,19 @@ class L10nMxEdiDocument(models.Model):
             else:
                 raise
 
+    @api.model
+    def _get_company_cfdi(self, company):
+        """ Get the company to consider when creating the CFDI document.
+        The root company will be the one with configured certificates on the hierarchy.
+
+        :param company: The res.company to consider when generating the CFDI.
+        :return: A dictionary containing either 'errors' if no certificate found, 'company' otherwise.
+        """
+        root_company = company.sudo().parent_ids[::-1].filtered('l10n_mx_edi_certificate_ids')[:1]
+        if not root_company:
+            return {'errors': [_("No valid certificate found")]}
+        return {'company': root_company}
+
     # -------------------------------------------------------------------------
     # CFDI: PACs
     # -------------------------------------------------------------------------

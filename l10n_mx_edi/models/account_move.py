@@ -536,16 +536,19 @@ class AccountMove(models.Model):
             else:
                 move.l10n_mx_edi_payment_policy = False
 
-    @api.depends('l10n_mx_edi_is_cfdi_needed', 'partner_id')
+    @api.depends('l10n_mx_edi_is_cfdi_needed', 'partner_id', 'company_id')
     def _compute_l10n_mx_edi_cfdi_to_public(self):
         for move in self:
-            if move.l10n_mx_edi_cfdi_to_public:
-                move.l10n_mx_edi_cfdi_to_public = True
-            elif move.l10n_mx_edi_is_cfdi_needed and move.partner_id:
+            move.l10n_mx_edi_cfdi_to_public = move.l10n_mx_edi_cfdi_to_public
+            if (
+                not move.l10n_mx_edi_cfdi_to_public
+                and move.l10n_mx_edi_is_cfdi_needed
+                and move.partner_id
+                and move.company_id
+            ):
                 customer_values = move._l10n_mx_edi_get_customer_cfdi_values(move.partner_id)
-                move.l10n_mx_edi_cfdi_to_public = customer_values['rfc'] == 'XAXX010101000'
-            else:
-                move.l10n_mx_edi_cfdi_to_public = False
+                if customer_values:
+                    move.l10n_mx_edi_cfdi_to_public = customer_values['rfc'] == 'XAXX010101000'
 
     @api.depends('journal_id', 'statement_line_id', 'partner_id')
     def _compute_l10n_mx_edi_payment_method_id(self):
@@ -712,10 +715,12 @@ class AccountMove(models.Model):
 
     def _l10n_mx_edi_get_customer_cfdi_values(self, partner, to_public=False):
         self.ensure_one()
+        company = self.env['l10n_mx_edi.document']._get_company_cfdi(self.company_id).get('company')
+        if not company:
+            return
         customer = partner if partner.type == 'invoice' else partner.commercial_partner_id
         is_foreign_customer = customer.country_id.code != 'MX'
-        supplier = self.company_id.partner_id.commercial_partner_id
-        issued_address = self._get_l10n_mx_edi_issued_address()
+        supplier = company.partner_id.commercial_partner_id
 
         if to_public or is_foreign_customer:
             vat = 'XEXX010101000' if is_foreign_customer else 'XAXX010101000'
@@ -724,7 +729,7 @@ class AccountMove(models.Model):
                 'rfc': vat,
                 'nombre': self._l10n_mx_edi_cfdi_clean_to_legal_name(customer.name),
                 'residencia_fiscal': None,
-                'domicilio_fiscal_receptor': issued_address.zip or supplier.zip,
+                'domicilio_fiscal_receptor': supplier.zip,
                 'regimen_fiscal_receptor': '616',
                 'uso_cfdi': 'S01',
             }
@@ -743,7 +748,6 @@ class AccountMove(models.Model):
                 customer_values['residencia_fiscal'] = customer.country_id.l10n_mx_edi_code
 
         customer_values['customer'] = customer
-        customer_values['issued_address'] = issued_address
         return customer_values
 
     def _l10n_mx_edi_get_common_cfdi_values(self):
@@ -753,10 +757,12 @@ class AccountMove(models.Model):
         '''
         self.ensure_one()
 
-        company = self.company_id
+        # Note: We can't receive an error here since it has already been checked in '_l10n_mx_edi_prepare_invoice_cfdi'
+        # or '_l10n_mx_edi_prepare_payment_cfdi'.
+        company = self.env['l10n_mx_edi.document']._get_company_cfdi(self.company_id)['company']
         certificate = company.l10n_mx_edi_certificate_ids.sudo()._get_valid_certificate()
         currency_precision = self.currency_id.l10n_mx_edi_decimal_places
-        supplier = self.company_id.partner_id.commercial_partner_id
+        supplier = company.partner_id.commercial_partner_id
 
         def format_string(text, size):
             """ Replace from text received the characters that are not found in the regex. This regex is taken from SAT
@@ -778,6 +784,7 @@ class AccountMove(models.Model):
             return '%.*f' % (precision, amount if not float_is_zero(amount, precision_digits=precision) else 0.0)
 
         results = {
+            'company': company,
             'certificate': certificate,
             'format_string': format_string,
             'format_float': format_float,
@@ -805,8 +812,8 @@ class AccountMove(models.Model):
         results['emisor'] = {
             'supplier': supplier,
             'rfc': supplier.vat,
-            'nombre': self._l10n_mx_edi_cfdi_clean_to_legal_name(self.company_id.name),
-            'regimen_fiscal': self.company_id.l10n_mx_edi_fiscal_regime,
+            'nombre': self._l10n_mx_edi_cfdi_clean_to_legal_name(company.name),
+            'regimen_fiscal': company.l10n_mx_edi_fiscal_regime,
         }
 
         return results
@@ -1001,7 +1008,9 @@ class AccountMove(models.Model):
         customer_values = self._l10n_mx_edi_get_customer_cfdi_values(self.partner_id, to_public=self.l10n_mx_edi_cfdi_to_public)
         customer = customer_values['customer']
         cfdi_values['receptor'] = customer_values
-        cfdi_values['lugar_expedicion'] = customer_values['issued_address'].zip
+
+        issued_address = self._get_l10n_mx_edi_issued_address()
+        cfdi_values['lugar_expedicion'] = issued_address.zip
 
         # Date.
         if self.invoice_date >= fields.Date.context_today(self) and self.invoice_date == self.l10n_mx_edi_post_time.date():
@@ -1220,7 +1229,12 @@ class AccountMove(models.Model):
         self.ensure_one()
 
         # == Check the config ==
-        errors = self.company_id._l10n_mx_edi_cfdi_check_config() + self._l10n_mx_edi_cfdi_check_invoice_config()
+        company_values = self.env['l10n_mx_edi.document']._get_company_cfdi(self.company_id)
+        if company_values.get('errors'):
+            return company_values
+
+        company = company_values['company']
+        errors = company._l10n_mx_edi_cfdi_check_config() + self._l10n_mx_edi_cfdi_check_invoice_config()
         if errors:
             return {'errors': errors}
 
@@ -1262,6 +1276,7 @@ class AccountMove(models.Model):
         """
         self.ensure_one()
         cfdi_values = self._l10n_mx_edi_get_common_cfdi_values()
+        company = cfdi_values['company']
         company_curr = self.company_currency_id
 
         # Date.
@@ -1347,7 +1362,9 @@ class AccountMove(models.Model):
         customer_values = invoice_values_list[0]['receptor']
         customer = customer_values['customer']
         cfdi_values['receptor'] = customer_values
-        cfdi_values['lugar_expedicion'] = customer_values['issued_address'].zip
+
+        issued_address = self._get_l10n_mx_edi_issued_address()
+        cfdi_values['lugar_expedicion'] = issued_address.zip
 
         # Bank information.
         payment_method_code = self.l10n_mx_edi_payment_method_id.code
@@ -1355,7 +1372,7 @@ class AccountMove(models.Model):
         is_payment_code_receiver_ok = payment_method_code in ('02', '03', '04', '05', '28', '29', '99')
         is_payment_code_bank_ok = payment_method_code in ('02', '03', '04', '28', '29', '99')
 
-        bank_account = customer.bank_ids.filtered(lambda x: x.company_id.id in (False, self.company_id.id))[:1]
+        bank_account = customer.bank_ids.filtered(lambda x: x.company_id.id in (False, company.id))[:1]
 
         partner_bank = bank_account.bank_id
         if partner_bank.country and partner_bank.country.code != 'MX':
@@ -1476,7 +1493,13 @@ class AccountMove(models.Model):
         self.ensure_one()
 
         # == Check the config ==
-        errors = self.company_id._l10n_mx_edi_cfdi_check_config()
+        company_values = self.env['l10n_mx_edi.document']._get_company_cfdi(self.company_id)
+        if company_values.get('errors'):
+            return company_values
+
+        company = company_values['company']
+
+        errors = company._l10n_mx_edi_cfdi_check_config()
         if errors:
             return {'errors': errors}
 
@@ -1705,7 +1728,8 @@ class AccountMove(models.Model):
             )
             return
 
-        company = self.company_id
+        # Note: We can't receive an error here since it has already been checked in '_l10n_mx_edi_prepare_invoice_cfdi'.
+        company = self.env['l10n_mx_edi.document']._get_company_cfdi(self.company_id)['company']
         pac_name = company.l10n_mx_edi_pac
 
         # == Check credentials ==
@@ -1753,11 +1777,15 @@ class AccountMove(models.Model):
         if self.state != 'posted' or self.l10n_mx_edi_cfdi_state != 'sent':
             return
 
-        company = self.company_id
+        # == Check the config ==
+        company_values = self.env['l10n_mx_edi.document']._get_company_cfdi(self.company_id)
+        if company_values.get('errors'):
+            return company_values
+
+        company = company_values['company']
         pac_name = company.l10n_mx_edi_pac
 
-        # == Check the config ==
-        errors = self.company_id._l10n_mx_edi_cfdi_check_config() + self._l10n_mx_edi_cfdi_check_invoice_config()
+        errors = company._l10n_mx_edi_cfdi_check_config() + self._l10n_mx_edi_cfdi_check_invoice_config()
         if errors:
             self._l10n_mx_edi_cfdi_invoice_document_cancel_failed(
                 "\n".join(errors),
@@ -1777,7 +1805,7 @@ class AccountMove(models.Model):
 
         # == Check PAC ==
         cancel_results = getattr(self.env['l10n_mx_edi.document'], f'_{pac_name}_cancel')(
-            self.company_id,
+            company,
             credentials,
             self.l10n_mx_edi_cfdi_uuid,
             uuid_replace=self.l10n_mx_edi_cfdi_cancel_id.l10n_mx_edi_cfdi_uuid,
@@ -1977,6 +2005,13 @@ class AccountMove(models.Model):
             self.l10n_mx_edi_cfdi_invoice_try_cancel_payment(invoices)
             return
 
+        # == Check the config ==
+        company_values = self.env['l10n_mx_edi.document']._get_company_cfdi(self.company_id)
+        if company_values.get('errors'):
+            return company_values
+
+        company = company_values['company']
+
         # == Check xml ==
         results = self._l10n_mx_edi_prepare_payment_cfdi(pay_results)
         if results.get('errors'):
@@ -1988,7 +2023,6 @@ class AccountMove(models.Model):
             )
             return
 
-        company = self.company_id
         pac_name = company.l10n_mx_edi_pac
 
         # == Check credentials ==
@@ -2027,12 +2061,17 @@ class AccountMove(models.Model):
         self.ensure_one()
 
         # == Check the config ==
-        errors = self.company_id._l10n_mx_edi_cfdi_check_config()
+        company_values = self.env['l10n_mx_edi.document']._get_company_cfdi(self.company_id)
+        if company_values.get('errors'):
+            return company_values
+
+        company = company_values['company']
+
+        errors = company._l10n_mx_edi_cfdi_check_config()
         if errors:
             return {'errors': errors}
 
         # == Check credentials ==
-        company = self.company_id
         pac_name = company.l10n_mx_edi_pac
         credentials = getattr(self.env['l10n_mx_edi.document'], f'_get_{pac_name}_credentials')(company)
         if credentials.get('errors'):
@@ -2048,7 +2087,7 @@ class AccountMove(models.Model):
         # == Check PAC ==
         cfdi_infos = self.env['l10n_mx_edi.document']._decode_cfdi_attachment(self.l10n_mx_edi_cfdi_attachment_id.raw)
         cancel_results = getattr(self.env['l10n_mx_edi.document'], f'_{pac_name}_cancel')(
-            self.company_id,
+            company,
             credentials,
             cfdi_infos['uuid'],
             uuid_replace=self.l10n_mx_edi_cfdi_cancel_id.l10n_mx_edi_cfdi_uuid,

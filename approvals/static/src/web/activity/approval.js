@@ -1,8 +1,6 @@
 /* @odoo-module */
 
-import { useStore } from "@mail/core/common/messaging_hook";
-
-import { Component } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 
 import { useService } from "@web/core/utils/hooks";
 
@@ -21,7 +19,7 @@ export class Approval extends Component {
     setup() {
         /** @type {import("@mail/core/web/activity_service").ActivityService} */
         this.activityService = useService("mail.activity");
-        this.store = useStore();
+        this.store = useState(useService("mail.store"));
     }
 
     async onClickApprove() {

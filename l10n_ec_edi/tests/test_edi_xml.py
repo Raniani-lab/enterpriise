@@ -34,6 +34,9 @@ class TestEcEdiXmls(TestEcEdiCommon):
             <xpath expr="//totalSinImpuestos" position="replace">
                 <totalSinImpuestos>357.140000</totalSinImpuestos>
             </xpath>
+            <xpath expr="//totalDescuento" position="replace">
+                <totalDescuento>89.29</totalDescuento>
+            </xpath>
             <xpath expr="//totalImpuesto/baseImponible" position="replace">
                 <baseImponible>357.140000</baseImponible>
             </xpath>
@@ -92,7 +95,7 @@ class TestEcEdiXmls(TestEcEdiCommon):
                 <totalSinImpuestos>426.290000</totalSinImpuestos>
             </xpath>
             <xpath expr="//totalDescuento" position="replace">
-                <totalDescuento>103.02</totalDescuento>
+                <totalDescuento>103.03</totalDescuento>
             </xpath>
             <xpath expr="//totalImpuesto/baseImponible" position="replace">
                 <baseImponible>426.290000</baseImponible>
@@ -167,7 +170,7 @@ class TestEcEdiXmls(TestEcEdiCommon):
                 <totalSinImpuestos>852.580000</totalSinImpuestos>
             </xpath>
             <xpath expr="//totalDescuento" position="replace">
-                <totalDescuento>206.05</totalDescuento>
+                <totalDescuento>206.06</totalDescuento>
             </xpath>
             <xpath expr="//totalImpuesto/baseImponible" position="replace">
                 <baseImponible>852.580000</baseImponible>

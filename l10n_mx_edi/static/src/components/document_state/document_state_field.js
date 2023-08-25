@@ -22,6 +22,7 @@ export class DocumentState extends SelectionField {
     static template = "l10n_mx_edi.DocumentState";
 
     setup() {
+        super.setup();
         this.popover = useService("popover");
         this.notification = useService("notification");
     }

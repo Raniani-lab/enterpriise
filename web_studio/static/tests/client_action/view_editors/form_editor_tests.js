@@ -3023,6 +3023,40 @@ QUnit.module("View Editors", (hooks) => {
             await click(target, '.o_web_studio_sidebar input[name="readonly"]');
         }
     );
+
+    QUnit.test("X2Many field widgets not using subviews", async function (assert) {
+        class NoSubView extends owl.Component {
+            static template = owl.xml`<div>nosubview <t t-esc="this.props.record.fields[props.name].type"/></div>`;
+        }
+        registry.category("fields").add("nosubview", {
+            component: NoSubView,
+            supportedTypes: ["many2many", "one2many"],
+        });
+
+        serverData.models.coucou.fields.product_ids = { type: "one2many", relation: "product" };
+
+        await createViewEditor({
+            serverData,
+            type: "form",
+            resModel: "coucou",
+            arch: '<form><field name="product_ids" widget="nosubview" /></form>',
+        });
+
+        assert.strictEqual(
+            target.querySelector(".o_field_nosubview").textContent,
+            "nosubview one2many"
+        );
+        assert.doesNotHaveClass(
+            target.querySelector(".o_field_nosubview"),
+            "o-web-studio-editor--element-clicked"
+        );
+        await click(target.querySelector(".o_field_nosubview"));
+        assert.hasClass(
+            target.querySelector(".o_field_nosubview"),
+            "o-web-studio-editor--element-clicked"
+        );
+        assert.containsNone(target, ".o-web-studio-edit-x2manys-buttons");
+    });
 });
 
 QUnit.module("View Editors", (hooks) => {

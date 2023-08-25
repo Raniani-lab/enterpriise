@@ -60,11 +60,7 @@ export class FieldStudio extends Field {
         if (!["one2many", "many2many"].includes(field.type)) {
             return false;
         }
-        const activeField = record.activeFields[name];
-        if (["many2many_tags", "hr_org_chart"].includes(activeField.widget)) {
-            return false;
-        }
-        return true;
+        return !!this.props.fieldInfo.field.useSubView;
     }
 
     onEditViewType(viewType) {

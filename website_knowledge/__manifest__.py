@@ -21,6 +21,11 @@
             'website_knowledge/static/src/js/components/**/*.xml',
             'website_knowledge/static/src/js/components/**/*.js',
         ],
+        'web.assets_frontend': [
+            'website_knowledge/static/src/js/knowledge_public.js',
+            'website_knowledge/static/src/scss/knowledge_public.scss',
+            'website_knowledge/static/src/xml/knowledge_public.xml',
+        ],
         'web.assets_tests': [
             'website_knowledge/static/tests/tours/**/*',
         ],

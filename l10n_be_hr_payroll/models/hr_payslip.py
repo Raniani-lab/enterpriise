@@ -900,12 +900,8 @@ def compute_special_social_cotisations(payslip, categories, worked_days, inputs)
     if not wage or employee.is_non_resident:
         return 0.0
 
-    RuleParameters = payslip.dict.env['hr.rule.parameter']
     if employee.marital in ['divorced', 'single', 'widower'] or (employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without_income'):
-        # YTI TODO: could be dropped in master in favor to
-        # rates = payslip.rule_parameter('cp200_monss_isolated')
-        rates = RuleParameters._get_parameter_from_code(
-            'cp200_monss_isolated', payslip.dict.date_to, raise_if_not_found=False)
+        rates = payslip.rule_parameter('cp200_monss_isolated')
         if not rates:
             rates = [
                 (0.00, 1945.38, 0.00, 0.00, 0.00, 0.00),
@@ -917,10 +913,7 @@ def compute_special_social_cotisations(payslip, categories, worked_days, inputs)
         return -min(max(basis + (wage - low + 0.01) * rate, min_amount), max_amount)
 
     if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status != 'without_income':
-        # YTI TODO: could be dropped in master in favor to
-        # rates = payslip.rule_parameter('cp200_monss_couple')
-        rates = RuleParameters._get_parameter_from_code(
-            'cp200_monss_couple', payslip.dict.date_to, raise_if_not_found=False)
+        rates = payslip.rule_parameter('cp200_monss_couple')
         if not rates:
             rates = [
                 (0.00, 1095.09, 0.00, 0.00, 0.00, 0.00),

@@ -1,99 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <function model="hr.salary.rule" name="write">
-        <value model="hr.salary.rule" search="[('struct_id', '=', ref('l10n_in_hr_payroll.structure_with_pf')),
+        <value model="hr.salary.rule" search="[('struct_id', '=', ref('l10n_in_hr_payroll.hr_payroll_structure_in_employee_salary')),
             ('code', '=', 'BASIC')]"/>
-        <value eval="{'amount_python_compute': &quot;result = payslip._rule_parameter('basic_with_pf') if ((payslip.paid_amount * 0.60) * 0.31) &lt;= payslip._rule_parameter('basic_with_pf') else ((payslip.paid_amount * 0.60) * 0.31)&quot;}"/>
+        <value eval="{'amount_python_compute': &quot;result = max(payslip._rule_parameter('l10n_in_basic_value'), payslip.paid_amount * payslip._rule_parameter('l10n_in_basic_percent') * payslip._rule_parameter('l10n_in_basic_days'))&quot;}"/>
     </function>
 
-    <record id="hr_salary_rule_hra_with_pf" model="hr.salary.rule">
+    <record id="l10n_in_hr_salary_rule_hra" model="hr.salary.rule">
         <field name="code">HRA</field>
         <field name="name">House Rent Allowance</field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="sequence" eval="16"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = categories['BASIC'] * 0.40</field>
-        <field name="struct_id" ref="l10n_in_hr_payroll.structure_with_pf"/>
+        <field name="amount_python_compute">
+hra_value = payslip._rule_parameter('l10n_in_hra_value')
+result = categories['BASIC'] * hra_value
+        </field>
+        <field name="struct_id" ref="l10n_in_hr_payroll.hr_payroll_structure_in_employee_salary"/>
     </record>
 
-    <record id="hr_salary_rule_std_with_pf" model="hr.salary.rule">
+    <record id="l10n_in_hr_salary_rule_std" model="hr.salary.rule">
         <field name="code">STD</field>
         <field name="name">Standard Allowance</field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="sequence" eval="20"/>
         <field name="quantity">1</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result= (payslip._rule_parameter('l10n_in_std_awl')/(sum(payslip.worked_days_line_ids.mapped('number_of_days')))) * (((sum(payslip.worked_days_line_ids.mapped('number_of_days')))) - ('LEAVE90' in worked_days and worked_days['LEAVE90'].number_of_days))</field>
-        <field name="struct_id" ref="l10n_in_hr_payroll.structure_with_pf"/>
+        <field name="amount_python_compute">
+std_awl = payslip._rule_parameter('l10n_in_std_alw')
+work_rate = 1
+if payslip.worked_days_line_ids:
+    total_days = sum(payslip.worked_days_line_ids.mapped('number_of_days'))
+    total_unpaid_days = worked_days['LEAVE90'].number_of_days if 'LEAVE90' in worked_days else 0
+    work_rate = (total_days - total_unpaid_days) / total_days
+result = 1
+        </field>
+        <field name="struct_id" ref="l10n_in_hr_payroll.hr_payroll_structure_in_employee_salary"/>
     </record>
 
-    <record id="hr_salary_rule_bonus_with_pf" model="hr.salary.rule">
+    <record id="l10n_in_hr_salary_rule_bonus" model="hr.salary.rule">
         <field name="code">BONUS</field>
         <field name="name">Bonus</field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="sequence" eval="22"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = categories['BASIC'] * 0.3  if  ((contract.wage * 12) &lt; 450000) else categories['BASIC'] * 0.20 if (contract.wage * 3 &lt; 550000) else categories['BASIC'] * 0.10</field>
-        <field name="struct_id" ref="l10n_in_hr_payroll.structure_with_pf"/>
+        <field name="amount_python_compute">
+bonus_percent = payslip._rule_parameter('l10n_in_bonus_percent')
+result = 0
+for treshhold, coef in bonus_percent:
+    annual_wage = contract.wage * coef[0]
+    if annual_wage &lt; treshhold:
+        result = categories['BASIC'] * coef[1]
+        break
+        </field>
+        <field name="struct_id" ref="l10n_in_hr_payroll.hr_payroll_structure_in_employee_salary"/>
     </record>
 
-    <record id="hr_salary_rule_lta_with_pf" model="hr.salary.rule">
+    <record id="l10n_in_hr_salary_rule_lta" model="hr.salary.rule">
         <field name="code">LTA</field>
         <field name="name">Leave Travel Allowance</field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="sequence" eval="23"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = categories['BASIC'] * 0.3  if  ((contract.wage * 12) &lt; 450000) else categories['BASIC'] * 0.20 if (contract.wage * 3 &lt; 550000) else categories['BASIC'] * 0.10</field>
-        <field name="struct_id" ref="l10n_in_hr_payroll.structure_with_pf"/>
+        <field name="amount_python_compute">
+lta_percent = payslip._rule_parameter('l10n_in_lta_percent')
+result = 0
+for treshhold, coef in lta_percent:
+    annual_wage = contract.wage * coef[0]
+    if annual_wage &lt; treshhold:
+        result = categories['BASIC'] * coef[1]
+        break
+        </field>
+        <field name="struct_id" ref="l10n_in_hr_payroll.hr_payroll_structure_in_employee_salary"/>
     </record>
 
-    <record id="hr_salary_rule_spl_with_pf" model="hr.salary.rule">
+    <record id="l10n_in_hr_salary_rule_spl" model="hr.salary.rule">
         <field name="code">SPL</field>
         <field name="name">Supplementary Allowance</field>
         <field name="category_id" ref="l10n_in_hr_payroll.SPA"/>
         <field name="sequence" eval="29"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = (payslip.paid_amount * 0.60) - (categories['BASIC'] + categories['ALW'])</field>
-        <field name="struct_id" ref="l10n_in_hr_payroll.structure_with_pf"/>
+        <field name="amount_python_compute">
+basic_and_alw = categories['BASIC'] + categories['ALW']
+basic_in_per = payslip._rule_parameter('l10n_in_basic_percent')
+result = payslip.paid_amount * basic_in_per - basic_and_alw
+        </field>
+        <field name="struct_id" ref="l10n_in_hr_payroll.hr_payroll_structure_in_employee_salary"/>
     </record>
 
-    <record id="hr_salary_rule_p_bonus_with_pf" model="hr.salary.rule">
+    <record id="l10n_in_hr_salary_rule_p_bonus" model="hr.salary.rule">
         <field name="code">P_BONUS</field>
         <field name="name">Performance Bonus</field>
         <field name="category_id" ref="l10n_in_hr_payroll.PBS"/>
         <field name="sequence" eval="31"/>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-total_days = sum(payslip.worked_days_line_ids.mapped('number_of_days'))
-total_worked_days = total_days - ('LEAVE90' in worked_days and worked_days['LEAVE90'].number_of_days)
-worked_days_ratio = total_worked_days / total_days
-bonus_base_ded = contract.wage * 0.60 * 2 / payslip._rule_parameter('l10n_in_leave_days') + contract.l10n_in_gratuity
-bonus_base = contract.wage * 0.40 - bonus_base_ded
+basic_percent = payslip._rule_parameter('l10n_in_basic_percent')
+regular_bonus_percent = payslip._rule_parameter('l10n_in_regular_bonus_percent')
+worked_days_ratio = 1
+if payslip.worked_days_line_ids:
+    total_days = sum(payslip.worked_days_line_ids.mapped('number_of_days'))
+    total_unpaid_days = worked_days['LEAVE90'].number_of_days if 'LEAVE90' in worked_days else 0
+    worked_days_ratio = (total_days - total_unpaid_days) / total_days
+bonus_base_ded = contract.wage * basic_percent * 2 / payslip._rule_parameter('l10n_in_leave_days') + contract.l10n_in_gratuity
+bonus_base = contract.wage * regular_bonus_percent - bonus_base_ded
 result = bonus_base * worked_days_ratio
         </field>
-        <field name="struct_id" ref="l10n_in_hr_payroll.structure_with_pf"/>
+        <field name="struct_id" ref="l10n_in_hr_payroll.hr_payroll_structure_in_employee_salary"/>
     </record>
 
     <function model="hr.salary.rule" name="write">
-        <value model="hr.salary.rule" search="[('struct_id', '=', ref('l10n_in_hr_payroll.structure_with_pf')),
+        <value model="hr.salary.rule" search="[('struct_id', '=', ref('l10n_in_hr_payroll.hr_payroll_structure_in_employee_salary')),
             ('code', '=', 'GROSS')]"/>
-        <value eval="{'amount_python_compute': &quot;result = payslip.paid_amount * 0.60 &quot;}"/>
+        <value eval="{'amount_python_compute': &quot;result = payslip.paid_amount * payslip._rule_parameter('l10n_in_basic_percent')&quot;}"/>
     </function>
 
-    <record id="hr_salary_rule_leave_with_pf" model="hr.salary.rule">
+    <record id="l10n_in_hr_salary_rule_leave" model="hr.salary.rule">
         <field name="code">LEAVE</field>
         <field name="name">Leave Allowance</field>
         <field name="category_id" ref="l10n_in_hr_payroll.LEAVE"/>
         <field name="sequence" eval="101"/>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = contract.l10n_in_leave_allowance</field>
+        <field name="condition_python">result = bool(contract.l10n_in_leave_allowance)</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">result = contract.l10n_in_leave_allowance</field>
-        <field name="struct_id" ref="l10n_in_hr_payroll.structure_with_pf"/>
+        <field name="struct_id" ref="l10n_in_hr_payroll.hr_payroll_structure_in_employee_salary"/>
         <field name="appears_on_payslip">False</field>
     </record>
 
-    <record id="hr_salary_rule_pt_with_pf" model="hr.salary.rule">
+    <record id="l10n_in_hr_salary_rule_pt" model="hr.salary.rule">
         <field name="code">PT</field>
         <field name="name">Professional Tax</field>
         <field name="category_id" ref="hr_payroll.DED"/>
@@ -103,14 +139,14 @@ result = bonus_base * worked_days_ratio
 amounts = payslip._rule_parameter('l10n_in_professional_tax')
 if categories['GROSS'] &gt;= 12000:
     result = amounts[0]
-elif categories['GROSS'] &gt;= 9000 and categories &lt; 12000:
+elif categories['GROSS'] &gt;= 9000 and categories['GROSS'] &lt; 12000:
     result = amounts[1]
 elif categories['GROSS'] &gt;= 6000 and categories['GROSS'] &lt; 9000:
     result = amounts[2]
 else:
     result = 0
         </field>
-        <field name="struct_id" ref="l10n_in_hr_payroll.structure_with_pf"/>
+        <field name="struct_id" ref="l10n_in_hr_payroll.hr_payroll_structure_in_employee_salary"/>
     </record>
 
     <record id="hr_salary_rule_pf_with_pf" model="hr.salary.rule">
@@ -124,7 +160,7 @@ total_days = sum(payslip.worked_days_line_ids.mapped('number_of_days'))
 total_worked_days = total_days - ('LEAVE90' in worked_days and worked_days['LEAVE90'].number_of_days)
 result = - categories['BASIC'] * 0.12 if  ((categories['BASIC']) &lt; 15000) else -(1800/total_days) * total_worked_days
         </field>
-        <field name="struct_id" ref="l10n_in_hr_payroll.structure_with_pf"/>
+        <field name="struct_id" ref="l10n_in_hr_payroll.hr_payroll_structure_in_employee_salary"/>
     </record>
 
     <record id="hr_salary_rule_pfe_with_pf" model="hr.salary.rule">
@@ -138,10 +174,10 @@ total_days = sum(payslip.worked_days_line_ids.mapped('number_of_days'))
 total_worked_days = total_days - ('LEAVE90' in worked_days and worked_days['LEAVE90'].number_of_days)
 result = - categories['BASIC'] * 0.12 if  ((categories['BASIC']) &lt; 15000) else -(1800/total_days) * total_worked_days
         </field>
-        <field name="struct_id" ref="l10n_in_hr_payroll.structure_with_pf"/>
+        <field name="struct_id" ref="l10n_in_hr_payroll.hr_payroll_structure_in_employee_salary"/>
     </record>
 
-    <record id="hr_salary_rule_attach_salary_with_pf" model="hr.salary.rule">
+    <record id="l10n_in_hr_salary_rule_attach_salary" model="hr.salary.rule">
         <field name="code">ATTACH_SALARY</field>
         <field name="name">Attachment of Salary</field>
         <field name="category_id" ref="hr_payroll.DED"/>
@@ -151,11 +187,11 @@ result = - categories['BASIC'] * 0.12 if  ((categories['BASIC']) &lt; 15000) els
         <field name="condition_python">'ATTACH_SALARY' in inputs</field>
         <field name="amount_python_compute">
 result = -inputs['ATTACH_SALARY'].amount
-result_name = inputs['ATTACH_SALARY'].name</field>
-        <field name="struct_id" ref="l10n_in_hr_payroll.structure_with_pf"/>
+result_name = -inputs['ATTACH_SALARY'].name</field>
+        <field name="struct_id" ref="l10n_in_hr_payroll.hr_payroll_structure_in_employee_salary"/>
     </record>
 
-    <record id="hr_salary_rule_assig_salary_with_pf" model="hr.salary.rule">
+    <record id="l10n_in_hr_salary_rule_assig_salary" model="hr.salary.rule">
         <field name="code">ASSIG_SALARY</field>
         <field name="name">Assignment of Salary</field>
         <field name="category_id" ref="hr_payroll.DED"/>
@@ -166,12 +202,13 @@ result_name = inputs['ATTACH_SALARY'].name</field>
         <field name="amount_python_compute">
 result = -inputs['ASSIG_SALARY'].amount
 result_name = inputs['ASSIG_SALARY'].name</field>
-        <field name="struct_id" ref="l10n_in_hr_payroll.structure_with_pf"/>
+        <field name="struct_id" ref="l10n_in_hr_payroll.hr_payroll_structure_in_employee_salary"/>
     </record>
 
     <function model="hr.salary.rule" name="write">
-        <value model="hr.salary.rule" search="[('struct_id', '=', ref('l10n_in_hr_payroll.structure_with_pf')),
+        <value model="hr.salary.rule" search="[('struct_id', '=', ref('l10n_in_hr_payroll.hr_payroll_structure_in_employee_salary')),
             ('code', '=', 'NET')]"/>
         <value eval="{'amount_python_compute': &quot;result = categories['GROSS'] + categories['PBS'] + categories['DED'] &quot;}"/>
     </function>
+
 </odoo>

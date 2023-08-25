@@ -3,9 +3,10 @@
     <record id="hr_salary_rule_houserentallowancemetro_nonmetro" model="hr.salary.rule">
         <field name="code">HRAMN</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and
-((contract.wage + categories['DA']) * contract.l10n_in_house_rent_allowance_metro_nonmetro / 100)
-or (contract.wage * contract.l10n_in_house_rent_allowance_metro_nonmetro / 100))</field>
+        <field name="amount_python_compute">
+nonmetro_alw = contract.l10n_in_house_rent_allowance_metro_nonmetro / 100
+result = contract.wage * nonmetro_alw
+        </field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="name">House Rent Allowance</field>
         <field name="partner_id" ref="hr_houserent_allowance_register"/>
@@ -34,7 +35,13 @@ or (contract.wage * contract.l10n_in_house_rent_allowance_metro_nonmetro / 100))
         <field name="condition_select">python</field>
         <field name="condition_python">result = bool(employee.children)</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = 100 if employee.children == 1 else 200</field>
+        <field name="amount_python_compute">
+amounts = payslip._rule_parameter('l10n_in_chea_value')
+if employee.children == 1:
+    result = amounts[0]
+else:
+    result = amounts[1]
+        </field>
         <field name="sequence" eval="18"/>
         <field name="note">Per school going child 1200 per annum is non-taxable.Maximum for 2 children, so max 2400 per annum becomes non-taxable.</field>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
@@ -45,10 +52,15 @@ or (contract.wage * contract.l10n_in_house_rent_allowance_metro_nonmetro / 100))
         <field name="name">Child Hostel Allowance</field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = bool(employee.children)</field>
         <field name="condition_python">result = bool(employee.l10n_in_residing_child_hostel)</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = 300 if employee.children == 1 else 600</field>
+        <field name="amount_python_compute">
+amounts = payslip._rule_parameter('l10n_in_child_hostel_allowance')
+if employee.l10n_in_residing_child_hostel == 1:
+    result = amounts[0]
+else:
+    result = amounts[1]
+        </field>
         <field name="note">In case the children are in hostel, the exemption available for child.</field>
         <field name="sequence" eval="19"/>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
@@ -61,8 +73,10 @@ or (contract.wage * contract.l10n_in_house_rent_allowance_metro_nonmetro / 100))
         <field name="condition_select">none</field>
         <field name="sequence" eval="21"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and ((contract.wage + categories['DA']) * 0.10)
-or (contract.wage * 0.10))</field>
+        <field name="amount_python_compute">
+city_alw_percent = payslip._rule_parameter('l10n_in_city_alw_percent')
+result = contract.wage * city_alw_percent
+        </field>
         <field name="note">This allowance is paid to Employees who are posted in big cities. The purpose is to compensate the high cost of living in cities like Mumbai, Delhi, etc. However it is Fully Taxable.</field>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
     </record>
@@ -132,9 +146,12 @@ Now difference of income tax between payment year and actual year would be allow
         <field name="sequence" eval="168"/>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = categories['GROSS'] &lt;= 21000 </field>
+        <field name="condition_python">result = result_rules['GROSS']['total'] &lt;= payslip._rule_parameter('l10n_in_esicf_value')</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = (categories['GROSS'] * 0.0325) if categories['GROSS'] &lt;= 21000 else 0</field>
+        <field name="amount_python_compute">
+esicf_percent = payslip._rule_parameter('l10n_in_esicf_percent')
+result = gross * esicf_percent
+        </field>
         <field name="sequence" eval="110"/>
         <field name="appears_on_payslip" eval="False"/>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
@@ -145,8 +162,10 @@ Now difference of income tax between payment year and actual year would be allow
         <field name="name">Employer's PF Contribution</field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = -(payslip.company_id.l10n_in_dearness_allowance and - ((contract.wage + categories['DA']) * 0.12)
-or - (contract.wage * 0.12))</field>
+        <field name="amount_python_compute">
+pf_ctb_percent = payslip._rule_parameter('l10n_in_pf_percent')
+result = -contract.wage * pf_ctb_percent
+        </field>
         <field name="sequence" eval="37"/>
         <field name="partner_id" ref="hr_register_provident_fund"/>
         <field name="appears_on_payslip" eval="False"/>
@@ -255,8 +274,10 @@ or - (contract.wage * 0.12))</field>
         <field name="name">Employee's PF Contribution</field>
         <field name="category_id" ref="hr_payroll.DED"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and - ((contract.wage + categories['DA']) * 0.12)
-or - (contract.wage * 0.12))</field>
+        <field name="amount_python_compute">
+pf_ctb_percent = payslip._rule_parameter('l10n_in_pf_percent')
+result = -contract.wage * pf_ctb_percent
+        </field>
         <field name= "note">Employer contribution does not become part of employee’s income and hence income tax is not payable on this part.</field>
         <field name="partner_id" ref="hr_register_provident_fund"/>
         <field name="sequence" eval="150"/>
@@ -268,8 +289,10 @@ or - (contract.wage * 0.12))</field>
         <field name="name">Employee's NPS Contribution</field>
         <field name="category_id" ref="hr_payroll.DED"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and - ((contract.wage + categories['DA']) * 0.10)
-or - (contract.wage * 0.10))</field>
+        <field name="amount_python_compute">
+pf_ctb_percent = payslip._rule_parameter('l10n_in_cbda_percent')
+result = -contract.wage * pf_ctb_percent
+        </field>
         <field name="sequence" eval="155"/>
         <field name="partner_id" ref="hr_nps_contribution_register"/>
         <field name="note">Employee can claim deduction even of employer's contribution to NPS.</field>
@@ -283,9 +306,10 @@ or - (contract.wage * 0.10))</field>
         <field name="condition_select">python</field>
         <field name="condition_python">result = bool(contract.l10n_in_voluntary_provident_fund)</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and
-- ((contract.wage + categories['DA']) * contract.l10n_in_voluntary_provident_fund / 100)
-or - (contract.wage * contract.l10n_in_voluntary_provident_fund / 100))</field>
+        <field name="amount_python_compute">
+VPF = contract.l10n_in_voluntary_provident_fund
+result = -contract.wage * VPF / 100
+        </field>
         <field name="sequence" eval="160"/>
         <field name="partner_id" ref="hr_vpf_contribution_register"/>
         <field name="note">VPF is a safe option wherein you can contribute more than the PF ceiling of 12% that has been mandated by the government.This additional amount enjoys all the benefits of PF except that the employer is not liable to contribute any extra amount apart from 12%.An added advantage is that the interest rate is equal to the interest rate of PF and he withdrawal is tax free. Please note that the maximum contribution towards VPF is 100% of your Basic.The highest rate of interest (close to 9%) makes it a very attractive saving scheme. Because of these advantages many employees chose not to close their PF account even after getting employment else where other than India.Employees also get a major tax break on their entire contribution to the fund up to a ceiling of Rs. 70,000/-</field>
@@ -357,11 +381,10 @@ or - (contract.wage * contract.l10n_in_voluntary_provident_fund / 100))</field>
         <field name="code">DLA</field>
         <field name="name">Deduction Towards Leave Availed</field>
         <field name="category_id" ref="hr_payroll.DED"/>
-        <field name="condition_select">none</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = 'LAI' in inputs</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = 'LAI' in inputs and - (inputs['LAI'].amount)</field>
-        <field name="partner_id" ref="hr_leave_availed_register"/>
-        <field name="sequence" eval="180"/>
+        <field name="amount_python_compute">result = -inputs['LAI'].amount</field>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
     </record>
 
@@ -372,7 +395,9 @@ or - (contract.wage * contract.l10n_in_voluntary_provident_fund / 100))</field>
         <field name="condition_select">python</field>
         <field name="condition_python">result = bool(contract.l10n_in_medical_insurance)</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = - (contract.l10n_in_medical_insurance)</field>
+        <field name="amount_python_compute">
+result = -contract.l10n_in_medical_insurance
+        </field>
         <field eval="-50.0" name="amount_fix"/>
         <field name="partner_id" ref="hr_medical_insurance_register"/>
         <field name="sequence" eval="185"/>
@@ -395,8 +420,10 @@ or - (contract.wage * contract.l10n_in_voluntary_provident_fund / 100))</field>
         <field name="name">Employer's NPS Contribution</field>
         <field name="category_id" ref="hr_payroll.DED"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and - ((contract.wage + categories['DA']) * 0.10)
-or - (contract.wage * 0.10))</field>
+        <field name="amount_python_compute">
+pf_ctb_percent = payslip._rule_parameter('l10n_in_cbda_percent')
+result = -contract.wage * pf_ctb_percent
+        </field>
         <field name="sequence" eval="190"/>
         <field name="partner_id" ref="hr_nps_contribution_register"/>
         <field name= "note">Any amount contributed by your employer to your NPS account is treated as part of your salary and is included in your income but you can claim deduction under Section 80C for this too.thus, effectively making it exempt from tax within the limit of 10% of your basic salary. This is very useful and tax efficient for you particularly if you fall in the maximum tax.</field>
@@ -408,8 +435,10 @@ or - (contract.wage * 0.10))</field>
         <field name="name">Employer's PF Contribution</field>
         <field name="category_id" ref="hr_payroll.DED"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and - ((contract.wage + categories['DA']) * 0.12)
-or - (contract.wage * 0.12))</field>
+        <field name="amount_python_compute">
+pf_ctb_percent = payslip._rule_parameter('l10n_in_pf_percent')
+result = -contract.wage * pf_ctb_percent
+        </field>
         <field name="sequence" eval="195"/>
         <field name="partner_id" ref="hr_register_provident_fund"/>
         <field name="appears_on_payslip" eval="False"/>
@@ -448,11 +477,46 @@ result_name = inputs['EXPENSES'].name
         <field name="code">GRATUITY</field>
         <field name="name">Gratuity</field>
         <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="sequence" eval="169"/>
         <field name="condition_select">python</field>
         <field name="condition_python">result = bool(contract.l10n_in_gratuity)</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = contract.l10n_in_gratuity</field>
+        <field name="amount_python_compute">result = -contract.l10n_in_gratuity</field>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
+    </record>
+
+    <record id="l10n_in_hr_salary_rule_pf" model="hr.salary.rule">
+        <field name="code">PF</field>
+        <field name="name">Provident fund - Employee</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="sequence" eval="107"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+treshhold, coef = payslip._rule_parameter('l10n_in_pf_amount')[0]
+result = 0
+if categories['BASIC'] &lt; treshhold:
+    result = - categories['BASIC'] * coef[1]
+else:
+    work_rate = 1
+    if payslip.worked_days_line_ids:
+        total_days = sum(payslip.worked_days_line_ids.mapped('number_of_days'))
+        total_unpaid_days = worked_days['LEAVE90'].number_of_days if 'LEAVE90' in worked_days else 0
+        work_rate = (total_days - total_unpaid_days) / total_days
+    result = coef[0] * work_rate
+        </field>
+        <field name="struct_id" ref="l10n_in_hr_payroll.hr_payroll_salary_structure_ind_emp"/>
+    </record>
+
+    <record id="l10n_in_hr_salary_rule_pfe" model="hr.salary.rule">
+        <field name="code">PFE</field>
+        <field name="name">Provident fund - Employer</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="sequence" eval="110"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = result_rules['PF']['total']
+        </field>
+        <field name="struct_id" ref="l10n_in_hr_payroll.hr_payroll_salary_structure_ind_emp"/>
     </record>
 
 </odoo>

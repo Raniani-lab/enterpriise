@@ -224,6 +224,7 @@
             'search_default_recurring': 0,
             'search_default_non_recurring': 1,
         }</field>
+        <field name="domain">[('state', '!=', 'cancel')]</field>
     </record>
 
     <menuitem id="menu_sale_subscription_report" name="Reporting" parent="menu_sale_subscription_root" sequence="40"/>

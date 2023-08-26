@@ -1384,23 +1384,23 @@ msgstr "Zeiteinheit der Zeiterfassung"
 #: model:ir.actions.server,name:timesheet_grid.timesheet_reminder_user_ir_actions_server
 #: model:ir.cron,cron_name:timesheet_grid.timesheet_reminder_user
 msgid "Timesheet: Employees Email Reminder"
-msgstr "Stundenzettel: E-Mail-Erinnerung an Mitarbeiter"
+msgstr "Zeiterfassung: E-Mail-Erinnerung an Mitarbeiter"
 
 #. module: timesheet_grid
 #: model:mail.template,name:timesheet_grid.mail_template_timesheet_reminder_user
 msgid "Timesheet: Employees Reminder"
-msgstr "Stundenzettel: Erinnerung für Mitarbeiter"
+msgstr "Zeiterfassung: Erinnerung für Mitarbeiter"
 
 #. module: timesheet_grid
 #: model:mail.template,name:timesheet_grid.mail_template_timesheet_reminder_manager
 msgid "Timesheet: Manager Reminder"
-msgstr "Stundenzettel: Manager Reminder"
+msgstr "Zeiterfassung: Manager Reminder"
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_reminder_manager_ir_actions_server
 #: model:ir.cron,cron_name:timesheet_grid.timesheet_reminder_manager
 msgid "Timesheet: Managers Email Reminder"
-msgstr "Stundenzettel: E-Mail-Erinnerung für Manager"
+msgstr "Zeiterfassung: E-Mail-Erinnerung für Manager"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__timesheet_ids

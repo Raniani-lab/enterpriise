@@ -52,7 +52,7 @@ msgstr "<span class=\"navbar-brand h4 my-0 me-auto my-auto\">選擇你的預約<
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_select_operator
 msgid "<span> See all availabilities <i class=\"fa fa-long-arrow-right\"/></span>"
-msgstr ""
+msgstr "<span>查看所有空檔 <i class=\"fa fa-long-arrow-right\"/></span>"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_type_view_kanban
@@ -67,7 +67,7 @@ msgstr "在此加入功能⋯"
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_select_operator
 msgid "Add a user description here..."
-msgstr ""
+msgstr "在此加入用戶描述⋯"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointments_cards
@@ -90,19 +90,19 @@ msgstr "預約"
 #. module: website_appointment
 #: model:ir.actions.act_window,name:website_appointment.action_appointment_pages_list
 msgid "Appointment Pages"
-msgstr ""
+msgstr "預約頁面"
 
 #. module: website_appointment
 #: model:ir.model,name:website_appointment.model_appointment_type
 msgid "Appointment Type"
-msgstr "預約類別"
+msgstr "預約類型"
 
 #. module: website_appointment
 #. odoo-javascript
 #: code:addons/website_appointment/static/src/xml/website_appointment_templates.xml:0
 #, python-format
 msgid "Appointment Type Name"
-msgstr ""
+msgstr "預約類型名稱"
 
 #. module: website_appointment
 #: model:ir.ui.menu,name:website_appointment.menu_appointment_pages
@@ -112,7 +112,7 @@ msgstr "預約"
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.snippet_options
 msgid "Appointments Page"
-msgstr ""
+msgstr "預約頁面"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_progress_bar
@@ -127,7 +127,7 @@ msgstr "可以發佈"
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.snippet_options
 msgid "Card Design"
-msgstr ""
+msgstr "卡片設計"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_select_operator
@@ -137,7 +137,7 @@ msgstr "選擇"
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_select_operator
 msgid "Choose who you will meet"
-msgstr ""
+msgstr "選取要會見的人"
 
 #. module: website_appointment
 #. odoo-javascript
@@ -198,7 +198,7 @@ msgstr "客服人員"
 #: code:addons/website_appointment/static/src/xml/website_appointment_templates.xml:0
 #, python-format
 msgid "Please fill this field"
-msgstr ""
+msgstr "請填寫此欄位"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_type_view_form
@@ -241,12 +241,12 @@ msgstr "預約會面"
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.website_calendar_index_topbar
 msgid "Search an appointment..."
-msgstr ""
+msgstr "搜尋預約⋯"
 
 #. module: website_appointment
 #: model:ir.model.fields,field_description:website_appointment.field_appointment_type__seo_name
 msgid "Seo name"
-msgstr "Seo 名稱"
+msgstr "SEO 名稱"
 
 #. module: website_appointment
 #: model:ir.model.fields,help:website_appointment.field_appointment_type__website_url
@@ -294,7 +294,7 @@ msgstr "網站"
 #. module: website_appointment
 #: model:ir.model.fields,field_description:website_appointment.field_appointment_type__website_url
 msgid "Website URL"
-msgstr "網站URL"
+msgstr "網站網址"
 
 #. module: website_appointment
 #: model:ir.model.fields,field_description:website_appointment.field_appointment_type__website_meta_description
@@ -328,7 +328,7 @@ msgstr "聯絡我們"
 #: code:addons/website_appointment/static/src/xml/website_appointment_templates.xml:0
 #, python-format
 msgid "e.g. \"Technical Demo\""
-msgstr ""
+msgstr "例：技術示範"
 
 #. module: website_appointment
 #. odoo-javascript

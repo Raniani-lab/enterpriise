@@ -3451,7 +3451,7 @@ msgstr "要擴展的合作夥伴分類賬資料行，識別碼錯誤： %s"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Wrong format for if_other_expr_above/if_other_expr_below formula: %s"
-msgstr ""
+msgstr "if_other_expr_above/if_other_expr_below 算式的格式錯誤： %s"
 
 #. module: account_reports
 #. odoo-python

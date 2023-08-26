@@ -102,23 +102,23 @@ msgstr ""
 msgid ""
 "Inter company user of company %(name)s doesn't have enough access rights"
 msgstr ""
-"Unternehmensübergreifender Benutzer des Unternehmen %(name)s hat nicht "
-"genügend Zugriffsrechte"
+"Zwischenbetrieblicher Benutzer des Unternehmen %(name)s hat nicht genügend "
+"Zugriffsrechte"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/sale_order.py:0
 #, python-format
 msgid "Inter company user of company %s doesn't have enough access rights"
 msgstr ""
-"Unternehmensübergreifender Benutzer für dieses Unternehmen %s hat nicht "
-"genügend Zugriffsrechte"
+"Zwischenbetrieblicher Benutzer für dieses Unternehmen %s hat nicht genügend "
+"Zugriffsrechte"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/purchase_order.py:0
 #, python-format
 msgid "Provide at least one user for inter company relation for %(name)s"
 msgstr ""
-"Hinterlegen Sie mindestens einen Benutzer für unternehmensübergreifende "
+"Hinterlegen Sie mindestens einen Benutzer für zwischenbetriebliche "
 "Beziehungen für %(name)s"
 
 #. module: sale_purchase_inter_company_rules
@@ -126,8 +126,8 @@ msgstr ""
 #, python-format
 msgid "Provide one user for intercompany relation for %(name)s "
 msgstr ""
-"Stellen Sie einen Benutzer für die unternehmensübergreifenden Beziehungen "
-"für %(name)s zur Verfügung"
+"Stellen Sie einen Benutzer für die zwischenbetrieblichen Beziehungen für "
+"%(name)s zur Verfügung"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model,name:sale_purchase_inter_company_rules.model_purchase_order
@@ -153,18 +153,18 @@ msgstr "Verkaufsauftragszeile"
 #: model:ir.model.fields,help:sale_purchase_inter_company_rules.field_res_company__rule_type
 msgid "Select the type to setup inter company rules in selected company."
 msgstr ""
-"Wählen Sie den Typ, um unternehmensübergreifende Regeln im ausgewählten "
+"Wählen Sie den Typ, um zwischenbetrieblich Regeln im ausgewählten "
 "Unternehmen aufzustellen."
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_sale_order__auto_purchase_order_id
 msgid "Source Purchase Order"
-msgstr "Herkunft Einkaufsauftrag"
+msgstr "Referenz-Einkaufsauftrag"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_purchase_order__auto_sale_order_id
 msgid "Source Sales Order"
-msgstr "Herkunft Verkaufsauftrag"
+msgstr "Referenz-Verkaufsauftrag"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields.selection,name:sale_purchase_inter_company_rules.selection__res_company__rule_type__purchase

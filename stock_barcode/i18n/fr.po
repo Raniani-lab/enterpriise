@@ -769,7 +769,7 @@ msgstr "Conditionnement"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_packaging_uom_qty
 msgid "Packaging Quantity"
-msgstr "Quantité de colis"
+msgstr "Quantité de conditionnements"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_backorder_confirmation__partial_move_count
@@ -872,7 +872,7 @@ msgstr "Mouvements de produit (Ligne de mouvement de stock)"
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_product_packaging
 msgid "Product Packaging"
-msgstr "Emballage des produits"
+msgstr "Conditionnement des produits"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_stock_quant_ids
@@ -915,7 +915,8 @@ msgstr "Quantité faite"
 #: model:ir.model.fields,help:stock_barcode.field_stock_move_line__product_packaging_uom_qty
 msgid "Quantity of the Packaging in the UoM of the Stock Move Line."
 msgstr ""
-"Quantité de colis dans la nomenclature de la ligne de mouvement de stock."
+"Quantité de conditionnements dans la nomenclature de la ligne de mouvement "
+"de stock."
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_quant

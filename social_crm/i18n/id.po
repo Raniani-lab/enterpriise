@@ -189,7 +189,7 @@ msgstr ""
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__social_account_id
 msgid "Social Account"
-msgstr ""
+msgstr "Akun Sosial"
 
 #. module: social_crm
 #: model:ir.model,name:social_crm.model_social_post
@@ -199,7 +199,7 @@ msgstr "Post Sosial"
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__social_stream_post_id
 msgid "Social Stream Post"
-msgstr ""
+msgstr "Social Stream Post"
 
 #. module: social_crm
 #. odoo-python

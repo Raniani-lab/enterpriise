@@ -1063,6 +1063,8 @@ msgstr ""
 #: model:ir.model.fields,help:social.field_social_post__message_needaction_counter
 msgid "Number of messages requiring action"
 msgstr ""
+"നടപടി ആവശ്യമായ സന്ദേശങ്ങളുടെ എണ്ണം\n"
+" "
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_has_error_counter

@@ -149,7 +149,7 @@ msgstr ""
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check__worksheet_count
 msgid "Worksheet Count"
-msgstr ""
+msgstr "ウェブシートカウント"
 
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_worksheet_template

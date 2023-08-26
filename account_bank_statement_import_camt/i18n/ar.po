@@ -812,14 +812,14 @@ msgstr "متداولة "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Exchange Traded CCP"
-msgstr ""
+msgstr "CCP المؤشرات المتداولة "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Exchange Traded Non-CCP"
-msgstr ""
+msgstr "المؤشرات المتداولة لغير CCP "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -972,7 +972,7 @@ msgstr "تجميد الأموال"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Full Call / Early Redemption"
-msgstr ""
+msgstr "الدفع قبل تاريخ الاستحقاق / التحصيل قبل تاريخ الاستحقاق "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

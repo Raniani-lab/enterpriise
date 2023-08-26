@@ -2191,7 +2191,7 @@ msgstr "取引先"
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Password is incorrect."
-msgstr ""
+msgstr "パスワードが間違っています。"
 
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_phone

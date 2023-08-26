@@ -7,6 +7,7 @@
 # Raymond Yu <cl_yu@hotmail.com>, 2022
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
 # Emily Jia <eji@odoo.com>, 2023
+# Chloe Wang, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Emily Jia <eji@odoo.com>, 2023\n"
+"Last-Translator: Chloe Wang, 2023\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -60,6 +61,8 @@ msgid ""
 "<span attrs=\"{'invisible': [('contract_id', '!=', False)]}\">An offer "
 "template need to be selected to have an offer link.</span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('contract_id', '!=', "
+"False)]}\">需要选择要约模板，才能有要约链接。</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
@@ -1115,7 +1118,7 @@ msgstr "Offer链接"
 #: code:addons/hr_contract_salary/wizard/generate_simulation_link.py:0
 #, python-format
 msgid "Offer link can not be send. The applicant needs to have a name."
-msgstr ""
+msgstr "无法发送要约链接。需要有申请人姓名。"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1538,7 +1541,7 @@ msgstr "本合同是复制的合同。"
 msgid ""
 "The employee does not have a valid work email set. The Simulation Link won't"
 " be able to be completed."
-msgstr ""
+msgstr "员工未设置有效的工作电子邮件。模拟链接无法完成。"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
@@ -1586,7 +1589,7 @@ msgstr "没有可用的选项来定制你的工资"
 msgid ""
 "They will review your contract.<br/> Feel free to contact them if you have "
 "any questions."
-msgstr ""
+msgstr "他们会审查您的合同。<br/> 如有任何疑问，请随时联系。"
 
 #. module: hr_contract_salary
 #. odoo-python

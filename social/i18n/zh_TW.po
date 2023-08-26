@@ -310,7 +310,7 @@ msgstr ""
 msgid ""
 "Contains the social media handle of the person that created this account. "
 "E.g: '@odoo.official' for the 'Odoo' Twitter account"
-msgstr ""
+msgstr "對於建立此帳戶的人，此處包括其社交媒體用戶名稱。例如：@odoo.official 即是 Odoo 的官方 Twitter 帳戶"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_live_post__message
@@ -1362,7 +1362,7 @@ msgstr "設定"
 #: model:ir.model.fields,field_description:social.field_social_stream__account_id
 #: model_terms:ir.ui.view,arch_db:social.social_account_view_form
 msgid "Social Account"
-msgstr ""
+msgstr "社交媒體帳號"
 
 #. module: social
 #: model:ir.actions.act_window,name:social.action_social_account

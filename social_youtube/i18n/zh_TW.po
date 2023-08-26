@@ -367,7 +367,7 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_account
 msgid "Social Account"
-msgstr ""
+msgstr "社交媒體帳號"
 
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_live_post

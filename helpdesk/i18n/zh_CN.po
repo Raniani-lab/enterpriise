@@ -199,6 +199,16 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<div>\n"
+"    尊敬的 <t t-out=\"object.sudo().partner_id.name or 'Madam/Sir'\">女士/先生</t>，<br><br>\n"
+"    此消息为自动发送，我们已关闭您的请求（编号 <t t-out=\"object.id or ''\">15</t>）。\n"
+"    希望我们所提供的服务能够满足您的期望。\n"
+"    如果您有任何疑问或意见，欢迎随时回复此邮件。回复邮件会重新开启您的支援请求。<br><br>\n"
+"    感谢您的合作。<br>\n"
+"    谨致问候<br><br>\n"
+"    <t t-out=\"object.team_id.name or 'Helpdesk'\">技术支持</t>团队。\n"
+"</div>\n"
+"        "
 
 #. module: helpdesk
 #: model:mail.template,body_html:helpdesk.new_ticket_request_email_template

@@ -969,7 +969,7 @@ msgstr "Fluxo de caixa de atividades financeiras"
 #: code:addons/account_reports/models/account_cash_flow_report.py:0
 #, python-format
 msgid "Cash flows from investing & extraordinary activities"
-msgstr "Fluxo de caixa de investimentos e atividades extras"
+msgstr "Fluxos de caixa de atividades extraordinárias e de investimento"
 
 #. module: account_reports
 #. odoo-python
@@ -2321,14 +2321,14 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Non Trade Payable"
-msgstr ""
+msgstr "Contas a pagar não comerciais"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Non Trade Receivable"
-msgstr ""
+msgstr "Contas a receber não comerciais"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -2582,7 +2582,7 @@ msgstr "Adiantamentos"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__preview_data
 msgid "Preview Data"
-msgstr ""
+msgstr "Pré-visualizar dados"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -2728,7 +2728,7 @@ msgstr "Reversão de: %s"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_report_search
 msgid "Root Report"
-msgstr ""
+msgstr "Relatório raiz"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_horizontal_group__rule_ids
@@ -3278,7 +3278,7 @@ msgstr "Desdobrar"
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Unfold All"
-msgstr ""
+msgstr "Desdobrar tudo"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template

@@ -194,7 +194,7 @@ msgstr "ワークシート"
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__worksheet_count
 msgid "Worksheet Count"
-msgstr ""
+msgstr "ウェブシートカウント"
 
 #. module: industry_fsm_report
 #: model:ir.model,name:industry_fsm_report.model_worksheet_template

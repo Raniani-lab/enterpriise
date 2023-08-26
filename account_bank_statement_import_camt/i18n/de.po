@@ -1632,7 +1632,7 @@ msgstr "Rückzahlung"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Repo"
-msgstr "Repo"
+msgstr "Pensionsgeschäft"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -2002,7 +2002,7 @@ msgstr "Finanzministerium Steuer- und Kreditservice"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Triparty Repo"
-msgstr "Triparty-Repo"
+msgstr "Triparty-Pensionsgeschäft"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

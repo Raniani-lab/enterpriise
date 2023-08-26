@@ -312,8 +312,7 @@ msgstr "PNG"
 #, python-format
 msgid "Package type used in pack %s is not configured for easypost."
 msgstr ""
-"Le type d'emballage utilisé pour le colis %s n'est pas configuré pour "
-"Easypost."
+"Le type de colis utilisé pour le colis %s n'est pas configuré pour Easypost."
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:0

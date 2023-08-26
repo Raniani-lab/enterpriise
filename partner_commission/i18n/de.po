@@ -388,7 +388,7 @@ msgstr "Sequenz"
 #: model:ir.model.fields,field_description:partner_commission.field_purchase_order__invoice_commission_count
 #: model_terms:ir.ui.view,arch_db:partner_commission.purchase_order_form_inherit_partner_commission
 msgid "Source Invoices"
-msgstr "Quelle Rechnungen"
+msgstr "Referenzrechnungen"
 
 #. module: partner_commission
 #: model:ir.model,name:partner_commission.model_sale_subscription_report

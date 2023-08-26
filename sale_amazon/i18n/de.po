@@ -100,7 +100,7 @@ msgid ""
 "                                                to which this account has access will be\n"
 "                                                synchronized and automatically made available."
 msgstr ""
-"Nach der Validierung der Anmeldeinformationen werden die Marktplätze\n"
+"Nach der Validierung der Anmeldeinformationen werden die Marketplaces,\n"
 "auf die dieses Konto Zugriff hat, synchronisiert\n"
 "und automatisch verfügbar gemacht."
 
@@ -1048,7 +1048,7 @@ msgstr "Transfer"
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 msgid "Unlink account"
-msgstr "Konto entkoppeln"
+msgstr "Konto trennen"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form

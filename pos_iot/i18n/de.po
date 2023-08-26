@@ -35,7 +35,7 @@ msgstr "Zahlungen mit einem Ingenico-Zahlungsterminal akzeptieren"
 #: code:addons/pos_iot/static/src/xml/IoTErrorPopup.xml:0
 #, python-format
 msgid "Access your"
-msgstr "Greifen Sie zu auf"
+msgstr "Gehen Sie zu Ihrer"
 
 #. module: pos_iot
 #. odoo-javascript

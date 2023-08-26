@@ -32,6 +32,8 @@ msgid ""
 "<i class=\"fa fa-3x rounded bg-secondary m-3 fa-book fa-3x rounded bg-"
 "secondary m-3\">​</i>"
 msgstr ""
+"<i class=\"fa fa-3x rounded bg-secondary m-3 fa-book fa-3x rounded bg-"
+"secondary m-3\">​</i>"
 
 #. module: website_helpdesk_knowledge
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_knowledge.search_result
@@ -43,12 +45,12 @@ msgstr "<i class=\"fa fa-fw fa-2x fa-book\" title=\"Knowledge Article\"/>"
 msgid ""
 "<span style=\"font-size: 18px;\">Search our documentation for answers<br/>to"
 " common questions</span>"
-msgstr ""
+msgstr "<span style=\"font-size: 18px;\">ドキュメントで以下のための答えを探す:<br/>よく良ある質問</span>"
 
 #. module: website_helpdesk_knowledge
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_knowledge.knowledge_base_articles_card
 msgid "<span style=\"font-weight: bolder; font-size: 18px;\">Articles</span>"
-msgstr ""
+msgstr "<span style=\"font-weight: bolder; font-size: 18px;\">記事</span>"
 
 #. module: website_helpdesk_knowledge
 #: model:ir.model.fields,field_description:website_helpdesk_knowledge.field_helpdesk_team__website_article_id
@@ -60,7 +62,7 @@ msgstr "記事"
 msgid ""
 "Article on which customers will land by default, and to which the search "
 "will be restricted."
-msgstr ""
+msgstr "顧客がデフォルトで着地し、検索が制限される記事。"
 
 #. module: website_helpdesk_knowledge
 #: code:addons/website_helpdesk_knowledge/models/helpdesk.py:0
@@ -71,7 +73,7 @@ msgstr "記事"
 #. module: website_helpdesk_knowledge
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_knowledge.knowledge_base_articles_card
 msgid "Browse Articles"
-msgstr ""
+msgstr "記事をブラウズ"
 
 #. module: website_helpdesk_knowledge
 #: model:ir.model,name:website_helpdesk_knowledge.model_helpdesk_team
@@ -94,4 +96,4 @@ msgstr "ナレッジベース記事を表示する"
 msgid ""
 "You cannot delete, unpublish or set a parent on an article that is used by a"
 " helpdesk team."
-msgstr ""
+msgstr "ヘルプデスクチームが使用している記事の削除、公開解除、親の設定はできません。"

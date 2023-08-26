@@ -39,7 +39,7 @@ msgstr "Kontenübertragsmodellszeile"
 #: model:ir.actions.server,name:account_auto_transfer.ir_cron_auto_transfer_ir_actions_server
 #: model:ir.cron,cron_name:account_auto_transfer.ir_cron_auto_transfer
 msgid "Account automatic transfers : Perform transfers"
-msgstr "Automatische Kontoüberträge: Buchungen ausführen"
+msgstr "Automatische Kontoüberträge: Übertragungen ausführen"
 
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form

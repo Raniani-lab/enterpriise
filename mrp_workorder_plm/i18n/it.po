@@ -39,7 +39,7 @@ msgstr "Bloccato"
 #: code:addons/mrp_workorder_plm/wizard/propose_change.py:0
 #, python-format
 msgid "BoM feedback for not found step: %s (%s)"
-msgstr ""
+msgstr "Feedback Diba per fase non trovata: %s (%s) "
 
 #. module: mrp_workorder_plm
 #: model:ir.model.fields,help:mrp_workorder_plm.field_mrp_eco_routing_change__test_type
@@ -80,7 +80,7 @@ msgstr "Nuova"
 #: code:addons/mrp_workorder_plm/models/mrp_workorder.py:0
 #, python-format
 msgid "New Step Suggestion: %s"
-msgstr ""
+msgstr "Suggerimento nuova fase: %s"
 
 #. module: mrp_workorder_plm
 #: model:ir.model,name:mrp_workorder_plm.model_propose_change

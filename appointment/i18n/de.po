@@ -580,7 +580,7 @@ msgstr "Ganztägig"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Allow Cancelling"
-msgstr "Stornierung zulassen"
+msgstr "Absage zulassen"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__country_ids
@@ -1056,7 +1056,7 @@ msgstr "Datum"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Declined"
-msgstr "Abgesagt"
+msgstr "Abgelehnt"
 
 #. module: appointment
 #. odoo-python
@@ -1222,7 +1222,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_onboarding_link
 msgid "Get a link to an appointment type during the onboarding"
-msgstr "Erhalte einen Link zu einer Terminart während des Einführungsphase"
+msgstr "Erhalten Sie einen Link zu einer Terminart während der Einführung"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_invite__suggested_staff_user_ids
@@ -1884,14 +1884,14 @@ msgstr "In Beschreibung suchen"
 #: code:addons/appointment/controllers/portal.py:0
 #, python-format
 msgid "Search in Name"
-msgstr "Namen durchsuchen"
+msgstr "In Name suchen"
 
 #. module: appointment
 #. odoo-python
 #: code:addons/appointment/controllers/portal.py:0
 #, python-format
 msgid "Search in Responsible"
-msgstr "Verantwortliche durchsuchen"
+msgstr "In Verantwortlich suchen"
 
 #. module: appointment
 #. odoo-javascript
@@ -2083,7 +2083,7 @@ msgstr "Technische Demo"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__value_text_box
 msgid "Text Answer"
-msgstr "Text Antwort"
+msgstr "Textantwort"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_search

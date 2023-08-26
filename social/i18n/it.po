@@ -32,7 +32,7 @@ msgstr "N. account"
 #: code:addons/social/models/social_post.py:0
 #, python-format
 msgid "%s (max %s chars)"
-msgstr ""
+msgstr "%s (max %s caratteri)"
 
 #. module: social
 #. odoo-javascript
@@ -64,6 +64,8 @@ msgid ""
 "<strong>Congrats! Come back in a few minutes to check your "
 "statistics.</strong>"
 msgstr ""
+"<strong>Congratulazioni! Torna tra qualche minuto per controllare le "
+"statistiche.</strong>"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__message_needaction
@@ -476,6 +478,8 @@ msgid ""
 "Enable this option and load demo data to test the social module.<br/>\n"
 "                                        This must never be used on a production database!"
 msgstr ""
+"Abilita l'opzione e carica dati demo per testare il modulo social.<br/>\n"
+"                                        Non deve mai essere utilizzata in un database di produzione!"
 
 #. module: social
 #. odoo-javascript
@@ -571,7 +575,7 @@ msgstr "Ritorna a Odoo"
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_stream
 msgid "Go to the"
-msgstr ""
+msgstr "Vai al"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_account_view_search
@@ -841,7 +845,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,help:social.field_social_live_post__live_post_link
 msgid "Link of the live post on the target media."
-msgstr ""
+msgstr "Link del post live sul social network selezionato."
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
@@ -1758,6 +1762,8 @@ msgid ""
 "Use your own Developer Accounts on our Social app.\n"
 "                            Those credentials are provided in the developer section of your professional social media account."
 msgstr ""
+"Utilizza i tuoi account da sviluppatore sulla nostra app Social.\n"
+"                            Le credenziali vengono fornite nella sezione da sviluppatore del tuo account professionale per social network."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__media_type
@@ -1855,6 +1861,8 @@ msgid ""
 "You cannot delete these UTM Mediums as they are linked to the following social accounts in Social:\n"
 "%(social_accounts)s"
 msgstr ""
+"Non è possibile eliminare i mezzi UTM perché sono legati ai seguenti account dei social network:\n"
+"%(social_accounts)s"
 
 #. module: social
 #. odoo-python
@@ -1864,6 +1872,8 @@ msgid ""
 "You cannot delete these UTM Sources as they are linked to social posts in Social:\n"
 "%(utm_sources)s"
 msgstr ""
+"Non è possibile eliminare le fonti UTM perché sono legate ai post dei social network:\n"
+"%(utm_sources)s"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
@@ -1875,7 +1885,7 @@ msgstr "Post"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "a Stream from an existing account"
-msgstr ""
+msgstr "un flusso da un account esistente"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form

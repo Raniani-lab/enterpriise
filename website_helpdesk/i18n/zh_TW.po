@@ -109,7 +109,7 @@ msgstr "所有標籤"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_type
 msgid "All Types"
-msgstr ""
+msgstr "所有類型"
 
 #. module: website_helpdesk
 #. odoo-javascript
@@ -312,7 +312,7 @@ msgstr "網站選單"
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_url
 msgid "Website URL"
-msgstr "網站URL"
+msgstr "網站網址"
 
 #. module: website_helpdesk
 #. odoo-javascript

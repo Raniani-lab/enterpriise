@@ -71,7 +71,7 @@ msgstr "Journalbuchung"
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_move_reversal__move_ids
 msgid "Move"
-msgstr "Buchungssatz"
+msgstr "Buchung"
 
 #. module: helpdesk_account
 #: model:ir.actions.act_window,name:helpdesk_account.helpdesk_ticket_action_refund

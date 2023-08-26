@@ -167,7 +167,7 @@ msgstr "Instagram-App-ID"
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_res_config_settings__instagram_client_secret
 msgid "Instagram App Secret"
-msgstr "Instagram App-Geheimnis"
+msgstr "App-Geheimnis von Instagram"
 
 #. module: social_instagram
 #. odoo-javascript

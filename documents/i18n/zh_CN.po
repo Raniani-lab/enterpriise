@@ -35,7 +35,7 @@ msgstr " + 添加一个标签"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "#{document_is_url and 'Link to ' or 'Download '}#{document.name}"
-msgstr ""
+msgstr "#{文档_是_url 和\"链接到\"或\"下载\"}#{文档.名称}"
 
 #. module: documents
 #. odoo-javascript

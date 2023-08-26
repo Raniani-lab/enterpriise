@@ -73,7 +73,7 @@ msgstr ""
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_social_account
 msgid "Social Account"
-msgstr ""
+msgstr "Akun Sosial"
 
 #. module: social_demo
 #: model:utm.campaign,title:social_demo.social_utm_campaign
@@ -83,7 +83,7 @@ msgstr ""
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_social_live_post
 msgid "Social Live Post"
-msgstr ""
+msgstr "Social Live Post"
 
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_social_post
@@ -98,7 +98,7 @@ msgstr "Streaming sosial"
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_social_stream_post
 msgid "Social Stream Post"
-msgstr ""
+msgstr "Social Stream Post"
 
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_twitter_account

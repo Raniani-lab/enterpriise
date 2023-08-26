@@ -430,12 +430,12 @@ msgstr "PDF"
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_package_dimension_unit
 msgid "Package Dimension Unit"
-msgstr "Unité de dimension pour les paquets"
+msgstr "Unité de dimension pour les colis"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_package_weight_unit
 msgid "Package Weight Unit"
-msgstr "Unité de poids pour les paquets"
+msgstr "Unité de poids pour les colis"
 
 #. module: delivery_dhl
 #. odoo-python

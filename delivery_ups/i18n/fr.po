@@ -694,7 +694,8 @@ msgstr ""
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "The selected service is not valid with the selected packaging."
-msgstr "Le service sélectionné n'est pas valide pour l'emballage sélectionné."
+msgstr ""
+"Le service sélectionné n'est pas valide pour le conditionnement sélectionné."
 
 #. module: delivery_ups
 #. odoo-python
@@ -736,8 +737,8 @@ msgid ""
 "This value added service will allow you to ship the package on saturday "
 "also."
 msgstr ""
-"Ce service à valeur ajoutée vous permettra également d'expédier le paquet le"
-" samedi."
+"Ce service à valeur ajoutée vous permettra également d'expédier le colis le "
+"samedi."
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__delivery_type__ups
@@ -846,7 +847,7 @@ msgstr "Paiement des droits UPS"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_package_weight_unit
 msgid "Ups Package Weight Unit"
-msgstr "Unité de poids du paquet UPS"
+msgstr "Unité de poids du colis UPS"
 
 #. module: delivery_ups
 #. odoo-python

@@ -2816,7 +2816,7 @@ msgstr "Ricerca conto"
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "Search line"
-msgstr ""
+msgstr "Cerca riga"
 
 #. module: account_reports
 #. odoo-javascript

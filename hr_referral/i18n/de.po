@@ -1236,7 +1236,7 @@ msgstr "Sequenz"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__sequence_stage
 msgid "Sequence of stage"
-msgstr "Reihenfolge der Phasen"
+msgstr "Sequenz der Phase"
 
 #. module: hr_referral
 #: model:ir.actions.act_window,name:hr_referral.action_hr_referral_configuration

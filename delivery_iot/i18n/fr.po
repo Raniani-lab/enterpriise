@@ -40,7 +40,7 @@ msgstr ""
 #. module: delivery_iot
 #: model:ir.model,name:delivery_iot.model_choose_delivery_package
 msgid "Delivery Package Selection Wizard"
-msgstr "Assistant de sélection d'emballage"
+msgstr "Assistant de sélection de colis"
 
 #. module: delivery_iot
 #: model:ir.model.fields,field_description:delivery_iot.field_choose_delivery_package__iot_ip

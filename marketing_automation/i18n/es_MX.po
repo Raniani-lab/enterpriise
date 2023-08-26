@@ -1126,7 +1126,7 @@ msgstr "Elija una plantilla"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 msgid "Pick or create a/an"
-msgstr "Elija o cree un/una"
+msgstr "Seleccione o cree un"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__processed

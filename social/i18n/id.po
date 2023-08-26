@@ -239,6 +239,8 @@ msgid ""
 "Campaigns are used to centralize your marketing efforts and track their "
 "results."
 msgstr ""
+"Kampanye digunakan untuk memusatkan usaha marketing Anda dan melacak "
+"hasilnya."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__can_link_accounts
@@ -761,7 +763,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Likes"
-msgstr ""
+msgstr "Likes"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post__link_description
@@ -884,7 +886,7 @@ msgstr "Media"
 #: model:ir.model.fields,field_description:social.field_social_account__media_type
 #: model:ir.model.fields,field_description:social.field_social_media__media_type
 msgid "Media Type"
-msgstr ""
+msgstr "Tipe Media"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_live_post__message
@@ -1152,7 +1154,7 @@ msgstr "Rekam"
 #: model_terms:ir.ui.view,arch_db:social.social_stream_post_view_kanban
 #, python-format
 msgid "Post Image"
-msgstr ""
+msgstr "Post Gambar"
 
 #. module: social
 #. odoo-javascript
@@ -1365,7 +1367,7 @@ msgstr "Pengaturan"
 #: model:ir.model.fields,field_description:social.field_social_stream__account_id
 #: model_terms:ir.ui.view,arch_db:social.social_account_view_form
 msgid "Social Account"
-msgstr ""
+msgstr "Akun Sosial"
 
 #. module: social
 #: model:ir.actions.act_window,name:social.action_social_account
@@ -1380,7 +1382,7 @@ msgstr ""
 #. module: social
 #: model:ir.model,name:social.model_social_live_post
 msgid "Social Live Post"
-msgstr ""
+msgstr "Social Live Post"
 
 #. module: social
 #: model:res.groups,name:social.group_social_manager
@@ -1424,7 +1426,7 @@ msgstr "Post Sosial"
 #: model:ir.model,name:social.model_social_post_template
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
 msgid "Social Post Template"
-msgstr ""
+msgstr "Social Post Template"
 
 #. module: social
 #: model:ir.actions.act_window,name:social.social_post_template_action
@@ -1449,7 +1451,7 @@ msgstr "Streaming sosial"
 #: model:ir.model,name:social.model_social_stream_post
 #: model:ir.model,name:social.model_social_stream_type
 msgid "Social Stream Post"
-msgstr ""
+msgstr "Social Stream Post"
 
 #. module: social
 #: model:ir.model,name:social.model_social_stream_post_image
@@ -1709,6 +1711,8 @@ msgid ""
 "Used to make comparisons when we need to restrict some features to a "
 "specific media ('facebook', 'twitter', ...)."
 msgstr ""
+"Digunakan untuk membuat perbandingan saat kita harus membatasi beberapa "
+"fitur ke media spesifik ('facebook', 'twitter', ...)."
 
 #. module: social
 #. odoo-javascript

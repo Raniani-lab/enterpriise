@@ -1197,7 +1197,7 @@ msgstr "Drop-down-Menü"
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Duplicate"
-msgstr "Duplizieren"
+msgstr "Duplizieren Sie"
 
 #. module: sign
 #. odoo-javascript
@@ -2730,7 +2730,7 @@ msgstr "Dokument unterzeichnen"
 #. module: sign
 #: model:ir.model,name:sign.model_sign_duplicate_template_pdf
 msgid "Sign Duplicate Template with new PDF"
-msgstr "Duplikatvorlage mit neuem PDF unterzeichenen"
+msgstr "Duplikatvorlage mit neuem PDF unterzeichnen"
 
 #. module: sign
 #. odoo-javascript
@@ -4271,7 +4271,7 @@ msgstr "Stichwörter"
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "this template to modify it."
-msgstr "dieser Vorlage, um sie zu ändern."
+msgstr "diese Vorlage, um sie zu ändern."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user

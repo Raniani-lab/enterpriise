@@ -43,22 +43,22 @@ msgstr "<span>Costo unitario</span>"
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
 msgid "<strong>Total Cost of Subcontracting</strong>"
-msgstr ""
+msgstr "<strong>Costo totale subappalto</strong>"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_report_pivot_view_inherit_subcontracting
 msgid "Average Subcontracting Cost / Unit"
-msgstr ""
+msgstr "Costo medio subappalto/unità"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
 msgid "Cost of Subcontracting"
-msgstr ""
+msgstr "Costo di subappalto"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
 msgid "Cost of Subcontracting per unit (in"
-msgstr ""
+msgstr "Costo del subappalto per unità (in"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model,name:mrp_subcontracting_account_enterprise.model_report_mrp_account_enterprise_mrp_cost_structure
@@ -76,6 +76,8 @@ msgid ""
 "Subcontracting cost per unit produced (in product UoM) of manufacturing "
 "order"
 msgstr ""
+"Costo del subappalto per unità prodotta (nella distinta base del prodotto) "
+"dell'ordine di produzione"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,field_description:mrp_subcontracting_account_enterprise.field_mrp_report__total_cost
@@ -85,12 +87,12 @@ msgstr "Costo totale"
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,field_description:mrp_subcontracting_account_enterprise.field_mrp_report__subcontracting_cost
 msgid "Total Subcontracting Cost"
-msgstr ""
+msgstr "Costo subappalto totale"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,field_description:mrp_subcontracting_account_enterprise.field_mrp_report__unit_subcontracting_cost
 msgid "Total Subcontracting Cost / Unit"
-msgstr ""
+msgstr "Costo totale subappalto/unità"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,help:mrp_subcontracting_account_enterprise.field_mrp_report__total_cost
@@ -104,4 +106,4 @@ msgstr ""
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,help:mrp_subcontracting_account_enterprise.field_mrp_report__subcontracting_cost
 msgid "Total cost of subcontracting for manufacturing order"
-msgstr ""
+msgstr "Costo totale del subapplato per l'ordine di produzione"

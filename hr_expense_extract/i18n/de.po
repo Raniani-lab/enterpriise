@@ -239,7 +239,7 @@ msgstr "Spesen gesendet"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_word_ids
 msgid "Extract Word"
-msgstr "Wort entnehmen"
+msgstr "Wort extrahieren"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_state

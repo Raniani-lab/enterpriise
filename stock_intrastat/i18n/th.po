@@ -38,7 +38,7 @@ msgstr ""
 #. module: stock_intrastat
 #: model:ir.model.fields,help:stock_intrastat.field_stock_warehouse__company_country_id
 msgid "The country to use the tax reports from for this company"
-msgstr ""
+msgstr "ประเทศที่จะใช้รายงานภาษีสำหรับบริษัทนี้"
 
 #. module: stock_intrastat
 #: model:ir.model,name:stock_intrastat.model_stock_warehouse

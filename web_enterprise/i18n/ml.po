@@ -288,7 +288,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "Register"
-msgstr ""
+msgstr "രജിസ്റ്റർ"
 
 #. module: web_enterprise
 #. odoo-javascript

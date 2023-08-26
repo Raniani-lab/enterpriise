@@ -83,7 +83,7 @@ msgstr "Aktueller Kompetenzenfortschritt"
 #. module: hr_appraisal_skills
 #: model:ir.model.fields.selection,name:hr_appraisal_skills.selection__hr_appraisal_skill_report__evolution__decline
 msgid "Decline"
-msgstr "Absagen"
+msgstr "Ablehnen"
 
 #. module: hr_appraisal_skills
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill_report__department_id

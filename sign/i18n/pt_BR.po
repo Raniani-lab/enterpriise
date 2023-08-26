@@ -2648,7 +2648,7 @@ msgstr "Compartilhar"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_share_view_form
 msgid "Share & Close"
-msgstr "Fechar e salvar"
+msgstr "Compartilhar e fechar"
 
 #. module: sign
 #. odoo-python

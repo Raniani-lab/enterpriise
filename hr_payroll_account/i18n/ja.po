@@ -98,7 +98,7 @@ msgstr "従業員契約"
 #, python-format
 msgid ""
 "Incorrect journal: The journal must be in the same currency as the company"
-msgstr ""
+msgstr "間違った仕訳帳:仕訳帳の通貨は会社と同じである必要があります。"
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_account_journal

@@ -655,7 +655,7 @@ msgstr "Ist erforderlicher Genehmiger"
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_job_referral_award
 msgid "Job Referral Award"
-msgstr "Prämie für Mitarbeiterempfehlung"
+msgstr "Belohnung für Mitarbeiterempfehlung"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver____last_update

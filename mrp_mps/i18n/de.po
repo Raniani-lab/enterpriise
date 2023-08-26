@@ -667,9 +667,10 @@ msgid ""
 "MPS. Note that if the demand is higher than that amount, the remaining "
 "quantity will be transferred to the next period automatically."
 msgstr ""
-"Die maximale Auffüllmenge, die Sie für jede Periode im MPS starten möchten. "
-"Beachten Sie, dass die verbleibende Menge automatisch auf die nächste "
-"Periode übertragen wird, wenn die Bedarf höher ist als dieser Betrag."
+"Die maximale Auffüllmenge, die Sie für jede Periode im Produktionszeitplan "
+"(MPS) starten möchten. Beachten Sie, dass die verbleibende Menge automatisch"
+" auf die nächste Periode übertragen wird, wenn die Bedarf höher ist als "
+"dieser Betrag."
 
 #. module: mrp_mps
 #. odoo-javascript

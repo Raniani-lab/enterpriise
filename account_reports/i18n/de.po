@@ -998,7 +998,7 @@ msgstr "Cashflow-Bericht Benutzerdefinierter Handler"
 #: model:ir.actions.client,name:account_reports.action_account_report_cs
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_cash_flow
 msgid "Cash Flow Statement"
-msgstr "Kapitalflussrechnung"
+msgstr "Cashflow-Rechnung"
 
 #. module: account_reports
 #. odoo-python
@@ -1406,7 +1406,7 @@ msgstr "Dokumentenname"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_horizontal_group_rule__domain
 msgid "Domain"
-msgstr "Domain"
+msgstr "Bereich"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_fiscal_position_choser
@@ -3787,4 +3787,4 @@ msgstr "⇒ Kurse"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_main_template
 msgid "⇒ Reset to Odoo’s Rate"
-msgstr "⇒ Zurücksetzen auf Odoos Rate"
+msgstr "⇒ Zurücksetzen auf Odoos Kurs"

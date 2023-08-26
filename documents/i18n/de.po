@@ -666,7 +666,7 @@ msgstr "Alle Dateien hochgeladen"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__action
 msgid "Allows to"
-msgstr "Erlaubt zu"
+msgstr "Erlaubt"
 
 #. module: documents
 #: model:ir.module.category,description:documents.module_category_documents_management
@@ -2040,7 +2040,7 @@ msgid ""
 "Own Documents Only may not be enabled for write groups if it is not enabled "
 "for read groups."
 msgstr ""
-"Die Option Nur eigene Dokumente darf nicht für Schreibgruppen aktiviert "
+"Die Option „Nur eigene Dokumente“ darf nicht für Schreibgruppen aktiviert "
 "werden, wenn sie nicht für Lesegruppen aktiviert ist."
 
 #. module: documents
@@ -2369,7 +2369,7 @@ msgstr "Teilen"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__share_link_ids
 msgid "Share Links"
-msgstr "Links teilen"
+msgstr "Freigabelinks"
 
 #. module: documents
 #. odoo-python

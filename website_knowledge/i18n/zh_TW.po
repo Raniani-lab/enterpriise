@@ -89,4 +89,4 @@ msgstr "網站"
 #. module: website_knowledge
 #: model:ir.model.fields,field_description:website_knowledge.field_knowledge_article__website_url
 msgid "Website URL"
-msgstr "網站URL"
+msgstr "網站網址"

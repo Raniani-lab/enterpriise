@@ -74,7 +74,7 @@ msgstr "注文済"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Ordered Qty"
-msgstr ""
+msgstr "オーダ済数"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -95,7 +95,7 @@ msgstr "期間"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Picked-up Qty"
-msgstr ""
+msgstr "ピックアップ済数量"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -168,7 +168,7 @@ msgstr "レンタル"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Returned Qty"
-msgstr ""
+msgstr "返却数"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -195,14 +195,14 @@ msgstr "販売担当者"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Customers"
-msgstr ""
+msgstr "トップ顧客"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Product Categories"
-msgstr ""
+msgstr "トッププロダクトカテゴリ"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -216,7 +216,7 @@ msgstr "トッププロダクト"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Salespeople"
-msgstr ""
+msgstr "トップ販売担当"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript

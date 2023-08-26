@@ -3,9 +3,9 @@
 # 	* sign
 # 
 # Translators:
-# Martin Trigaux, 2022
 # 敬雲 林 <chingyun@yuanchih-consult.com>, 2022
 # Benson <Benson.Dr@Gmail.com>, 2023
+# Martin Trigaux, 2023
 # Tony Ng, 2023
 # 
 msgid ""
@@ -583,7 +583,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__group_ids
 msgid "Authorized Groups"
-msgstr ""
+msgstr "授權群組"
 
 #. module: sign
 #. odoo-javascript
@@ -1191,7 +1191,7 @@ msgstr "Edit template name"
 #: model:sign.item.type,placeholder:sign.sign_item_type_email
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Email"
-msgstr "Email"
+msgstr "電郵"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__subject

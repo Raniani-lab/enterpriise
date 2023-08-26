@@ -753,7 +753,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Admin"
-msgstr ""
+msgstr "管理者"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2183,7 +2183,7 @@ msgstr "共有"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree_frontend
 msgid "Shared with you"
-msgstr ""
+msgstr "あなたにシェアされた"
 
 #. module: knowledge
 #. odoo-javascript

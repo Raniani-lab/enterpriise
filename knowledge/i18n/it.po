@@ -6,8 +6,8 @@
 # Friederike Fasterling-Nesselbosch, 2022
 # Sergio Zanchetta <primes2h@gmail.com>, 2023
 # Martin Trigaux, 2023
-# Marianna Ciofani, 2023
 # Francesco Garganese <francesco.garganese@aeromnia.aero>, 2023
+# Marianna Ciofani, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Francesco Garganese <francesco.garganese@aeromnia.aero>, 2023\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,12 +43,12 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.xml:0
 #, python-format
 msgid "\" under:"
-msgstr ""
+msgstr "\" al di sotto di:"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__favorite_count
 msgid "#Is Favorite"
-msgstr ""
+msgstr "#È preferito"
 
 #. module: knowledge
 #. odoo-python
@@ -64,12 +64,12 @@ msgstr "%s (copia)"
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "%s has been sent to Trash"
-msgstr ""
+msgstr "%s è stato inviato al cestino"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite
 msgid ".<br/><br/>"
-msgstr ""
+msgstr ".<br/><br/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -234,6 +234,8 @@ msgid ""
 "<i class=\"fa fa-w fa-info-circle\"/> All external users you selected won't "
 "be added to the members."
 msgstr ""
+"<i class=\"fa fa-w fa-info-circle\"/> Tutti gli utenti esterni selezionati "
+"non verranno aggiunti ai membri."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
@@ -241,6 +243,8 @@ msgid ""
 "<i class=\"fa fa-w fa-info-circle\"/> External users cannot write on "
 "Articles and will be granted read access instead."
 msgstr ""
+"<i class=\"fa fa-w fa-info-circle\"/> Gli utenti esterni selezionati non "
+"possono scrivere sugli Articoli ma avranno l'accesso garantito."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -269,7 +273,7 @@ msgstr "<i>Non sono presenti articoli nel tuo spazio di lavoro.</i>"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree
 msgid "<i>You do not have any private Articles.</i>"
-msgstr ""
+msgstr "<i>Non hai articoli privati.</i>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -888,7 +892,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Access Restricted. May not be shared with everyone from"
-msgstr ""
+msgstr "Accesso limitato. Non dovrebbe essere condiviso con chiunque da"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_needaction
@@ -1021,6 +1025,8 @@ msgid ""
 "Are you sure you want to leave this private article? By doing so, the "
 "article and all its descendants will be archived."
 msgstr ""
+"Sei sicuro di volere abbandonare l'articolo privato? L'articolo e tutti i "
+"discendenti verranno archiviati."
 
 #. module: knowledge
 #. odoo-javascript
@@ -1030,6 +1036,7 @@ msgid ""
 "Are you sure you want to move \"%s\" to private? Only you will be able to "
 "access it."
 msgstr ""
+"Sei sicuro di voler rendere \"%s\" privato? Sarai l'unico a poter accedere."
 
 #. module: knowledge
 #. odoo-javascript
@@ -1039,6 +1046,8 @@ msgid ""
 "Are you sure you want to move \"%s\" to the Workspace? It will be shared "
 "with all internal users."
 msgstr ""
+"Sei sicuro di voler spostare \"%s\" nello spazio di lavoro? Verrà condiviso "
+"con tutti gli utenti interni."
 
 #. module: knowledge
 #. odoo-javascript
@@ -1048,6 +1057,8 @@ msgid ""
 "Are you sure you want to move \"%s\" under \"%s%s\"? It will be shared with "
 "the same persons."
 msgstr ""
+"Sei sicuro di voler spostare \"%s\" al di sotto di \"%s%s\"? Verrà condiviso"
+" con le stesse persone."
 
 #. module: knowledge
 #. odoo-javascript
@@ -1057,13 +1068,15 @@ msgid ""
 "Are you sure you want to remove your member? By leaving an article, you may "
 "lose access to it."
 msgstr ""
+"Sei sicuro di voler eliminare la tua iscrizione? Se abbandoni un articolo "
+"potresti perdere l'accesso ad esso."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Are you sure you want to remove your own \"Write\" access ?"
-msgstr ""
+msgstr "Sei sicuro di voler eliminare il tuo accesso \"in scrittura\"?"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1084,6 +1097,8 @@ msgid ""
 "Are you sure you want to restrict this role and restrict access ? This "
 "article will no longer inherit access settings from the parent page."
 msgstr ""
+"Sei sicuro di voler limitare il ruolo e l'accesso? L'articolo non erediterà "
+"più le impostazioni di accesso dalla pagina principale."
 
 #. module: knowledge
 #. odoo-javascript
@@ -1093,6 +1108,8 @@ msgid ""
 "Are you sure you want to set the internal permission to \"none\" ? If you "
 "do, you will no longer have access to the article."
 msgstr ""
+"Sei sicuro di volere impostare l'autorizzazione interna su \"nessuna\"? Non "
+"avrai più accesso all'articolo."
 
 #. module: knowledge
 #. odoo-javascript
@@ -1102,6 +1119,8 @@ msgid ""
 "Are you sure you want to set your permission to \"none\"? If you do, you "
 "will no longer have access to the article."
 msgstr ""
+"Sei sicuro di voler configurare l'autorizzazione su \"nessuna\"? Non avrai "
+"più accesso all'articolo."
 
 #. module: knowledge
 #. odoo-javascript
@@ -1123,11 +1142,13 @@ msgid ""
 "Article '%s' should always have a writer: inherit write permission, or have "
 "a member with write access"
 msgstr ""
+"L'articolo \"%s\" dovrebbe sempre avere uno scrittore: ereditare i permessi "
+"di scrittura o avere un membro con accesso in scrittura."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_properties_definition
 msgid "Article Item Properties"
-msgstr ""
+msgstr "Proprietà elemento articolo"
 
 #. module: knowledge
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_item_action
@@ -1138,7 +1159,7 @@ msgstr "Elementi articolo"
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_article_member
 msgid "Article Member"
-msgstr ""
+msgstr "Membro articolo"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1160,7 +1181,7 @@ msgstr "Copertina articolo"
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_article_item_parent
 msgid "Article items must have a parent."
-msgstr ""
+msgstr "Gli elementi dell'articolo devono avere un padre."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
@@ -1187,6 +1208,8 @@ msgstr "articoli"
 msgid ""
 "Articles %s cannot be updated as this would create a recursive hierarchy."
 msgstr ""
+"Gli articoli %s non possono essere aggiornati in quanto questo potrebbe "
+"causare una gerarchia ricorrente."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__article_ids
@@ -1198,7 +1221,7 @@ msgstr "Articoli con cover"
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "As a reader, you can't leave a Workspace article"
-msgstr ""
+msgstr "In quanto lettore, puoi sempre modificare l'articolo e i suoi membri."
 
 #. module: knowledge
 #. odoo-javascript
@@ -1207,6 +1230,7 @@ msgstr ""
 msgid ""
 "As an administrator, you can always modify this article and its members."
 msgstr ""
+"In quanto amministratore, puoi sempre modificare l'articolo e i suoi membri."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_attachment_count
@@ -1247,6 +1271,7 @@ msgstr "Può Scrivere"
 #, python-format
 msgid "Can not update the article or partner of a member."
 msgstr ""
+"Non è stato possibile aggiornare l'articolo o il partner di un membro."
 
 #. module: knowledge
 #. odoo-python
@@ -1254,6 +1279,7 @@ msgstr ""
 #, python-format
 msgid "Can not update the article or user of a favorite."
 msgstr ""
+"Non è stato possibile aggiornare l'articolo o l'utente di un preferito."
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__inherited_permission__read
@@ -1288,6 +1314,8 @@ msgid ""
 "Cannot create an article under article %(parent_name)s which is a non-"
 "private parent"
 msgstr ""
+"Non è stato possibile creare un articolo al di sotto dell'articolo "
+"%(parent_name)s che è un padre non-privato"
 
 #. module: knowledge
 #. odoo-python
@@ -1297,6 +1325,9 @@ msgid ""
 "Cannot move %(article_name)s as a root of the 'shared' section since access "
 "rights can not be inferred without a parent."
 msgstr ""
+"Non è stato possibile spostare %(article_name)s come radice della sezione "
+"\"condivisi\" perché i diritti di accesso non possono essere stabiliti senza"
+" un padre."
 
 #. module: knowledge
 #. odoo-javascript
@@ -1310,7 +1341,7 @@ msgstr "Categorie"
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Change Permission"
-msgstr ""
+msgstr "Modifica autorizzazione"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__child_ids
@@ -1381,7 +1412,7 @@ msgstr "Crea \""
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_item_action
 msgid "Create a new article item"
-msgstr ""
+msgstr "Crea un nuovo elemento dell'articolo"
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_action
@@ -1392,7 +1423,7 @@ msgstr "Crea un articolo"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
 msgid "Create my own Workspace <i class=\"fa fa-book\"/>"
-msgstr ""
+msgstr "Crea il mio spazio di lavoro <i class=\"fa fa-book\"/>"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__create_uid
@@ -1506,7 +1537,7 @@ msgstr "Incorpora un file."
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__icon
 msgid "Emoji"
-msgstr ""
+msgstr "Emoji"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1623,22 +1654,22 @@ msgstr "Ha accesso in scrittura"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__has_item_children
 msgid "Has article item children?"
-msgstr ""
+msgstr "L'articolo ha elementi figlio?"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__has_article_children
 msgid "Has normal article children?"
-msgstr ""
+msgstr "L'articolo normale ha figli?"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__have_share_partners
 msgid "Have Share Partners"
-msgstr ""
+msgstr "Ha partner per condivisione"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Hello there"
-msgstr ""
+msgstr "Ciao!"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -1695,13 +1726,14 @@ msgstr "Se selezionata, alcuni messaggi presentano un errore di consegna."
 msgid ""
 "If set, this article won't inherit access rules from its parents anymore."
 msgstr ""
+"Se selezionato, l'articolo non erediterà più le regole di accesso dai padri."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Index"
-msgstr ""
+msgstr "Indice"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__inherited_permission
@@ -1712,7 +1744,7 @@ msgstr "Autorizzazione ereditata"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__inherited_permission_parent_id
 msgid "Inherited Permission Parent Article"
-msgstr ""
+msgstr "Autorizzazione ereditata dall'articolo padre"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1806,7 +1838,7 @@ msgstr "Invita persone"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_favorite__is_article_active
 msgid "Is Article Active"
-msgstr ""
+msgstr "L'articolo è attivo"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_user_favorite
@@ -1821,26 +1853,26 @@ msgstr "Sta seguendo"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_article_item
 msgid "Is Item?"
-msgstr ""
+msgstr "È un elemento?"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_properties_is_empty
 msgid "Is Property Field Empty?"
-msgstr ""
+msgstr "Il campo proprietà è vuoto?"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Item Kanban"
-msgstr ""
+msgstr "Elemento Kanban"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Item List"
-msgstr ""
+msgstr "Elemento elenco"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1870,7 +1902,7 @@ msgstr "Copertina Knowledge"
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_invite
 msgid "Knowledge Invite Wizard"
-msgstr ""
+msgstr "Procedura guidata invito Knowledge"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
@@ -1892,7 +1924,7 @@ msgstr "Ultima modifica di:"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__last_edition_date
 msgid "Last Edited on"
-msgstr ""
+msgstr "Ultima modifica il"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article____last_update
@@ -1928,7 +1960,7 @@ msgstr "Ultimo aggiornamento il"
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Leave Article"
-msgstr ""
+msgstr "Abbandona articolo"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1969,6 +2001,8 @@ msgid ""
 "Logging changes from %(partner_name)s without write access on article "
 "%(article_name)s due to hierarchy tree update"
 msgstr ""
+"Registra i cambiamenti di %(partner_name)s senza accesso in scrittura "
+"sull'articolo %(article_name)s per via di un aggiornamento della gerarchia"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_main_attachment_id
@@ -2003,7 +2037,7 @@ msgstr "Informazioni iscritti"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__root_article_id
 msgid "Menu Article"
-msgstr ""
+msgstr "Menu articolo"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_has_error
@@ -2027,7 +2061,7 @@ msgstr "File mancante"
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.xml:0
 #, python-format
 msgid "Move \""
-msgstr ""
+msgstr "Sposta \""
 
 #. module: knowledge
 #. odoo-javascript
@@ -2051,6 +2085,8 @@ msgid ""
 "Move to target of %(article_name)s is ambiguous, you should specify the "
 "category."
 msgstr ""
+"Lo spostamento all'obiettivo di %(article_name)s è ambiguo, devi specificare"
+" la categoria."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__my_activity_date_deadline
@@ -2079,7 +2115,7 @@ msgstr "Concetti base della navigazione"
 #: code:addons/knowledge/static/src/xml/knowledge_editor.xml:0
 #, python-format
 msgid "Nest articles under this one to generate a structure"
-msgstr ""
+msgstr "Collega articoli per creare una struttura"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_calendar_event_id
@@ -2120,17 +2156,17 @@ msgstr "Nessun articolo trovato. Crea \"%s\""
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "No Article in Trash"
-msgstr ""
+msgstr "Nessun articolo nel cestino"
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_favorite_action
 msgid "No Favorites yet!"
-msgstr ""
+msgstr "Ancora nessun preferito!"
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_member_action
 msgid "No Members yet!"
-msgstr ""
+msgstr "Ancora nessun membro!"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__inherited_permission__none
@@ -2155,7 +2191,7 @@ msgstr "Nessun articolo trovato."
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "No article yet."
-msgstr ""
+msgstr "Ancora nessun articolo."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_needaction_counter
@@ -2321,12 +2357,12 @@ msgstr "Limita accesso"
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_desync_on_root
 msgid "Root articles cannot be desynchronized."
-msgstr ""
+msgstr "Gli articoli alla base non posso essere desincronizzati."
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_permission_on_root
 msgid "Root articles must have internal permission."
-msgstr ""
+msgstr "Gli articoli alla base devono avere un'autorizzazione interna."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_has_sms_error
@@ -2434,14 +2470,14 @@ msgstr "Mostra tutti gli articoli collegati."
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Show the first level of nested articles."
-msgstr ""
+msgstr "Mostra il primo livello degli articoli annidati."
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Some articles have been sent to Trash"
-msgstr ""
+msgstr "Alcuni articoli sono stati inviati al cestino"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2499,6 +2535,8 @@ msgstr "L'articolo a cui sta cercando di accedere è stato eliminato"
 #, python-format
 msgid "The article '%s' needs at least one member with 'Write' access."
 msgstr ""
+"L'articolo \"%s\" necessita di almeno un membro con l'accesso \"in "
+"scrittura\"."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
@@ -2517,6 +2555,8 @@ msgid ""
 "The external user %(user_name)s cannot have a 'write' permission on article "
 "%(article_name)s"
 msgstr ""
+"L'utente esterno %(user_name)s non può avere un'autorizzazione \"in "
+"scrittura\" sull'articolo %(article_name)s"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2526,6 +2566,8 @@ msgid ""
 "The operation was interrupted because the page or the record changed. Please"
 " try again later."
 msgstr ""
+"L'operazione è stata interrotta perché la pagina o la registrazione è stata "
+"modificata. Prova di nuovo più tardi."
 
 #. module: knowledge
 #. odoo-python
@@ -2540,19 +2582,21 @@ msgstr "Il membro selezionato non esiste o è stato già eliminato."
 msgid ""
 "The sequence is computed only among the articles that have the same parent."
 msgstr ""
+"La sequenza è calcolata solo tra gli articoli che hanno lo stesso padre."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__root_article_id
 msgid ""
 "The subject is the title of the highest parent in the article hierarchy."
 msgstr ""
+"L'oggetto è il titolo del padre più alto nella gerarchia dell'articolo."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0
 #, python-format
 msgid "The view does not exist or you are not allowed to access to it."
-msgstr ""
+msgstr "La vista non esiste o non hai l'autorizzazione per accedervi."
 
 #. module: knowledge
 #. odoo-python
@@ -2562,11 +2606,13 @@ msgid ""
 "This Article cannot be unfolded. Either you lost access to it or it has been"
 " deleted."
 msgstr ""
+"Questo articolo non può essere dispiegato. È possibile che sia stato "
+"eliminato o che tu abbia perso i diritti di accesso."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "This Article is in Trash and will be deleted on the"
-msgstr ""
+msgstr "L'articolo è nel cestino e verrà eliminato il"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -2578,14 +2624,14 @@ msgstr "L'articolo è archiviato."
 #: code:addons/knowledge/static/src/components/behaviors/article_behavior/article_behavior.js:0
 #, python-format
 msgid "This article was deleted or you don't have the rights to access it."
-msgstr ""
+msgstr "L'articolo è stato eliminato o non hai i diritti di accesso."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/xml/knowledge_frontend.xml:0
 #, python-format
 msgid "This view is only available for internal users"
-msgstr ""
+msgstr "La vista è disponibile solo per gli utenti interni"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__name
@@ -2624,7 +2670,7 @@ msgstr "Prova Odoo"
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Trying to remove wrong member."
-msgstr ""
+msgstr "Tentativo di rimozione del membro sbagliato."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__activity_exception_decoration
@@ -2686,6 +2732,8 @@ msgid ""
 "Used to categozie articles in UI, depending on their main permission "
 "definitions."
 msgstr ""
+"Utilizzato per categorizzare gli articoli nell'interfaccia utente, in base "
+"alla definizione dei permessi principali."
 
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_res_users
@@ -2697,7 +2745,7 @@ msgstr "Utente"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_favorite_sequence
 msgid "User Favorite Sequence"
-msgstr ""
+msgstr "Sequenza preferita utente"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2709,7 +2757,7 @@ msgstr "Autorizzazione utente"
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_favorite_unique_article_user
 msgid "User already has this article in favorites."
-msgstr ""
+msgstr "L'utente ha già inserito l'articolo tra i preferiti."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_permission
@@ -2738,7 +2786,7 @@ msgstr "Benvenuto/a %s"
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.xml:0
 #, python-format
 msgid "What do you want to manage?"
-msgstr ""
+msgstr "Cosa vuoi gestire?"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__is_locked
@@ -2746,6 +2794,8 @@ msgid ""
 "When locked, users cannot write on the body or change the title, even if "
 "they have write access on the article."
 msgstr ""
+"Quando è bloccato, gli utenti non possono scrivere sul corpo o modificare il"
+" titolo, anche se hanno accesso in scrittura all'articolo."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__to_delete
@@ -2755,6 +2805,10 @@ msgid ""
 "                parameter can be used to modify the number of days. \n"
 "                (default is 30)"
 msgstr ""
+"Quando inviati al cestino, gli articoli sono contrassegnati per essere eliminati\n"
+"                giorni dopo l'ultima modifica. knowledge_article_trash_limit_days config\n"
+"                è un parametro che può essere utilizzato per modificare il numero di giorni. \n"
+"                (30 predefiniti)"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__full_width
@@ -2789,7 +2843,7 @@ msgstr "Hai già aggiunto questo partner all'articolo."
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
 msgid "You are currently visiting as a Guest User"
-msgstr ""
+msgstr "Sei in visita come utente ospite"
 
 #. module: knowledge
 #. odoo-python
@@ -2805,27 +2859,29 @@ msgstr "Non ti è permesso rendere privato l'articolo \"%(article_name)s\"."
 msgid ""
 "You are not allowed to move '%(article_name)s' under '%(parent_name)s'."
 msgstr ""
+"Non ti è permesso spostare \"%(article_name)s\" al di sotto di "
+"\"%(parent_name)s\"."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "You can't leave an article for which you are the last writer"
-msgstr ""
+msgstr "Non puoi abbandonare un articolo di cui sei l'ultimo scrittore"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "You can't remove the last writer of the article"
-msgstr ""
+msgstr "Non è possibile eliminare l'ultimo scrittore dell'articolo"
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "You cannot add or remove this article to your favorites"
-msgstr ""
+msgstr "Non è possibile aggiungere o eliminare l'articolo dai preferiti"
 
 #. module: knowledge
 #. odoo-python
@@ -2833,13 +2889,14 @@ msgstr ""
 #, python-format
 msgid "You cannot change the internal permission of this article."
 msgstr ""
+"Non è possibile modificare l'autorizzazione interna di questo articolo."
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/controllers/main.py:0
 #, python-format
 msgid "You cannot change the permission of this member."
-msgstr ""
+msgstr "Non è possibile modificare l'autorizzazione di questo membro."
 
 #. module: knowledge
 #. odoo-python
@@ -2854,6 +2911,8 @@ msgstr "Non è possibile creare una nuova copertina Knowledge da qui."
 #, python-format
 msgid "You cannot create an article under articles on which you cannot write"
 msgstr ""
+"Non è possibile creare un articolo sotto articoli sui quali non puoi "
+"scrivere"
 
 #. module: knowledge
 #. odoo-python
@@ -2862,6 +2921,8 @@ msgstr ""
 msgid ""
 "You cannot move an article under %(parent_name)s as you cannot write on it"
 msgstr ""
+"Non è possibile spostare un articolo al di sotto di %(parent_name)s in "
+"quanto non puoi scrivere su di esso"
 
 #. module: knowledge
 #. odoo-python
@@ -2899,6 +2960,8 @@ msgid ""
 "You have to be editor on %(article_name)s to remove or exclude member "
 "%(member_name)s."
 msgstr ""
+"Devi essere un editor di %(article_name)s per eliminare o escludere il "
+"membro %(member_name)s."
 
 #. module: knowledge
 #. odoo-python
@@ -2910,7 +2973,7 @@ msgstr "Devi essere un editor per ripristinare l'articolo %(article_name)s."
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "and the following child article(s) have"
-msgstr ""
+msgstr "e i seguenti articoli figli hanno"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2922,7 +2985,7 @@ msgstr "articoli"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "been sent to Trash.<br/><br/>"
-msgstr ""
+msgstr "è stato inviato al cestino.<br/><br/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -2934,29 +2997,29 @@ msgstr "copertina"
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "e.g. Buildings"
-msgstr ""
+msgstr "ad es. Edifici"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "e.g. Todos"
-msgstr ""
+msgstr "ad es. Cose da fare"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "has"
-msgstr ""
+msgstr "ha"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "have"
-msgstr ""
+msgstr "hanno"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite
 msgid "invited you to access"
-msgstr ""
+msgstr "ti ha invitato ad accedere"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2966,7 +3029,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "loader"
-msgstr ""
+msgstr "caricamento"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__none
@@ -2986,12 +3049,12 @@ msgstr "pdf"
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__read
 msgid "read"
-msgstr ""
+msgstr "legge"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "to unleash the power of Knowledge !"
-msgstr ""
+msgstr "per scoprire il potere di Knowledge!"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__write

@@ -193,7 +193,7 @@ msgstr "Immagine"
 #: model:ir.model.fields,field_description:social_twitter.field_social_post__is_twitter_post_limit_exceed
 #: model:ir.model.fields,field_description:social_twitter.field_social_post_template__is_twitter_post_limit_exceed
 msgid "Is Twitter Post Limit Exceed"
-msgstr ""
+msgstr "Ha superato il limite di post twitter"
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_keyword
@@ -435,7 +435,7 @@ msgstr "ID autore Twitter"
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_can_retweet
 msgid "Twitter Can Retweet"
-msgstr ""
+msgstr "Twitter può ritwittare"
 
 #. module: social_twitter
 #. odoo-javascript
@@ -489,7 +489,7 @@ msgstr "Token privato OAuth Twitter"
 #: model:ir.model.fields,field_description:social_twitter.field_social_post__twitter_post_limit_message
 #: model:ir.model.fields,field_description:social_twitter.field_social_post_template__twitter_post_limit_message
 msgid "Twitter Post Limit Message"
-msgstr ""
+msgstr "Messaggio limite post twitter"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_post__twitter_preview
@@ -601,6 +601,9 @@ msgid ""
 "We could not upload your image, it may be corrupted, it may exceed size "
 "limit or API may have send improper response (error: %s)."
 msgstr ""
+"Non è stato possibile caricare l'immagine che potrebbe essere corrotta, "
+"eccedere le dimensioni indicato o l'API ha inviato una risposta non adeguata"
+" (errore: %s)."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_account.py:0
@@ -636,6 +639,7 @@ msgstr ""
 #: model:ir.model.constraint,message:social_twitter.constraint_social_stream_post_tweet_uniq
 msgid "You can not store two times the same tweet on the same stream!"
 msgstr ""
+"Non è possibile memorizzare due volte lo stesso tweet sullo stesso flusso!"
 
 #. module: social_twitter
 #. odoo-python

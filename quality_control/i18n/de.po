@@ -95,7 +95,7 @@ msgid ""
 "<span class=\"o_stat_text\">Pass:</span>\n"
 "                        <span class=\"o_stat_text\">Fail:</span>"
 msgstr ""
-"<span class=\"o_stat_text\">Bestehen:</span>\n"
+"<span class=\"o_stat_text\">Bestanden:</span>\n"
 "                        <span class=\"o_stat_text\">Fehlschlagen:</span>"
 
 #. module: quality_control

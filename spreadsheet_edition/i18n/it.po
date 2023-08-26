@@ -815,7 +815,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "graph"
-msgstr ""
+msgstr "grafico"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

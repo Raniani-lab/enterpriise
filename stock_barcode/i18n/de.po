@@ -916,7 +916,7 @@ msgstr "Menge der Verpackungen in der Maßeinheit der Lagerbuchungszeile."
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_quant
 msgid "Quants"
-msgstr "Mengen"
+msgstr "Quanten"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1462,7 +1462,7 @@ msgstr "Wert des zuletzt gelesenen Barcodes."
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_warehouse
 msgid "Warehouse"
-msgstr "Lager"
+msgstr "Lagerhaus"
 
 #. module: stock_barcode
 #. odoo-javascript

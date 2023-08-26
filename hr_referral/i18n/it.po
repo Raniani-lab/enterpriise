@@ -87,6 +87,8 @@ msgid ""
 "<span title=\"Buy\"><i class=\"fa fa-shopping-basket me-3\" role=\"img\" "
 "aria-label=\"Buy\"/>Buy</span>"
 msgstr ""
+"<span title=\"Buy\"><i class=\"fa fa-shopping-basket me-3\" role=\"img\" "
+"aria-label=\"Buy\"/>Acquista</span>"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_job_employee_referral_kanban
@@ -398,7 +400,7 @@ msgstr "Referenza diretta"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__dismissed_user_ids
 msgid "Dismissed User"
-msgstr ""
+msgstr "Utente licenziato"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__display_name
@@ -878,7 +880,7 @@ msgstr "Le mie referenze"
 #: code:addons/hr_referral/wizard/hr_referral_alert_mail_wizard.py:0
 #, python-format
 msgid "New Alert In Referrals App"
-msgstr ""
+msgstr "Nuovo avviso nell'app Referenze"
 
 #. module: hr_referral
 #. odoo-python
@@ -1057,7 +1059,7 @@ msgstr "Fasi di selezione"
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_report_view_tree
 msgid "Referer"
-msgstr ""
+msgstr "Referente"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
@@ -1067,13 +1069,13 @@ msgstr "Referenza"
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_referral_alert_mail_wizard
 msgid "Referral Alert Mail Wizard"
-msgstr ""
+msgstr "Procedura guidata e-mail di notifica referenza"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_res_company__hr_referral_background
 #: model:ir.model.fields,field_description:hr_referral.field_res_config_settings__hr_referral_background
 msgid "Referral Background"
-msgstr ""
+msgstr "Sfondo referenza"
 
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_referral_link_to_share
@@ -1093,7 +1095,7 @@ msgstr "Punti referenza"
 #. module: hr_referral
 #: model:res.groups,name:hr_referral.group_hr_referral_reward_responsible_user
 msgid "Referral Reward Responsible User"
-msgstr ""
+msgstr "Utente responsabile ricompensa referenza"
 
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_referral_send_mail
@@ -1272,7 +1274,7 @@ msgstr "Informazioni elemento condiviso"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_recruitment_stage__use_in_referral
 msgid "Show in Referrals"
-msgstr ""
+msgstr "Mostra in Referenze"
 
 #. module: hr_referral
 #. odoo-javascript
@@ -1294,6 +1296,8 @@ msgstr "Salta e inizia"
 #, python-format
 msgid "Sorry, your referral %s has been refused in the recruitment process."
 msgstr ""
+"Ci dispiace, la tua referenza %s è stata rifiutata durante il processo di "
+"selezione."
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_res_users__utm_source_id
@@ -1399,6 +1403,9 @@ msgid ""
 "This option is used in app 'Referrals'. If checked, the stage is displayed "
 "in 'Referrals Dashboard' and points are given to the employee."
 msgstr ""
+"L'opzione è utilizzata nell'applicazione \"Referenze\". Se selezionata, la "
+"fase non viene visualizzata nella \"Dashboard delle referenze\" e non viene "
+"assegnato alcun punto al dipendente."
 
 #. module: hr_referral
 #: model_terms:ir.actions.act_window,help:hr_referral.employee_referral_report_action
@@ -1466,7 +1473,7 @@ msgstr "Utente"
 #. module: hr_referral
 #: model:res.groups,name:hr_referral.group_hr_recruitment_referral_user
 msgid "User : Referral only"
-msgstr ""
+msgstr "Utente: solo referenza"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__gift_manager_id
@@ -1517,6 +1524,8 @@ msgid ""
 "You cannot delete these UTM Campaigns as they are linked to the following jobs in Referral:\n"
 "%(job_names)s"
 msgstr ""
+"Non è possibile eliminare le campagne UTM perché sono legate ai seguenti lavori nella referenza:\n"
+"%(job_names)s"
 
 #. module: hr_referral
 #. odoo-python
@@ -1526,6 +1535,8 @@ msgid ""
 "You cannot delete these UTM Sources as they are linked to the following users in Referral:\n"
 "%(employee_names)s"
 msgstr ""
+"Non è possibile eliminare le fonti UTM perché sono legate ai seguenti utenti nella referenza:\n"
+"%(employee_names)s"
 
 #. module: hr_referral
 #. odoo-python

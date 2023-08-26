@@ -753,7 +753,7 @@ msgstr "Randlos"
 #: code:addons/web_studio/static/src/legacy/js/reports/report_kanban_view.js:0
 #, python-format
 msgid "Business header/footer"
-msgstr "Firmen Kopf- und Fußzeile"
+msgstr "Kopf- und Fußzeile des Unternehmens"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2552,21 +2552,21 @@ msgstr "Margen"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Measure"
-msgstr "Messung"
+msgstr "Wert"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Measure Field"
-msgstr "Messungsfeld"
+msgstr "Wertefeld"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Measures"
-msgstr "Messungen"
+msgstr "Werte"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3344,7 +3344,7 @@ msgstr "Bericht"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_report
 msgid "Report Action"
-msgstr "Aktion melden"
+msgstr "Berichtsaktion"
 
 #. module: web_studio
 #. odoo-javascript

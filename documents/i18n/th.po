@@ -2515,7 +2515,7 @@ msgstr "เพื่อตรวจสอบ"
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_tv
 msgid "To validate"
-msgstr ""
+msgstr "เพื่อตรวจสอบ"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search

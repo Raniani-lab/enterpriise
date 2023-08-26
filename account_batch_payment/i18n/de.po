@@ -401,7 +401,7 @@ msgstr "Eingehend"
 #: code:addons/account_batch_payment/models/account_journal.py:0
 #, python-format
 msgid "Inbound Batch Payments Sequence"
-msgstr "Nummernkreis für eingehende Sammelzahlungen"
+msgstr "Sequenz für eingehende Sammelzahlungen"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__message_is_follower
@@ -548,7 +548,7 @@ msgstr "Ausgehend"
 #: code:addons/account_batch_payment/models/account_journal.py:0
 #, python-format
 msgid "Outbound Batch Payments Sequence"
-msgstr "Nummernkreis für ausgehende Sammelzahlungen"
+msgstr "Sequenz für ausgehende Sammelzahlungen"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_account_payment_tree_inherit_account_batch_payment

@@ -69,7 +69,7 @@ msgstr "公司設定"
 #: code:addons/account_winbooks_import/wizard/import_wizard.py:0
 #, python-format
 msgid "Counterpart (generated at import from Winbooks)"
-msgstr ""
+msgstr "對應項（從 WinBooks 匯入時生成）"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields,field_description:account_winbooks_import.field_account_winbooks_import_wizard__create_uid
@@ -173,7 +173,7 @@ msgstr "階段搜尋"
 #. module: account_winbooks_import
 #: model:ir.model.fields,field_description:account_winbooks_import.field_res_company__account_onboarding_winbooks_state
 msgid "State of the onboarding winbooks step"
-msgstr ""
+msgstr "使用簡介 WinBooks 步驟狀態"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields,field_description:account_winbooks_import.field_account_winbooks_import_wizard__suspense_code
@@ -196,6 +196,8 @@ msgid ""
 "The following banks were used for multiple partners in Winbooks, which is not allowed in Odoo. The bank number has been only set on one of each group:\n"
 "%s"
 msgstr ""
+"以下銀行在 WinBooks 中用於多個合作夥伴，但這在 Odoo 中是不允許的。因此，銀行號碼只為每組之一個合作夥伴設置：\n"
+"%s"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields,help:account_winbooks_import.field_account_winbooks_import_wizard__suspense_code
@@ -203,7 +205,7 @@ msgid ""
 "This is the code of the account in which you want to put the counterpart of "
 "unbalanced moves. This might be an account from your Winbooks data, or an "
 "account that you created in Odoo before the import."
-msgstr ""
+msgstr "此賬戶代碼是不平衡分錄的對應項記賬的賬戶。 這可能是你的 WinBooks 數據中的賬戶，或是匯入數據之前你在 Odoo 建立的賬戶。"
 
 #. module: account_winbooks_import
 #: model:ir.actions.act_window,name:account_winbooks_import.winbooks_import_action
@@ -220,11 +222,11 @@ msgstr "WinBooks 配對號碼"
 msgid ""
 "Years closed in Winbooks are likely to have incomplete data. The counter "
 "part of incomplete entries will be set in a suspense account"
-msgstr ""
+msgstr "在 WinBooks 中關閉的年份，數據可能不完整。不完整記項的對應項，會在暫記賬中記賬"
 
 #. module: account_winbooks_import
 #. odoo-python
 #: code:addons/account_winbooks_import/wizard/import_wizard.py:0
 #, python-format
 msgid "You should install a Fiscal Localization first."
-msgstr ""
+msgstr "你應該先安裝財政本地化套裝。"

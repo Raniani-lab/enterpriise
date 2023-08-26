@@ -222,7 +222,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Add Another Activity"
-msgstr "Ein andere Aktivität hinzufügen"
+msgstr "Eine andere Aktivität hinzufügen"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -409,7 +409,7 @@ msgstr "Konfiguration"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 msgid "Continue"
-msgstr "Weiter"
+msgstr "Fortfahren"
 
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
@@ -588,7 +588,7 @@ msgstr "Aktivitäten ausführen"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Expiry Duration"
-msgstr "Verfalldauer"
+msgstr "Gültigkeitsdauer"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_filter_id
@@ -1126,7 +1126,7 @@ msgstr "Eine Vorlage auswählen"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 msgid "Pick or create a/an"
-msgstr "Wählen Sie oder erstellen Sie ein/eine"
+msgstr "Wählen Sie einen"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__processed
@@ -1698,4 +1698,4 @@ msgstr "z. B. E-Commerce-Angebotsplan"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 msgid "to generate a Test Participant"
-msgstr ", um einen Testteilnehmer zu erstellen"
+msgstr "aus oder erstellen Sie einen, um einen Testteilnehmer zu erzeugen."

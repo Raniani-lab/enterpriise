@@ -168,7 +168,7 @@ msgstr "إضافة قسم"
 #: code:addons/hr_contract_salary/models/hr_contract_salary_advantage.py:0
 #, python-format
 msgid "Advanges that are not linked to a field should always be displayed."
-msgstr ""
+msgstr "يجب دائماً عرض المزايا غير المرتبطة بحقل. "
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value__advantage_id

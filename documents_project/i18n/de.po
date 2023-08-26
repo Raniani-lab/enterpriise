@@ -78,7 +78,7 @@ msgstr "Nicht mehr verwenden"
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_deprecated
 msgid "Deprecated"
-msgstr "Nicht mehr verwenden"
+msgstr "Nicht mehr verwendet"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_document

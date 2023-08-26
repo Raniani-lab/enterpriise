@@ -497,6 +497,8 @@ msgstr "Assegnazione dello stipendio"
 msgid ""
 "At least one previous negative net could be reported on this payslip for %s"
 msgstr ""
+"Nella busta paga potrebbe essere riportato almeno un precedente netto "
+"negativo per %s"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_attachment_count
@@ -1086,7 +1088,7 @@ msgstr "Note di credito"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract_history__time_credit
 msgid "Credit time"
-msgstr ""
+msgstr "Credito-tempo"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__currency_id
@@ -2370,6 +2372,8 @@ msgid ""
 "On the first tab is the amount of worked time giving you a <strong>gross "
 "amount</strong>."
 msgstr ""
+"Nella prima casella è presente l'importo del tempo lavorato fornendo un "
+"<strong>importo lordo</strong>."
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -2379,6 +2383,8 @@ msgid ""
 "On the second tab is the computation of the rules linked to the Structure "
 "resulting in a <strong>net amount</strong>."
 msgstr ""
+"Nella seconda casella è presente il calcolo delle regole legate alla "
+"struttura che da come risultato un <strong>importo netto</strong>."
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -2388,11 +2394,13 @@ msgid ""
 "On the smartbutton, you can find all the <strong>Payslips</strong> included "
 "in the Batch."
 msgstr ""
+"Sul pulsante intelligente è possibile trovare tutte le <strong>buste "
+"paga</strong> incluse nel gruppo."
 
 #. module: hr_payroll
 #: model:ir.actions.server,name:hr_payroll.ir_actions_server_action_open_reporting
 msgid "Open Payroll Reporting"
-msgstr ""
+msgstr "Apri rendiconto busta paga"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
@@ -3221,6 +3229,8 @@ msgstr "Ricerca tipo di struttura"
 #, python-format
 msgid "Select an <strong>HR Responsible</strong> for the contract."
 msgstr ""
+"Seleziona un <strong>responsabile delle risorse umane</strong> per il "
+"contratto."
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payroll_structure__schedule_pay__semi-annually
@@ -3420,6 +3430,8 @@ msgid ""
 "The Standard Calendar is the calendar used by the people working at a 100% "
 "rate. It's used here to compute your part-time percentage."
 msgstr ""
+"Il calendario standard è il calendario utilizzato dalle persone che lavorano"
+" al 100%. Viene utilizzato per calcolare la percentuale del part-time."
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_work_entry_type__is_unforeseen
@@ -3519,6 +3531,8 @@ msgid ""
 "The work entry type used when generating work entries to fit full time "
 "working schedule."
 msgstr ""
+"Il tipo di voce di lavoro utilizzata durante la generazione delle voci di "
+"lavoro per adattarsi all'orario di lavoro a tempo pieno."
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_work_entry_type__unpaid_structure_ids
@@ -3534,6 +3548,9 @@ msgid ""
 "There's no contract set on payslip %s for %s. Check that there is at least a"
 " contract set on the employee form."
 msgstr ""
+"Non è presente alcun contratto configurato sulla bustapaga %s per %s. "
+"Verifica che ci sia almeno un contratto configurato sul modulo del "
+"dipendente."
 
 #. module: hr_payroll
 #. odoo-python
@@ -3568,7 +3585,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_contract_history__time_credit
 msgid "This is a credit time contract."
-msgstr ""
+msgstr "Questo è un tipo di contratto credito-tempo."
 
 #. module: hr_payroll
 #. odoo-python
@@ -3759,7 +3776,7 @@ msgstr "Tipi di voce lavorativa non retribuiti"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_work_entry_type__unpaid_structure_ids
 msgid "Unpaid in Structures Types"
-msgstr ""
+msgstr "Non retribuito nei tipi di struttura"
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_work_entry_type__round_days_type__up
@@ -3787,6 +3804,8 @@ msgstr "Utilizzato per visualizzare la regola di retribuzione in busta paga."
 #: model:ir.model.fields,help:hr_payroll.field_hr_salary_rule__appears_on_employee_cost_dashboard
 msgid "Used to display the value in the employer cost dashboard."
 msgstr ""
+"Utilizzato per visualizzare il valore nella dashboard relativa al costo del "
+"datore di lavoro."
 
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_res_users
@@ -3812,7 +3831,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:res.groups,comment:hr_payroll.group_hr_payroll_manager
 msgid "User have full access on the application."
-msgstr ""
+msgstr "L'utente ha pieno accesso all'applicazione."
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_form
@@ -3844,7 +3863,7 @@ msgstr "Mostra nella dashboard dei costi del datore di lavoro"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__appears_on_payroll_report
 msgid "View on Payroll Reporting"
-msgstr ""
+msgstr "Mostra sul rendiconto busta paga"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__wage_type
@@ -3972,6 +3991,8 @@ msgid ""
 "Work Entries are generated for each <strong>time period</strong> defined in "
 "the Working Schedule of the Contract."
 msgstr ""
+"Le voci lavortive sono generate per ogni <strong>periodo di tempo</strong> "
+"definito nell'orario di lavoro del contratto."
 
 #. module: hr_payroll
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_work_entry_report
@@ -4026,7 +4047,7 @@ msgstr ""
 #: model:ir.model.fields,help:hr_payroll.field_hr_contract__work_time_rate
 #: model:ir.model.fields,help:hr_payroll.field_hr_contract_history__work_time_rate
 msgid "Work time rate versus full time working schedule."
-msgstr ""
+msgstr "Tasso tempo di lavoro rispetto all'orario di lavoro a tempo pieno."
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_report__work_code
@@ -4169,6 +4190,8 @@ msgid ""
 "You cannot reset a batch to draft if some of the payslips have already been "
 "paid."
 msgstr ""
+"Non puoi riportare un gruppo allo stato di bozza se alcune delle buste paga "
+"comprese sono già state pagate."
 
 #. module: hr_payroll
 #. odoo-python

@@ -65,3 +65,9 @@ msgstr "請為以下合作夥伴至少設定一個地址（郵政編碼 / 城市
 #, python-format
 msgid "SAFT is only compatible with one column group."
 msgstr ""
+
+#. module: account_saft
+#: code:addons/account_saft/models/account_general_ledger.py:0
+#, python-format
+msgid "Please define one or more Contacts belonging to your company."
+msgstr ""

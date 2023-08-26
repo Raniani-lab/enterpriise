@@ -854,7 +854,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "วิดเจ็ตการกระทบยอดธนาคารสำหรับรายการใบแจ้งยอดเดียว"
 
 #. module: account_reports
 #. odoo-python
@@ -2371,6 +2371,7 @@ msgstr ""
 #, python-format
 msgid "Only Billing Administrators are allowed to change lock dates!"
 msgstr ""
+"เฉพาะผู้ดูแลระบบการเรียกเก็บเงินเท่านั้นที่ได้รับอนุญาตให้เปลี่ยนวันที่ล็อค!"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -2712,7 +2713,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__reversal_date
 msgid "Reversal Date"
-msgstr ""
+msgstr "วันที่กลับรายการ"
 
 #. module: account_reports
 #. odoo-python
@@ -2724,7 +2725,7 @@ msgstr "การกลับรายการของ:%s"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_report_search
 msgid "Root Report"
-msgstr ""
+msgstr "รายงานหลัก"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_horizontal_group__rule_ids
@@ -2734,7 +2735,7 @@ msgstr "กฏ"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
 msgid "Running Balance"
-msgstr ""
+msgstr "ยอดคงเหลือที่ใช้อยู่"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -2786,7 +2787,7 @@ msgstr "บริการ"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_coa
 msgid "Setup"
-msgstr ""
+msgstr "ตั้งค่า"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_executivesummary_st_cash_forecast0
@@ -3274,7 +3275,7 @@ msgstr "กางออก"
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Unfold All"
-msgstr ""
+msgstr "ขยายทั้งหมด"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template

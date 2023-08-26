@@ -39,7 +39,7 @@ msgstr "'Arbeitsblatt %s - %s' % (object.name, object.partner_id.name)"
 #, python-format
 msgid "<b>Review and sign</b> the <b>task report</b> with your customer."
 msgstr ""
-"<b>Prüfen und unterschreiben Sie</b> den <b>Aufgabenbericht</b> mit Ihren "
+"<b>Prüfen und unterschreiben Sie</b> den <b>Tätigkeitsbericht</b> mit Ihren "
 "Kunden."
 
 #. module: industry_fsm
@@ -48,7 +48,7 @@ msgstr ""
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "<b>Send your task report</b> to your customer."
-msgstr "<b>Senden Sie Ihren Aufgabenbericht</b> an Ihren Kunden."
+msgstr "<b>Senden Sie Ihren Tätigkeitsbericht</b> an Ihren Kunden."
 
 #. module: industry_fsm
 #: model:mail.template,body_html:industry_fsm.mail_template_data_intervention_details
@@ -1266,12 +1266,12 @@ msgstr "Es gibt keine zu sendenden Berichte."
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 #, python-format
 msgid "Time"
-msgstr "Uhrzeit"
+msgstr "Zeit"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.timesheet_view_form
 msgid "Time Spent"
-msgstr "Geleistete Stunden"
+msgstr "Zeitaufwand"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_res_config_settings__module_industry_fsm_sale

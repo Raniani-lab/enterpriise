@@ -79,7 +79,7 @@
                 </div>
             </div>
         </xpath>
-        <xpath expr="//div[@id='o_product_terms_and_share']" position="before">
+        <div id="product_documents" position="before">
             <t t-if="combination_info['is_rental'] and (not website.prevent_zero_price_sale or combination_info['current_rental_price'])">
                 <u class="h5">Pricing</u>
                 <table class="o_not_editable table w-50 {{'' if combination_info['pricing_table'] else 'd-none'}}" id="oe_wsale_rental_pricing_table">
@@ -93,7 +93,7 @@
                     </tbody>
                 </table>
             </t>
-        </xpath>
+        </div>
     </template>
 
     <template id="variants" inherit_id="website_sale.variants">

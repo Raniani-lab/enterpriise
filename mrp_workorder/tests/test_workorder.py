@@ -2,7 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.addons.mrp_workorder.tests.common import TestMrpWorkorderCommon
-from odoo.tests import Form
+from odoo.addons.base.tests.common import HttpCase
+from odoo.tests import Form, tagged
 from odoo.tools import mute_logger
 from odoo.exceptions import UserError
 import logging
@@ -516,3 +517,46 @@ class TestWorkOrder(TestMrpWorkorderCommon):
         self.assertEqual(wo2_1.state, 'progress')
         self.assertEqual(wo2_2.state, 'pending', "Completion of first MO's WOs should not affect backordered pending WO")
         self.assertEqual(mo.state, 'to_close')
+
+@tagged("post_install", "-at_install")
+class TestShopFloor(HttpCase, TestMrpWorkorderCommon):
+
+    def test_access_shop_floor_with_multicomany(self):
+        """
+            test the flow when we have multicompany situation and
+            we want to access shop floor from a company after switching
+            from the other one.
+        """
+        company1 = self.env['res.company'].create({'name': 'Test Company'})
+        user_admin = self.env.ref('base.user_admin')
+        user_admin.write(
+            {'company_ids': [(4, company1.id)]})
+        submarine_pod = self.env['product.product'].with_company(company1).with_user(user_admin).create({
+            'name': 'Submarine pod',
+            'type': 'product',
+            'tracking': 'serial'})
+        workcenter_2 = self.env['mrp.workcenter'].with_company(company1).with_user(user_admin).create({
+            'name': 'Nuclear Workcenter',
+            'default_capacity': 2,
+            'time_start': 10,
+            'time_stop': 5,
+            'time_efficiency': 80,
+        })
+        bom_submarine = self.env['mrp.bom'].with_company(company1).with_user(user_admin).create({
+            'product_tmpl_id': submarine_pod.product_tmpl_id.id,
+            'product_qty': 1.0,
+            'operation_ids': [
+                (0, 0, {'name': 'Cutting Machine', 'workcenter_id': workcenter_2.id,
+                 'time_cycle': 12, 'sequence': 1}),
+            ]})
+        mo_form = Form(self.env['mrp.production'].with_company(
+            company1).with_user(user_admin))
+        mo_form.product_id = submarine_pod
+        mo_form.bom_id = bom_submarine
+        mo_form.product_qty = 1
+        mo = mo_form.save()
+        mo.action_confirm()
+        mo.action_assign()
+        mo.button_plan()
+        self.start_tour(
+            "/", 'test_access_shop_floor_with_multicomany', login="admin")

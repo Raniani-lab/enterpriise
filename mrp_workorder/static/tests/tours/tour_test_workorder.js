@@ -61,3 +61,38 @@ registry.category("web_tour.tours").add('test_serial_tracked_and_register', {tes
     { trigger: 'button[name=do_finish]' },
     { trigger: '.o_searchview_input' },
 ]});
+
+registry.category("web_tour.tours").add('test_access_shop_floor_with_multicomany', {
+    test: true,
+    url: '/web#cids=1&action=menu',
+    steps: () => [{
+        content: 'Select Shop Floor app',
+        trigger: 'a.o_app:contains("Shop Floor")',
+    },{
+        content: 'Check that we entered the app with first company',
+        trigger: 'div.o_mrp_display',
+    },{
+        content: 'Go back to home menu',
+        trigger: '.o_home_menu',
+    },{
+        content: 'Click on switch  company menu',
+        trigger: '.o_switch_company_menu button',
+    },{
+        content: 'Select another company',
+        trigger: 'div[role="button"]:contains("Test Company")',
+    },{
+        context: 'Check that we switched companies',
+        trigger: '.o_switch_company_menu button span:contains("Test Company")',
+        isCheck: true,
+    },{
+        content: 'Select Shop Floor app',
+        trigger: 'a.o_app:contains("Shop Floor")',
+    },{
+        content: 'Check that we entered the app with second company',
+        trigger: 'div.o_mrp_display',
+    },{
+        content: 'Check that the WO is not clickable',
+        trigger: 'div.o_mrp_display_record.o_disabled',
+        isCheck: true,
+    }]
+})

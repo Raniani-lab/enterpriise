@@ -40,7 +40,7 @@
     <t t-name="timesheet_grid.TimerGridHeader" t-inherit="web_grid.Header">
         <xpath expr="//div[hasclass('o_grid_column_title')]" position="before">
             <div t-if="showTimerButton"
-                 class="o_grid_column_timer_button border-bottom"
+                 class="o_grid_column_timer_button o_grid_navigation_wrap position-md-sticky top-0 border-bottom bg-100"
                  t-attf-style="grid-row: {{rowsGap}}; grid-column: 1;"
             />
         </xpath>

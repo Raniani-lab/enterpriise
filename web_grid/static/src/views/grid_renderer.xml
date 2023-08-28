@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <templates>
     <t t-name="web_grid.Renderer">
-        <div class="o_grid_renderer flex-grow-1" t-ref="renderer">
+        <div class="o_grid_renderer position-relative z-index-0" t-ref="renderer">
             <div class="o_grid_grid d-grid gap-0 border-bottom bg-100"
                  t-attf-style="grid-template-rows: {{ gridTemplateRows }} ; grid-template-columns: {{ gridTemplateColumns }}"
                  t-on-mouseover.stop="onMouseOver"
@@ -35,7 +35,7 @@
     </t>
     <t t-name="web_grid.Header">
         <div class="o_grid_column_title o_grid_navigation_wrap position-md-sticky top-0 start-0 d-flex align-items-center gap-2 px-3 border-bottom bg-100 overflow-visible"
-             t-attf-style="grid-row: {{rowsGap}}; grid-column: {{columnsGap - 1}} / span {{columnsGap}};">
+             t-attf-style="grid-row: {{rowsGap}}; grid-column: {{columnsGap}};">
             <t t-call="web_grid.NavigationButtons"/>
         </div>
         <div t-foreach="props.columns"
@@ -56,7 +56,7 @@
                     'o_grid_cell_overlay_today bg-info': column.isToday,
                     'o_grid_cell_overlay bg-700' : !column.isToday,
                 }"/>
-            <span class="z-index-1" t-out="column.title"/>
+            <span class="z-index-1 text-center" t-out="column.title"/>
         </div>
         <div t-if="!props.options.hideLineTotal"
              class="o_grid_column_title o_grid_row_total position-md-sticky top-0 end-0 d-flex align-items-center justify-content-center text-bg-700 px-3 py-2 fw-bold text-center"
@@ -116,7 +116,7 @@
                 </div>
             </div>
             <div t-if="!props.options.hideLineTotal"
-                 class="o_grid_section o_grid_row_total o_grid_highlightable position-relative position-md-sticky end-0 d-flex align-items-center justify-content-center px-3 py-1 fw-bold text-bg-800"
+                 class="o_grid_section o_grid_row_total o_grid_highlightable position-relative position-md-sticky end-0 z-index-1 d-flex align-items-center justify-content-center px-3 py-1 fw-bold text-bg-800"
                  t-att-class="{
                     'text-opacity-25': section.grandTotal === 0
                  }"
@@ -354,7 +354,7 @@
         </t>
     </t>
     <t t-name="web_grid.NavigationButtons">
-        <div class="o_grid_navigation_buttons d-contents" t-if="props.model.columnFieldIsDate">
+        <div class="o_grid_navigation_buttons position-md-sticky d-flex gap-2" t-if="props.model.columnFieldIsDate">
             <button class="btn btn-secondary"
                     data-hotkey="t"
                     type="button"

@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="timesheet_grid.TimesheetTimerHeader">
-        <div class="timesheet-timer position-sticky start-0 d-md-flex align-items-center px-3 py-2 border-bottom bg-view"
+        <div class="timesheet-timer position-sticky start-0 z-index-1 d-md-flex align-items-center px-3 py-2 border-bottom bg-view"
             t-att-class="props.className"
             t-on-timer-started="props.onTimerStarted"
             t-on-timer-stopped="props.onTimerStopped"
@@ -63,7 +63,7 @@
                 </div>
             </t>
             <t t-else="">
-                <div class="position-md-sticky start-0 d-flex align-items-center ps-3">
+                <div class="position-md-sticky start-0 d-flex align-items-center">
                     <button class="btn_start_timer btn btn-primary text-uppercase" t-on-click.stop="_onClickStartTimer" t-ref="startButton">
                         <i class="fa fa-play me-2"></i> Start
                     </button>

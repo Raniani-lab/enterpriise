@@ -4,11 +4,16 @@ $o-web-grid-first-column-width: 3rem;
 $o-web-grid-cell-minwidth: 10ch;
 
 .o_view_sample_data .o_grid_renderer {
+    overflow: hidden;
     pointer-events: none;
 }
 
 .o_grid_renderer {
     height: inherit;
+
+    .o_grid_grid {
+        min-width: fit-content;
+    }
 
     .o_grid_row, .o_grid_section, .o_grid_column_title {
         &:not(.o_grid_highlighted) {
@@ -58,6 +63,9 @@ $o-web-grid-cell-minwidth: 10ch;
 
     .o_grid_row, .o_grid_section {
         min-height: 2.5rem;
+    }
+    .o_grid_section ~ .o_grid_row.o_grid_row_title {
+        padding-left: calc(#{map-get($spacers, 3)} + #{$o-avatar-size} + #{map-get($spacers, 1)}) !important;
     }
 
     .o_grid_row_title {

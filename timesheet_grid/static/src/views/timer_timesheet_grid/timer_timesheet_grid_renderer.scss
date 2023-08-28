@@ -9,17 +9,8 @@
     width: $o-web-grid-first-column-width;
 }
 
-@include media-breakpoint-up(md) {
-    .o_grid_column_timer_button + .o_grid_navigation_wrap {
-        margin-right: $o-web-grid-first-column-width;
-
-        &::before {
-            content: "";
-            @include o-position-absolute(0, -$o-web-grid-first-column-width);
-            box-sizing: content-box;
-            height: 100%;
-            width: $o-web-grid-first-column-width;
-            border-bottom: 1px solid $border-color;
-        }
-    }
+.o_grid_column_timer_button + .o_grid_navigation_wrap .o_grid_navigation_buttons {
+    margin-left: -$o-web-grid-first-column-width;
+    left: map-get($spacers, 3);
 }
+

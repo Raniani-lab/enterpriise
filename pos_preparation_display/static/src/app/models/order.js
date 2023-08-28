@@ -12,6 +12,7 @@ export class Order extends Reactive {
         last_stage_change,
         pos_order_id,
         customer_count,
+        tracking_number,
     }) {
         super();
         this.setup(...arguments);
@@ -28,6 +29,7 @@ export class Order extends Reactive {
         this.posOrderId = order.pos_order_id;
         this.customerCount = order.customer_count;
         this.changeStageTimeout = null;
+        this.tracking_number = order.tracking_number;
     }
 
     clearChangeTimeout() {

@@ -59,6 +59,10 @@ export class Order extends Component {
         this.props.order.displayed = false;
         this.preparationDisplay.doneOrders([this.props.order]);
     }
+
+    get cardColor() {
+        return "o_pdis_card_color_0";
+    }
 }
 
 Order.components = { Orderline };

@@ -16,12 +16,21 @@ class PosPreparationDisplayOrder(models.Model):
         readonly=True)
 
     @api.model
-    def process_order(self, order):
+    def process_order(self, order_id, cancelled=False):
+        if not order_id:
+            return
+
+        order = self.env['pos.order'].browse(order_id)
+        if not order:
+            return
+
+        preparation_display_order = order._get_orderline_to_send(cancelled)
+
         positive_orderlines = []
         negative_orderlines = []
         product_categories = []
 
-        for orderline in order['preparation_display_order_line_ids']:
+        for orderline in preparation_display_order['preparation_display_order_line_ids']:
             product_categories.extend(orderline['product_category_ids'])
             del orderline['product_category_ids']
 
@@ -35,7 +44,7 @@ class PosPreparationDisplayOrder(models.Model):
                 quantity_to_cancel = abs(negative_orderline['product_quantity'])
 
                 orderlines = self.env['pos_preparation_display.orderline'].search(
-                    [('preparation_display_order_id.pos_order_id', '=', order['pos_order_id']), ('product_id', '=', negative_orderline['product_id'])],
+                    [('preparation_display_order_id.pos_order_id', '=', preparation_display_order['pos_order_id']), ('product_id', '=', negative_orderline['product_id'])],
                     order='id desc'
                 )
 
@@ -56,7 +65,7 @@ class PosPreparationDisplayOrder(models.Model):
                         break
 
         if positive_orderlines:
-            order_to_create = self._get_preparation_order_values(order)
+            order_to_create = self._get_preparation_order_values(preparation_display_order)
             order_to_create['preparation_display_order_line_ids'] = positive_orderlines
             self.create(order_to_create)
 
@@ -68,6 +77,9 @@ class PosPreparationDisplayOrder(models.Model):
 
                 if len(set(p_dis_categories.ids).intersection(product_categories)) > 0:
                     p_dis._send_load_orders_message()
+
+        order._update_last_order_changes()
+        return order.last_order_preparation_change
 
     @api.model
     def _send_orders_to_preparation_display(self, preparation_display_id):
@@ -190,4 +202,5 @@ class PosPreparationDisplayOrder(models.Model):
                 'last_stage_change': current_order_stage.write_date if current_order_stage else self.create_date,
                 'displayed': self.displayed,
                 'orderlines': preparation_display_orderlines,
+                'tracking_number': self.pos_order_id.tracking_number,
             }

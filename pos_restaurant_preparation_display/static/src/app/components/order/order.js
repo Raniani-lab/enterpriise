@@ -4,6 +4,7 @@ import { Order } from "@pos_preparation_display/app/components/order/order";
 
 patch(Order.prototype, {
     get cardColor() {
+        const cardColor = super.cardColor;
         const table = this.props.order.table;
         let tableOrdersInStage = [];
 
@@ -16,11 +17,6 @@ patch(Order.prototype, {
             }
         }
 
-        if (tableOrdersInStage.length > 1) {
-            const i = table.id % 9;
-            return "o_pdis_card_color_" + i;
-        } else {
-            return "o_pdis_card_color_0";
-        }
+        return tableOrdersInStage.length > 1 ? "o_pdis_card_color_" + (table.id % 9) : cardColor;
     },
 });

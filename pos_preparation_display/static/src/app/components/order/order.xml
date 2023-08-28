@@ -2,9 +2,22 @@
 <templates id="template" xml:space="preserve">
     <t t-name="pos_preparation_display.Order">
         <section
-            class="o_pdis_order_card o_pdis_card_nocolor position-relative w-100 mx-auto mb-auto overflow-hidden rounded"
-            t-attf-class="{{this.props.order.changeStageTimeout ? 'o_pdis_stage--animation' : ''}}">
+            class="o_pdis_order_card position-relative w-100 mx-auto mb-auto overflow-hidden rounded"
+            t-attf-class="{{this.props.order.changeStageTimeout ? 'o_pdis_stage--animation' : ''}} {{this.cardColor}}">
             <div class="o_pdis_order_card_header" t-on-click="() => this.preparationDisplay.changeOrderStage(this.props.order, true)">
+                <div
+                    class="o_pdis_order_card_header_top d-flex flex-nowrap align-items-center justify-content-between px-2 pb-1 fw-bold"
+                    t-att-class="this.cardColor">
+                    <div class="o_pdis_tracking_number flex-shrink-0 pe-3 flex-grow-1">
+                        <div class="o_pdis_tracker">
+                            (#<t t-esc="this.props.order.tracking_number"/>)
+                        </div>
+                    </div>
+                    <div t-if="this.props.order.responsible" class="o_pdis_staff w-100 text-truncate flex-shrink-1">
+                        <i class="fa fa-user-circle-o pe-1" aria-hidden="true"/>
+                        <span t-esc="this.props.order.responsible"/>
+                    </div>
+                </div>
                 <div class="o_pdis_order_card_header_bottom d-grid p-2 bg-100">
                     <div class="o_pdis_table-info d-flex justify-content-between align-items-center">
                         <div t-esc="this.stage.name" class=" o_pdis_stage py-1 px-3 rounded-pill" t-att-style="`background-color: ${this.stage.color} !important; color: ${this.fondColor}`" />

@@ -29,10 +29,13 @@ class PosPreparationDisplayOrder(models.Model):
         return order_to_create
 
     @api.model
-    def process_order(self, order):
-        super().process_order(order)
+    def process_order(self, order_id, cancelled=False):
+        res = super().process_order(order_id, cancelled)
+        order = self.env['pos.order'].browse(order_id)
 
-        if order.get('pos_table_id') and order['pos_order_id'] and order['pos_table_id']:
-            old_orders = self.env['pos_preparation_display.order'].search([('id', '=', order['pos_order_id']), ('pos_table_id', '!=', order['pos_table_id'])])
+        if order and order.table_id:
+            old_orders = self.env['pos_preparation_display.order'].search([('id', '=', order_id), ('pos_table_id', '!=', order.table_id.id)])
             for o in old_orders:
-                o.pos_table_id = order['pos_table_id']
+                o.pos_table_id = order.table_id
+
+        return res

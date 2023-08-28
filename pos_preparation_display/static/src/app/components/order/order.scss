@@ -27,12 +27,6 @@ $colors: (
 
 @include card-colors();
 
-
-.o_pdis_card_nocolor {
-    background-color: map-get($colors, 0);
-    border: $border-size $border-style map-get($colors, 0);
-}
-
 .o_pdis_no_products {
     background-color: $o-gray-100;
     color: $black;

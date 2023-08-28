@@ -14,7 +14,7 @@ class PosPreparationDisplay(models.Model):
         last_stage = self.stage_ids[-1]
         for pdis_order_id in pdis_order_ids:
             order_stage_id = pdis_order_id.order_stage_ids[-1].stage_id
-            pos_order_tracking_ref = pdis_order_id.pos_order_id._get_tracking_ref()
+            pos_order_tracking_ref = pdis_order_id.pos_order_id.tracking_number
             unfinished_pdis_orders = (
                 (
                     order.pos_order_id == pdis_order_id.pos_order_id

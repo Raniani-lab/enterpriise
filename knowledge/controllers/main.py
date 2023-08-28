@@ -170,7 +170,6 @@ class KnowledgeController(http.Controller):
             'internal_permission_options': sorted(internal_permission_field.get_description(request.env).get('selection', []),
                                                   key=lambda x: x[0] == article.inherited_permission, reverse=True),
             'internal_permission': article.inherited_permission,
-            'is_article_visible_by_everyone': article.is_article_visible_by_everyone,
             'category': article.category,
             'parent_permission': parent_article_sudo.inherited_permission,
             'based_on': inherited_permission_parent_sudo.display_name,

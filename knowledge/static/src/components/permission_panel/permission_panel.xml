@@ -54,14 +54,14 @@
                 <div class="flex-grow-1 px-3">Visibility</div>
                 <div class="flex-shrink-0">
                     <select class="o_permission form-select rounded"
-                        t-att-value="state.is_article_visible_by_everyone ? 'join': 'everyone'"
+                        t-att-value="props.record.data.is_article_visible_by_everyone ? 'join': 'everyone'"
                         t-on-change="_onChangeVisibility"
                         t-att-disabled="state.user_is_admin || props.record.data.user_permission === 'write' ? undefined : 'disabled'"
                         aria-label="Visibility">
-                        <option t-att-value="'join'" t-att-selected="!state.is_article_visible_by_everyone ? 'selected' : undefined">
+                        <option t-att-value="'join'" t-att-selected="!props.record.data.is_article_visible_by_everyone ? 'selected' : undefined">
                             Members
                         </option>
-                        <option t-att-value="'everyone'" t-att-selected="state.is_article_visible_by_everyone ? 'selected' : undefined">
+                        <option t-att-value="'everyone'" t-att-selected="props.record.data.is_article_visible_by_everyone ? 'selected' : undefined">
                             Everyone
                         </option>
                     </select>

@@ -1805,7 +1805,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_employee_feedback
 msgid ""
 "What are my short and long-term goals with the company, and for my\n"
-"            carreer?"
+"            career?"
 msgstr ""
 
 #. module: hr_appraisal

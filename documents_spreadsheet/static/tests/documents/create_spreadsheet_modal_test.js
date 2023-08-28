@@ -5,12 +5,7 @@ import { getEnrichedSearchArch } from "@documents/../tests/documents_test_utils"
 
 import { start, startServer } from "@mail/../tests/helpers/test_utils";
 
-import {
-    editInput,
-    triggerEvent,
-    getFixture,
-    click,
-} from "@web/../tests/helpers/utils";
+import { editInput, triggerEvent, getFixture, click } from "@web/../tests/helpers/utils";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";
 
 import { mockActionService } from "@documents_spreadsheet/../tests/spreadsheet_test_utils";
@@ -253,7 +248,6 @@ QUnit.module(
             await click(dialog.querySelector(".o_pager_next"));
             assert.containsNone(dialog, ".o-template-selected");
             const createButton = dialog.querySelector(".o-spreadsheet-create");
-            await click(createButton);
             assert.ok(createButton.attributes.disabled);
         });
 

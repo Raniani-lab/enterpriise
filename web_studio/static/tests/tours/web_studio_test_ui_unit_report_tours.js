@@ -576,3 +576,93 @@ registry.category("web_tour.tours").add("web_studio.test_render_multicompany", {
         },
     ],
 });
+
+registry.category("web_tour.tours").add("web_studio.test_report_edition_binary_field", {
+    test: true,
+    sequence: 260,
+    steps: () => [
+        {
+            trigger: ".o-web-studio-report-editor-wysiwyg iframe p:eq(2)",
+            async run(helpers) {
+                const el = this.$anchor[0];
+                openEditorPowerBox(el);
+            },
+        },
+        {
+            trigger:
+                ".oe-powerbox-wrapper .oe-powerbox-commandDescription:contains(Insert a field)",
+        },
+        {
+            trigger: ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover_search input",
+            run: "text Company",
+        },
+        {
+            trigger: "[data-name=company_id] > button.o_model_field_selector_popover_item_relation",
+        },
+        {
+            trigger: ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover_search input",
+            run: "text New File",
+        },
+        {
+            trigger: ".o_model_field_selector_popover_item_name:contains(New File):not(:contains(filename))",
+        },
+        {
+            trigger:
+                ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_default_value_input input",
+            run: "text file default value",
+        },
+        {
+            trigger: ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover",
+            run() {
+                this.$anchor[0].dispatchEvent(
+                    new KeyboardEvent("keydown", { key: "Enter", bubbles: true })
+                );
+            },
+        },
+        {
+            trigger: ".o-web-studio-report-editor-wysiwyg iframe p:eq(2)",
+            async run(helpers) {
+                const el = this.$anchor[0];
+                openEditorPowerBox(el);
+            },
+        },
+        {
+            trigger:
+                ".oe-powerbox-wrapper .oe-powerbox-commandDescription:contains(Insert a field)",
+        },
+        {
+            trigger: ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover_search input",
+            run: "text Company",
+        },
+        {
+            trigger: "[data-name=company_id] > button.o_model_field_selector_popover_item_relation",
+        },
+        {
+            trigger: ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover_search input",
+            run: "text New Image",
+        },
+        {
+            trigger: ".o_model_field_selector_popover_item_name:contains(New Image)",
+        },
+        {
+            trigger:
+                ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_default_value_input input",
+            run: "text image default value",
+        },
+        {
+            trigger: ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover",
+            run() {
+                this.$anchor[0].dispatchEvent(
+                    new KeyboardEvent("keydown", { key: "Enter", bubbles: true })
+                );
+            },
+        },
+        {
+            trigger: ".o-web-studio-save-report.btn-primary",
+        },
+        {
+            trigger: ".o-web-studio-save-report:not(.btn-primary)",
+            isCheck: true,
+        },
+    ],
+});

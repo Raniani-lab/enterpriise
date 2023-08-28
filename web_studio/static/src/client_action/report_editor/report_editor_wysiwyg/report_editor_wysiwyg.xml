@@ -74,7 +74,7 @@
         </div>
       </div>
     </div>
-    <DynamicPlaceholderPopover resModel="currentResModel" validate.bind="validate" close="props.close" t-key="currentResModel"/>
+    <StudioDynamicPlaceholderPopover resModel="currentResModel" validate.bind="validate" close="props.close" t-key="currentResModel"/>
   </div>
 </t>
 

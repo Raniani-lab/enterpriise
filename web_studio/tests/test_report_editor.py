@@ -583,3 +583,38 @@ class TestReportEditorUIUnit(HttpCase):
 
         tour_url = self.tour_url + f"&cids={company2.id}-{company1.id}"
         self.start_tour(tour_url, "web_studio.test_render_multicompany", login="admin")
+
+    def test_report_edition_binary_field(self):
+        self.env["ir.model.fields"].create({
+            "field_description": "New File",
+            "name": "x_new_file",
+            "ttype": "binary",
+            "model": "res.company",
+            "model_id": self.env["ir.model"]._get('res.company').id,
+            "state": "manual",
+        })
+        self.env["ir.model.fields"].create({
+            "field_description": "New File filename",
+            "name": "x_new_file_filename",
+            "ttype": "char",
+            "model": "res.partner",
+            "model_id": self.env["ir.model"]._get('res.company').id,
+            "state": "manual",
+        })
+        self.env["ir.model.fields"].create({
+            "field_description": "New Image",
+            "name": "x_new_image",
+            "ttype": "binary",
+            "model": "res.company",
+            "model_id": self.env["ir.model"]._get('res.company').id,
+            "state": "manual",
+        })
+
+        self.start_tour(self.tour_url, "web_studio.test_report_edition_binary_field", login="admin")
+
+        self.assertXMLEqual(self.main_view_document.arch, """
+            <t t-name="web_studio.test_report_document" class="">
+                <div><p t-field="doc.name"/></div>
+                <p><span t-field="doc.company_id.x_new_file">file default value</span><span t-field="doc.company_id.x_new_image" t-options-widget="\'image\'" t-options-qweb_img_raw_data="1">image default value</span><br/></p>
+            </t>
+        """)

@@ -9,7 +9,7 @@ import { useOwnedDialogs, useService } from "@web/core/utils/hooks";
 import { Wysiwyg } from "@web_editor/js/wysiwyg/wysiwyg";
 import { QWebPlugin } from "@web_editor/js/backend/QWebPlugin";
 
-import { DynamicPlaceholderPopover } from "@web/views/fields/dynamic_placeholder_popover";
+import { StudioDynamicPlaceholderPopover } from "./studio_dynamic_placeholder_popover";
 import { Many2ManyTagsField } from "@web/views/fields/many2many_tags/many2many_tags_field";
 import { CharField } from "@web/views/fields/char/char_field";
 import { Record as _Record } from "@web/views/record";
@@ -44,7 +44,7 @@ class Record extends _Record {
 }
 
 class FieldDynamicPlaceholder extends Component {
-    static components = { DynamicPlaceholderPopover };
+    static components = { StudioDynamicPlaceholderPopover };
     static template = "web_studio.FieldDynamicPlaceholder";
 
     setup() {
@@ -397,12 +397,17 @@ export class ReportEditorWysiwyg extends Component {
                         ...availableQwebVariables,
                     },
                     resModel,
-                    validate: (qwebVar, fieldNameChain, defaultValue = "") => {
+                    validate: (qwebVar, fieldNameChain, defaultValue = "", is_image) => {
                         this.wysiwyg.focus();
 
                         const span = doc.createElement("span");
                         span.textContent = defaultValue;
                         span.setAttribute("t-field", `${qwebVar}.${fieldNameChain}`);
+
+                        if (is_image) {
+                            span.setAttribute("t-options-widget", "'image'");
+                            span.setAttribute("t-options-qweb_img_raw_data", 1);
+                        }
                         odooEditor.execCommand("insert", span);
                     },
                 });

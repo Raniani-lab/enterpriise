@@ -18,7 +18,7 @@ class HrPayrollEmployeeDeclaration(models.Model):
     res_model = fields.Char(
         'Declaration Model Name', required=True, index=True)
     res_id = fields.Many2oneReference(
-        'Declaration Model Id', index=True, model_field='res_model')
+        'Declaration Model Id', index=True, model_field='res_model', required=True)
     employee_id = fields.Many2one('hr.employee')
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company, required=True)
     pdf_file = fields.Binary('PDF File', readonly=True, attachment=False)

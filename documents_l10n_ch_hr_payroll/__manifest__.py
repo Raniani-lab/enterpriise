@@ -15,7 +15,6 @@ Employees' individual account forms are automatically integrated to the Document
     'depends': ['documents_hr_payroll', 'l10n_ch_hr_payroll'],
     'data': [
         'views/l10n_ch_individual_account_views.xml',
-        'data/mail_template_data.xml',
     ],
     'installable': True,
     'auto_install': True,

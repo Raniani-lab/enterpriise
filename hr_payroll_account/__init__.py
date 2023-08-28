@@ -3,6 +3,8 @@
 
 from . import models
 from . import report
+from . import wizard
+
 from collections import defaultdict
 from odoo import api, SUPERUSER_ID, _
 

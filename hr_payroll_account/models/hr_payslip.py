@@ -4,9 +4,10 @@
 from collections import defaultdict
 from markupsafe import Markup
 
-from odoo import api, fields, models, _
+from odoo import fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_is_zero, plaintext2html
+
 
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
@@ -15,19 +16,20 @@ class HrPayslip(models.Model):
         help="Keep empty to use the period of the validation(Payslip) date.")
     journal_id = fields.Many2one('account.journal', 'Salary Journal', related="struct_id.journal_id", check_company=True)
     move_id = fields.Many2one('account.move', 'Accounting Entry', readonly=True, copy=False)
+    batch_payroll_move_lines = fields.Boolean(related='company_id.batch_payroll_move_lines')
 
     def action_payslip_cancel(self):
-        moves = self.mapped('move_id')
+        moves = self.move_id
         moves.filtered(lambda x: x.state == 'posted').button_cancel()
         moves.unlink()
-        return super(HrPayslip, self).action_payslip_cancel()
+        return super().action_payslip_cancel()
 
     def action_payslip_done(self):
         """
             Generate the accounting entries related to the selected payslips
             A move is created for each journal and for each month.
         """
-        res = super(HrPayslip, self).action_payslip_done()
+        res = super().action_payslip_done()
         self._action_create_account_move()
         return res
 
@@ -38,7 +40,7 @@ class HrPayslip(models.Model):
         payslips_to_post = self.filtered(lambda slip: not slip.payslip_run_id)
 
         # Adding pay slips from a batch and deleting pay slips with a batch that is not ready for validation.
-        payslip_runs = (self - payslips_to_post).mapped('payslip_run_id')
+        payslip_runs = (self - payslips_to_post).payslip_run_id
         for run in payslip_runs:
             if run._are_payslips_ready():
                 payslips_to_post |= run.slip_ids
@@ -53,50 +55,65 @@ class HrPayslip(models.Model):
             raise ValidationError(_('One of the payroll structures has no account journal defined on it.'))
 
         # Map all payslips by structure journal and pay slips month.
-        # {'journal_id': {'month': [slip_ids]}}
-        slip_mapped_data = defaultdict(lambda: defaultdict(lambda: self.env['hr.payslip']))
-        for slip in payslips_to_post:
-            slip_mapped_data[slip.struct_id.journal_id.id][slip.date or fields.Date().end_of(slip.date_to, 'month')] |= slip
-        for journal_id in slip_mapped_data: # For each journal_id.
-            for slip_date in slip_mapped_data[journal_id]: # For each month.
-                line_ids = []
-                debit_sum = 0.0
-                credit_sum = 0.0
-                date = slip_date
-                move_dict = {
-                    'narration': '',
-                    'ref': fields.Date().end_of(slip.date_to, 'month').strftime('%B %Y'),
-                    'journal_id': journal_id,
-                    'date': date,
+        # Case 1: Batch all the payslips together -> {'journal_id': {'month': slips}}
+        # Case 2: Generate account move separately -> [{'journal_id': {'month': slip}}]
+        if self.company_id.batch_payroll_move_lines:
+            all_slip_mapped_data = defaultdict(lambda: defaultdict(lambda: self.env['hr.payslip']))
+            for slip in payslips_to_post:
+                all_slip_mapped_data[slip.struct_id.journal_id.id][slip.date or fields.Date().end_of(slip.date_to, 'month')] |= slip
+            all_slip_mapped_data = [all_slip_mapped_data]
+        else:
+            all_slip_mapped_data = [{
+                slip.struct_id.journal_id.id: {
+                    slip.date or fields.Date().end_of(slip.date_to, 'month'): slip
                 }
+            } for slip in payslips_to_post]
 
-                for slip in slip_mapped_data[journal_id][slip_date]:
-                    move_dict['narration'] += plaintext2html(slip.number or '' + ' - ' + slip.employee_id.name or '')
-                    move_dict['narration'] += Markup('<br/>')
-                    slip_lines = slip._prepare_slip_lines(date, line_ids)
-                    line_ids.extend(slip_lines)
+        for slip_mapped_data in all_slip_mapped_data:
+            for journal_id in slip_mapped_data: # For each journal_id.
+                for slip_date in slip_mapped_data[journal_id]: # For each month.
+                    line_ids = []
+                    debit_sum = 0.0
+                    credit_sum = 0.0
+                    date = slip_date
+                    move_dict = {
+                        'narration': '',
+                        'ref': fields.Date().end_of(slip_mapped_data[journal_id][slip_date][0].date_to, 'month').strftime('%B %Y'),
+                        'journal_id': journal_id,
+                        'date': date,
+                    }
 
-                for line_id in line_ids: # Get the debit and credit sum.
-                    debit_sum += line_id['debit']
-                    credit_sum += line_id['credit']
+                    for slip in slip_mapped_data[journal_id][slip_date]:
+                        move_dict['narration'] += plaintext2html(slip.number or '' + ' - ' + slip.employee_id.name or '')
+                        move_dict['narration'] += Markup('<br/>')
+                        slip_lines = slip._prepare_slip_lines(date, line_ids)
+                        line_ids.extend(slip_lines)
 
-                # The code below is called if there is an error in the balance between credit and debit sum.
-                if float_compare(credit_sum, debit_sum, precision_digits=precision) == -1:
-                    slip._prepare_adjust_line(line_ids, 'credit', debit_sum, credit_sum, date)
-                elif float_compare(debit_sum, credit_sum, precision_digits=precision) == -1:
-                    slip._prepare_adjust_line(line_ids, 'debit', debit_sum, credit_sum, date)
+                    for line_id in line_ids: # Get the debit and credit sum.
+                        debit_sum += line_id['debit']
+                        credit_sum += line_id['credit']
 
-                # Add accounting lines in the move
-                move_dict['line_ids'] = [(0, 0, line_vals) for line_vals in line_ids]
-                move = self._create_account_move(move_dict)
-                for slip in slip_mapped_data[journal_id][slip_date]:
-                    slip.write({'move_id': move.id, 'date': date})
+                    # The code below is called if there is an error in the balance between credit and debit sum.
+                    if float_compare(credit_sum, debit_sum, precision_digits=precision) == -1:
+                        slip._prepare_adjust_line(line_ids, 'credit', debit_sum, credit_sum, date)
+                    elif float_compare(debit_sum, credit_sum, precision_digits=precision) == -1:
+                        slip._prepare_adjust_line(line_ids, 'debit', debit_sum, credit_sum, date)
+
+                    # Add accounting lines in the move
+                    move_dict['line_ids'] = [(0, 0, line_vals) for line_vals in line_ids]
+                    move = self._create_account_move(move_dict)
+                    for slip in slip_mapped_data[journal_id][slip_date]:
+                        slip.write({'move_id': move.id, 'date': date})
         return True
 
     def _prepare_line_values(self, line, account_id, date, debit, credit):
+        if not self.company_id.batch_payroll_move_lines and line.code == "NET":
+            partner = self.employee_id.work_contact_id
+        else:
+            partner = line.partner_id
         return {
             'name': line.name,
-            'partner_id': line.partner_id.id,
+            'partner_id': partner.id,
             'account_id': account_id,
             'journal_id': line.slip_id.struct_id.journal_id.id,
             'date': date,
@@ -198,37 +215,16 @@ class HrPayslip(models.Model):
     def _create_account_move(self, values):
         return self.env['account.move'].sudo().create(values)
 
-
-class HrSalaryRule(models.Model):
-    _inherit = 'hr.salary.rule'
-
-    analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', company_dependent=True)
-    account_debit = fields.Many2one('account.account', 'Debit Account', company_dependent=True, domain=[('deprecated', '=', False)])
-    account_credit = fields.Many2one('account.account', 'Credit Account', company_dependent=True, domain=[('deprecated', '=', False)])
-    not_computed_in_net = fields.Boolean(
-        string="Not computed in net accountably", default=False,
-        help='This field allows you to delete the value of this rule in the "Net Salary" rule at the accounting level to explicitly display the value of this rule in the accounting. For example, if you want to display the value of your representation fees, you can check this field.')
-
-class HrContract(models.Model):
-    _inherit = 'hr.contract'
-    _description = 'Employee Contract'
-
-    analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', check_company=True)
-
-class HrPayrollStructure(models.Model):
-    _inherit = 'hr.payroll.structure'
-
-    def _get_default_journal_id(self):
-        default_structure = self.env.ref('hr_payroll.default_structure', False)
-        return default_structure.journal_id if default_structure else False
-
-    journal_id = fields.Many2one('account.journal', 'Salary Journal', readonly=False, required=True,
-        company_dependent=True, default=lambda self: self._get_default_journal_id())
-
-    @api.constrains('journal_id')
-    def _check_journal_id(self):
-        for record_sudo in self.sudo():
-            if record_sudo.journal_id.currency_id and record_sudo.journal_id.currency_id != record_sudo.journal_id.company_id.currency_id:
-                raise ValidationError(
-                    _('Incorrect journal: The journal must be in the same currency as the company')
-                )
+    def action_register_payment(self):
+        ''' Open the account.payment.register wizard to pay the selected journal entries.
+        :return: An action opening the account.payment.register wizard.
+        '''
+        if not self.struct_id.rule_ids.filtered(lambda r: r.code == "NET").account_credit.reconcile:
+            raise UserError(_('The credit account on the NET salary rule is not reconciliable'))
+        bank_account = self.employee_id.sudo().bank_account_id
+        if not bank_account.allow_out_payment:
+            raise UserError(_('The employee bank account is untrusted'))
+        return self.move_id.with_context(
+            default_partner_id=self.employee_id.work_contact_id.id,
+            default_partner_bank_id=bank_account.id
+        ).action_register_payment()

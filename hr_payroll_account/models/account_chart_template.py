@@ -32,6 +32,9 @@ class AccountChartTemplate(models.AbstractModel):
         for company in companies:
             self = self.with_company(company)
 
+            # Enable SEPA batch payment by default for some countries
+            if company.country_id.code in ['BE', 'CH']:
+                company.batch_payroll_move_lines = True
             accounts = {}
             for code in account_codes:
                 account = AccountAccount.search([

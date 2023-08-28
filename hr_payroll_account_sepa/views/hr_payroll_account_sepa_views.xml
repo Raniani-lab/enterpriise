@@ -26,9 +26,9 @@
         <field name="model">hr.payslip</field>
         <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
         <field name="arch" type="xml">
-            <button name="action_payslip_paid" position="replace">
-                <button name="action_open_sepa_wizard" type="object" string="Create Payment Report" class="oe_highlight" 
-                    invisible="payslip_run_id or state != 'done'"/>
+            <button name="refund_sheet" position="before">
+                <button name="action_open_sepa_wizard" type="object" string="Create Payment Report" class="oe_highlight"
+                    invisible="payslip_run_id or state != 'done' or not batch_payroll_move_lines"/>
             </button>
             <notebook position="inside">
                 <page string="Exported File" name="exported_file" invisible="not sepa_export">

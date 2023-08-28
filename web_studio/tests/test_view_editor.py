@@ -255,6 +255,42 @@ class TestEditView(TestStudioController):
             """
         )
 
+    def test_edit_view_create_attribute_attribute(self):
+        op = {
+            'type': 'attributes',
+            'target': {
+                'tag': 'kanban',
+                'attrs': {},
+                'xpath_info': [
+                    {'tag': 'kanban', 'indice': 1},
+                ],
+                'isSubviewAttr': True,
+            },
+            'position': 'attributes',
+            'new_attrs': {'create': True}
+        }
+
+        base_view = self.env['ir.ui.view'].create({
+            'name': 'TestKanban',
+            'type': 'kanban',
+            'model': 'res.partner',
+            'arch': """
+                <kanban>
+                    <templates><t t-name="kanban-box" /></templates>
+                </kanban>
+            """
+        })
+        self.edit_view(base_view, operations=[op], model='res.users')
+
+        self.assertViewArchEqual(
+            base_view.get_combined_arch(),
+            """
+                <kanban create="true">
+                    <templates><t t-name="kanban-box" /></templates>
+                </kanban>
+            """
+        )
+
     def test_edit_view_add_binary_field_inside_group(self):
         arch = """<form>
             <sheet>

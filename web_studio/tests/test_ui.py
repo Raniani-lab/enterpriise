@@ -887,7 +887,7 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
         assertViewArchEqual(self, studioView.arch, """
             <data>
                 <xpath expr="//form[1]/field[@name='child_ids']/form[1]" position="attributes">
-                    <attribute name="create">False</attribute>
+                    <attribute name="create">false</attribute>
                 </xpath>
             </data>""")
 

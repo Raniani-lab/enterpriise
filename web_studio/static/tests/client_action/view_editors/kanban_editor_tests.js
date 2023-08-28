@@ -1569,6 +1569,33 @@ QUnit.module(
             assert.containsOnce(target, ".rendered");
         });
 
+        QUnit.test("toggle create attribute", async function (assert) {
+            assert.expect(2);
+            let newCreateAttr;
+
+            await createViewEditor({
+                serverData,
+                type: "kanban",
+                resModel: "coucou",
+                arch: `<kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                        </t>
+                    </templates>
+                </kanban>
+                `,
+                async mockRPC(route, args) {
+                    if (route === "/web_studio/edit_view") {
+                        newCreateAttr = args.operations[0].new_attrs.create;
+                    }
+                },
+            });
+
+            assert.containsOnce(target, ".o_kanban_renderer", "there should be a kanban editor");
+            await click(target.querySelector('input[name="create"]'));
+            assert.strictEqual(newCreateAttr, false);
+        });
+
         QUnit.test("toggle bold attribute", async (assert) => {
             const newArch = `
             <kanban>

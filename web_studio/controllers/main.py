@@ -1050,7 +1050,7 @@ Are you sure you want to remove the selection values of those records?""") % len
 
         for key, new_attr in new_attrs.items():
             xml_node = etree.Element('attribute', {'name': key})
-            xml_node.text = str(new_attr)
+            xml_node.text = json.dumps(new_attr) if isinstance(new_attr, bool) else str(new_attr)
             xpath_node.insert(0, xml_node)
 
             # change the field description when changing the field label (for custom fields)

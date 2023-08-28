@@ -21,7 +21,7 @@
                 <field name="basic_wage" widget="monetary" options="{'currency_field': 'currency_id'}" optional="show"/>
                 <field name="gross_wage" widget="monetary" options="{'currency_field': 'currency_id'}" optional="show"/>
                 <field name="net_wage" widget="monetary" options="{'currency_field': 'currency_id'}" decoration-bf="1" optional="show"/>
-                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'verify'" decoration-success="state in ('done','paid')"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'verify'" decoration-success="state == 'done'" decoration-primary="state == 'paid'"/>
             </tree>
         </field>
     </record>

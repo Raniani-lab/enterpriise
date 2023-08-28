@@ -154,7 +154,7 @@ QUnit.module(
                         assert.strictEqual(args.model, "documents.share");
                         const excel = JSON.parse(JSON.stringify(model.exportXLSX().files));
                         assert.deepEqual(shareVals, {
-                            document_ids: [x2ManyCommands.replaceWith([documentId])],
+                            document_ids: [x2ManyCommands.set([documentId])],
                             folder_id: folderId,
                             type: "ids",
                             spreadsheet_shares: [
@@ -217,7 +217,7 @@ QUnit.module(
                         const [shareVals] = args.args;
                         assert.strictEqual(args.model, "documents.share");
                         assert.deepEqual(shareVals.document_ids, [
-                            x2ManyCommands.replaceWith([documentId]),
+                            x2ManyCommands.set([documentId]),
                         ]);
                         assert.strictEqual(shareVals.folder_id, folderId);
                         assert.strictEqual(shareVals.type, "ids");

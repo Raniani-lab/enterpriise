@@ -157,7 +157,7 @@ QUnit.module(
                         assert.strictEqual(args.model, "documents.share");
                         const excel = JSON.parse(JSON.stringify(model.exportXLSX().files));
                         assert.deepEqual(shareVals, {
-                            document_ids: [x2ManyCommands.replaceWith([spreadsheetId])],
+                            document_ids: [x2ManyCommands.set([spreadsheetId])],
                             folder_id: 465,
                             type: "ids",
                             spreadsheet_shares: [

@@ -121,7 +121,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
 
     async shareSpreadsheet(data, excelExport) {
         const vals = {
-            document_ids: [x2ManyCommands.replaceWith([this.resId])],
+            document_ids: [x2ManyCommands.set([this.resId])],
             folder_id: this.record.folder_id,
             type: "ids",
             spreadsheet_shares: [

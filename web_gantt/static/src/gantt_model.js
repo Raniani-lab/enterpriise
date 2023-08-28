@@ -232,7 +232,7 @@ export class GanttModel extends Model {
     async createDependency(masterId, slaveId) {
         const { dependencyField, resModel } = this.metaData;
         const writeCommand = {
-            [dependencyField]: [x2ManyCommands.linkTo(masterId)],
+            [dependencyField]: [x2ManyCommands.link(masterId)],
         };
         await this.mutex.exec(() => this.orm.write(resModel, [slaveId], writeCommand));
         await this.fetchData();
@@ -335,7 +335,7 @@ export class GanttModel extends Model {
     async removeDependency(masterId, slaveId) {
         const { dependencyField, resModel } = this.metaData;
         const writeCommand = {
-            [dependencyField]: [x2ManyCommands.forget(masterId)],
+            [dependencyField]: [x2ManyCommands.unlink(masterId)],
         };
         await this.mutex.exec(() => this.orm.write(resModel, [slaveId], writeCommand));
         await this.fetchData();

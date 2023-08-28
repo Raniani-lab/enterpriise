@@ -132,7 +132,7 @@ patch(SaleOrderLineProductField.prototype, {
                         for (const fieldName in closeInfo.rentalConfiguration) {
                             if (["one2many", "many2many"].includes(record.fields[fieldName].type)) {
                                 const ids = closeInfo.rentalConfiguration[fieldName];
-                                changes[fieldName] = [x2ManyCommands.replaceWith(ids)];
+                                changes[fieldName] = [x2ManyCommands.set(ids)];
                             } else {
                                 changes[fieldName] = closeInfo.rentalConfiguration[fieldName];
                             }

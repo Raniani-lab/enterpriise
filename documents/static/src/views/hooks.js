@@ -116,7 +116,7 @@ export function useDocumentView(helpers) {
                     default_partner_id: props.context.default_partner_id || false,
                     default_folder_id: env.searchModel.getSelectedFolderId(),
                     default_tag_ids: [
-                        x2ManyCommands.replaceWith(env.searchModel.getSelectedTagIds()),
+                        x2ManyCommands.set(env.searchModel.getSelectedTagIds()),
                     ],
                     default_res_id: props.context.default_res_id || false,
                     default_res_model: props.context.default_res_model || false,
@@ -135,7 +135,7 @@ export function useDocumentView(helpers) {
                     default_partner_id: props.context.default_partner_id || false,
                     default_folder_id: env.searchModel.getSelectedFolderId(),
                     default_tag_ids: [
-                        x2ManyCommands.replaceWith(env.searchModel.getSelectedTagIds()),
+                        x2ManyCommands.set(env.searchModel.getSelectedTagIds()),
                     ],
                     default_res_id: props.context.default_res_id || false,
                     default_res_model: props.context.default_res_model || false,
@@ -165,11 +165,11 @@ export function useDocumentView(helpers) {
             const defaultVals = {
                 domain: env.searchModel.domain,
                 folder_id: env.searchModel.getSelectedFolderId(),
-                tag_ids: [x2ManyCommands.replaceWith(env.searchModel.getSelectedTagIds())],
+                tag_ids: [x2ManyCommands.set(env.searchModel.getSelectedTagIds())],
                 type: selectedRecords.length ? "ids" : "domain",
                 document_ids: selectedRecords.length
                     ? [
-                          x2ManyCommands.replaceWith(
+                          x2ManyCommands.set(
                               selectedRecords
                                   .filter((rec) => rec._values.type !== "empty")
                                   .map((rec) => rec.resId)

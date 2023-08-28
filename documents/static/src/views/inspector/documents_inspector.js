@@ -357,7 +357,7 @@ export class DocumentsInspector extends Component {
             .filter((rec) => rec._values.type !== "empty")
             .map((rec) => rec.resId);
         return {
-            document_ids: [x2ManyCommands.replaceWith(resIds)],
+            document_ids: [x2ManyCommands.set(resIds)],
             folder_id: this.env.searchModel.getSelectedFolderId(),
             type: "ids",
         };

@@ -12,7 +12,6 @@ import { migrate } from "@spreadsheet/o_spreadsheet/migration";
 import { DataSources } from "@spreadsheet/data_sources/data_sources";
 import { initCallbackRegistry } from "@spreadsheet/o_spreadsheet/init_callbacks";
 
-import { loadSpreadsheetDependencies } from "@spreadsheet/helpers/helpers";
 import { RecordFileStore } from "../image/record_file_store";
 
 const { createCurrencyFormat } = spreadsheet.helpers;
@@ -102,12 +101,12 @@ export class AbstractSpreadsheetAction extends Component {
         // if we are returning to the spreadsheet via the breadcrumb, we don't want
         // to do all the "creation" options of the actions
         if (!this.props.state) {
-            await Promise.all([this._setupPreProcessingCallbacks(), loadSpreadsheetDependencies()]);
+            await Promise.all([this._setupPreProcessingCallbacks()]);
         }
         if (owl.status(this) === "destroyed") {
             return;
         }
-        const [record] = await Promise.all([this._fetchData(), loadSpreadsheetDependencies()]);
+        const [record] = await Promise.all([this._fetchData()]);
         this._initializeWith(record);
     }
 

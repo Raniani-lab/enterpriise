@@ -4,6 +4,7 @@
 import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
 import { ProductScreen } from "@point_of_sale/../tests/tours/helpers/ProductScreenTourMethods";
+import { Numpad } from "@point_of_sale/../tests/tours/helpers/NumpadTourMethods";
 
 class TerminalProxy {
     action(data) {
@@ -154,10 +155,7 @@ registry.category("web_tour.tours").add("payment_terminals_tour", {
             content: "Pay with payment terminal",
             trigger: '.paymentmethod:contains("Terminal")',
         },
-        {
-            content: "Press 9 in the numpad",
-            trigger: '.payment-numpad .number-char:contains("9")',
-        },
+        Numpad.click("9"),
         {
             content: "Send payment to terminal",
             trigger: ".button.send_payment_request.highlight",

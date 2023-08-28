@@ -60,7 +60,7 @@ registry
             ProductScreen.do.clickOrderButton();
             ProductScreen.check.orderlinesHaveNoChange();
             ProductScreen.check.selectedOrderlineHas("Minute Maid", "1.00");
-            ProductScreen.do.pressNumpad("Backspace");
+            ProductScreen.do.pressNumpad("⌫");
             ProductScreen.check.selectedOrderlineHas("Minute Maid", "0.00");
             ProductScreen.do.clickPayButton();
             PaymentScreen.do.clickPaymentMethod("Cash");

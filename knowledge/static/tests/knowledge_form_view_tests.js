@@ -15,16 +15,16 @@ import { KnowledgeArticleFormController } from "@knowledge/js/knowledge_controll
 const articlesStructureSearch = {
     records: [
         { id: 1, display_name: 'My Article', parent_id: false },
-        { id: 2, display_name: 'Child 1', parent_id: [1, 'My Article'] },
-        { id: 3, display_name: 'Child 2', parent_id: [1, 'My Article'] },
+        { id: 2, display_name: 'Child 1', parent_id: 1 },
+        { id: 3, display_name: 'Child 2', parent_id: 1 },
     ]
 };
 
 const articlesIndexSearch = {
     records: articlesStructureSearch.records.concat([
-        { id: 4, display_name: 'Grand-child 1', parent_id: [2, 'Child 1'] },
-        { id: 5, display_name: 'Grand-child 2', parent_id: [2, 'Child 1'] },
-        { id: 6, display_name: 'Grand-child 3', parent_id: [3, 'Child 2'] },
+        { id: 4, display_name: 'Grand-child 1', parent_id: 2 },
+        { id: 5, display_name: 'Grand-child 2', parent_id: 2 },
+        { id: 6, display_name: 'Grand-child 3', parent_id: 3 },
     ])
 };
 
@@ -73,10 +73,10 @@ QUnit.module("Knowledge - Articles Structure Command", (hooks) => {
     hooks.beforeEach(() => {
         fixture = getFixture();
         type = "form";
-        resModel = "knowledge_article";
+        resModel = "knowledge.article";
         serverData = {
             models: {
-                knowledge_article: {
+                "knowledge.article": {
                     fields: {
                         display_name: {string: "Displayed name", type: "char"},
                         body: {string: "Body", type: 'html'},
@@ -113,7 +113,7 @@ QUnit.module("Knowledge - Articles Structure Command", (hooks) => {
             arch,
             resId: 1,
             mockRPC(route, args) {
-                if (route === '/web/dataset/search_read' && args.model === 'knowledge.article') {
+                if (args.method === 'unity_web_search_read' && args.model === 'knowledge.article') {
                     return Promise.resolve(articlesStructureSearch);
                 }
             }
@@ -139,7 +139,7 @@ QUnit.module("Knowledge - Articles Structure Command", (hooks) => {
             arch,
             resId: 1,
             mockRPC(route, args) {
-                if (route === '/web/dataset/search_read' && args.model === 'knowledge.article') {
+                if (args.method === 'unity_web_search_read' && args.model === 'knowledge.article') {
                     if (searchReadCallCount === 0) {
                         searchReadCallCount++;
                         return Promise.resolve(articlesIndexSearch);
@@ -147,7 +147,7 @@ QUnit.module("Knowledge - Articles Structure Command", (hooks) => {
                         // return updated result (called when clicking on the refresh button)
                         return Promise.resolve({
                             records: articlesIndexSearch.records.concat([
-                                { id: 7, display_name: 'Grand-child 4', parent_id: [3, 'Child 2'] },
+                                { id: 7, display_name: 'Grand-child 4', parent_id: 3 },
                             ])
                         });
                     }

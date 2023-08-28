@@ -203,14 +203,17 @@ QUnit.module(
         QUnit.test("Can fetch next templates", async function (assert) {
             let fetch = 0;
             const mockRPC = async function (route, args) {
-                if (route === "/web/dataset/search_read" && args.model === "spreadsheet.template") {
+                if (
+                    args.method === "unity_web_search_read" &&
+                    args.model === "spreadsheet.template"
+                ) {
                     fetch++;
-                    assert.equal(args.limit, 9);
+                    assert.equal(args.kwargs.limit, 9);
                     assert.step("fetch_templates");
                     if (fetch === 1) {
-                        assert.equal(args.offset, 0);
+                        assert.equal(args.kwargs.offset, 0);
                     } else if (fetch === 2) {
-                        assert.equal(args.offset, 9);
+                        assert.equal(args.kwargs.offset, 9);
                     }
                 }
                 if (args.method === "search_read" && args.model === "ir.model") {

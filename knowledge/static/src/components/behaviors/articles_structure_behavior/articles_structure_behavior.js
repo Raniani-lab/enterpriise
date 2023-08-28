@@ -37,7 +37,7 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
 
     setup () {
         super.setup();
-        this.rpc = useService('rpc');
+        this.orm = useService('orm');
         this.actionService = useService('action');
         this.childrenSelector = 'o_knowledge_articles_structure_children_only';
         this.articlesStructureContent = useRef('articlesStructureContent');
@@ -202,11 +202,12 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
             ['parent_id', !this.showAllChildren ? '=' : 'child_of', articleId],
             ['is_article_item', '=', false]
         ];
-        const { records } = await this.rpc('/web/dataset/search_read', {
-            model: 'knowledge.article',
-            fields: ['id', 'display_name', 'parent_id'],
-            domain,
-            sort: 'sequence',
+        const { records } = await this.orm.webSearchRead('knowledge.article', domain, {
+            specification: {
+                display_name: {},
+                parent_id: {},
+            },
+            order: 'sequence',
         });
         return records;
     }
@@ -221,7 +222,7 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
     _buildArticlesStructure (parentId, allArticles) {
         const articles = [];
         for (const article of allArticles) {
-            if (article.parent_id && article.parent_id[0] === parentId) {
+            if (article.parent_id && article.parent_id === parentId) {
                 articles.push({
                     id: article.id,
                     name: article.display_name,

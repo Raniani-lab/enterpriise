@@ -81,6 +81,7 @@ class TestSEPAFile(AccountTestInvoicingCommon):
         })
 
         payslip_employee.with_context(active_id=payslip_run.id).compute_sheet()
+        payslip_run.action_validate()
 
         sepa_wizard = self.env['hr.payslip.run.sepa.wizard'].with_company(self.company).with_context(active_id=payslip_run.id).create({})
         sepa_wizard.generate_sepa_xml_file()

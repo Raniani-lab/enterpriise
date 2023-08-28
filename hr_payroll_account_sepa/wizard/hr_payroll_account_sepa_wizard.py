@@ -16,7 +16,7 @@ class HrPayslipSepaWizard(models.TransientModel):
     def generate_sepa_xml_file(self):
         self = self.with_context(skip_bic=True)
         payslips = self.env['hr.payslip'].browse(self.env.context['active_ids'])
-        payslips = payslips.filtered(lambda p: p.net_wage > 0)
+        payslips = payslips.filtered(lambda p: p.state == "done" and p.net_wage > 0)
         invalid_employees = payslips.mapped('employee_id').filtered(lambda e: e.bank_account_id.acc_type != 'iban')
         if invalid_employees:
             raise UserError(_('Invalid bank account for the following employees:\n%s', '\n'.join(invalid_employees.mapped('name'))))
@@ -39,7 +39,7 @@ class HrPayslipRunSepaWizard(models.TransientModel):
     def generate_sepa_xml_file(self):
         self = self.with_context(skip_bic=True)
         payslip_run = self.env['hr.payslip.run'].browse(self.env.context['active_id'])
-        payslips = payslip_run.mapped('slip_ids').filtered(lambda p: p.net_wage > 0)
+        payslips = payslip_run.mapped('slip_ids').filtered(lambda p: p.state == "done" and p.net_wage > 0)
         invalid_employees = payslips.mapped('employee_id').filtered(lambda e: e.bank_account_id.acc_type != 'iban')
         if invalid_employees:
             raise UserError(_('Invalid bank account for the following employees:\n%s', '\n'.join(invalid_employees.mapped('name'))))

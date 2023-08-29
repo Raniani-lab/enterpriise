@@ -99,4 +99,13 @@
         <field name="work_entry_type_id" ref="work_entry_type_strike"></field>
         <field name="company_id" eval="False"/>
     </record>
+
+    <record id="holiday_status_bank_holiday" model="hr.leave.type">
+        <field name="name">Public Holiday</field>
+        <field name="requires_allocation">no</field>
+        <field name="leave_validation_type">both</field>
+        <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
+        <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
+        <field name="work_entry_type_id" ref="l10n_be_hr_payroll.work_entry_type_bank_holiday"/>
+    </record>
 </odoo>

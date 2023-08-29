@@ -126,7 +126,6 @@
                     <field name="salary_attachment_ids" invisible="1" force_save="1"/>
                     <field name="wage_type" invisible="1"/>
                     <field name="sum_worked_hours" invisible="1"/>
-                    <field name="normal_wage" invisible="1"/>
                     <field name="credit_note" invisible="1" readonly="state not in ['draft', 'verify']"/>
                     <field name="is_superuser" invisible="1"/>
                     <field name="has_refund_slip" invisible="1"/>

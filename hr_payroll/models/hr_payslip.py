@@ -106,8 +106,6 @@ class HrPayslip(models.Model):
         copy=False, ondelete='cascade',
         domain="[('company_id', '=', company_id)]")
     sum_worked_hours = fields.Float(compute='_compute_worked_hours', store=True, help='Total hours of attendance and time off (paid or not)')
-    # YTI TODO: normal_wage to be removed
-    normal_wage = fields.Integer(compute='_compute_normal_wage', store=True)
     compute_date = fields.Date('Computed On')
     basic_wage = fields.Monetary(compute='_compute_basic_net', store=True)
     gross_wage = fields.Monetary(compute='_compute_basic_net', store=True)
@@ -356,13 +354,6 @@ class HrPayslip(models.Model):
     def _compute_worked_hours(self):
         for payslip in self:
             payslip.sum_worked_hours = sum([line.number_of_hours for line in payslip.worked_days_line_ids])
-
-    @api.depends('contract_id')
-    def _compute_normal_wage(self):
-        with_contract = self.filtered('contract_id')
-        (self - with_contract).normal_wage = 0
-        for payslip in with_contract:
-            payslip.normal_wage = payslip._get_contract_wage()
 
     def _compute_is_superuser(self):
         self.update({'is_superuser': self.env.user._is_superuser() and self.user_has_groups("base.group_no_one")})

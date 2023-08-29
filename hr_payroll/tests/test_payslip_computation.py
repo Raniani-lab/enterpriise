@@ -280,7 +280,7 @@ class TestPayslipComputation(TestPayslipContractBase):
         })
         self.assertTrue(payslip.contract_id)
         payslip.contract_id = False
-        self.assertEqual(payslip.normal_wage, 0, "It should have a default wage of 0")
+        self.assertEqual(payslip._get_contract_wage(), 0, "It should have a default wage of 0")
         self.assertEqual(payslip.basic_wage, 0, "It should have a default wage of 0")
         self.assertEqual(payslip.gross_wage, 0, "It should have a default wage of 0")
         self.assertEqual(payslip.net_wage, 0, "It should have a default wage of 0")

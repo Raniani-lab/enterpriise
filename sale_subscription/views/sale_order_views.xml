@@ -167,6 +167,9 @@
             <xpath expr="//field[@name='order_line']/tree/field[@name='price_total']" position='attributes'>
                 <attribute name="decoration-info">temporal_type == 'subscription'</attribute>
             </xpath>
+            <xpath expr="//field[@name='analytic_account_id']" position='attributes'>
+                <attribute name="attrs">{'readonly': [('invoice_count','!=',0),('state','=','sale'),('is_subscription','=',False)]}</attribute>
+            </xpath>
             <xpath expr="//notebook/page[@name='optional_products']/field/tree/field[@name='name']" position='after'>
             </xpath>
             <group name="sales_person" position='inside'>

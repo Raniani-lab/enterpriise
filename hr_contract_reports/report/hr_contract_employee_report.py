@@ -26,6 +26,7 @@ class HrContractEmployeeReport(models.Model):
     start_date_months = fields.Integer("Months of first date of this month since 01/01/1970", readonly=True)
     end_date_months = fields.Integer("Months of last date of this month since 01/01/1970", readonly=True)
     date_end_contract = fields.Date('Date Last Contract Ended', group_operator="max", readonly=True)
+    contract_start = fields.Date('Date First Contract Started', group_operator="min", readonly=True)
 
     departure_reason_id = fields.Many2one("hr.departure.reason", string="Departure Reason", readonly=True)
 

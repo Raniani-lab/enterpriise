@@ -61,6 +61,11 @@
             'knowledge/static/src/views/**/*',
             'knowledge/static/src/services/**/*',
             'knowledge/static/src/macros/**/*',
+            'knowledge/static/src/js/wysiwyg.js',
+            'knowledge/static/src/js/knowledge_wysiwyg.js',
+            'knowledge/static/src/xml/knowledge_editor.xml',
+            'knowledge/static/src/xml/knowledge_article_templates.xml',
+            'knowledge/static/src/js/knowledge_clipboard_whitelist.js',
         ],
         "web.dark_mode_assets_backend": [
             'knowledge/static/src/scss/knowledge_views.dark.scss',
@@ -69,13 +74,6 @@
             'knowledge/static/src/scss/knowledge_common.scss',
             'knowledge/static/src/scss/knowledge_blocks.scss',
             'knowledge/static/src/js/tools/**/*',
-        ],
-        'web_editor.assets_wysiwyg': [
-            'knowledge/static/src/js/wysiwyg.js',
-            'knowledge/static/src/js/knowledge_wysiwyg.js',
-            'knowledge/static/src/xml/knowledge_editor.xml',
-            'knowledge/static/src/xml/knowledge_article_templates.xml',
-            'knowledge/static/src/js/knowledge_clipboard_whitelist.js',
         ],
         'web.assets_tests': [
             'knowledge/static/tests/tours/**/*',

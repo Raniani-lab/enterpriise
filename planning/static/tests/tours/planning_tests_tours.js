@@ -165,6 +165,9 @@ registry.category("web_tour.tours").add('planning_shift_switching_backend', {
 }, {
     trigger: '.btn-close',
     content: "Click on the close button to hide the shift form modal",
+}, {
+    trigger: '.o_planning_gantt',
+    isCheck: true,
 }]});
 
 registry.category("web_tour.tours").add('planning_assigning_unwanted_shift_backend', {
@@ -196,4 +199,8 @@ registry.category("web_tour.tours").add('planning_assigning_unwanted_shift_backe
 }, {
     trigger: '.o_gantt_pill :contains("joseph")',
     content: "Click again on the newly assigned shift",
+}, {
+    trigger: '.o_popover',
+    content: "Check the popover opened",
+    isCheck: true,
 }]});

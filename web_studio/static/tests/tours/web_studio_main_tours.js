@@ -1031,6 +1031,10 @@ registry.category("web_tour.tours").add("web_studio_approval_tour", {
         {
             trigger: ".breadcrumb .o_back_button",
         },
+        {
+            trigger: 'body .o_modules_kanban',
+            isCheck: true,
+        }
     ],
 });
 
@@ -1372,6 +1376,7 @@ registry.category("web_tour.tours").add("web_studio_test_create_action_button_in
         {
             trigger: '.o_web_studio_leave a',
         },
+        stepNotInStudio(".o_form_view"),
     ]
 });
 
@@ -1389,6 +1394,7 @@ registry.category("web_tour.tours").add("web_studio_test_create_second_action_bu
         {
             trigger: '.o_web_studio_leave a',
         },
+        stepNotInStudio(".o_form_view"),
     ]
 });
 
@@ -1412,6 +1418,7 @@ registry.category("web_tour.tours").add("web_studio_test_create_action_button_in
         {
             trigger: '.o_web_studio_leave a',
         },
+        stepNotInStudio(".o_list_view"),
     ]
 });
 
@@ -1437,6 +1444,7 @@ registry.category("web_tour.tours").add("web_studio_test_remove_action_button_in
         {
             trigger: '.o_web_studio_leave a',
         },
+        stepNotInStudio(".o_form_view"),
     ]
 });
 
@@ -1468,6 +1476,7 @@ registry.category("web_tour.tours").add("web_studio_test_remove_action_button_in
         {
             trigger: '.o_web_studio_leave a',
         },
+        stepNotInStudio(".o_list_view"),
     ]
 });
 
@@ -1505,6 +1514,10 @@ registry.category("web_tour.tours").add("web_studio_monetary_create", {
             // currency field is in the view
             trigger: ".o_web_studio_view_renderer div[data-field-name='x_studio_currency_id']",
         },
+        {
+            trigger: ".o_web_studio_properties.active",
+            isCheck: true,
+        }
     ],
 });
 
@@ -1660,6 +1673,10 @@ registry.category("web_tour.tours").add("web_studio_monetary_change_currency_not
             // currency field is in the view and click on it
             trigger: ".o_web_studio_view_renderer div[data-field-name='x_studio_currency_test2']",
         },
+        {
+            trigger: ".o_web_studio_properties.active",
+            isCheck: true,
+        }
     ],
 });
 

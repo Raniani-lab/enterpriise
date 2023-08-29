@@ -16,6 +16,7 @@ export const stepUtils = {
             },
             {
                 trigger: '.o_notification.border-success',
+                isCheck: true,
             },
         ];
     },

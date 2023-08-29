@@ -85,5 +85,10 @@ registry.category("web_tour.tours").add('helpdesk_tour', {
     trigger: ".o_column_quick_create .o_kanban_add",
     content: _t("Add your stage and place it at the right step of your workflow by dragging & dropping it."),
     position: 'right',
+}, {
+    trigger: ".o_column_quick_create .o_kanban_add",
+    content: "Clicking on 'Add' when input name is empty won't do anything, 'Add' will still be displayed",
+    auto: true,
+    isCheck: true,
 }
 ]});

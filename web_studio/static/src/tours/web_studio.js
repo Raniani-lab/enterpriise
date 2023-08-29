@@ -213,6 +213,7 @@ registry.category("web_tour.tours").add("web_studio_new_app_tour", {
             trigger: ".o_web_studio_sidebar .o_web_studio_new",
             content: markup(_t("Now you’re on your own. Enjoy your <b>super power</b>.")),
             position: "bottom",
+            isCheck: true,
         },
     ],
 });

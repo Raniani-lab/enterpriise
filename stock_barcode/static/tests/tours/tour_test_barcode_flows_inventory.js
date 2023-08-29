@@ -599,6 +599,7 @@ registry.category("web_tour.tours").add('test_inventory_package', {test: true, s
 
     {
         trigger: '.o_stock_barcode_main_menu',
+        isCheck: true,
     },
 ]});
 
@@ -626,7 +627,10 @@ registry.category("web_tour.tours").add('test_inventory_packaging', {test: true,
         extra_trigger: '.o_barcode_line .qty-done:contains(15)',
         trigger: '.o_apply_page',
     },
-    { trigger: '.o_notification.border-success' },
+    {
+        trigger: '.o_notification.border-success',
+        isCheck: true,
+    },
 ]});
 
 registry.category("web_tour.tours").add('test_inventory_owner_scan_package', {test: true, steps: () => [
@@ -894,5 +898,8 @@ registry.category("web_tour.tours").add('test_inventory_using_buttons', {test: t
 
     // Validates the inventory.
     { trigger: '.o_apply_page' },
-    { trigger: '.o_notification.border-success' }
+    {
+        trigger: '.o_notification.border-success',
+        isCheck: true,
+    }
 ]});

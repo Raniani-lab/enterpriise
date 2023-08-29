@@ -194,7 +194,10 @@ registry.category("web_tour.tours").add('test_internal_picking_from_scratch', {t
         extra_trigger: '.o_barcode_line:last-child() .o_line_destination_location:contains("Section 3")',
         trigger: '.o_validate_page',
     },
-    { trigger: '.o_notification.border-success' } // Second call to write (change the dest. location).
+    { // Second call to write (change the dest. location).
+        trigger: '.o_notification.border-success',
+        isCheck: true,
+    }
 ]});
 
 registry.category("web_tour.tours").add('test_internal_picking_from_scratch_with_package', { test: true, steps: () => [
@@ -233,7 +236,7 @@ registry.category("web_tour.tours").add('test_internal_picking_from_scratch_with
     // Scans the destination location and validate the transfert.
     { trigger: '.o_barcode_line.o_selected + .o_barcode_line.o_selected', run: 'scan LOC-01-02-00' },
     { trigger: '.o_barcode_line:not(.o_selected)', run: 'scan O-BTN.validate' },
-    { trigger: '.o_notification.border-success' },
+    { trigger: '.o_notification.border-success', isCheck: true },
 ]});
 
 registry.category("web_tour.tours").add('test_internal_picking_reserved_1', {test: true, steps: () => [
@@ -539,7 +542,8 @@ registry.category("web_tour.tours").add('test_receipt_product_not_consecutively'
         run: 'scan O-BTN.validate',
     },
     {
-        trigger: '.o_notification.border-success'
+        trigger: '.o_notification.border-success',
+        isCheck: true,
     },
 ]});
 
@@ -672,7 +676,10 @@ registry.category("web_tour.tours").add('test_delivery_reserved_1', {test: true,
     // Display the picking's information to trigger a save.
     { trigger: '.o_show_information' },
     { trigger: '.o_barcode_control .btn.o_discard' },
-    { trigger: '.o_barcode_line' },
+    {
+        trigger: '.o_barcode_line',
+        isCheck: true,
+    },
 ]});
 
 registry.category("web_tour.tours").add('test_delivery_reserved_2', {test: true, steps: () => [
@@ -1001,6 +1008,7 @@ registry.category("web_tour.tours").add('test_delivery_using_buttons', {test: tr
     },
     {
         trigger: '.o_notification.border-success',
+        isCheck: true,
     },
 ]});
 
@@ -1835,7 +1843,7 @@ registry.category("web_tour.tours").add('test_picking_type_mandatory_scan_settin
         trigger: '.btn.o_validate_page.btn-success',
         extra_trigger: 'div[name="barcode_messages"] .fa-check-square',
     },
-    { trigger: '.o_notification.border-success' },
+    { trigger: '.o_notification.border-success', isCheck: true },
 ]});
 
 registry.category("web_tour.tours").add('test_picking_type_mandatory_scan_settings_pick_int_2', {test: true, steps: () => [
@@ -1978,7 +1986,7 @@ registry.category("web_tour.tours").add('test_picking_type_mandatory_scan_settin
         trigger: '.btn.o_validate_page.btn-success',
         extra_trigger: 'div[name="barcode_messages"] .fa-check-square',
     },
-    { trigger: '.o_notification.border-success' },
+    { trigger: '.o_notification.border-success', isCheck: true },
 ]});
 
 registry.category("web_tour.tours").add('test_picking_type_mandatory_scan_complete_flux_receipt', {test: true, steps: () => [
@@ -2077,7 +2085,10 @@ registry.category("web_tour.tours").add('test_picking_type_mandatory_scan_comple
         extra_trigger: 'div[name="barcode_messages"] .o_scan_validate',
         trigger: '.o_validate_page.btn-success',
     },
-    { trigger: '.o_notification.border-success' },
+    {
+        trigger: '.o_notification.border-success',
+        isCheck: true
+    },
 ]});
 
 registry.category("web_tour.tours").add('test_picking_type_mandatory_scan_complete_flux_internal', {test: true, steps: () => [
@@ -2215,7 +2226,10 @@ registry.category("web_tour.tours").add('test_picking_type_mandatory_scan_comple
         extra_trigger: 'div[name="barcode_messages"] .fa-check-square', // "Press validate" message icon.
         trigger: '.o_validate_page.btn-success',
     },
-    { trigger: '.o_notification.border-success' },
+    {
+        trigger: '.o_notification.border-success',
+        isCheck: true,
+    },
 ]});
 
 registry.category("web_tour.tours").add('test_picking_type_mandatory_scan_complete_flux_pick', {test: true, steps: () => [
@@ -2430,7 +2444,10 @@ registry.category("web_tour.tours").add('test_picking_type_mandatory_scan_comple
         extra_trigger: 'div[name="barcode_messages"] .fa-check-square', // "Press validate" message icon.
         trigger: '.o_validate_page.btn-success',
     },
-    { trigger: '.o_notification.border-success' },
+    {
+        trigger: '.o_notification.border-success',
+        isCheck: true,
+    },
 ]});
 
 registry.category("web_tour.tours").add('test_picking_type_mandatory_scan_complete_flux_pack', {test: true, steps: () => [
@@ -2464,7 +2481,7 @@ registry.category("web_tour.tours").add('test_picking_type_mandatory_scan_comple
         extra_trigger: '.o_scan_message.o_scan_validate',
         trigger: '.o_validate_page.btn-success',
     },
-    { trigger: '.o_notification.border-success' },
+    { trigger: '.o_notification.border-success', isCheck: true },
 ]});
 
 registry.category("web_tour.tours").add('test_picking_type_mandatory_scan_complete_flux_delivery', {test: true, steps: () => [
@@ -2486,7 +2503,7 @@ registry.category("web_tour.tours").add('test_picking_type_mandatory_scan_comple
         trigger: '.o_barcode_line.o_line_completed',
         run: 'scan O-BTN.validate',
     },
-    { trigger: '.o_notification.border-success' },
+    { trigger: '.o_notification.border-success', isCheck: true },
 ]});
 
 registry.category("web_tour.tours").add('test_pack_multiple_scan', {test: true, steps: () => [
@@ -2691,7 +2708,8 @@ registry.category("web_tour.tours").add('test_pack_multiple_location_02', {test:
     },
 
     {
-        trigger: '.o_notification.border-success'
+        trigger: '.o_notification.border-success',
+        isCheck: true,
     },
 ]});
 
@@ -3049,6 +3067,7 @@ registry.category("web_tour.tours").add('test_put_in_pack_new_lines', {test: tru
     },
     {
         trigger: '.o_notification.border-success',
+        isCheck: true,
     },
 ]});
 
@@ -3282,6 +3301,7 @@ registry.category("web_tour.tours").add('test_define_the_destination_package', {
     },
     {
         trigger: '.o_notification.border-success',
+        isCheck: true,
     },
 ]});
 

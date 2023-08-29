@@ -445,6 +445,7 @@ registry.category("web_tour.tours").add("web_studio.test_field_placeholder", {
         },
         {
             trigger: ".o-web-studio-save-report:not(.btn-primary)",
+            isCheck: true,
         },
     ],
 });
@@ -485,6 +486,10 @@ registry.category("web_tour.tours").add("web_studio.test_edition_without_lang", 
         {
             trigger: ".modal-footer button.btn-primary",
         },
+        {
+            trigger: ".o_web_studio_editor",
+            isCheck: true,
+        }
     ],
 });
 
@@ -541,6 +546,7 @@ registry.category("web_tour.tours").add("web_studio.test_partial_eval", {
         },
         {
             trigger: ".o-web-studio-report-container iframe .couic",
+            isCheck: true,
         },
     ],
 });

@@ -130,6 +130,7 @@ registry.category("web_tour.tours").add('test_process_confirmed_mo', {test: true
     },
     {
         trigger: '.o_notification.border-success',
+        isCheck: true,
     },
 ]});
 
@@ -550,5 +551,6 @@ registry.category("web_tour.tours").add("test_barcode_production_component_no_st
     },
     {
         trigger: ".o_notification.border-success",
+        isCheck: true,
     },
 ]});

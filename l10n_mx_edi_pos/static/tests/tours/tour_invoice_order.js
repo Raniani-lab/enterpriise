@@ -63,4 +63,9 @@ registry.category("web_tour.tours").add('l10n_mx_edi_pos.tour_invoice_order', {
         content: "Check the No Tax Breakdown checkbox",
         trigger: "input[name='l10n_mx_edi_no_tax_breakdown']",
     },
+    {
+        content: "Verify No Tax Breakdown checkbox is checked",
+        trigger: "input[name='l10n_mx_edi_no_tax_breakdown']:checked",
+        isCheck: true,
+    }
 ]});

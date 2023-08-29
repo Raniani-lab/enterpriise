@@ -114,8 +114,5 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour_portal', {
 }, {
     // verify that the move was done
     trigger: 'div.o_favorite_container ul > :eq(0):contains("My Private Article")',
-    run: () => {},
-}, {
-    // go back to '/my' page, as ending a tour on a form view can lead to issues
-    trigger: 'a[title="Home"]',
+    isCheck: true,
 }]});

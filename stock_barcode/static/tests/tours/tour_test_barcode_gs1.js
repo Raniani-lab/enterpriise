@@ -284,6 +284,7 @@ registry.category("web_tour.tours").add('test_gs1_inventory_lot_serial', {test: 
     },
     {
         trigger: '.o_notification.border-success',
+        isCheck: true,
     },
 ]});
 
@@ -378,7 +379,8 @@ registry.category("web_tour.tours").add('test_gs1_inventory_package', {test: tru
         trigger: '.o_apply_page'
     },
     {
-        trigger: '.o_notification.border-success'
+        trigger: '.o_notification.border-success',
+        isCheck: true,
     }
 ]});
 

@@ -552,7 +552,7 @@ registry.category("web_tour.tours").add('test_barcode_batch_delivery_1', {test: 
         }
     },
     { trigger: '.o_barcode_backorder_dialog .btn.btn-primary' },
-    { trigger: '.o_notification.border-success' },
+    { trigger: '.o_notification.border-success', isCheck: true },
 ]});
 
 registry.category("web_tour.tours").add('test_barcode_batch_delivery_2_move_entire_package', {test: true, steps: () => [

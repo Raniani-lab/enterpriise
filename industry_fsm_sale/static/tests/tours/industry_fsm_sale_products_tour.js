@@ -31,4 +31,5 @@ registry.category("web_tour.tours").add('industry_fsm_sale_products_tour', {
 }, {
     trigger: '.o_fsm_product_kanban_view .o_kanban_record:contains("500.00") div[name="fsm_quantity"] span:contains("2")',
     content: 'Price is 500',
+    isCheck: true,
 }]});

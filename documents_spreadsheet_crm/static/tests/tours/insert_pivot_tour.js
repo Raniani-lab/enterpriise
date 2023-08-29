@@ -31,6 +31,7 @@ registry.category("web_tour.tours").add(
         {
             trigger: ".o-spreadsheet",
             content: "Redirected to spreadsheet",
+            isCheck: true,
         },
     ]
 });

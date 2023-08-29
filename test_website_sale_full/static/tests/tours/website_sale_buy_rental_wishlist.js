@@ -36,5 +36,10 @@ registry.category("web_tour.tours").add('shop_buy_rental_product_wishlist', {
             extra_trigger: '#cart_products .oe_currency_value:contains(75.00)',
             trigger: 'a[href*="/shop/checkout"]',
         },
+        {
+            content: "verify checkout page",
+            trigger: 'a[href*="shop/payment"] .active',
+            isCheck: true,
+        },
     ]
 });

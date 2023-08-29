@@ -534,6 +534,7 @@ registry.category("web_tour.tours").add("web_studio_test_create_new_model_from_e
         },
         {
             trigger: ".o_form_view",
+            isCheck: true,
         },
     ],
 });
@@ -589,6 +590,7 @@ registry.category("web_tour.tours").add("web_studio_test_create_model_with_click
         {
             trigger:
                 ".o_kanban_group:contains(In Progress) .o_kanban_record_details:contains(new record)",
+            isCheck: true,
         },
     ],
 });
@@ -617,6 +619,7 @@ registry
             },
             {
                 trigger: ".o_content > .o_list_renderer span:contains('Address Type')",
+                isCheck: true,
             },
         ],
     });
@@ -656,6 +659,7 @@ registry
             {
                 content: "Check that the active field has been added",
                 trigger: ".o_web_studio_view_renderer .o_list_view thead th[data-name='active']",
+                isCheck: true,
             },
         ],
     });

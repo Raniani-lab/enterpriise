@@ -1,10 +1,10 @@
 /** @odoo-module */
 
-import { ActivityService } from "@mail/core/web/activity_service";
+import { Activity } from "@mail/core/web/activity_model";
 
 import { patch } from "@web/core/utils/patch";
 
-patch(ActivityService.prototype, {
+patch(Activity, {
     insert(data) {
         const activity = super.insert(...arguments);
         if ("approver_id" in data && "approver_status" in data) {

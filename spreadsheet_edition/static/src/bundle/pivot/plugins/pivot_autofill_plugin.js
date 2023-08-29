@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { _t } from "@web/core/l10n/translation";
-import { sprintf } from '@web/core/utils/strings';
+import { sprintf } from "@web/core/utils/strings";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { FORMATS } from "@spreadsheet/helpers/constants";
 import {
@@ -564,14 +564,15 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
         const tooltips = [];
         const definition = this.getters.getPivotDefinition(pivotId);
         const dataSource = this.getters.getPivotDataSource(pivotId);
-        const values = this._parseArgs(args.slice(2));
-        for (const [fieldName, value] of Object.entries(values)) {
+        const domain = args.slice(2); // e.g. ["create_date:month", "04/2022", "user_id", 3]
+        for (let i = 2; i <= domain.length; i += 2) {
+            const fieldName = domain[i - 2];
             if (
                 (isColumn && dataSource.isColumnGroupBy(fieldName)) ||
                 (!isColumn && dataSource.isRowGroupBy(fieldName))
             ) {
                 tooltips.push({
-                    value: dataSource.getDisplayedPivotHeaderValue([fieldName, value]),
+                    value: dataSource.getDisplayedPivotHeaderValue(domain.slice(0, i)),
                 });
             }
         }
@@ -600,13 +601,13 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      */
     _tooltipFormatPivotHeader(pivotId, args) {
         const tooltips = [];
-        const values = this._parseArgs(args.slice(1));
+        const domain = args.slice(1); // e.g. ["create_date:month", "04/2022", "user_id", 3]
         const dataSource = this.getters.getPivotDataSource(pivotId);
-        if (Object.keys(values).length === 0) {
+        if (domain.length === 0) {
             return [{ value: _t("Total") }];
         }
-        for (const [fieldName, value] of Object.entries(values)) {
-            tooltips.push({ value: dataSource.getDisplayedPivotHeaderValue([fieldName, value]) });
+        for (let i = 2; i <= domain.length; i += 2) {
+            tooltips.push({ value: dataSource.getDisplayedPivotHeaderValue(domain.slice(0, i)) });
         }
         return tooltips;
     }

@@ -48,7 +48,6 @@
             <t t-set="head">
                 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
                 <t t-call-assets="sign.assets_public_sign" t-js="false"/>
-                <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/modal_mobile.scss"/>
                 <script type="text/javascript">
                     odoo.__session_info__ = <t t-out="json.dumps(request.env['ir.http'].get_frontend_session_info_sign())"/>;
                 </script>
@@ -155,7 +154,6 @@
             <t t-set="head">
                 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
-                <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/modal_mobile.scss"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
             </t>
             <div class="container text-center">
@@ -182,7 +180,6 @@
             <t t-set="head">
                 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
-                <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/modal_mobile.scss"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
             </t>
             <div class="oe_structure oe_empty">

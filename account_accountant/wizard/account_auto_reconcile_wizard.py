@@ -1,3 +1,5 @@
+from datetime import date
+
 from odoo import fields, models, _
 from odoo.exceptions import UserError
 
@@ -16,7 +18,7 @@ class AccountAutoReconcileWizard(models.TransientModel):
         readonly=True,
         default=lambda self: self.env.company,
     )
-    from_date = fields.Date(string='From', required=True, store=True, readonly=False)
+    from_date = fields.Date(string='From', store=True, readonly=False)
     to_date = fields.Date(string='To', default=fields.Date.context_today, required=True, store=True, readonly=False)
     account_ids = fields.Many2many(
         comodel_name='account.account',
@@ -47,7 +49,7 @@ class AccountAutoReconcileWizard(models.TransientModel):
             ('company_id', '=', self.company_id.id),
             ('parent_state', '=', 'posted'),
             ('display_type', 'not in', ('line_section', 'line_note')),
-            ('date', '>=', self.from_date),
+            ('date', '>=', self.from_date or date.min),
             ('date', '<=', self.to_date),
             ('reconciled', '=', False),
             ('account_id.reconcile', '=', True),

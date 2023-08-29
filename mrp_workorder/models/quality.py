@@ -555,41 +555,6 @@ class QualityCheck(models.Model):
             new_next.previous_check_id = self
             relative.next_check_id = self
 
-    @api.model
-    def _get_fields_list_for_tablet(self):
-        return [
-            'lot_id',
-            'move_id',
-            'move_line_id',
-            'note',
-            'additional_note',
-            'title',
-            'quality_state',
-            'qty_done',
-            'test_type_id',
-            'test_type',
-            'user_id',
-            'picture',
-            'additional',
-            'worksheet_document',
-            'worksheet_page',
-            'is_deleted',
-            'point_id',
-        ]
-
-    def _get_fields_for_tablet(self, sorted_check_list):
-        """ List of fields on the quality check object that are needed by the tablet
-        client action. The purpose of this function is to be overridden in order
-        to inject new fields to the client action.
-        """
-        if sorted_check_list:
-            self = self.browse(sorted_check_list)
-        values = self.read(self._get_fields_list_for_tablet(), load=False)
-        for check in values:
-            check['worksheet_url'] = self.env['quality.check'].browse(check['id']).point_id.worksheet_url
-            check['source_document'] = self.env['quality.check'].browse(check['id']).point_id.source_document
-        return values
-
     def _update_lots(self):
         for check in self:
             if check.component_tracking and check.move_id.picking_type_id.prefill_lot_tablet:

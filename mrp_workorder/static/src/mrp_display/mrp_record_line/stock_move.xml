@@ -8,7 +8,7 @@
             <span t-att-class="isComplete ? 'text-decoration-line-through' : ''"
                   t-esc="props.label || props.record.data.product_id[1]"/>
             <button t-on-click.stop="openMoveDetails" class="btn btn-sm text-nowrap" t-att-class="{
-                'btn-outline-secondary disabled': isComplete,
+                'btn-outline-secondary text-muted': isComplete,
                 'btn-secondary': !isComplete,
                 'text-danger': quantityDone > toConsumeQuantity,
                 }">

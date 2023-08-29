@@ -87,9 +87,11 @@ export class SpreadsheetControlPanel extends Component {
         const spreadsheetLocale = this.props.model.getters.getLocale();
 
         const title = _t(
-            "Difference between user locale (%s) and spreadsheet locale (%s):",
-            this.userLocale.code,
-            spreadsheetLocale.code
+            "Difference between user locale (%(user_locale)s) and spreadsheet locale (%(spreadsheet_locale)s):",
+            {
+                user_locale: this.userLocale.code,
+                spreadsheet_locale: spreadsheetLocale.code,
+            }
         );
         const comparison = this.getLocalesComparison(spreadsheetLocale, this.userLocale);
 

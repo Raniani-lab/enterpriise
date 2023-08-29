@@ -43,20 +43,7 @@ class HrPayrollDeclarationMixin(models.AbstractModel):
             sheet.documents_enabled = sheet.company_id._payroll_documents_enabled()
 
     def action_post_in_documents(self):
-        self.ensure_one()
-        if not self.company_id._payroll_documents_enabled():
-            return
-        self.line_ids.write({'pdf_to_post': True})
-        self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
-
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'type': 'success',
-                'message': _("PDFs are gonna be posted in Documents shortly"),
-            }
-        }
+        self.line_ids.action_post_in_documents()
 
     def _get_posted_mail_template(self):
         return self.env.ref('documents_hr_payroll.mail_template_new_declaration', raise_if_not_found=False)

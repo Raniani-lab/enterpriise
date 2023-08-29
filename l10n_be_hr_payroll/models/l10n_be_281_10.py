@@ -183,7 +183,7 @@ class L10nBe28110(models.Model):
                     'res_id': sheet.id,
                 }) for employee in all_employees]
             })
-        super().action_generate_declarations()
+        return super().action_generate_declarations()
 
     def _get_rendering_data(self, employees):
         # Round to eurocent for XML file, not PDF

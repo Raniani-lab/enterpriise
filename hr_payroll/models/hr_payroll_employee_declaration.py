@@ -5,7 +5,7 @@ import logging
 
 from collections import defaultdict
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 
 _logger = logging.getLogger(__name__)
 
@@ -26,7 +26,7 @@ class HrPayrollEmployeeDeclaration(models.Model):
     pdf_to_generate = fields.Boolean()
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('pdf_to_generate', 'PDF to generate'),
+        ('pdf_to_generate', 'Queued PDF generation'),
         ('pdf_generated', 'Generated PDF'),
     ], compute='_compute_state', store=True)
 
@@ -79,3 +79,23 @@ class HrPayrollEmployeeDeclaration(models.Model):
         if vals.get('pdf_to_generate'):
             self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
         return res
+
+    def action_generate_pdf(self):
+        if self:
+            self.write({'pdf_to_generate': True})
+            self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
+            message = _("PDF generation started. It will be available shortly.")
+        else:
+            message = _("Please select the declarations for which you want to generate a PDF.")
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'type': 'success',
+                'message': message,
+                'next': {
+                    'type': 'ir.actions.client',
+                    'tag': 'reload'
+                }
+            }
+        }

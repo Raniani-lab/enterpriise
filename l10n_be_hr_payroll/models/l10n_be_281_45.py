@@ -101,7 +101,7 @@ class L10nBe28145(models.Model):
                     'res_id': sheet.id,
                 }) for employee in all_employees]
             })
-        super().action_generate_declarations()
+        return super().action_generate_declarations()
 
     @api.depends('xml_file')
     def _compute_validation_state(self):

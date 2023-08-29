@@ -47,7 +47,7 @@ class L10nChIndividualAccount(models.Model):
                     }) for employee in all_employees
                 ]
             })
-        super().action_generate_declarations()
+        return super().action_generate_declarations()
 
     def _get_rendering_data(self, employees):
         self.ensure_one()
@@ -65,6 +65,8 @@ class L10nChIndividualAccount(models.Model):
 
         result = {
             employee: {
+                'year': self.year,
+                'company': employee.company_id or self.company_id,
                 'rules': OrderedDict(
                     (rule, {
                         'year': {'name': False, 'total': 0},

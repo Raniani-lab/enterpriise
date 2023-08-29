@@ -6,15 +6,15 @@
         <field name="arch" type="xml">
             <form string="Individual Accounts">
                 <header>
-                    <button name="action_generate_declarations" string="Generate Declarations" type="object" class="btn-primary"/>
-                    <button name="action_generate_pdf" string="Create PDFs" type="object" class="btn-primary"/>
+                    <button name="action_generate_declarations" string="Populate" type="object" class="btn-primary" invisible="lines_count" options="{'reload_on_button': true}"/>
+                    <button name="action_generate_declarations" string="Populate" type="object" class="btn-secondary" invisible="not lines_count" options="{'reload_on_button': true}"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_open_declarations" type="object" class="oe_stat_button" icon="fa-file-text-o">
+                        <button name="action_open_declarations" type="object" class="oe_stat_button" icon="fa-users" invisible="not lines_count">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value"><field name="lines_count"/></span>
-                                <span class="o_stat_text">Declarations</span>
+                                <span class="o_stat_text">Eligible Employees</span>
                             </div>
                         </button>
                     </div>

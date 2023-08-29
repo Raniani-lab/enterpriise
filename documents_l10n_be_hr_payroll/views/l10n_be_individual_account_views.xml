@@ -24,10 +24,6 @@
                     </div>
                 </div>
             </p>
-            <button name="action_generate_pdf" position="after">
-                <field name="pdfs_generated" invisible="1"/>
-                <button name="action_post_in_documents" string="Post in Documents" type="object" confirm="This will add all the sheets in the employee portal. Are you sure you want to proceed ?" invisible="not documents_enabled or not pdfs_generated"/>
-            </button>
         </field>
     </record>
 

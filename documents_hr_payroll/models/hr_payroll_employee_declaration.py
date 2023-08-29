@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 
 class HrPayrollEmployeeDeclaration(models.Model):
@@ -10,7 +11,7 @@ class HrPayrollEmployeeDeclaration(models.Model):
     pdf_to_post = fields.Boolean()
     state = fields.Selection(
         selection_add=[
-            ('pdf_to_post', 'PDF to post'),
+            ('pdf_to_post', 'Queued PDF posting'),
             ('pdf_posted', 'Posted PDF')
         ], ondelete={'pdf_to_post': 'set pdf_generated', 'pdf_posted': 'set pdf_generated'})
     document_id = fields.Many2one('documents.document')
@@ -65,3 +66,19 @@ class HrPayrollEmployeeDeclaration(models.Model):
         if vals.get('pdf_to_post'):
             self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
         return res
+
+    def action_post_in_documents(self):
+        for company in self.company_id:
+            if not company._payroll_documents_enabled():
+                raise UserError(_('Document posting is not properly set in configuration'))
+        self.write({'pdf_to_post': True})
+        self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'type': 'success',
+                'message': _("PDFs are gonna be posted in Documents shortly"),
+            }
+        }

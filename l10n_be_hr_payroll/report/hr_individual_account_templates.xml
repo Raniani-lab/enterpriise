@@ -26,7 +26,7 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <table class="table table-sm table-bordered">
+                                <table t-if="employee" class="table table-sm table-bordered">
                                     <tr>
                                         <td><strong>Name</strong></td>
                                         <td><span t-field="employee.name"/></td>

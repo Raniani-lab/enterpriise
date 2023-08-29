@@ -40,6 +40,7 @@ class HrPayrollDeclarationMixin(models.AbstractModel):
         for sheet in self:
             if not sheet.line_ids:
                 raise UserError(_('There is no declaration to generate for the given period'))
+        return self.action_generate_pdf()
 
     @api.depends('line_ids')
     def _compute_lines_count(self):
@@ -67,20 +68,7 @@ class HrPayrollDeclarationMixin(models.AbstractModel):
         return False
 
     def action_generate_pdf(self):
-        if self.line_ids:
-            self.line_ids.write({'pdf_to_generate': True})
-            self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
-            message = _("PDF generation started. It will be available shortly.")
-        else:
-            message = _("There's not declaration pdf to generate.")
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'type': 'success',
-                'message': message,
-            }
-        }
+        return self.line_ids.action_generate_pdf()
 
     def _post_process_rendering_data_pdf(self, rendering_data):
         return rendering_data

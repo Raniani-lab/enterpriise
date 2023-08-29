@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=bad-whitespace
 from unittest.mock import patch
+from freezegun import freeze_time
 
 from .common import TestAccountReportsCommon
 from odoo import fields, Command
@@ -979,6 +980,7 @@ class TestTaxReport(TestAccountReportsCommon):
             'payment_date': invoice.date,
         })._create_payments()
 
+    @freeze_time('2023-10-05 02:00:00')
     def test_tax_report_grid_cash_basis(self):
         """ Cash basis moves create for taxes based on payments are handled differently
         by the report; we want to ensure their sign is managed properly.
@@ -994,6 +996,7 @@ class TestTaxReport(TestAccountReportsCommon):
             on_invoice_created=self._register_full_payment_for_invoice
         )
 
+    @freeze_time('2023-10-05 02:00:00')
     def test_tax_report_grid_cash_basis_refund(self):
         """ Cash basis moves create for taxes based on payments are handled differently
         by the report; we want to ensure their sign is managed properly. This
@@ -1016,6 +1019,7 @@ class TestTaxReport(TestAccountReportsCommon):
             on_all_invoices_created=reconcile_opposite_types
         )
 
+    @freeze_time('2023-10-05 02:00:00')
     def test_tax_report_grid_cash_basis_misc_pmt(self):
         """ Cash basis moves create for taxes based on payments are handled differently
         by the report; we want to ensure their sign is managed properly. This
@@ -1058,6 +1062,7 @@ class TestTaxReport(TestAccountReportsCommon):
             on_invoice_created=reconcile_with_misc_pmt
         )
 
+    @freeze_time('2023-10-05 02:00:00')
     def test_caba_no_payment(self):
         """ The cash basis taxes of an unpaid invoice should
         never impact the report.
@@ -1071,6 +1076,7 @@ class TestTaxReport(TestAccountReportsCommon):
             ]
         )
 
+    @freeze_time('2023-10-05 02:00:00')
     def test_caba_half_payment(self):
         """ Paying half the amount of the invoice should report half the
         base and tax amounts.
@@ -1516,6 +1522,7 @@ class TestTaxReport(TestAccountReportsCommon):
             report_options,
         )
 
+    @freeze_time('2023-10-05 02:00:00')
     def test_tax_report_grid_caba_negative_inv_line(self):
         """ Tests cash basis taxes work properly in case a line of the invoice
         has been made with a negative quantities and taxes (causing debit and
@@ -2004,6 +2011,7 @@ class TestTaxReport(TestAccountReportsCommon):
                 options,
             )
 
+    @freeze_time('2023-10-05 02:00:00')
     def test_tax_report_with_entries_with_sale_and_purchase_taxes(self):
         """ Ensure signs are managed properly for entry moves.
         This test runs the case where invoice/bill like entries are created and reverted.
@@ -2088,6 +2096,7 @@ class TestTaxReport(TestAccountReportsCommon):
             options,
         )
 
+    @freeze_time('2023-10-05 02:00:00')
     def test_invoice_like_entry_reverse_caba_report(self):
         """ Cancelling the reconciliation of an invoice using cash basis taxes should reverse the cash basis move
         in such a way that the original cash basis move lines' impact falls down to 0.

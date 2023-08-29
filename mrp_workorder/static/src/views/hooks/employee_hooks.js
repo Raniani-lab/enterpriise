@@ -10,17 +10,17 @@ import { DialogWrapper } from "@mrp_workorder/components/dialog_wrapper";
 
 const { useState } = owl;
 
-export function useConnectedEmployee(model, controllerType, context, workcenterId, domain = { workcenterEmployeeDomain: [] }) {
+export function useConnectedEmployee(controllerType, context, workcenterId) {
     const orm = useService("orm");
     const notification = useService("notification");
     const dialog = useService("dialog");
     const imageBaseURL = `${browser.location.origin}/web/image?model=hr.employee&field=avatar_128&id=`;
-    let employees = useState({
+    const employees = useState({
         connected: [],
         all: [],
-        admin: {}
+        admin: {},
     });
-    let popup = useState({
+    const popup = useState({
         PinPopup: {
             isShown: false,
         },
@@ -29,7 +29,7 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
         },
         WorkingEmployeePopupWOList: {
             isShown: false,
-        }
+        },
     });
 
     function openDialog(id, component, props) {
@@ -44,18 +44,17 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
                 {
                     onClose: () => {
                         popup[id] = { isShown: false };
-                    }
+                    },
                 }
-            )
+            ),
         };
     }
 
     async function openEmployeeSelection() {
-        const connectedEmployees = await orm.call(
-            "hr.employee",
-            "get_employees_wo_by_employees",
-            [null, employees.connected.map((emp) => emp.id)],
-        );
+        const connectedEmployees = await orm.call("hr.employee", "get_employees_wo_by_employees", [
+            null,
+            employees.connected.map((emp) => emp.id),
+        ]);
         openDialog("WorkingEmployeePopupWOList", WorkingEmployeePopupWOList, {
             popupData: { employees: connectedEmployees },
             onClosePopup: closePopup.bind(this),
@@ -67,77 +66,59 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
     }
 
     async function startEmployee(employeeId, workorderId) {
-        await orm.call(
-            'mrp.workorder',
-            'start_employee',
-            [workorderId, employeeId],
-        );
-        await reload();
+        await orm.call("mrp.workorder", "start_employee", [workorderId, employeeId]);
+        await this.env.reload();
     }
 
     async function stopEmployee(employeeId, workorderId) {
-        await orm.call(
-            'mrp.workorder',
-            'stop_employee',
-            [workorderId, [employeeId]],
-        );
-        await reload();
-    }
-
-    async function reload() {
-        const models = controllerType == 'mrp_display' ? model : [model]
-        for (let currentModel of models){
-            await currentModel.root.load();
-            currentModel.notify();
-        }
+        await orm.call("mrp.workorder", "stop_employee", [workorderId, [employeeId]]);
+        await this.env.reload();
     }
 
     async function getAllEmployees() {
         const fieldsToRead = ["id", "name"];
-        employees.all = await orm.searchRead(
-            "hr.employee",
-            domain.workcenterEmployeeDomain,
-            fieldsToRead,
-        );
+        employees.all = await orm.searchRead("hr.employee", [], fieldsToRead);
     }
 
     async function selectEmployee(employeeId, pin) {
-        const employee = employees.all.find(e => e.id === employeeId);
-        const employee_connected = employees.connected.find(e => e.name && e.id === employee.id);
+        const employee = employees.all.find((e) => e.id === employeeId);
+        const employee_connected = employees.connected.find((e) => e.name && e.id === employee.id);
         const employee_function = employee_connected ? "logout" : "login";
-        const pinValid = await orm.call(
-            "hr.employee", employee_function, [employeeId, pin],
-        );
+        const pinValid = await orm.call("hr.employee", employee_function, [employeeId, pin]);
         if (!pinValid && popup.PinPopup.isShown) {
-            return notification.add(_t('Wrong password!'), { type: 'danger' });
+            return notification.add(_t("Wrong password!"), { type: "danger" });
         }
         if (!pinValid) {
             return askPin(employee);
         }
 
-        if (employee_function === 'login') {
-            notification.add(_t('Logged in!'), { type: 'success' });
+        if (employee_function === "login") {
+            notification.add(_t("Logged in!"), { type: "success" });
             await getConnectedEmployees();
             if (controllerType === "kanban" && context.openRecord) {
                 await openRecord(...context.openRecord);
             }
         } else {
             await stopAllWorkorderFromEmployee(employeeId);
-            notification.add(_t('Logged out!'), { type: 'success' });
+            notification.add(_t("Logged out!"), { type: "success" });
         }
-        closePopup('SelectionPopup');
+        closePopup("SelectionPopup");
         await getConnectedEmployees();
-        await reload();
+        await this.env.reload();
     }
 
     async function getConnectedEmployees(login=false) {
         const res = await orm.call("hr.employee", "get_all_employees", [null, login]);
-        if (login){
-            this.employees.all = res.all
+        if (login) {
+            this.employees.all = res.all;
         }
         res.connected.sort(function (emp1, emp2) {
-            if (emp1.workorder.length == 0) return 1;
-            if (emp2.workorder.length == 0) return -1;
+            if (emp1.workorder.length == 0) {
+                return 1;
+            }
+            if (emp2.workorder.length == 0) {
+                return -1;
+            }
             return 0;
         });
         employees.connected = res.connected.map((obj) => {
@@ -157,15 +138,13 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
     }
 
     async function logout(employeeId) {
-        const success = await orm.call(
-            "hr.employee", "logout", [employeeId, false, true],
-        );
+        const success = await orm.call("hr.employee", "logout", [employeeId, false, true]);
         if (success) {
-            notification.add(_t('Logged out!'), { type: 'success' });
+            notification.add(_t("Logged out!"), { type: "success" });
             await Promise.all([stopAllWorkorderFromEmployee(employeeId), getConnectedEmployees()]);
-            await reload();
+            await this.env.reload();
         } else {
-            notification.add(_t('Error during log out!'), { type: 'danger' });
+            notification.add(_t("Error during log out!"), { type: "danger" });
         }
     }
 
@@ -181,9 +160,7 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
         if (employees.admin.id == employee_id && employee_id == employees.connected[0].id) {
             return;
         }
-        let pinValid = await orm.call(
-            "hr.employee", "login", [employee_id, pin],
-        );
+        const pinValid = await orm.call("hr.employee", "login", [employee_id, pin]);
 
         if (!pinValid) {
             if (pin) {
@@ -198,18 +175,18 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
     }
 
     async function stopAllWorkorderFromEmployee(employeeId) {
-        await orm.call('hr.employee',
-            'stop_all_workorder_from_employee',
-            [employeeId]);
+        await orm.call("hr.employee", "stop_all_workorder_from_employee", [employeeId]);
     }
 
     function popupAddEmployee() {
-        const list = employees.all.map(employee => Object.create({
-            id: employee.id,
-            item: employee,
-            label: employee.name,
-            isSelected: employees.connected.find(e => e.id === employee.id) != undefined ? true : false
-        }));
+        const list = employees.all.map((employee) =>
+            Object.create({
+                id: employee.id,
+                item: employee,
+                label: employee.name,
+                isSelected: employees.connected.find((e) => e.id === employee.id),
+            })
+        );
         openDialog("SelectionPopup", SelectionPopup, {
             popupData: { title: _t("Select Employee"), list: list },
             onClosePopup: closePopup.bind(this),
@@ -218,13 +195,14 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
     }
 
     async function pinValidation(employeeId, pin) {
-        return await orm.call('hr.employee',
-            'pin_validation',
-            [employeeId, pin]);
+        return await orm.call("hr.employee", "pin_validation", [employeeId, pin]);
     }
 
     async function checkPin(employeeId, pin) {
-        if (employees.connected.find(e => e.id === employeeId) && employees.admin?.id != employeeId) {
+        if (
+            employees.connected.find((e) => e.id === employeeId) &&
+            employees.admin?.id != employeeId
+        ) {
             setSessionOwner(employeeId, pin);
         } else {
             selectEmployee(employeeId, pin);
@@ -241,11 +219,16 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
     }
 
     async function onBarcodeScanned(barcode) {
-        const employee = await orm.call("mrp.workcenter", "get_employee_barcode", [workcenterId, barcode]);
+        const employee = await orm.call("mrp.workcenter", "get_employee_barcode", [
+            workcenterId,
+            barcode,
+        ]);
         if (employee) {
             selectEmployee(employee);
         } else {
-            notification.add(_t('This employee is not allowed on this workcenter'), { type: 'danger' });
+            notification.add(_t("This employee is not allowed on this workcenter"), {
+                type: "danger",
+            });
         }
     }
 
@@ -264,7 +247,6 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
         openEmployeeSelection,
         startEmployee,
         stopEmployee,
-        reload,
         getAllEmployees,
         getConnectedEmployees,
         logout,
@@ -279,6 +261,6 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
         onBarcodeScanned,
         openRecord,
         employees,
-        popup
-    }
+        popup,
+    };
 }

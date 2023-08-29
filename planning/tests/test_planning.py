@@ -306,3 +306,11 @@ class TestPlanning(TestCommonPlanning):
             'template_id': template.id,
         })
         self.assertEqual(slot.end_datetime.minute, 6, 'The min should be 6, just like in the template, not 5 due to rounding error')
+
+    def test_name_respect_duration(self):
+        """ The template name should follow the working hours"""
+        template_slot = self.env['planning.slot.template'].create({
+            'start_time': 9,
+            'duration': 48,
+        })
+        self.assertEqual(template_slot.name, "9 AM - 9 AM (2 days span)", 'Template name is not correct')

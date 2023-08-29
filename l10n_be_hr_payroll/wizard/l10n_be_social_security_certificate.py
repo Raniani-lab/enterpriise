@@ -166,7 +166,6 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
             withholding_taxes_exemption_34 = wizard_274.deducted_amount_34
             withholding_taxes_capping = -wizard_274.capped_amount_34
 
-            # YTI TODO: Include double holiday - 13th month
             aggregate_data = {
                 'gross_before_onss': gross_before_onss,
                 'atn': atn,

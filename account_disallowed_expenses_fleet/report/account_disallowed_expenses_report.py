@@ -73,7 +73,7 @@ class DisallowedExpensesFleetCustomHandler(models.AbstractModel):
         where += current.get('account_id') and not current.get('vehicle_id') and options.get('vehicle_split') and """
               AND vehicle.id IS NULL""" or ""
 
-        group_by = f" GROUP BY COALESCE(category.name->>'{lang}', category.name->>'en_US')"
+        group_by = f" GROUP BY category.id, COALESCE(category.name->>'{lang}', category.name->>'en_US')"
 
         if len(current) == 1 and current.get('category_id'):
             # Expanding a category

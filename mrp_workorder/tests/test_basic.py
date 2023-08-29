@@ -411,6 +411,8 @@ class TestWorkOrderProcessCommon(TestMrpCommon):
             'note': 'Installing VIM (pcs xi ipzth adi du ixbt)',
         })
 
+        self.env['stock.quant']._update_available_quantity(component, self.stock_location_14, 10)
+
         mo_form = Form(self.env['mrp.production'])
         mo_form.product_id = finished_product
         mo_form.bom_id = bom
@@ -974,6 +976,8 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         laptop = self.laptop
         graphics_card = self.graphics_card
         unit = self.env.ref("uom.product_uom_unit")
+        stock_location = self.env.ref('stock.stock_location_stock')
+        self.env['stock.quant']._update_available_quantity(graphics_card, stock_location, 20)
 
         laptop.tracking = 'serial'
 
@@ -1096,15 +1100,28 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
                 'sequence': 2,
             })]
         })
+        drawer_drawer_lot = self.env['stock.lot'].create({
+            'product_id': drawer_drawer.id,
+            'name': 'dd0001',
+            'company_id': self.env.company.id,
+        })
+
+        drawer_case_lot = self.env['stock.lot'].create({
+            'product_id': drawer_case.id,
+            'name': 'dc0001',
+            'company_id': self.env.company.id,
+        })
         self.env['stock.quant'].create({
             'product_id': drawer_drawer.id,
             'inventory_quantity': 50.0,
-            'location_id': self.stock_location_14.id
+            'location_id': self.stock_location_14.id,
+            'lot_id': drawer_drawer_lot.id,
         }).action_apply_inventory()
         self.env['stock.quant'].create({
             'product_id': drawer_case.id,
             'inventory_quantity': 50.0,
-            'location_id': self.stock_location_14.id
+            'location_id': self.stock_location_14.id,
+            'lot_id': drawer_case_lot.id,
         }).action_apply_inventory()
 
         product = bom.product_tmpl_id.product_variant_id

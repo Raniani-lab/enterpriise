@@ -87,7 +87,7 @@ export class SpreadsheetControlPanel extends Component {
         const spreadsheetLocale = this.props.model.getters.getLocale();
 
         const title = _t(
-            "Difference between user locale (%(user_locale)s) and spreadsheet locale (%(spreadsheet_locale)s):",
+            "Difference between user locale (%(user_locale)s) and spreadsheet locale (%(spreadsheet_locale)s). This spreadsheet is using the formats below:",
             {
                 user_locale: this.userLocale.code,
                 spreadsheet_locale: spreadsheetLocale.code,
@@ -101,7 +101,7 @@ export class SpreadsheetControlPanel extends Component {
     getLocalesComparison(spreadsheetLocale, userLocale) {
         const differences = [];
         if (spreadsheetLocale.dateFormat !== userLocale.dateFormat) {
-            differences.push(_t("- current Date Format: %s", userLocale.dateFormat));
+            differences.push(_t("- dates: %s", spreadsheetLocale.dateFormat));
         }
 
         if (
@@ -110,8 +110,11 @@ export class SpreadsheetControlPanel extends Component {
         ) {
             differences.push(
                 _t(
-                    "- current Number Format: %s",
-                    helpers.formatValue(1234567.89, { format: "#,##0.00", locale: userLocale })
+                    "- numbers: %s",
+                    helpers.formatValue(1234567.89, {
+                        format: "#,##0.00",
+                        locale: spreadsheetLocale,
+                    })
                 )
             );
         }

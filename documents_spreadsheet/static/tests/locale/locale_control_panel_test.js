@@ -40,9 +40,9 @@ QUnit.module("documents_spreadsheet > Locale Control Panel", {}, function () {
             assert.ok(icon.classList.contains("text-danger"));
             assert.equal(
                 icon.title,
-                "Difference between user locale (fr_FR) and spreadsheet locale (en_US):\n" +
-                    "- current Date Format: yyyy-mm-dd\n" +
-                    "- current Number Format: 1 234 567,89"
+                "Difference between user locale (fr_FR) and spreadsheet locale (en_US). This spreadsheet is using the formats below:\n" +
+                    "- dates: m/d/yyyy\n" +
+                    "- numbers: 1,234,567.89"
             );
         }
     );

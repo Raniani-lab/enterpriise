@@ -7,6 +7,9 @@
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="priority" eval="100" />
         <field name="arch" type="xml">
+            <field name="company_id" position="after">
+                <field name="currency_id" invisible="1"/>
+            </field>
             <group name="identification_group" position="after">
                 <group name="payroll_group" string="Payroll">
                     <field name="registration_number"/>

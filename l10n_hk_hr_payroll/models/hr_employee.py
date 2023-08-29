@@ -13,11 +13,6 @@ auto_mobn_re = re.compile(r"""^[+]\d{1,3}-\d{1,29}$""", re.VERBOSE)
 class HrEmployee(models.Model):
     _inherit = "hr.employee"
 
-    # YTI TODO: move this field to hr_payroll in master
-    currency_id = fields.Many2one(
-        "res.currency",
-        string='Currency',
-        related='company_id.currency_id')
     l10n_hk_surname = fields.Char(
         "Surname",
         groups="hr.group_hr_user",

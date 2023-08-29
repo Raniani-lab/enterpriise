@@ -150,6 +150,7 @@ export class MrpDisplayAction extends Component {
                 searchViewArch: searchViews.views.search.arch,
                 searchViewId: searchViews.views.search.id,
                 searchViewFields: searchViews.fields,
+                searchMenuTypes: ["filter", "favorite"],
                 context,
                 domain,
                 orderBy: [

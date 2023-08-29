@@ -615,6 +615,11 @@ class AccountMove(models.Model):
         if 'detected_layout_id' in ocr_results:
             self.extract_detected_layout = ocr_results['detected_layout_id']
 
+        if ocr_results.get('type') == 'refund' and self.move_type in ('in_invoice', 'out_invoice'):
+            # We only switch from an invoice to a credit note, not the other way around.
+            # We assume that if the user has specifically created a credit note, it is indeed a credit note.
+            self.action_switch_move_type()
+
         self._save_form(ocr_results, force_write=force_write)
 
         if self.extract_word_ids:  # We don't want to recreate the boxes when the user clicks on "Reload AI data"

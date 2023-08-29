@@ -3818,7 +3818,6 @@ class AccountReport(models.Model):
 
         :param lines:   The report lines.
         :param options: The report options.
-        :param lolipop:
         :return:        Lines sorted by the selected column.
         '''
         def needs_to_be_at_bottom(line_elem):

@@ -2156,6 +2156,9 @@ class AccountReport(models.Model):
         if parent_id:
             rslt['parent_id'] = parent_id
 
+        if options['export_mode'] == 'file':
+            rslt['code'] = line.code
+
         if options['show_debug_column']:
             first_group_key = list(options['column_groups'].keys())[0]
             column_group_totals = all_column_groups_expression_totals[first_group_key]

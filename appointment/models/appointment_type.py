@@ -957,6 +957,10 @@ class AppointmentType(models.Model):
         :return: boolean: is user available for an appointment for given slot
         """
         slot_start_dt_utc, slot_end_dt_utc = slot['UTC'][0], slot['UTC'][1]
+        slot_start_dt_user_timezone = slot_start_dt_utc.astimezone(
+            pytz.timezone(staff_user.tz) or pytz.utc)
+        slot_end_dt_user_timezone = slot_end_dt_utc.astimezone(
+            pytz.timezone(staff_user.tz) or pytz.utc)
 
         if slot['slot'].restrict_to_user_ids and staff_user not in slot['slot'].restrict_to_user_ids:
             return False
@@ -968,9 +972,15 @@ class AppointmentType(models.Model):
                                       until=slot_end_dt_utc,
                                       interval=1):
                 day_events = partner_to_events[staff_user.partner_id].get(day_dt.date()) or []
-                if any(event.allday or (event.start < slot_end_dt_utc and event.stop > slot_start_dt_utc) for event in day_events):
+                if any(not event.allday and (event.start < slot_end_dt_utc and event.stop > slot_start_dt_utc) for event in day_events):
                     return False
-
+            for day_dt in rrule.rrule(freq=rrule.DAILY,
+                                      dtstart=slot_start_dt_user_timezone,
+                                      until=slot_end_dt_user_timezone,
+                                      interval=1):
+                day_events = partner_to_events[staff_user.partner_id].get(day_dt.date()) or []
+                if any(event.allday for event in day_events):
+                    return False
         return True
 
     def _slot_availability_prepare_users_values(self, staff_users, start_dt, end_dt):

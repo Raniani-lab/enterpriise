@@ -1023,3 +1023,56 @@ class AppointmentTest(AppointmentCommon, HttpCase):
         })
         # User should be able open url without timezone session
         self.url_open(url_inside_of_slot)
+
+    @freeze_time('2022-02-14')
+    @users('apt_manager')
+    def test_different_timezones_with_allday_events_availabilities(self):
+        """
+        When the utc offset of the timezone is large, it is possible that the day of the week no longer corresponds.
+        Testing that allday event slots are all not available.
+        """
+        appointment = self.env['appointment.type'].create({
+            'appointment_tz': 'Pacific/Auckland',
+            'appointment_duration': 21,
+            'assign_method': 'time_auto_assign',
+            'category': 'recurring',
+            'location_id': self.staff_user_nz.partner_id.id,
+            'name': 'New Zealand Appointment',
+            'max_schedule_days': 14,
+            'min_cancellation_hours': 1,
+            'min_schedule_hours': 1,
+            'slot_ids': [(0, 0, {
+                'weekday': '1',
+                'start_hour': 1,
+                'end_hour': 23,
+            })],
+            'staff_user_ids': [(4, self.staff_user_nz.id)],
+        })
+        self._create_meetings(
+            self.staff_user_nz,
+            [(self.reference_monday + timedelta(days=7),
+              self.reference_monday + timedelta(days=7, hours=1),
+              True
+              )])
+        slots = appointment._get_appointment_slots(
+            appointment.appointment_tz)
+        global_slots_startdate = self.reference_now_monthweekstart
+        # last day of last week of February
+        global_slots_enddate = date(2022, 3, 5)
+        self.assertSlots(
+            slots,
+            [{'name_formated': 'February 2022',
+              'month_date': datetime(2022, 2, 1),
+              'weeks_count': 5,  # 31/01 -> 28/02 (06/03)
+              }
+             ],
+            {'enddate': global_slots_enddate,
+             'startdate': global_slots_startdate,
+             'slots_start_hours': [],
+             # first Monday after reference_now
+             'slots_startdate': self.reference_monday + timedelta(days=7),
+             # only test that day
+             'slots_enddate': self.reference_monday + timedelta(days=14),
+             'slots_day_specific': {date(2022, 2, 28): [{'start':1}]}
+             }
+        )

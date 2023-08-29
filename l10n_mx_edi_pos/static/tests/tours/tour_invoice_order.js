@@ -1,5 +1,8 @@
 /** @odoo-module **/
+
 import { registry } from "@web/core/registry";
+import { ProductScreen } from "@point_of_sale/../tests/tours/helpers/ProductScreenTourMethods";
+
 registry.category("web_tour.tours").add('l10n_mx_edi_pos.tour_invoice_order', {
     test: true,
     steps: () => [
@@ -11,10 +14,7 @@ registry.category("web_tour.tours").add('l10n_mx_edi_pos.tour_invoice_order', {
         content: "Open POS session from backend",
         trigger: "button[name='open_ui']",
     },
-    {
-        content: "Open POS session popup",
-        trigger: "div.button:contains('Open session')",
-    },
+    ...ProductScreen.do.confirmOpeningPopup(),
     {
         content: "Select a product",
         trigger: "div.product-content:contains('product_mx')",

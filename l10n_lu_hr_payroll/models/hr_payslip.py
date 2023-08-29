@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models
+from odoo import models, _
 
 
 class HrEmployee(models.Model):
@@ -24,6 +24,24 @@ class HrEmployee(models.Model):
                 'data/hr_rule_parameters_data.xml',
                 'data/hr_salary_rule_data.xml',
             ])]
+
+    def _get_dashboard_warnings(self):
+        res = super()._get_dashboard_warnings()
+        lu_companies = self.env.companies.filtered(lambda c: c.country_id.code == 'LU')
+        if lu_companies:
+            # Tax Classification
+            invalid_employees = self.env['hr.employee'].search([
+                ('l10n_lu_tax_classification', '=', False),
+                ('company_id', 'in', lu_companies.ids)
+            ])
+            if invalid_employees:
+                invalid_employees_str = _('Employees without a defined tax classification')
+                res.append({
+                    'string': invalid_employees_str,
+                    'count': len(invalid_employees),
+                    'action': self._dashboard_default_action(invalid_employees_str, 'hr.employee', invalid_employees.ids),
+                })
+        return res
 
 def compute_lux_tax(payslip, categories, worked_days, inputs):
     # Source: https://impotsdirects.public.lu/fr/baremes.html#Ex

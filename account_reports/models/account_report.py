@@ -2974,10 +2974,12 @@ class AccountReport(models.Model):
         # Create the subquery for the WITH linking our prefixes with account.account entries
         all_prefixes_queries = []
         prefix_params = []
-        company_ids = [comp_opt['id'] for comp_opt in options.get('multi_company', self.env.company)]
+        prefilter = self.env['account.account']._check_company_domain([
+            comp_opt['id'] for comp_opt in options.get('multi_company', self.env.company)
+        ])
         for prefix, excluded_prefixes in prefixes_to_compute:
             account_domain = [
-                *self.env['account.account']._check_company_domain(company_ids),
+                *prefilter,
                 ('code', '=like', f'{prefix}%'),
             ]
             excluded_prefixes_domains = []

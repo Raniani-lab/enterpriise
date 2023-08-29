@@ -128,6 +128,7 @@ class sale_subscription_report(models.Model):
     def _where(self):
         return """
             sub.is_subscription
+            AND sub.recurring_live
         """
 
     def _group_by(self):

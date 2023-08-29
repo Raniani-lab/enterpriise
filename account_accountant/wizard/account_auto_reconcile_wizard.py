@@ -18,8 +18,8 @@ class AccountAutoReconcileWizard(models.TransientModel):
         readonly=True,
         default=lambda self: self.env.company,
     )
-    from_date = fields.Date(string='From', store=True, readonly=False)
-    to_date = fields.Date(string='To', default=fields.Date.context_today, required=True, store=True, readonly=False)
+    from_date = fields.Date(string='From')
+    to_date = fields.Date(string='To', default=fields.Date.context_today, required=True)
     account_ids = fields.Many2many(
         comodel_name='account.account',
         string='Accounts',

@@ -102,7 +102,7 @@ export class SignItemCustomPopover extends Component {
         return {
             ...this.getMany2XProps(record, fieldName),
             domain: [["available", "=", true]],
-            noViewAll: true,
+            noSearchMore: true,
         };
     }
 

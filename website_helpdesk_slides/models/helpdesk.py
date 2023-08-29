@@ -7,7 +7,8 @@ class HelpdeskTeam(models.Model):
     _inherit = "helpdesk.team"
 
     show_knowledge_base_slide_channel = fields.Boolean(compute="_compute_show_knowledge_base_slide_channel")
-    website_slide_channel_ids = fields.Many2many('slide.channel', string='Courses', help="In the help center, customers will only be able to see the selected courses.")
+    website_slide_channel_ids = fields.Many2many('slide.channel', string='Courses',
+        help="Customers will see only the content from chosen courses in the help center. If you want all courses to be accessible, just leave the field empty. Alternatively, you can make courses private to restrict this feature to internal users.")
 
     @api.depends('website_slide_channel_ids')
     def _compute_show_knowledge_base_slide_channel(self):

@@ -159,7 +159,7 @@
     </template>
 
     <template id="search_box" name="Knowledge Base: Navbar Search Box">
-        <form t-attf-action="/helpdesk/{{slug(team)}}/knowledgebase" method="get"
+        <form t-attf-action="/helpdesk/{{slug(team)}}/knowledgebase" method="get" onsubmit="return this.search.value !== ''"
               role="search" class="o_helpdesk_knowledge_search w-100" t-att-data-autocomplete="autocomplete" t-attf-data-ac-url="/helpdesk/{{slug(team)}}/knowledgebase/autocomplete">
             <t t-call="website.website_search_box"/>
         </form>

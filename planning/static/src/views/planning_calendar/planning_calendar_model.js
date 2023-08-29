@@ -2,6 +2,7 @@
 
 import { CalendarModel } from "@web/views/calendar/calendar_model";
 import { usePlanningModelActions } from "../planning_hooks";
+import { _t } from "@web/core/l10n/translation";
 
 export class PlanningCalendarModel extends CalendarModel {
     setup() {
@@ -13,7 +14,7 @@ export class PlanningCalendarModel extends CalendarModel {
     }
 
     get defaultFilterLabel() {
-        return this.env._t("Open Shifts");
+        return _t("Open Shifts");
     }
 
     /**

@@ -473,14 +473,18 @@ class MrpProductionWorkcenterLine(models.Model):
                 if wo.move_id:
                     wo.current_quality_check_id._update_component_quantity()
             if not self.env.context.get('no_start_next'):
+                next_wo = self.env['mrp.workorder']
                 if self.operation_id:
-                    action = backorder.workorder_ids.filtered(lambda wo: wo.operation_id == self.operation_id).open_tablet_view()
+                    next_wo = backorder.workorder_ids.filtered(lambda wo: wo.operation_id == self.operation_id and wo.state in ('ready', 'progress'))
                 else:
                     index = list(self.production_id.workorder_ids).index(self)
-                    action = backorder.workorder_ids[index].open_tablet_view()
-                if self.employee_id:
-                    action['context']['employee_id'] = self.employee_id.id
-                return action
+                    if backorder.workorder_ids[index].state in ('ready', 'progress'):
+                        next_wo = backorder.workorder_ids[index]
+                if next_wo:
+                    action = next_wo.open_tablet_view()
+                    if self.employee_id:
+                        action['context']['employee_id'] = self.employee_id.id
+                    return action
         return self.action_back()
 
     def _defaults_from_move(self, move):

@@ -4,7 +4,6 @@ from markupsafe import Markup
 
 from odoo.addons.mrp_workorder.tests.common import TestMrpWorkorderCommon
 from odoo.tests import Form, HttpCase, tagged
-from .test_workorder import TestWorkOrder
 
 
 class TestWorkorderClientActionCommon(TestMrpWorkorderCommon):

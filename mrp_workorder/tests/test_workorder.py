@@ -468,3 +468,51 @@ class TestWorkOrder(TestMrpWorkorderCommon):
         self.assertEqual(backorder.move_raw_ids.move_line_ids.qty_done, 2)
         self.assertEqual(backorder.move_raw_ids.move_line_ids.location_id, location)
 
+    def test_split_mo_finished_wo_transition(self):
+        """ Check that if WOs are done out of order, then backordered/split WOs are not
+        started when they should not be started
+        """
+        simple_bom = self.env['mrp.bom'].create({
+            'product_tmpl_id': self.product_1.product_tmpl_id.id,
+            'product_qty': 1.0,
+            'operation_ids': [
+                (0, 0, {'name': 'OP1', 'workcenter_id': self.workcenter_1.id, 'time_cycle': 12, 'sequence': 1}),
+                (0, 0, {'name': 'OP2', 'workcenter_id': self.workcenter_2.id, 'time_cycle': 12, 'sequence': 1}),
+            ]})
+        mo_form = Form(self.env['mrp.production'])
+        mo_form.product_id = self.product_1
+        mo_form.bom_id = simple_bom
+        mo_form.product_qty = 2
+        mo = mo_form.save()
+        mo.action_confirm()
+
+        action = mo.action_split()
+        wizard = Form(self.env[action['res_model']].with_context(action['context']))
+        wizard.counter = 2
+        action = wizard.save().action_split()
+        # Should have 2 mos w/ 2 wos each
+        self.assertEqual(len(mo.procurement_group_id.mrp_production_ids), 2)
+        mo2 = mo.procurement_group_id.mrp_production_ids[1]
+        self.assertEqual(len(mo.workorder_ids), 2)
+        self.assertEqual(len(mo2.workorder_ids), 2)
+        self.assertEqual(mo.state, 'confirmed')
+        self.assertEqual(mo2.state, 'confirmed')
+        wo1_1, wo1_2 = mo.workorder_ids.sorted()
+        wo2_1, wo2_2 = mo2.workorder_ids.sorted()
+        self.assertEqual(wo1_1.state, 'ready')
+        self.assertEqual(wo1_2.state, 'pending')
+        self.assertEqual(wo2_1.state, 'ready')
+        self.assertEqual(wo2_2.state, 'pending')
+
+        wo1_1.qty_producing = 1
+        wo1_1.do_finish()
+        self.assertEqual(wo1_1.state, 'done')
+        self.assertEqual(wo1_2.state, 'ready')
+        self.assertEqual(wo2_1.state, 'progress', "Completion of first MO's WOs should auto-started second MO's first WO")
+        self.assertEqual(wo2_2.state, 'pending')
+        wo1_2.do_finish()
+        self.assertEqual(wo1_1.state, 'done')
+        self.assertEqual(wo1_2.state, 'done')
+        self.assertEqual(wo2_1.state, 'progress')
+        self.assertEqual(wo2_2.state, 'pending', "Completion of first MO's WOs should not affect backordered pending WO")
+        self.assertEqual(mo.state, 'to_close')

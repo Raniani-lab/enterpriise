@@ -22,7 +22,7 @@
             </p>
             <div class="w-100 ms-3">
                 <h5>
-                    <a t-att-href="url" t-out="record.display_name" class="fw-bold"/>
+                    <a t-att-href="url" target="_blank" t-out="record.display_name" class="fw-bold"/>
                 </h5>
                 <small>
                     <time t-field="record.create_date" class="ps-2 border-start" t-options='{"format": "d MMM yyyy"}'/>, by <a t-attf-href="/profile/user/{{record.create_uid.id}}" class="fw-bold" t-out="record.create_uid.name"/>

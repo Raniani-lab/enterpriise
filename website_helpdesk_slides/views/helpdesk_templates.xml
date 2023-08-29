@@ -22,7 +22,7 @@
             </p>
             <div class="w-100 ms-3">
                 <h5>
-                    <a t-att-href="url" t-out="record.name" class="fw-bold"/>
+                    <a t-att-href="url" target="_blank" t-out="record.name" class="fw-bold"/>
                 </h5>
                 <small>
                     <time t-field="record.date_published" t-options='{"format": "d MMM yyyy"}'/>, by <a t-attf-href="/profile/user/{{record.user_id.id}}" class="fw-bold" t-out="record.user_id.name"/>
@@ -47,7 +47,7 @@
             </p>
             <div class="w-100 ms-3">
                 <h5>
-                    <a t-att-href="url" t-out="record.name" class="fw-bold"/>
+                    <a t-att-href="url" target="_blank" t-out="record.name" class="fw-bold"/>
                 </h5>
                 <small>
                     <time t-field="record.slide_last_update" t-options='{"format": "d MMM yyyy"}'/>, by <a t-attf-href="/profile/user/{{record.user_id.id}}" class="fw-bold" t-out="record.user_id.name"/>

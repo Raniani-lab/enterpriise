@@ -55,7 +55,8 @@ class SignLog(models.Model):
         ("sent", "Before Signature"),
         ("signed", "After Signature"),
         ("refused", "Refused Signature"),
-        ("canceled", "Canceled")
+        ("canceled", "Canceled"),
+        ("expired", "Expired"),
     ], required=True, string="State of the request on action log", groups="sign.group_sign_manager")
 
     # Not related on purpose :P

@@ -693,3 +693,23 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
             invoice._check_status()
 
         self.assertEqual(invoice.partner_bank_id, created_bank_account)
+
+    def test_credit_note_detection(self):
+        # test that move type changes, if and only if the type in the ocr results is refund the current move type is invoice
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
+
+        extract_response = self.get_default_extract_response()
+        extract_response['results'][0]['type'] = 'refund'
+        with self.mock_iap_extract(extract_response, {}):
+            invoice._check_status()
+
+        self.assertEqual(invoice.move_type, 'in_refund')
+
+        invoice = self.env['account.move'].create({'move_type': 'out_refund', 'extract_state': 'waiting_extraction'})
+
+        extract_response = self.get_default_extract_response()
+        extract_response['results'][0]['type'] = 'invoice'
+        with self.mock_iap_extract(extract_response, {}):
+            invoice._check_status()
+
+        self.assertEqual(invoice.move_type, 'out_refund')

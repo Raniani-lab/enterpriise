@@ -20,3 +20,8 @@ class WebsiteSaleAvatax(WebsiteSale):
                 )
 
         return res
+
+    def _update_website_sale_delivery_return(self, order, **post):
+        if order and order.fiscal_position_id.is_avatax:
+            order.button_update_avatax()
+        return super()._update_website_sale_delivery_return(order, **post)

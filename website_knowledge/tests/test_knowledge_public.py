@@ -6,8 +6,40 @@ from odoo.tests.common import tagged
 
 
 @tagged('post_install', '-at_install', 'knowledge_public', 'knowledge_tour')
-class TestKnowledgePublicSearch(HttpCase):
+class TestKnowledgePublic(HttpCase):
     """ Test public user search tree rendering. """
+
+    @classmethod
+    def setUpClass(cls):
+        super(TestKnowledgePublic, cls).setUpClass()
+        # remove existing articles to ease tour management
+        cls.env['knowledge.article'].with_context(active_test=False).search([]).unlink()
+
+    def test_knowledge_load_more(self):
+        """ The goal of this tour is to test the behavior of the 'load more' feature.
+        Sub-trees of the articles are loaded max 50 by 50.
+        The parent articles are hand-picked with specific index because it allows testing
+        that we force the display of the parents of the active article. """
+
+        root_articles = self.env['knowledge.article'].create([{
+            'name': 'Root Article %i' % index,
+            'website_published': True,
+            'category': 'workspace',
+        } for index in range(153)])
+
+        children_articles = self.env['knowledge.article'].create([{
+            'name': 'Child Article %i' % index,
+            'parent_id': root_articles[103].id,
+            'website_published': True,
+        } for index in range(254)])
+
+        self.env['knowledge.article'].create([{
+            'name': 'Grand-Child Article %i' % index,
+            'parent_id': children_articles[203].id,
+            'website_published': True,
+        } for index in range(344)])
+
+        self.start_tour('/knowledge/article/%s' % root_articles[0].id, 'website_knowledge_load_more_tour')
 
     def test_knowledge_search_flow_public(self):
         """This tour will check that the search bar tree rendering is properly updated"""

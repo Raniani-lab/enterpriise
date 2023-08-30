@@ -122,7 +122,7 @@ class FecImportWizard(models.TransientModel):
                 account = accounts[account_code_stripped]
                 if account_code not in new_ids:
                     new_ids[account_code] = {
-                        'xml_id': f"l10n_fr_fec_import.account_{account_code_orig}",
+                        'xml_id': f"l10n_fr_fec_import.account_{account_code}",
                         'record': account,
                         'noupdate': True,
                     }
@@ -134,7 +134,7 @@ class FecImportWizard(models.TransientModel):
                     "account_type": 'asset_current',
                 }
                 cache['account.account'][account_code_stripped] = data
-                yield f"l10n_fr_fec_import.account_{account_code_orig}", data
+                yield f"l10n_fr_fec_import.account_{account_code}", data
         self.env['ir.model.data']._update_xmlids(new_ids.values())
 
 
@@ -213,6 +213,9 @@ class FecImportWizard(models.TransientModel):
 
                 # Setup account properties
                 if account_code:
+                    template_data = self.env['account.chart.template']._get_chart_template_data('fr').get('template_data')
+                    digits = template_data['code_digits']
+                    account_code = account_code[:digits] + account_code[digits:].rstrip('0')
                     account = cache['account.account'].get(account_code.rstrip('0'))
                     if account['account_type'] == 'asset_receivable':
                         data["property_account_receivable_id"] = f"l10n_fr_fec_import.account_{account_code}"
@@ -408,8 +411,12 @@ class FecImportWizard(models.TransientModel):
             journal_code = record.get("JournalCode", "")
 
             # Move line data ------------------------------------
+            template_data = self.env['account.chart.template']._get_chart_template_data('fr').get('template_data')
+            digits = template_data['code_digits']
             move_line_name = record.get("EcritureLib", "")
-            account_code = record.get("CompteNum", "")
+            account_code_orig = record.get("CompteNum", "")
+            account_code = account_code_orig[:digits] + account_code_orig[digits:].rstrip('0')
+
             currency_name = record.get("Idevise", "")
             amount_currency = self._normalize_float_value(record, "Montantdevise")
             matching = record.get("EcritureLet", "")

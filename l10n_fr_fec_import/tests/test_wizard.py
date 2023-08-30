@@ -32,6 +32,10 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
         ACH\tACHATS\tACH000003\t20180910\t61320000\tPartner rentals 01\t\t\t3\t20180910\tPARTNER 01\t41,50\t0,00\t\t\t20190725\t\t
         ACH\tACHATS\tACH000003\t20180910\t44566000\tVat on other goods and services\t\t\t3\t20180910\tPARTNER 01\t8,30\t0,00\tAA\t\t20190725\t\t
         ACH\tACHATS\tACH000003\t20180910\t40100000\tSuppliers\tPARTNER01\tPARTNER 01\t3\t20180910\tPARTNER 01\t0,00\t49,80\tAA\t\t20190725\t\t
+        ACH\tACHATS\tACH000004\t20180910\t512001\tVat on other goods and services\t\t\t3\t20180910\tPARTNER 01\t49,80\t0,00\tAA\t\t20190725\t\t
+        ACH\tACHATS\tACH000004\t20180910\t40100000\tSuppliers\tPARTNER01\tPARTNER 01\t3\t20180910\tPARTNER 01\t0,00\t49,80\tAA\t\t20190725\t\t
+        ACH\tACHATS\tACH000005\t20180910\t5120010\tVat on other goods and services\t\t\t3\t20180910\tPARTNER 01\t49,80\t0,00\tAA\t\t20190725\t\t
+        ACH\tACHATS\tACH000005\t20180910\t40100000\tSuppliers\tPARTNER01\tPARTNER 01\t3\t20180910\tPARTNER 01\t0,00\t49,80\tAA\t\t20190725\t\t
     """
 
     # ----------------------------------------
@@ -340,6 +344,10 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
                 ('ACH/20180910', 'PARTNER 01'),
                 ('ACH/20180910', 'PARTNER 01'),
                 ('ACH/20180910', 'PARTNER 01'),
+                ('ACH/20180910', 'PARTNER 01'),
+                ('ACH/20180910', 'PARTNER 01'),
+                ('ACH/20180910', 'PARTNER 01'),
+                ('ACH/20180910', 'PARTNER 01'),
             ])
 
     def test_balance_moves_by_month(self):
@@ -359,6 +367,10 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
                 ('ACH/201808', 'DOMICILIATION'),
                 ('ACH/201808', 'DOMICILIATION'),
                 ('ACH/201808', 'DOMICILIATION'),
+                ('ACH/201809', 'PARTNER 01'),
+                ('ACH/201809', 'PARTNER 01'),
+                ('ACH/201809', 'PARTNER 01'),
+                ('ACH/201809', 'PARTNER 01'),
                 ('ACH/201809', 'PARTNER 01'),
                 ('ACH/201809', 'PARTNER 01'),
                 ('ACH/201809', 'PARTNER 01'),

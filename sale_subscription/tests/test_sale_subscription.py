@@ -2586,3 +2586,10 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertEqual(subscription.sale_order_option_ids.price_unit, 150, "The price unit for the optional product must be 150.0 due to 'Monthly' value in the 'Recurrence' field.")
         subscription.recurrence_id = self.recurrence_year.id
         self.assertEqual(subscription.sale_order_option_ids.price_unit, 1000, "The price unit for the optional product must update to 1000.0 after changing the 'Recurrence' field to 'Yearly'.")
+    def test_stage_progress_for_order_with_no_stage(self):
+        """ Test that the stage progress is computed for a subscription
+        with no stage. """
+
+        self.subscription.stage_id = False
+        self.subscription.action_confirm()
+        self.assertTrue(self.subscription.stage_id, "The stage should be set")

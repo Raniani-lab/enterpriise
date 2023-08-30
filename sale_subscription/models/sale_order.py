@@ -627,6 +627,7 @@ class SaleOrder(models.Model):
         upsell = child_subscriptions.filtered(lambda s: s.subscription_management == 'upsell' and s.state in ['draft', 'sent'])
         # We need to call super with batches of subscription in the same stage
         res = super(SaleOrder, self - confirmed_subscription).action_confirm()
+        confirmed_subscription.filtered(lambda so: not so.stage_id).stage_id = self._get_default_stage_id()
         for stage in confirmed_subscription.mapped('stage_id'):
             subs_current_stage = confirmed_subscription.filtered(lambda so: so.stage_id.id == stage.id)
             res = res and super(SaleOrder, subs_current_stage).action_confirm()

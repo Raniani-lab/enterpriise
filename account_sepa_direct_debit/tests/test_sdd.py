@@ -110,16 +110,24 @@ class SDDTest(AccountTestInvoicingCommon):
         self.assertEqual(mandate_no_bic.state, 'closed', 'A one-off mandate should be closed after accepting a payment')
 
         #Let us check the conformity of XML generation :
-        schema_file_path = get_module_resource('account_sepa_direct_debit', 'schemas', 'pain.008.001.02.xsd')
 
-        for invoice in (invoice_agrolait, invoice_china_export, invoice_no_bic):
-            payment = invoice.line_ids.mapped('matched_credit_ids.credit_move_id.payment_id')
-            xml_file = etree.fromstring(payment.generate_xml(company, fields.Date.today(), True))
-            xml_schema = etree.XMLSchema(etree.parse(open(schema_file_path)))
-            self.assertTrue(xml_schema.validate(xml_file), xml_schema.error_log.last_error)
+        debit_sepa_pain_versions = ['pain.008.001.02', 'pain.008.001.08']
+        for debit_sepa_pain_version in debit_sepa_pain_versions:
+
+            # Set up the journal SEPA version
+            company_bank_journal.debit_sepa_pain_version = debit_sepa_pain_version
+
+            schema_file_path = get_module_resource('account_sepa_direct_debit', 'schemas', f'{debit_sepa_pain_version}.xsd')
+
+            for invoice in (invoice_agrolait, invoice_china_export, invoice_no_bic):
+                payment = invoice.line_ids.mapped('matched_credit_ids.credit_move_id.payment_id')
+                xml_file = etree.fromstring(payment.generate_xml(company, fields.Date.today(), True))
+                xml_schema = etree.XMLSchema(etree.parse(open(schema_file_path)))
+                self.assertTrue(xml_schema.validate(xml_file), xml_schema.error_log.last_error)
 
         # Test B2B sdd scheme
         schema_file_path = get_module_resource('account_sepa_direct_debit', 'schemas', 'EPC131-08_2019_V1.0_pain.008.001.02.xsd')
+        company_bank_journal.debit_sepa_pain_version = 'pain.008.001.02'
         mandate_agrolait.sdd_scheme = 'B2B'
         mandate_china_export.sdd_scheme = 'B2B'
         mandate_no_bic.sdd_scheme = 'B2B'

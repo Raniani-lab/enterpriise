@@ -54,6 +54,7 @@
         'views/res_partner_view.xml',
         'views/account_batch_payment_views.xml',
         'views/account_move_view.xml',
+        'views/account_journal_views.xml',
     ],
     'license': 'OEEL-1',
 }

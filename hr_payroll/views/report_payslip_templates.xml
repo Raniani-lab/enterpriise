@@ -67,11 +67,7 @@
                 </tr>
             </table>
 
-            <!-- YTI TODO master: Remove this horrible bidouille and add a field on the structure to display the basic
-                 salary on the payslip report -->
-            <t t-set="holiday_attest_n1" t-value="o.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays', raise_if_not_found=False)"/>
-            <t t-set="holiday_attest_n" t-value="o.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays', raise_if_not_found=False)"/>
-            <table class="table table-sm" t-if="o.struct_id not in [holiday_attest_n, holiday_attest_n1]">
+            <table class="table table-sm" t-if="not o.struct_id.hide_basic_on_pdf">
                 <tr>
                     <td class="w-25"><strong>Basic Salary</strong></td>
                     <td style="color:#875A7B" class="w-25">

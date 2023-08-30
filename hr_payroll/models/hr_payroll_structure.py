@@ -45,6 +45,7 @@ class HrPayrollStructure(models.Model):
         string="Report", domain="[('model','=','hr.payslip'),('report_type','=','qweb-pdf')]", default=_get_default_report_id)
     payslip_name = fields.Char(string="Payslip Name", translate=True,
         help="Name to be set on a payslip. Example: 'End of the year bonus'. If not set, the default value is 'Salary Slip'")
+    hide_basic_on_pdf = fields.Boolean(help="Enable this option if you don't want to display the Basic Salary on the printed pdf.")
     unpaid_work_entry_type_ids = fields.Many2many(
         'hr.work.entry.type', 'hr_payroll_structure_hr_work_entry_type_rel')
     use_worked_day_lines = fields.Boolean(default=True, help="Worked days won't be computed/displayed in payslips.")

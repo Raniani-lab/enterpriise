@@ -2290,7 +2290,7 @@ QUnit.test("move a pill in the same row (with different timezone)", async (asser
     assert.expect(5);
 
     patchWithCleanup(luxon.Settings, {
-        defaultZone: new luxon.IANAZone("Europe/Brussels"),
+        defaultZone: luxon.IANAZone.create("Europe/Brussels"),
     });
 
     serverData.models.tasks.records[7].start = `${DST_DATES.winterToSummer.before} 05:00:00`;
@@ -4412,7 +4412,7 @@ QUnit.test("concurrent pill resizes and open, dialog show updated number", async
 
 QUnit.test("DST spring forward", async (assert) => {
     patchWithCleanup(luxon.Settings, {
-        defaultZone: new luxon.IANAZone("Europe/Brussels"),
+        defaultZone: luxon.IANAZone.create("Europe/Brussels"),
     });
 
     serverData.models.tasks.records = [
@@ -4465,7 +4465,7 @@ QUnit.test("DST spring forward", async (assert) => {
 
 QUnit.test("DST fall back", async (assert) => {
     patchWithCleanup(luxon.Settings, {
-        defaultZone: new luxon.IANAZone("Europe/Brussels"),
+        defaultZone: luxon.IANAZone.create("Europe/Brussels"),
     });
 
     serverData.models.tasks.records = [
@@ -4518,7 +4518,7 @@ QUnit.test("DST fall back", async (assert) => {
 
 QUnit.test("Records spanning across DST should be displayed normally", async (assert) => {
     patchWithCleanup(luxon.Settings, {
-        defaultZone: new luxon.IANAZone("Europe/Brussels"),
+        defaultZone: luxon.IANAZone.create("Europe/Brussels"),
     });
 
     serverData.models.tasks.records = [
@@ -5223,7 +5223,7 @@ QUnit.test("date grid and dst winterToSummer (1 cell part)", async (assert) => {
     });
 
     patchWithCleanup(luxon.Settings, {
-        defaultZone: new luxon.IANAZone("Europe/Brussels"),
+        defaultZone: luxon.IANAZone.create("Europe/Brussels"),
     });
 
     serverData.models.tasks.records = [];
@@ -5386,7 +5386,7 @@ QUnit.test("date grid and dst summerToWinter (1 cell part)", async (assert) => {
     });
 
     patchWithCleanup(luxon.Settings, {
-        defaultZone: new luxon.IANAZone("Europe/Brussels"),
+        defaultZone: luxon.IANAZone.create("Europe/Brussels"),
     });
 
     serverData.models.tasks.records = [];
@@ -5550,7 +5550,7 @@ QUnit.test("date grid and dst winterToSummer (2 cell part)", async (assert) => {
     });
 
     patchWithCleanup(luxon.Settings, {
-        defaultZone: new luxon.IANAZone("Europe/Brussels"),
+        defaultZone: luxon.IANAZone.create("Europe/Brussels"),
     });
 
     serverData.models.tasks.records = [];
@@ -5780,7 +5780,7 @@ QUnit.test("date grid and dst summerToWinter (2 cell part)", async (assert) => {
     });
 
     patchWithCleanup(luxon.Settings, {
-        defaultZone: new luxon.IANAZone("Europe/Brussels"),
+        defaultZone: luxon.IANAZone.create("Europe/Brussels"),
     });
 
     serverData.models.tasks.records = [];

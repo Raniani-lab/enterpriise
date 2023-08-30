@@ -1,14 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
 
-    <!-- Calendar's menu -->
-    <menuitem
-        id="calendar_appointment_type_menu_action"
-        parent="calendar.mail_menu_calendar"
-        name="Calendar"
-        action="calendar.action_calendar_event"
-        groups="base.group_user"/>
-
     <!-- Calendar's appointment menu-->
     <menuitem
         id="appointment_menu_calendar"

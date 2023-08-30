@@ -99,7 +99,7 @@ const FormControllerPatch = {
 
                 const readonlyModifier = record.activeFields[fieldName].readonly;
                 const invisibleModifier = record.activeFields[fieldName].invisible;
-                if (evaluateBooleanExpr(readonlyModifier, record.evalContext) || evaluateBooleanExpr(invisibleModifier, record.evalContext)) {
+                if (evaluateBooleanExpr(readonlyModifier, record.evalContextWithVirtualIds) || evaluateBooleanExpr(invisibleModifier, record.evalContextWithVirtualIds)) {
                     continue loopFieldNames;
                 }
                 // Parse the xmlDoc to find all instances of the field that are
@@ -114,7 +114,7 @@ const FormControllerPatch = {
                     let xmlInvisibleParent = xmlFieldParent.closest('[invisible]');
                     while (xmlInvisibleParent) {
                         const invisibleParentModifier = xmlInvisibleParent.getAttribute('invisible');
-                        if (evaluateBooleanExpr(invisibleParentModifier, record.evalContext)) {
+                        if (evaluateBooleanExpr(invisibleParentModifier, record.evalContextWithVirtualIds)) {
                             continue loopDirectXmlFields;
                         }
                         xmlInvisibleParent = xmlInvisibleParent.parentElement &&

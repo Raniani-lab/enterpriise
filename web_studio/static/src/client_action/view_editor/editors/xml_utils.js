@@ -77,7 +77,9 @@ export function applyInvisible(invisible, compiled, params) {
     // If invisible is dynamic, pass a props or apply the studio class.
     if (invisible !== "True" && invisible !== "1") {
         const recordExpr = params.recordExpr || "__comp__.props.record";
-        isVisileExpr = `!__comp__.evaluateBooleanExpr(${JSON.stringify(invisible)},${recordExpr}.evalContext)`;
+        isVisileExpr = `!__comp__.evaluateBooleanExpr(${JSON.stringify(
+            invisible
+        )},${recordExpr}.evalContextWithVirtualIds)`;
         if (isComponentNode(compiled)) {
             compiled.setAttribute("studioIsVisible", isVisileExpr);
         } else {

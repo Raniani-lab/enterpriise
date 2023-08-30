@@ -32,7 +32,7 @@ class Task(models.Model):
             if not date_end:
                 date_end = date_begin.replace(hour=23, minute=59, second=59)
             date_diff = date_end - date_begin
-            if date_diff.seconds / 3600 > 23.5:
+            if date_diff.total_seconds() / 3600 > 23.5:
                 # if the interval between both dates are more than 23 hours and 30 minutes
                 # then we changes those dates to fit with the working schedule of the assigned user or the current company
                 # because we assume here, the planned dates are not the ones chosen by the current user.

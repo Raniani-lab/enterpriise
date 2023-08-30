@@ -48,15 +48,15 @@ class HelpDeskPortal(HttpCase):
         self.assertTrue(ticket.exists())
         ticket_submitted_response = self.url_open('/your-ticket-has-been-submitted')
         self.assertEqual(ticket_submitted_response.status_code, 200)
-        ticket_submitted_response_ticket_id = int(
+        ticket_submitted_response_ticket_id = (
             re.search(
-                rb'Your Ticket Number is #<span>(?P<ticket_id>\d+)</span>',
+                rb'Your Ticket Number is #<span>(?P<ticket_id>.*?)</span>',
                 ticket_submitted_response.content)
             .group('ticket_id')
-        )
-        self.assertEqual(
+        ).decode()
+        self.assertIn(
             ticket_submitted_response_ticket_id,
-            ticket.id,
+            (ticket.ticket_ref, str(ticket.id)),
             "Ticket ID on the submitted page does not match with the ticket created"
         )
 

@@ -58,7 +58,7 @@ export const homeMenuService = {
 
         registry.category("actions").add("menu", HomeMenuAction);
 
-        env.bus.on("HOME-MENU:TOGGLED", null, () => {
+        env.bus.addEventListener("HOME-MENU:TOGGLED", () => {
             document.body.classList.toggle("o_home_menu_background", hasHomeMenu);
         });
 

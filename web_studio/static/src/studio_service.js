@@ -39,7 +39,16 @@ export function viewTypeToString(vType) {
 }
 
 export const studioService = {
-    dependencies: ["action", "cookie", "color_scheme", "home_menu", "router", "user", "rpc", "menu"],
+    dependencies: [
+        "action",
+        "cookie",
+        "color_scheme",
+        "home_menu",
+        "router",
+        "user",
+        "rpc",
+        "menu",
+    ],
     async start(env, { user, cookie, color_scheme, rpc, menu }) {
         const supportedViewTypes = Object.keys(SUPPORTED_VIEW_TYPES);
 
@@ -90,13 +99,13 @@ export const studioService = {
         const menuSelectMenu = menu.selectMenu;
         menu.selectMenu = async (argMenu) => {
             if (!inStudio) {
-                return menuSelectMenu.call(menu, argMenu)
+                return menuSelectMenu.call(menu, argMenu);
             } else {
                 argMenu = typeof argMenu === "number" ? menu.getMenu(argMenu) : argMenu;
                 await open(MODES.EDITOR, argMenu.actionID);
                 menu.setCurrentMenu(argMenu);
             }
-        }
+        };
 
         const state = {
             studioMode: null,
@@ -148,7 +157,7 @@ export const studioService = {
         }
 
         let studioProm = _loadParamsFromURL();
-        env.bus.on("ROUTE_CHANGE", null, async () => {
+        env.bus.addEventListener("ROUTE_CHANGE", async () => {
             studioProm = _loadParamsFromURL();
         });
 
@@ -348,7 +357,8 @@ export const studioService = {
             bus.trigger("UPDATE", { reset });
         }
 
-        env.bus.on("ACTION_MANAGER:UI-UPDATED", null, (mode) => {
+        env.bus.addEventListener("ACTION_MANAGER:UI-UPDATED", (ev) => {
+            const mode = ev.detail;
             if (mode === "new") {
                 return;
             }

@@ -221,11 +221,11 @@ QUnit.module("Studio", (hooks) => {
     QUnit.test("Click on a normal App", async (assert) => {
         assert.expect(2);
 
-        bus.on("studio:open", null, (modeAndActionId) => {
-            assert.deepEqual(modeAndActionId, [MODES.EDITOR, 121]);
+        bus.addEventListener("studio:open", (ev) => {
+            assert.deepEqual(ev.detail, [MODES.EDITOR, 121]);
         });
-        bus.on("menu:setCurrentMenu", null, (menuId) => {
-            assert.strictEqual(menuId, 1);
+        bus.addEventListener("menu:setCurrentMenu", (ev) => {
+            assert.strictEqual(ev.detail, 1);
         });
         const target = await createStudioHomeMenu();
 
@@ -235,10 +235,10 @@ QUnit.module("Studio", (hooks) => {
     QUnit.test("Click on new App", async (assert) => {
         assert.expect(1);
 
-        bus.on("studio:open", null, ([mode]) => {
-            assert.strictEqual(mode, MODES.APP_CREATOR);
+        bus.addEventListener("studio:open", (ev) => {
+            assert.strictEqual(ev.detail[0], MODES.APP_CREATOR);
         });
-        bus.on("menu:setCurrentMenu", null, () => {
+        bus.addEventListener("menu:setCurrentMenu", () => {
             throw new Error("should not update the current menu");
         });
         const target = await createStudioHomeMenu();

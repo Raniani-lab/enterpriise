@@ -904,7 +904,7 @@ QUnit.module("Studio", (hooks) => {
             const webClient = await createEnterpriseWebClient({ serverData });
             assert.containsOnce(target, ".o_home_menu");
 
-            webClient.env.bus.on("ACTION_MANAGER:UI-UPDATED", null, () => {
+            webClient.env.bus.addEventListener("ACTION_MANAGER:UI-UPDATED", () => {
                 assert.containsOnce(target, ".o_kanban_view");
                 assert.hasClass(target.querySelector(".o_web_studio_navbar_item"), "o_disabled");
                 def.resolve();

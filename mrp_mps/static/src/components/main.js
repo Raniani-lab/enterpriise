@@ -6,7 +6,7 @@ import { MrpMpsSearchModel } from '../search/mrp_mps_search_model';
 import MpsLineComponent from '@mrp_mps/components/line';
 import { MasterProductionScheduleModel } from '@mrp_mps/models/master_production_schedule_model';
 import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
+import { useService, useBus } from "@web/core/utils/hooks";
 import { CheckBox } from "@web/core/checkbox/checkbox";
 import { usePager } from "@web/search/pager_hook";
 import { useSetupAction } from "@web/webclient/actions/action_hook";
@@ -50,10 +50,11 @@ class MainComponent extends Component {
             },
         });
 
+        useBus(this.model, "update", () => this.render(true));
+
         onWillStart(async () => {
             this.env.config.setDisplayName(_t("Master Production Schedule"));
             this.withSearchProps = await this._prepareWithSearchProps();
-            this.model.on('update', this, () => this.render(true));
             const domain = this.props.action.domain;
             await this.model.load(domain, this.env.config.offset, this.env.config.limit);
         });

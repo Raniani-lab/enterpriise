@@ -107,7 +107,7 @@ QUnit.module("Worksheet", (hooks) => {
             },
         });
 
-        bus.on("studio:open", null, () => {
+        bus.addEventListener("studio:open", () => {
             assert.step("open studio");
         });
 

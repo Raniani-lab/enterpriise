@@ -9,7 +9,8 @@ class StudioSystray extends Component {
         this.hm = useService("home_menu");
         this.studio = useService("studio");
         this.rootRef = useRef("root");
-        this.env.bus.on("ACTION_MANAGER:UI-UPDATED", this, (mode) => {
+        this.env.bus.addEventListener("ACTION_MANAGER:UI-UPDATED", (ev) => {
+            const mode = ev.detail;
             if (mode !== "new" && this.rootRef.el) {
                 this.rootRef.el.classList.toggle("o_disabled", this.buttonDisabled);
             }

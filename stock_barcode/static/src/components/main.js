@@ -10,7 +10,7 @@ import GroupedLineComponent from '@stock_barcode/components/grouped_line';
 import LineComponent from '@stock_barcode/components/line';
 import PackageLineComponent from '@stock_barcode/components/package_line';
 import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
+import { useService, useBus } from "@web/core/utils/hooks";
 import * as BarcodeScanner from '@web/webclient/barcode/barcode_scanner';
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { View } from "@web/views/view";
@@ -62,6 +62,9 @@ class MainComponent extends Component {
             displayNote: false,
         });
 
+        useBus(this.env.model, 'flash', this.flashScreen.bind(this));
+        useBus(this.env.model, 'error', this.playErrorSound.bind(this));
+
         onWillStart(async () => {
             const barcodeData = await this.rpc(
                 '/stock_barcode/get_barcode_data',
@@ -79,13 +82,11 @@ class MainComponent extends Component {
             this.groups = barcodeData.groups;
             this.env.model.setData(barcodeData);
             this.state.displayNote = Boolean(this.env.model.record.note);
-            this.env.model.on('flash', this, this.flashScreen);
-            this.env.model.on('error', this, this.playErrorSound);
-            this.env.model.on('process-action', this, this._onDoAction);
-            this.env.model.on('refresh', this, this._onRefreshState);
-            this.env.model.on('update', this, () => this.render(true));
-            this.env.model.on('do-action', this, args => bus.trigger('do-action', args));
-            this.env.model.on('history-back', this, () => this.env.config.historyBack());
+            this.env.model.addEventListener('process-action', this._onDoAction.bind(this));
+            this.env.model.addEventListener('refresh', (ev) => this._onRefreshState(ev.detail));
+            this.env.model.addEventListener('update', () => this.render(true));
+            this.env.model.addEventListener('do-action', args => bus.trigger('do-action', args.detail));
+            this.env.model.addEventListener('history-back', () => this.env.config.historyBack());
         });
 
         onMounted(() => {
@@ -95,8 +96,6 @@ class MainComponent extends Component {
         });
 
         onWillUnmount(() => {
-            this.env.model.off('flash', this, this.flashScreen)
-            this.env.model.off('error', this, this.playErrorSound)
             bus.off('barcode_scanned', this, this._onBarcodeScanned);
             bus.off('refresh', this, this._onRefreshState);
             bus.off('warning', this, this._onWarning);
@@ -349,7 +348,7 @@ class MainComponent extends Component {
 
     async _onDoAction(ev) {
         bus.trigger('do-action', {
-            action: ev,
+            action: ev.detail,
             options: {
                 on_close: this._onRefreshState.bind(this),
             },

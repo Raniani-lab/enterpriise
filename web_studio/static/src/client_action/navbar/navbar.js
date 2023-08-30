@@ -19,7 +19,7 @@ export class StudioNavbar extends EnterpriseNavBar {
         this.dialogManager = useService("dialog");
         this.notification = useService("notification");
         onMounted(() => {
-            this.env.bus.off("HOME-MENU:TOGGLED", this);
+            this.env.bus.removeEventListener("HOME-MENU:TOGGLED", this._busToggledCallback);
             this._updateMenuAppsIcon();
         });
 

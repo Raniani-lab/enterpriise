@@ -11,7 +11,8 @@ export class EnterpriseNavBar extends NavBar {
         this.hm = useService("home_menu");
         this.menuAppsRef = useRef("menuApps");
         this.navRef = useRef("nav");
-        useBus(this.env.bus, "HOME-MENU:TOGGLED", () => this._updateMenuAppsIcon());
+        this._busToggledCallback = () => this._updateMenuAppsIcon();
+        useBus(this.env.bus, "HOME-MENU:TOGGLED", this._busToggledCallback);
         useEffect(() => this._updateMenuAppsIcon());
     }
     get hasBackgroundAction() {

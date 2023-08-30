@@ -66,7 +66,7 @@ export class Editor extends Component {
 
         const globalBus = this.env.bus;
         const newBus = new EventBus();
-        newBus.on("CLEAR-CACHES", this, () => globalBus.trigger("CLEAR-CACHES"));
+        newBus.addEventListener("CLEAR-CACHES", () => globalBus.trigger("CLEAR-CACHES"));
 
         useSubEnv({
             bus: newBus,

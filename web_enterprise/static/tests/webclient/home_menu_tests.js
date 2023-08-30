@@ -138,8 +138,8 @@ QUnit.module(
         QUnit.module("HomeMenu");
 
         QUnit.test("ESC Support", async function (assert) {
-            bus.on("toggle", null, (show) => {
-                assert.step(`toggle ${show}`);
+            bus.addEventListener("toggle", (ev) => {
+                assert.step(`toggle ${ev.detail}`);
             });
             await createHomeMenu(homeMenuProps);
             await testUtils.dom.triggerEvent(window, "keydown", { key: "Escape" });
@@ -147,8 +147,8 @@ QUnit.module(
         });
 
         QUnit.test("Click on an app", async function (assert) {
-            bus.on("selectMenu", null, (menuId) => {
-                assert.step(`selectMenu ${menuId}`);
+            bus.addEventListener("selectMenu", (ev) => {
+                assert.step(`selectMenu ${ev.detail}`);
             });
             await createHomeMenu(homeMenuProps);
 
@@ -277,8 +277,8 @@ QUnit.module(
         QUnit.test("Navigation and open an app in the home menu", async function (assert) {
             assert.expect(7);
 
-            bus.on("selectMenu", null, (menuId) => {
-                assert.step(`selectMenu ${menuId}`);
+            bus.addEventListener("selectMenu", (ev) => {
+                assert.step(`selectMenu ${ev.detail}`);
             });
             await createHomeMenu(homeMenuProps);
 

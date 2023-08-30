@@ -157,7 +157,7 @@ class TestTimeoffDefer(TestPayrollHolidaysBase):
         })
 
     def test_report_to_next_month(self):
-        self.emp.contract_ids._generate_work_entries(datetime(2022, 1, 1), datetime(2022, 2, 28))
+        self.emp.contract_ids.generate_work_entries(date(2022, 1, 1), date(2022, 2, 28))
         payslip = self.env['hr.payslip'].create({
             'name': 'toto payslip',
             'employee_id': self.emp.id,
@@ -202,7 +202,7 @@ class TestTimeoffDefer(TestPayrollHolidaysBase):
         If the time off overlap over 2 months, only report the exceeding part from january
         In case leaves go over two months, only the leaves that are in the first month should be defered
         """
-        self.emp.contract_ids._generate_work_entries(datetime(2022, 1, 1), datetime(2022, 2, 28))
+        self.emp.contract_ids.generate_work_entries(date(2022, 1, 1), date(2022, 2, 28))
         payslip = self.env['hr.payslip'].create({
             'name': 'toto payslip',
             'employee_id': self.emp.id,
@@ -246,7 +246,7 @@ class TestTimeoffDefer(TestPayrollHolidaysBase):
 
     def test_report_to_next_month_not_enough_days(self):
         # If the time off contains too many days to be reported to next months, raise
-        self.emp.contract_ids._generate_work_entries(datetime(2022, 1, 1), datetime(2022, 2, 28))
+        self.emp.contract_ids.generate_work_entries(date(2022, 1, 1), date(2022, 2, 28))
         payslip = self.env['hr.payslip'].create({
             'name': 'toto payslip',
             'employee_id': self.emp.id,
@@ -277,7 +277,7 @@ class TestTimeoffDefer(TestPayrollHolidaysBase):
 
     def test_report_to_next_month_long_time_off(self):
         # If the time off overlap over more than 2 months, raise
-        self.emp.contract_ids._generate_work_entries(datetime(2022, 1, 1), datetime(2022, 2, 28))
+        self.emp.contract_ids.generate_work_entries(date(2022, 1, 1), date(2022, 2, 28))
         payslip = self.env['hr.payslip'].create({
             'name': 'toto payslip',
             'employee_id': self.emp.id,
@@ -308,7 +308,7 @@ class TestTimeoffDefer(TestPayrollHolidaysBase):
 
     def test_report_to_next_month_half_days(self):
         self.leave_type.request_unit = 'half_day'
-        self.emp.contract_ids._generate_work_entries(datetime(2022, 1, 1), datetime(2022, 2, 28))
+        self.emp.contract_ids.generate_work_entries(date(2022, 1, 1), date(2022, 2, 28))
         payslip = self.env['hr.payslip'].create({
             'name': 'toto payslip',
             'employee_id': self.emp.id,

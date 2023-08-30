@@ -429,7 +429,7 @@ class Payslip(models.Model):
     def _compute_presence_prorata(self, date_from, date_to, contracts):
         unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids
         paid_work_entry_types = self.env['hr.work.entry.type'].search([]) - unpaid_work_entry_types
-        hours = contracts._get_work_hours(date_from, date_to)
+        hours = contracts.get_work_hours(date_from, date_to)
         paid_hours = sum(v for k, v in hours.items() if k in paid_work_entry_types.ids)
         unpaid_hours = sum(v for k, v in hours.items() if k in unpaid_work_entry_types.ids)
         return paid_hours / (paid_hours + unpaid_hours) if paid_hours or unpaid_hours else 0

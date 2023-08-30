@@ -532,7 +532,7 @@ class HrPayslip(models.Model):
         self.ensure_one()
         res = []
         hours_per_day = self._get_worked_day_lines_hours_per_day()
-        work_hours = self.contract_id._get_work_hours(self.date_from, self.date_to, domain=domain)
+        work_hours = self.contract_id.get_work_hours(self.date_from, self.date_to, domain=domain)
         work_hours_ordered = sorted(work_hours.items(), key=lambda x: x[1])
         biggest_work = work_hours_ordered[-1][0] if work_hours_ordered else 0
         add_days_rounding = 0
@@ -796,7 +796,7 @@ class HrPayslip(models.Model):
         generate_from = min(p.date_from for p in self)
         current_month_end = date_utils.end_of(fields.Date.today(), 'month')
         generate_to = max(min(fields.Date.to_date(p.date_to), current_month_end) for p in valid_slips)
-        self.mapped('contract_id')._generate_work_entries(generate_from, generate_to)
+        self.mapped('contract_id').generate_work_entries(generate_from, generate_to)
 
         for slip in valid_slips:
             if not slip.struct_id.use_worked_day_lines:

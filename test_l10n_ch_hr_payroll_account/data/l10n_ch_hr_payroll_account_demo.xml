@@ -14,10 +14,10 @@
     </data>
 
     <!-- Work Entries for Ruth -->
-    <function model="hr.contract" name="_generate_work_entries">
+    <function model="hr.contract" name="generate_work_entries">
         <value eval="[ref('l10n_ch_hr_payroll.hr_contract_cdi_ruth_schmid')]"/>
-        <value eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1, days=-1))"/>
-        <value eval="DateTime.today()"/>
+        <value eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1, days=-1)).date()"/>
+        <value eval="DateTime.today().date()"/>
     </function>
 
     <function model="hr.work.entry" name="action_validate">

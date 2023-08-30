@@ -29,7 +29,7 @@ class TestPayslipOvertime(HrWorkEntryAttendanceCommon):
         })
 
     def test_01_no_overtime(self):
-        work_entries = self.contract._generate_work_entries(datetime(2022, 12, 12), datetime(2022, 12, 12)).sorted('date_start')
+        work_entries = self.contract.generate_work_entries(date(2022, 12, 12), date(2022, 12, 12)).sorted('date_start')
         self.assertEqual(len(work_entries), 2)
         self.assertEqual(work_entries[0].date_start, datetime(2022, 12, 12, 7, 0))
         self.assertEqual(work_entries[0].date_stop, datetime(2022, 12, 12, 11, 0))
@@ -44,7 +44,7 @@ class TestPayslipOvertime(HrWorkEntryAttendanceCommon):
             'check_in': datetime(2022, 12, 12, 6),
             'check_out': datetime(2022, 12, 12, 20),
         })
-        work_entries = self.contract._generate_work_entries(datetime(2022, 12, 12), datetime(2022, 12, 12)).sorted('date_start')
+        work_entries = self.contract.generate_work_entries(date(2022, 12, 12), date(2022, 12, 12)).sorted('date_start')
         self.assertEqual(len(work_entries), 4)
         self.assertEqual(work_entries[0].date_start, datetime(2022, 12, 12, 6, 0))
         self.assertEqual(work_entries[0].date_stop, datetime(2022, 12, 12, 7, 0))
@@ -65,7 +65,7 @@ class TestPayslipOvertime(HrWorkEntryAttendanceCommon):
             'check_in': datetime(2022, 12, 12, 6),
             'check_out': datetime(2022, 12, 12, 15),
         })
-        work_entries = self.contract._generate_work_entries(datetime(2022, 12, 12), datetime(2022, 12, 12)).sorted('date_start')
+        work_entries = self.contract.generate_work_entries(date(2022, 12, 12), date(2022, 12, 12)).sorted('date_start')
         self.assertEqual(len(work_entries), 3)
         self.assertEqual(work_entries[0].date_start, datetime(2022, 12, 12, 6, 0))
         self.assertEqual(work_entries[0].date_stop, datetime(2022, 12, 12, 7, 0))
@@ -83,7 +83,7 @@ class TestPayslipOvertime(HrWorkEntryAttendanceCommon):
             'check_in': datetime(2022, 12, 12, 11),
             'check_out': datetime(2022, 12, 12, 17),
         })
-        work_entries = self.contract._generate_work_entries(datetime(2022, 12, 12), datetime(2022, 12, 12)).sorted('date_start')
+        work_entries = self.contract.generate_work_entries(date(2022, 12, 12), date(2022, 12, 12)).sorted('date_start')
         self.assertEqual(len(work_entries), 3)
         self.assertEqual(work_entries[0].date_start, datetime(2022, 12, 12, 7, 0))
         self.assertEqual(work_entries[0].date_stop, datetime(2022, 12, 12, 11, 0))
@@ -101,7 +101,7 @@ class TestPayslipOvertime(HrWorkEntryAttendanceCommon):
             'check_in': datetime(2022, 12, 10, 11),
             'check_out': datetime(2022, 12, 10, 17),
         })
-        work_entries = self.contract._generate_work_entries(datetime(2022, 12, 10), datetime(2022, 12, 10)).sorted('date_start')
+        work_entries = self.contract.generate_work_entries(date(2022, 12, 10), date(2022, 12, 10)).sorted('date_start')
         self.assertEqual(len(work_entries), 1)
         self.assertEqual(work_entries.date_start, datetime(2022, 12, 10, 11, 0))
         self.assertEqual(work_entries.date_stop, datetime(2022, 12, 10, 17, 0))
@@ -118,7 +118,7 @@ class TestPayslipOvertime(HrWorkEntryAttendanceCommon):
             'time_type': "leave",
             'work_entry_type_id': self.work_entry_type_public_type_off.id,
         }])
-        work_entries = self.contract._generate_work_entries(datetime(2022, 12, 26), datetime(2022, 12, 26)).sorted('date_start')
+        work_entries = self.contract.generate_work_entries(date(2022, 12, 26), date(2022, 12, 26)).sorted('date_start')
         self.assertEqual(len(work_entries), 2)
         self.assertEqual(work_entries[0].date_start, datetime(2022, 12, 26, 7, 0))
         self.assertEqual(work_entries[0].date_stop, datetime(2022, 12, 26, 11, 0))
@@ -143,7 +143,7 @@ class TestPayslipOvertime(HrWorkEntryAttendanceCommon):
             'check_in': datetime(2022, 12, 26, 6),
             'check_out': datetime(2022, 12, 26, 20),
         })
-        work_entries = self.contract._generate_work_entries(datetime(2022, 12, 26), datetime(2022, 12, 26)).sorted('date_start')
+        work_entries = self.contract.generate_work_entries(date(2022, 12, 26), date(2022, 12, 26)).sorted('date_start')
         self.assertEqual(len(work_entries), 2)
         self.assertEqual(work_entries[0].date_start, datetime(2022, 12, 26, 6, 0))
         self.assertEqual(work_entries[0].date_stop, datetime(2022, 12, 26, 11, 0))
@@ -168,7 +168,7 @@ class TestPayslipOvertime(HrWorkEntryAttendanceCommon):
             'check_in': datetime(2022, 12, 26, 6),
             'check_out': datetime(2022, 12, 26, 11),
         })
-        work_entries = self.contract._generate_work_entries(datetime(2022, 12, 26), datetime(2022, 12, 26)).sorted('date_start')
+        work_entries = self.contract.generate_work_entries(date(2022, 12, 26), date(2022, 12, 26)).sorted('date_start')
         self.assertEqual(len(work_entries), 2)
         self.assertEqual(work_entries[0].date_start, datetime(2022, 12, 26, 6, 0))
         self.assertEqual(work_entries[0].date_stop, datetime(2022, 12, 26, 11, 0))
@@ -193,7 +193,7 @@ class TestPayslipOvertime(HrWorkEntryAttendanceCommon):
             'check_in': datetime(2022, 12, 26, 10),
             'check_out': datetime(2022, 12, 26, 11),
         })
-        work_entries = self.contract._generate_work_entries(datetime(2022, 12, 26), datetime(2022, 12, 26)).sorted('date_start')
+        work_entries = self.contract.generate_work_entries(date(2022, 12, 26), date(2022, 12, 26)).sorted('date_start')
         self.assertEqual(len(work_entries), 3)
         self.assertEqual(work_entries[0].date_start, datetime(2022, 12, 26, 7, 0))
         self.assertEqual(work_entries[0].date_stop, datetime(2022, 12, 26, 10, 0))
@@ -221,7 +221,7 @@ class TestPayslipOvertime(HrWorkEntryAttendanceCommon):
             'check_in': datetime(2022, 12, 26, 9),
             'check_out': datetime(2022, 12, 26, 10),
         })
-        work_entries = self.contract._generate_work_entries(datetime(2022, 12, 26), datetime(2022, 12, 26)).sorted('date_start')
+        work_entries = self.contract.generate_work_entries(date(2022, 12, 26), date(2022, 12, 26)).sorted('date_start')
         self.assertEqual(len(work_entries), 4)
         self.assertEqual(work_entries[0].date_start, datetime(2022, 12, 26, 7, 0))
         self.assertEqual(work_entries[0].date_stop, datetime(2022, 12, 26, 9, 0))
@@ -243,7 +243,7 @@ class TestPayslipOvertime(HrWorkEntryAttendanceCommon):
             'check_in': datetime(2022, 12, 12, 15),
             'check_out': datetime(2022, 12, 12, 16, 13),
         })
-        work_entries = self.contract._generate_work_entries(datetime(2022, 12, 12), datetime(2022, 12, 12)).sorted('date_start')
+        work_entries = self.contract.generate_work_entries(date(2022, 12, 12), date(2022, 12, 12)).sorted('date_start')
         self.assertEqual(len(work_entries), 2)
         self.assertEqual(work_entries[0].date_start, datetime(2022, 12, 12, 7, 0))
         self.assertEqual(work_entries[0].date_stop, datetime(2022, 12, 12, 11, 0))
@@ -259,7 +259,7 @@ class TestPayslipOvertime(HrWorkEntryAttendanceCommon):
             'check_in': datetime(2022, 12, 12, 15),
             'check_out': datetime(2022, 12, 12, 16, 18),
         })
-        work_entries = self.contract._generate_work_entries(datetime(2022, 12, 12), datetime(2022, 12, 12)).sorted('date_start')
+        work_entries = self.contract.generate_work_entries(date(2022, 12, 12), date(2022, 12, 12)).sorted('date_start')
         self.assertEqual(len(work_entries), 3)
         self.assertEqual(work_entries[0].date_start, datetime(2022, 12, 12, 7, 0))
         self.assertEqual(work_entries[0].date_stop, datetime(2022, 12, 12, 11, 0))

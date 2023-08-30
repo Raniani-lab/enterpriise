@@ -14,7 +14,7 @@ class TestLuMonthlyDeclaration(TestLuPayrollCommon):
     def setUp(self):
         super().setUp()
 
-        self.contract_david._generate_work_entries(date(2022, 3, 1), date(2020, 3, 31))
+        self.contract_david.generate_work_entries(date(2022, 3, 1), date(2020, 3, 31))
         self.payslip_run = self.env['hr.payslip.run'].create({
             'name': 'March 2022',
             'date_start': '2022-3-1',
@@ -113,7 +113,7 @@ class TestLuMonthlyDeclaration(TestLuPayrollCommon):
             'date_to': '2022-03-09 23:59:59',
             'number_of_days': 1,
         })
-        contracts._generate_work_entries(date(2022, 3, 1), date(2022, 3, 31))
+        contracts.generate_work_entries(date(2022, 3, 1), date(2022, 3, 31))
 
         batch = self.env['hr.payslip.run'].create({
             'name': 'March 2022',
@@ -222,7 +222,7 @@ class TestLuMonthlyDeclaration(TestLuPayrollCommon):
             'structure_type_id': self.env.ref('l10n_lu_hr_payroll.structure_type_employee_lux').id,
         })
         contracts = jade_contract1 | jade_contract2
-        contracts._generate_work_entries(date(2022, 3, 1), date(2022, 3, 31))
+        contracts.generate_work_entries(date(2022, 3, 1), date(2022, 3, 31))
 
         batch = self.env['hr.payslip.run'].create({
             'name': 'March 2022',

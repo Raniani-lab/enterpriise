@@ -125,10 +125,10 @@
 
     <!-- Work Entries for Laurie -->
 
-    <function model="hr.contract" name="_generate_work_entries">
+    <function model="hr.contract" name="generate_work_entries">
         <value eval="[ref('l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret')]"/>
-        <value eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1, days=-1))"/>
-        <value eval="DateTime.today()"/>
+        <value eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1, days=-1)).date()"/>
+        <value eval="DateTime.today().date()"/>
     </function>
 
     <function model="hr.work.entry" name="action_validate">
@@ -2430,16 +2430,16 @@
         ]).ids"/>
     </function>
 
-    <function model="hr.contract" name="_generate_work_entries">
+    <function model="hr.contract" name="generate_work_entries">
         <value eval="[ref('test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_1')]"/>
-        <value eval="time.strftime('2019-01-01')"/>
-        <value eval="time.strftime('2019-12-31')"/>
+        <value eval="DateTime(2019, 1, 1).date()"/>
+        <value eval="DateTime(2019, 12, 31).date()"/>
     </function>
 
-    <function model="hr.contract" name="_generate_work_entries">
+    <function model="hr.contract" name="generate_work_entries">
         <value eval="[ref('test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_2')]"/>
-        <value eval="time.strftime('2020-01-01')"/>
-        <value eval="time.strftime('2020-03-31')"/>
+        <value eval="DateTime(2020, 1, 1).date()"/>
+        <value eval="DateTime(2020, 3, 31).date()"/>
     </function>
 
     <record id="hr_payslip_batch_joseph_no_luck" model="hr.payslip.run">
@@ -2933,7 +2933,7 @@
 
     <function model="hr.employee" name="generate_work_entries">
         <value model="hr.employee" eval="obj().search([('company_id', '=', ref('l10n_be_hr_payroll.res_company_be'))]).ids"/>
-        <value eval="(DateTime.today() + relativedelta(day=1, months=-1))"/>
-        <value eval="(DateTime.today() + relativedelta(day=31))"/>
+        <value eval="(DateTime.today() + relativedelta(day=1, months=-1)).date()"/>
+        <value eval="(DateTime.today() + relativedelta(day=31)).date()"/>
     </function>
 </odoo>

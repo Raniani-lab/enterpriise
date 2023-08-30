@@ -589,7 +589,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
     @classmethod
     def _generate_payslip(cls, date_from, date_to, struct_id=False):
-        work_entries = cls.contract._generate_work_entries(date_from, date_to)
+        work_entries = cls.contract.generate_work_entries(date_from, date_to)
         payslip = cls.env['hr.payslip'].create([{
             'name': "Test Payslip",
             'employee_id': cls.employee.id,
@@ -697,8 +697,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         (cls.unpaid_leave_2019 + cls.legal_leave_2019 + cls.legal_leave_2020).action_validate()
 
-        cls.contract_2019._generate_work_entries(datetime.date(2019, 1, 1), datetime.date(2019, 12, 31))
-        cls.contract_2020._generate_work_entries(datetime.date(2020, 1, 1), datetime.date(2020, 3, 31))
+        cls.contract_2019.generate_work_entries(datetime.date(2019, 1, 1), datetime.date(2019, 12, 31))
+        cls.contract_2020.generate_work_entries(datetime.date(2020, 1, 1), datetime.date(2020, 3, 31))
 
         cls.batch = cls.env['hr.payslip.run'].create({
             'name': 'History Batch',
@@ -1351,7 +1351,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ip': True,
         }])
 
-        new_contract._generate_work_entries(datetime.date(2020, 10, 1), datetime.date(2020, 10, 31))
+        new_contract.generate_work_entries(datetime.date(2020, 10, 1), datetime.date(2020, 10, 31))
 
         payslip.input_line_ids.unlink()
         payslip._compute_worked_days_line_ids()
@@ -2815,7 +2815,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         (sick_leave_1 + sick_leave_2).action_validate()
 
-        work_entries = self.employee.contract_id._generate_work_entries(datetime.date(2020, 9, 1), datetime.date(2020, 10, 31))
+        work_entries = self.employee.contract_id.generate_work_entries(datetime.date(2020, 9, 1), datetime.date(2020, 10, 31))
 
         attendance = self.env.ref('hr_work_entry.work_entry_type_attendance')
         sick_work_entry_type = self.env.ref('hr_work_entry_contract.work_entry_type_sick_leave')
@@ -3013,7 +3013,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         (sick_leave_1 + sick_leave_2).action_validate()
 
-        work_entries = self.employee.contract_id._generate_work_entries(datetime.date(2020, 9, 1), datetime.date(2020, 10, 31))
+        work_entries = self.employee.contract_id.generate_work_entries(datetime.date(2020, 9, 1), datetime.date(2020, 10, 31))
 
         attendance = self.env.ref('hr_work_entry.work_entry_type_attendance')
         sick_work_entry_type = self.env.ref('hr_work_entry_contract.work_entry_type_sick_leave')
@@ -3186,7 +3186,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         sick_leave = self.env['hr.leave'].create(sick_leave._convert_to_write(sick_leave._cache))
         sick_leave.action_validate()
 
-        work_entries = self.employee.contract_id._generate_work_entries(datetime.date(2020, 9, 1), datetime.date(2020, 10, 31))
+        work_entries = self.employee.contract_id.generate_work_entries(datetime.date(2020, 9, 1), datetime.date(2020, 10, 31))
 
         attendance = self.env.ref('hr_work_entry.work_entry_type_attendance')
         sick_work_entry_type = self.env.ref('hr_work_entry_contract.work_entry_type_sick_leave')
@@ -3382,7 +3382,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         (sick_leave_1 + sick_leave_2).action_validate()
 
-        work_entries = self.employee.contract_id._generate_work_entries(datetime.date(2020, 9, 1), datetime.date(2020, 10, 31))
+        work_entries = self.employee.contract_id.generate_work_entries(datetime.date(2020, 9, 1), datetime.date(2020, 10, 31))
 
         attendance = self.env.ref('hr_work_entry.work_entry_type_attendance')
         sick_work_entry_type = self.env.ref('hr_work_entry_contract.work_entry_type_sick_leave')
@@ -3602,7 +3602,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         (sick_leave_1 + sick_leave_2).action_validate()
 
-        work_entries = self.employee.contract_id._generate_work_entries(datetime.date(2020, 9, 1), datetime.date(2020, 10, 31))
+        work_entries = self.employee.contract_id.generate_work_entries(datetime.date(2020, 9, 1), datetime.date(2020, 10, 31))
 
         attendance = self.env.ref('hr_work_entry.work_entry_type_attendance')
         sick_work_entry_type = self.env.ref('hr_work_entry_contract.work_entry_type_sick_leave')
@@ -3799,7 +3799,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         sick_leave = self.env['hr.leave'].create(sick_leave._convert_to_write(sick_leave._cache))
         sick_leave.action_validate()
 
-        work_entries = self.employee.contract_id._generate_work_entries(datetime.date(2020, 9, 1), datetime.date(2020, 10, 31))
+        work_entries = self.employee.contract_id.generate_work_entries(datetime.date(2020, 9, 1), datetime.date(2020, 10, 31))
 
         attendance = self.env.ref('hr_work_entry.work_entry_type_attendance')
         sick_work_entry_type = self.env.ref('hr_work_entry_contract.work_entry_type_sick_leave')
@@ -4419,7 +4419,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'amount': 8484.0
         }])
 
-        work_entries = self.contract._generate_work_entries(datetime.date(2020, 3, 1), datetime.date(2020, 3, 31))
+        work_entries = self.contract.generate_work_entries(datetime.date(2020, 3, 1), datetime.date(2020, 3, 31))
         work_entries.action_validate()
         commission_payslip.input_line_ids.amount = 8484.0
         commission_payslip.compute_sheet()
@@ -4543,7 +4543,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_end': datetime.date(2020, 12, 31),
         })
 
-        work_entries = self.contract._generate_work_entries(datetime.date(2020, 11, 1), datetime.date(2020, 11, 30))
+        work_entries = self.contract.generate_work_entries(datetime.date(2020, 11, 1), datetime.date(2020, 11, 30))
         sick_work_entries = work_entries.filtered(lambda we: we.work_entry_type_id == self.sick_time_off_type.work_entry_type_id)
         self.assertEqual(len(sick_work_entries), 4)
 
@@ -4593,7 +4593,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }])
 
         # Generate Batch / payslips
-        work_entries = self.contract._generate_work_entries(datetime.date(2020, 12, 1), datetime.date(2020, 12, 31))
+        self.contract.generate_work_entries(datetime.date(2020, 12, 1), datetime.date(2020, 12, 31))
         payslip_run_id = self.env['hr.payslip.employees'].with_context(
             default_date_start='2020-12-01',
             default_date_end='2020-12-31',
@@ -5738,7 +5738,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.contract.write({
             'transport_mode_car': False,
         })
-        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+        self.contract.generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
 
         payslip = self.env['hr.payslip'].create({
             'name': "Test Payslip",
@@ -5769,7 +5769,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
     def test_double_holiday_no_right(self):
         self.contract.date_start = datetime.date(2021, 1, 1)
-        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+        self.contract.generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
 
         payslip = self.env['hr.payslip'].create({
             'name': "Test Payslip",
@@ -5803,7 +5803,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_start': datetime.date(2020, 3, 15),
             'transport_mode_car': False,
         })
-        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+        self.contract.generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
 
         payslip = self.env['hr.payslip'].create({
             'name': "Test Payslip",
@@ -5839,7 +5839,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'wage_on_signature': 2120.0,
             'transport_mode_car': False,
         })
-        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+        self.contract.generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
 
         payslip = self.env['hr.payslip'].create({
             'name': "Test Payslip",
@@ -5876,7 +5876,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'wage_on_signature': 2120.0,
             'transport_mode_car': False,
         })
-        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+        self.contract.generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
 
         payslip = self.env['hr.payslip'].create({
             'name': "Test Payslip",
@@ -5908,7 +5908,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'wage_on_signature': 2120.0,
             'transport_mode_car': False,
         })
-        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+        self.contract.generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
 
         payslip = self.env['hr.payslip'].create({
             'name': "Test Payslip",
@@ -5941,7 +5941,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'wage_on_signature': 2120.0,
             'transport_mode_car': False,
         })
-        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+        self.contract.generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
 
         payslip = self.env['hr.payslip'].create({
             'name': "Test Payslip",
@@ -5971,7 +5971,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_start': datetime.date(2020, 3, 15),
             'transport_mode_car': False,
         })
-        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+        self.contract.generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
 
         self.employee.write({
             'children': 2,
@@ -6005,7 +6005,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_start': datetime.date(2020, 3, 15),
             'transport_mode_car': False,
         })
-        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+        self.contract.generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
 
         self.employee.write({
             'children': 6,
@@ -6055,7 +6055,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'commission_on_target': 1000,
             'transport_mode_car': False,
         })
-        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+        self.contract.generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
 
         payslip = self.env['hr.payslip'].create({
             'name': "Test Payslip",
@@ -6102,7 +6102,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_start': datetime.date(2020, 3, 15),
             'transport_mode_car': False,
         })
-        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+        self.contract.generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
 
         payslip = self.env['hr.payslip'].create({
             'name': "Test Payslip",
@@ -6132,7 +6132,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_start': datetime.date(2020, 3, 15),
             'transport_mode_car': False,
         })
-        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+        self.contract.generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
 
         self.employee.write({
             'children': 2,
@@ -6193,7 +6193,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_start': datetime.date(2019, 1, 1),
             'transport_mode_car': False,
         })
-        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+        self.contract.generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
 
         self.employee.write({
             'children': 2,
@@ -6280,7 +6280,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self._validate_payslip(payslip_2021, payslip_results)
 
     def test_double_holidays_company_car(self):
-        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+        self.contract.generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
         payslip = self.env['hr.payslip'].create({
             'name': "Test Payslip",
             'employee_id': self.employee.id,
@@ -6312,7 +6312,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.contract.write({
             'transport_mode_car': False,
         })
-        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+        self.contract.generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
 
         payslip = self.env['hr.payslip'].create({
             'name': "Test Payslip",
@@ -6734,7 +6734,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         })
         economic_unemployment.action_validate()
 
-        self.contract._generate_work_entries(datetime.date(2021, 5, 1), datetime.date(2021, 5, 31))
+        self.contract.generate_work_entries(datetime.date(2021, 5, 1), datetime.date(2021, 5, 31))
 
         payslip = self.env['hr.payslip'].create({
             'name': "Test Payslip",
@@ -6829,7 +6829,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         })
         maternity.action_validate()
 
-        self.contract._generate_work_entries(datetime.date(2021, 4, 1), datetime.date(2021, 5, 31))
+        self.contract.generate_work_entries(datetime.date(2021, 4, 1), datetime.date(2021, 5, 31))
 
         payslip = self.env['hr.payslip'].create({
             'name': "Test Payslip",
@@ -6924,7 +6924,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         })
         maternity.action_validate()
 
-        self.contract._generate_work_entries(datetime.date(2021, 5, 1), datetime.date(2021, 5, 31))
+        self.contract.generate_work_entries(datetime.date(2021, 5, 1), datetime.date(2021, 5, 31))
 
         payslip = self.env['hr.payslip'].create({
             'name': "Test Payslip",
@@ -6985,7 +6985,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         })
         maternity.action_validate()
 
-        self.contract._generate_work_entries(datetime.date(2021, 5, 1), datetime.date(2021, 5, 31))
+        self.contract.generate_work_entries(datetime.date(2021, 5, 1), datetime.date(2021, 5, 31))
 
         payslip = self.env['hr.payslip'].create({
             'name': "Test Payslip",
@@ -7067,7 +7067,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         })
         maternity.action_validate()
 
-        self.contract._generate_work_entries(datetime.date(2021, 5, 1), datetime.date(2021, 5, 31))
+        self.contract.generate_work_entries(datetime.date(2021, 5, 1), datetime.date(2021, 5, 31))
 
         payslip = self.env['hr.payslip'].create({
             'name': "Test Payslip",
@@ -7227,7 +7227,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'state': 'open',
         })
 
-        (contract_1 + contract_2)._generate_work_entries(datetime.date(2022, 2, 1), datetime.date(2022, 2, 28))
+        (contract_1 + contract_2).generate_work_entries(datetime.date(2022, 2, 1), datetime.date(2022, 2, 28))
 
         payslip_1 = self.env['hr.payslip'].create([{
             'name': "Test Payslip 1",
@@ -7355,7 +7355,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'train_transport_employee_amount': 50,
         })
 
-        (contract_1 + contract_2)._generate_work_entries(datetime.date(2022, 2, 1), datetime.date(2022, 2, 28))
+        (contract_1 + contract_2).generate_work_entries(datetime.date(2022, 2, 1), datetime.date(2022, 2, 28))
 
         payslip_1 = self.env['hr.payslip'].create([{
             'name': "Test Payslip 1",
@@ -7661,7 +7661,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'transport_mode_private_car': True,
         }])
 
-        (self.contract + partial_contract)._generate_work_entries(datetime.date(2022, 4, 1), datetime.date(2022, 4, 30))
+        (self.contract + partial_contract).generate_work_entries(datetime.date(2022, 4, 1), datetime.date(2022, 4, 30))
         payslip_1 = self.env['hr.payslip'].create([{
             'name': "Test Payslip 1",
             'employee_id': self.employee.id,
@@ -8196,7 +8196,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         (sick_leave_1 + sick_leave_2 + sick_leave_3 + sick_leave_4).action_validate()
 
-        work_entries = self.employee.contract_id._generate_work_entries(datetime.date(2022, 4, 1), datetime.date(2022, 6, 30))
+        work_entries = self.employee.contract_id.generate_work_entries(datetime.date(2022, 4, 1), datetime.date(2022, 6, 30))
 
         work_entries_expected_results = {
             # Attendances
@@ -8553,7 +8553,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
     def test_double_holidays_european_time_off_current_year(self):
         # Check that european time off taken on the current year
         # are not recovered on the double holiday pay (and left for next year)
-        self.contract._generate_work_entries(datetime.date(2020, 5, 1), datetime.date(2022, 6, 30))
+        self.contract.generate_work_entries(datetime.date(2020, 5, 1), datetime.date(2022, 6, 30))
 
         european_time_off = self.env['hr.leave'].create({
             'name': 'European Time Off',
@@ -9167,7 +9167,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         (sick_leave_1 + sick_leave_2).action_validate()
 
-        self.contract._generate_work_entries(datetime.date(2022, 10, 1), datetime.date(2022, 10, 31))
+        self.contract.generate_work_entries(datetime.date(2022, 10, 1), datetime.date(2022, 10, 31))
         payslip = self._generate_payslip(datetime.date(2022, 10, 1), datetime.date(2022, 10, 31))
 
         self.assertEqual(len(payslip.worked_days_line_ids), 4)
@@ -9229,7 +9229,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ip': False,
             'date_start': datetime.date(2019, 1, 1),
         })
-        self.contract._generate_work_entries(datetime.date(2019, 10, 1), datetime.date(2019, 10, 31))
+        self.contract.generate_work_entries(datetime.date(2019, 10, 1), datetime.date(2019, 10, 31))
         payslip = self._generate_payslip(datetime.date(2019, 10, 1), datetime.date(2019, 10, 31))
 
         payslip_results = {
@@ -9259,7 +9259,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
     def test_cdi_laurie_poiret(self):
         self.contract.ip = False
-        self.contract._generate_work_entries(datetime.date(2019, 2, 1), datetime.date(2019, 2, 28))
+        self.contract.generate_work_entries(datetime.date(2019, 2, 1), datetime.date(2019, 2, 28))
         payslip = self._generate_payslip(datetime.date(2019, 2, 1), datetime.date(2019, 2, 28))
         payslip_results = {
             'BASIC': 2650.0,
@@ -9327,7 +9327,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday').id
         })
 
-        self.contract._generate_work_entries(datetime.date(2018, 11, 1), datetime.date(2018, 11, 30))
+        self.contract.generate_work_entries(datetime.date(2018, 11, 1), datetime.date(2018, 11, 30))
         payslip = self._generate_payslip(datetime.date(2018, 11, 1), datetime.date(2018, 11, 30))
         payslip_results = {
             'BASIC': 3655.32,
@@ -9428,7 +9428,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday').id
         }])
 
-        self.contract._generate_work_entries(datetime.date(2019, 5, 1), datetime.date(2019, 5, 31))
+        self.contract.generate_work_entries(datetime.date(2019, 5, 1), datetime.date(2019, 5, 31))
         payslip = self._generate_payslip(datetime.date(2019, 5, 1), datetime.date(2019, 5, 31))
         payslip_results = {
             'BASIC': 3197.34,
@@ -9493,7 +9493,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         })
         self.contract.wage_on_signature = self.contract.wage_with_holidays
 
-        self.contract._generate_work_entries(datetime.date(2019, 3, 1), datetime.date(2019, 3, 31))
+        self.contract.generate_work_entries(datetime.date(2019, 3, 1), datetime.date(2019, 3, 31))
         payslip = self._generate_payslip(datetime.date(2019, 3, 1), datetime.date(2019, 3, 31))
         payslip_results = {
             'BASIC': 3450.89,
@@ -9538,7 +9538,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'transport_mode_car': False,
             'ip': False,
         })
-        self.contract._generate_work_entries(datetime.date(2019, 2, 1), datetime.date(2019, 2, 28))
+        self.contract.generate_work_entries(datetime.date(2019, 2, 1), datetime.date(2019, 2, 28))
         payslip = self._generate_payslip(datetime.date(2019, 2, 1), datetime.date(2019, 2, 28))
         payslip_results = {
             'BASIC': 2075.44,
@@ -9597,7 +9597,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }])
         brief_holidays.action_validate()
 
-        self.contract._generate_work_entries(datetime.date(2019, 2, 1), datetime.date(2019, 2, 28))
+        self.contract.generate_work_entries(datetime.date(2019, 2, 1), datetime.date(2019, 2, 28))
         payslip = self._generate_payslip(datetime.date(2019, 2, 1), datetime.date(2019, 2, 28))
         payslip_results = {
             'BASIC': 2706.14,
@@ -9654,7 +9654,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday').id
         })
 
-        self.contract._generate_work_entries(datetime.date(2019, 1, 1), datetime.date(2019, 1, 31))
+        self.contract.generate_work_entries(datetime.date(2019, 1, 1), datetime.date(2019, 1, 31))
         payslip = self._generate_payslip(datetime.date(2019, 1, 1), datetime.date(2019, 1, 31), struct_id=self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_pfi').id)
         payslip_results = {
             'BASIC': 1653.11,
@@ -9674,7 +9674,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'wage': 1572.8,
             'wage_on_signature': 1572.8,
         })
-        self.contract._generate_work_entries(datetime.date(2019, 2, 1), datetime.date(2019, 2, 28))
+        self.contract.generate_work_entries(datetime.date(2019, 2, 1), datetime.date(2019, 2, 28))
         payslip = self._generate_payslip(datetime.date(2019, 2, 1), datetime.date(2019, 2, 28), struct_id=self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_pfi').id)
         payslip_results = {
             'BASIC': 1572.8,
@@ -9743,7 +9743,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         sick_leave._compute_date_from_to()
         sick_leave = self.env['hr.leave'].create(sick_leave._convert_to_write(sick_leave._cache))
         sick_leave.action_validate()
-        self.contract._generate_work_entries(datetime.date(2023, 3, 1), datetime.date(2023, 3, 31))
+        self.contract.generate_work_entries(datetime.date(2023, 3, 1), datetime.date(2023, 3, 31))
         payslip = self._generate_payslip(datetime.date(2023, 3, 1), datetime.date(2023, 3, 31))
 
         wds = payslip.worked_days_line_ids.sorted("number_of_hours")
@@ -9944,7 +9944,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         sick_leave = self.env['hr.leave'].create(sick_leave._convert_to_write(sick_leave._cache))
         sick_leave.action_validate()
 
-        self.employee.contract_ids._generate_work_entries(datetime.datetime(2023, 1, 1), datetime.datetime(2023, 6, 30))
+        self.employee.contract_ids.generate_work_entries(datetime.date(2023, 1, 1), datetime.date(2023, 6, 30))
 
         payslip = self._generate_payslip(datetime.date(2023, 6, 1), datetime.date(2023, 6, 30), struct_id=self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month').id)
         payslip_results = {

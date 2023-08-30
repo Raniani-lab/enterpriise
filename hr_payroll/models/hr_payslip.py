@@ -607,7 +607,7 @@ class HrPayslip(models.Model):
         self.ensure_one()
         res = []
         hours_per_day = self._get_worked_day_lines_hours_per_day()
-        work_hours = self.contract_id._get_work_hours(self.date_from, self.date_to, domain=domain)
+        work_hours = self.contract_id.get_work_hours(self.date_from, self.date_to, domain=domain)
         work_hours_ordered = sorted(work_hours.items(), key=lambda x: x[1])
         biggest_work = work_hours_ordered[-1][0] if work_hours_ordered else 0
         add_days_rounding = 0
@@ -934,7 +934,7 @@ class HrPayslip(models.Model):
         # Ensure work entries are generated for all contracts
         generate_from = min(p.date_from for p in valid_slips) + relativedelta(days=-1)
         generate_to = max(p.date_to for p in valid_slips) + relativedelta(days=1)
-        self.mapped('contract_id')._generate_work_entries(generate_from, generate_to)
+        self.contract_id.generate_work_entries(generate_from, generate_to)
 
         work_entries = self.env['hr.work.entry'].search([
             ('date_stop', '<=', generate_to),

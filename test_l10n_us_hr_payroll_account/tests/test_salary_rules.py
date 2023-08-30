@@ -95,7 +95,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
     @classmethod
     def _generate_payslip(cls, date_from, date_to, struct_id=False):
-        work_entries = cls.contract._generate_work_entries(date_from, date_to)
+        work_entries = cls.contract.generate_work_entries(date_from, date_to)
         payslip = cls.env['hr.payslip'].create([{
             'name': "Test Payslip",
             'employee_id': cls.employee.id,
@@ -654,7 +654,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'l10n_us_post_roth_401k_type': 'fixed',
         })
 
-        self.contract._generate_work_entries(datetime.date(2023, 1, 1), datetime.date(2023, 6, 30))
+        self.contract.generate_work_entries(datetime.date(2023, 1, 1), datetime.date(2023, 6, 30))
 
         all_payslips = self.env['hr.payslip']
         for month in range(1, 7):

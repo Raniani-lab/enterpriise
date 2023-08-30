@@ -88,8 +88,7 @@ class HrPayslipEmployees(models.TransientModel):
         contracts = employees._get_contracts(
             payslip_run.date_start, payslip_run.date_end, states=['open', 'close']
         ).filtered(lambda c: c.active)
-        contracts._generate_work_entries(payslip_run.date_start, payslip_run.date_end)
-
+        contracts.generate_work_entries(payslip_run.date_start, payslip_run.date_end)
         work_entries = self.env['hr.work.entry'].search([
             ('date_start', '<=', payslip_run.date_end + relativedelta(days=1)),
             ('date_stop', '>=', payslip_run.date_start + relativedelta(days=-1)),

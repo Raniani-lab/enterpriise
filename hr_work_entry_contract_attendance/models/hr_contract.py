@@ -56,8 +56,8 @@ class HrContract(models.Model):
         public_leaves = self.env['resource.calendar.leaves'].search([
             ('resource_id', '=', False),
             '|', ('calendar_id', '=', False), ('calendar_id', 'in', self.resource_calendar_id.ids),
-            ('date_from', '>=', start_dt),
-            ('date_to', '<=', end_dt)
+            ('date_from', '<=', end_dt),
+            ('date_to', '>=', start_dt)
         ])
 
         attendances = self.env['hr.attendance'].sudo().search([

@@ -3328,7 +3328,7 @@
         "f3e010de-9bd4-4988-954a-3f49a991118e": "hr.menu_hr_employee_user",
         "f7581632-58da-48bc-8496-90f246798c2c": "hr.menu_hr_employee_user",
         "56e6d534-9e29-46e2-af98-2e5fe94b6f8c": "hr.menu_hr_employee_user",
-        "dc313975-cb78-4356-93af-0ad64f1ad756": "hr_work_entry_contract_enterprise.hr_menu_contract",
-        "d387d347-cba4-4bf6-9cde-3cb91c1e95f2": "hr_work_entry_contract_enterprise.hr_menu_contract"
+        "dc313975-cb78-4356-93af-0ad64f1ad756": "hr_contract.hr_menu_contract",
+        "d387d347-cba4-4bf6-9cde-3cb91c1e95f2": "hr_contract.hr_menu_contract"
     }
 }

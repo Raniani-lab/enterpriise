@@ -127,7 +127,7 @@ class HrApplicant(models.Model):
 
     def _contact_iap_extract(self, pathinfo, params):
         params['version'] = OCR_VERSION
-        endpoint = self.env['ir.config_parameter'].sudo().get_param('iap_extract_endpoint', 'https://iap-extract.odoo.com')
+        endpoint = self.env['ir.config_parameter'].sudo().get_param('iap_extract_endpoint', 'https://extract.api.odoo.com')
         return iap_tools.iap_jsonrpc(endpoint + '/api/extract/applicant/1/' + pathinfo, params=params)
 
     def _get_iap_bus_notification_content(self):

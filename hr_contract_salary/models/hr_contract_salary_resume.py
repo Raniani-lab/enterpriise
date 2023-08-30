@@ -19,14 +19,13 @@ class HrContractSalaryResumeCategory(models.Model):
 class HrContractSalaryResume(models.Model):
     _name = 'hr.contract.salary.resume'
     _description = 'Salary Package Resume'
+    _order = 'sequence'
 
     def _get_available_fields(self):
         return [(field, description['string']) for field, description in self.env['hr.contract'].fields_get().items()]
 
-    # YTI TODO master:
-    # Add sequence field
-    # Add display condition field
     name = fields.Char()
+    sequence = fields.Integer(default=100)
     value_type = fields.Selection([
         ('fixed', 'Fixed Value'),
         ('contract', 'Contract Value'),

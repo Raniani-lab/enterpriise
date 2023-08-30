@@ -51,6 +51,7 @@ class product_template(models.Model):
             }}
         confirmed_lines = self.env['sale.order.line'].search([('product_template_id', 'in', self.ids), ('order_id.state', 'in', ('sale', 'done'))])
         if confirmed_lines:
+            self.recurring_invoice = True
             return {'warning': {
                 'title': _("Warning"),
                 'message': _("You can not change the recurring property of this product because it has been sold already.")

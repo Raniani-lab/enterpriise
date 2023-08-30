@@ -236,6 +236,7 @@
         <field name="color">3</field>
         <field name="is_leave">True</field>
         <field name="dmfa_code">1</field>
+        <field name="representation_fees" eval="True"/>
     </record>
 
     <record id="work_entry_type_extra_legal" model="hr.work.entry.type">

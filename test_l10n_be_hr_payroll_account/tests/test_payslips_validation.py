@@ -1130,7 +1130,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB': 4.0,
             'SALARY': 1802.85,
             'ONSS': -235.63,
-            'EmpBonus.1': 0.0,
+            'EmpBonus.1': 0,
             'ONSSTOTAL': 235.63,
             'ATN.CAR': 141.14,
             'GROSS': 1708.36,
@@ -1139,10 +1139,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.CAR.2': -141.14,
             'ATN.INT.2': -5.0,
             'ATN.MOB.2': -4.0,
-            'M.ONSS': 0.0,
+            'M.ONSS': 0,
             'MEAL_V_EMP': -15.26,
-            'REP.FEES': 94.62,
-            'NET': 1435.83,
+            'REP.FEES': 101.54,
+            'NET': 1442.76,
             'REMUNERATION': 1793.85,
             'ONSSEMPLOYERBASIC': 451.07,
             'ONSSEMPLOYERFFE': 2.34,
@@ -1481,9 +1481,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_phc').id
         }])
         public_compensation_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_phc')
-        # YTI TODO: master: Get rid of this.
-        if 'representation_fees' in public_compensation_type:
-            public_compensation_type.representation_fees = True
 
         payslip = self._generate_payslip(datetime.date(2020, 9, 1), datetime.date(2020, 9, 30))
 

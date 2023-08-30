@@ -17,7 +17,7 @@ class TestBankRecWidgetFleet(TestBankRecWidgetCommon):
             ('811000', 'Tax Account'),
         ]])
         self.env['account.disallowed.expenses.category'].create({
-            'code': '12345',
+            'code': '23456',
             'name': 'Robins DNA',
             'car_category': True,
             'account_ids': [Command.set(vehicle_exp_acc.ids)],

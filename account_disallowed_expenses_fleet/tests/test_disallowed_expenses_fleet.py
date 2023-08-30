@@ -16,7 +16,7 @@ class TestAccountDisallowedExpensesFleetReport(TestAccountReportsCommon):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.dna_category = cls.env['account.disallowed.expenses.category'].create({
-            'code': '1234',
+            'code': '2345',
             'name': 'DNA category',
             'rate_ids': [
                 Command.create({
@@ -178,7 +178,7 @@ class TestAccountDisallowedExpensesFleetReport(TestAccountReportsCommon):
             #   Name                                          Total Amount     Rate          Disallowed Amount    Level
             [   0,                                            1,               2,            3,                   4],
             [
-                ('1234 DNA category',                         3200.0,          '',          1088.0,               1),
+                ('2345 DNA category',                         3200.0,          '',          1088.0,               1),
                   ('600000 Expenses',                         2300.0,          '',           749.0,               2),
                     ('600000 Expenses',                        700.0,          '23.00%',     161.0,               3),
                     ('600000 Expenses',                        600.0,          '23.00%',     138.0,               3),
@@ -205,7 +205,7 @@ class TestAccountDisallowedExpensesFleetReport(TestAccountReportsCommon):
             #   Name                                          Total Amount     Rate          Disallowed Amount    Level
             [   0,                                            1,               2,            3,                   4],
             [
-                ('1234 DNA category',                         3200.0,          '',          1088.0,               1),
+                ('2345 DNA category',                         3200.0,          '',          1088.0,               1),
                   ('Wayne Enterprises/Batmobile/No Plate',    1300.0,          '',           315.0,               2),
                     ('600000 Expenses',                        800.0,          '',           200.0,               3),
                       ('600000 Expenses',                      600.0,          '23.00%',     138.0,               4),
@@ -237,7 +237,7 @@ class TestAccountDisallowedExpensesFleetReport(TestAccountReportsCommon):
         })
 
         self.robins_dna = self.env['account.disallowed.expenses.category'].create({
-            'code': '1235',
+            'code': '2346',
             'name': 'Robins DNA',
             'account_ids': [Command.set(self.mr_freeze_account.id)],
             'rate_ids': [
@@ -281,7 +281,7 @@ class TestAccountDisallowedExpensesFleetReport(TestAccountReportsCommon):
             #   Name                             Total Amount     Rate          Disallowed Amount    Total Amount     Rate          Disallowed Amount    Level
             [   0,                               1,               2,            3,                   4,               5,            6,                   7],
             [
-                ('1234 DNA category',            3200.0,          '',          1088.0,               '',              '',           '',                  1),
+                ('2345 DNA category',            3200.0,          '',          1088.0,               '',              '',           '',                  1),
                   ('600000 Expenses',            2300.0,          '',           749.0,               '',              '',           '',                  2),
                     ('600000 Expenses',           700.0,          '23.00%',     161.0,               '',              '',           '',                  3),
                     ('600000 Expenses',           600.0,          '23.00%',     138.0,               '',              '',           '',                  3),
@@ -292,7 +292,7 @@ class TestAccountDisallowedExpensesFleetReport(TestAccountReportsCommon):
                   ('600020 Expenses (copy)',      900.0,          '',           339.0,               '',              '',           '',                  2),
                     ('600020 Expenses (copy)',    500.0,          '23.00%',     115.0,               '',              '',           '',                  3),
                     ('600020 Expenses (copy)',    400.0,          '56.00%',     224.0,               '',              '',           '',                  3),
-                ('1235 Robins DNA',                46.0,          '',            10.5,               79.0,            '',           '',                  1),
+                ('2346 Robins DNA',                46.0,          '',            10.5,               79.0,            '',           '',                  1),
                   ('611011 Frozen Account',        46.0,          '',            10.5,               79.0,            '',           '',                  2),
                     ('611011 Frozen Account',      21.0,          '50.00%',      10.5,               '',              '',           '',                  3),
                     ('611011 Frozen Account',      25.0,          '',              '',               79.0,            '',           '',                  3),

@@ -18,9 +18,7 @@ class AccountDisallowedExpensesCategory(models.Model):
     current_rate = fields.Char(compute='_compute_current_rate', string='Current Rate')
 
     _sql_constraints = [
-        (
-            'unique_code_in_country', 'UNIQUE(code, company_id)',
-            'Disallowed expenses category code should be unique in each company.')
+        ('unique_code', 'UNIQUE(code)', 'Disallowed expenses category code should be unique.')
     ]
 
     @api.depends('current_rate', 'code')

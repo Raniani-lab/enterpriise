@@ -481,6 +481,14 @@ type          = PO
 minimum_perc  = 0
 resource_name = delivery_sendcloud
 
+[o:odoo:p:odoo-16:r:delivery_shiprocket]
+file_filter   = delivery_shiprocket/i18n/<lang>.po
+source_file   = delivery_shiprocket/i18n/delivery_shiprocket.pot
+source_lang   = en
+type          = PO
+minimum_perc  = 0
+resource_name = delivery_shiprocket
+
 [o:odoo:p:odoo-16:r:delivery_ups]
 file_filter   = delivery_ups/i18n/<lang>.po
 source_file   = delivery_ups/i18n/delivery_ups.pot

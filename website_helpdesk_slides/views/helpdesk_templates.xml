@@ -25,8 +25,15 @@
                     <a t-att-href="url" target="_blank" t-out="record.name" class="fw-bold"/>
                 </h5>
                 <small>
-                    <time t-field="record.date_published" t-options='{"format": "d MMM yyyy"}'/>, by <a t-attf-href="/profile/user/{{record.user_id.id}}" class="fw-bold" t-out="record.user_id.name"/>
-
+                    <time t-field="record.date_published" t-options='{"format": "d MMM yyyy"}'/>
+                    <t t-if="record.user_id">
+                        , by <a t-attf-href="/profile/user/{{record.user_id.id}}" class="fw-bold" t-out="record.user_id.name"/>
+                        <t t-call="website_slides.slides_misc_user_image">
+                            <t t-set="user" t-value="record.user_id"/>
+                            <t t-set="img_class" t-value="'rounded-circle me-1'"/>
+                            <t t-set="img_style" t-value="'width: 20px; height: 20px; object-fit: cover; vertical-align: sub;'"/>
+                        </t>
+                    </t>
                     | <t t-out="record.total_views"/> Views
                     | <t t-out="record.likes"/> Likes
                     | <t t-out="record.comments_count"/> Comments
@@ -34,7 +41,7 @@
                 </small>
                 <div class="whelpdesk_search_description mt-3 text-break text-muted overflow-hidden" t-if="record.description and (record.is_preview or record.channel_id.is_member)" t-out="record.description"/>
                 <p class="mt-3 mb-0" t-if="record.tag_ids">
-                    <a t-foreach="record.tag_ids" t-as="tag" t-attf-href="?{{ keep_query('*', tag=tag.name.lower()) }}" class="btn btn-sm btn-outline-secondary" t-out="tag.name"/>
+                    <a t-foreach="record.tag_ids" t-as="tag" t-attf-href="?{{ keep_query('*', tag=tag.name.lower()) }}" class="border badge text-bg-light me-1" t-out="tag.name"/>
                 </p>
             </div>
         </div>
@@ -50,13 +57,27 @@
                     <a t-att-href="url" target="_blank" t-out="record.name" class="fw-bold"/>
                 </h5>
                 <small>
-                    <time t-field="record.slide_last_update" t-options='{"format": "d MMM yyyy"}'/>, by <a t-attf-href="/profile/user/{{record.user_id.id}}" class="fw-bold" t-out="record.user_id.name"/>
+                    <time t-field="record.slide_last_update" t-options='{"format": "d MMM yyyy"}'/>
+                    <t t-if="record.user_id">
+                        , by <a t-attf-href="/profile/user/{{record.user_id.id}}" class="fw-bold" t-out="record.user_id.name"/>
+                        <t t-call="website_slides.slides_misc_user_image">
+                            <t t-set="user" t-value="record.user_id"/>
+                            <t t-set="img_class" t-value="'rounded-circle me-1'"/>
+                            <t t-set="img_style" t-value="'width: 20px; height: 20px; object-fit: cover; vertical-align: sub;'"/>
+                        </t>
+                    </t>
+                    | <t t-out="record.nbr_document"/> <t t-if="record.channel_type == 'training'">Lessons</t><t t-else="">Documents</t>
+                    | <t t-out="round(record.total_time)"/> Hours to Complete
                     | <t t-out="record.members_count"/> Members
-                    | <t t-out="record.rating_count"/> Reviews
+                    | <t t-call="portal_rating.rating_widget_stars_static">
+                        <t t-set="inline_mode" t-value="1"/>
+                        <t t-set="rating_avg" t-value="record.rating_avg_stars"/>
+                        <t t-set="rating_count" t-value="record.rating_count"/>
+                    </t>
                 </small>
                 <div class="whelpdesk_search_description mt-3 text-break text-muted overflow-hidden" t-if="record.description" t-out="record.description"/>
                 <p class="mt-3 mb-0" t-if="record.tag_ids">
-                    <a t-foreach="record.tag_ids" t-as="tag" t-attf-href="?{{ keep_query('*', tag=tag.name.lower()) }}" class="btn btn-sm btn-outline-secondary" t-out="tag.name"/>
+                    <a t-foreach="record.tag_ids" t-as="tag" t-attf-href="?{{ keep_query('*', tag=tag.name.lower()) }}" t-attf-class="badge me-1 o_tag #{'o_tag_color_'+str(tag.color)}" t-out="tag.name"/>
                 </p> 
             </div>
         </div>

@@ -43,12 +43,11 @@ QUnit.module("Planning", (hooks) => {
         const webClient = await createWebClient({
             serverData,
             mockRPC(route, args) {
-                if (args.method === "write") {
+                if (args.method === "web_save") {
                     // Say a recurrence that repeats for ever.
                     // If, on the n'th occurrence, we change the recurrence to have max n-1 occurrences,
                     // then the n'th occurrence (which we just saved) is deleted.
-                    args.method = "unlink";
-                    args.args = [args.args[0]];
+                    return [];
                 }
             },
         });

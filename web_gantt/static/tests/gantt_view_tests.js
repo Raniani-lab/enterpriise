@@ -1780,10 +1780,11 @@ QUnit.test("create dialog with timezone", async (assert) => {
         serverData,
         arch: '<gantt date_start="start" date_stop="stop" />',
         mockRPC(route, { method, args }) {
-            if (method === "create") {
-                assert.deepEqual(args[0], [
-                    { start: "2018-12-09 23:00:00", stop: "2018-12-10 22:59:59" },
-                ]);
+            if (method === "web_save") {
+                assert.deepEqual(args[1], {
+                    start: "2018-12-09 23:00:00",
+                    stop: "2018-12-10 22:59:59",
+                });
             }
         },
     });

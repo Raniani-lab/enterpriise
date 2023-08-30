@@ -460,8 +460,8 @@ QUnit.module("Studio Approval", (hooks) => {
                 message: false,
                 exclusive_user: false,
             };
-            if (args.method === "create") {
-                assert.step("create");
+            if (args.method === "web_save") {
+                assert.step("web_save");
             }
             if (args.method === "check_approval") {
                 assert.step(`check_approval: ${JSON.stringify(args.args)}`);
@@ -502,7 +502,7 @@ QUnit.module("Studio Approval", (hooks) => {
         assert.verifySteps(['get_approval_spec: resId: false ; ["partner",false,"someMethod"]']);
         await click(target, 'button[name="someMethod"]');
         assert.verifySteps([
-            "create",
+            "web_save",
             'check_approval: ["partner",4,false,"someMethod"]',
             'get_approval_spec: resId: 4 ; ["partner",false,"someMethod"]',
         ]);
@@ -528,8 +528,8 @@ QUnit.module("Studio Approval", (hooks) => {
                 message: false,
                 exclusive_user: false,
             };
-            if (args.method === "write") {
-                assert.step("write");
+            if (args.method === "web_save") {
+                assert.step("web_save");
             }
             if (args.method === "check_approval") {
                 assert.step(`check_approval: ${JSON.stringify(args.args)}`);
@@ -574,7 +574,7 @@ QUnit.module("Studio Approval", (hooks) => {
         assert.verifySteps(['get_approval_spec: resId: 1 ; ["partner",false,"someaction"]']);
         await click(target, 'button[name="someaction"]');
         assert.verifySteps([
-            "write",
+            "web_save",
             'check_approval: ["partner",1,false,"someaction"]',
             'get_approval_spec: resId: 1 ; ["partner",false,"someaction"]',
         ]);

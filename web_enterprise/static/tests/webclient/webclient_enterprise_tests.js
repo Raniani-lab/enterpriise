@@ -304,14 +304,12 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         // and relied upon by this test
 
         const mockRPC = (route, args) => {
-            if (args.method === "create") {
+            if (args.method === "web_save") {
                 assert.strictEqual(args.model, "partner");
-                assert.deepEqual(args.args[0], [
-                    {
-                        display_name: "red right hand",
-                        foo: false,
-                    },
-                ]);
+                assert.deepEqual(args.args[1], {
+                    display_name: "red right hand",
+                    foo: false,
+                });
             }
         };
 

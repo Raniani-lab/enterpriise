@@ -27,7 +27,7 @@ QUnit.module("Knowledge - Form Search Button", (hooks) => {
                     case "check_access_rights":
                         return true;
                 }
-            } else if (model === "res.partner" && method === "create") {
+            } else if (model === "res.partner" && method === "web_save") {
                 assert.step("save");
             }
         };

@@ -347,7 +347,7 @@ QUnit.module("Knowledge - Ensure body save scenarios", (hooks) => {
             resId: 1,
             mockRPC(route, args) {
                 if (
-                    route === '/web/dataset/call_kw/knowledge_article/write' &&
+                    route === '/web/dataset/call_kw/knowledge_article/web_save' &&
                     args.model === 'knowledge_article'
                 ) {
                     if (writeCount === 0) {

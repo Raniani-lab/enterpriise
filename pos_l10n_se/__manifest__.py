@@ -8,15 +8,14 @@
     'sequence': 6,
     'summary': 'Implements the registered cash system',
     'description': """
-
+        This module makes sure that the point of sales are compliant to the law in sweden.
     """,
     'depends': ['pos_restaurant', 'pos_iot', 'l10n_se'],
     'data': [
         'views/pos_daily_reports.xml',
-        'security/ir.model.access.csv',
         'views/pos_config.xml',
         'views/res_config_settings_views.xml',
-        'views/order.xml',
+        'views/pos_order.xml',
     ],
     'assets': {
         'point_of_sale._assets_pos': [

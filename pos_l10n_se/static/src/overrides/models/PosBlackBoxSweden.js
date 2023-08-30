@@ -4,6 +4,7 @@ import { Order, Orderline } from "@point_of_sale/app/store/models";
 import { _t } from "@web/core/l10n/translation";
 import { patch } from "@web/core/utils/patch";
 import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
+const { DateTime } = luxon;
 import { deserializeDateTime } from "@web/core/l10n/dates";
 
 patch(PosStore.prototype, {
@@ -31,28 +32,28 @@ patch(PosStore.prototype, {
                 order.blackbox_tax_category_b = order.get_specific_tax(12);
                 order.blackbox_tax_category_c = order.get_specific_tax(6);
                 order.blackbox_tax_category_d = order.get_specific_tax(0);
-                var data = await this.push_order_to_blackbox(order);
-                this.set_data_for_push_order_from_blackbox(order, data);
-                return super.push_single_order(...arguments);
+                const data = await this.pushOrderToSwedenBlackbox(order);
+                if (data.value.error && data.value.error.errorCode != "000000") {
+                    throw data.value.error;
+                }
+                this.setDataForPushOrderFromSwedenBlackBox(order, data);
             } catch (err) {
-                order.finalized = false;
-                return Promise.reject({
-                    code: 700,
-                    message: "Blackbox Error",
-                    data: { order: order, error: err },
+                this.env.services.popup.add(ErrorPopup, {
+                    title: _t("Blackbox error"),
+                    body: _t(err.status.message_title ? err.status.message_title : err.status),
                 });
+                return;
             }
-        } else {
-            return super.push_single_order(...arguments);
         }
+        return super.push_single_order(...arguments);
     },
-    async push_order_to_blackbox(order) {
+    async pushOrderToSwedenBlackbox(order) {
         const fdm = this.hardwareProxy.deviceControllers.fiscal_data_module;
         const data = {
-            date: deserializeDateTime(order.date_order).toFormat("yyyyMMddHHmm"),
+            date: new DateTime(order.date_order).toFormat("yyyyMMddHHmm"),
             receipt_id: order.sequence_number.toString(),
             pos_id: order.pos.config.id.toString(),
-            organisation_number: this.company.company_registry.replace(/\D/g, ""),
+            organisation_number: this.company.company_registry,
             receipt_total: order.get_total_with_tax().toFixed(2).toString().replace(".", ","),
             negative_total:
                 order.get_total_with_tax() < 0
@@ -72,22 +73,16 @@ patch(PosStore.prototype, {
                 ? "0,00;" + order.blackbox_tax_category_d.toFixed(2).replace(".", ",")
                 : " ",
         };
-        return new Promise((resolve, reject) => {
-            fdm.addListener((data) => (data.status === "ok" ? resolve(data) : reject(data)));
-            fdm.action({
-                action: "registerReceipt",
+
+        return new Promise(async (resolve, reject) => {
+            fdm.addListener(data => data.status === "ok" ? resolve(data) : reject(data));
+            await fdm.action({
+                action: 'registerReceipt',
                 high_level_message: data,
-            }).then((action_result) => {
-                if (action_result.result === false) {
-                    this.env.services.popup(ErrorPopup, {
-                        title: _t("Fiscal Data Module error"),
-                        body: _t("The fiscal data module is disconnected."),
-                    });
-                }
             });
         });
     },
-    set_data_for_push_order_from_blackbox(order, data) {
+    setDataForPushOrderFromSwedenBlackBox(order, data) {
         order.blackbox_signature = data.signature_control;
         order.blackbox_unit_id = data.unit_id;
     },
@@ -101,6 +96,25 @@ patch(PosStore.prototype, {
             this.config.id,
         ]);
     },
+    getReceiptHeaderData() {
+        const result = super.getReceiptHeaderData(...arguments);
+        const order = this.get_order();
+        if(this.useBlackBoxSweden()) {
+            result.receipt_type = order.receipt_type;
+            result.blackboxDate = order.blackbox_date;
+            result.posIdentifier = this.config.name;
+            result.isReprint = order.isReprint;
+            result.orderSequence = order.sequence_number;
+            if(order.isReprint) {
+                result.type = "COPY"
+            } else if(order.isProfo) {
+                result.type = "PRO FORMA"
+            } else {
+                result.type = (order.amount_total < 0 ? "return" : "") + "receipt";
+            }
+        }
+        return result;
+    }
 });
 
 patch(Order.prototype, {
@@ -113,29 +127,29 @@ patch(Order.prototype, {
     },
     async add_product(product, options) {
         if (this.pos.useBlackBoxSweden() && product.taxes_id.length === 0) {
-            await this.env.services.popup(ErrorPopup, {
+             this.pos.env.services.popup.add(ErrorPopup, {
                 title: _t("POS error"),
                 body: _t("Product has no tax associated with it."),
             });
         } else if (
             this.pos.useBlackBoxSweden() &&
-            !this.pos.taxes_by_id[product.taxes_id[0]].identification_letter
+            !this.pos.taxes_by_id[product.taxes_id[0]].sweden_identification_letter
         ) {
-            await this.env.services.popup(ErrorPopup, {
-                title: _t("POS error"),
-                body: _t(
+             this.pos.env.services.popup.add(ErrorPopup, {
+                'title': _t("POS error"),
+                'body': _t(
                     "Product has an invalid tax amount. Only 25%, 12%, 6% and 0% are allowed."
                 ),
             });
         } else if (this.pos.useBlackBoxSweden() && this.pos.get_order().is_refund) {
-            await this.env.services.popup(ErrorPopup, {
-                title: _t("POS error"),
-                body: _t("Cannot modify a refund order."),
+             this.pos.env.services.popup.add(ErrorPopup, {
+                'title': _t("POS error"),
+                'body': _t("Cannot modify a refund order."),
             });
         } else if (this.pos.useBlackBoxSweden() && this.hasNegativeAndPositiveProducts(product)) {
-            await this.env.services.popup(ErrorPopup, {
-                title: _t("POS error"),
-                body: _t("You can only make positive or negative order. You cannot mix both."),
+             this.pos.env.services.popup.add(ErrorPopup, {
+                'title': _t("POS error"),
+                'body': _t("You can only make positive or negative order. You cannot mix both."),
             });
         } else {
             return super.add_product(...arguments);
@@ -152,9 +166,11 @@ patch(Order.prototype, {
         this.is_refund = json.is_refund || false;
     },
     export_as_JSON() {
-        var json = super.export_as_JSON(...arguments);
+        let json = super.export_as_JSON(...arguments);
+        if(!this.pos.useBlackBoxSweden())
+            return json;
 
-        var to_return = Object.assign(json, {
+        return Object.assign(json, {
             receipt_type: this.receipt_type,
             blackbox_unit_id: this.blackbox_unit_id,
             blackbox_signature: this.blackbox_signature,
@@ -164,7 +180,6 @@ patch(Order.prototype, {
             blackbox_tax_category_d: this.blackbox_tax_category_d,
             is_refund: this.is_refund,
         });
-        return to_return;
     },
     hasNegativeAndPositiveProducts(product) {
         var isPositive = product.lst_price >= 0;
@@ -179,6 +194,31 @@ patch(Order.prototype, {
         }
         return false;
     },
+    export_for_printing() {
+        let result = super.export_for_printing(...arguments);
+        if(!this.pos.useBlackBoxSweden())
+            return result
+
+        const order = this.pos.get_order();
+        result.useBlackBoxSweden = true;
+        result.blackboxSeData = {
+            "posID": this.pos.config.name,
+            "orderSequence": order.sequence_number,
+            "unitID": order.blackbox_unit_id,
+            "blackboxSignature": order.blackbox_signature,
+            "isReprint": order.isReprint,
+            "originalOrderDate": deserializeDateTime(
+                order.creation_date
+            ).toFormat("HH:mm dd/MM/yyyy"),
+            "productLines": order.orderlines.filter((orderline) => {
+                return orderline.product_type !== "service";
+            }),
+            "serviceLines": order.orderlines.filter((orderline) => {
+                return orderline.product_type === "service";
+            })
+        }
+        return result;
+    }
 });
 
 patch(Orderline.prototype, {
@@ -190,4 +230,11 @@ patch(Orderline.prototype, {
         });
         return to_return;
     },
+    getLineTaxLetter() {
+        if(this.pos.useBlackBoxSweden()) {
+            let taxId = Object.values(this.get_tax_details())[0]?.id;
+            return this.pos.taxes_by_id[taxId]?.sweden_identification_letter;
+        }
+        return super.getLineTaxLetter();
+    }
 });

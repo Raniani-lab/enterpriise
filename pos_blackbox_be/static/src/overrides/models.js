@@ -135,8 +135,10 @@ patch(PosStore.prototype, {
     },
     getReceiptHeaderData() {
         const result = super.getReceiptHeaderData(...arguments);
-        const order = this.get_order();
         if(this.useBlackBoxBe()) {
+            const order = this.get_order();
+
+            result.useBlackBoxBe = this.useBlackBoxBe();
             result.receipt_type = order.receipt_type;
             result.blackboxDate = order.blackbox_date;
             result.posIdentifier = this.config.name;

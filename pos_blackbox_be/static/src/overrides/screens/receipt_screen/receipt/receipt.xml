@@ -16,7 +16,7 @@
         </xpath>
 
         <xpath expr="//div[hasclass('pos-receipt-contact')]" position="inside">
-            <t t-if="props.data.useBlackBoxBe !== false">
+            <t t-if="props.data.useBlackBoxBe">
                 <div>
                     Date: <t t-esc="props.data.blackboxDate"/>
                 </div>

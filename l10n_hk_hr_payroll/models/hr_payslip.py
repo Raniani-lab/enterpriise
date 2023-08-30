@@ -60,51 +60,40 @@ class Payslip(models.Model):
             return self._get_contract_wage()
         return res
 
-    def _get_daily_wage(self):
+    def _get_moving_daily_wage(self):
         self.ensure_one()
-        res = {
-            "average": 0,
-            "moving": 0,
-        }
-        date_from, date_to = min(self.mapped('date_from')), max(self.mapped('date_to'))
-        payslips_per_employee = self._get_last_year_payslips_per_employee(date_from, date_to)
-        wage = self.contract_id.wage
-        payslip_day = (self.date_to - self.date_from).days + 1
-        res['average'] = wage / payslip_day
+
         moving_daily_wage = sum(self.input_line_ids.filtered(lambda line: line.code == 'MOVING_DAILY_WAGE').mapped('amount'))
         if moving_daily_wage:
-            res['moving'] = moving_daily_wage
-        else:
-            payslips = payslips_per_employee[self.employee_id]
-            domain = self._get_last_year_payslips_domain(self.date_from, self.date_to)
-            last_year_payslips = payslips.filtered_domain(domain).sorted(lambda x: x.date_from)
-            if last_year_payslips:
-                gross = last_year_payslips._get_line_values(['713_GROSS'], compute_sum=True)['713_GROSS']['sum']['total']
-                gross -= last_year_payslips._get_total_non_full_pay()
-                actual_worked_days = 0
-                for payslip in last_year_payslips:
-                    actual_worked_days += payslip._get_actual_work_days(skip_non_full_pay=True)
-                if actual_worked_days > 0:
-                    res['moving'] = gross / actual_worked_days
-        return res
+            return moving_daily_wage
+
+        payslips_per_employee = self._get_last_year_payslips_per_employee(self.date_from, self.date_to)
+        payslips = payslips_per_employee[self.employee_id]
+        domain = self._get_last_year_payslips_domain(self.date_from, self.date_to)
+        last_year_payslips = payslips.filtered_domain(domain).sorted(lambda slip: slip.date_from)
+        if last_year_payslips:
+            gross = last_year_payslips._get_line_values(['713_GROSS'], compute_sum=True)['713_GROSS']['sum']['total']
+            gross -= last_year_payslips._get_total_non_full_pay()
+            actual_worked_days = sum([payslip._get_actual_work_days(skip_non_full_pay=True) for payslip in last_year_payslips])
+            if actual_worked_days > 0:
+                return gross / actual_worked_days
+        return 0
 
     def _get_actual_work_days(self, skip_non_full_pay=False):
         self.ensure_one()
 
         def _filtered_worked_days_line(line):
             if line.code in ['LEAVE90', 'OUT']:
-                return True
+                return False
             if skip_non_full_pay and line.work_entry_type_id.l10n_hk_non_full_pay:
-                return True
-            return False
+                return False
+            return True
 
-        day_count = (self.date_to - self.date_from).days + 1
-        skip_worked_days_count = sum(self.worked_days_line_ids.filtered(_filtered_worked_days_line).mapped('number_of_days'))
-        return day_count - skip_worked_days_count
+        return sum(self.worked_days_line_ids.filtered(_filtered_worked_days_line).mapped('number_of_days'))
 
     def _get_actual_work_rate(self):
         self.ensure_one()
-        days_count = (self.date_to - self.date_from).days + 1
+        days_count = self.worked_days_line_ids.mapped('number_of_days')
         actual_work_days = self._get_actual_work_days()
         return actual_work_days / days_count
 
@@ -125,6 +114,11 @@ class Payslip(models.Model):
         for payslip in payslips:
             payslips_per_employee[payslip.employee_id] += payslip
         return payslips_per_employee
+
+    def _get_credit_time_lines(self):
+        if self.struct_id.country_id.code != 'HK':
+            return super()._get_credit_time_lines()
+        return []
 
     def _get_worked_day_lines_values(self, domain=None):
         self.ensure_one()
@@ -172,28 +166,38 @@ class Payslip(models.Model):
 
         contract = self.contract_id
         if contract.resource_calendar_id:
+            if not check_out_of_contract:
+                return res
+            out_days, out_hours = 0, 0
             reference_calendar = self._get_out_of_contract_calendar()
-            payslip_days = (self.date_to - self.date_from).days + 1
-            remaining_days, remaining_hours = payslip_days, payslip_days * reference_calendar.hours_per_day
-            for worked_days in res:
-                remaining_days -= worked_days['number_of_days']
-                remaining_hours -= worked_days['number_of_hours']
-
-            if remaining_days or remaining_hours:
+            domain = expression.AND([domain, [('work_entry_type_id.is_leave', '=', True)]])
+            if self.date_from < contract.date_start:
+                start = fields.Datetime.to_datetime(self.date_from)
+                stop = fields.Datetime.to_datetime(contract.date_start) + relativedelta(days=-1, hour=23, minute=59)
+                out_time = reference_calendar.get_work_duration_data(start, stop, compute_leaves=False, domain=domain)
+                out_days += out_time['days']
+                out_hours += out_time['hours']
+            if contract.date_end and contract.date_end < self.date_to:
+                start = fields.Datetime.to_datetime(contract.date_end) + relativedelta(days=1)
+                stop = fields.Datetime.to_datetime(self.date_to) + relativedelta(hour=23, minute=59)
+                out_time = reference_calendar.get_work_duration_data(start, stop, compute_leaves=False, domain=domain)
+                out_days += out_time['days']
+                out_hours += out_time['hours']
+            if out_days or out_hours:
                 work_entry_type = self.env.ref('hr_payroll.hr_work_entry_type_out_of_contract')
                 existing = False
                 for worked_days in res:
                     if worked_days['work_entry_type_id'] == work_entry_type.id:
-                        worked_days['number_of_days'] += remaining_days
-                        worked_days['number_of_hours'] += remaining_hours
+                        worked_days['number_of_days'] += out_days
+                        worked_days['number_of_hours'] += out_hours
                         existing = True
                         break
                 if not existing:
                     res.append({
                         'sequence': work_entry_type.sequence,
                         'work_entry_type_id': work_entry_type.id,
-                        'number_of_days': remaining_days,
-                        'number_of_hours': remaining_hours,
+                        'number_of_days': out_days,
+                        'number_of_hours': out_hours,
                     })
         return res
 

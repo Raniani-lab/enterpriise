@@ -11,6 +11,9 @@ Accounting Data for Hong Kong Payroll Rules
 ===========================================
     """,
     'depends': ['hr_payroll_account', 'l10n_hk', 'l10n_hk_hr_payroll'],
+    'data': [
+        'data/account_chart_template_data.xml',
+    ],
     'demo': [
         'data/l10n_hk_hr_payroll_account_demo.xml',
     ],

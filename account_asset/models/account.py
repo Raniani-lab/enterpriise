@@ -9,7 +9,7 @@ class AccountAccount(models.Model):
 
     asset_model = fields.Many2one(
         'account.asset',
-        domain=lambda self: [('state', '=', 'model')],
+        domain=[('state', '=', 'model')],
         help="If this is selected, an expense/revenue will be created automatically "
              "when Journal Items on this account are posted.",
         tracking=True)

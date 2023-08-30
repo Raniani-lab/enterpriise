@@ -12,7 +12,7 @@ class HelpdeskTicketSelectForumWizard(models.TransientModel):
     _description = 'Share on Forum'
 
     ticket_id = fields.Many2one('helpdesk.ticket', default=lambda self: self.env.context.get('active_id'))
-    forum_id = fields.Many2one('forum.forum', required=True, domain=lambda self: self._get_forums_domain())
+    forum_id = fields.Many2one('forum.forum', required=True, domain="[('filter_for_helpdesk_wizard', '=', True)]")
 
     title = fields.Char(compute='_compute_post', store=True, readonly=False, required=True)
     description = fields.Html(compute='_compute_post', store=True, readonly=False, required=True)
@@ -21,7 +21,7 @@ class HelpdeskTicketSelectForumWizard(models.TransientModel):
     def default_get(self, fields_list):
         res = super().default_get(fields_list)
         if 'forum_id' in fields_list:
-            res['forum_id'] = self.env['forum.forum'].search(self._get_forums_domain(), limit=1).id
+            res['forum_id'] = self.env['forum.forum'].search([('filter_for_helpdesk_wizard', '=', True)], limit=1).id
         return res
 
     def action_confirm_selection(self):
@@ -80,7 +80,16 @@ class HelpdeskTicketSelectForumWizard(models.TransientModel):
     def action_create_view_post(self):
         return self._create_forum_post().open_forum_post()
 
-    def _get_forums_domain(self):
+
+class ForumForum(models.Model):
+    _inherit = "forum.forum"
+
+    filter_for_helpdesk_wizard = fields.Boolean(store=False, search='_search_filter_for_helpdesk_wizard')
+
+    def _search_filter_for_helpdesk_wizard(self, operator, value):
+        assert operator == '='
+        assert value
+
         forums = False
         ticket_id = self.env.context.get('active_id')
         if ticket_id:

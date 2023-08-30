@@ -247,7 +247,7 @@ class Task(models.Model):
             'res_model': 'project.task',
             'res_id': self.id,
             'view_mode': 'form',
-            'context': {'task_worksheet_comment': True},
+            'context': {'disable_toolbar': True},
             'views': [[self.env.ref('industry_fsm.fsm_form_view_comment').id, 'form']],
         }
 
@@ -420,13 +420,6 @@ class Task(models.Model):
     def has_to_be_signed(self):
         self.ensure_one()
         return self._is_fsm_report_available() and not self.worksheet_signature
-
-    @api.model
-    def get_views(self, views, options=None):
-        options = options or {}
-        options['toolbar'] = not self._context.get('task_worksheet_comment') and options.get('toolbar')
-        res = super().get_views(views, options)
-        return res
 
     # ---------------------------------------------------------
     # Business Methods

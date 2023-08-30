@@ -18,7 +18,7 @@ class AccountMove(models.Model):
     l10n_pe_dua_invoice_id = fields.Many2one(
         comodel_name="account.move",
         string="DUA Invoice",
-        domain=lambda self: [
+        domain=[
             ("l10n_latam_document_type_id_code", "in", ("50", "52")),
             ("state", "=", "posted"),
         ],

@@ -39,9 +39,6 @@ class HelpdeskTeam(models.Model):
             })
         return [Command.set(default_stages.ids)]
 
-    def _default_domain_member_ids(self):
-        return [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)]
-
     name = fields.Char('Helpdesk Team', required=True, translate=True)
     description = fields.Html('About Team', translate=True)
     active = fields.Boolean(default=True)
@@ -60,7 +57,7 @@ class HelpdeskTeam(models.Model):
         ('balanced', 'Each user has an equal number of open tickets')],
         string='Assignment Method', default='randomly', required=True,
         help="New tickets will automatically be assigned to the team members that are available, according to their working hours and their time off.")
-    member_ids = fields.Many2many('res.users', string='Team Members', domain=lambda self: self._default_domain_member_ids(),
+    member_ids = fields.Many2many('res.users', string='Team Members', domain=lambda self: [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)],
         default=lambda self: self.env.user, required=True)
     privacy_visibility = fields.Selection([
         ('invited_internal', 'Invited internal users (private)'),

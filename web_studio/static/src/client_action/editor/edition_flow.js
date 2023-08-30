@@ -55,8 +55,8 @@ export class EditionFlow extends Reactive {
         if (forceSearch && !views.some((tuple) => tuple[1] === "search")) {
             views.push([false, "search"]);
         }
-        const newContext = { ...context, studio: true, lang: false, no_address_format: true };
-        const options = { loadIrFilters: true, loadActionMenus: false, id };
+        const newContext = { ...context, lang: false };
+        const options = { loadIrFilters: true, loadActionMenus: false, id, studio: true };
         const res = await this.view.loadViews(
             { resModel: res_model, views, context: newContext },
             options

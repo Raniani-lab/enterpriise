@@ -66,8 +66,9 @@ class DataMergeModel(models.Model):
     mix_by_company = fields.Boolean('Cross-Company', default=False, help="When enabled, duplicates across different companies will be suggested")
 
     ### User Notifications for Manual merge
-    notify_user_ids = fields.Many2many('res.users', string='Notify Users', help='List of users to notify when there are new records to merge', domain=lambda self:
-    [('groups_id', 'in', self.env.ref('base.group_system').id)])
+    notify_user_ids = fields.Many2many('res.users', string='Notify Users',
+        help='List of users to notify when there are new records to merge',
+        domain=lambda self: [('groups_id', 'in', self.env.ref('base.group_system').id)])
     notify_frequency = fields.Integer(string='Notify', default=1)
     notify_frequency_period = fields.Selection([
         ('days', 'Days'),

@@ -26,7 +26,7 @@ class Model(models.AbstractModel):
     def _get_view_cache_key(self, *args, **kwargs):
         if self._context.get('studio'):
             self = self.with_context(no_address_format=True)
-        key = super(Model, self)._get_view_cache_key(*args, **kwargs)
+        key = super()._get_view_cache_key(*args, **kwargs)
         return key + (self._context.get("studio"),)
 
     @api.model
@@ -36,6 +36,19 @@ class Model(models.AbstractModel):
             keys.append('manual')
         return keys
 
+    @api.model
+    def get_views(self, views, options=None):
+        """Add an option to enable features for studio.
+
+        :param dict options: a dict optional boolean flags, set to enable:
+
+            ``studio``
+                enable studio feature, will add 'studio' and
+                'no_address_format' in the context.
+        """
+        if options and options.get('studio'):
+            self = self.with_context(studio=True, no_address_format=True)
+        return super().get_views(views, options)
 
 class View(models.Model):
     _name = 'ir.ui.view'

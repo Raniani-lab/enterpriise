@@ -14,7 +14,7 @@ class HelpdeskSaleCouponGenerate(models.TransientModel):
     ticket_id = fields.Many2one('helpdesk.ticket')
     company_id = fields.Many2one(related="ticket_id.company_id")
     program = fields.Many2one('loyalty.program', string="Coupon Program", default=_get_default_program,
-        domain=lambda self: [('applies_on', '=', 'current'), ('trigger', '=', 'with_code'), '|', ('company_id', '=', False), ('company_id', '=', self.company_id.id)])
+        domain=[('applies_on', '=', 'current'), ('trigger', '=', 'with_code')], check_company=True)
     points_granted = fields.Float('Coupon Value', default=1)
     points_name = fields.Char(related='program.portal_point_name')
     valid_until = fields.Date("Valid Until")

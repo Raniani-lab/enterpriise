@@ -3,6 +3,17 @@
 $o-web-grid-first-column-width: 3rem;
 $o-web-grid-cell-minwidth: 10ch;
 
+@mixin o-grid-zindex($level) {
+    z-index: map-get(
+        (
+            interact: 20,
+            // Top-most elements
+            top: 30,
+        ),
+        $level
+    );
+}
+
 .o_view_sample_data .o_grid_renderer {
     overflow: hidden;
     pointer-events: none;
@@ -24,7 +35,7 @@ $o-web-grid-cell-minwidth: 10ch;
     }
 
     .o_grid_column_title {
-        @include o-gantt-zindex(interact);
+        @include o-grid-zindex(interact);
 
         &:not(.o_grid_highlighted) {
             > .o_grid_cell_overlay_today {
@@ -38,7 +49,7 @@ $o-web-grid-cell-minwidth: 10ch;
     }
 
     .o_grid_row_title, .o_grid_section_title {
-        @include o-gantt-zindex(interact);
+        @include o-grid-zindex(interact);
     }
 
     .o_grid_highlighted, .o_grid_row_highlighted:not(.o_grid_add_line) {
@@ -88,6 +99,6 @@ $o-web-grid-cell-minwidth: 10ch;
     }
 
     .o_grid_navigation_wrap {
-        @include o-gantt-zindex(top);
+        @include o-grid-zindex(top);
     }
 }

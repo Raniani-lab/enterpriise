@@ -113,7 +113,7 @@ QUnit.module("Knowledge - Articles Structure Command", (hooks) => {
             arch,
             resId: 1,
             mockRPC(route, args) {
-                if (args.method === 'unity_web_search_read' && args.model === 'knowledge.article') {
+                if (args.method === 'web_search_read' && args.model === 'knowledge.article') {
                     return Promise.resolve(articlesStructureSearch);
                 }
             }
@@ -139,7 +139,7 @@ QUnit.module("Knowledge - Articles Structure Command", (hooks) => {
             arch,
             resId: 1,
             mockRPC(route, args) {
-                if (args.method === 'unity_web_search_read' && args.model === 'knowledge.article') {
+                if (args.method === 'web_search_read' && args.model === 'knowledge.article') {
                     if (searchReadCallCount === 0) {
                         searchReadCallCount++;
                         return Promise.resolve(articlesIndexSearch);

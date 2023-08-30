@@ -293,7 +293,7 @@ QUnit.test("ungrouped gantt rendering", async (assert) => {
     const webClient = await createWebClient({
         serverData,
         mockRPC(_, { method, model }) {
-            if (method === "unity_web_search_read") {
+            if (method === "web_search_read") {
                 assert.step(model);
             } else if (method === "web_read_group") {
                 throw Error("Should not call read_group when no groupby!");
@@ -810,7 +810,7 @@ QUnit.test("gantt rendering, thumbnails", async (assert) => {
         arch: `<gantt string="Tasks" date_start="start" date_stop="stop" thumbnails="{'user_id': 'image'}"/>`,
         groupBy: ["user_id"],
         mockRPC: function (_, args) {
-            if (args.method === "unity_web_search_read") {
+            if (args.method === "web_search_read") {
                 return Promise.resolve({
                     records: [
                         {
@@ -1242,7 +1242,7 @@ QUnit.test("date navigation with timezone (1h)", async (assert) => {
         serverData,
         arch: '<gantt date_start="start" date_stop="stop" />',
         mockRPC(_, { method, kwargs }) {
-            if (method === "unity_web_search_read") {
+            if (method === "web_search_read") {
                 assert.step(kwargs.domain.toString());
             }
         },
@@ -1332,7 +1332,7 @@ QUnit.test(
             serverData,
             arch: '<gantt date_start="start" date_stop="stop" on_create="this_is_create_action" />',
             mockRPC: function (_, { method }) {
-                if (method === "unity_web_search_read") {
+                if (method === "web_search_read") {
                     assert.step("web_search_read");
                 }
             },
@@ -2221,7 +2221,7 @@ QUnit.test("pill is updated after failed resized", async (assert) => {
         domain: [["id", "=", 7]],
         async mockRPC(_route, { method }) {
             switch (method) {
-                case "unity_web_search_read": {
+                case "web_search_read": {
                     assert.step(method);
                     break;
                 }
@@ -2240,7 +2240,7 @@ QUnit.test("pill is updated after failed resized", async (assert) => {
 
     assert.strictEqual(initialPillWidth, getPillWrapper("Task 7").getBoundingClientRect().width);
 
-    assert.verifySteps(["unity_web_search_read", "write", "unity_web_search_read"]);
+    assert.verifySteps(["web_search_read", "write", "web_search_read"]);
 });
 
 QUnit.test("move a pill in the same row", async (assert) => {
@@ -2677,7 +2677,7 @@ QUnit.test("gantt_unavailability reloads when the view's scale changes", async (
         serverData,
         arch: '<gantt date_start="start" date_stop="stop" display_unavailability="1" />',
         async mockRPC(_route, { args, method }) {
-            if (method === "unity_web_search_read") {
+            if (method === "web_search_read") {
                 reloadCount++;
             } else if (method === "gantt_unavailability") {
                 unavailabilityCallCount++;
@@ -2740,7 +2740,7 @@ QUnit.test("gantt_unavailability reload when period changes", async (assert) => 
         serverData,
         arch: '<gantt date_start="start" date_stop="stop" display_unavailability="1" />',
         async mockRPC(_route, { args, method }) {
-            if (method === "unity_web_search_read") {
+            if (method === "web_search_read") {
                 reloadCount++;
             } else if (method === "gantt_unavailability") {
                 unavailabilityCallCount++;
@@ -2781,7 +2781,7 @@ QUnit.test(
             serverData,
             arch: '<gantt date_start="start" date_stop="stop" />',
             async mockRPC(_route, { args, method }) {
-                if (method === "unity_web_search_read") {
+                if (method === "web_search_read") {
                     reloadCount++;
                 } else if (method === "gantt_unavailability") {
                     unavailabilityCallCount++;
@@ -4056,7 +4056,7 @@ QUnit.test("concurrent scale switches return in inverse order", async (assert) =
         serverData,
         arch: '<gantt date_start="start" date_stop="stop" />',
         async mockRPC(_, { method }) {
-            if (method === "unity_web_search_read") {
+            if (method === "web_search_read") {
                 await reloadProm;
             }
         },
@@ -4194,7 +4194,7 @@ QUnit.test("concurrent focusDate selections", async (assert) => {
         serverData,
         arch: '<gantt date_start="start" date_stop="stop" />',
         async mockRPC(_, { method }) {
-            if (method === "unity_web_search_read") {
+            if (method === "web_search_read") {
                 await reloadProm;
             }
         },
@@ -4242,7 +4242,7 @@ QUnit.test("concurrent pill resize and groupBy change", async (assert) => {
 
     assert.verifySteps([
         JSON.stringify(["get_views", []]),
-        JSON.stringify(["unity_web_search_read", []]),
+        JSON.stringify(["web_search_read", []]),
     ]);
 
     assert.deepEqual(getGridContent().rows, [
@@ -4272,7 +4272,7 @@ QUnit.test("concurrent pill resize and groupBy change", async (assert) => {
     await toggleMenuItem(target, "Project");
 
     assert.verifySteps([
-        JSON.stringify(["unity_web_search_read", []]),
+        JSON.stringify(["web_search_read", []]),
         JSON.stringify(["web_read_group", []]),
     ]);
 
@@ -4303,7 +4303,7 @@ QUnit.test("concurrent pill resize and groupBy change", async (assert) => {
     await nextTick();
 
     assert.verifySteps([
-        JSON.stringify(["unity_web_search_read", []]),
+        JSON.stringify(["web_search_read", []]),
         JSON.stringify(["web_read_group", []]),
     ]);
 
@@ -4363,11 +4363,11 @@ QUnit.test("concurrent pill resizes return in inverse order", async (assert) => 
 
     assert.verifySteps([
         JSON.stringify(["get_views", []]),
-        JSON.stringify(["unity_web_search_read", []]),
+        JSON.stringify(["web_search_read", []]),
         JSON.stringify(["write", [[2], { stop: "2018-12-21 06:29:59" }]]),
-        JSON.stringify(["unity_web_search_read", []]),
+        JSON.stringify(["web_search_read", []]),
         JSON.stringify(["write", [[2], { stop: "2018-12-24 06:29:59" }]]),
-        JSON.stringify(["unity_web_search_read", []]),
+        JSON.stringify(["web_search_read", []]),
     ]);
 });
 
@@ -4653,7 +4653,7 @@ QUnit.test("plan dialog initial domain has the action domain as its only base", 
     const webClient = await createWebClient({
         serverData,
         mockRPC: function (route, args) {
-            if (args.method === "unity_web_search_read") {
+            if (args.method === "web_search_read") {
                 assert.step(args.kwargs.domain.toString());
             }
         },

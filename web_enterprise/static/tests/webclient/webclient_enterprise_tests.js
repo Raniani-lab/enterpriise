@@ -85,7 +85,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.verifySteps([
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/call_kw/partner/unity_web_search_read",
+                "/web/dataset/call_kw/partner/web_search_read",
             ]);
             assert.notOk(document.body.classList.contains("o_home_menu_background"));
             assert.containsNone(fixture, ".o_home_menu");
@@ -105,7 +105,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.verifySteps([
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/call_kw/partner/unity_web_search_read",
+                "/web/dataset/call_kw/partner/web_search_read",
             ]);
             assert.containsNone(fixture, ".o_kanban_view");
             await nextTick();
@@ -128,7 +128,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.verifySteps([
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/call_kw/partner/unity_web_search_read",
+                "/web/dataset/call_kw/partner/web_search_read",
             ]);
             assert.containsNone(fixture, ".o_kanban_view");
             await nextTick();
@@ -159,7 +159,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 assert.verifySteps([
                     "/web/action/load",
                     "/web/dataset/call_kw/partner/get_views",
-                    "/web/dataset/call_kw/partner/unity_web_search_read",
+                    "/web/dataset/call_kw/partner/web_search_read",
                 ]);
                 assert.containsNone(fixture, ".o_kanban_view");
                 await nextTick();
@@ -188,7 +188,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.verifySteps([
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/call_kw/partner/unity_web_search_read",
+                "/web/dataset/call_kw/partner/web_search_read",
             ]);
             assert.containsNone(fixture, ".o_kanban_view");
             await nextTick();

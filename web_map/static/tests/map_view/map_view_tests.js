@@ -345,7 +345,7 @@ QUnit.module("Views", (hooks) => {
                     </map>
                 `,
             async mockRPC(route, { model, kwargs }) {
-                if (route === "/web/dataset/call_kw/project.task/unity_web_search_read") {
+                if (route === "/web/dataset/call_kw/project.task/web_search_read") {
                     assert.strictEqual(model, "project.task", "The model should be project.task");
                     const specification = kwargs.specification;
                     assert.deepEqual(specification.partner_id, { fields: { display_name: {} } });
@@ -862,7 +862,7 @@ QUnit.module("Views", (hooks) => {
             arch: `<map res_partner="id" />`,
             async mockRPC(route, { kwargs, model }) {
                 switch (route) {
-                    case "/web/dataset/call_kw/res.partner/unity_web_search_read":
+                    case "/web/dataset/call_kw/res.partner/web_search_read":
                         assert.strictEqual(model, "res.partner", "The model should be res.partner");
                         break;
                     case "/web/dataset/call_kw/res.partner/search_read":
@@ -1159,7 +1159,7 @@ QUnit.module("Views", (hooks) => {
             resModel: "project.task",
             arch: `<map res_partner="partner_id" default_order="name" />`,
             async mockRPC(route, { kwargs }) {
-                if (route === "/web/dataset/call_kw/project.task/unity_web_search_read") {
+                if (route === "/web/dataset/call_kw/project.task/web_search_read") {
                     assert.deepEqual(
                         kwargs.order,
                         "name ASC",

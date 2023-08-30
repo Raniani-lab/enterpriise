@@ -20,6 +20,7 @@ Website Slides integration for the helpdesk module
     'data': [
         'views/helpdesk_views.xml',
         'views/helpdesk_templates.xml',
+        'views/slide_channel_views.xml',
     ],
     'auto_install': True,
     'license': 'OEEL-1',

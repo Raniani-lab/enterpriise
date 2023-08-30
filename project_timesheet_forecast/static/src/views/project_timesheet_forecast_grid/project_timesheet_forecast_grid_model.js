@@ -42,9 +42,26 @@ patch(TimesheetGridDataPoint.prototype, {
             ["end_datetime", ">", serializeDate(this.navigationInfo.periodStart)],
         ]);
 
+        let additionalDomain = [];
+        const fieldsToRemove = [];
+        const searchDomain = new Domain(this.searchParams.domain);
+        for (const tuple of searchDomain.ast.value) {
+            if (
+                tuple.type === 10
+                && !['project_id', 'employee_id', 'user_id'].includes(tuple.value[0].value)
+            ) {
+                fieldsToRemove.push(tuple.value[0].value);
+            }
+        }
+        if (fieldsToRemove.length) {
+            additionalDomain = Domain.removeDomainLeaves(
+                this.searchParams.domain,
+                fieldsToRemove,
+            );
+        }
         const previousWeekSlotsInfo = this.orm.webReadGroup(
             "planning.slot",
-            Domain.and([this.searchParams.domain, domain]).toList({}),
+            Domain.and([additionalDomain, domain]).toList({}),
             validRowFields,
             validRowFields,
             { lazy: false }

@@ -313,15 +313,20 @@ export class MapRenderer extends Component {
                 string: _t("Address"),
             });
         }
+        const fields = this.props.model.metaData.fields;
         for (const field of this.props.model.metaData.fieldNamesMarkerPopup) {
             if (record[field.fieldName]) {
-                const fieldName =
-                    record[field.fieldName] instanceof Array
-                        ? record[field.fieldName][1]
-                        : record[field.fieldName];
+                let value = record[field.fieldName];
+                if (fields[field.fieldName].type === "many2one") {
+                    value = record[field.fieldName].display_name;
+                } else if (["one2many", "many2many"].includes(fields[field.fieldName].type)) {
+                    value = record[field.fieldName]
+                        ? record[field.fieldName].map((r) => r.display_name).join(", ")
+                        : "";
+                }
                 fieldsView.push({
                     id: this.nextId++,
-                    value: fieldName,
+                    value,
                     string: field.string,
                 });
             }

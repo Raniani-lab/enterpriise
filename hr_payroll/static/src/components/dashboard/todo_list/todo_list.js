@@ -26,7 +26,7 @@ export class PayrollDashboardTodo extends Component {
         });
         this.recordInfo = {
             model: "hr.payroll.note",
-            fieldNames: ["id", "name"],
+            specification: { name: {} },
         };
         this.autofocusInput = useAutofocus({selectAll: true});
         useSetupAction({
@@ -43,8 +43,8 @@ export class PayrollDashboardTodo extends Component {
                 await this.orm.webSearchRead(
                     this.recordInfo.model,
                     [],
-                    this.recordInfo.fieldNames,
                     {
+                        specification: this.recordInfo.specification,
                         order: orderByToString(this.props.orderBy),
                     }
                 )
@@ -66,8 +66,9 @@ export class PayrollDashboardTodo extends Component {
             },
         ]);
         const noteId = result[0];
+        const specification = this.recordInfo.specification;
         const createdNote = (
-            await this.orm.read(this.recordInfo.model, [noteId], this.recordInfo.fieldNames)
+            await this.orm.webRead(this.recordInfo.model, [noteId], { specification })
         )[0];
         this.state.records.push(createdNote);
         this.state.activeNoteId = noteId;

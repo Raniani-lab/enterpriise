@@ -54,7 +54,7 @@ QUnit.module("Views", (hooks) => {
                     another_partner_id: {
                         string: "another relation",
                         type: "many2one",
-                        relation: "res.partner}",
+                        relation: "res.partner",
                     },
                     partner_ids: {
                         string: "Partners",
@@ -65,78 +65,50 @@ QUnit.module("Views", (hooks) => {
                     },
                 },
                 records: [{ id: 1, display_name: "project", partner_id: 1 }],
-                oneRecord: {
-                    records: [{ id: 1, display_name: "Foo", partner_id: [1] }],
-                    length: 1,
-                },
 
-                twoRecordsFieldDateTime: {
-                    records: [
-                        { id: 1, display_name: "Foo", scheduled_date: false, partner_id: [1] },
-                        {
-                            id: 2,
-                            display_name: "Bar",
-                            scheduled_date: "2022-02-07 21:09:31",
-                            partner_id: [2],
-                        },
-                    ],
-                    length: 2,
-                },
-
-                twoRecords: {
-                    records: [
-                        { id: 1, display_name: "FooProject", sequence: 1, partner_id: [1] },
-                        { id: 2, display_name: "BarProject", sequence: 2, partner_id: [2] },
-                    ],
-                    length: 2,
-                },
-
-                threeRecords: {
-                    records: [
-                        {
-                            id: 1,
-                            display_name: "FooProject",
-                            sequence: 1,
-                            partner_id: [1],
-                            partner_ids: [1, 2],
-                        },
-                        {
-                            id: 2,
-                            display_name: "BarProject",
-                            sequence: 2,
-                            partner_id: [2],
-                            partner_ids: [1, 3],
-                        },
-                        {
-                            id: 3,
-                            display_name: "FooBarProject",
-                            sequence: 3,
-                            partner_id: [1],
-                            partner_ids: [1],
-                        },
-                    ],
-                    length: 3,
-                },
-
-                twoRecordOnePartner: {
-                    records: [
-                        { id: 1, display_name: "FooProject", partner_id: [1] },
-                        { id: 2, display_name: "BarProject", partner_id: [1] },
-                    ],
-                    length: 2,
-                },
-                noRecord: {
-                    records: [],
-                    length: 0,
-                },
-                recordWithouthPartner: {
-                    records: [{ id: 1, display_name: "Foo", partner_id: [] }],
-                    length: 1,
-                },
-                anotherPartnerId: {
-                    records: [{ id: 1, display_name: "FooProject", another_partner_id: [1] }],
-                    length: 1,
-                },
+                oneRecord: [{ id: 1, display_name: "Foo", partner_id: 1 }],
+                twoRecordsFieldDateTime: [
+                    { id: 1, display_name: "Foo", scheduled_date: false, partner_id: 1 },
+                    {
+                        id: 2,
+                        display_name: "Bar",
+                        scheduled_date: "2022-02-07 21:09:31",
+                        partner_id: 2,
+                    },
+                ],
+                twoRecords: [
+                    { id: 1, display_name: "FooProject", sequence: 1, partner_id: 1 },
+                    { id: 2, display_name: "BarProject", sequence: 2, partner_id: 2 },
+                ],
+                threeRecords: [
+                    {
+                        id: 1,
+                        display_name: "FooProject",
+                        sequence: 1,
+                        partner_id: 1,
+                        partner_ids: [1, 2],
+                    },
+                    {
+                        id: 2,
+                        display_name: "BarProject",
+                        sequence: 2,
+                        partner_id: 2,
+                        partner_ids: [1, 3],
+                    },
+                    {
+                        id: 3,
+                        display_name: "FooBarProject",
+                        sequence: 3,
+                        partner_id: 1,
+                        partner_ids: [1],
+                    },
+                ],
+                twoRecordOnePartner: [
+                    { id: 1, display_name: "FooProject", partner_id: 1 },
+                    { id: 2, display_name: "BarProject", partner_id: 1 },
+                ],
+                recordWithouthPartner: [{ id: 1, display_name: "Foo", partner_id: false }],
+                anotherPartnerId: [{ id: 1, display_name: "FooProject", another_partner_id: 1 }],
             },
             "res.partner": {
                 fields: {
@@ -218,7 +190,6 @@ QUnit.module("Views", (hooks) => {
                         contact_address_complete: "Chaussée de Namur 40, 1367, Ramillies",
                     },
                 ],
-                emptyRecords: [],
                 twoRecordsAddressNoCoordinates: [
                     {
                         id: 2,
@@ -362,6 +333,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("Create a view with no record", async function (assert) {
         assert.expect(8);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+        serverData.models["project.task"].records = [];
         const map = await makeView({
             serverData,
             type: "map",
@@ -369,24 +341,17 @@ QUnit.module("Views", (hooks) => {
             arch: `
                     <map res_partner="partner_id" routing="1">
                         <field name="name" string="Project"/>
+                        <field name="partner_ids" string="Project"/>
                     </map>
                 `,
             async mockRPC(route, { model, kwargs }) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        assert.strictEqual(
-                            model,
-                            "project.task",
-                            "The model should be project.task"
-                        );
-                        assert.strictEqual(kwargs.fields[0], "partner_id");
-                        assert.strictEqual(kwargs.fields[1], "display_name");
-                        return serverData.models["project.task"].noRecord;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        assert.ok(
-                            false,
-                            "Should not search_read the partners if there are no partner"
-                        );
+                if (route === "/web/dataset/call_kw/project.task/unity_web_search_read") {
+                    assert.strictEqual(model, "project.task", "The model should be project.task");
+                    const specification = kwargs.specification;
+                    assert.deepEqual(specification.partner_id, { fields: { display_name: {} } });
+                    assert.deepEqual(specification.display_name, {});
+                } else if (route === "/web/dataset/call_kw/res.partner/search_read") {
+                    assert.ok(false, "Should not search_read the partners if there are no partner");
                 }
             },
         });
@@ -416,21 +381,16 @@ QUnit.module("Views", (hooks) => {
      * Should have no route
      */
     QUnit.test("Create a view with one record that has no partner", async function (assert) {
-        assert.expect(5);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].recordWithouthPartner;
+        models["res.partner"].records = [];
+
         const map = await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].recordWithouthPartner;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].emptyRecords;
-                }
-            },
         });
         assert.strictEqual(map.model.data.records.length, 1, "There should be 1 records");
         assert.containsNone(target, "div.leaflet-marker-icon", "No marker should be on a the map.");
@@ -458,21 +418,16 @@ QUnit.module("Views", (hooks) => {
     QUnit.test(
         "Create a view with one record and a partner located by coordinates",
         async function (assert) {
-            assert.expect(3);
             patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+            const models = serverData.models;
+            models["project.task"].records = models["project.task"].oneRecord;
+            models["res.partner"].records = models["res.partner"].coordinatesNoAddress;
+
             const map = await makeView({
                 serverData,
                 type: "map",
                 resModel: "project.task",
                 arch: `<map res_partner="partner_id" routing="1" />`,
-                async mockRPC(route) {
-                    switch (route) {
-                        case "/web/dataset/call_kw/project.task/web_search_read":
-                            return serverData.models["project.task"].oneRecord;
-                        case "/web/dataset/call_kw/res.partner/search_read":
-                            return serverData.models["res.partner"].coordinatesNoAddress;
-                    }
-                },
             });
             assert.strictEqual(map.model.data.records.length, 1, "There should be one records");
             assert.containsOnce(
@@ -498,21 +453,16 @@ QUnit.module("Views", (hooks) => {
     QUnit.test(
         "Create view with one record linked to a partner with wrong coordinates with MB",
         async function (assert) {
-            assert.expect(5);
             patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+            const models = serverData.models;
+            models["project.task"].records = models["project.task"].oneRecord;
+            models["res.partner"].records = models["res.partner"].wrongCoordinatesNoAddress;
+
             const map = await makeView({
                 serverData,
                 type: "map",
                 resModel: "project.task",
                 arch: `<map res_partner="partner_id" routing="1" />`,
-                async mockRPC(route) {
-                    switch (route) {
-                        case "/web/dataset/call_kw/project.task/web_search_read":
-                            return serverData.models["project.task"].oneRecord;
-                        case "/web/dataset/call_kw/res.partner/search_read":
-                            return serverData.models["res.partner"].wrongCoordinatesNoAddress;
-                    }
-                },
             });
             assert.strictEqual(map.model.data.records.length, 1, "There should be one records");
             assert.containsNone(
@@ -546,20 +496,15 @@ QUnit.module("Views", (hooks) => {
     QUnit.test(
         "Create view with one record linked to a partner with wrong coordinates with OSM",
         async function (assert) {
-            assert.expect(3);
+            const models = serverData.models;
+            models["project.task"].records = models["project.task"].oneRecord;
+            models["res.partner"].records = models["res.partner"].wrongCoordinatesNoAddress;
+
             const map = await makeView({
                 serverData,
                 type: "map",
                 resModel: "project.task",
                 arch: `<map res_partner="partner_id" routing="1" />`,
-                async mockRPC(route) {
-                    switch (route) {
-                        case "/web/dataset/call_kw/project.task/web_search_read":
-                            return serverData.models["project.task"].oneRecord;
-                        case "/web/dataset/call_kw/res.partner/search_read":
-                            return serverData.models["res.partner"].wrongCoordinatesNoAddress;
-                    }
-                },
             });
             assert.strictEqual(map.model.data.records.length, 1, "There should be one records");
             assert.containsNone(
@@ -585,30 +530,30 @@ QUnit.module("Views", (hooks) => {
         "Create View with one record linked to a partner with no coordinates and right address OSM",
         async function (assert) {
             assert.expect(7);
+
+            const models = serverData.models;
+            models["project.task"].records = models["project.task"].oneRecord;
+            models["res.partner"].records = models["res.partner"].noCoordinatesGoodAddress;
+
             const map = await makeView({
                 serverData,
                 type: "map",
                 resModel: "project.task",
                 arch: `<map res_partner="partner_id" routing="1" />`,
                 async mockRPC(route, { args, method, model }) {
-                    switch (route) {
-                        case "/web/dataset/call_kw/project.task/web_search_read":
-                            return serverData.models["project.task"].oneRecord;
-                        case "/web/dataset/call_kw/res.partner/search_read":
-                            return serverData.models["res.partner"].noCoordinatesGoodAddress;
-                        case "/web/dataset/call_kw/res.partner/update_latitude_longitude":
-                            assert.strictEqual(
-                                model,
-                                "res.partner",
-                                'The model should be "res.partner"'
-                            );
-                            assert.strictEqual(method, "update_latitude_longitude");
-                            assert.strictEqual(
-                                args[0].length,
-                                1,
-                                "There should be one record needing caching"
-                            );
-                            assert.strictEqual(args[0][0].id, 1, "The records's id should be 1");
+                    if (route === "/web/dataset/call_kw/res.partner/update_latitude_longitude") {
+                        assert.strictEqual(
+                            model,
+                            "res.partner",
+                            'The model should be "res.partner"'
+                        );
+                        assert.strictEqual(method, "update_latitude_longitude");
+                        assert.strictEqual(
+                            args[0].length,
+                            1,
+                            "There should be one record needing caching"
+                        );
+                        assert.strictEqual(args[0][0].id, 1, "The records's id should be 1");
                     }
                 },
             });
@@ -637,31 +582,32 @@ QUnit.module("Views", (hooks) => {
         "Create View with one record linked to a partner with no coordinates and right address MB",
         async function (assert) {
             assert.expect(7);
+
             patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+
+            const models = serverData.models;
+            models["project.task"].records = models["project.task"].oneRecord;
+            models["res.partner"].records = models["res.partner"].noCoordinatesGoodAddress;
+
             const map = await makeView({
                 serverData,
                 type: "map",
                 resModel: "project.task",
                 arch: `<map res_partner="partner_id" routing="1" />`,
                 async mockRPC(route, { args, method, model }) {
-                    switch (route) {
-                        case "/web/dataset/call_kw/project.task/web_search_read":
-                            return serverData.models["project.task"].oneRecord;
-                        case "/web/dataset/call_kw/res.partner/search_read":
-                            return serverData.models["res.partner"].noCoordinatesGoodAddress;
-                        case "/web/dataset/call_kw/res.partner/update_latitude_longitude":
-                            assert.strictEqual(
-                                model,
-                                "res.partner",
-                                'The model should be "res.partner"'
-                            );
-                            assert.strictEqual(method, "update_latitude_longitude");
-                            assert.strictEqual(
-                                args[0].length,
-                                1,
-                                "There should be one record needing caching"
-                            );
-                            assert.strictEqual(args[0][0].id, 1, "The records's id should be 1");
+                    if (route === "/web/dataset/call_kw/res.partner/update_latitude_longitude") {
+                        assert.strictEqual(
+                            model,
+                            "res.partner",
+                            'The model should be "res.partner"'
+                        );
+                        assert.strictEqual(method, "update_latitude_longitude");
+                        assert.strictEqual(
+                            args[0].length,
+                            1,
+                            "There should be one record needing caching"
+                        );
+                        assert.strictEqual(args[0][0].id, 1, "The records's id should be 1");
                     }
                 },
             });
@@ -687,21 +633,17 @@ QUnit.module("Views", (hooks) => {
      * no marker
      */
     QUnit.test("Create view with no located record", async function (assert) {
-        assert.expect(3);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].oneRecord;
+        models["res.partner"].records = models["res.partner"].unlocatedRecords;
+
         const map = await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].oneRecord;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].unlocatedRecords;
-                }
-            },
         });
         assert.strictEqual(map.model.data.records.length, 1, "There should be one records");
         assert.containsNone(target, "div.leaflet-marker-icon", "No marker should be on a the map.");
@@ -720,20 +662,15 @@ QUnit.module("Views", (hooks) => {
      * no marker
      */
     QUnit.test("Create view with no located record OSM", async function (assert) {
-        assert.expect(3);
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].oneRecord;
+        models["res.partner"].records = models["res.partner"].unlocatedRecords;
+
         const map = await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].oneRecord;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].unlocatedRecords;
-                }
-            },
         });
         assert.strictEqual(map.model.data.records.length, 1, "There should be one records");
         assert.containsNone(target, "div.leaflet-marker-icon", "No marker should be on a the map.");
@@ -752,20 +689,15 @@ QUnit.module("Views", (hooks) => {
      * no marker
      */
     QUnit.test("Create view with no badly located record OSM", async function (assert) {
-        assert.expect(3);
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].oneRecord;
+        models["res.partner"].records = models["res.partner"].noCoordinatesWrongAddress;
+
         const map = await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].oneRecord;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].noCoordinatesWrongAddress;
-                }
-            },
         });
         assert.strictEqual(map.model.data.records.length, 1, "There should be one records");
         assert.containsNone(target, "div.leaflet-marker-icon", "No marker should be on a the map.");
@@ -785,21 +717,17 @@ QUnit.module("Views", (hooks) => {
      */
 
     QUnit.test("Create view with no badly located record MB", async function (assert) {
-        assert.expect(3);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].oneRecord;
+        models["res.partner"].records = models["res.partner"].noCoordinatesWrongAddress;
+
         const map = await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].oneRecord;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].noCoordinatesWrongAddress;
-                }
-            },
         });
         assert.strictEqual(map.model.data.records.length, 1, "There should be one records");
         assert.containsNone(target, "div.leaflet-marker-icon", "No marker should be on a the map.");
@@ -819,21 +747,17 @@ QUnit.module("Views", (hooks) => {
      * 1 caching request
      */
     QUnit.test("Create a view with two located records same partner", async function (assert) {
-        assert.expect(4);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].twoRecordOnePartner;
+        models["res.partner"].records = models["res.partner"].oneLocatedRecord;
+
         const map = await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].twoRecordOnePartner;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].oneLocatedRecord;
-                }
-            },
         });
         assert.strictEqual(map.model.data.records.length, 2, "There should be 2 records");
         assert.strictEqual(
@@ -866,23 +790,23 @@ QUnit.module("Views", (hooks) => {
         async function (assert) {
             assert.expect(5);
             patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+
+            const models = serverData.models;
+            models["project.task"].records = models["project.task"].twoRecords;
+            models["res.partner"].records = models["res.partner"].twoRecordsAddressNoCoordinates;
+
             const map = await makeView({
                 serverData,
                 type: "map",
                 resModel: "project.task",
                 arch: `<map res_partner="partner_id" routing="1" />`,
                 async mockRPC(route, { args }) {
-                    switch (route) {
-                        case "/web/dataset/call_kw/project.task/web_search_read":
-                            return serverData.models["project.task"].twoRecords;
-                        case "/web/dataset/call_kw/res.partner/search_read":
-                            return serverData.models["res.partner"].twoRecordsAddressNoCoordinates;
-                        case "/web/dataset/call_kw/res.partner/update_latitude_longitude":
-                            assert.strictEqual(
-                                args[0].length,
-                                2,
-                                "Should have 2 record needing caching"
-                            );
+                    if (route === "/web/dataset/call_kw/res.partner/update_latitude_longitude") {
+                        assert.strictEqual(
+                            args[0].length,
+                            2,
+                            "Should have 2 record needing caching"
+                        );
                     }
                 },
             });
@@ -914,25 +838,23 @@ QUnit.module("Views", (hooks) => {
      * no route
      */
     QUnit.test("Create a view with res.partner", async function (assert) {
-        assert.expect(8);
+        assert.expect(7);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
-        serverData.models["res.partner"].recordsPrimary = {
-            records: [
-                {
-                    id: 2,
-                    name: "Foo",
-                    contact_address_complete: "Chaussée de Namur 40, 1367, Ramillies",
-                    sequence: 3,
-                },
-                {
-                    id: 1,
-                    name: "FooBar",
-                    contact_address_complete: "Chaussée de Louvain 94, 5310 Éghezée",
-                    sequence: 1,
-                },
-            ],
-            length: 2,
-        };
+
+        serverData.models["res.partner"].records = [
+            {
+                id: 2,
+                name: "Foo",
+                contact_address_complete: "Chaussée de Namur 40, 1367, Ramillies",
+                sequence: 3,
+            },
+            {
+                id: 1,
+                name: "FooBar",
+                contact_address_complete: "Chaussée de Louvain 94, 5310 Éghezée",
+                sequence: 1,
+            },
+        ];
         const map = await makeView({
             serverData,
             type: "map",
@@ -940,19 +862,18 @@ QUnit.module("Views", (hooks) => {
             arch: `<map res_partner="id" />`,
             async mockRPC(route, { kwargs, model }) {
                 switch (route) {
-                    case "/web/dataset/call_kw/res.partner/web_search_read":
+                    case "/web/dataset/call_kw/res.partner/unity_web_search_read":
                         assert.strictEqual(model, "res.partner", "The model should be res.partner");
-                        assert.strictEqual(kwargs.fields[0], "id");
-                        return serverData.models["res.partner"].recordsPrimary;
+                        break;
                     case "/web/dataset/call_kw/res.partner/search_read":
                         assert.strictEqual(
                             model,
                             "res.partner",
                             "The model should be res.partner as well"
                         );
-                        assert.strictEqual(kwargs.domain[1][2][0], 2);
-                        assert.strictEqual(kwargs.domain[1][2][1], 1);
-                        return serverData.models["res.partner"].twoRecordsAddressNoCoordinates;
+                        assert.strictEqual(kwargs.domain[1][2][0], 1);
+                        assert.strictEqual(kwargs.domain[1][2][1], 2);
+                        break;
                 }
             },
         });
@@ -975,21 +896,17 @@ QUnit.module("Views", (hooks) => {
      * test if only the 2 located records are displayed
      */
     QUnit.test("Create a view with 2 located records and 1 unlocated", async function (assert) {
-        assert.expect(4);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].threeRecords;
+        models["res.partner"].records = models["res.partner"].twoRecordsOneUnlocated;
+
         const map = await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].threeRecords;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].twoRecordsOneUnlocated;
-                }
-            },
         });
         assert.strictEqual(map.model.data.records.length, 3);
         assert.strictEqual(map.model.data.records[0].partner.id, 1, "The partner's id should be 1");
@@ -998,12 +915,12 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("Change load limit", async function (assert) {
-        assert.expect(2);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
-        serverData.models["project.task"].records =
-            serverData.models["project.task"].threeRecords.records;
-        serverData.models["res.partner"].records =
-            serverData.models["res.partner"].twoRecordsAddressCoordinates;
+
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].threeRecords;
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressCoordinates;
+
         await makeView({
             serverData,
             type: "map",
@@ -1025,21 +942,15 @@ QUnit.module("Views", (hooks) => {
     //--------------------------------------------------------------------------
 
     QUnit.test("Google Maps redirection", async function (assert) {
-        assert.expect(2);
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].twoRecords;
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressNoCoordinates;
 
         await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id"></map>`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].twoRecords;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].twoRecordsAddressNoCoordinates;
-                }
-            },
         });
 
         assert.strictEqual(
@@ -1057,21 +968,15 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("Google Maps redirection (with routing = true)", async function (assert) {
-        assert.expect(2);
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].twoRecords;
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressNoCoordinates;
 
         await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1"></map>`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].twoRecords;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].twoRecordsAddressNoCoordinates;
-                }
-            },
         });
 
         assert.strictEqual(
@@ -1089,21 +994,17 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("Unicity of coordinates in Google Maps url", async function (assert) {
-        assert.expect(2);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].twoRecordOnePartner;
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressNoCoordinates;
+
         await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].twoRecordOnePartner;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].twoRecordsAddressNoCoordinates;
-                }
-            },
         });
         assert.strictEqual(
             target.querySelector("a.btn.btn-primary").href,
@@ -1119,20 +1020,15 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("test the position of pin", async function (assert) {
-        assert.expect(4);
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].twoRecords;
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressNoCoordinates;
+
         const map = await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].twoRecords;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].twoRecordsAddressNoCoordinates;
-                }
-            },
         });
 
         assert.containsOnce(target, ".o-map-renderer--marker", "Should have one marker created");
@@ -1160,21 +1056,15 @@ QUnit.module("Views", (hooks) => {
      * Create an empty map
      */
     QUnit.test("Create of a empty map", async function (assert) {
-        assert.expect(6);
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].twoRecords;
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressNoCoordinates;
 
         const map = await makeView({
             serverData,
             type: "map",
             resModel: "res.partner",
             arch: `<map />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].twoRecords;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].twoRecordsAddressNoCoordinates;
-                }
-            },
         });
         assert.notOk(map.model.metaData.resPartnerField, "the resPartnerField should not be set");
 
@@ -1206,21 +1096,17 @@ QUnit.module("Views", (hooks) => {
      * test the click on them
      */
     QUnit.test("Create view with normal marker icons", async function (assert) {
-        assert.expect(6);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].twoRecords;
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressNoCoordinates;
+
         const map = await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].twoRecords;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].twoRecordsAddressNoCoordinates;
-                }
-            },
         });
         assert.notOk(map.model.metaData.numbering, "the numbering option should not be enabled");
         assert.notOk(map.model.metaData.routing, "The routing option should not be enabled");
@@ -1262,22 +1148,23 @@ QUnit.module("Views", (hooks) => {
      */
     QUnit.test("Create a view with default_order", async function (assert) {
         assert.expect(7);
+
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].twoRecords;
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressNoCoordinates;
+
         const map = await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" default_order="name" />`,
             async mockRPC(route, { kwargs }) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        assert.deepEqual(
-                            kwargs.order,
-                            "name ASC",
-                            "The sorting order should be on the field name in a ascendant way"
-                        );
-                        return serverData.models["project.task"].twoRecords;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].twoRecordsAddressNoCoordinates;
+                if (route === "/web/dataset/call_kw/project.task/unity_web_search_read") {
+                    assert.deepEqual(
+                        kwargs.order,
+                        "name ASC",
+                        "The sorting order should be on the field name in a ascendant way"
+                    );
                 }
             },
         });
@@ -1310,22 +1197,17 @@ QUnit.module("Views", (hooks) => {
      * test click on route
      */
     QUnit.test("Create a view with routing", async function (assert) {
-        assert.expect(9);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].twoRecords;
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressNoCoordinates;
 
         const map = await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].twoRecords;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].twoRecordsAddressNoCoordinates;
-                }
-            },
         });
         assert.ok(map.model.metaData.numbering, "The numbering option should be enabled");
         assert.ok(map.model.metaData.routing, "The routing option should be enabled");
@@ -1379,19 +1261,15 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].twoRecords;
+        models["res.partner"].records = [];
+
         await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].twoRecords;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return [];
-                }
-            },
         });
 
         assert.containsOnce(target, ".o-map-renderer .o-map-renderer--alert", "should have alert");
@@ -1402,21 +1280,17 @@ QUnit.module("Views", (hooks) => {
      * No route
      */
     QUnit.test("create a view with routing and one located record", async function (assert) {
-        assert.expect(2);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].oneRecord;
+        models["res.partner"].records = models["res.partner"].oneLocatedRecord;
+
         const map = await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].oneRecord;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].oneLocatedRecord;
-                }
-            },
         });
         assert.ok(map.model.metaData.routing, "The routing option should be enabled");
         assert.strictEqual(map.model.data.routes.length, 0, "Should have no computed route");
@@ -1427,21 +1301,15 @@ QUnit.module("Views", (hooks) => {
      * assert that the view uses the right api and routes
      */
     QUnit.test("CreateView with empty mapbox token setting", async function (assert) {
-        assert.expect(2);
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].recordWithouthPartner;
+        models["res.partner"].records = [];
 
         const map = await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].recordWithouthPartner;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].emptyRecords;
-                }
-            },
         });
         assert.strictEqual(
             map.model.metaData.mapBoxToken,
@@ -1456,21 +1324,17 @@ QUnit.module("Views", (hooks) => {
      * assert that the view uses the openstreetmap api
      */
     QUnit.test("Create a view with wrong map box setting", async function (assert) {
-        assert.expect(2);
         patchWithCleanup(session, { map_box_token: "vrve" });
+
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].twoRecords;
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressNoCoordinates;
+
         const map = await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].twoRecords;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].twoRecordsAddressNoCoordinates;
-                }
-            },
         });
         assert.strictEqual(map.model.metaData.mapBoxToken, "vrve", "The token should be kept");
         assert.notOk(map.model.data.useMapBoxAPI, "model should not use mapbox");
@@ -1482,21 +1346,17 @@ QUnit.module("Views", (hooks) => {
     QUnit.test(
         "create a view with wrong map box setting and located records",
         async function (assert) {
-            assert.expect(2);
             patchWithCleanup(session, { map_box_token: "frezfre" });
+
+            const models = serverData.models;
+            models["project.task"].records = models["project.task"].twoRecords;
+            models["res.partner"].records = models["res.partner"].twoRecordsAddressCoordinates;
+
             const map = await makeView({
                 serverData,
                 type: "map",
                 resModel: "project.task",
                 arch: `<map res_partner="partner_id" routing="1" />`,
-                async mockRPC(route) {
-                    switch (route) {
-                        case "/web/dataset/call_kw/project.task/web_search_read":
-                            return serverData.models["project.task"].twoRecords;
-                        case "/web/dataset/call_kw/res.partner/search_read":
-                            return serverData.models["res.partner"].twoRecordsAddressCoordinates;
-                    }
-                },
             });
             assert.strictEqual(
                 map.model.metaData.mapBoxToken,
@@ -1512,21 +1372,17 @@ QUnit.module("Views", (hooks) => {
      * assert that the view uses the map box api
      */
     QUnit.test("Create a view with the right map box token", async function (assert) {
-        assert.expect(2);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].recordWithouthPartner;
+        models["res.partner"].records = [];
+
         const map = await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].recordWithouthPartner;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].emptyRecords;
-                }
-            },
         });
         assert.strictEqual(
             map.model.metaData.mapBoxToken,
@@ -1542,21 +1398,17 @@ QUnit.module("Views", (hooks) => {
     QUnit.test(
         "Click on pin shows popup, click on another shuts the first and open the other",
         async function (assert) {
-            assert.expect(3);
             patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+
+            const models = serverData.models;
+            models["project.task"].records = models["project.task"].twoRecords;
+            models["res.partner"].records = models["res.partner"].twoRecordsAddressNoCoordinates;
+
             await makeView({
                 serverData,
                 type: "map",
                 resModel: "project.task",
                 arch: `<map res_partner="partner_id" routing="1" />`,
-                async mockRPC(route) {
-                    switch (route) {
-                        case "/web/dataset/call_kw/project.task/web_search_read":
-                            return serverData.models["project.task"].twoRecords;
-                        case "/web/dataset/call_kw/res.partner/search_read":
-                            return serverData.models["res.partner"].twoRecordsAddressNoCoordinates;
-                    }
-                },
             });
             assert.notOk(
                 target.querySelector(".leaflet-pane .leaflet-popup-pane").children.length,
@@ -1591,21 +1443,17 @@ QUnit.module("Views", (hooks) => {
      * asserts that all the records are shown on the map
      */
     QUnit.test("assert that all the records are shown on the map", async function (assert) {
-        assert.expect(3);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].twoRecords;
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressNoCoordinates;
+
         await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].twoRecords;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].twoRecordsAddressNoCoordinates;
-                }
-            },
         });
         const mapX = target.querySelector(".leaflet-map-pane")._leaflet_pos.x;
         const mapY = target.querySelector(".leaflet-map-pane")._leaflet_pos.y;
@@ -1627,11 +1475,15 @@ QUnit.module("Views", (hooks) => {
      * asserts that the right fields are shown in the popup
      */
     QUnit.test("Content of the marker popup with one field", async function (assert) {
-        assert.expect(5);
         serverData.views = {
             "project.task,false,form": "<form/>",
         };
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].oneRecord;
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressCoordinates;
+
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+
         const map = await makeView({
             config: { views: [[false, "form"]] },
             serverData,
@@ -1642,14 +1494,6 @@ QUnit.module("Views", (hooks) => {
                     <field name="display_name" string="Name" />
                 </map>
             `,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].oneRecord;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].twoRecordsAddressCoordinates;
-                }
-            },
         });
         assert.strictEqual(map.model.metaData.fieldNamesMarkerPopup[0].fieldName, "display_name");
 
@@ -1674,14 +1518,16 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("Content of the marker popup with date time", async function (assert) {
-        assert.expect(2);
         serverData.views = {
             "project.task,false,form": "<form/>",
         };
 
         patchTimeZone(120); // UTC+2
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
-        serverData.models["res.partner"].twoRecordsAddressCoordinates[0].partner_latitude = 11.0;
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].twoRecordsFieldDateTime;
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressCoordinates;
+        models["res.partner"].twoRecordsAddressCoordinates[0].partner_latitude = 11.0;
 
         await makeView({
             config: { views: [[false, "form"]] },
@@ -1691,14 +1537,6 @@ QUnit.module("Views", (hooks) => {
             arch: `<map res_partner="partner_id" routing="true" hide_name="true" hide_address="true">
                     <field name="scheduled_date" string="Date"/>
                 </map>`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].twoRecordsFieldDateTime;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].twoRecordsAddressCoordinates;
-                }
-            },
         });
 
         await click(target, "div.leaflet-marker-icon:first-child");
@@ -1723,10 +1561,12 @@ QUnit.module("Views", (hooks) => {
      * asserts that no field is shown in popup
      */
     QUnit.test("Content of the marker with no field", async function (assert) {
-        assert.expect(2);
         serverData.views = {
             "project.task,false,form": "<form/>",
         };
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].twoRecords;
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressNoCoordinates;
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         await makeView({
             config: { views: [[false, "form"]] },
@@ -1734,14 +1574,6 @@ QUnit.module("Views", (hooks) => {
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" hide_name="1" hide_address="1" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].twoRecords;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].twoRecordsAddressNoCoordinates;
-                }
-            },
         });
         await click(target, "div.leaflet-marker-icon");
 
@@ -1758,21 +1590,15 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("Attribute: hide_name", async function (assert) {
-        assert.expect(2);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].twoRecords;
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressCoordinates;
         await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" hide_name="1" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].twoRecords;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].twoRecordsAddressCoordinates;
-                }
-            },
         });
 
         await click(target, "div.leaflet-marker-icon");
@@ -1788,21 +1614,15 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("Render partner address field in popup", async function (assert) {
-        assert.expect(3);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].oneRecord;
+        models["res.partner"].records = models["res.partner"].oneLocatedRecord;
         await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" hide_name="1" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].oneRecord;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].oneLocatedRecord;
-                }
-            },
         });
 
         await click(target, "div.leaflet-marker-icon");
@@ -1825,21 +1645,17 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("Hide partner address field in popup", async function (assert) {
-        assert.expect(3);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].oneRecord;
+        models["res.partner"].records = models["res.partner"].oneLocatedRecord;
+
         await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" hide_address="1" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].oneRecord;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].oneLocatedRecord;
-                }
-            },
         });
 
         await click(target, "div.leaflet-marker-icon");
@@ -1862,21 +1678,17 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("Handle records of same co-ordinates in marker", async function (assert) {
-        assert.expect(4);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].twoRecords;
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressCoordinates;
+
         await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].twoRecords;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].twoRecordsAddressCoordinates;
-                }
-            },
         });
 
         assert.containsOnce(target, "div.leaflet-marker-icon", "There should be a one marker");
@@ -1900,35 +1712,21 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("Pager", async function (assert) {
-        assert.expect(4);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+
+        const models = serverData.models;
+        models["project.task"].records = Array.from({ length: 101 }, (_, index) => {
+            return { id: index + 1, name: "project", partner_id: index + 1 };
+        });
+        models["res.partner"].records = Array.from({ length: 101 }, (_, index) => {
+            return { id: index + 1, name: "Foo", partner_latitude: 10.0, partner_longitude: 10.5 };
+        });
+
         await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return {
-                            length: 101,
-                            records: Array.from({ length: 101 }, (_, index) => {
-                                return {
-                                    id: index,
-                                    name: "project",
-                                    partner_id: [index],
-                                };
-                            }),
-                        };
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return Array.from({ length: 101 }, (_, index) => ({
-                            id: index,
-                            name: "Foo",
-                            partner_latitude: 10.0,
-                            partner_longitude: 10.5,
-                        }));
-                }
-            },
         });
         assert.containsOnce(target, ".o_pager");
         assert.strictEqual(
@@ -1952,12 +1750,14 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("New domain", async function (assert) {
-        assert.expect(13);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
-        serverData.models["project.task"].records = [
+        const models = serverData.models;
+        models["project.task"].records = [
             { id: 1, name: "FooProject", sequence: 1, partner_id: 1 },
             { id: 2, name: "BarProject", sequence: 2, partner_id: 2 },
         ];
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressCoordinates;
+
         const map = await makeView({
             serverData,
             type: "map",
@@ -1970,12 +1770,6 @@ QUnit.module("Views", (hooks) => {
                     <filter name="f_3" string="Filter 3" domain="[('name', 'like', 'Project')]"/>
                 </search>
             `,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].twoRecordsAddressCoordinates;
-                }
-            },
         });
         assert.strictEqual(map.model.data.records.length, 2, "There should be 2 records");
         assert.containsOnce(
@@ -2043,27 +1837,17 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("Toggle grouped pin lists", async function (assert) {
-        assert.expect(13);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
-        const records = serverData.models["project.task"].threeRecords;
-        const partners = serverData.models["res.partner"].twoRecordsAddressCoordinates;
-        for (const record of records.records) {
-            // add name on partner_id to have display_name like value
-            record.partner_id.push(partners.find((x) => x.id === record.partner_id[0]).name);
-        }
+
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].threeRecords;
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressCoordinates;
+
         await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return records;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return partners;
-                }
-            },
             groupBy: ["partner_id"],
         });
 
@@ -2121,27 +1905,15 @@ QUnit.module("Views", (hooks) => {
 
     QUnit.test("Toggle grouped one2many pin lists", async function (assert) {
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
-        const records = serverData.models["project.task"].threeRecords;
-        const partners = serverData.models["res.partner"].records;
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].threeRecords;
 
-        for (const record of records.records) {
-            // add name on partner_id to have display_name like value
-            record.partner_id.push(partners.find((x) => x.id === record.partner_id[0]).name);
-        }
         await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id"/>`,
             groupBy: ["partner_ids"],
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return records;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return partners;
-                }
-            },
         });
 
         assert.containsN(
@@ -2170,27 +1942,22 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("Check groupBy on datetime field", async function (assert) {
-        assert.expect(1);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
-        serverData.models["project.task"].fields["scheduled_date"] = {
+        const models = serverData.models;
+        models["project.task"].fields["scheduled_date"] = {
             string: "Schedule date",
             type: "datetime",
         };
-        serverData.models["project.task"].records = [
+        models["project.task"].records = [
             { id: 1, name: "FooProject", sequence: 1, partner_id: 1, scheduled_date: false },
         ];
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressCoordinates;
 
         await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].twoRecordsAddressCoordinates;
-                }
-            },
             searchViewId: false,
             searchViewArch: `
                 <search>
@@ -2215,27 +1982,17 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("Change groupBy", async function (assert) {
-        assert.expect(13);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
-        const records = serverData.models["project.task"].threeRecords;
-        const partners = serverData.models["res.partner"].twoRecordsAddressCoordinates;
-        for (const record of records.records) {
-            // add name on partner_id to have display_name like value
-            record.partner_id.push(partners.find((x) => x.id === record.partner_id[0]).name);
-        }
+
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].threeRecords;
+        models["res.partner"].records = models["res.partner"].twoRecordsAddressCoordinates;
+
         await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return records;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return partners;
-                }
-            },
             searchViewId: false,
             searchViewArch: `
                 <search>
@@ -2321,8 +2078,6 @@ QUnit.module("Views", (hooks) => {
     //--------------------------------------------------------------------------
 
     QUnit.test("Click on open button switches to form view", async function (assert) {
-        assert.expect(5);
-
         serviceRegistry.add(
             "action",
             {
@@ -2342,20 +2097,16 @@ QUnit.module("Views", (hooks) => {
             "project.task,false,form": "<form/>",
         };
 
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].oneRecord;
+        models["res.partner"].records = models["res.partner"].oneLocatedRecord;
+
         await makeView({
             config: { views: [[false, "form"]] },
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" />`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].oneRecord;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].oneLocatedRecord;
-                }
-            },
         });
 
         await click(target, "div.leaflet-marker-icon");
@@ -2372,21 +2123,15 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("Test the lack of open button", async function (assert) {
-        assert.expect(1);
+        const models = serverData.models;
+        models["project.task"].records = models["project.task"].oneRecord;
+        models["res.partner"].records = models["res.partner"].oneLocatedRecord;
 
         await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id"></map>`,
-            async mockRPC(route) {
-                switch (route) {
-                    case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].oneRecord;
-                    case "/web/dataset/call_kw/res.partner/search_read":
-                        return serverData.models["res.partner"].oneLocatedRecord;
-                }
-            },
         });
 
         await click(target, "div.leaflet-marker-icon");
@@ -2401,21 +2146,15 @@ QUnit.module("Views", (hooks) => {
     QUnit.test(
         "attribute panel_title on the arch should display in the pin list",
         async function (assert) {
-            assert.expect(1);
+            const models = serverData.models;
+            models["project.task"].records = models["project.task"].oneRecord;
+            models["res.partner"].records = models["res.partner"].oneLocatedRecord;
 
             await makeView({
                 serverData,
                 type: "map",
                 resModel: "project.task",
                 arch: `<map res_partner="partner_id" panel_title="AAAAAAAAAAAAAAAAA"></map>`,
-                async mockRPC(route) {
-                    switch (route) {
-                        case "/web/dataset/call_kw/project.task/web_search_read":
-                            return serverData.models["project.task"].oneRecord;
-                        case "/web/dataset/call_kw/res.partner/search_read":
-                            return serverData.models["res.partner"].oneLocatedRecord;
-                    }
-                },
             });
 
             assert.strictEqual(
@@ -2429,21 +2168,15 @@ QUnit.module("Views", (hooks) => {
     QUnit.test(
         "Test using a field other than partner_id for the map view",
         async function (assert) {
-            assert.expect(1);
+            const models = serverData.models;
+            models["project.task"].records = models["project.task"].anotherPartnerId;
+            models["res.partner"].records = models["res.partner"].oneLocatedRecord;
 
             await makeView({
                 serverData,
                 type: "map",
                 resModel: "project.task",
                 arch: `<map res_partner="another_partner_id"></map>`,
-                async mockRPC(route) {
-                    switch (route) {
-                        case "/web/dataset/call_kw/project.task/web_search_read":
-                            return serverData.models["project.task"].anotherPartnerId;
-                        case "/web/dataset/call_kw/res.partner/search_read":
-                            return serverData.models["res.partner"].oneLocatedRecord;
-                    }
-                },
             });
 
             await click(target, "div.leaflet-marker-icon");
@@ -2457,8 +2190,6 @@ QUnit.module("Views", (hooks) => {
     );
 
     QUnit.test("Check Google Maps URL is updating on domain change", async function (assert) {
-        assert.expect(2);
-
         serverData.models["project.task"].records = [
             { id: 1, name: "FooProject", sequence: 1, partner_id: 2 },
             { id: 2, name: "BarProject", sequence: 2, partner_id: 3 },
@@ -2492,8 +2223,6 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("Check Google Maps URL (routing and multiple records)", async function (assert) {
-        assert.expect(1);
-
         serverData.models["project.task"].records = [
             { id: 1, name: "FooProject", sequence: 1, partner_id: 2 },
             { id: 2, name: "BarProject", sequence: 2, partner_id: 3 },

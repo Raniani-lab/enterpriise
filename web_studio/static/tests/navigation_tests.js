@@ -803,18 +803,18 @@ QUnit.module("Studio", (hooks) => {
         await nextTick();
         assert.containsOnce(target, ".o_kanban_view");
         assert.verifySteps([
-            `unity_web_search_read: {"specification":{"display_name":{}},"domain":[],"offset":0,"order":"","limit":40,"context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"bin_size":true,"current_company_id":1},"count_limit":10001}`,
+            `unity_web_search_read: {"specification":{"display_name":{}},"offset":0,"order":"","limit":40,"context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"bin_size":true,"current_company_id":1},"count_limit":10001,"domain":[]}`,
         ]);
         await toggleSearchBarMenu(target);
         await toggleMenuItem(target, "Apple");
         assert.verifySteps([
-            `unity_web_search_read: {"specification":{"display_name":{}},"domain":[["name","ilike","Apple"]],"offset":0,"order":"","limit":40,"context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"bin_size":true,"current_company_id":1},"count_limit":10001}`,
+            `unity_web_search_read: {"specification":{"display_name":{}},"offset":0,"order":"","limit":40,"context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"bin_size":true,"current_company_id":1},"count_limit":10001,"domain":[["name","ilike","Apple"]]}`,
         ]);
 
         await openStudio(target);
         assert.containsOnce(target, ".o_web_studio_kanban_view_editor");
         assert.verifySteps([
-            `unity_web_search_read: {"specification":{"display_name":{}},"domain":[["name","ilike","Apple"]],"offset":0,"order":"","limit":1,"context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"studio":1,"bin_size":true,"current_company_id":1},"count_limit":10001}`,
+            `unity_web_search_read: {"specification":{"display_name":{}},"offset":0,"order":"","limit":1,"context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"studio":1,"bin_size":true,"current_company_id":1},"count_limit":10001,"domain":[["name","ilike","Apple"]]}`,
         ]);
         assert.strictEqual(target.querySelector(".o_kanban_record").textContent, "Applejack");
     });

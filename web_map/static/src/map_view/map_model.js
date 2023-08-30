@@ -95,7 +95,7 @@ export class MapModel extends Model {
                 if (metaData.resModel === "res.partner" && metaData.resPartnerField === "id") {
                     recordPartnerId = record.id;
                 } else {
-                    recordPartnerId = record[metaData.resPartnerField][0];
+                    recordPartnerId = record[metaData.resPartnerField].id;
                 }
 
                 if (recordPartnerId == partner.id) {
@@ -214,9 +214,16 @@ export class MapModel extends Model {
      * @returns {Promise}
      */
     _fetchRecordData(metaData, data) {
-        const fields = data.groupByKey
+        const fieldNames = data.groupByKey
             ? metaData.fieldNames.concat(data.groupByKey.split(":")[0])
             : metaData.fieldNames;
+        const specification = {};
+        for (const fieldName of fieldNames) {
+            specification[fieldName] = {};
+            if (["many2one", "one2many", "many2many"].includes(metaData.fields[fieldName].type)) {
+                specification[fieldName].fields = { display_name: {} };
+            }
+        }
         const orderBy = [];
         if (metaData.defaultOrder) {
             orderBy.push(metaData.defaultOrder.name);
@@ -224,7 +231,8 @@ export class MapModel extends Model {
                 orderBy.push("ASC");
             }
         }
-        return this.orm.webSearchRead(metaData.resModel, metaData.domain, fields, {
+        return this.orm.webSearchRead(metaData.resModel, metaData.domain, {
+            specification,
             limit: metaData.limit,
             offset: metaData.offset,
             order: orderBy.join(" "),
@@ -305,7 +313,7 @@ export class MapModel extends Model {
     _fillPartnerIds(metaData, data) {
         for (const record of data.records) {
             if (record[metaData.resPartnerField]) {
-                data.partnerIds.push(record[metaData.resPartnerField][0]);
+                data.partnerIds.push(record[metaData.resPartnerField].id);
             }
         }
     }
@@ -339,59 +347,46 @@ export class MapModel extends Model {
      */
     async _getRecordGroups(metaData, data) {
         const [fieldName, subGroup] = data.groupByKey.split(":");
-        const groups = {};
-        const idToFetch = {};
         const fieldType = metaData.fields[fieldName].type;
-        for (const record of data.records) {
-            const value = record[fieldName];
-            let id, name;
-            if (["date", "datetime"].includes(fieldType) && value) {
-                const date = fieldType === "date" ? parseDate(value) : parseDateTime(value);
-                id = name = date.toFormat(DATE_GROUP_FORMATS[subGroup]);
-            } else if (fieldType === "boolean") {
-                id = name = value ? _t("Yes") : _t("No");
-            } else {
-                id = Array.isArray(value) ? value[0] : value;
-                name = Array.isArray(value) ? value[1] : value;
-            }
-
-            if (!id && !name) {
-                id = name = this._getEmptyGroupLabel(fieldName);
-            }
-
-            if (["many2many", "one2many"].includes(fieldType) && value.length) {
-                for (const m2mId of value) {
-                    idToFetch[m2mId] = undefined;
-                }
-            } else if (!groups[id]) {
+        const groups = {};
+        function addToGroup(id, name, record) {
+            if (!groups[id]) {
                 groups[id] = {
                     name,
                     records: [],
                 };
             }
-            if (!["many2many", "one2many"].includes(fieldType) || !value.length) {
-                groups[id].records.push(record);
-            }
+            groups[id].records.push(record);
         }
-        if (["many2many", "one2many"].includes(fieldType)) {
-            const m2mList = await this.orm.nameGet(
-                metaData.fields[fieldName].relation,
-                Object.keys(idToFetch).map(Number)
-            );
-            for (const [m2mId, m2mName] of m2mList) {
-                idToFetch[m2mId] = m2mName;
-            }
-
-            for (const record of data.records) {
-                for (const m2mId of record[fieldName]) {
-                    if (!groups[m2mId]) {
-                        groups[m2mId] = {
-                            name: idToFetch[m2mId],
-                            records: [],
-                        };
+        for (const record of data.records) {
+            const value = record[fieldName];
+            let id, name;
+            if (["one2many", "many2many"].includes(fieldType)) {
+                if (value.length) {
+                    for (const r of value) {
+                        addToGroup(r.id, r.display_name, record);
                     }
-                    groups[m2mId].records.push(record);
+                } else {
+                    id = name = this._getEmptyGroupLabel(fieldName);
+                    addToGroup(id, name, record);
                 }
+            } else {
+                if (["date", "datetime"].includes(fieldType) && value) {
+                    const date = fieldType === "date" ? parseDate(value) : parseDateTime(value);
+                    id = name = date.toFormat(DATE_GROUP_FORMATS[subGroup]);
+                } else if (fieldType === "boolean") {
+                    id = name = value ? _t("Yes") : _t("No");
+                } else if (fieldType === "many2one" && value) {
+                    id = value.id;
+                    name = value.display_name;
+                } else {
+                    id = value;
+                    name = value;
+                }
+                if (!id && !name) {
+                    id = name = this._getEmptyGroupLabel(fieldName);
+                }
+                addToGroup(id, name, record);
             }
         }
         return groups;

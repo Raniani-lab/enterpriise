@@ -3,13 +3,11 @@
 
 <div t-name="documents_spreadsheet.SpreadsheetAction" class="o_spreadsheet_action">
     <DocumentsSpreadsheetControlPanel
-        model="model"
+        t-props="controlPanelProps"
         onSpreadsheetShared.bind="shareSpreadsheet"
-        spreadsheetName="state.spreadsheetName"
         isReadonly="isReadonly || !!accessToken"
         onFavoriteToggled.bind="_onSpreadSheetFavoriteToggled"
         isFavorited="state.isFavorited"
-        onSpreadsheetNameChanged.bind="_onSpreadSheetNameChanged"
     />
     <SpreadsheetComponent model="model"/>
 </div>

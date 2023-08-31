@@ -2,12 +2,7 @@
 <templates>
 
 <div t-name="documents_spreadsheet.SpreadsheetTemplateAction" class="o_spreadsheet_action" style="height: 100%;">
-    <DocumentsSpreadsheetControlPanel
-        model="model"
-        spreadsheetName="state.spreadsheetName"
-        isReadonly="isReadonly"
-        onSpreadsheetNameChanged.bind="_onSpreadSheetNameChanged"
-    />
+    <DocumentsSpreadsheetControlPanel t-props="controlPanelProps"/>
     <SpreadsheetComponent model="model"/>
 </div>
 

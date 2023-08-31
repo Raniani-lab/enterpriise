@@ -3,11 +3,8 @@
 
     <div t-name="spreadsheet_dashboard_edition.DashboardEditAction" class="o_dashboard_edit_action">
         <SpreadsheetControlPanel
-            model="model"
-            spreadsheetName="state.spreadsheetName"
-            isReadonly="isReadonly"
-            onSpreadsheetShared.bind="shareSpreadsheet"
-            onSpreadsheetNameChanged.bind="_onSpreadSheetNameChanged" />
+            t-props="controlPanelProps"
+            onSpreadsheetShared.bind="shareSpreadsheet"/>
         <SpreadsheetComponent model="model"/>
     </div>
 

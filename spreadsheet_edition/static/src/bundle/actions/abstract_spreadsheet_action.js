@@ -97,6 +97,15 @@ export class AbstractSpreadsheetAction extends Component {
         });
     }
 
+    get controlPanelProps() {
+        return {
+            model: this.model,
+            isReadonly: this.isReadonly,
+            onSpreadsheetNameChanged: this._onSpreadSheetNameChanged.bind(this),
+            spreadsheetName: this.state.spreadsheetName,
+        };
+    }
+
     async fetchData() {
         // if we are returning to the spreadsheet via the breadcrumb, we don't want
         // to do all the "creation" options of the actions

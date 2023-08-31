@@ -6,7 +6,7 @@ import { SpreadsheetName } from "./spreadsheet_name";
 import { SpreadsheetShareButton } from "@spreadsheet/components/share_button/share_button";
 import { session } from "@web/session";
 import { _t } from "@web/core/l10n/translation";
-import { Component, onWillUnmount, useState, onWillStart } from "@odoo/owl";
+import { Component, onWillUnmount, useState } from "@odoo/owl";
 import { helpers } from "@odoo/o-spreadsheet";
 
 /**
@@ -18,7 +18,6 @@ export class SpreadsheetControlPanel extends Component {
         this.controlPanelDisplay = {};
         this.actionService = useService("action");
         this.userService = useService("user");
-        this.ormService = useService("orm");
         this.breadcrumbs = useState(this.env.config.breadcrumbs);
         this.collaborative = useState({
             isSynced: true,
@@ -32,15 +31,12 @@ export class SpreadsheetControlPanel extends Component {
             model.on("update", this, this.syncState.bind(this));
             onWillUnmount(() => model.off("update", this));
         }
-        onWillStart(async () => {
-            this.userLocale = await this.ormService.call("res.lang", "get_user_spreadsheet_locale");
-        });
     }
 
     syncState() {
         this.collaborative.isSynced = this.props.model.getters.isFullySynchronized();
         this.collaborative.connectedUsers = this.getConnectedUsers();
-        if (this.userLocale) {
+        if (this.props.userLocale) {
             this.locale.mismatchedLocaleTitle = this.mismatchedLocaleTitle;
         }
     }
@@ -89,11 +85,11 @@ export class SpreadsheetControlPanel extends Component {
         const title = _t(
             "Difference between user locale (%(user_locale)s) and spreadsheet locale (%(spreadsheet_locale)s). This spreadsheet is using the formats below:",
             {
-                user_locale: this.userLocale.code,
+                user_locale: this.props.userLocale.code,
                 spreadsheet_locale: spreadsheetLocale.code,
             }
         );
-        const comparison = this.getLocalesComparison(spreadsheetLocale, this.userLocale);
+        const comparison = this.getLocalesComparison(spreadsheetLocale, this.props.userLocale);
 
         return comparison ? title + "\n" + comparison : "";
     }
@@ -145,6 +141,10 @@ SpreadsheetControlPanel.props = {
     },
     onSpreadsheetShared: {
         type: Function,
+        optional: true,
+    },
+    userLocale: {
+        type: Object,
         optional: true,
     },
 };

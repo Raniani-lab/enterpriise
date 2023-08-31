@@ -103,6 +103,7 @@ export class AbstractSpreadsheetAction extends Component {
             isReadonly: this.isReadonly,
             onSpreadsheetNameChanged: this._onSpreadSheetNameChanged.bind(this),
             spreadsheetName: this.state.spreadsheetName,
+            userLocale: this.record.user_locale,
         };
     }
 

@@ -389,7 +389,6 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
                 country = addr_partner.country_id.code
 
         # Turnover and Farmer tags are not included
-        options['print_mode'] = True
         options['date']['date_from'] = options['date']['date_from'][0:4] + '-01-01'
         options['date']['date_to'] = options['date']['date_to'][0:4] + '-12-31'
         lines = report._get_lines(options)

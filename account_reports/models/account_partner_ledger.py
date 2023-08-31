@@ -25,7 +25,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
         }
 
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
-        if options['print_mode'] and options.get('filter_search_bar'):
+        if options['export_mode'] == 'print' and options.get('filter_search_bar'):
             # Handled here instead of in custom options initializer as init_options functions aren't re-called when printing the report.
             options.setdefault('forced_domain', []).append(('partner_id', 'ilike', options['filter_search_bar']))
 
@@ -384,7 +384,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
                 # For the first expansion of the line, the initial balance line gives the progress
                 progress = init_load_more_progress(initial_balance_line)
 
-        limit_to_load = report.load_more_limit + 1 if report.load_more_limit and not options['print_mode'] else None
+        limit_to_load = report.load_more_limit + 1 if report.load_more_limit and options['export_mode'] != 'print' else None
 
         if unfold_all_batch_data:
             aml_results = unfold_all_batch_data['aml_values'][record_id]
@@ -395,7 +395,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
         treated_results_count = 0
         next_progress = progress
         for result in aml_results:
-            if not options['print_mode'] and report.load_more_limit and treated_results_count == report.load_more_limit:
+            if options['export_mode'] != 'print' and report.load_more_limit and treated_results_count == report.load_more_limit:
                 # We loaded one more than the limit on purpose: this way we know we need a "load more" line
                 has_more = True
                 break
@@ -577,7 +577,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
     ####################################################
     def _get_report_line_partners(self, options, partner, partner_values, level_shift=0):
         company_currency = self.env.company.currency_id
-        unfold_all = (options['print_mode'] and not options.get('unfolded_lines')) or options.get('unfold_all')
+        unfold_all = (options['export_mode'] == 'print' and not options.get('unfolded_lines')) or options.get('unfold_all')
 
         unfoldable = False
         column_values = []

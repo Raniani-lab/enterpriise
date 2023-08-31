@@ -174,7 +174,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             # These can be fetched using any column groups or lines for this move.
             first_move_line = move_line_vals_list[0]
             general_line_vals = next(col_group_val for col_group_val in first_move_line.values())
-            if report.load_more_limit and len(move_line_vals_list) + treated_amls_count > report.load_more_limit and not options['print_mode']:
+            if report.load_more_limit and len(move_line_vals_list) + treated_amls_count > report.load_more_limit and options['export_mode'] != 'print':
                 # This element won't generate a line now, but we use it to know that we'll need to add a load_more line.
                 has_more_lines = True
                 if treated_amls_count == 0:
@@ -713,7 +713,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             params.append(column_group_key)
             params += where_params
 
-            limit_to_load = report.load_more_limit + 1 if report.load_more_limit and not options['print_mode'] else None
+            limit_to_load = report.load_more_limit + 1 if report.load_more_limit and options['export_mode'] != 'print' else None
 
             params += [limit_to_load, offset]
             queries.append(f"""

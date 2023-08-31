@@ -38,7 +38,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             ]
 
         # Automatically unfold the report when printing it, unless some specific lines have been unfolded
-        options['unfold_all'] = (options['print_mode'] and not options.get('unfolded_lines')) or options['unfold_all']
+        options['unfold_all'] = (options['export_mode'] == 'print' and not options.get('unfolded_lines')) or options['unfold_all']
 
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         lines = []
@@ -680,7 +680,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                 progress = init_load_more_progress(initial_balance_line)
 
         # Get move lines
-        limit_to_load = report.load_more_limit + 1 if report.load_more_limit and not options['print_mode'] else None
+        limit_to_load = report.load_more_limit + 1 if report.load_more_limit and options['export_mode'] != 'print' else None
         has_more = False
         if unfold_all_batch_data:
             aml_results = unfold_all_batch_data['aml_values'][model_id]

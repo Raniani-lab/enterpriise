@@ -182,7 +182,7 @@ class BelgiumPartnerVatListingTest(TestAccountReportsCommon):
             return invoice.line_ids.filtered('tax_line_id').display_name
 
         self.report.filter_unfold_all = True
-        self.env.ref('l10n_be_reports.l10n_be_partner_vat_listing_line').groupby = 'account_id, partner_id, id'
+        self.env.ref('l10n_be_reports.l10n_be_partner_vat_listing_line').user_groupby = 'account_id, partner_id, id'
         options = self._generate_options(self.report, '2022-06-01', '2022-06-30', default_options={'unfold_all': True})
 
         invoice_1 = self.init_invoice('out_invoice', partner=self.partner_a_be, post=True, amounts=[100], taxes=[self.tax_sale_a], invoice_date='2022-06-29')

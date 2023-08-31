@@ -606,7 +606,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
 
     def _get_layout_line(self, report, options, layout_line_id, layout_line_data, report_data):
         line_id = report._get_generic_line_id(None, None, markup=layout_line_id)
-        unfold_all = options['print_mode'] or options.get('unfold_all')
+        unfold_all = options['export_mode'] == 'print' or options.get('unfold_all')
         unfoldable = 'aml_groupby_account' in report_data[layout_line_id] if layout_line_id in report_data else False
 
         column_values = []

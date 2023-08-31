@@ -1235,7 +1235,7 @@ class AccountReport(models.Model):
         options['columns'] = columns
         options['column_groups'] = column_groups
         # Debug column is only shown when there is a single column group, so that we can display all the subtotals of the line in a clear way
-        options['show_debug_column'] = not options['print_mode'] \
+        options['show_debug_column'] = options['export_mode'] != 'print' \
                                        and self.user_has_groups('base.group_no_one') \
                                        and len(options['column_groups']) == 1 \
                                        and len(self.line_ids) > 0 # No debug column on fully dynamic reports by default (they can customize this)
@@ -1441,10 +1441,10 @@ class AccountReport(models.Model):
 
 
     ####################################################
-    # OPTIONS: PRINT MODE
+    # OPTIONS: EXPORT MODE
     ####################################################
-    def _init_options_print_mode(self, options, previous_options=None):
-        options['print_mode'] = (previous_options or {}).get('print_mode', False)
+    def _init_options_export_mode(self, options, previous_options=None):
+        options['export_mode'] = (previous_options or {}).get('export_mode')
 
     ####################################################
     # OPTIONS: CUSTOM
@@ -2063,18 +2063,19 @@ class AccountReport(models.Model):
         line_id = self._get_generic_line_id('account.report.line', line.id, parent_line_id=parent_id)
         columns = self._build_static_line_columns(line, options, all_column_groups_expression_totals)
         has_children = (any(col['has_sublines'] for col in columns) or bool(line.children_ids))
+        groupby = line._get_groupby(options)
 
         rslt = {
             'id': line_id,
             'name': line.name,
-            'groupby': line.groupby,
+            'groupby': groupby,
             'unfoldable': line.foldable and has_children,
-            'unfolded': bool((not line.foldable and (line.children_ids or line.groupby)) or line_id in options['unfolded_lines']) or (has_children and options['unfold_all']),
+            'unfolded': bool((not line.foldable and (line.children_ids or groupby)) or line_id in options['unfolded_lines']) or (has_children and options['unfold_all']),
             'columns': columns,
             'level': line.hierarchy_level,
             'page_break': line.print_on_new_page,
             'action_id': line.action_id.id,
-            'expand_function': line.groupby and '_report_expand_unfoldable_line_with_groupby' or None,
+            'expand_function': groupby and '_report_expand_unfoldable_line_with_groupby' or None,
         }
 
         if parent_id:
@@ -2282,7 +2283,7 @@ class AccountReport(models.Model):
                     grouped_formulas[engine] = {}
 
                 date_scope = force_date_scope or self._standardize_date_scope_for_date_range(expression.date_scope)
-                groupby_data = expression.report_line_id._parse_groupby(groupby_to_expand=groupby_to_expand)
+                groupby_data = expression.report_line_id._parse_groupby(options, groupby_to_expand=groupby_to_expand)
 
                 next_groupby = groupby_data['next_groupby'] if engine not in NO_NEXT_GROUPBY_ENGINES else None
                 grouping_key = (date_scope, groupby_data['current_groupby'], next_groupby)
@@ -2295,7 +2296,7 @@ class AccountReport(models.Model):
                 else:
                     grouped_formulas[engine][grouping_key][expression.formula] |= expression
 
-        if groupby_to_expand and any(not expression.report_line_id.groupby for expression in expressions):
+        if groupby_to_expand and any(not expression.report_line_id._get_groupby(options) for expression in expressions):
             raise UserError(_("Trying to expand groupby results on lines without a groupby value."))
 
         # Group formulas for batching (when possible)
@@ -4248,7 +4249,7 @@ class AccountReport(models.Model):
 
         line = self.env['account.report.line'].browse(report_line_id)
 
-        if ',' not in groupby and not options['print_mode']:
+        if ',' not in groupby and options['export_mode'] != 'print':
             # if ',' not in groupby, then its a terminal groupby (like 'id' in 'partner_id, id'), so we can use the 'load more' feature if necessary
             # When printing, we want to ignore the limit.
             limit_to_load = self.load_more_limit or None
@@ -4260,7 +4261,7 @@ class AccountReport(models.Model):
         rslt_lines = line._expand_groupby(line_dict_id, groupby, options, offset=offset, limit=limit_to_load, load_one_more=bool(limit_to_load), unfold_all_batch_data=unfold_all_batch_data)
         lines_to_load = rslt_lines[:self.load_more_limit] if limit_to_load else rslt_lines
 
-        if not limit_to_load and not options['print_mode']:
+        if not limit_to_load and options['export_mode'] != 'print':
             lines_to_load = self._regroup_lines_by_name_prefix(options, rslt_lines, '_report_expand_unfoldable_line_groupby_prefix_group', line.hierarchy_level,
                                                                groupby=groupby, parent_line_dict_id=line_dict_id)
 
@@ -4292,7 +4293,7 @@ class AccountReport(models.Model):
         # When grouping by prefix, we ignore the totals
         lines_to_group_without_totals = list(filter(lambda x: self._get_markup(x['id']) != 'total', lines_to_group))
 
-        if options['print_mode'] or threshold <= 0 or len(lines_to_group_without_totals) < threshold:
+        if options['export_mode'] == 'print' or threshold <= 0 or len(lines_to_group_without_totals) < threshold:
             # No grouping needs to be done
             return lines_to_group
 
@@ -4307,7 +4308,7 @@ class AccountReport(models.Model):
             else:
                 prefix_groups[line_name[char_index].lower()].append(line)
 
-        unfold_all = options['print_mode'] or options.get('unfold_all')
+        unfold_all = options['export_mode'] == 'print' or options.get('unfold_all')
         for prefix_key, prefix_sublines in sorted(prefix_groups.items(), key=lambda x: x[0]):
             # Compute the total of this prefix line, summming all of its content
             prefix_expression_totals_by_group = {column_group_key: defaultdict(float) for column_group_key in options['column_groups']}
@@ -4493,10 +4494,12 @@ class AccountReport(models.Model):
     def export_file(self, options, file_generator):
         self.ensure_one()
 
+        export_options = {**options, 'export_mode': 'file'}
+
         return {
             'type': 'ir_actions_account_report_download',
             'data': {
-                'options': json.dumps(options),
+                'options': json.dumps(export_options),
                 'file_generator': file_generator,
             }
         }
@@ -4522,7 +4525,7 @@ class AccountReport(models.Model):
             'company': self.env.company,
         }
 
-        print_options = self.get_options(previous_options={**options, 'print_mode': True})
+        print_options = self.get_options(previous_options={**options, 'export_mode': 'print'})
         if print_options['sections']:
             reports_to_print = self.env['account.report'].browse([section['id'] for section in print_options['sections']])
         else:
@@ -4629,7 +4632,7 @@ class AccountReport(models.Model):
             'strings_to_formulas': False,
         })
 
-        print_options = self.get_options(previous_options={**options, 'print_mode': True})
+        print_options = self.get_options(previous_options={**options, 'export_mode': 'print'})
         if print_options['sections']:
             reports_to_print = self.env['account.report'].browse([section['id'] for section in print_options['sections']])
         else:
@@ -5175,6 +5178,13 @@ class AccountReport(models.Model):
 class AccountReportLine(models.Model):
     _inherit = 'account.report.line'
 
+    display_custom_groupby_warning = fields.Boolean(compute='_compute_display_custom_groupby_warning')
+
+    @api.depends('groupby', 'user_groupby')
+    def _compute_display_custom_groupby_warning(self):
+        for line in self:
+            line.display_custom_groupby_warning = line.get_external_id() and line.user_groupby != line.groupby
+
     def _expand_groupby(self, line_dict_id, groupby, options, offset=0, limit=None, load_one_more=False, unfold_all_batch_data=None):
         """ Expand function used to get the sublines of a groupby.
         groupby param is a string consisting of one or more coma-separated field names. Only the first one
@@ -5207,7 +5217,7 @@ class AccountReportLine(models.Model):
             options = {**options, 'forced_domain': forced_domain}
 
         # Parse groupby
-        groupby_data = self._parse_groupby(groupby_to_expand=groupby)
+        groupby_data = self._parse_groupby(options, groupby_to_expand=groupby)
         groupby_model = groupby_data['current_groupby_model']
         next_groupby = groupby_data['next_groupby']
         current_groupby = groupby_data['current_groupby']
@@ -5331,7 +5341,7 @@ class AccountReportLine(models.Model):
 
         return self.env[groupby_model].browse(grouping_key).display_name
 
-    def _parse_groupby(self, groupby_to_expand=None):
+    def _parse_groupby(self, options, groupby_to_expand=None):
         """ Retrieves the information needed to handle the groupby feature on the current line.
 
         :param groupby_to_expand:    A coma-separated string containing, in order, all the fields that are used in the groupby we're expanding.
@@ -5374,7 +5384,8 @@ class AccountReportLine(models.Model):
             next_groupby = ','.join(split_groupby[1:]) if len(split_groupby) > 1 else None
         else:
             current_groupby = None
-            next_groupby = self.groupby.replace(' ', '') if self.groupby else None
+            groupby = self._get_groupby(options)
+            next_groupby = groupby.replace(' ', '') if groupby else None
             split_groupby = next_groupby.split(',') if next_groupby else []
 
         if current_groupby == 'id':
@@ -5389,6 +5400,16 @@ class AccountReportLine(models.Model):
             'next_groupby': next_groupby,
             'current_groupby_model': groupby_model,
         }
+
+    def _get_groupby(self, options):
+        self.ensure_one()
+        if options['export_mode'] == 'file':
+            return self.groupby
+        return self.user_groupby
+
+    def action_reset_custom_groupby(self):
+        self.ensure_one()
+        self.user_groupby = self.groupby
 
 
 class AccountReportHorizontalGroup(models.Model):

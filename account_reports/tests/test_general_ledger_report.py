@@ -464,7 +464,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
 
     def test_general_ledger_filter_search_bar_print(self):
         """ Test the lines generated when a user filters on the search bar and prints the report """
-        options = self._generate_options(self.report, '2017-01-01', '2017-12-31', default_options={'print_mode': True})
+        options = self._generate_options(self.report, '2017-01-01', '2017-12-31', default_options={'export_mode': 'print'})
         options['filter_search_bar'] = '400'
         options['unfold_all'] = True
 

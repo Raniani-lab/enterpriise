@@ -93,7 +93,7 @@ class TrialBalanceCustomHandler(models.AbstractModel):
         journal_name = journal.name
         if journal.company_period_id:
             journal_name = journal.company_period_id.company_name
-        if options['print_mode'] or options.get('xlsx_mode'):
+        if options['export_mode'] == 'print' or options.get('xlsx_mode'):
             return {'name': journal_name}
         if journal.currencies_are_different and journal.company_period_id:
             cp = journal.company_period_id

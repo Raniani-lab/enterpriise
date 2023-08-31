@@ -22,7 +22,7 @@ QUnit.test("'backbutton' event should close messaging menu", async (assert) => {
     // simulate 'backbutton' event triggered by the mobile app
     const backButtonEvent = new Event("backbutton");
     document.dispatchEvent(backButtonEvent);
-    await contains(".o-mail-MessagingMenu", 0);
+    await contains(".o-mail-MessagingMenu", { count: 0 });
 });
 
 QUnit.test(
@@ -43,7 +43,7 @@ QUnit.test(
         assert.verifySteps(["overrideBackButton: true"]);
 
         await click(".o_menu_systray i[aria-label='Messages']");
-        await contains(".o-mail-MessagingMenu", 0);
+        await contains(".o-mail-MessagingMenu", { count: 0 });
         assert.verifySteps(["overrideBackButton: false"]);
     }
 );

@@ -38,7 +38,7 @@ QUnit.test("'backbutton' event should close attachment viewer", async () => {
     await contains(".o-FileViewer");
     const backButtonEvent = new Event("backbutton");
     document.dispatchEvent(backButtonEvent);
-    await contains(".o-FileViewer", 0);
+    await contains(".o-FileViewer", { count: 0 });
 });
 
 QUnit.test(
@@ -77,7 +77,7 @@ QUnit.test(
         assert.verifySteps(["overrideBackButton: true"]);
 
         await click(".o-FileViewer div[aria-label='Close']");
-        await contains(".o-FileViewer", 0);
+        await contains(".o-FileViewer", { count: 0 });
         assert.verifySteps(["overrideBackButton: false"]);
     }
 );

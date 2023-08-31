@@ -46,8 +46,8 @@ QUnit.test("Should not have attachment preview for still uploading attachment", 
     dragenterFiles((await contains(".o-mail-Chatter"))[0]);
     const files = [await createFile({ name: "invoice.pdf", contentType: "application/pdf" })];
     dropFiles((await contains(".o-mail-Dropzone"))[0], files);
-    await contains(".o-mail-Dropzone", 0);
-    await contains(".o-mail-Attachment", 0);
+    await contains(".o-mail-Dropzone", { count: 0 });
+    await contains(".o-mail-Attachment", { count: 0 });
     assert.verifySteps(
         [],
         "The page should never render a PDF while it is uploading, as the uploading is blocked in this test we should never render a PDF preview"
@@ -96,17 +96,17 @@ QUnit.test("Attachment on side", async (assert) => {
     await contains(".o_form_sheet_bg + .o_attachment_preview");
 
     // Don't display arrow if there is no previous/next element
-    await contains(".arrow", 0);
+    await contains(".arrow", { count: 0 });
 
     // send a message with attached PDF file
     await click("button", { text: "Send message" });
     const files = [await createFile({ name: "invoice.pdf", contentType: "application/pdf" })];
     inputFiles((await contains(".o-mail-Composer-coreMain .o_input_file"))[0], files);
     await click(".o-mail-Composer-send:not(:disabled)");
-    await contains(".arrow", 2);
+    await contains(".arrow", { count: 2 });
 
     await click(".o_move_next");
-    await contains(".o-mail-Attachment-imgContainer > img", 0);
+    await contains(".o-mail-Attachment-imgContainer > img", { count: 0 });
     await contains(".o-mail-Attachment > iframe");
 
     await click(".o_move_previous");
@@ -170,12 +170,12 @@ QUnit.test(
         openFormView("mail.test.simple.main.attachment", recordId_1, {
             props: { resIds: [recordId_1, recordId_2] },
         });
-        await contains(".o_pager_counter", 1, { text: "1 / 2" });
+        await contains(".o_pager_counter", { text: "1 / 2" });
         await click(".o_pager_next");
-        await contains(".o_pager_counter", 1, { text: "2 / 2" });
+        await contains(".o_pager_counter", { text: "2 / 2" });
         await click(".o_pager_previous");
-        await contains(".o_pager_counter", 1, { text: "1 / 2" });
-        await contains(".arrow", 2);
+        await contains(".o_pager_counter", { text: "1 / 2" });
+        await contains(".arrow", { count: 2 });
         await click(".o-mail-Attachment .o_move_next");
         await contains(".o-mail-Attachment-imgContainer img");
         await click(".o-mail-Attachment .o_move_previous");
@@ -203,7 +203,7 @@ QUnit.test("Attachment on side on new record", async () => {
         waitUntilMessagesLoaded: false,
     });
     await contains(".o_form_sheet_bg + .o-mail-Form-chatter");
-    await contains(".o_attachment_preview", 0);
+    await contains(".o_attachment_preview", { count: 0 });
 });
 
 QUnit.test("Attachment on side not displayed on smaller screens", async () => {
@@ -235,5 +235,5 @@ QUnit.test("Attachment on side not displayed on smaller screens", async () => {
     const { openFormView } = await start({ serverData: { views } });
     openFormView("mail.test.simple.main.attachment", recordId);
     await contains(".o_form_sheet_bg + .o-mail-Form-chatter");
-    await contains(".o_attachment_preview", 0);
+    await contains(".o_attachment_preview", { count: 0 });
 });

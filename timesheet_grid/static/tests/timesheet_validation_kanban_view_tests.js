@@ -56,7 +56,7 @@ QUnit.module("timesheet_grid", (hooks) => {
             (btn) => btn.innerText === "Validate"
         );
         await click(validateButton);
-        await contains(".o_notification.border-danger .o_notification_content", 1, {
+        await contains(".o_notification.border-danger .o_notification_content", {
             text: "dummy title",
         });
         assert.verifySteps(["action_validate_timesheet"]);

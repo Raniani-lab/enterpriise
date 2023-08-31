@@ -548,12 +548,12 @@ QUnit.module("documents", {}, function () {
                         </div>
                     </t></templates></kanban>`,
                 });
-                await contains(".o_kanban_record", 11);
-                await contains(".o_kanban_record.o_record_selected", 0);
+                await contains(".o_kanban_record", { count: 11 });
+                await contains(".o_kanban_record.o_record_selected", { count: 0 });
                 await mailClick(".o_kanban_record:eq(0)");
                 await contains(".o_kanban_record.o_record_selected");
                 await mailClick(".o_kanban_record:eq(0)");
-                await contains(".o_kanban_record.o_record_selected", 0);
+                await contains(".o_kanban_record.o_record_selected", { count: 0 });
             });
 
             QUnit.test("can select records with keyboard navigation", async function (assert) {
@@ -2156,14 +2156,14 @@ QUnit.module("documents", {}, function () {
                 );
 
                 click(input);
-                await contains(".o_inspector_tags ul li", 2);
+                await contains(".o_inspector_tags ul li", { count: 2 });
                 assert.containsOnce(target, ".o_inspector_tag");
 
                 editInput(input, null, "stress");
                 await contains(".o_inspector_tags ul:not(:contains(Status))");
 
                 click(target.querySelector(".o_inspector_tags ul li"));
-                await contains(".o_inspector_tag", 2);
+                await contains(".o_inspector_tag", { count: 2 });
 
                 assert.strictEqual(
                     input,
@@ -2192,11 +2192,11 @@ QUnit.module("documents", {}, function () {
                     );
                     await click(target.querySelector(".o_kanban_record"));
 
-                    await contains(".o_inspector_tag", 2);
+                    await contains(".o_inspector_tag", { count: 2 });
 
                     await click(target.querySelector(".o_inspector_tags input"));
                     editInput(target.querySelector(".o_inspector_tags input"), null, "new");
-                    await contains(".o_inspector_tags ul", 0);
+                    await contains(".o_inspector_tags ul", { count: 0 });
                 }
             );
 

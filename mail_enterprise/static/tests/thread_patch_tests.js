@@ -26,10 +26,10 @@ QUnit.test("message list desc order", async (assert) => {
         $("button:contains(Load More)").nextAll(".o-mail-Message")[0],
         "load more link should be after messages"
     );
-    await contains(".o-mail-Message", 30);
+    await contains(".o-mail-Message", { count: 30 });
     await scroll(".o-mail-Chatter", "bottom");
-    await contains(".o-mail-Message", 60);
+    await contains(".o-mail-Message", { count: 60 });
     await scroll(".o-mail-Chatter", 0);
     // weak test, no guaranteed that we waited long enough for potential extra messages to be loaded
-    await contains(".o-mail-Message", 60);
+    await contains(".o-mail-Message", { count: 60 });
 });

@@ -68,8 +68,8 @@ QUnit.test("canned response should work in helpdesk ticket", async () => {
     const { openFormView } = await start();
     openFormView("helpdesk.ticket", ticketId);
     await click(".o-mail-Chatter button", { text: "Send message" });
-    await contains(".o-mail-Composer-suggestion strong", 0, { text: "hello" });
+    await contains(".o-mail-Composer-suggestion strong", { count: 0, text: "hello" });
 
     await insertText(".o-mail-Composer-input", ":");
-    await contains(".o-mail-Composer-suggestion strong", 1, { text: "hello" });
+    await contains(".o-mail-Composer-suggestion strong", { text: "hello" });
 });

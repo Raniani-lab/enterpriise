@@ -34,7 +34,7 @@ QUnit.test("'backbutton' event should close chat window", async () => {
     // simulate 'backbutton' event triggered by the mobile app
     const backButtonEvent = new Event("backbutton");
     document.dispatchEvent(backButtonEvent);
-    await contains(".o-mail-ChatWindow", 0);
+    await contains(".o-mail-ChatWindow", { count: 0 });
 });
 
 QUnit.test("[technical] chat window should properly override the back button", async (assert) => {
@@ -60,7 +60,7 @@ QUnit.test("[technical] chat window should properly override the back button", a
     // so we need to close it because it overrides the back button too.
     // As long as something overrides the back button, it can't be disabled.
     await click(".o_menu_systray i[aria-label='Messages']");
-    await contains(".o-mail-ChatWindow", 0);
-    await contains(".o-mail-MessagingMenu", 0);
+    await contains(".o-mail-ChatWindow", { count: 0 });
+    await contains(".o-mail-MessagingMenu", { count: 0 });
     assert.verifySteps(["overrideBackButton: false"]);
 });

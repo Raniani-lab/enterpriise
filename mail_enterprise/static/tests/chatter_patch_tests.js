@@ -50,9 +50,9 @@ QUnit.test("Message list loads new messages on scroll", async () => {
         target,
     });
     await openFormView("res.partner", partnerId);
-    await contains(".o-mail-Message", 30);
+    await contains(".o-mail-Message", { count: 30 });
     await scroll(".o-mail-Chatter", "bottom");
-    await contains(".o-mail-Message", 60);
+    await contains(".o-mail-Message", { count: 60 });
 });
 
 QUnit.skip("Message list is scrolled to new message after posting a message", async () => {
@@ -94,19 +94,19 @@ QUnit.skip("Message list is scrolled to new message after posting a message", as
         target,
     });
     await openFormView("res.partner", partnerId);
-    await contains(".o-mail-Message", 30);
+    await contains(".o-mail-Message", { count: 30 });
     await contains(".o-mail-Form-chatter.o-aside");
-    await contains(".o_content", 1, { scroll: 0 });
-    await contains(".o-mail-Chatter", 1, { scroll: 0 });
+    await contains(".o_content", { scroll: 0 });
+    await contains(".o-mail-Chatter", { scroll: 0 });
     await scroll(".o-mail-Chatter", "bottom");
-    await contains(".o-mail-Message", 60);
-    await contains(".o_content", 1, { scroll: 0 });
+    await contains(".o-mail-Message", { count: 60 });
+    await contains(".o_content", { scroll: 0 });
     await click("button", { text: "Log note" });
     await insertText(".o-mail-Composer-input", "New Message");
     await click(".o-mail-Composer-send:not(:disabled)");
-    await contains(".o-mail-Composer-input", 0);
-    await contains(".o-mail-Message", 61);
-    await contains(".o-mail-Message-content", 1, { text: "New Message" });
-    await contains(".o_content", 1, { scroll: 0 });
-    await contains(".o-mail-Chatter", 1, { scroll: 0 });
+    await contains(".o-mail-Composer-input", { count: 0 });
+    await contains(".o-mail-Message", { count: 61 });
+    await contains(".o-mail-Message-content", { text: "New Message" });
+    await contains(".o_content", { scroll: 0 });
+    await contains(".o-mail-Chatter", { scroll: 0 });
 });

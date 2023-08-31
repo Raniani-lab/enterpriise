@@ -24,6 +24,6 @@ QUnit.module("documents", {}, function () {
         await click(".o_menu_systray i[aria-label='Activities']");
         await contains(".o-mail-ActivityMenu");
         await click(".o_sys_documents_request");
-        await contains(".o-mail-ActivityMenu", 0);
+        await contains(".o-mail-ActivityMenu", { count: 0 });
     });
 });

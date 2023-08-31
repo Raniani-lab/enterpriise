@@ -42,7 +42,7 @@ QUnit.module("Knowledge - Form Search Button", (hooks) => {
         });
         openFormView("res.partner", partnerId);
         await contains(".o_control_panel_navigation .o_knowledge_icon_search");
-        await contains(".o_command_palette", 0);
+        await contains(".o_command_palette", { count: 0 });
 
         await click(".o_control_panel_navigation .o_knowledge_icon_search");
         await contains(".o_command_palette");
@@ -56,7 +56,7 @@ QUnit.module("Knowledge - Form Search Button", (hooks) => {
         });
         openFormView("res.partner");
         await contains(".o_control_panel_navigation .o_knowledge_icon_search");
-        await contains(".o_command_palette", 0);
+        await contains(".o_command_palette", { count: 0 });
 
         await click(".o_control_panel_navigation .o_knowledge_icon_search");
         await contains(".o_command_palette");
@@ -79,10 +79,10 @@ QUnit.module("Knowledge - Form Search Button", (hooks) => {
         });
         openFormView("res.partner");
         await contains(".o_control_panel_navigation .o_knowledge_icon_search");
-        await contains(".o_command_palette", 0);
+        await contains(".o_command_palette", { count: 0 });
 
         await click(".o_control_panel_navigation .o_knowledge_icon_search");
-        await contains(".o_command_palette", 0);
+        await contains(".o_command_palette", { count: 0 });
         assert.verifySteps([], "shouldn't call save");
     });
 });

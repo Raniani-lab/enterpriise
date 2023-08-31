@@ -52,6 +52,6 @@ QUnit.test("list activity widget: sign button in dropdown", async (assert) => {
     assert.strictEqual($(".o-mail-ListActivity-summary")[0].innerText, "Sign a new contract");
 
     await click(".o-mail-ActivityButton"); // open the popover
-    await contains(".o-mail-ActivityListPopoverItem-markAsDone", 0);
+    await contains(".o-mail-ActivityListPopoverItem-markAsDone", { count: 0 });
     await contains(".o-mail-ActivityListPopoverItem-requestSign");
 });

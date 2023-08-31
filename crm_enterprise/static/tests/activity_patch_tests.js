@@ -23,5 +23,5 @@ QUnit.test("click on activity Lead/Opportunity clock should open crm.lead view",
     await start({ serverData: { views } });
     await click(".o_menu_systray i[aria-label='Activities']");
     await click(".o-mail-ActivityGroup button[title='Summary']");
-    await contains(".o_breadcrumb .active", 1, { text: "crm.lead" });
+    await contains(".o_breadcrumb .active", { text: "crm.lead" });
 });

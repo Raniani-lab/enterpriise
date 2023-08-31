@@ -4,6 +4,7 @@ import { Order, Orderline } from "@point_of_sale/app/store/models";
 import { _t } from "@web/core/l10n/translation";
 import { patch } from "@web/core/utils/patch";
 import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
+import { deserializeDateTime } from "@web/core/l10n/dates";
 
 patch(PosStore.prototype, {
     useBlackBoxSweden() {
@@ -48,7 +49,7 @@ patch(PosStore.prototype, {
     async push_order_to_blackbox(order) {
         const fdm = this.hardwareProxy.deviceControllers.fiscal_data_module;
         const data = {
-            date: moment(order.creation_date).format("YYYYMMDDHHmm"),
+            date: deserializeDateTime(order.creation_date).toFormat("yyyyMMddHHmm"),
             receipt_id: order.sequence_number.toString(),
             pos_id: order.pos.config.id.toString(),
             organisation_number: this.company.company_registry.replace(/\D/g, ""),

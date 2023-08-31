@@ -2,7 +2,7 @@
 
 import { click, getFixture, patchDate, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
-
+const { DateTime } = luxon;
 let target;
 
 QUnit.module("Planning.planning_calendar_tests", ({ beforeEach }) => {
@@ -39,8 +39,8 @@ QUnit.module("Planning.planning_calendar_tests", ({ beforeEach }) => {
                         {
                             id: 1,
                             name: "First Record",
-                            start: moment().format("YYYY-MM-DD HH:00:00"),
-                            stop: moment().add(4, "hours").format("YYYY-MM-DD HH:00:00"),
+                            start: DateTime.now().toFormat("yyyy-MM-dd HH':00:00'"),
+                            stop: DateTime.now().plus({hours:4}).toFormat("yyyy-MM-dd HH':00:00'"),
                             resource_id: 1,
                             color: 7,
                             role_id: 1,
@@ -49,8 +49,8 @@ QUnit.module("Planning.planning_calendar_tests", ({ beforeEach }) => {
                         {
                             id: 2,
                             name: "Second Record",
-                            start: moment().add(2, "days").format("YYYY-MM-DD HH:00:00"),
-                            stop: moment().add(2, "days").add(4, "hours").format("YYYY-MM-DD HH:00:00"),
+                            start: DateTime.now().plus({days:2}).toFormat("yyyy-MM-dd HH':00:00'"),
+                            stop: DateTime.now().plus({hours:4, days:2}).toFormat("yyyy-MM-dd HH':00:00'"),
                             resource_id: 2,
                             color: 9,
                             role_id: 2,

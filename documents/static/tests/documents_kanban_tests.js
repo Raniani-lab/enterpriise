@@ -45,7 +45,9 @@ import {
 import { str_to_datetime } from "@web/legacy/js/core/time";
 import { session } from "@web/session";
 import { browser, makeRAMLocalStorage } from "@web/core/browser/browser";
+import { serializeDate } from "@web/core/l10n/dates";
 
+const { DateTime } = luxon;
 const serviceRegistry = registry.category("services");
 
 function createDocumentsView(params) {
@@ -2960,7 +2962,7 @@ QUnit.module("documents", {}, function () {
                 pyEnv["mail.activity"].create({
                     can_write: true,
                     create_uid: pyEnv.currentUserId,
-                    date_deadline: moment().format("YYYY-MM-DD"),
+                    date_deadline: serializeDate(DateTime.now()),
                     display_name: "An activity",
                     res_id: pyEnv["documents.document"].search([])[0],
                     res_model: "documents.document",

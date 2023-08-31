@@ -2,8 +2,9 @@
 
 import { MrpTimer } from "@mrp/widgets/timer";
 import { useService } from "@web/core/utils/hooks";
-import time from '@web/legacy/js/core/time';
+import { parseDate } from "@web/core/l10n/dates";
 
+const { DateTime } = luxon;
 const { Component, onWillStart } = owl;
 
 export class WorkingEmployeePopup extends Component {
@@ -30,7 +31,7 @@ export class WorkingEmployeePopup extends Component {
         this.lines.map(l => {
             if (l.employee_id === employeeId) {
                 l.ongoing = false;
-                const additionalDuration = moment(new Date()).diff(l.start, 'seconds') / 60;
+                const additionalDuration = DateTime.now().diff(l.start).as("seconds") / 60;
                 l.duration += additionalDuration;
             }
         });
@@ -41,7 +42,7 @@ export class WorkingEmployeePopup extends Component {
         this.props.onStartEmployee(employeeId);
         this.lines.map(l => {
             if (l.employee_id === employeeId) {
-                l.start = moment(new Date());
+                l.start = DateTime.now();
                 l.ongoing = true;
             }
         });
@@ -61,12 +62,12 @@ export class WorkingEmployeePopup extends Component {
             ['duration', 'date_start:array_agg', 'date_end:array_agg'],
             ['employee_id']
         ]);
-        const now = moment(new Date());
+        const now = DateTime.now();
         this.lines = productivityLines.map((pl) => {
             let duration = pl.duration;
             const ongoingTimerIndex = pl.date_end.indexOf(null);
             if (ongoingTimerIndex != -1) {
-                const additionalDuration = now.diff(moment(time.auto_str_to_date(pl.date_start[ongoingTimerIndex])), 'seconds') / 60;
+                const additionalDuration = now.diff(parseDate(pl.date_start[ongoingTimerIndex])).as("seconds") / 60;
                 duration += additionalDuration;
             }
             return {

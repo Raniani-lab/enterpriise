@@ -7,6 +7,7 @@ import { registry } from "@web/core/registry";
 import { userService } from "@web/core/user_service";
 import testUtils from '@web/../tests/legacy/helpers/test_utils';
 
+const { DateTime } = luxon;
 const serviceRegistry = registry.category("services");
 
 let target;
@@ -59,8 +60,8 @@ QUnit.module('appointment.appointment_link', {
                         user_id: uid,
                         partner_id: uid,
                         name: 'Event 1',
-                        start: moment().add(1, 'years').format('YYYY-01-12 10:00:00'),
-                        stop: moment().add(1, 'years').format('YYYY-01-12 11:00:00'),
+                        start: DateTime.now().plus({years:1}).toFormat("yyyy'-01-12 10:00:00'"),
+                        stop: DateTime.now().plus({years:1}).toFormat("yyyy'-01-12 11:00:00'"),
                         allday: false,
                         partner_ids: [1],
                     }, {
@@ -68,8 +69,8 @@ QUnit.module('appointment.appointment_link', {
                         user_id: uid,
                         partner_id: uid,
                         name: 'Event 2',
-                        start: moment().add(1, 'years').format('YYYY-01-05 10:00:00'),
-                        stop: moment().add(1, 'years').format('YYYY-01-05 11:00:00'),
+                        start: DateTime.now().plus({years:1}).toFormat("yyyy'-01-05 10:00:00'"),
+                        stop: DateTime.now().plus({years:1}).toFormat("yyyy'-01-05 11:00:00'"),
                         allday: false,
                         partner_ids: [1],
                     }, {
@@ -77,8 +78,8 @@ QUnit.module('appointment.appointment_link', {
                         user_id: 214,
                         partner_id: 214,
                         name: 'Event 3',
-                        start: moment().add(1, 'years').format('YYYY-01-05 10:00:00'),
-                        stop: moment().add(1, 'years').format('YYYY-01-05 11:00:00'),
+                        start: DateTime.now().plus({years:1}).toFormat("yyyy'-01-05 10:00:00'"),
+                        stop: DateTime.now().plus({years:1}).toFormat("yyyy'-01-05 11:00:00'"),
                         allday: false,
                         partner_ids: [214],
                     }
@@ -152,7 +153,7 @@ QUnit.module('appointment.appointment_link', {
             },
             views: {},
         };
-        patchDate(moment().add(1, 'years').year(), 0, 5, 0, 0, 0);
+        patchDate(DateTime.now().plus({years:1}).year, 0, 5, 0, 0, 0);
         target = getFixture();
         setupViewRegistries();
         serviceRegistry.add(
@@ -312,7 +313,7 @@ QUnit.test('discard slot in calendar', async function (assert) {
     assert.containsOnce(target, '.fc-event', 'There is one calendar event');
     assert.containsNone(target, '.o_calendar_slot', 'There is no slot yet');
 
-    await clickAllDaySlot(target, moment().format('YYYY-01-12'));
+    await clickAllDaySlot(target, DateTime.now().toFormat("yyyy'-01-12'"));
     await nextTick();
     assert.containsN(target, '.fc-event', 2, 'There is 2 events in the calendar');
     assert.containsOnce(target, '.o_calendar_slot', 'One of them is a slot');
@@ -421,7 +422,7 @@ QUnit.test("create slots for custom appointment type", async function (assert) {
     assert.containsOnce(target, '.fc-event', 'There is one calendar event');
     assert.containsNone(target, '.o_calendar_slot', 'There is no slot yet');
 
-    await clickAllDaySlot(target, moment().format('YYYY-01-12'));
+    await clickAllDaySlot(target, DateTime.now().toFormat("yyyy'-01-12'"));
     await nextTick();
     assert.containsN(target, '.fc-event', 2, 'There is 2 events in the calendar');
     assert.containsOnce(target, '.o_calendar_slot', 'One of them is a slot');
@@ -476,7 +477,7 @@ QUnit.test('filter works in slots-creation mode', async function (assert) {
     assert.containsOnce(target, '.fc-event');
     assert.containsNone(target, '.o_calendar_slot');
 
-    await clickAllDaySlot(target, moment().format('YYYY-01-12'));
+    await clickAllDaySlot(target, DateTime.now().toFormat("yyyy'-01-12'"));
     await nextTick();
     assert.containsN(target, '.fc-event', 2, 'There is 2 events in the calendar');
     assert.containsOnce(target, '.o_calendar_slot', 'One of them is a slot');

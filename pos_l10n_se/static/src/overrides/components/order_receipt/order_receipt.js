@@ -2,6 +2,7 @@
 
 import { OrderReceipt } from "@point_of_sale/app/screens/receipt_screen/receipt/receipt";
 import { patch } from "@web/core/utils/patch";
+import { deserializeDateTime } from "@web/core/l10n/dates";
 
 patch(OrderReceipt.prototype, {
     get receiptEnv() {
@@ -16,9 +17,9 @@ patch(OrderReceipt.prototype, {
             receipt_render_env.receipt.blackboxSignature =
                 receipt_render_env.order.blackbox_signature;
 
-            receipt_render_env.receipt.originalOrderDate = moment(
+            receipt_render_env.receipt.originalOrderDate = deserializeDateTime(
                 receipt_render_env.order.creation_date
-            ).format("HH:mm DD/MM/YYYY");
+            ).toFormat("HH:mm dd/MM/yyyy");
 
             return receipt_render_env;
         }

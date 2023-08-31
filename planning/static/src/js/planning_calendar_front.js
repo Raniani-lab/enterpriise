@@ -2,7 +2,8 @@
 /* eslint-disable no-undef */
 
 import publicWidget from "@web/legacy/js/public/public_widget";
-import { localization } from "@web/core/l10n/localization";
+import { _t } from "@web/core/l10n/translation";
+const { DateTime } = luxon;
 
 publicWidget.registry.PlanningView = publicWidget.Widget.extend({
     selector: '#calendar_employee',
@@ -50,10 +51,11 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
             $('[data-bs-toggle="popover"]').not(this).popover('hide');
         });
         // default date: first event of either assigned slots or open shifts
-        const defaultStart = moment($('.default_start').attr('value')).toDate();
+        const defaultStartValue = $('.default_start').attr('value'); //yyyy-MM-dd
+        const defaultStart = DateTime.fromFormat(defaultStartValue, "yyyy-MM-dd").toJSDate();
         const defaultView = $('.default_view').attr('value');
-        const minTime = $('.mintime').attr('value');
-        const maxTime = $('.maxtime').attr('value');
+        const minTime = $('.mintime').attr('value'); //HH:mm:ss
+        const maxTime = $('.maxtime').attr('value'); //HH:mm:ss
         let calendarHeaders = {
             left: 'dayGridMonth,timeGridWeek,listMonth',
             center: 'title',
@@ -67,18 +69,12 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
                 right: false,
             };
         }
-        let titleFormat = 'MMMM YYYY';
+        const titleFormat = { month: "long", year: "numeric" };
             // The calendar is displayed if there are slots (open or not)
         if (defaultView && (employeeSlotsFcData || openSlotsIds)) {
             this.calendar = new FullCalendar.Calendar($("#calendar_employee")[0], {
                 // Settings
-                plugins: [
-                    'moment',
-                    'dayGrid',
-                    'timeGrid',
-                    'list',
-                    'interraction'
-                ],
+                plugins: ["luxon", "dayGrid", "timeGrid", "list", "interraction"],
                 locale: locale,
                 defaultView: defaultView,
                 navLinks: true, // can click day/week names to navigate views
@@ -104,7 +100,12 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
                 events: employeeSlotsFcData,
                 // Event Function is called when clicking on the event
                 eventClick: this.eventFunction.bind(this),
-                buttonText: { today: "Today",  dayGridMonth: "Month", timeGridWeek: "Week", listMonth: 'List'},
+                buttonText: {
+                    today: _t("Today"),
+                    dayGridMonth: _t("Month"),
+                    timeGridWeek: _t("Week"),
+                    listMonth: _t("List"),
+                },
                 noEventsMessage: '',
             });
             this.calendar.setOption('locale', locale);
@@ -130,11 +131,11 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
         }
     },
     formatDateAsBackend: function (date) {
-        const weekday = moment(date).format('ddd.');
-        const timeFormat = localization.timeFormat.replace(':%S', '');
-        const dateTimeFormat = `${localization.dateFormat} ${timeFormat}`;
-        const dateTime = luxon.DateTime.fromJSDate(date).toFormat(dateTimeFormat);
-        return `${weekday} ${dateTime}`;
+        return DateTime.fromJSDate(date).toLocaleString({
+            ...DateTime.DATE_SHORT,
+            ...DateTime.TIME_24_SIMPLE,
+            weekday: "short",
+        });
     },
     eventFunction: function (calEvent) {
         const planningToken = $('.planning_token').attr('value');

@@ -2,6 +2,7 @@
 
 import publicWidget from "@web/legacy/js/public/public_widget";
 import { renderToElement, renderToFragment } from "@web/core/utils/render";
+const { DateTime } = luxon;
 
 publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
     selector: '.o_appointment',
@@ -65,7 +66,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         const staffUserName = this.$("#slots_form select[name='staff_user_id'] :selected").text();
         $month.find('table').addClass('d-none');
         $month.append(renderToElement('Appointment.appointment_info_no_slot_month', {
-            firstAvailabilityDate: moment(firstAvailabilityDate).format('dddd D MMMM YYYY'),
+            firstAvailabilityDate: DateTime.fromJSDate(firstAvailabilityDate).toFormat("cccc dd MMMM yyyy"),
             staffUserName: staffUserName,
         }));
         $month.find('#next_available_slot').on('click', () => this.selectFirstAvailableMonth());
@@ -165,7 +166,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
             commonUrlParams: commonUrlParams,
             resourceAssignMethod: resourceAssignMethod,
             scheduleBasedOn: scheduleBasedOn,
-            slotDate: moment(slotDate).format("dddd D MMMM YYYY"),
+            slotDate: DateTime.fromJSDate(slotDate).toFormat("cccc dd MMMM yyyy"),
             slots: slots,
             getAvailableResources: (slot) => {
                 return scheduleBasedOn === 'resources' ? JSON.stringify(slot['available_resources']) : false;

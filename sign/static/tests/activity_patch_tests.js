@@ -4,6 +4,8 @@ import { click, contains, start, startServer } from "@mail/../tests/helpers/test
 
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
 import { ListController } from "@web/views/list/list_controller";
+import { serializeDate } from "@web/core/l10n/dates";
+const { DateTime } = luxon;
 
 QUnit.module("activity (patch)");
 
@@ -13,7 +15,7 @@ QUnit.test("list activity widget: sign button in dropdown", async (assert) => {
     const activityId = pyEnv["mail.activity"].create({
         display_name: "Sign a new contract",
         activity_category: "sign_request",
-        date_deadline: moment().add(1, "day").format("YYYY-MM-DD"), // tomorrow
+        date_deadline: serializeDate(DateTime.now().plus({ days: 1 })), // tomorrow
         can_write: true,
         state: "planned",
         user_id: pyEnv.currentUserId,

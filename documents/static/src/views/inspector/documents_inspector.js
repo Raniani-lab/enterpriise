@@ -17,8 +17,10 @@ import { download } from "@web/core/network/download";
 import { onNewPdfThumbnail } from "../helper/documents_pdf_thumbnail_service";
 import { useTriggerRule } from "@documents/views/hooks";
 import dUtils from '@documents/views/helper/documents_utils';
+import { serializeDate } from "@web/core/l10n/dates";
 import { utils as uiUtils } from "@web/core/ui/ui_service";
 
+const { DateTime } = luxon;
 const { Component, markup, useEffect, useState, useRef, onPatched, onWillUpdateProps, onWillStart } = owl;
 
 async function toggleArchive(model, resModel, resIds, doArchive) {
@@ -292,7 +294,7 @@ export class DocumentsInspector extends Component {
             download({
                 data: {
                     file_ids: records.map(rec => rec.resId),
-                    zip_name: `documents-${moment().format("YYYY-MM-DD")}.zip`,
+                    zip_name: `documents-${serializeDate(DateTime.now())}.zip`,
                 },
                 url: "/document/zip",
             });

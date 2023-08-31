@@ -323,10 +323,9 @@ export class TimesheetGridDataPoint extends GridDataPoint {
             if (!this.sectionField || this.sectionField.name === "project_id") {
                 additionalGroups.push(
                     this.orm
-                        .webSearchRead("project.project", projectDomain.toList({}), [
-                            "id",
-                            "display_name",
-                        ])
+                        .webSearchRead("project.project", projectDomain.toList({}), {
+                            specification: { display_name: {} },
+                        })
                         .then((data) => {
                             const timesheet_data = data.records.map((r) => {
                                 return { project_id: [r.id, r.display_name] };
@@ -339,17 +338,23 @@ export class TimesheetGridDataPoint extends GridDataPoint {
         const addTaskData = (taskDomain, limit) => {
             additionalGroups.push(
                 this.orm
-                    .webSearchRead("project.task", taskDomain.toList({}), [
-                        "id",
-                        "display_name",
-                        "project_id",
-                    ], {
+                    .webSearchRead("project.task", taskDomain.toList({}), {
+                        specification: {
+                            display_name: {},
+                            project_id: {
+                                fields: { display_name: {} },
+                            },
+                        },
                         limit: limit,
                     })
                     .then((data) => {
-                        return prepareAdditionalData(data.records.map((r) => (
-                            { task_id: [r.id, r.display_name], project_id: r.project_id }
-                        )));
+                        const records = data.records.map(({ id, display_name, project_id }) => {
+                            return {
+                                task_id: [id, display_name],
+                                project_id: project_id && [project_id.id, project_id.display_name],
+                            };
+                        });
+                        return prepareAdditionalData(records);
                     })
             );
         };

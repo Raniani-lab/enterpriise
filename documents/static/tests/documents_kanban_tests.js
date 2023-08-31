@@ -3794,7 +3794,7 @@ QUnit.module("documents", {}, function () {
                         mockRPC: function (route, args) {
                             if (
                                 route ===
-                                    "/web/dataset/call_kw/documents.document/unity_web_search_read" &&
+                                    "/web/dataset/call_kw/documents.document/web_search_read" &&
                                 args.model === "documents.document"
                             ) {
                                 assert.step(JSON.stringify(args.kwargs.domain || []));
@@ -4950,7 +4950,7 @@ QUnit.module("documents", {}, function () {
                     async mockRPC(route, args) {
                         if (
                             route ===
-                                "/web/dataset/call_kw/documents.document/unity_web_search_read" &&
+                                "/web/dataset/call_kw/documents.document/web_search_read" &&
                             args.model === "documents.document"
                         ) {
                             assert.deepEqual(args.kwargs.domain, [
@@ -5009,7 +5009,7 @@ QUnit.module("documents", {}, function () {
                     async mockRPC(route, args) {
                         if (
                             route ===
-                                "/web/dataset/call_kw/documents.document/unity_web_search_read" &&
+                                "/web/dataset/call_kw/documents.document/web_search_read" &&
                             args.model === "documents.document"
                         ) {
                             assert.deepEqual(args.kwargs.domain, [["folder_id", "child_of", 1]]);

@@ -61,10 +61,6 @@ function setFieldAvailableInSidebar(key) {
 
 const defaultMockRpc = {
     "/web/dataset/call_kw/res.users/has_group": () => true,
-    "/web/dataset/call_kw/coucou/web_search_read": () => ({
-        records: serverData.models.coucou.records,
-        length: serverData.models.coucou.records.length,
-    }),
 };
 
 QUnit.module(
@@ -168,10 +164,12 @@ QUnit.module(
                 type: "list",
                 arch: "<tree/>",
                 mockRPC: {
-                    "/web/dataset/call_kw/coucou/web_search_read": () => ({
-                        records: [],
-                        length: 0,
-                    }),
+                    "/web/dataset/call_kw/coucou/web_search_read": () => {
+                        return {
+                            records: [],
+                            length: 0,
+                        };
+                    },
                 },
             });
 
@@ -557,7 +555,10 @@ QUnit.module(
             await click(target, "#show_invisible");
             assert.containsN(target, "td[name='display_name'].o_web_studio_show_invisible", 2);
 
-            await click(target, "tr:first-child td[name='display_name'].o_web_studio_show_invisible");
+            await click(
+                target,
+                "tr:first-child td[name='display_name'].o_web_studio_show_invisible"
+            );
             assert.containsOnce(target, "#invisible");
 
             assert.ok(target.querySelector("#invisible").checked);
@@ -810,7 +811,7 @@ QUnit.module(
                 resModel: "coucou",
                 arch: arch,
                 mockRPC(route, args) {
-                    if (route === "/web/dataset/call_kw/coucou/unity_web_search_read") {
+                    if (route === "/web/dataset/call_kw/coucou/web_search_read") {
                         return {
                             records: [],
                             length: 0,
@@ -1204,7 +1205,8 @@ QUnit.module(
                 await click(target.querySelector(".modal .btn-primary"));
                 assert.containsN(target, ".modal", 2, "should contain 2 modals");
                 assert.strictEqual(
-                    target.querySelector(".o_dialog:not(.o_inactive_modal) .modal-body").textContent,
+                    target.querySelector(".o_dialog:not(.o_inactive_modal) .modal-body")
+                        .textContent,
                     "There are 3 records linked, upon confirming records will be deleted.",
                     "should have right message"
                 );
@@ -2032,11 +2034,24 @@ QUnit.module(
         QUnit.test("list editor field with aggregate function", async function (assert) {
             const changeArch = makeArchChanger();
             serverData.models.coucou.records = [
-                { id: 1, display_name: "Red Right Hand", croissant: 3, float_field: 3.14, money_field: 1.001 },
-                { id: 2, display_name: "Hell Broke Luce", croissant: 5, float_field: 6.66, money_field: 999.999 },
+                {
+                    id: 1,
+                    display_name: "Red Right Hand",
+                    croissant: 3,
+                    float_field: 3.14,
+                    money_field: 1.001,
+                },
+                {
+                    id: 2,
+                    display_name: "Hell Broke Luce",
+                    croissant: 5,
+                    float_field: 6.66,
+                    money_field: 999.999,
+                },
             ];
 
-            const arch = '<tree><field name="display_name"/><field name="float_field"/><field name="money_field"/><field name="croissant"/></tree>';
+            const arch =
+                '<tree><field name="display_name"/><field name="float_field"/><field name="money_field"/><field name="croissant"/></tree>';
             const sumArchReturn =
                 '<tree><field name="display_name"/><field name="float_field"/><field name="money_field"/><field name="croissant" sum="Sum of Croissant"/></tree>';
             const avgArchReturn =

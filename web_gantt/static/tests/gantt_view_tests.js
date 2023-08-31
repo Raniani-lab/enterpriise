@@ -818,7 +818,7 @@ QUnit.test("gantt rendering, thumbnails", async (assert) => {
                             id: 1,
                             start: "2018-11-30 18:30:00",
                             stop: "2018-12-31 18:29:59",
-                            user_id: [1, "User 2"],
+                            user_id: { id: 1, display_name: "User 2" },
                         },
                         {
                             display_name: "FALSE",
@@ -997,10 +997,16 @@ QUnit.test("current month is highlighted'", async (assert) => {
         arch: '<gantt date_start="start" date_stop="stop" default_scale="year"/>',
     });
 
-    assert.containsOnce(target, ".o_gantt_header_cell.o_gantt_today",
-                        "there should be an highlighted month");
-    assert.strictEqual(getText(".o_gantt_header_cell.o_gantt_today"), "December",
-                       "the highlighted month should be this month");
+    assert.containsOnce(
+        target,
+        ".o_gantt_header_cell.o_gantt_today",
+        "there should be an highlighted month"
+    );
+    assert.strictEqual(
+        getText(".o_gantt_header_cell.o_gantt_today"),
+        "December",
+        "the highlighted month should be this month"
+    );
 });
 
 QUnit.test("current hour is highlighted'", async (assert) => {
@@ -1011,10 +1017,16 @@ QUnit.test("current hour is highlighted'", async (assert) => {
         arch: '<gantt date_start="start" date_stop="stop" default_scale="day"/>',
     });
 
-    assert.containsOnce(target, ".o_gantt_header_cell.o_gantt_today",
-                        "there should be an highlighted hour");
-    assert.strictEqual(getText(".o_gantt_header_cell.o_gantt_today"), "8am",
-                       "the highlighted hour should correspond to the current time");
+    assert.containsOnce(
+        target,
+        ".o_gantt_header_cell.o_gantt_today",
+        "there should be an highlighted hour"
+    );
+    assert.strictEqual(
+        getText(".o_gantt_header_cell.o_gantt_today"),
+        "8am",
+        "the highlighted hour should correspond to the current time"
+    );
 });
 
 // GANTT WITH SAMPLE="1"
@@ -1321,7 +1333,7 @@ QUnit.test(
             arch: '<gantt date_start="start" date_stop="stop" on_create="this_is_create_action" />',
             mockRPC: function (_, { method }) {
                 if (method === "web_search_read") {
-                    assert.step(method);
+                    assert.step("web_search_read");
                 }
             },
         });
@@ -4641,7 +4653,7 @@ QUnit.test("plan dialog initial domain has the action domain as its only base", 
     const webClient = await createWebClient({
         serverData,
         mockRPC: function (route, args) {
-            if (args.method === "unity_web_search_read" || args.method === "web_search_read") {
+            if (args.method === "web_search_read") {
                 assert.step(args.kwargs.domain.toString());
             }
         },

@@ -1019,7 +1019,7 @@ QUnit.module("View Editors", () => {
                 "/web/webclient/load_menus",
                 "/web/dataset/call_kw/coucou/get_views",
                 "/web_studio/get_studio_view_arch",
-                "/web/dataset/call_kw/coucou/unity_web_search_read",
+                "/web/dataset/call_kw/coucou/web_search_read",
                 "/web/dataset/call_kw/res.users/has_group",
             ]);
 
@@ -1033,7 +1033,7 @@ QUnit.module("View Editors", () => {
             assert.verifySteps([
                 "block",
                 "/web_studio/edit_view",
-                "/web/dataset/call_kw/coucou/unity_web_search_read",
+                "/web/dataset/call_kw/coucou/web_search_read",
                 "unblock",
                 "/web_studio/get_default_value",
             ]);
@@ -1050,7 +1050,7 @@ QUnit.module("View Editors", () => {
                 "block",
                 "/web_studio/rename_field",
                 "/web_studio/edit_view",
-                "/web/dataset/call_kw/coucou/unity_web_search_read",
+                "/web/dataset/call_kw/coucou/web_search_read",
                 "/web_studio/get_default_value",
                 "unblock",
             ]);

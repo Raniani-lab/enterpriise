@@ -132,6 +132,10 @@ function parseServerValues(fields, values) {
                 }
                 break;
             }
+            case "many2one": {
+                parsedValues[fieldName] = value ? [value.id, value.display_name] : false;
+                break;
+            }
             default: {
                 parsedValues[fieldName] = value;
             }
@@ -613,8 +617,15 @@ export class GanttModel extends Model {
         };
         const domain = this._getDomain(metaData);
         const fields = this._getFields(metaData);
+        const specification = {};
+        for (const fieldName of fields) {
+            specification[fieldName] = {};
+            if (metaData.fields[fieldName].type === "many2one") {
+                specification[fieldName].fields = { display_name: {} };
+            }
+        }
 
-        const proms = [this.orm.webSearchRead(resModel, domain, fields, { context })];
+        const proms = [this.orm.webSearchRead(resModel, domain, { context, specification })];
         if (groupedBy.length) {
             proms.push(
                 this.orm.webReadGroup(resModel, domain, fields, groupedBy, {

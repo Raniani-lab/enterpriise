@@ -16,7 +16,6 @@ import { Component, useState, useSubEnv, useChildSubEnv, onWillStart } from "@od
 export class TemplateDialog extends Component {
     setup() {
         this.orm = useService("orm");
-        this.rpc = useService("rpc");
         this.viewService = useService("view");
         this.notificationService = useService("notification");
         this.actionService = useService("action");
@@ -79,14 +78,13 @@ export class TemplateDialog extends Component {
     async _fetchTemplates(offset = 0) {
         const { domain, context } = this.model;
         const { records, length } = await this.keepLast.add(
-            this.rpc("/web/dataset/search_read", {
-                model: "spreadsheet.template",
-                fields: ["name"],
+            this.orm.webSearchRead("spreadsheet.template", domain, {
+                specification: { name: {} },
                 domain,
                 context,
                 offset,
                 limit: this.limit,
-                sort: "sequence, id",
+                order: "sequence, id",
             })
         );
         this.state.templates = records;

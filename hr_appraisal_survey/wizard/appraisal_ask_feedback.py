@@ -63,8 +63,7 @@ class AppraisalAskFeedback(models.TransientModel):
             if recipients:
                 last_name = recipients.pop()
                 if len(recipients) > 0:
-                    formatted_names = ', '.join(recipients)
-                    recipients_str = formatted_names + _(" and ") + last_name
+                    recipients_str = _("Employee")
                 else:
                     recipients_str = last_name
             else:

@@ -115,7 +115,7 @@ export class KnowledgeSidebar extends Component {
             groups: () => this.isInternalUser ? ".o_section" : ".o_section[data-section='private']",
             connectGroups: () => this.isInternalUser,
             nest: true,
-            ignore: ".readonly",
+            preventDrag: (el) => el.classList.contains("readonly"),
             tolerance: SORTABLE_TOLERANCE,
             onDragStart: () => this.state.dragging = true,
             onDragEnd: () => this.state.dragging = false,
@@ -172,8 +172,11 @@ export class KnowledgeSidebar extends Component {
                     }
                 }
                 if (parent) {
-                    // Cannot add child to readonly articles
-                    if (parent.classList.contains('readonly')) {
+                    // Cannot add child to readonly articles, unless it is the
+                    // current parent.
+                    const currentParentId = element.parentElement.parentElement.dataset.articleId;
+                    const targetParentId = parent.dataset.articleId;
+                    if (currentParentId !== targetParentId && parent.classList.contains('readonly')) {
                         placeholder.classList.add('bg-danger');
                         return;
                     }
@@ -707,7 +710,8 @@ export class KnowledgeSidebar extends Component {
             );
         }
         this.dialog.add(ConfirmationDialog, {
-            title: "Move cancelled",
+            confirmLabel: _t("Close"),
+            title: _t("Move cancelled"),
             body: message,
         });
     }

@@ -144,7 +144,7 @@ class L10nFrSendVatReport(models.TransientModel):
         report = self.env['account.report'].browse(options['report_id'])
         dt_from = fields.Date.to_date(options['date']['date_from'])
         dt_from, dt_to = self.env.company._get_tax_closing_period_boundaries(dt_from)
-        options = report._get_options(
+        options = report.get_options(
             {'no_format': True, 'date': {'date_from': dt_from, 'date_to': dt_to}, 'filter_unfold_all': True})
         lines = report._get_lines(options)
 
@@ -250,6 +250,12 @@ class L10nFrSendVatReport(models.TransientModel):
         options = self.env.context.get('l10n_fr_generation_options')
         vals = self._prepare_edi_vals(options)
         xml_content = self.env['ir.qweb']._render('l10n_fr_reports.aspone_xml_edi', vals)
+        try:
+            xml_content.encode('ISO-8859-15')
+        except UnicodeEncodeError as e:
+            raise ValidationError(
+                _("The xml file generated contains an invalid character: '%s'", xml_content[e.start:e.end]))
+
         xml_content = etree.tostring(cleanup_xml_node(xml_content), encoding='ISO-8859-15', standalone='yes')
 
         # Send xml to ASPOne

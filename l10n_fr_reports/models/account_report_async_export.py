@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, _
+from odoo import models, fields, api, _, _lt
 from odoo.exceptions import UserError
 from odoo.addons.iap.tools import iap_tools
 
@@ -8,6 +8,24 @@ from datetime import timedelta
 import json
 
 ENDPOINT = "https://l10n-fr-aspone.api.odoo.com"
+
+# Allows to translate the errors returned by IAP
+ERROR_CODE_TO_MSG = {
+    'invalid_xml': _lt("The structure of the xml document is invalid."),
+    'missing_deposit': _lt("No deposit_uid was provided."),
+    'missing_declaration': _lt("No declaration_uid was provided."),
+    'unknown_deposit': _lt("This deposit is unknown from Odoo."),
+    'unknown_declaration': _lt("This declaration is unknown from Odoo."),
+    'error_subscription': _lt("An error has occurred when trying to verify your subscription."),
+    'dbuuid_not_exist': _lt("Your database uuid does not exist"),
+    'not_enterprise': _lt("You do not have an Odoo enterprise subscription."),
+    'not_prod_env': _lt("Your database is not used for a production environment."),
+    'not_active_db': _lt("Your database is not yet activated."),
+    'add_document': _lt("An error occurred while trying to send the document: "),
+    'get_interchange': _lt("An error occurred while getting the interchange details: "),
+    'get_declaration': _lt("An error occurred while getting the declaration details: "),
+    'get_attachment': _lt("An error occurred while getting the attachments: "),
+}
 
 
 class AccountReportAsyncExport(models.Model):
@@ -100,7 +118,7 @@ class AccountReportAsyncExport(models.Model):
             # Avoid calling the first step again if its state is already final
             first_step_state_final = False
             if export.step_1_logs:
-                first_step_state_final = any([status['is_final'] for status in json.loads(self.step_1_logs)])
+                first_step_state_final = any(status['is_final'] for status in json.loads(export.step_1_logs))
 
             # First step
             if not first_step_state_final:
@@ -187,7 +205,12 @@ class AccountReportAsyncExport(models.Model):
 
         # Error from IAP
         if response.get('error'):
-            raise UserError(response['error'])
+            err = response['error']
+            if isinstance(response['error'], str):
+                msg = ERROR_CODE_TO_MSG[err]
+            else:
+                msg = ERROR_CODE_TO_MSG[err[0]] + err[1]
+            raise UserError(msg)
 
         # Error from ASPOne
         if response['responseType'] != 'SUCCESS':

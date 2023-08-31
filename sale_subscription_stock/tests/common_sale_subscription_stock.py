@@ -22,28 +22,28 @@ class TestSubscriptionStockCommon(TestSubscriptionCommon, ValuationReconciliatio
 
         cls.uom_unit = cls.env.ref('uom.product_uom_unit')
 
-        cls.recurrence_3_months = cls.env['sale.temporal.recurrence'].create({'duration': 3, 'unit': 'month'})
+        cls.plan_3_months = cls.env['sale.subscription.plan'].create({'billing_period_duration': 3, 'billing_period_unit': 'month'})
 
         # Pricing
 
         pricing_commands = [
             Command.create({
-                'recurrence_id': cls.recurrence_month.id,
+                'plan_id': cls.plan_month.id,
                 'price': 45,
             }),
             Command.create({
-                'recurrence_id': cls.recurrence_3_months.id,
+                'plan_id': cls.plan_3_months.id,
                 'price': 50,
             })
         ]
 
-        cls.pricing_1month = cls.env['product.pricing'].create({
-            'recurrence_id': cls.recurrence_month.id,
+        cls.pricing_1month = cls.env['sale.subscription.pricing'].create({
+            'plan_id': cls.plan_month.id,
             'price': 45,
         })
 
-        cls.pricing_3month = cls.env['product.pricing'].create({
-            'recurrence_id': cls.recurrence_3_months.id,
+        cls.pricing_3month = cls.env['sale.subscription.pricing'].create({
+            'plan_id': cls.plan_3_months.id,
             'price': 50,
         })
 
@@ -56,7 +56,7 @@ class TestSubscriptionStockCommon(TestSubscriptionCommon, ValuationReconciliatio
             'uom_id': cls.uom_unit.id,
             'invoice_policy': 'order',
             'recurring_invoice': True,
-            'product_pricing_ids': pricing_commands,
+            'product_subscription_pricing_ids': pricing_commands,
         })
 
         cls.sub_product_order_2 = Product.create({
@@ -66,7 +66,7 @@ class TestSubscriptionStockCommon(TestSubscriptionCommon, ValuationReconciliatio
             'uom_id': cls.uom_unit.id,
             'invoice_policy': 'order',
             'recurring_invoice': True,
-            'product_pricing_ids': pricing_commands,
+            'product_subscription_pricing_ids': pricing_commands,
         })
 
         cls.sub_product_delivery = Product.create({
@@ -76,7 +76,7 @@ class TestSubscriptionStockCommon(TestSubscriptionCommon, ValuationReconciliatio
             'uom_id': cls.uom_unit.id,
             'invoice_policy': 'delivery',
             'recurring_invoice': True,
-            'product_pricing_ids': pricing_commands,
+            'product_subscription_pricing_ids': pricing_commands,
         })
 
         cls.product_non_recurring = Product.create({
@@ -93,7 +93,7 @@ class TestSubscriptionStockCommon(TestSubscriptionCommon, ValuationReconciliatio
             'name': 'Order',
             'is_subscription': True,
             'partner_id': cls.user_portal.partner_id.id,
-            'recurrence_id': cls.recurrence_month.id,
+            'plan_id': cls.plan_month.id,
             'pricelist_id': cls.company_data['default_pricelist'].id,
             'order_line': [Command.create({
                 'product_id': cls.sub_product_order.id,
@@ -106,7 +106,7 @@ class TestSubscriptionStockCommon(TestSubscriptionCommon, ValuationReconciliatio
             'name': 'Delivery',
             'is_subscription': True,
             'partner_id': cls.user_portal.partner_id.id,
-            'recurrence_id': cls.recurrence_month.id,
+            'plan_id': cls.plan_month.id,
             'pricelist_id': cls.company_data['default_pricelist'].id,
             'order_line': [Command.create({
                 'product_id': cls.sub_product_delivery.id,

@@ -100,7 +100,7 @@ class TestSubscriptionStockOnOrder(TestSubscriptionStockCommon):
         self.assertEqual(invoice.amount_total, 45, 'Price in invoice unit should be the same')
 
         sub.write({
-            'recurrence_id': self.recurrence_3_months.id,
+            'plan_id': self.plan_3_months.id,
         })
 
         self.assertEqual(sub.order_line.price_unit, 45, 'Price unit should not be update for confirmed order')
@@ -164,7 +164,7 @@ class TestSubscriptionStockOnOrder(TestSubscriptionStockCommon):
             'name': 'Order',
             'is_subscription': True,
             'partner_id': self.user_portal.partner_id.id,
-            'recurrence_id': self.recurrence_month.id,
+            'plan_id': self.plan_month.id,
             'order_line': [
                 Command.create({
                 'product_id': self.sub_product_order.id,
@@ -197,7 +197,7 @@ class TestSubscriptionStockOnOrder(TestSubscriptionStockCommon):
             'name': 'Order',
             'is_subscription': True,
             'partner_id': self.user_portal.partner_id.id,
-            'recurrence_id': self.recurrence_month.id,
+            'plan_id': self.plan_month.id,
             'order_line': [
                 Command.create({
                 'product_id': self.sub_product_order.id,

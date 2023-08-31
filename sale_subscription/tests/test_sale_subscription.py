@@ -1709,7 +1709,7 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertEqual(product_product_2.lst_price, 20.0)
         template = SaleOrderTemplate.create({
             'name': 'Variant Products Plan',
-            'recurrence_id': self.recurrence_week.id,
+            'plan_id': self.plan_week.id,
             'sale_order_template_line_ids': [Command.create({
                 'product_id': product_product_2.id
             })]

@@ -53,7 +53,8 @@ class ProductTemplate(models.Model):
             pricelist = pricelist or website.get_current_pricelist()
             currency = pricelist.currency_id or self.env.company.currency_id
 
-            fpos = self.env['account.fiscal.position'].sudo()._get_fiscal_position(partner)
+            fpos_id = website._get_current_fiscal_position_id(partner)
+            fpos = self.env['account.fiscal.position'].sudo().browse(fpos_id)
             product_taxes = self.sudo().taxes_id.filtered(lambda t: t.company_id == company_id)
             taxes = fpos.map_tax(product_taxes)
             unit_price = self._price_with_tax_computed(

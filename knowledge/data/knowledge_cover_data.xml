@@ -1,0 +1,16 @@
+<odoo noupdate="1">
+    <!-- Attachments -->
+    <record id="ir_attachment_computer_monitor_with_code" model="ir.attachment">
+        <field name="name">computer_monitor_with_code.jpg</field>
+        <field name="res_model">knowledge.cover</field>
+        <field name="res_field">attachment_id</field>
+        <field name="public">True</field>
+        <field name="type">url</field>
+        <field name="url">/knowledge/static/src/img/computer_monitor_with_code.jpg</field>
+    </record>
+
+    <!-- Covers -->
+    <record id="knowledge_cover_release_note" model="knowledge.cover">
+        <field name="attachment_id" ref="ir_attachment_computer_monitor_with_code"/>
+    </record>
+</odoo>

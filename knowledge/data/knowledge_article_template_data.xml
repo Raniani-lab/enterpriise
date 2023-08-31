@@ -1,203 +1,331 @@
 <odoo noupdate="1">
     <!-- Templates -->
-    <record id="knowledge_template_my_todo_list" model="knowledge.article.template">
-        <field name="name">My todo list</field>
-        <field name="icon">✅</field>
+    <record id="knowledge_article_template_personal_organizer" model="knowledge.article.template">
+        <field name="name">Personal Organizer</field>
+        <field name="icon">📅</field>
         <field name="sequence">0</field>
-        <field name="category_id" ref="knowledge_article_template_category_recommended"/>
-        <field name="description">Simple task management - create, organize, and track your tasks.</field>
+        <field name="category_id" ref="knowledge_article_template_category_productivity"/>
+        <field name="description">Make every week a success by proactively organizing your priority and optional tasks.</field>
         <field name="body" type="html">
-            <h1>My todo list</h1>
+            <h1>Personal Organizer</h1>
             <hr/>
-            <ul class="o_checklist">
-                <li>Buy milk<br/></li>
-                <li>Buy eggs<br/></li>
-            </ul>
-            <p><br/></p>
-        </field>
-    </record>
-
-    <record id="knowledge_article_template_hr_faq" model="knowledge.article.template">
-        <field name="name">HR FAQ</field>
-        <field name="icon">💼</field>
-        <field name="sequence">0</field>
-        <field name="category_id" ref="knowledge_article_template_category_company_organization"/>
-        <field name="body" type="html">
-            <h1>HR FAQ</h1>
-            <hr/>
-            <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_toc" contenteditable="false"/>
-            <p><br/></p>
-            <h2>Expense Policy</h2>
-            <h3>Who do I need to address if I need office supplies?</h3>
-            <p>Instead of setting up complicated processes, <strong>we prefer to let our employees buy whatever they need</strong>. Just fill in an expense and we will reimburse you.</p>
-            <p><br/></p>
-            <h3>Why has my expense not been reimbursed? It has been accepted.</h3>
-            <p>
-                The Accounting team handles all payments on Fridays afternoon.
-                <br/>
-                If 2 weeks have passed and you are still waiting to be paid, get in touch with them.
-            </p>
-            <p><br/></p>
-            <h2>Car Policy</h2>
-            <h3>How do I know which model I can order or not?</h3>
-            <p>Our catalog can be found here and is updated every 2 years. If you do not manage to find the specific model you are looking for, <a href="mailto:fleet@company.com" target="_blank">contact our FleetOfficer</a></p>
-            <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_file" data-oe-protected="true">
-                <div class="o_knowledge_file_image" data-prop-name="fileImage">
-                    <a href="/knowledge/static/src/demo/fleet_icon.png?download=true" title="Car_Catalog.png" data-mimetype="image/png" class="o_image"></a>
-                </div>
-                <div class="o_knowledge_file_description">
-                    <div class="o_knowledge_file_name" data-prop-name="fileName">Car_Catalog.png</div>
-                    <div class="o_knowledge_file_extension" data-prop-name="fileExtension">png</div>
-                </div>
-            </div>
-            <p><br/></p>
-            <h3>Who can drive my car?</h3>
-            <p>
-                Your car can be driven by <strong>you, your spouse and by any person living under the same roof</strong> as long as they have a valid permit.
-            </p>
-            <p><br/></p>
-            <h2>Leaves &amp; Time Off</h2>
-            <h3>What do I have to do if I cannot work?</h3>
-            <p>Please refer to the chart below.</p>
-            <p><br/></p>
-            <table class="table table-bordered">
-                <tbody>
-                    <tr>
-                        <td>An hour or two (medical appointment, ...)</td>
-                        <td>Let your Team Leader know in advance.</td>
-                    </tr>
-                    <tr>
-                        <td>A day or less</td>
-                        <td>Inform HR and your Team Leader.</td>
-                    </tr>
-                    <tr>
-                        <td>Absent for more than a day</td>
-                        <td>See a doctor and send us the sick note.</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p><br/></p>
-        </field>
-    </record>
-
-    <record id="knowledge_article_template_brand_assets" model="knowledge.article.template">
-        <field name="name">Brand Assets</field>
-        <field name="icon">🎨</field>
-        <field name="sequence">0</field>
-        <field name="category_id" ref="knowledge_article_template_category_sales_and_marketing"/>
-        <field name="body" type="html">
-            <h1>Brand Assets</h1>
-            <hr/>
-            <p>Please submit a request for assistance to the Marketing Team if you fall into one of the following:</p>
-            <ul>
-                <li>Advertising that would appear online or on TV</li>
-                <li>SEO &amp; SEA projects (betting on keywords, ...)</li>
-                <li>Booklets for a total price &gt; $1000</li>
-            </ul>
-            <p>For all other categories, we simply require you to follow the rules listed below.</p>
-            <table class="table table-bordered">
+            <blockquote>
+                <span style="font-size: 18px;">
+                    Productivity is never an accident. It is always the result of a commitment to excellence, intelligent planning, and focused effort.
+                </span>​
+                - Paul J. Meyer
+            </blockquote>
+            <p>Things to handle this week*</p>
+            <table class="table table-bordered o_table">
                 <tbody>
                     <tr>
                         <td>
-                            <span style="font-size: 24px;">
-                                Make sure to comply as <strong>you will represent <u>our</u> brand</strong>
-                            </span>
-                            <br/>
-                            <span style="font-size: 24px;">If in doubt, get in touch with us.</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <p><br/></p>
-            <h2>Logo</h2>
-            <hr/>
-            <p>
-                Here are logos that you can use at your own convenience.
-                <br/>
-                They can also be shared with customers, journalists and resellers.
-            </p>
-            <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_file" data-oe-protected="true">
-                <div class="o_knowledge_file_image" data-prop-name="fileImage">
-                    <a href="https://odoocdn.com/openerp_website/static/src/img/assets/png/odoo_logo.png?download=true" title="logo.jpg" data-mimetype="image/jpeg" class="o_image"></a>
-                </div>
-                <div class="o_knowledge_file_description">
-                    <div class="o_knowledge_file_name" data-prop-name="fileName">Odoo Logo</div>
-                    <div class="o_knowledge_file_extension" data-prop-name="fileExtension">JPG</div>
-                </div>
-            </div>
-            <p><br/></p>
-            <h4>Usage</h4>
-            <ul>
-                <li><strong>Do not recreate the Logo from scratch, use these ones</strong></li>
-                <li>Logos should only be used in the colors provided</li>
-                <li>Always include sufficient clear space around the logo</li>
-            </ul>
-            <p><br/></p>
-            <h2>Brand Name Rules</h2>
-            <hr/>
-            <p>
-                YourCompany is very proud of its brand image.
-                <br/>
-                When representing the brand, we thus ask you to be very cautious in how you refer to the company.
-            </p>
-            <table class="table table-bordered">
-                <tbody>
-                    <tr>
-                        <td>
-                            <h3>
-                                <strong><font style="color: rgb(148, 189, 123);">Do</font></strong>
-                            </h3>
-                            <ul>
-                                <li>Capitalize the word <strong>YourCompany</strong>, except if it's part of an URL e.g. website/company</li>
-                                <li>Always type <strong>YourCompany</strong> in the same font size and style as the content of the text</li>
-                                <li>Write it without any article(<em><s>the</s> YourCompany, <s>a</s> YourCompany, ...</em>)</li>
-                            </ul>
-                        </td>
-                        <td>
-                            <h3>
-                                <strong><font style="color: rgb(231, 99, 99);">Do Not</font></strong>
-                            </h3>
-                            <ul>
-                                <li>Pluralize the trademark (e.g.<em>YourCompanies</em>)</li>
-                                <li>Use the logo instead of the word inside sentences</li>
-                                <li>Use the expression "YourCompanions" to refer to our community</li>
+                            <ul class="o_checklist">
+                                <li id="checkId-1">
+                                    <font class="text-600">Task A</font>
+                                </li>
+                                <li id="checkId-2">
+                                    <font class="text-600">Task B</font>
+                                </li>
+                                <li id="checkId-3">
+                                    <font class="text-600">Task C</font>
+                                </li>
+                                <li id="checkId-4">
+                                    <font class="text-600">Task D</font>
+                                </li>
                             </ul>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <p>
+                <span style="font-size: 12px;">
+                    <font class="text-600">*💡 tick the box when the task is scheduled in the agenda</font>
+                </span>
+            </p>
             <p><br/></p>
-            <h2>"About Us" Template</h2>
+            <h2>🗓 WEEKLY AGENDA</h2>
             <hr/>
-            <p>Use this template whenever you have an announcement to make.</p>
-            <p><br/></p>
-            <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_template" data-oe-protected="true">
-                <div class="d-flex">
-                    <div class="o_knowledge_template_label align-middle">Clipboard</div>
-                </div>
-                <div class="o_knowledge_content" data-prop-name="content" data-oe-protected="false">
-                    <p>
-                        250 Executive Park Blvd, Suite 3400 94134
-                        <br/>
-                        San Francisco California (US)
-                        <br/>
-                        United States
-                        <br/>
-                        info@yourcompany.com
-                    </p>
-                    <p><br/></p>
-                    <p>YourCompany is proud to announce that...</p>
-                    <p><br/></p>
-                    <p>
-                        About YourCompany: YourCompany is a team of passionate people whose goal is to improve everyone's life
-                        through disruptive products.
-                        We build great products to solve your business problems.
-                        <br/>
-                        Our products are designed for small to medium size companies willing to optimize their performance.
-                    </p>
-                    <p><br/></p>
+            <div class="container o_text_columns">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <p>
+                            <strong>
+                                <span style="font-size: 18px;">
+                                    <font class="text-o-color-1">Reminders</font>
+                                </span>
+                            </strong>
+                        </p>
+                        <ul>
+                            <li><font class="text-600">Reminder 1</font></li>
+                            <li><font class="text-600">Reminder 2</font></li>
+                            <li><font class="text-600">Reminder 3</font></li>
+                        </ul>
+                        <p><br/></p>
+                    </div>
+                    <div class="col-lg-3">
+                        <p>
+                            <strong>
+                                <span style="font-size: 18px;">
+                                    <font class="text-o-color-1">MONDAY 🏢 @office</font>
+                                </span>
+                            </strong>
+                        </p>
+                        <p><strong>⚡ TOP 3 PRIORITIES</strong></p>
+                        <ol>
+                            <li><font class="text-600">Priority A</font></li>
+                            <li><font class="text-600">Priority B</font></li>
+                            <li><font class="text-600">Priority C</font></li>
+                        </ol>
+                        <p><strong>Optional Tasks</strong></p>
+                        <ul class="o_checklist">
+                            <li id="checkId-6">
+                                <span style="font-size: 14px;">
+                                    <font class="text-600">Task A</font>
+                                </span>
+                            </li>
+                            <li id="checkId-7">
+                                <span style="font-size: 14px;">
+                                    <font class="text-600">Task B</font>
+                                </span>
+                            </li>
+                            <li id="checkId-8">
+                                <span style="font-size: 14px;">
+                                    <font class="text-600">Task C</font>
+                                </span>
+                            </li>
+                        </ul>
+                        <p><strong>Extra Notes:</strong></p>
+                        <p><br/></p>
+                    </div>
+                    <div class="col-lg-3">
+                        <p>
+                            <strong>
+                                <span style="font-size: 18px;">
+                                    <font class="text-o-color-1">TUESDAY 🏢 @office</font>
+                                </span>
+                            </strong>
+                        </p>
+                        <p><strong style="font-weight: 500">⚡ TOP 3 PRIORITIES</strong></p>
+                        <ol>
+                            <li><font class="text-600">Priority A</font></li>
+                            <li><font class="text-600">Priority B</font></li>
+                            <li><font class="text-600">Priority C</font></li>
+                        </ol>
+                        <p><strong style="font-weight: 500">Optional Tasks</strong></p>
+                        <ul class="o_checklist">
+                            <li id="checkId-9">
+                                <span style="font-size: 14px">
+                                    <font class="text-600">Task A</font>
+                                </span>
+                            </li>
+                            <li id="checkId-10">
+                                <span style="font-size: 14px">
+                                    <font class="text-600">Task B</font>
+                                </span>
+                            </li>
+                            <li id="checkId-11">
+                                <span style="font-size: 14px">
+                                    <font class="text-600">Task C</font>
+                                </span>
+                            </li>
+                        </ul>
+                        <p><strong>Extra Notes:</strong></p>
+                        <p><br/></p>
+                    </div>
+                    <div class="col-lg-3">
+                        <p>
+                            <strong>
+                                <span style="font-size: 18px;">
+                                    <font class="text-o-color-1">WEDNESDAY 🏠 @home</font>
+                                </span>
+                            </strong>
+                        </p>
+                        <p><strong style="font-weight: 500">⚡ TOP 3 PRIORITIES</strong></p>
+                        <ol>
+                            <li><font class="text-600">Priority A</font></li>
+                            <li><font class="text-600">Priority B</font></li>
+                            <li><font class="text-600">Priority C</font></li>
+                        </ol>
+                        <p><strong style="font-weight: 500">Optional Tasks</strong></p>
+                        <ul class="o_checklist">
+                            <li id="checkId-12">
+                                <span style="font-size: 14px">
+                                    <font class="text-600">Task A</font>
+                                </span>
+                            </li>
+                            <li id="checkId-13">
+                                <span style="font-size: 14px">
+                                    <font class="text-600">Task B</font>
+                                </span>
+                            </li>
+                            <li id="checkId-14">
+                                <span style="font-size: 14px">
+                                    <font class="text-600">Task C</font>
+                                </span>
+                            </li>
+                        </ul>
+                        <p><strong>Extra Notes:</strong></p>
+                        <p><br/></p>
+                    </div>
                 </div>
             </div>
+            <div class="container o_text_columns">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <p>
+                            <strong>
+                                <span style="font-size: 18px;">
+                                    <font class="text-o-color-1">THURSDAY 🏢 @office</font>
+                                </span>
+                            </strong>
+                        </p>
+                        <p><strong style="font-weight: 500">⚡ TOP 3 PRIORITIES</strong></p>
+                        <ol>
+                            <li><font class="text-600">Priority A</font></li>
+                            <li><font class="text-600">Priority B</font></li>
+                            <li><font class="text-600">Priority C</font></li>
+                        </ol>
+                        <p><strong style="font-weight: 500">Optional Tasks</strong></p>
+                        <ul class="o_checklist">
+                            <li id="checkId-15">
+                                <span style="font-size: 14px">
+                                    <font class="text-600">Task A</font>
+                                </span>
+                            </li>
+                            <li id="checkId-16">
+                                <span style="font-size: 14px">
+                                    <font class="text-600">Task B</font>
+                                </span>
+                            </li>
+                            <li id="checkId-17">
+                                <span style="font-size: 14px">
+                                    <font class="text-600">Task C</font>
+                                </span>
+                            </li>
+                        </ul>
+                        <p><strong>Extra Notes:</strong></p>
+                        <p><br/></p>
+                    </div>
+                    <div class="col-lg-3">
+                        <p>
+                            <strong>
+                                <span style="font-size: 18px;">
+                                    <font class="text-o-color-1">FRIDAY 🏠 @home</font>
+                                </span>
+                            </strong>
+                        </p>
+                        <p><strong style="font-weight: 500">⚡ TOP 3 PRIORITIES</strong></p>
+                        <ol>
+                            <li><font class="text-600">Priority A</font></li>
+                            <li><font class="text-600">Priority B</font></li>
+                            <li><font class="text-600">Priority C</font></li>
+                        </ol>
+                        <p><strong style="font-weight: 500">Optional Tasks</strong></p>
+                        <ul class="o_checklist">
+                            <li id="checkId-18">
+                                <span style="font-size: 14px">
+                                    <font class="text-600">Task A</font>
+                                </span>
+                            </li>
+                            <li id="checkId-19">
+                                <span style="font-size: 14px">
+                                    <font class="text-600">Task B</font>
+                                </span>
+                            </li>
+                            <li id="checkId-20">
+                                <span style="font-size: 14px">
+                                    <font class="text-600">Task C</font>
+                                </span>
+                            </li>
+                        </ul>
+                        <p><strong>Extra Notes:</strong></p>
+                        <p><br/></p>
+                    </div>
+                    <div class="col-lg-3">
+                        <p>
+                            <strong>
+                                <span style="font-size: 18px;">
+                                    <font class="text-o-color-1">SATURDAY 🏠 @home</font>
+                                </span>
+                            </strong>
+                        </p>
+                        <p><strong style="font-weight: 500">⚡ TOP 3 PRIORITIES</strong></p>
+                        <ol>
+                            <li><font class="text-600">Priority A</font></li>
+                            <li><font class="text-600">Priority B</font></li>
+                            <li><font class="text-600">Priority C</font></li>
+                        </ol>
+                        <p><strong style="font-weight: 500">Optional Tasks</strong></p>
+                        <ul class="o_checklist">
+                            <li id="checkId-21">
+                                <span style="font-size: 14px">
+                                    <font class="text-600">Task A</font>
+                                </span>
+                            </li>
+                            <li id="checkId-22">
+                                <span style="font-size: 14px">
+                                    <font class="text-600">Task B</font>
+                                </span>
+                            </li>
+                            <li id="checkId-23">
+                                <span style="font-size: 14px">
+                                    <font class="text-600">Task C</font>
+                                </span>
+                            </li>
+                        </ul>
+                        <p><strong>Extra Notes:</strong></p>
+                        <p><br/></p>
+                    </div>
+                    <div class="col-lg-3">
+                        <p>
+                            <strong>
+                                <span style="font-size: 18px;">
+                                    <font class="text-o-color-1">SUNDAY 🏠 @home</font>
+                                </span>
+                            </strong>
+                        </p>
+                        <p><strong style="font-weight: 500">⚡ TOP 3 PRIORITIES</strong></p>
+                        <ol>
+                            <li><font class="text-600">Priority A</font></li>
+                            <li><font class="text-600">Priority B</font></li>
+                            <li><font class="text-600">Priority C</font></li>
+                        </ol>
+                        <p><strong style="font-weight: 500">Optional Tasks</strong></p>
+                        <ul class="o_checklist">
+                            <li id="checkId-24">
+                                <span style="font-size: 14px">
+                                    <font class="text-600">Task A</font>
+                                </span>
+                            </li>
+                            <li id="checkId-25">
+                                <span style="font-size: 14px">
+                                    <font class="text-600">Task B</font>
+                                </span>
+                            </li>
+                            <li id="checkId-26">
+                                <span style="font-size: 14px">
+                                    <font class="text-600">Task C</font>
+                                </span>
+                            </li>
+                        </ul>
+                        <p><strong>Extra Notes:</strong></p>
+                        <p><br/></p>
+                    </div>
+                </div>
+            </div>
+            <h2>Backlog</h2>
+            <hr/>
+            <p>
+                <em>
+                    <font class="text-600">List here all the text you could not do this week. These shall be postponed in the next weekly schedule.</font>
+                </em>
+            </p>
+            <ul>
+                <li><font class="text-600">Backlog 1</font></li>
+                <li><font class="text-600">Backlog 2</font></li>
+                <li><font class="text-600">Backlog 3</font></li>
+            </ul>
             <p><br/></p>
         </field>
     </record>
@@ -205,8 +333,9 @@
     <record id="knowledge_article_template_sales_playbook" model="knowledge.article.template">
         <field name="name">Sales Playbook</field>
         <field name="icon">📘</field>
-        <field name="sequence">100</field>
-        <field name="category_id" ref="knowledge_article_template_category_sales_and_marketing"/>
+        <field name="sequence">0</field>
+        <field name="category_id" ref="knowledge_article_template_category_sales"/>
+        <field name="description">Provide salespeople with tips, lexicon and templates to help them sell faster.</field>
         <field name="body" type="html">
             <h1>Sales Playbook</h1>
             <hr/>
@@ -216,8 +345,7 @@
             <hr/>
             <p><br/></p>
             <p>
-                <strong><font class="text-o-color-2">PRO TIP</font></strong>: From a lead, use the book button in the chatter to find this article and autocomplete your email with this
-                template.
+                <strong><font class="text-o-color-2">PRO TIP</font></strong>: From a lead, use the book button in the chatter to find this article and autocomplete your email with this template.
             </p>
             <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_template" data-oe-protected="true">
                 <div class="d-flex">
@@ -339,6 +467,721 @@
                     </tr>
                 </tbody>
             </table>
+            <p><br/></p>
+        </field>
+    </record>
+
+    <record id="knowledge_article_template_account_management" model="knowledge.article.template">
+        <field name="name">Account Management</field>
+        <field name="icon">🤝</field>
+        <field name="sequence">100</field>
+        <field name="category_id" ref="knowledge_article_template_category_sales"/>
+        <field name="description">Centralize account insights in one document for comprehensive monitoring and follow-up.</field>
+        <field name="body" type="html">
+            <h1>Account Management Cheat Sheet</h1>
+            <hr/>
+            <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_toc" contenteditable="false"/>
+            <blockquote>
+                <font class="text-o-color-2">
+                    <strong>Planned Next Step:</strong>
+                </font>
+                <br/>
+                <br/>
+            </blockquote>
+            <p><br/></p>
+            <h2>Company Details</h2>
+            <hr/>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="bg-200">
+                            <h3><strong>Fast Facts</strong></h3>
+                        </td>
+                        <td class="bg-200"><br/></td>
+                    </tr>
+                    <tr>
+                        <td>Company Name:</td>
+                        <td><br/></td>
+                    </tr>
+                    <tr>
+                        <td>Industry:</td>
+                        <td><br/></td>
+                    </tr>
+                    <tr>
+                        <td>Company Location:</td>
+                        <td><br/></td>
+                    </tr>
+                    <tr>
+                        <td># Employees:</td>
+                        <td><br/></td>
+                    </tr>
+                    <tr>
+                        <td>Company Structure:</td>
+                        <td><br/></td>
+                    </tr>
+                    <tr>
+                        <td>Estimated Revenues:</td>
+                        <td><br/></td>
+                    </tr>
+                    <tr>
+                        <td class="bg-200">
+                            <h3>Sales Details</h3>
+                        </td>
+                        <td class="bg-200"><br/></td>
+                    </tr>
+                    <tr>
+                        <td>Current Contract:</td>
+                        <td><br/></td>
+                    </tr>
+                    <tr>
+                        <td>Contract Due Date:</td>
+                        <td><br/></td>
+                    </tr>
+                    <tr>
+                        <td>Current Satisfaction:</td>
+                        <td><br/></td>
+                    </tr>
+                    <tr>
+                        <td class="bg-200">
+                            <h3>Objectives with our Collaboration</h3>
+                        </td>
+                        <td class="bg-200"><br/></td>
+                    </tr>
+                    <tr>
+                        <td>Issues they are trying to solve:</td>
+                        <td><br/></td>
+                    </tr>
+                    <tr>
+                        <td>How they measure success:</td>
+                        <td><br/></td>
+                    </tr>
+                    <tr style="height: 90px;">
+                        <td>Potential Risks:</td>
+                        <td><br/></td>
+                    </tr>
+                </tbody>
+            </table>
+            <h2>Stakeholders Analysis</h2>
+            <hr/>
+            <blockquote>
+                <i>
+                    <font style="color: rgb(8, 82, 148);">
+                        <strong>Blue: Expects accurate and rigorous results</strong>
+                    </font>
+                </i>
+                <p>
+                    <i>
+                        <font style="color: rgb(0, 255, 0);"><strong>Green: Values trust above all</strong></font><br/>
+                        <font style="color: rgb(255, 0, 0);"><strong>Red: Values results above all</strong></font><br/>
+                        <strong>
+                            <font style="color: rgb(239, 198, 49);">
+                                Yellow: Values creativity and enthusiasm above results
+                            </font>
+                        </strong>
+                    </i>
+                </p>
+            </blockquote>
+            <p><strong>Main Point of Contact:</strong></p>
+            <ul>
+                <li><font class="text-600">Name</font></li>
+                <li><font class="text-600">Phone</font></li>
+                <li><font class="text-600">Email</font></li>
+                <li><font class="text-600">Job Title</font></li>
+                <li><font class="text-600">Color</font></li>
+            </ul>
+            <table class="table table-bordered o_table">
+                <tbody>
+                    <tr>
+                        <td class="text-black bg-200">
+                            <span style="font-size: 18px;">
+                                <strong>Name</strong>
+                            </span>
+                        </td>
+                        <td class="text-black bg-200">
+                            <span style="font-size: 18px;">
+                                <strong>Role</strong>
+                            </span>
+                        </td>
+                        <td class="text-black bg-200">
+                            <span style="font-size: 18px;">
+                                <strong>Color</strong>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><font class="text-600">Name 1</font></td>
+                        <td><font class="text-600">Job Title 1</font></td>
+                        <td><font class="text-600">Blue/Green/Red/Yellow</font></td>
+                    </tr>
+                    <tr>
+                        <td><font class="text-600">Name 2</font></td>
+                        <td><font class="text-600">Job Title 2</font></td>
+                        <td><font class="text-600">Blue/Green/Red/Yellow</font></td>
+                    </tr>
+                    <tr>
+                        <td><br/></td>
+                        <td><br/></td>
+                        <td><br/></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><br/></p>
+            <h2>Challenges &amp; Competitive Landscape<br/></h2>
+            <hr/>
+            <table class="table table-bordered o_table">
+                <tbody>
+                    <tr>
+                        <td class="bg-200">
+                            <strong>
+                                <span style="font-size: 18px;">Name</span>
+                            </strong>
+                        </td>
+                        <td class="bg-200">
+                            <strong>
+                                <span style="font-size: 18px;">Strengths</span>
+                            </strong>
+                        </td>
+                        <td class="bg-200">
+                            <strong>
+                                <span style="font-size: 18px;">Weaknesses</span>
+                            </strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><font class="text-600">Competitor 1</font></td>
+                        <td><br/></td>
+                        <td><br/></td>
+                    </tr>
+                    <tr>
+                        <td><font class="text-600">Competitor 2</font></td>
+                        <td><br/></td>
+                        <td><br/></td>
+                    </tr>
+                    <tr>
+                        <td><font class="text-600">Competitor 3</font></td>
+                        <td><br/></td>
+                        <td><br/></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><br/></p>
+            <h2>Buying Process</h2>
+            <hr/>
+            <ul>
+                <li><font class="text-600">What is their buyer's journey?</font></li>
+                <li><font class="text-600">How do they compare and evaluate offers?</font></li>
+                <li><font class="text-600">How do stakeholders interact regarding offers?</font></li>
+                <li><font class="text-600">What is their key decision criteria?</font></li>
+            </ul>
+            <p><br/></p>
+            <h2>Action Plan</h2>
+            <hr/>
+            <p>
+                <font class="text-600">What is your action plan to move forward with this account?</font><br/>
+                <font class="text-600">Which KPI will be used to measure this progress?</font>
+            </p>
+            <p><br/></p>
+        </field>
+    </record>
+
+    <record id="knowledge_article_template_brand_assets" model="knowledge.article.template">
+        <field name="name">Brand Assets</field>
+        <field name="icon">🎨</field>
+        <field name="sequence">0</field>
+        <field name="category_id" ref="knowledge_article_template_category_marketing"/>
+        <field name="description">Distribute brand digital assets while ensuring compliance with company policies and guidelines.</field>
+        <field name="body" type="html">
+            <h1>Brand Assets</h1>
+            <hr/>
+            <p>Please submit a request for assistance to the Marketing Team if you fall into one of the following:</p>
+            <ul>
+                <li>Advertising that would appear online or on TV</li>
+                <li>SEO &amp; SEA projects (betting on keywords, ...)</li>
+                <li>Booklets for a total price &gt; $1000</li>
+            </ul>
+            <p>For all other categories, we simply require you to follow the rules listed below.</p>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td>
+                            <span style="font-size: 24px;">
+                                Make sure to comply as <strong>you will represent <u>our</u> brand</strong>
+                            </span>
+                            <br/>
+                            <span style="font-size: 24px;">If in doubt, get in touch with us.</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><br/></p>
+            <h2>Logo</h2>
+            <hr/>
+            <p>
+                Here are logos that you can use at your own convenience.
+                <br/>
+                They can also be shared with customers, journalists and resellers.
+            </p>
+            <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_file" data-oe-protected="true">
+                <div class="o_knowledge_file_image" data-prop-name="fileImage">
+                    <a href="https://odoocdn.com/openerp_website/static/src/img/assets/png/odoo_logo.png?download=true" title="logo.jpg" data-mimetype="image/jpeg" class="o_image"></a>
+                </div>
+                <div class="o_knowledge_file_description">
+                    <div class="o_knowledge_file_name" data-prop-name="fileName">Odoo Logo</div>
+                    <div class="o_knowledge_file_extension" data-prop-name="fileExtension">JPG</div>
+                </div>
+            </div>
+            <p><br/></p>
+            <h4>Usage</h4>
+            <ul>
+                <li><strong>Do not recreate the Logo from scratch, use these ones</strong></li>
+                <li>Logos should only be used in the colors provided</li>
+                <li>Always include sufficient clear space around the logo</li>
+            </ul>
+            <p><br/></p>
+            <h2>Brand Name Rules</h2>
+            <hr/>
+            <p>
+                YourCompany is very proud of its brand image.
+                <br/>
+                When representing the brand, we thus ask you to be very cautious in how you refer to the company.
+            </p>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td>
+                            <h3>
+                                <strong>
+                                    <font style="color: rgb(148, 189, 123);">Do</font>
+                                </strong>
+                            </h3>
+                            <ul>
+                                <li>Capitalize the word <strong>YourCompany</strong>, except if it's part of an URL e.g. website/company</li>
+                                <li>Always type <strong>YourCompany</strong> in the same font size and style as the content of the text</li>
+                                <li>Write it without any article(<em><s>the</s> YourCompany, <s>a</s> YourCompany, ...</em>)</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <h3>
+                                <strong><font style="color: rgb(231, 99, 99);">Do Not</font></strong>
+                            </h3>
+                            <ul>
+                                <li>Pluralize the trademark (e.g.<em>YourCompanies</em>)</li>
+                                <li>Use the logo instead of the word inside sentences</li>
+                                <li>Use the expression "YourCompanions" to refer to our community</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><br/></p>
+            <h2>"About Us" Template</h2>
+            <hr/>
+            <p>Use this template whenever you have an announcement to make.</p>
+            <p><br/></p>
+            <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_template" data-oe-protected="true">
+                <div class="d-flex">
+                    <div class="o_knowledge_template_label align-middle">Clipboard</div>
+                </div>
+                <div class="o_knowledge_content" data-prop-name="content" data-oe-protected="false">
+                    <p>
+                        250 Executive Park Blvd, Suite 3400 94134
+                        <br/>
+                        San Francisco California (US)
+                        <br/>
+                        United States
+                        <br/>
+                        info@yourcompany.com
+                    </p>
+                    <p><br/></p>
+                    <p>YourCompany is proud to announce that...</p>
+                    <p><br/></p>
+                    <p>
+                        About YourCompany: YourCompany is a team of passionate people whose goal is to improve everyone's life
+                        through disruptive products.
+                        We build great products to solve your business problems.
+                        <br/>
+                        Our products are designed for small to medium size companies willing to optimize their performance.
+                    </p>
+                    <p><br/></p>
+                </div>
+            </div>
+            <p><br/></p>
+        </field>
+    </record>
+
+    <record id="knowledge_article_template_marketing_campaign_brief" model="knowledge.article.template">
+        <field name="name">Marketing Campaign Brief</field>
+        <field name="icon">✨</field>
+        <field name="sequence">100</field>
+        <field name="category_id" ref="knowledge_article_template_category_marketing"/>
+        <field name="description">Document your Marketing Campaigns to prioritize key objectives and outcomes.</field>
+        <field name="body" type="html">
+            <h1>Marketing Campaign Brief</h1>
+            <hr/>
+            <p><br/></p>
+            <h2>⌚ Elevator Pitch</h2>
+            <hr/>
+            <p>
+                <em>
+                    <font class="text-600">
+                        Describe your campaign in just a few words.
+                    </font>
+                </em>
+            </p>
+            <p><br/></p>
+            <h2>🚀 Objective</h2>
+            <hr/>
+            <p>
+                <em>
+                    <font class="text-600">
+                        What are you trying to accomplish with this campaign?
+                    </font>
+                </em>
+            </p>
+            <p><br/></p>
+            <h2>🎯 Target Audience</h2>
+            <hr/>
+            <p>
+                <em>
+                    <font class="text-600">
+                        Who are you trying to reach?
+                    </font>
+                </em>
+            </p>
+            <p><br/></p>
+            <h2>📣 Message</h2>
+            <hr/>
+            <p>
+                <em>
+                    <font class="text-600">
+                        What are you trying to convince them of?
+                    </font>
+                </em>
+            </p>
+            <p><br/></p>
+            <h2>📊 KPIs</h2>
+            <hr/>
+            <p>
+                <em>
+                    <font class="text-600">
+                        How will your measure progress?
+                    </font>
+                </em>
+            </p>
+            <p><br/></p>
+        </field>
+    </record>
+
+    <record id="knowledge_article_template_hr_faq" model="knowledge.article.template">
+        <field name="name">HR FAQ</field>
+        <field name="icon">💼</field>
+        <field name="sequence">0</field>
+        <field name="category_id" ref="knowledge_article_template_category_company_organization"/>
+        <field name="description">Answer questions frequently asked by your employees</field>
+        <field name="body" type="html">
+            <h1>HR FAQ</h1>
+            <hr/>
+            <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_toc" contenteditable="false"/>
+            <p><br/></p>
+            <h2>Expense Policy</h2>
+            <h3>Who do I need to address if I need office supplies?</h3>
+            <p>Instead of setting up complicated processes, <strong>we prefer to let our employees buy whatever they need</strong>. Just fill in an expense and we will reimburse you.</p>
+            <p><br/></p>
+            <h3>Why has my expense not been reimbursed? It has been accepted.</h3>
+            <p>
+                The Accounting team handles all payments on Fridays afternoon.
+                <br/>
+                If 2 weeks have passed and you are still waiting to be paid, get in touch with them.
+            </p>
+            <p><br/></p>
+            <h2>Car Policy</h2>
+            <h3>How do I know which model I can order or not?</h3>
+            <p>Our catalog can be found here and is updated every 2 years. If you do not manage to find the specific model you are looking for, <a href="mailto:fleet@company.com" target="_blank">contact our FleetOfficer</a></p>
+            <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_file" data-oe-protected="true">
+                <div class="o_knowledge_file_image" data-prop-name="fileImage">
+                    <a href="/knowledge/static/src/demo/fleet_icon.png?download=true" title="Car_Catalog.png" data-mimetype="image/png" class="o_image"></a>
+                </div>
+                <div class="o_knowledge_file_description">
+                    <div class="o_knowledge_file_name" data-prop-name="fileName">Car_Catalog.png</div>
+                    <div class="o_knowledge_file_extension" data-prop-name="fileExtension">png</div>
+                </div>
+            </div>
+            <p><br/></p>
+            <h3>Who can drive my car?</h3>
+            <p>
+                Your car can be driven by <strong>you, your spouse and by any person living under the same roof</strong> as long as they have a valid permit.
+            </p>
+            <p><br/></p>
+            <h2>Leaves &amp; Time Off</h2>
+            <h3>What do I have to do if I cannot work?</h3>
+            <p>Please refer to the chart below.</p>
+            <p><br/></p>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td>An hour or two (medical appointment, ...)</td>
+                        <td>Let your Team Leader know in advance.</td>
+                    </tr>
+                    <tr>
+                        <td>A day or less</td>
+                        <td>Inform HR and your Team Leader.</td>
+                    </tr>
+                    <tr>
+                        <td>Absent for more than a day</td>
+                        <td>See a doctor and send us the sick note.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><br/></p>
+        </field>
+    </record>
+
+    <record id="knowledge_article_template_post_mortem" model="knowledge.article.template">
+        <field name="name">Post-mortem</field>
+        <field name="icon">🧐</field>
+        <field name="sequence">100</field>
+        <field name="category_id" ref="knowledge_article_template_category_company_organization"/>
+        <field name="description">Analyze what went wrong and the underlying causes. Extract insights to avoid making similar mistakes in the future.</field>
+        <field name="body" type="html">
+            <h1>Post-Mortem Analysis</h1>
+            <hr/>
+            <h2>Issue Summary</h2>
+            <hr/>
+            <p>
+                <em>
+                    <font class="text-600">Explain what went wrong in just a few words.</font>
+                </em>
+            </p>
+            <p><br/></p>
+            <h2>Impact</h2>
+            <hr/>
+            <p>
+                <em>
+                    <font class="text-600">Explain the consequences of this issue.</font>
+                </em>
+            </p>
+            <p><br/></p>
+            <h2>Causes</h2>
+            <hr/>
+            <p>
+                <em>
+                    <font class="text-600">How did it get to happen?</font>
+                </em>
+            </p>
+            <p><br/></p>
+            <h2>Recovery</h2>
+            <hr/>
+            <p>
+                <em>
+                    <font class="text-600">How was it solved?</font>
+                </em>
+            </p>
+            <p><br/></p>
+            <h2>Outcome</h2>
+            <hr/>
+            <div class="container o_text_columns">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p><strong>Lessons Learnt:</strong></p>
+                        <ol>
+                            <li><font class="text-600">Lesson A</font></li>
+                            <li><font class="text-600">Lesson B</font></li>
+                            <li><font class="text-600">Lesson C</font></li>
+                        </ol>
+                    </div>
+                    <div class="col-lg-6">
+                        <p><strong>Actions Taken:</strong></p>
+                        <ol>
+                            <li><font class="text-600">Action A</font></li>
+                            <li><font class="text-600">Action B</font></li>
+                            <li><font class="text-600">Action C</font></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <p><br/></p>
+        </field>
+    </record>
+
+    <record id="knowledge_article_template_release_note" model="knowledge.article.template">
+        <field name="name">Release Notes</field>
+        <field name="icon">💻</field>
+        <field name="sequence">0</field>
+        <field name="category_id" ref="knowledge_article_template_category_product_management"/>
+        <field name="cover_image_id" ref="knowledge_cover_release_note"/>
+        <field name="description">Inform users about your latest software updates and improvements.</field>
+        <field name="body" type="html">
+            <h1>Release Notes 🎉</h1>
+            <hr/>
+            <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_toc" contenteditable="false"/>
+            <p><br/></p>
+            <h1>VersionName - ReleaseDate</h1>
+            <hr/>
+            <p>
+                <strong>Summary</strong>: <font class="text-600">What an exciting release! This time the focus was on...</font>
+            </p>
+            <h2>New Features 🎉</h2>
+            <ul>
+                <li><span class="text-600">New Feature 1</span></li>
+                <li class="oe-nested">
+                    <ul>
+                        <li>
+                            <font class="text-600">Detailed Explanation of the feature, with screenshots or a GIF</font>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <font class="text-600">New Feature 2</font>
+                </li>
+                <li class="oe-nested">
+                    <ul>
+                        <li>
+                            <font class="text-600">Detailed Explanation of the feature, with screenshots or a GIF</font>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <h2>But Also...</h2>
+            <div class="container o_text_columns">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h3>Improvements 🔬</h3>
+                        <ul>
+                            <li>
+                                <font class="text-600">From now on, ...</font>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6">
+                        <h3>Bug Fixes 🔨</h3>
+                        <ul>
+                            <li>
+                                <font class="text-600">Fixed a bug where...</font>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <p><br/></p>
+        </field>
+    </record>
+
+    <record id="knowledge_article_template_software_specification" model="knowledge.article.template">
+        <field name="name">Software Specification</field>
+        <field name="icon">✍️</field>
+        <field name="sequence">100</field>
+        <field name="category_id" ref="knowledge_article_template_category_product_management"/>
+        <field name="description">Ensure all stakeholders of a product change are aligned by clearly communicating the requirements.</field>
+        <field name="body" type="html">
+            <h1>Software Specification</h1>
+            <hr/>
+            <h2>⭐ Release Notes</h2>
+            <hr/>
+            <p>
+                <em>
+                    <font class="text-600">Explain in a single sentence what has been changed.</font>
+                </em>
+            </p>
+            <p><br/></p>
+            <h2>🔗 Links</h2>
+            <hr/>
+            <p>
+                <em>
+                    <font class="text-600">List here all the material and documentation related to the task.</font>
+                </em>
+            </p>
+            <p><a href="#" target="_blank" class="btn btn-secondary">Test Environment</a></p>
+            <p><a href="#" target="_blank" class="btn btn-secondary">DESIGN PROTOTYPE</a></p>
+            <p><a href="#" target="_blank" class="btn btn-secondary">Source Feedback</a></p>
+            <p><br/></p>
+            <h2>📝 Purpose</h2>
+            <hr/>
+            <p>
+                <em>
+                    <font class="text-600">Explain in a few words the problem that this change is going to solve.</font>
+                </em>
+            </p>
+            <p><br/></p>
+            <h2>🧠 Functional Specifications</h2>
+            <hr/>
+            <p>
+                <em>
+                    <font class="text-600">List here all the changes to implement.</font>
+                </em>
+            </p>
+            <ul>
+                <li><font class="text-600">Change 1</font></li>
+                <li><font class="text-600">Change 2</font></li>
+                <li><font class="text-600">Change 3</font></li>
+            </ul>
+            <p><br/></p>
+            <h2>⚙ Technical Specifications</h2>
+            <hr/>
+            <p>
+                <em>
+                    <font class="text-600">Ask a Senior Engineer to fill this part before launching the task.</font>
+                </em>
+            </p>
+            <table class="table table-bordered o_table">
+                <tbody>
+                    <tr>
+                        <td>
+                            <strong><span style="font-size: 18px;">Change</span></strong>
+                        </td>
+                        <td>
+                            <strong><span style="font-size: 18px;">Complexity</span></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Change 1</td>
+                        <td>
+                            ​<span class="o_stars o_five_stars" id="checkId-1"><i class="fa fa-star-o"/><i class="fa fa-star-o"/><i class="fa fa-star-o"/><i class="fa fa-star-o"/><i class="fa fa-star-o"/></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Change 2</td>
+                        <td>
+                            ​<span class="o_stars o_five_stars" id="checkId-2"><i class="fa fa-star-o"/><i class="fa fa-star-o"/><i class="fa fa-star-o"/><i class="fa fa-star-o"/><i class="fa fa-star-o"/></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Change 3</td>
+                        <td>
+                            ​<span class="o_stars o_five_stars" id="checkId-3"><i class="fa fa-star-o"/><i class="fa fa-star-o"/><i class="fa fa-star-o"/><i class="fa fa-star-o"/><i class="fa fa-star-o"/></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <pre>Extra Technical Instructions:</pre>
+            <p><br/></p>
+            <h3>❓ Open Questions</h3>
+            <hr/>
+            <p>
+                <em>
+                    <font class="text-600">Lay here any remaining question or doubt.</font>
+                </em>
+            </p>
+            <blockquote>Q1: <font class="text-600">Would it be possible to...</font></blockquote>
+            <blockquote>Q2: <font class="text-600">Would there be an issue if...</font></blockquote>
+            <p><br/></p>
+            <h3>🔍 Review Checklist</h3>
+            <hr/>
+            <p>
+                <em>
+                    <font class="text-600">Ask the developer to go through this checklist before asking for a review.</font>
+                </em>
+            </p>
+            <ul class="o_checklist">
+                <li id="checkId-4">
+                    <font class="text-600">I made sure any visual change is responsive</font>
+                </li>
+                <li id="checkId-5">
+                    <font class="text-600">I made sure it did not introduce any obvious regression</font>
+                </li>
+                <li id="checkId-6">
+                    <font class="text-600">I made sure it did not introduce any security flaw</font>
+                </li>
+            </ul>
             <p><br/></p>
         </field>
     </record>

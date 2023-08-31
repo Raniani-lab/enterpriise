@@ -13,6 +13,8 @@ the registration is confirmed.
     'category': 'Marketing/Events',
     'depends': ['barcodes', 'event'],
     'data': [
+        'report/event_event_report.xml',
+        'report/event_registration_report.xml',
         'views/event_event_views.xml',
         'views/event_registration_views.xml',
         'views/event_report_templates.xml',

@@ -66,6 +66,8 @@ class SaleSubscriptionPricing(models.Model):
         """ Get a suitable pricing for given product and pricelist.
         Note: model method
         """
+        if self.env.is_superuser():   # This is for access to the product pricing
+            product = product.sudo()
         is_product_template = product._name == "product.template"
         available_pricings = product.product_subscription_pricing_ids
         first_pricing = self.env['sale.subscription.pricing']

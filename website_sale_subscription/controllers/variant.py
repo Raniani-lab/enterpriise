@@ -12,7 +12,7 @@ class WebsiteSaleRentingVariantController(WebsiteSaleVariantController):
     @route()
     def get_combination_info_website(self, *args, **kwargs):
         res = super().get_combination_info_website(*args, **kwargs)
-        res['is_combination_possible'] = res.get('is_combination_possible', True) and res.get('is_recurrence_possible', True)
+        res['is_combination_possible'] = res.get('is_combination_possible', True) and res.get('is_plan_possible', True)
         return res
 
 

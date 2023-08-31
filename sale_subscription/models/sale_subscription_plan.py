@@ -4,6 +4,12 @@
 from odoo import api, fields, models, _, _lt
 from odoo.tools import get_timedelta, float_compare, float_is_zero
 
+billing_period_sentence_template = {
+    'week': ('per week', 'per %s weeks'),
+    'month': ('per month', 'per %s months'),
+    'year': ('per year', 'per %s years'),
+}
+
 class SaleSubscriptionPlan(models.Model):
     _name = 'sale.subscription.plan'
     _description = 'Subscription Plan'
@@ -19,6 +25,7 @@ class SaleSubscriptionPlan(models.Model):
                                            string="Unit", required=True, default='month')
 
     billing_period_display = fields.Char(compute='_compute_billing_period_display', string="Billing Period")
+    billing_period_display_sentence = fields.Char(compute='_compute_billing_period_display_sentence', string="Billing Period Display")
 
     # Self Service
     user_closable = fields.Boolean(string="Self closable", default=False,
@@ -74,6 +81,12 @@ class SaleSubscriptionPlan(models.Model):
     def _compute_billing_period_display(self):
         for plan in self:
             plan.billing_period_display = f"{plan.billing_period_value} {plan._get_unit_label()}"
+
+    @api.depends('billing_period_value', 'billing_period_unit')
+    def _compute_billing_period_display_sentence(self):
+        for plan in self:
+            sentence = billing_period_sentence_template.get(plan.billing_period_unit)[plan.billing_period_value > 1]
+            plan.billing_period_display_sentence = _(sentence, plan.billing_period_value) if plan.billing_period_value > 1 else _(sentence)
 
     @api.depends('auto_close_limit')
     def _compute_auto_close_limit_display(self):

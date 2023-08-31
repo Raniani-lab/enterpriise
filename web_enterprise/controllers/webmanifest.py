@@ -13,7 +13,7 @@ from odoo.tools import ustr, file_open
 class WebManifest(http.Controller):
 
     def _get_shortcuts(self):
-        module_names = ['mail', 'crm', 'project', 'note']
+        module_names = ['mail', 'crm', 'project', 'project_todo']
         try:
             module_ids = request.env['ir.module.module'].search([('state', '=', 'installed'), ('name', 'in', module_names)]) \
                                                         .sorted(key=lambda r: module_names.index(r["name"]))

@@ -7,12 +7,13 @@ import { getBasicData, getBasicServerData } from "@spreadsheet/../tests/utils/da
 import { prepareWebClientForSpreadsheet } from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 import { getFixture, nextTick, click, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
-import { selectCell } from "@spreadsheet/../tests/utils/commands";
+import { setCellContent, selectCell, setSelection } from "@spreadsheet/../tests/utils/commands";
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 import { getCell, getCellContent, getCellValue } from "@spreadsheet/../tests/utils/getters";
 import MockSpreadsheetCollaborativeChannel from "@spreadsheet_edition/../tests/utils/mock_spreadsheet_collaborative_channel";
 
 const { topbarMenuRegistry } = spreadsheet.registries;
+const { toZone } = spreadsheet.helpers;
 const { Model } = spreadsheet;
 /** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */
 let target;
@@ -247,6 +248,25 @@ QUnit.module(
                 1,
                 "NotifyUser have 1 button"
             );
+        });
+
+        QUnit.test("ask confirmation when merging", async function (assert) {
+            const fixture = getFixture();
+            const { model } = await createSpreadsheet();
+            const sheetId = model.getters.getActiveSheetId();
+            setCellContent(model, "A2", "hello");
+            setSelection(model, "A1:A2");
+            await nextTick();
+
+            await click(fixture, ".o-menu-item-button[title='Merge cells']");
+            const dialog = document.querySelector(".o_dialog");
+            assert.ok(dialog, "Dialog should be open");
+            await click(document, ".o_dialog .btn-secondary"); // cancel
+            assert.equal(model.getters.isSingleCellOrMerge(sheetId, toZone("A1:A2")), false);
+
+            await click(fixture, ".o-menu-item-button[title='Merge cells']");
+            await click(document, ".o_dialog .btn-primary"); // confirm
+            assert.equal(model.getters.isSingleCellOrMerge(sheetId, toZone("A1:A2")), true);
         });
 
         QUnit.test("Grid has still the focus after a dialog", async function (assert) {

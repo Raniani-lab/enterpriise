@@ -2,6 +2,7 @@
 
 import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
+import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
 import { DEFAULT_LINES_NUMBER } from "@spreadsheet/helpers/constants";
 import { SpreadsheetDialog } from "@spreadsheet_edition/bundle/actions/spreadsheet_dialog/spreadsheet_dialog";
@@ -49,12 +50,14 @@ export default class SpreadsheetComponent extends Component {
      * @param {string} content Content to display
      * @param {Function} confirm Callback if the user press 'Confirm'
      */
-    askConfirmation(content, confirm) {
-        this.dialog.add(
-            SpreadsheetDialog,
-            { content, confirm },
-            { onClose: this.closeDialog.bind(this) }
-        );
+    askConfirmation(body, confirm) {
+        this.dialog.add(ConfirmationDialog, {
+            title: _t("Odoo Spreadsheet"),
+            body,
+            confirm,
+            cancel: this.closeDialog.bind(this),
+            confirmLabel: _t("Confirm"),
+        });
     }
 
     /**

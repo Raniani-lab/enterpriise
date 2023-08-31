@@ -299,39 +299,6 @@ class AppointmentResource(AppointmentCommon):
             {'total_remaining_capacity': 0},
             'No result should give dict with correct accumulated values.')
 
-    @users('apt_manager')
-    def test_appointment_resources_remaining_capacity_exceeded(self):
-        """Check that we prevent creation of invalid capacities accross different events."""
-        appointment = self.appointment_manage_capacity
-        resource_2 = self.resource_2
-
-        start = datetime(2022, 2, 15, 14, 0, 0)
-        end = start + timedelta(hours=1)
-
-        self.assertTrue(appointment._get_resources_remaining_capacity(resource_2, start, end)['total_remaining_capacity'] == 2)
-
-        # Create bookings for resource
-        booking_1, booking_2, booking_3 = self.env['calendar.event'].with_context(self._test_context).create([{
-            'appointment_type_id': appointment.id,
-            'name': f'Meeting {index}',
-            'start': start,
-            'stop': end,
-        } for index in range(1, 4)])
-
-        booking_1.write({'booking_line_ids': [Command.create({
-            'appointment_resource_id': resource_2.id,
-            'capacity_reserved': 1})]
-        })
-        booking_2.write({'booking_line_ids': [Command.create({
-            'appointment_resource_id': resource_2.id,
-            'capacity_reserved': 1})]
-        })
-
-        with self.assertRaises(ValidationError):
-            booking_3.write({'booking_line_ids': [Command.create({
-                'appointment_resource_id': resource_2.id,
-                'capacity_reserved': 2})]
-            })
 
 @tagged('appointment_resources', 'post_install', '-at_install')
 class AppointmentResourceBookingTest(AppointmentCommon):

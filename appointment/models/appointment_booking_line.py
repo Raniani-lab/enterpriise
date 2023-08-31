@@ -29,20 +29,6 @@ class AppointmentBookingLine(models.Model):
         ('check_capacity_used', 'CHECK(capacity_used >= capacity_reserved)', 'The capacity used can not be lesser than the capacity reserved'),
     ]
 
-    @api.constrains('appointment_type_id', 'event_start', 'event_stop', 'appointment_resource_id', 'capacity_reserved', 'capacity_used')
-    def _check_bookings_availability(self):
-        """ Check bookings are possible for the time slot and capacity needed """
-        meeting_booking_lines = self.grouped('calendar_event_id')
-        for meeting, booking_lines in meeting_booking_lines.items():
-            remaining_capacity = meeting.appointment_type_id._get_resources_remaining_capacity(
-                booking_lines.appointment_resource_id,
-                meeting.start,
-                meeting.stop,
-                with_linked_resources=False,
-            )['total_remaining_capacity']
-            if remaining_capacity < 0:
-                raise ValidationError(_("The booking linked to the meeting, %s, can't be configured with the values defined. There is not enough capacity available!", meeting.name))
-
     @api.constrains('appointment_resource_id', 'appointment_type_id')
     def _check_resources_match_appointment_type(self):
         """Check appointment resources linked to the lines are effectively usable through the appointment type."""

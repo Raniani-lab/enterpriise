@@ -1103,6 +1103,9 @@ class AccountReport(models.Model):
         elif self.filter_multi_company == 'tax_units':
             self._multi_company_tax_units_init_options(options, previous_options=previous_options)
 
+        if not 'multi_company' in options:
+            options['single_company'] = [self.env.company.id]
+
     def _multi_company_selector_init_options(self, options, previous_options=None):
         """ Initializes the multi_company option for reports configured to compute it from the company selector.
         """

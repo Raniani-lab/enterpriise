@@ -18,7 +18,7 @@ class AccountReportController(http.Controller):
         uid = request.uid
         options = json.loads(options)
 
-        allowed_company_ids = [company_data['id'] for company_data in options.get('multi_company', [])]
+        allowed_company_ids = [company_data['id'] for company_data in options.get('multi_company', [])] or options.get('single_company', [])
         if not allowed_company_ids:
             company_str = request.httprequest.cookies.get('cids', str(request.env.user.company_id.id))
             allowed_company_ids = [int(str_id) for str_id in company_str.split(',')]

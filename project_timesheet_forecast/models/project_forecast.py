@@ -94,13 +94,20 @@ class Forecast(models.Model):
             ['project_id', 'allocated_hours'],
             ['project_id'],
         )
-        return {
+        dict_values_per_project = {
             res['project_id'][0]: {
                 'value': res['allocated_hours'],
                 'max_value': project_dict.get(res['project_id'][0], 0)
             }
             for res in planning_read_group
         }
+        for project_id, allocated_hours in project_dict.items():
+            if project_id not in dict_values_per_project:
+                dict_values_per_project[project_id] = {
+                    'value': 0.0,
+                    'max_value': allocated_hours,
+                }
+        return dict_values_per_project
 
     def _gantt_progress_bar(self, field, res_ids, start, stop):
         if field == 'project_id':

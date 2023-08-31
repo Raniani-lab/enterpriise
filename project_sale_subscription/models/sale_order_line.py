@@ -11,7 +11,7 @@ class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
     def _compute_product_updatable(self):
-        temporal_lines = self.filtered('temporal_type')
+        temporal_lines = self.filtered('recurring_invoice')
         super(SaleOrderLine, self - temporal_lines)._compute_product_updatable()
         temporal_lines.product_updatable = True
 
@@ -31,14 +31,14 @@ class SaleOrderLine(models.Model):
         # we set this end date on the task recurrence
         start_date = datetime.combine(order.next_invoice_date, datetime.min.time())
         repeat_until = order.end_date and datetime.combine(order.end_date, datetime.min.time())
-        repeat_until = repeat_until and repeat_until + relativedelta(day=int(order.recurrence_id.unit == 'month' and start_date.day))
+        repeat_until = repeat_until and repeat_until + relativedelta(day=int(order.plan_id.billing_period_unit == 'month' and start_date.day))
 
-        # if there is no task template, we set a recurrence that mimmics the subscription on the created task
+        # if there is no task template, we set a recurrence that mimics the subscription on the created task
         recurrence = self.env['project.task.recurrence'].create({
             'task_ids': task.ids,
-            'repeat_interval': order.recurrence_id.duration,
+            'repeat_interval': order.plan_id.billing_period_value,
             'repeat_type': 'until' if repeat_until else 'forever',
-            'repeat_unit': order.recurrence_id.unit,
+            'repeat_unit': order.plan_id.billing_period_unit,
             'repeat_until': repeat_until,
         })
         task.write({

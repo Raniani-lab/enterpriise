@@ -51,7 +51,7 @@ class TestSubscriptionTask(TestSubscriptionCommon):
                     'note': "original subscription description",
                     'partner_id': self.partner.id,
                     **({
-                        'recurrence_id': self.recurrence_month.id,
+                        'plan_id': self.plan_month.id,
                         'end_date': end_date,
                     } if is_recurrent else {}),
                 })
@@ -74,10 +74,10 @@ class TestSubscriptionTask(TestSubscriptionCommon):
                     self.assertEqual(task_recurrence.repeat_type, 'forever',
                         "No end date on the subscription must result in a task with a recurrence of type 'forever'")
 
-    def test_task_recurrence_stop(self):
+    def test_task_plan_stop(self):
         order = self.env['sale.order'].create({
             'is_subscription': True,
-            'recurrence_id': self.recurrence_month.id,
+            'plan_id': self.plan_month.id,
             'note': "original subscription description",
             'partner_id': self.partner.id,
         })
@@ -95,10 +95,10 @@ class TestSubscriptionTask(TestSubscriptionCommon):
         self.assertFalse(task.recurring_task, "Closing a subscription must stop the task recurrence")
         self.assertFalse(task.recurrence_id, "Closing a subscription must stop the task recurrence")
 
-    def test_task_recurrence_quotation_template(self):
+    def test_task_plan_quotation_template(self):
         order = self.env['sale.order'].create({
             'is_subscription': True,
-            'recurrence_id': self.recurrence_month.id,
+            'plan_id': self.plan_month.id,
             'note': "original subscription description",
             'partner_id': self.partner.id,
             'sale_order_template_id': self.subscription_tmpl.id,
@@ -115,8 +115,8 @@ class TestSubscriptionTask(TestSubscriptionCommon):
         self.assertEqual(task_recurrence.repeat_until.month, order.end_date.month,
             "The task recurrence should end on the same month as the subscription")
 
-    def test_task_recurrence_upsell(self):
-        product_recurrence_2 = self.env['product.template'].create({
+    def test_task_plan_upsell(self):
+        product_plan_2 = self.env['product.template'].create({
             'name': 'Product Recurrence 2',
             'recurring_invoice': True,
             'type': 'service',
@@ -125,7 +125,7 @@ class TestSubscriptionTask(TestSubscriptionCommon):
         })
         order = self.env['sale.order'].create({
             'is_subscription': True,
-            'recurrence_id': self.recurrence_month.id,
+            'plan_id': self.plan_month.id,
             'note': "original subscription description",
             'partner_id': self.partner.id,
             "end_date": fields.Date.today() + relativedelta(months=1),
@@ -143,7 +143,7 @@ class TestSubscriptionTask(TestSubscriptionCommon):
         upsell.order_line.product_uom_qty = 1
         upsell.order_line += self.env['sale.order.line'].create({
             'order_id': upsell.id,
-            'product_id': product_recurrence_2.product_variant_id.id,
+            'product_id': product_plan_2.product_variant_id.id,
         })
         upsell.action_confirm()
         recurrences = order.order_line.task_id.recurrence_id
@@ -160,7 +160,7 @@ class TestSubscriptionTask(TestSubscriptionCommon):
         })
         order = self.env['sale.order'].create({
             'is_subscription': True,
-            'recurrence_id': self.recurrence_month.id,
+            'plan_id': self.plan_month.id,
             'note': "original subscription description",
             'partner_id': self.partner.id,
         })

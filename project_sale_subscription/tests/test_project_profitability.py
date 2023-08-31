@@ -24,12 +24,8 @@ class TestSaleSubscriptionProjectProfitability(TestSubscriptionCommon, TestProje
         cls.product_no_tax = cls.sub_product_tmpl.product_variant_id
         cls.subscription_tmpl_foreign_company = cls.env['sale.order.template'].with_context(context_no_mail).create({
             'name': 'Subscription template without discount',
-            'recurring_rule_type': 'year',
-            'recurring_rule_boundary': 'limited',
-            'recurring_rule_count': 4,
             'note': "This is the template description",
-            'auto_close_limit': 5,
-            'recurrence_id': cls.recurrence_month.id,
+            'plan_id': cls.plan_month.id,
             'sale_order_template_line_ids': [Command.create({
                 'name': "Product 1",
                 'product_id': cls.product_no_tax.id,
@@ -46,7 +42,7 @@ class TestSaleSubscriptionProjectProfitability(TestSubscriptionCommon, TestProje
         cls.subscription_foreign, cls.subscription_main_with_foreign_template = cls.env['sale.order'].with_context(context_no_mail).create([{
             'name': 'TestSubscription',
             'is_subscription': True,
-            'recurrence_id': cls.recurrence_month.id,
+            'plan_id': cls.plan_month.id,
             'note': "original subscription description",
             'partner_id': cls.user_portal.partner_id.id,
             'pricelist_id': cls.company_data_2['default_pricelist'].id,
@@ -55,7 +51,7 @@ class TestSaleSubscriptionProjectProfitability(TestSubscriptionCommon, TestProje
         }, {
             'name': 'TestSubscription',
             'is_subscription': True,
-            'recurrence_id': cls.recurrence_month.id,
+            'plan_id': cls.plan_month.id,
             'note': "original subscription description",
             'partner_id': cls.user_portal.partner_id.id,
             'pricelist_id': cls.company_data['default_pricelist'].id,
@@ -88,7 +84,7 @@ class TestSaleSubscriptionProjectProfitability(TestSubscriptionCommon, TestProje
         sequence_per_invoice_type = self.project._get_profitability_sequence_per_invoice_type()
         self.assertIn('subscriptions', sequence_per_invoice_type)
         subscription_sequence = sequence_per_invoice_type['subscriptions']
-        new_amount_expected = subscription_foreign.recurring_monthly * subscription_foreign.sale_order_template_id.recurring_rule_count * 0.2
+        new_amount_expected = subscription_foreign.recurring_monthly * subscription_foreign.sale_order_template_id.duration_value * 0.2
         self.assertDictEqual(
             self.project._get_profitability_items(False),
             {
@@ -108,7 +104,7 @@ class TestSaleSubscriptionProjectProfitability(TestSubscriptionCommon, TestProje
         subscription_main_with_foreign_template = self.subscription_main_with_foreign_template.copy({'analytic_account_id': self.account_1.id})
         subscription_main_with_foreign_template.order_line.price_unit = 100
         subscription_main_with_foreign_template.action_confirm()
-        new_amount_expected += subscription_main_with_foreign_template.recurring_monthly * subscription_main_with_foreign_template.sale_order_template_id.recurring_rule_count
+        new_amount_expected += subscription_main_with_foreign_template.recurring_monthly * subscription_main_with_foreign_template.sale_order_template_id.duration_value
         self.assertDictEqual(
             self.project._get_profitability_items(False),
             {
@@ -126,7 +122,7 @@ class TestSaleSubscriptionProjectProfitability(TestSubscriptionCommon, TestProje
         # This ensures that subscriptions with different template are correctly computed
         subscription = self.subscription.copy({'analytic_account_id': self.account_1.id})  # we work on a copy to test the whole flow
         subscription.action_confirm()
-        new_amount_expected += subscription.recurring_monthly * subscription.sale_order_template_id.recurring_rule_count
+        new_amount_expected += subscription.recurring_monthly * subscription.sale_order_template_id.duration_value
         self.assertDictEqual(
             self.project._get_profitability_items(False),
             {
@@ -229,7 +225,7 @@ class TestSaleSubscriptionProjectProfitability(TestSubscriptionCommon, TestProje
             'partner_invoice_id': self.partner.id,
             'partner_shipping_id': self.partner.id,
             'is_subscription': True,
-            'recurrence_id': self.recurrence_month.id,
+            'plan_id': self.plan_month.id,
             'analytic_account_id': self.project.analytic_account_id.id,
             'company_id': foreign_company.id,
         })
@@ -259,7 +255,7 @@ class TestSaleSubscriptionProjectProfitability(TestSubscriptionCommon, TestProje
             'partner_invoice_id': self.partner.id,
             'partner_shipping_id': self.partner.id,
             'is_subscription': True,
-            'recurrence_id': self.recurrence_month.id,
+            'plan_id': self.plan_month.id,
             'analytic_account_id': self.project.analytic_account_id.id,
         })
         self.env['sale.order.line'].with_context(tracking_disable=True).create({

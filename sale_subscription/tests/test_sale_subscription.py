@@ -1005,7 +1005,7 @@ class TestSubscription(TestSubscriptionCommon):
         sub = self.subscription
         sub.end_date = datetime.date(2029, 4, 1)
         with freeze_time("2021-01-01"):
-            self.subscription.write({'start_date': False, 'next_invoice_date': False, 'plan_id': self.plan_month.id,})
+            self.subscription.write({'start_date': False, 'next_invoice_date': False, 'plan_id': self.plan_month.id})
             sub.action_confirm()
             # first invoice: automatic or not, it's the same behavior. All line are invoiced
             sub._create_invoices()

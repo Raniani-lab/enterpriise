@@ -22,7 +22,7 @@ class TestSubscriptionStockCommon(TestSubscriptionCommon, ValuationReconciliatio
 
         cls.uom_unit = cls.env.ref('uom.product_uom_unit')
 
-        cls.plan_3_months = cls.env['sale.subscription.plan'].create({'billing_period_duration': 3, 'billing_period_unit': 'month'})
+        cls.plan_3_months = cls.env['sale.subscription.plan'].create({'billing_period_value': 3, 'billing_period_unit': 'month'})
 
         # Pricing
 

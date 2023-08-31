@@ -85,7 +85,7 @@ class TestSaleSubscription(TestCommissionsSetup):
         form.partner_id = self.customer
         form.referrer_id = self.referrer
         # form.commission_plan_frozen = False
-        form.recurrence_id = self.recurrence_month
+        form.plan_id = self.plan_month
         with form.order_line.new() as line:
             line.name = self.worker.name
             line.product_id = self.worker

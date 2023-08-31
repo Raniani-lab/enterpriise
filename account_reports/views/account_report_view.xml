@@ -71,6 +71,13 @@
                         <button class="btn btn-secondary float-end" invisible="not is_account_coverage_report_available"
                                 name="action_download_xlsx_accounts_coverage_report" type="object" string="Accounts Coverage Report"/>
                     </header>
+
+                    <field name="custom_handler_model_id" invisible="1"/>
+                    <div class="alert alert-info text-center" invisible="not custom_handler_model_id" role="alert">
+                        This report is linked to a custom handler.
+                        You can customize it manually, but make sure your changes don't clash with what the handler does.
+                    </div>
+
                     <sheet>
                         <div class="oe_title">
                             <h1>

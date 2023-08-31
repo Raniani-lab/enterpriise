@@ -581,7 +581,9 @@ QUnit.module(
                 await editGlobalFilterDefaultValue("Default Value");
                 await selectFieldMatching("name");
                 await saveGlobalFilter();
-                await contains(".o_notification.border-danger:contains(Duplicated Label)");
+                await contains(".o_notification.border-danger .o_notification_content", 1, {
+                    text: "Duplicated Label",
+                });
             }
         );
 

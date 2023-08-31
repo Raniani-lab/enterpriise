@@ -51,7 +51,7 @@ QUnit.test("[technical] chat window should properly override the back button", a
     await start();
 
     await click(".o_menu_systray i[aria-label='Messages']");
-    await click(".o-mail-NotificationItem:contains(test)");
+    await click(".o-mail-NotificationItem", { text: "test" });
     await contains(".o-mail-ChatWindow");
     assert.verifySteps(["overrideBackButton: true"]);
 

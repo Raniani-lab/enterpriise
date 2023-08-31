@@ -67,8 +67,9 @@ QUnit.test("canned response should work in helpdesk ticket", async () => {
     const ticketId = pyEnv["helpdesk.ticket"].create({ name: "My helpdesk ticket" });
     const { openFormView } = await start();
     openFormView("helpdesk.ticket", ticketId);
-    await click(".o-mail-Chatter button:contains(Send message)");
-    await contains(".o-mail-Composer-suggestion:contains(hello)", 0);
+    await click(".o-mail-Chatter button", { text: "Send message" });
+    await contains(".o-mail-Composer-suggestion strong", 0, { text: "hello" });
+
     await insertText(".o-mail-Composer-input", ":");
-    await contains(".o-mail-Composer-suggestion:contains(hello)");
+    await contains(".o-mail-Composer-suggestion strong", 1, { text: "hello" });
 });

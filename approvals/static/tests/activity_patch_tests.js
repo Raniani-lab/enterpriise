@@ -111,7 +111,7 @@ QUnit.test("approve approval", async (assert) => {
     assert.containsOnce($, ".o-mail-Activity");
     assert.containsOnce($, ".o-mail-Activity button:contains('Approve')");
 
-    await click(".o-mail-Activity button:contains('Approve')");
+    await click(".o-mail-Activity button", { text: "Approve" });
     await def;
     assert.verifySteps(["action_approve"]);
 });
@@ -149,7 +149,7 @@ QUnit.test("refuse approval", async (assert) => {
     assert.containsOnce($, ".o-mail-Activity");
     assert.containsOnce($, ".o-mail-Activity button:contains('Refuse')");
 
-    await click(".o-mail-Activity button:contains('Refuse')");
+    await click(".o-mail-Activity button", { text: "Refuse" });
     await def;
     assert.verifySteps(["action_refuse"]);
 });

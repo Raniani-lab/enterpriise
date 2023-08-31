@@ -101,12 +101,12 @@ QUnit.skip("Message list is scrolled to new message after posting a message", as
     await scroll(".o-mail-Chatter", "bottom");
     await contains(".o-mail-Message", 60);
     await contains(".o_content", 1, { scroll: 0 });
-    await click("button:contains(Log note)");
+    await click("button", { text: "Log note" });
     await insertText(".o-mail-Composer-input", "New Message");
     await click(".o-mail-Composer-send:not(:disabled)");
     await contains(".o-mail-Composer-input", 0);
     await contains(".o-mail-Message", 61);
-    await contains(".o-mail-Message:contains(New Message)");
+    await contains(".o-mail-Message-content", 1, { text: "New Message" });
     await contains(".o_content", 1, { scroll: 0 });
     await contains(".o-mail-Chatter", 1, { scroll: 0 });
 });

@@ -99,7 +99,7 @@ QUnit.test("Attachment on side", async (assert) => {
     await contains(".arrow", 0);
 
     // send a message with attached PDF file
-    await click("button:contains(Send message)");
+    await click("button", { text: "Send message" });
     const files = [await createFile({ name: "invoice.pdf", contentType: "application/pdf" })];
     inputFiles((await contains(".o-mail-Composer-coreMain .o_input_file"))[0], files);
     await click(".o-mail-Composer-send:not(:disabled)");
@@ -170,11 +170,11 @@ QUnit.test(
         openFormView("mail.test.simple.main.attachment", recordId_1, {
             props: { resIds: [recordId_1, recordId_2] },
         });
-        await contains(".o_pager_counter:contains(1 / 2)");
+        await contains(".o_pager_counter", 1, { text: "1 / 2" });
         await click(".o_pager_next");
-        await contains(".o_pager_counter:contains(2 / 2)");
+        await contains(".o_pager_counter", 1, { text: "2 / 2" });
         await click(".o_pager_previous");
-        await contains(".o_pager_counter:contains(1 / 2)");
+        await contains(".o_pager_counter", 1, { text: "1 / 2" });
         await contains(".arrow", 2);
         await click(".o-mail-Attachment .o_move_next");
         await contains(".o-mail-Attachment-imgContainer img");

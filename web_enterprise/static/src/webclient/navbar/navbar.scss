@@ -1,6 +1,12 @@
 // = Main Navbar
 // ============================================================================
 .o_main_navbar {
+    --NavBar-entry-color--active: #{$o-component-active-color};
+    --NavBar-entry-borderColor-active: #{$o-component-active-border};
+    --NavBar-entry-backgroundColor--active: #{$o-component-active-bg};
+    --NavBar-entry-backgroundColor--hover: #{$o-gray-200};
+    --NavBar-entry-backgroundColor--focus: #{$o-gray-200};
+
     --Dropdown_menu-margin-y: #{map-get($spacers, 1)};
 
     .o_menu_toggle {

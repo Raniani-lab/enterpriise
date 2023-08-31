@@ -1,11 +1,14 @@
 .o_studio_navbar {
-  --NavBar-brand-color: #{$o-white};
+  --NavBar-brand-color: #{rgba($o-white, .9)};
   --NavBar-entry-color: #{rgba($o-white, .9)};
-  --NavBar-entry-color--hover: #{$o-white};
-  --NavBar-entry-color--active: #{$o-white};
-  --NavBar-entry-backgroundColor--hover: #{rgba($o-white, .1)};
-  --NavBar-entry-backgroundColor--active: #{rgba($o-white, .1)};
+  --NavBar-entry-backgroundColor: $o-web-studio-bg-dark;
+  --NavBar-entry-backgroundColor--hover: #{$o-gray-700};
+  --NavBar-entry-backgroundColor--focus: #{$o-gray-700};
   --NavBar-menuToggle-color: #{rgba($o-white, .9)};
+  --NavBar-entry-borderColor-active: #{$o-gray-700};
+  --NavBar-entry-backgroundColor--active: #{$o-gray-700};
+  --NavBar-entry-color--active: #{$o-white};
+  --NavBar-entry-color--hover: #{$o-white};
 
   background: $o-web-studio-bg-dark;
   border-color: $o-web-studio-bg-dark;

@@ -91,13 +91,24 @@ class Forecast(models.Model):
             ['project_id'],
             ['allocated_hours:sum'],
         )
-        return {
+        dict_values_per_project = {
             project.id: {
                 'value': allocated_hours_sum,
                 'max_value': project.sudo().allocated_hours
             }
             for project, allocated_hours_sum in planning_read_group
         }
+        project_dict = {
+            project.id: project.allocated_hours
+            for project in self.env['project.project'].sudo().search([('id', 'in', res_ids)])
+        }
+        for project_id, allocated_hours in project_dict.items():
+            if project_id not in dict_values_per_project:
+                dict_values_per_project[project_id] = {
+                    'value': 0.0,
+                    'max_value': allocated_hours,
+                }
+        return dict_values_per_project
 
     def _gantt_progress_bar(self, field, res_ids, start, stop):
         if field == 'project_id':

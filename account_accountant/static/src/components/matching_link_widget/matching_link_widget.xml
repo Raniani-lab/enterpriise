@@ -8,7 +8,7 @@
         <t t-elif="props.record.data[props.name]">
             <a href='#' t-on-click.prevent="viewMatch" t-out="props.record.data[props.name]"/>
         </t>
-        <t t-elif="props.record.data.is_account_reconcile">
+        <t t-elif="props.record.data.is_account_reconcile and showMatchingButton()">
             <button class="journal_item_matching_button btn btn-outline-secondary btn-sm" t-on-click="reconcile">Match</button>
         </t>
     </t>

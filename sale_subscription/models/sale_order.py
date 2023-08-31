@@ -715,6 +715,12 @@ class SaleOrder(models.Model):
     # Actions #
     ###########
 
+    def action_update_prices(self):
+        # Resetting the price_unit will break the link to the parent_line_id. action_update_prices will recompute
+        # the price and _compute_parent_line_id will be recomputed.
+        self.order_line.price_unit = False
+        super(SaleOrder, self).action_update_prices()
+
     def action_archived_product(self):
         archived_product_ids = self.with_context(active_test=False).archived_product_ids
         action = self.env["ir.actions.actions"]._for_xml_id("product.product_normal_action_sell")

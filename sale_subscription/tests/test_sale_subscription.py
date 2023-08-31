@@ -2778,3 +2778,29 @@ class TestSubscription(TestSubscriptionCommon):
         })
         wiz.set_close()
         self.assertEqual(self.subscription.close_reason_id, new_reason, "The reason should be saved on the order")
+
+    def test_renew_with_different_currency(self):
+        pricelist_eur = self.env['product.pricelist'].create({
+            'name': 'Euro pricelist',
+            'currency_id': self.env.ref('base.EUR').id,
+        })
+        self.pricing_month.write({'pricelist_id': self.subscription.pricelist_id.id, 'price': 42})
+        pricing_month_eur = self.env['product.pricing'].create({
+            'recurrence_id': self.recurrence_month.id,
+            'pricelist_id': pricelist_eur.id,
+            'price': 420
+        })
+        self.sub_product_tmpl.product_pricing_ids = [Command.link(pricing_month_eur.id)]
+
+        self.subscription_tmpl.sale_order_template_line_ids[1].unlink()
+        self.subscription.order_line.product_id.taxes_id = [Command.clear()]
+        self.subscription._onchange_sale_order_template_id()
+        self.subscription.action_confirm()
+        self.assertEqual(self.subscription.amount_total, 42)
+        self.subscription._create_recurring_invoice()
+        action = self.subscription.prepare_renewal_order()
+        renew_so = self.env['sale.order'].browse(action['res_id'])
+        self.assertEqual(renew_so.amount_total, 42)
+        renew_so.pricelist_id = pricelist_eur.id
+        renew_so.action_update_prices()
+        self.assertEqual(renew_so.amount_total, 420)

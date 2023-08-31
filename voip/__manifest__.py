@@ -24,8 +24,10 @@ Allows to make call from next activities or with click-to-dial.
     "application": True,
     "license": "OEEL-1",
     "assets": {
+        "voip.assets_sip": [
+            "voip/static/lib/sip.js"
+        ],
         "web.assets_backend": [
-            "voip/static/lib/sip.js",
             "voip/static/src/**/*",
             ("remove", "voip/static/src/**/*.dark.scss"),
         ],

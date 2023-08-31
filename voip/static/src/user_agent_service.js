@@ -2,6 +2,7 @@
 
 import { Registerer } from "@voip/js/registerer";
 
+import { getBundle, loadBundle } from "@web/core/assets";
 import { browser } from "@web/core/browser/browser";
 import { _t } from "@web/core/l10n/translation";
 
@@ -85,6 +86,17 @@ export class UserAgent {
         if (!this.voip.areCredentialsSet) {
             this.voip.triggerError(
                 _t("Your credentials are not correctly set. Please contact your administrator.")
+            );
+            return;
+        }
+        try {
+            await loadBundle(await getBundle("voip.assets_sip"));
+        } catch (error) {
+            console.error(error);
+            this.voip.triggerError(
+                _t("Failed to load the SIP.js library:</br></br> %(error message)s", {
+                    "error message": error.message,
+                })
             );
             return;
         }

@@ -46,6 +46,7 @@ or (contract.wage * contract.l10n_in_house_rent_allowance_metro_nonmetro / 100))
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="condition_select">python</field>
         <field name="condition_python">result = bool(employee.children)</field>
+        <field name="condition_python">result = bool(employee.l10n_in_residing_child_hostel)</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">result = 300 if employee.children == 1 else 600</field>
         <field name="note">In case the children are in hostel, the exemption available for child.</field>

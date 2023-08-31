@@ -11,6 +11,7 @@ class HrEmployee(models.Model):
     l10n_in_pan = fields.Char(string='PAN', groups="hr.group_hr_user")
     l10n_in_esic_number = fields.Char(string='ESIC Number', groups="hr.group_hr_user")
     l10n_in_relationship = fields.Char("Relationship", groups="hr.group_hr_user", tracking=True)
+    l10n_in_residing_child_hostel = fields.Integer("Child Residing in hostel", groups="hr.group_hr_user", tracking=True)
 
     _sql_constraints = [
         ('unique_l10n_in_uan', 'unique (l10n_in_uan)', 'This UAN already exists'),

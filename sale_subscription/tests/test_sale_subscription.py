@@ -2857,12 +2857,12 @@ class TestSubscription(TestSubscriptionCommon):
             'currency_id': self.env.ref('base.EUR').id,
         })
         self.pricing_month.write({'pricelist_id': self.subscription.pricelist_id.id, 'price': 42})
-        pricing_month_eur = self.env['product.pricing'].create({
-            'recurrence_id': self.recurrence_month.id,
+        pricing_month_eur = self.env['sale.subscription.pricing'].create({
+            'plan_id': self.plan_month.id,
             'pricelist_id': pricelist_eur.id,
             'price': 420
         })
-        self.sub_product_tmpl.product_pricing_ids = [Command.link(pricing_month_eur.id)]
+        self.sub_product_tmpl.product_subscription_pricing_ids = [Command.link(pricing_month_eur.id)]
 
         self.subscription_tmpl.sale_order_template_line_ids[1].unlink()
         self.subscription.order_line.product_id.taxes_id = [Command.clear()]

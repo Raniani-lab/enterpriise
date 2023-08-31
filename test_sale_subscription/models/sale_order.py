@@ -69,7 +69,7 @@ class SaleOrder(models.Model):
             subs_to_invoice.start_date = False
             subs_to_invoice.next_invoice_date = False
             # prevent tu auto close the contract when the invoice cron run later than 15 days after the next_invoice_date
-            subs_to_invoice.sale_order_template_id.auto_close_limit = 60
+            subs_to_invoice.plan_id.auto_close_limit = 60
             self._test_demo_flush_tracking()
             subs_to_invoice.action_confirm()
             self._test_demo_flush_tracking()

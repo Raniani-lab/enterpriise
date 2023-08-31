@@ -28,7 +28,6 @@
         'views/knowledge_article_stage_views.xml',
         'views/knowledge_article_template_views.xml',
         'views/knowledge_article_template_category_views.xml',
-        'views/knowledge_templates_frontend.xml',
         'views/knowledge_templates_portal.xml',
         'views/knowledge_menus.xml',
         'views/portal_templates.xml',
@@ -62,18 +61,14 @@
             'knowledge/static/src/views/**/*',
             'knowledge/static/src/services/**/*',
             'knowledge/static/src/macros/**/*',
-            ('remove', 'knowledge/static/src/xml/knowledge_frontend.xml'),
         ],
         "web.dark_mode_assets_backend": [
             'knowledge/static/src/scss/knowledge_views.dark.scss',
         ],
         'web.assets_frontend': [
             'knowledge/static/src/scss/knowledge_common.scss',
-            'knowledge/static/src/scss/knowledge_frontend.scss',
             'knowledge/static/src/scss/knowledge_blocks.scss',
             'knowledge/static/src/js/tools/**/*',
-            'knowledge/static/src/js/knowledge_frontend.js',
-            'knowledge/static/src/xml/knowledge_frontend.xml',
         ],
         'web_editor.assets_wysiwyg': [
             'knowledge/static/src/js/wysiwyg.js',

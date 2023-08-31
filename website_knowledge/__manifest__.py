@@ -10,7 +10,7 @@
         'security/ir.model.access.csv',
         'security/ir_rule.xml',
         'views/knowledge_views.xml',
-        'views/knowledge_templates_frontend.xml',
+        'views/knowledge_templates_public.xml',
     ],
     'installable': True,
     'auto_install': True,
@@ -20,6 +20,11 @@
             'website_knowledge/static/src/client_actions/website_preview/website_preview.js',
             'website_knowledge/static/src/js/components/**/*.xml',
             'website_knowledge/static/src/js/components/**/*.js',
+        ],
+        'web.assets_frontend': [
+            'website_knowledge/static/src/js/knowledge_public.js',
+            'website_knowledge/static/src/scss/knowledge_public.scss',
+            'website_knowledge/static/src/xml/knowledge_public.xml',
         ],
         'web.assets_tests': [
             'website_knowledge/static/tests/tours/**/*',

@@ -1,13 +1,12 @@
 /** @odoo-module */
 
-import { fetchValidHeadings } from './tools/knowledge_tools.js';
+import { fetchValidHeadings } from '@knowledge/js/tools/knowledge_tools';
 import publicWidget from '@web/legacy/js/public/public_widget';
-import { session } from "@web/session";
 import { renderToElement } from "@web/core/utils/render";
 import { debounce, throttleForAnimation } from "@web/core/utils/timing";
 
 publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
-    selector: '.o_knowledge_form_view',
+    selector: '.o_knowledge_public_view',
     events: {
         'keyup .knowledge_search_bar': '_searchArticles',
         'click .o_article_caret': '_onFold',
@@ -22,11 +21,9 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
     start: function () {
         return this._super.apply(this, arguments).then(() => {
             this.$id = this.$el.data('article-id');
-            this.resId = this.$id;  // necessary for the 'KnowledgeTreePanelMixin' extension
             this.storageKey = "knowledge.unfolded.ids";
             this.unfoldedArticlesIds = localStorage.getItem(this.storageKey)?.split(";").map(Number) || [];
-
-            this._renderTree(this.$id, '/knowledge/tree_panel/portal');
+            this._renderTree();
             this._setResizeListener();
             // Debounce the search articles method to reduce the number of rpcs
             this._searchArticles = debounce(this._searchArticles, 500);
@@ -37,9 +34,8 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
              * in, the user will be redirected to the backend and should be able
              * to load the embedded view.
              */
-            const placeholder = renderToElement('knowledge.embedded_view_placeholder', {
+            const placeholder = renderToElement('website_knowledge.embedded_view_placeholder', {
                 url: `/knowledge/article/${this.$id}`,
-                isLoggedIn: session.user_id !== false
             });
             const $container = $('.o_knowledge_behavior_type_embedded_view');
             $container.empty();
@@ -52,15 +48,14 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
 
         let addedArticles;
         const rpcParams = {
-            active_article_id: this.resId || false,
+            active_article_id: this.$id || false,
             parent_id: ev.target.dataset['parentId'] || false,
             limit: ev.target.dataset['limit'],
             offset: ev.target.dataset['offset'] || 0,
-            public_section: ev.target.dataset['publicSection']
         };
 
         addedArticles = await this._rpc({
-            route: '/knowledge/tree_panel/load_more',
+            route: '/knowledge/public_sidebar/load_more',
             params: rpcParams,
         });
 
@@ -85,14 +80,14 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
         const searchTerm = this.$('.knowledge_search_bar').val();
         if (!searchTerm) {
             // Renders the basic user article tree (with only its cached articles unfolded)
-            await this._renderTree(this.$id, '/knowledge/tree_panel/portal');
+            await this._renderTree();
             return;
         }
         // Renders articles based on search term in a flatenned tree (no sections nor child articles)
         const container = this.el.querySelector('.o_knowledge_tree');
         try {
             const htmlTree = await this._rpc({
-                route: '/knowledge/tree_panel/portal/search',
+                route: '/knowledge/public_sidebar/',
                 params: {
                     search_term: searchTerm,
                     active_article_id: this.$id,
@@ -140,20 +135,18 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
      * the carret next to an article to load and see their children.
      * The id of the unfolded articles will be cached so that they will
      * automatically be displayed on page load.
-     * @param {integer} active_article_id
-     * @param {String} route
      */
-    _renderTree: async function (active_article_id, route) {
+    _renderTree: async function () {
         const container = this.el.querySelector('.o_knowledge_tree');
         const params = new URLSearchParams(document.location.search);
         if (Boolean(params.get('auto_unfold'))) {
-            this.unfoldedArticlesIds.push(active_article_id);
+            this.unfoldedArticlesIds.push(this.$id);
         }
         try {
             const htmlTree = await this._rpc({
-                route: route,
+                route: '/knowledge/public_sidebar',
                 params: {
-                    active_article_id: active_article_id,
+                    active_article_id: this.$id,
                     unfolded_articles_ids: this.unfoldedArticlesIds,
                 }
             });
@@ -165,10 +158,8 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
 
     _fetchChildrenArticles: function (parentId) {
         return this._rpc({
-            route: '/knowledge/tree_panel/children',
-            params: {
-                parent_id: parentId
-            }
+            route: '/knowledge/public_sidebar/children',
+            params: { parent_id: parentId },
         });
     },
 

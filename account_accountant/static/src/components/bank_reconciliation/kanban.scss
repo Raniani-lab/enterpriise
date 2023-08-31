@@ -214,8 +214,8 @@
     margin: 3px;
 }
 
-.o_bank_rec_selected_line{
-    background-color: whitesmoke;
+.o_bank_rec_selected_line > td {
+    background-color: var(--table-bg) !important;
 }
 
 .o_bank_rec_expanded_line{

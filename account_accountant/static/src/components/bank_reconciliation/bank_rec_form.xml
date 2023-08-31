@@ -133,7 +133,8 @@
                                 t-att-class="{
                                     'o_bank_rec_liquidity_line': line.data.flag === 'liquidity',
                                     'o_bank_rec_auto_balance_line': line.data.flag === 'auto_balance',
-                                    'o_bank_rec_selected_line': line.data.index === data.form_index,
+                                    'o_bank_rec_selected_line': line.data.index === data.form_index and this.state.bankRecNotebookPage === 'manual_operations_tab',
+                                    'table-info': line.data.index === data.form_index and this.state.bankRecNotebookPage === 'manual_operations_tab', 
                                 }"
                                 t-on-click="(ev) => this.handleLineClicked(ev, line)">
 
@@ -227,7 +228,8 @@
                                 t-att-class="{
                                     'o_bank_rec_liquidity_line': line.data.flag === 'liquidity',
                                     'o_bank_rec_auto_balance_line': line.data.flag === 'auto_balance',
-                                    'o_bank_rec_selected_line': line.data.index === data.form_index,
+                                    'o_bank_rec_selected_line': line.data.index === data.form_index and this.state.bankRecNotebookPage === 'manual_operations_tab',
+                                    'table-info': line.data.index === data.form_index and this.state.bankRecNotebookPage === 'manual_operations_tab', 
                                 }"
                                 t-on-click="(ev) => this.handleLineClicked(ev, line)">
                                 <td t-att-colspan="line_ids_columns.length - (display_currency_columns ? 5 : 3)"

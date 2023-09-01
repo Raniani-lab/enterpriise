@@ -53,7 +53,7 @@ class TestSEPACreditTransferUpdate(AccountTestInvoicingCommon):
         cls.sepa_ct = cls.env.ref('account_sepa.account_payment_method_sepa_ct')
 
         # Get a pain.001.001.09 schema validator
-        schema_file_path = file_path('account_sepa_pain_001_001_09/schemas/pain.001.001.09.xsd')
+        schema_file_path = file_path('account_sepa/schemas/pain.001.001.09.xsd')
         cls.xmlschema = etree.XMLSchema(etree.parse(schema_file_path))
 
     def test_new_generic_sepa_version_001_001_09(self):

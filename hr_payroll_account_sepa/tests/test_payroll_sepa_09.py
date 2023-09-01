@@ -14,7 +14,7 @@ class TestPayrollSEPANewCreditTransfer(TestPayrollSEPACreditTransfer):
 
     def test_hr_payroll_account_sepa_09(self):
         self.bank_journal.sepa_pain_version = 'pain.001.001.09'
-        schema_file_path = file_path('account_sepa_pain_001_001_09/schemas/pain.001.001.09.xsd')
+        schema_file_path = file_path('account_sepa/schemas/pain.001.001.09.xsd')
         xmlschema = etree.XMLSchema(etree.parse(schema_file_path))
 
         payslip_employee = self.env['hr.payslip.employees'].create({

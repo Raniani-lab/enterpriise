@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from uuid import uuid4
 import base64
 
 from odoo import api, models, fields, _
@@ -13,6 +14,10 @@ class HrPayslip(models.Model):
     sepa_export_date = fields.Date(string='Generation Date')
     sepa_export = fields.Binary(string='SEPA File', help="Export file related to this payslip")
     sepa_export_filename = fields.Char(string='File Name', help="Name of the export file generated for this payslip", store=True)
+    sepa_uetr = fields.Char(
+        string='UETR',
+        help='Unique end-to-end transaction reference',
+    )
 
     def action_open_sepa_wizard(self):
         self.ensure_one()
@@ -29,7 +34,7 @@ class HrPayslip(models.Model):
     def _get_payments_vals(self, journal_id):
         self.ensure_one()
 
-        return {
+        payment_vals = {
             'id' : self.id,
             'name': self.number,
             'payment_date' : fields.Date.today(),
@@ -41,6 +46,13 @@ class HrPayslip(models.Model):
             'partner_id' : self.employee_id.work_contact_id.id,
             'partner_bank_id': self.employee_id.bank_account_id.id,
         }
+        if journal_id.sepa_pain_version == 'pain.001.001.09':
+            if not self.sepa_uetr:
+                payment_vals['sepa_uetr'] = self.sepa_uetr = str(uuid4())
+            else:
+                payment_vals['sepa_uetr'] = self.sepa_uetr
+
+        return payment_vals
 
     def _create_xml_file(self, journal_id, file_name=None):
         employees = self.mapped('employee_id').filtered(lambda e: not e.work_contact_id)

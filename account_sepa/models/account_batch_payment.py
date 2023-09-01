@@ -133,6 +133,7 @@ class AccountBatchPayment(models.Model):
             'partner_id' : payment.partner_id.id,
             'partner_bank_id': payment.partner_bank_id.id,
             'partner_country_code': payment.partner_id.country_id.code,
+            'sepa_uetr': payment.sepa_uetr,
         }
 
     def _generate_payment_template(self, payments):

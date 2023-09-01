@@ -14,6 +14,7 @@ class ResCompany(models.Model):
         help="Entity that assigns the identification (eg. KBE-BCO or Finanzamt Muenchen IV).")
     sepa_initiating_party_name = fields.Char('Your Company Name', size=70, copy=False,
         help="Will appear in SEPA payments as the name of the party initiating the payment. Limited to 70 characters.")
+    account_sepa_lei = fields.Char(related='partner_id.account_sepa_lei', readonly=False)
 
     @api.model_create_multi
     def create(self, vals_list):

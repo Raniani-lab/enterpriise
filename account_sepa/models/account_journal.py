@@ -42,6 +42,7 @@ class AccountJournal(models.Model):
             ('pain.001.001.03.de', 'German'),
             ('pain.001.001.03.se', 'Swedish'),
             ('pain.001.001.03.ch.02', 'Swiss'),
+            ('pain.001.001.09', 'New generic version (09)'),
         ],
         string='SEPA Pain Version',
         readonly=False,
@@ -94,8 +95,6 @@ class AccountJournal(models.Model):
             It returns the content of the XML file.
         """
         pain_version = self.sepa_pain_version
-        if payments and pain_version == 'pain.001.001.09' and 'sepa_uetr' not in payments[0]:
-            raise UserError(_("Please install SEPA pain.001.001.09 module to generate XML files in the new format."))
         Document = self._get_document(pain_version)
         CstmrCdtTrfInitn = etree.SubElement(Document, "CstmrCdtTrfInitn")
 
@@ -173,6 +172,8 @@ class AccountJournal(models.Model):
     def _get_document(self, pain_version):
         if pain_version == 'pain.001.001.03.ch.02':
             Document = self._create_pain_001_001_03_ch_document()
+        elif pain_version == 'pain.001.001.09':
+            Document = self._create_iso20022_document('pain.001.001.09')
         else: #The German version will also use the create_pain_001_001_03_document since the version 001.003.03 is deprecated
             Document = self._create_pain_001_001_03_document()
 
@@ -239,6 +240,9 @@ class AccountJournal(models.Model):
                 raise UserError(_("Please first set a SEPA identification number in the accounting settings."))
             Id = etree.Element("Id")
             OrgId = etree.SubElement(Id, "OrgId")
+            if self.sepa_pain_version == "pain.001.001.09" and self.company_id.account_sepa_lei:
+                LEI = etree.SubElement(OrgId, "LEI")
+                LEI.text = self.company_id.account_sepa_lei
             Othr = etree.SubElement(OrgId, "Othr")
             _Id = etree.SubElement(Othr, "Id")
             _Id.text = sanitize_communication(company.sepa_orgid_id)
@@ -386,6 +390,11 @@ class AccountJournal(models.Model):
         val_RmtInf = self._get_RmtInf(payment)
         if val_RmtInf is not False:
             CdtTrfTxInf.append(val_RmtInf)
+
+        if self.sepa_pain_version == "pain.001.001.09":
+            UETR = etree.SubElement(PmtId, "UETR")
+            UETR.text = payment["sepa_uetr"]
+
         return CdtTrfTxInf
 
     def _get_ChrgBr(self, sct_generic):
@@ -400,7 +409,14 @@ class AccountJournal(models.Model):
         if bic_code:
             BIC = etree.SubElement(FinInstnId, "BIC")
             BIC.text = bic_code
-        else:
+            if self.sepa_pain_version == "pain.001.001.09":
+                BIC.tag = "BICFI"
+            partner_lei = bank_account.partner_id.account_sepa_lei
+        if self.sepa_pain_version == "pain.001.001.09" and partner_lei:
+            # LEI needs to be inserted after BIC
+            LEI = etree.SubElement(FinInstnId, "LEI")
+            LEI.text = partner_lei
+        if not bic_code:
             if pain_version in ['pain.001.001.03.austrian.004', 'pain.001.001.03.ch.02']:
                 # Othr and NOTPROVIDED are not supported in CdtrAgt by those flavours
                 raise UserError(_("The bank defined on account %s (from partner %s) has no BIC. Please first set one.", bank_account.acc_number, bank_account.partner_id.name))

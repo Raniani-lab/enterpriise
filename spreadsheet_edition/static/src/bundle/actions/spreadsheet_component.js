@@ -47,7 +47,7 @@ export default class SpreadsheetComponent extends Component {
     /**
      * Open a dialog to ask a confirmation to the user.
      *
-     * @param {string} content Content to display
+     * @param {string} body body content to display
      * @param {Function} confirm Callback if the user press 'Confirm'
      */
     askConfirmation(body, confirm) {
@@ -118,17 +118,14 @@ export default class SpreadsheetComponent extends Component {
     /**
      * Open a dialog to display an error message to the user.
      *
-     * @param {string} content Content to display
+     * @param {string} body Content to display
      */
-    raiseError(content, callback) {
-        this.dialog.add(
-            SpreadsheetDialog,
-            {
-                content,
-                confirm: callback,
-            },
-            { onClose: this.closeDialog.bind(this) }
-        );
+    raiseError(body) {
+        this.dialog.add(ConfirmationDialog, {
+            title: _t("Odoo Spreadsheet"),
+            body,
+            confirm: this.closeDialog.bind(this),
+        });
     }
 }
 

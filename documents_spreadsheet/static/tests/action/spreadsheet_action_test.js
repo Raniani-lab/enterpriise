@@ -234,7 +234,7 @@ QUnit.module(
             const dialog = document.querySelector(".o_dialog");
             assert.ok(dialog !== undefined, "Dialog can be opened");
             assert.equal(
-                document.querySelector(".modal-body div").textContent,
+                document.querySelector(".modal-body p").textContent,
                 "this is a message in an opened window that requests user action",
                 "Can set dialog content"
             );

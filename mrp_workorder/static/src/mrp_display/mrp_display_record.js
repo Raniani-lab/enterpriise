@@ -270,13 +270,16 @@ export class MrpDisplayRecord extends Component {
     async displayInstruction(record) {
         if (!record) {
             // Searches the next Quality Check.
-            const lastQC = this.lastOpenedQualityCheck.data;
-            const workorder =
-                this.resModel === "mrp.workorder"
-                    ? this.record
-                    : this.workorders.find((wo) => wo.resId === lastQC.workorder_id[0]);
-            const currentCheckId = workorder.current_quality_check_id[0];
-            record = this.checks.find((qc) => qc.resId === currentCheckId);
+            let lastQC = this.lastOpenedQualityCheck.data;
+            const checks = this.props.record.data.check_ids.records;
+            while (lastQC.next_check_id && !record) {
+                const nextCheckId = lastQC.next_check_id[0];
+                const check = checks.find((check) => check.data.id === nextCheckId);
+                if (check && check.data.quality_state === "none") {
+                    record = check;
+                }
+                lastQC = check;
+            }
         }
         if (record === this.lastOpenedQualityCheck || !record) {
             // Avoids a QC to re-open itself.
@@ -304,9 +307,7 @@ export class MrpDisplayRecord extends Component {
     async qualityCheckDone(updateChecks = false, qualityState = "pass") {
         await this.env.reload();
         if (updateChecks) {
-            this.qualityChecks = this.props.subRecords.filter(
-                (rec) => rec.resModel === "quality.check"
-            );
+            await this.props.record.data.check_ids.load();
         }
         // Show the next Quality Check only if the previous one is passed.
         if (qualityState === "pass") {

@@ -386,7 +386,8 @@ class HrContractSalary(main.HrContractSalary):
                 # In case in the car was reserved for the applicant
                 partner_ids = offer.applicant_id.partner_id | new_contract.employee_id.work_contact_id
                 available_cars_domain = new_contract._get_available_vehicles_domain(partner_ids)
-                if new_contract.car_id not in request.env['fleet.vehicle'].sudo().search(available_cars_domain):
+                if (new_contract.car_id not in request.env['fleet.vehicle'].sudo().search(available_cars_domain)) \
+                        and (new_contract.car_id != offer.car_id):
                     return {'error': True, 'error_msg': _("Sorry, the selected car has been selected by someone else. Please refresh and try again.")}
 
             # Don't create simulation cars but create the wishlist car is set

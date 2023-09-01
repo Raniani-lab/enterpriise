@@ -54,10 +54,15 @@ class GenerateSimulationLink(models.TransientModel):
             elif model == 'hr.applicant':
                 partner |= wizard.applicant_id.partner_id if wizard.applicant_id else False
             if partner:
-                car = self.env['fleet.vehicle'].search([
+                car_is_driver = self.env['fleet.vehicle'].search([
+                    ('future_driver_id', '=', False),
+                    ('driver_id', 'in', partner.ids),
+                ], limit=1)
+                car_is_future_driver = self.env['fleet.vehicle'].search([
                     ('future_driver_id', 'in', partner.ids),
                     ('driver_id', '=', False),
                 ], limit=1)
+                car = car_is_driver or car_is_future_driver
             wizard.car_id = car if car else False
 
     @api.depends('contract_id.available_cars_amount', 'contract_id.max_unused_cars')

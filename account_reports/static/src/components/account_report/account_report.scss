@@ -55,7 +55,10 @@
         > :not(caption) > * > * { padding: 0.25rem 0.75rem } //!\\ Override of bootstrap, keep selector
 
         > thead {
-            > tr > th { text-align: center }
+            > tr > th {
+                text-align: center;
+                vertical-align: middle;
+            }
             > tr:not(:last-child) > th:not(:first-child) { border: 1px solid $o-gray-300 }
         }
 

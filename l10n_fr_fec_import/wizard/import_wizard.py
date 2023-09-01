@@ -482,7 +482,7 @@ class FecImportWizard(models.TransientModel):
                 line_data["partner_id"] = partner.id if partner else False
 
             # Currency
-            if currency_name in cache["res.currency"]:
+            if currency_name in cache["res.currency"] and amount_currency:
                 currency = cache["res.currency"][currency_name]
                 line_data.update({
                     "currency_id": currency.id,
@@ -499,7 +499,7 @@ class FecImportWizard(models.TransientModel):
 
             # Montantdevise can be positive while the line is credited:
             # => amount_currency and balance (debit - credit) should always have the same sign
-            if currency_name in cache["res.currency"] and line_data['amount_currency'] * balance < 0:
+            if currency_name in cache["res.currency"] and amount_currency and line_data['amount_currency'] * balance < 0:
                 line_data["amount_currency"] *= -1
 
             # Append the move_line data to the move

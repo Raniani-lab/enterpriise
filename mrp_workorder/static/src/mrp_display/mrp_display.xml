@@ -8,7 +8,7 @@
                 </t>
                 <t t-set-slot="control-panel-additional-actions">
                     <button class="btn btn-light oi oi-panel-right fa-flip-horizontal" t-if="group_mrp_routings" t-att-class="showEmployeesPanel ? 'active' : ''" t-on-click="toggleEmployeesPanel"/>
-                    <button class="btn btn-light fa fa-refresh" t-on-click="reload"/>
+                    <button class="btn btn-light fa fa-refresh" t-on-click="env.reload"/>
                 </t>
                 <t t-set-slot="layout-actions">
                     <t t-if="group_mrp_routings">

@@ -308,12 +308,13 @@ export class MrpDisplay extends Component {
             const action = await this.orm.call(
                 "mrp.production",
                 "button_mark_done",
-                [productionIds],
+                productionIds,
                 kwargs
             );
             if (action && typeof action === "object") {
                 return this.actionService.doAction(action);
             }
+            this.env.reload();
             this.validationStack = {
                 "mrp.production": [],
                 "mrp.workorder": [],
@@ -381,6 +382,7 @@ export class MrpDisplay extends Component {
             confirm: this.toggleWorkcenter.bind(this),
             disabled: [],
             active: this.state.workcenters.map((wc) => wc.id),
+            radioMode: false,
         };
         this.dialogService.add(MrpWorkcenterDialog, params);
     }

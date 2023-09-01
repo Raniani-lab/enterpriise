@@ -805,7 +805,7 @@ class MrpProductionWorkcenterLine(models.Model):
             if len(wo.allowed_employees) != 0 and main_employee_connected not in [wo.id for wo in wo.allowed_employees]:
                 raise UserError(_('You are not allow to work on some of these work orders.'))
             if wo.working_state == 'blocked':
-                raise UserError(_('Some workorders require another workorder to be completed first'))
+                raise UserError(_('Please unblock the work center to start the work order'))
         self.button_finish()
 
         loss_id = self.env['mrp.workcenter.productivity.loss'].search([('loss_type', '=', 'productive')], limit=1)

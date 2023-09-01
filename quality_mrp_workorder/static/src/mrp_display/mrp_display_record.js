@@ -20,8 +20,8 @@ patch(MrpDisplayRecord.prototype, {
     },
 
     _productionDisplayDoneButton() {
-        return this.checks.every(
-            (qc) => ["fail", "pass"].includes(qc.data.quality_state) || !qc.data.workorder_id
+        return this.record.check_ids.records.every((qc) =>
+            ["fail", "pass"].includes(qc.data.quality_state)
         );
     },
 });

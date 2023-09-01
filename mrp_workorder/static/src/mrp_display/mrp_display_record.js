@@ -498,9 +498,7 @@ export class MrpDisplayRecord extends Component {
     }
 
     _productionDisplayDoneButton() {
-        return this.record.check_ids.records.every((qc) =>
-            ["fail", "pass"].includes(qc.data.quality_state)
-        );
+        return true;
     }
 
     openFormView() {

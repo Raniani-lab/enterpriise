@@ -36,6 +36,8 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
         ACH\tACHATS\tACH000004\t20180910\t40100000\tSuppliers\tPARTNER01\tPARTNER 01\t3\t20180910\tPARTNER 01\t0,00\t49,80\tAA\t\t20190725\t\t
         ACH\tACHATS\tACH000005\t20180910\t5120010\tVat on other goods and services\t\t\t3\t20180910\tPARTNER 01\t49,80\t0,00\tAA\t\t20190725\t\t
         ACH\tACHATS\tACH000005\t20180910\t40100000\tSuppliers\tPARTNER01\tPARTNER 01\t3\t20180910\tPARTNER 01\t0,00\t49,80\tAA\t\t20190725\t\t
+        ACH\tACHATS\tACH000006\t20180910\t61320000\tPRIMES D'ASSURANCES\t\t\t3\t20180910\tASSURANCE\t200,50\t0,00\t\t\t20190725\t\tEUR
+        ACH\tACHATS\tACH000006\t20180910\t44566000\tASSURANCE\t\t\t3\t20180910\tASSURANCE\t0,00\t200,50\t\t\t20190725\t\tEUR
     """
 
     # ----------------------------------------
@@ -237,7 +239,7 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
 
         self.wizard._import_files(['account.account', 'account.journal', 'res.partner', 'account.move'])
 
-        move_names = ('ACH000001', 'ACH000002', 'ACH000003')
+        move_names = ('ACH000001', 'ACH000002', 'ACH000003', 'ACH000006')
         domain = [('company_id', '=', self.company.id), ('move_name', 'in', move_names)]
         move_lines = self.env['account.move.line'].search(domain, order='move_name, id')
         columns = ['name', 'credit', 'debit', 'fec_matching_number']
@@ -251,6 +253,8 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
             ('PARTNER 01', 0.00, 41.50, False),
             ('PARTNER 01', 0.00, 8.30, 'AA'),
             ('PARTNER 01', 49.80, 0.00, 'AA'),
+            ('ASSURANCE', 0.00, 200.50, False),
+            ('ASSURANCE', 200.50, 0.00, False),
         ]
         expected_values = [dict(zip(columns, line)) for line in lines]
         self.assertRecordValues(move_lines, expected_values)
@@ -341,6 +345,8 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
                 ('ACH/20180808', 'DOMICILIATION'),
                 ('ACH/20180808', 'DOMICILIATION'),
                 ('ACH/20180808', 'DOMICILIATION'),
+                ('ACH/20180910', 'ASSURANCE'),
+                ('ACH/20180910', 'ASSURANCE'),
                 ('ACH/20180910', 'PARTNER 01'),
                 ('ACH/20180910', 'PARTNER 01'),
                 ('ACH/20180910', 'PARTNER 01'),
@@ -367,6 +373,8 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
                 ('ACH/201808', 'DOMICILIATION'),
                 ('ACH/201808', 'DOMICILIATION'),
                 ('ACH/201808', 'DOMICILIATION'),
+                ('ACH/201809', 'ASSURANCE'),
+                ('ACH/201809', 'ASSURANCE'),
                 ('ACH/201809', 'PARTNER 01'),
                 ('ACH/201809', 'PARTNER 01'),
                 ('ACH/201809', 'PARTNER 01'),

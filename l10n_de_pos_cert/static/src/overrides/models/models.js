@@ -199,7 +199,7 @@ patch(Order.prototype, {
             .filter((rate) => !!amountPerVatRate[rate])
             .map((rate) => ({
                 vat_rate: rate,
-                amount: this.env.utils.formatCurrency(amountPerVatRate[rate], false),
+                amount: this.env.utils.roundCurrency(amountPerVatRate[rate]).toFixed(2),
             }));
     },
     /*
@@ -211,14 +211,14 @@ patch(Order.prototype, {
             amountPerPaymentTypeArray.push({
                 payment_type:
                     line.payment_method.name.toLowerCase() === "cash" ? "CASH" : "NON_CASH",
-                amount: this.env.utils.formatCurrency(line.amount, false),
+                amount: this.env.utils.roundCurrency(line.amount).toFixed(2),
             });
         });
         const change = this.get_change();
         if (change) {
             amountPerPaymentTypeArray.push({
                 payment_type: "CASH",
-                amount: this.env.utils.formatCurrency(-change, false),
+                amount: this.env.utils.roundCurrency(-change).toFixed(2),
             });
         }
         return amountPerPaymentTypeArray;

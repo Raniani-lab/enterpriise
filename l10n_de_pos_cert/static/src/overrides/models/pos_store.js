@@ -19,9 +19,9 @@ const RATE_ID_MAPPING = {
 patch(PosStore.prototype, {
     // @Override
     async setup() {
-        await super.setup(...arguments);
         this.token = "";
         this.vatRateMapping = {};
+        await super.setup(...arguments);
     },
     //@Override
     async after_load_server_data() {

@@ -9,6 +9,11 @@ import { Tooltip } from "@web/core/tooltip/tooltip";
 import { browser } from "@web/core/browser/browser";
 import { serializeDateTime } from "@web/core/l10n/dates";
 import { useRef, useState, useSubEnv, onWillStart } from "@odoo/owl";
+import { Dropdown } from "@web/core/dropdown/dropdown";
+
+patch(AttendeeCalendarController, {
+    components: { ...AttendeeCalendarController.components, Dropdown },
+});
 
 patch(AttendeeCalendarController.prototype, {
     setup() {

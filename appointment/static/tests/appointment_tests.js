@@ -218,13 +218,15 @@ QUnit.test('verify appointment links button are displayed', async function (asse
                 return Promise.resolve([]);
             } else if (route === '/web/dataset/call_kw/res.users/has_group') {
                 return Promise.resolve(true);
+            } else if (route === '/calendar/check_credentials') {
+                return Promise.resolve({});
             }
         },
     });
 
     assert.containsOnce(target, 'button:contains("Share Availabilities")');
 
-    await click(target, '#dropdownAppointmentLink');
+    await click(target, '.dropdownAppointmentLink');
 
     assert.containsOnce(target, 'button:contains("Test Appointment")');
 
@@ -266,6 +268,8 @@ QUnit.test('create/search anytime appointment type', async function (assert) {
                 return Promise.resolve([]);
             } else if (route === '/web/dataset/call_kw/res.users/has_group') {
                 return Promise.resolve(true);
+            } else if (route === '/calendar/check_credentials') {
+                return Promise.resolve({});
             }
         },
         session: {
@@ -275,7 +279,7 @@ QUnit.test('create/search anytime appointment type', async function (assert) {
 
     assert.strictEqual(2, serverData.models['appointment.type'].records.length)
 
-    await click(target.querySelector('#dropdownAppointmentLink'));
+    await click(target.querySelector('.dropdownAppointmentLink'));
 
     await click(target.querySelector('.o_appointment_search_create_anytime_appointment'));
     await nextTick();
@@ -285,7 +289,7 @@ QUnit.test('create/search anytime appointment type', async function (assert) {
         "Create a new appointment type")
 
     await click(target.querySelector('.o_appointment_discard_slots'));
-    await click(target.querySelector('#dropdownAppointmentLink'));
+    await click(target.querySelector('.dropdownAppointmentLink'));
 
     await click(target.querySelector('.o_appointment_search_create_anytime_appointment'));
     await nextTick();
@@ -316,6 +320,8 @@ QUnit.test('discard slot in calendar', async function (assert) {
                 return Promise.resolve([]);
             } else if (route === '/web/dataset/call_kw/res.users/has_group') {
                 return Promise.resolve(true);
+            } else if (route === '/calendar/check_credentials') {
+                return Promise.resolve({});
             }
         },
     });
@@ -375,6 +381,8 @@ QUnit.test("cannot move real event in slots-creation mode", async function (asse
                 return Promise.resolve([]);
             } else if (route === '/web/dataset/call_kw/res.users/has_group') {
                 return Promise.resolve(true);
+            } else if (route === '/calendar/check_credentials') {
+                return Promise.resolve({});
             }
         },
     });
@@ -427,6 +435,8 @@ QUnit.test("create slots for custom appointment type", async function (assert) {
                 return Promise.resolve([]);
             } else if (route === '/web/dataset/call_kw/res.users/has_group') {
                 return Promise.resolve(true);
+            } else if (route === '/calendar/check_credentials') {
+                return Promise.resolve({});
             }
         },
     });
@@ -479,6 +489,8 @@ QUnit.test('filter works in slots-creation mode', async function (assert) {
                 return Promise.resolve([]);
             } else if (route === '/web/dataset/call_kw/res.users/has_group') {
                 return Promise.resolve(true);
+            } else if (route === '/calendar/check_credentials') {
+                return Promise.resolve({});
             }
         },
     });
@@ -550,11 +562,13 @@ QUnit.test('click & copy appointment type url', async function (assert) {
                 return Promise.resolve([]);
             } else if (route === '/web/dataset/call_kw/res.users/has_group') {
                 return Promise.resolve(true);
+            } else if (route === '/calendar/check_credentials') {
+                return Promise.resolve({});
             }
         },
     });
 
-    await click(target.querySelector('#dropdownAppointmentLink'));
+    await click(target.querySelector('.dropdownAppointmentLink'));
     await click(target.querySelector('.o_appointment_appointment_link_clipboard'));
 
     assert.verifySteps(['/appointment/appointment_type/get_book_url']);

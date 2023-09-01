@@ -19,7 +19,7 @@ registry.category("web_tour.tours").add('appointment_crm_meeting_tour', {
         trigger: 'button[name="action_schedule_meeting"]',
         run: 'click',
     }, {
-        trigger: 'button[id="dropdownAppointmentLink"]',
+        trigger: 'button.dropdownAppointmentLink',
         run: 'click',
     }, {
         trigger: '.o_appointment_button_link:contains("Test AppointmentCRM")',

@@ -14,7 +14,7 @@
                 <field name="resource_total_capacity_reserved"
                        invisible="not appointment_resource_id"/>
             </field>
-            <xpath expr="//page[@name='page_details']" position="after">
+            <xpath expr="//page[@name='page_invitations']" position="before">
                 <page name="page_appointment" string="Appointment Details"
                     invisible="not appointment_type_id">
                     <field name="booking_line_ids" invisible="not active">

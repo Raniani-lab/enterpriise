@@ -21,7 +21,7 @@ registry.category("web_tour.tours").add('appointment_hr_recruitment_tour', {
         trigger: 'button[name="action_makeMeeting"]',
         run: 'click',
     }, {
-        trigger: 'button[id="dropdownAppointmentLink"]',
+        trigger: 'button.dropdownAppointmentLink',
         run: 'click',
     }, {
         trigger: '.o_appointment_button_link:contains("Test AppointmentHrRecruitment")',

@@ -3467,9 +3467,13 @@ QUnit.module("View Editors", (hooks) => {
             };
             const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
             await doAction(webClient, "studio.coucou_action");
-            assert.verifySteps([`widget Dependency: {"name":"is_dep","type":"char"} : the meters`]);
+            assert.verifySteps([
+                `widget Dependency: {"name":"is_dep","type":"char","readonly":true} : the meters`,
+            ]);
             await openStudio(target);
-            assert.verifySteps([`widget Dependency: {"name":"is_dep","type":"char"} : the meters`]);
+            assert.verifySteps([
+                `widget Dependency: {"name":"is_dep","type":"char","readonly":true} : the meters`,
+            ]);
 
             assert.containsOnce(target, ".o_web_studio_form_view_editor");
             await click(target.querySelector(".o_field_one2many"));

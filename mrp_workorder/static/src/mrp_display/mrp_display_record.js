@@ -492,7 +492,7 @@ export class MrpDisplayRecord extends Component {
 
     _doAction(action) {
         const options = {
-            onClose: () => this.props.reload(),
+            onClose: () => this.env.reload(),
         };
         return this.model.action.doAction(action, options);
     }

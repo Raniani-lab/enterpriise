@@ -151,12 +151,12 @@ export function useDocumentView(helpers) {
             ]);
             let shareResId = act.res_id;
             let saved = false;
-            const close = dialogService.add(
+            dialogService.add(
                 ShareFormViewDialog,
                 {
                     resModel: "documents.share",
                     resId: shareResId,
-                    onSave: async (record) => {
+                    onRecordSaved: async (record) => {
                         saved = true;
                         // Copy the share link to the clipboard
                         navigator.clipboard.writeText(record.data.full_url);
@@ -164,9 +164,7 @@ export function useDocumentView(helpers) {
                         notification.add(env._t("The share url has been copied to your clipboard."), {
                             type: "success",
                         });
-                        close();
                     },
-                    onDiscard: () => {close();},
                 },
                 {
                     onClose: async () => {

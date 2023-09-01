@@ -37,4 +37,13 @@ patch(PosStore.prototype, {
 
         return partnerInfos;
     },
+    async refreshTotalDueOfPartner(partner) {
+        const total_due = await this.orm.call("res.partner", "get_total_due", [
+            partner.id,
+            this.config.currency_id[0],
+        ]);
+        partner.total_due = total_due;
+        this.db.update_partners([partner]);
+        return [partner];
+    },
 });

@@ -88,7 +88,10 @@ class SocialTwitterController(SocialController):
         if f'@{answering_to.lower()}' not in message.lower():
             message = f"@{answering_to} {message}"
 
-        return json.dumps(stream_post._twitter_comment_add(stream, comment_id, message))
+        try:
+            return json.dumps(stream_post._twitter_comment_add(stream, comment_id, message))
+        except Exception as e:
+            return json.dumps({'error': str(e)})
 
     @http.route('/social_twitter/delete_tweet', type='json')
     def social_twitter_delete_tweet(self, stream_post_id, comment_id):

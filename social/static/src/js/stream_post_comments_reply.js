@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { FileUploader } from "@web/views/fields/file_handler";
-import { useAutofocus } from "@web/core/utils/hooks";
+import { useAutofocus, useService } from "@web/core/utils/hooks";
 import { useEmojiPicker } from "@web/core/emoji_picker/emoji_picker";
 import { useRef } from "@odoo/owl";
 
@@ -16,6 +16,7 @@ export class StreamPostCommentsReply extends Component {
         });
         this.inputRef = useAutofocus();
         this._onAddEmoji = this._onAddEmoji.bind(this);
+        this.notification = useService("notification");
         useEmojiPicker(useRef("emoji-picker"), {
             onSelect: (str) => this._onAddEmoji(str),
             onClose: () => this.state.autofocus++,
@@ -83,6 +84,12 @@ export class StreamPostCommentsReply extends Component {
             const comment = JSON.parse(xhr.response);
             if (!comment.error) {
                 this.props.onAddComment(comment);
+            } else {
+                this.notification.add(
+                    this.env._t("Something went wrong while posting the comment.") +
+                        `\n${comment.error}`,
+                    { type: "danger" }
+                );
             }
             this.state.attachmentSrc = false;
             this.inputRef.el.value = "";

@@ -42,14 +42,7 @@ var TweetWall = Widget.extend({
      */
     _zoom: function (level) {
         this.zoomLevel = level;
-        if ($.browser.mozilla) {
-            $('body').css('MozTransform', 'scale(' + this.zoomLevel + ')');
-        } else {
-            $('body').css('zoom', this.zoomLevel);
-            $('iframe').each(function (iframe) {
-                $(iframe.contentDocument).find('body').css('zoom', level);
-            });
-        }
+        document.body.style.transform = `scale(${this.zoomLevel})`;
     },
     /**
      * @private

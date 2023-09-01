@@ -1,31 +1,34 @@
 /** @odoo-module **/
 
-import { Component } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog";
+import { _t } from "@web/core/l10n/translation";
 
-export class SpreadsheetDialog extends Component {
+export class InputDialog extends Component {
     setup() {
-        this.state = {
-            inputContent: this.props.inputContent,
-        };
+        this.state = useState({
+            inputValue: this.props.inputValue,
+        });
+    }
+
+    get defaultTitle() {
+        return _t("Odoo Spreadsheet");
     }
 
     confirm() {
         this.props.close();
-        this.props.confirm?.(this.state.inputContent);
+        this.props.confirm?.(this.state.inputValue);
     }
 }
 
-SpreadsheetDialog.components = { Dialog };
+InputDialog.components = { Dialog };
 
-SpreadsheetDialog.props = {
-    close: Function,
-    content: { type: String, optional: true },
-    edit: { type: Boolean, optional: true },
+InputDialog.props = {
+    close: Function, // injected by the dialog service
+    body: String,
     inputType: { type: String, optional: true },
-    inputContent: { type: [String, Number], optional: true },
-    errorText: { type: String, optional: true },
+    inputValue: { type: [String, Number], optional: true },
     confirm: { type: Function, optional: true },
     title: { type: String, optional: true },
 };
-SpreadsheetDialog.template = "spreadsheet_edition.SpreadsheetDialog";
+InputDialog.template = "spreadsheet_edition.InputDialog";

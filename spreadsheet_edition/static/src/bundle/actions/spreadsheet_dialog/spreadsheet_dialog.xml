@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-    <t t-name="spreadsheet_edition.SpreadsheetDialog">
-        <Dialog title="props.title || 'Odoo Spreadsheet'" size="'md'">
-            <div t-if="props.content" t-esc="props.content"/>
-            <t t-if="props.edit">
-                <input t-att-type="props.inputType" class="form-control" t-model="state.inputContent" />
-                <span t-if="props.errorText" class="o_dialog_error_text text-danger" t-esc="props.errorText" />
-            </t>
+    <t t-name="spreadsheet_edition.InputDialog">
+        <Dialog title="props.title || defaultTitle" size="'md'">
+            <div t-if="props.body" t-esc="props.body"/>
+            <input t-att-type="props.inputType" class="form-control" t-model="state.inputValue" />
             <t t-set-slot="footer">
-                <t t-if="props.edit">
-                    <button class="btn btn-primary" t-on-click="confirm">Confirm</button>
-                    <button class="btn btn-secondary" t-on-click="props.close">Cancel</button>
-                </t>
-                <t t-else="1">
-                    <button class="btn btn-primary" t-on-click="confirm">Ok</button>
-                </t>
+                <button class="btn btn-primary" t-on-click="confirm">Confirm</button>
+                <button class="btn btn-secondary" t-on-click="props.close">Cancel</button>
             </t>
         </Dialog>
     </t>

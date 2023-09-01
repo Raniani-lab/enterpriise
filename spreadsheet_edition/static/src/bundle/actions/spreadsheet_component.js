@@ -5,7 +5,7 @@ import { useService } from "@web/core/utils/hooks";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
 import { DEFAULT_LINES_NUMBER } from "@spreadsheet/helpers/constants";
-import { SpreadsheetDialog } from "@spreadsheet_edition/bundle/actions/spreadsheet_dialog/spreadsheet_dialog";
+import { InputDialog } from "@spreadsheet_edition/bundle/actions/spreadsheet_dialog/spreadsheet_dialog";
 
 import { Spreadsheet, Model } from "@odoo/o-spreadsheet";
 
@@ -61,13 +61,12 @@ export default class SpreadsheetComponent extends Component {
 
     _getLinesNumber(callback) {
         this.dialog.add(
-            SpreadsheetDialog,
+            InputDialog,
             {
-                content: _t("Select the number of records to insert"),
+                body: _t("Select the number of records to insert"),
                 confirm: callback,
                 title: _t("Re-insert list"),
-                edit: true,
-                inputContent: DEFAULT_LINES_NUMBER,
+                inputValue: DEFAULT_LINES_NUMBER,
                 inputType: "number",
             },
             { onClose: this.closeDialog.bind(this) }

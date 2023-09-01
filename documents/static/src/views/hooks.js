@@ -189,12 +189,12 @@ export function useDocumentView(helpers) {
             const act = await orm.call("documents.share", "open_share_popup", [vals]);
             const shareResId = act.res_id;
             let saved = false;
-            const close = dialogService.add(
+            dialogService.add(
                 ShareFormViewDialog,
                 {
                     resModel: "documents.share",
                     resId: shareResId,
-                    onSave: async (record) => {
+                    onRecordSaved: async (record) => {
                         saved = true;
                         // Copy the share link to the clipboard
                         navigator.clipboard.writeText(record.data.full_url);
@@ -205,10 +205,6 @@ export function useDocumentView(helpers) {
                                 type: "success",
                             }
                         );
-                        close();
-                    },
-                    onDiscard: () => {
-                        close();
                     },
                 },
                 {

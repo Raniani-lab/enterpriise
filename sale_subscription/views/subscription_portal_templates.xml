@@ -504,9 +504,12 @@
                             <a t-att-href="subscription.get_portal_url()"><t t-esc="subscription.display_name"/></a>
                         </td>
                         <td class="text-center">
-                            <t t-esc="subscription.next_invoice_date" t-if="subscription.subscription_state == '3_progress' and subscription.next_invoice_date &lt; datetime.date.today()"
-                               class="text-danger"/>
-                            <t t-esc="subscription.next_invoice_date" t-else=""/>
+                            <t t-if="subscription.subscription_state == '3_progress' and subscription.next_invoice_date &lt; datetime.date.today()">
+                                <span t-field="subscription.next_invoice_date" class="text-danger"/>
+                            </t>
+                            <t t-else="">
+                                <span t-field="subscription.next_invoice_date"/>
+                            </t>
                         </td>
                         <td class="text-center"><t t-esc="subscription.recurrence_id.sudo().name"/></td>
                         <td class="text-end"><span t-esc="subscription.amount_total" t-options="{'widget': 'monetary', 'display_currency': subscription.currency_id}"/></td>

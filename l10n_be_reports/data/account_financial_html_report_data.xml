@@ -20,6 +20,8 @@
             <record id="account_financial_report_be_actif_title0" model="account.report.line">
                 <field name="name">ASSETS</field>
                 <field name="hierarchy_level">0</field>
+                <field name="code">BE_ACTIF</field>
+                <field name="aggregation_formula">BE_20_28.balance + BE_29_58.balance</field>
                 <field name="children_ids">
                     <record id="account_financial_report_be_actif_imm0" model="account.report.line">
                         <field name="name">20/28 - Fixed assets</field>
@@ -204,16 +206,13 @@
                             </record>
                         </field>
                     </record>
-                    <record id="account_financial_report_be_actif0" model="account.report.line">
-                        <field name="name">TOTAL ASSETS</field>
-                        <field name="code">BE_ACTIF</field>
-                        <field name="aggregation_formula">BE_20_28.balance + BE_29_58.balance</field>
-                    </record>
                 </field>
             </record>
             <record id="account_financial_report_be_passif_title0" model="account.report.line">
                 <field name="name">EQUITY AND LIABILITIES</field>
                 <field name="hierarchy_level">0</field>
+                <field name="code">BE_PASSIF</field>
+                <field name="aggregation_formula">BE_10_15.balance + BE_16.balance + BE_17_49.balance</field>
                 <field name="children_ids">
                     <record id="account_financial_report_be_capitaux_propres0" model="account.report.line">
                         <field name="name">10/15 - Equity</field>
@@ -521,11 +520,6 @@
                             </record>
                         </field>
                     </record>
-                    <record id="account_financial_report_be_passif0" model="account.report.line">
-                        <field name="name">TOTAL LIABILITIES</field>
-                        <field name="code">BE_PASSIF</field>
-                        <field name="aggregation_formula">BE_10_15.balance + BE_16.balance + BE_17_49.balance</field>
-                    </record>
                 </field>
             </record>
         </field>
@@ -758,10 +752,6 @@
                     </record>
                 </field>
             </record>
-            <record id="account_financial_report_be_empty" model="account.report.line">
-                <field name="name"/>
-                <field name="code">BE_EMPTY</field>
-            </record>
             <record id="account_financial_report_be_produits_financiers0" model="account.report.line">
                 <field name="name">75 - Financial income</field>
                 <field name="hierarchy_level">0</field>
@@ -874,10 +864,6 @@
                         <field name="date_scope">normal</field>
                     </record>
                 </field>
-            </record>
-            <record id="account_financial_report_be_empty2" model="account.report.line">
-                <field name="name"/>
-                <field name="code">BE_EMPTY2</field>
             </record>
             <record id="account_financial_report_be_produits_exceptionnels0" model="account.report.line">
                 <field name="name">76 - Extraordinary income</field>
@@ -1062,10 +1048,6 @@
                     </record>
                 </field>
             </record>
-            <record id="account_financial_report_be_empty3" model="account.report.line">
-                <field name="name"/>
-                <field name="code">BE_EMPTY3</field>
-            </record>
             <record id="account_financial_report_be_prelevements_impots_differes0" model="account.report.line">
                 <field name="name">780 - Transfer from deferred taxes</field>
                 <field name="hierarchy_level">0</field>
@@ -1152,10 +1134,6 @@
                     </record>
                 </field>
             </record>
-            <record id="account_financial_report_be_empty4" model="account.report.line">
-                <field name="name"/>
-                <field name="code">BE_EMPTY4</field>
-            </record>
             <record id="account_financial_report_be_prelevements_reserves_immunisees0" model="account.report.line">
                 <field name="name">789 - Transfer from untaxed reserves</field>
                 <field name="hierarchy_level">0</field>
@@ -1198,14 +1176,6 @@
                         <field name="date_scope">normal</field>
                     </record>
                 </field>
-            </record>
-            <record id="account_financial_report_be_empty5" model="account.report.line">
-                <field name="name"/>
-                <field name="code">BE_EMPTY5</field>
-            </record>
-            <record id="account_financial_report_be_empty6" model="account.report.line">
-                <field name="name"/>
-                <field name="code">BE_EMPTY6</field>
             </record>
             <record id="account_financial_report_be_affectation" model="account.report.line">
                 <field name="name">Appropriations and transfers</field>

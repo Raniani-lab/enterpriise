@@ -166,7 +166,11 @@ export class MrpDisplayRecord extends Component {
             products = checks.map((c) => c.data.component_id[0]);
         } else if (this.resModel === "mrp.workorder") {
             const productionMoves = this.props.production.data.move_raw_ids.records.filter(
-                (m) => !m.data.workorder_id && m.data.manual_consumption && !m.data.scrapped
+                (m) =>
+                    !m.data.operation_id &&
+                    m.data.manual_consumption &&
+                    !m.data.scrapped &&
+                    m.data.workorder_id[0] != this.props.record.data.id
             );
             moves = moves.concat(productionMoves);
             const checks = this.props.record.data.check_ids.records;

@@ -11,7 +11,7 @@
             <t t-set-slot="footer">
                 <t t-if="props.edit">
                     <button class="btn btn-primary" t-on-click="confirm">Confirm</button>
-                    <button class="btn btn-secondary" t-on-click="close">Cancel</button>
+                    <button class="btn btn-secondary" t-on-click="props.close">Cancel</button>
                 </t>
                 <t t-else="1">
                     <button class="btn btn-primary" t-on-click="confirm">Ok</button>

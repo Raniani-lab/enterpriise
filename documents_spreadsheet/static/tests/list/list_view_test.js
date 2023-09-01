@@ -185,6 +185,18 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         const input = document.body.querySelector(".modal-body input");
         assert.ok(input);
         assert.strictEqual(input.type, "number");
+
+        await click(document, ".o_dialog .btn-secondary"); // cancel
+        assert.strictEqual(getCellFormula(model, "Z26"), "", "the list is not re-inserted");
+
+        await doMenuAction(topbarMenuRegistry, ["data", "reinsert_list", "reinsert_list_1"], env);
+        await nextTick();
+        await click(document, ".o_dialog .btn-primary"); // confirm
+        assert.strictEqual(
+            getCellFormula(model, "Z26"),
+            '=ODOO.LIST.HEADER(1,"foo")',
+            "the list is re-inserted"
+        );
     });
 
     QUnit.test("user related context is not saved in the spreadsheet", async function (assert) {

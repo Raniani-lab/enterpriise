@@ -3076,3 +3076,30 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertEqual(subscription.sale_order_option_ids.price_unit, 150, "The price unit for the optional product must be 150.0 due to 'Monthly' value in the 'Recurrence' field.")
         subscription.plan_id = self.plan_year.id
         self.assertEqual(subscription.sale_order_option_ids.price_unit, 1000, "The price unit for the optional product must update to 1000.0 after changing the 'Recurrence' field to 'Yearly'.")
+
+    def test_qty_invoiced_after_revert(self):
+        """ Test invoice quantity is correctly updated after a revert
+            with modify move creation
+        """
+        self.subscription.write({
+            'order_line': [
+                Command.clear(),
+                Command.create({
+                    'name': self.product.name,
+                    'product_id': self.product.id,
+                    'product_uom_qty': 2.0,
+                    'product_uom': self.product.uom_id.id,
+                    'price_unit': 12,
+                })],
+        })
+        self.subscription.action_confirm()
+        self.env['sale.order']._cron_recurring_create_invoice()
+        invoice = self.subscription.invoice_ids
+        move_reversal = self.env['account.move.reversal'].with_context(active_model="account.move", active_ids=invoice.ids).create({
+            'reason': 'no reason',
+            'journal_id': invoice.journal_id.id,
+        })
+        reversal = move_reversal.modify_moves()
+        new_move = self.env['account.move'].browse(reversal['res_id'])
+        new_move.action_post()
+        self.assertEqual(self.subscription.order_line.qty_invoiced, 2.0, "Invoiced quantity on the order line is not correct")

@@ -55,3 +55,11 @@ class AccountMoveLine(models.Model):
             line.subscription_mrr = line.price_subtotal / months if months else 0
             if line.move_id.move_type == "out_refund":
                 line.subscription_mrr *= -1
+
+    def copy_data(self, default=None):
+        data_list = super().copy_data(default=default)
+        for line, values in zip(self, data_list):
+            if line.subscription_id:
+                values['deferred_start_date'] = line.deferred_start_date
+                values['deferred_end_date'] = line.deferred_end_date
+        return data_list

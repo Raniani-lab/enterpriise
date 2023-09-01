@@ -36,7 +36,6 @@ export default class SpreadsheetComponent extends Component {
             getLinesNumber: this._getLinesNumber.bind(this),
             notifyUser: this.notifyUser.bind(this),
             raiseError: this.raiseError.bind(this),
-            editText: this.editText.bind(this),
             askConfirmation: this.askConfirmation.bind(this),
         });
 
@@ -58,28 +57,6 @@ export default class SpreadsheetComponent extends Component {
             cancel: this.closeDialog.bind(this),
             confirmLabel: _t("Confirm"),
         });
-    }
-
-    /**
-     * Ask the user to edit a text
-     *
-     * @param {string} title Title of the popup
-     * @param {Function} callback Callback to call with the entered text
-     * @param {Object} options Options of the dialog. Can contain a placeholder and an error message.
-     */
-    editText(title, callback, options = {}) {
-        this.dialog.add(
-            SpreadsheetDialog,
-            {
-                confirm: callback,
-                title: title && title.toString(),
-                errorText: options.error && options.error.toString(),
-                edit: true,
-                inputContent: options.placeholder,
-                inputType: "text",
-            },
-            { onClose: this.closeDialog.bind(this) }
-        );
     }
 
     _getLinesNumber(callback) {

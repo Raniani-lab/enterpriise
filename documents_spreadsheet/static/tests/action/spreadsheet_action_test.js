@@ -180,33 +180,6 @@ QUnit.module(
             assert.equal(dialog, undefined, "Dialog should not normally be displayed ");
         });
 
-        QUnit.test("edit text window", async function (assert) {
-            assert.expect(4);
-            const { env } = await createSpreadsheet();
-            env.editText("testTitle", () => {}, {
-                error: "testErrorText",
-                placeholder: "testPlaceholder",
-            });
-            await nextTick();
-            const dialog = document.querySelector(".o_dialog");
-            assert.ok(dialog !== undefined, "Dialog can be opened");
-            assert.equal(
-                document.querySelector(".modal-title").textContent,
-                "testTitle",
-                "Can set dialog title"
-            );
-            assert.equal(
-                document.querySelector(".o_dialog_error_text").textContent,
-                "testErrorText",
-                "Can set dialog error text"
-            );
-            assert.equal(
-                document.querySelectorAll(".modal-footer button").length,
-                2,
-                "Edit text have 2 buttons"
-            );
-        });
-
         QUnit.test("notify user window", async function (assert) {
             const { env } = await createSpreadsheet();
             env.notifyUser({ text: "this is a notification", type: "warning", sticky: true });

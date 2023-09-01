@@ -14,6 +14,11 @@ class MrpProduction(models.Model):
 
     employee_ids = fields.Many2many('hr.employee', string="working employees", related='workorder_ids.employee_ids')
 
+    def write(self, vals):
+        if 'lot_producing_id' in vals:
+            self.sudo().workorder_ids.check_ids.filtered(lambda c: c.test_type_id.technical_name == 'register_production').write({'lot_id': vals['lot_producing_id']})
+        return super().write(vals)
+
     def action_add_byproduct(self):
         return {
             'type': 'ir.actions.act_window',

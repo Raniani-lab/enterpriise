@@ -438,11 +438,17 @@ class QualityCheck(models.Model):
             vals_list.append(vals)
         return vals_list
 
-    def action_generate_serial_number_and_pass(self):
+    def action_generate_serial(self):
         self.ensure_one()
         self.production_id.action_generate_serial()
         self.lot_id = self.production_id.lot_producing_id
-        self.qty_done = 1
+
+    def action_generate_serial_number_and_pass(self):
+        self.action_generate_serial()
+        if self.product_tracking == 'serial':
+            self.qty_done = 1
+        elif self.product_tracking == 'lot' and self.qty_done == 0:
+            self.qty_done = self.production_id.product_qty
         return self._next()
 
     def _next(self, continue_production=False):

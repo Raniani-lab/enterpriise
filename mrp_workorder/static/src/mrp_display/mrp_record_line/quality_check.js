@@ -40,18 +40,25 @@ export class QualityCheck extends MrpWorkorder {
         if (["instructions", "passfail"].includes(record.data.test_type)) {
             return this._pass();
         } else if (record.data.test_type === "register_production") {
-            if (record.data.quality_state != "none") {
+            if (record.data.quality_state !== "none" || record.data.lot_id) {
                 return this.clicked();
-            } else if (record.data.product_tracking == "serial") {
+            } else if (record.data.product_tracking === "serial") {
                 await record.model.orm.call(
                     record.resModel,
                     "action_generate_serial_number_and_pass",
                     [record.resId]
                 );
             } else {
+                if (record.data.product_tracking === "lot") {
+                    await record.model.orm.call(
+                        record.resModel,
+                        "action_generate_serial_number_and_pass",
+                        [record.resId]
+                    );
+                }
                 parent.update({ qty_producing: this.props.quantityToProduce });
                 record.update({ qty_done: this.props.quantityToProduce });
-                await this.env.model.save();
+                await this.env.model.root.records.save();
                 await record.model.orm.call(record.resModel, "action_next", [record.resId]);
             }
             this.env.reload();

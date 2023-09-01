@@ -28,6 +28,16 @@ export class MrpRegisterProductionDialog extends MrpQualityCheckConfirmationDial
         };
     }
 
+    async actionGenerateSerial() {
+        await this.props.record.model.orm.call(
+            this.props.record.resModel,
+            "action_generate_serial",
+            [this.props.record.resId]
+        );
+        await this.props.record.load();
+        this.render();
+    }
+
     get lotInfo() {
         return {
             name: "lot_producing_id",

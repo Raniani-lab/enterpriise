@@ -95,11 +95,8 @@ export class MrpDisplayRecord extends Component {
     }
 
     async generateSerialNumber() {
-        if (this.trackingMode === "lot") {
-            await this.props.production.update(
-                { qty_producing: this.props.production.data.product_qty },
-                { save: true }
-            );
+        if (this.trackingMode === "lot" && this.props.production.data.qty_producing === 0) {
+            this.quickRegisterProduction();
         }
         const args = [this.props.production.resId];
         await this.model.orm.call("mrp.production", "action_generate_serial", args);
@@ -118,7 +115,7 @@ export class MrpDisplayRecord extends Component {
     }
 
     get quantityProducing() {
-        return this.props.production.data.qty_producing;
+        return this.props.record.data.qty_producing;
     }
 
     getByproductLabel(record) {

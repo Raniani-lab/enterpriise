@@ -12,7 +12,7 @@ export class MrpWorkcenterDialog extends ConfirmationDialog {
         workcenters: { type: Array, optional: true },
         disabled: { type: Array, optional: true },
         active: { type: Array, optional: true },
-        radioMode: { type: Boolean, default: false },
+        radioMode: { type: Boolean, default: false, optional: true },
     };
 
     setup() {

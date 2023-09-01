@@ -31,6 +31,7 @@
                     <div name="lot_producing_id" class="o_field_widget col-4">
                         <Many2OneField t-props="lotInfo"/>
                     </div>
+                    <button t-if="!recordData.lot_producing_id" class="btn btn-info fa fa-plus col-1" t-on-click="actionGenerateSerial"/>
                 </div>
             </div>
             <t t-set-slot="footer">

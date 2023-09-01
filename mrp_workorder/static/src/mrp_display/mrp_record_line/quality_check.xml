@@ -10,7 +10,7 @@
                 <MrpTimer value="props.record.data.duration" ongoing="active"/>
             </span>
             <t t-if="props.quantityToProduce">
-                <t t-if="props.record.data.product_tracking == 'serial'">
+                <t t-if="props.record.data.product_tracking !== 'none'">
                     <button t-if="!props.record.data.lot_id" class="btn btn-info fa fa-plus" t-on-click.stop="pass"/>
                     <span t-else="" t-out="props.record.data.lot_id[1]" t-on-click.stop="pass"/>
                 </t>

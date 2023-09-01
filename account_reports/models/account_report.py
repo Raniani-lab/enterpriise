@@ -1293,15 +1293,15 @@ class AccountReport(models.Model):
             }
 
             for report_column in self.column_ids:
-                columns.append(self._build_column_dict(
-                    options=options,
-                    no_format=report_column.name,
-                    expression_label=report_column.expression_label,
-                    figure_type=report_column.figure_type,
-                    column_group_key=column_group_key,
-                    sortable=report_column.sortable,
-                    blank_if_zero=report_column.blank_if_zero,
-                ))
+                columns.append({
+                    'name': report_column.name,
+                    'column_group_key': column_group_key,
+                    'expression_label': report_column.expression_label,
+                    'sortable': report_column.sortable,
+                    'figure_type': report_column.figure_type,
+                    'blank_if_zero': report_column.blank_if_zero,
+                    'style': "text-align: center; white-space: nowrap;",
+                })
 
         return columns, column_groups
 

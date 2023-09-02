@@ -91,12 +91,26 @@ msgid "An error occurred (%s)"
 msgstr "Tapahtui virhe (%s)"
 
 #. module: social_twitter
-#. odoo-javascript
+#: code:addons/social_twitter/controllers/main.py:0
+#, python-format
+msgid "Authentication failed. Please enter valid credentials."
+msgstr ""
+
+#. module: social_twitter
+#. openerp-web
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 #, python-format
 msgid "Author Image"
 msgstr "Tekijän kuva"
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid ""
+"Can not like / unlike the tweet\n"
+"%s."
+msgstr ""
 
 #. module: social_twitter
 #. odoo-javascript
@@ -177,6 +191,33 @@ msgstr "Virhe"
 #, python-format
 msgid "Error while sending the data to the server."
 msgstr "Virhe lähetettäessä tietoja palvelimelle."
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid ""
+"Failed to delete the Tweet\n"
+"%s."
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "Failed to fetch the conversation id: '%s' using the account %s."
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid ""
+"Failed to fetch the tweets in the same thread: '%s' using the account %s."
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "Failed to post comment: %s with the account %s."
+msgstr ""
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_likes
@@ -265,6 +306,12 @@ msgstr "Nimi"
 
 #. module: social_twitter
 #. odoo-python
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "Oops! Couldn't find this tweet on Twitter.com"
+msgstr ""
+
+#. module: social_twitter
 #: code:addons/social_twitter/models/social_stream.py:0
 #, python-format
 msgid "Please select a Twitter account for this stream type."
@@ -335,6 +382,12 @@ msgstr "Retweettaa tai lainaa"
 #, python-format
 msgid "Retweets"
 msgstr "Uudelleentviittaukset"
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "Replies from Tweets older than 7 days must be accessed on Twitter.com"
+msgstr ""
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream__twitter_searched_keyword
@@ -601,6 +654,14 @@ msgstr ""
 
 #. module: social_twitter
 #. odoo-python
+#: code:addons/social_twitter/models/social_account.py:0
+#, python-format
+msgid ""
+"We could not upload your image, it may be corrupted, it may exceed size "
+"limit or API may have send improper response (error: %s)."
+msgstr ""
+
+#. module: social_twitter
 #: code:addons/social_twitter/models/social_account.py:0
 #, python-format
 msgid ""

@@ -988,7 +988,7 @@ msgstr "您确定要离开这篇私人文章吗？ 这样做，这篇文章及�
 msgid ""
 "Are you sure you want to move \"%s\" to private? Only you will be able to "
 "access it."
-msgstr ""
+msgstr "您确定要将 \"%s\" 转为私密吗？只有您才能访问。"
 
 #. module: knowledge
 #. odoo-javascript
@@ -997,7 +997,7 @@ msgstr ""
 msgid ""
 "Are you sure you want to move \"%s\" to the Workspace? It will be shared "
 "with all internal users."
-msgstr ""
+msgstr "您确定要将 \"%s\" 移动到工作区吗？它将被分享给所有内部用户。"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1006,7 +1006,7 @@ msgstr ""
 msgid ""
 "Are you sure you want to move \"%s\" under \"%s%s\"? It will be shared with "
 "the same persons."
-msgstr ""
+msgstr "您确定要将\"%s\"移到\"%s%s\"下吗？它将分享给同一个人。"
 
 #. module: knowledge
 #. odoo-javascript

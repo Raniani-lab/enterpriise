@@ -438,8 +438,8 @@ msgid ""
 "<span class=\"text-nowrap\"><i class=\"fa fa-arrow-right mx-2\"/>Back to "
 "edit mode</span>"
 msgstr ""
-"<span class=\"text-nowrap\"><i class=\"fa fa-arrow-right "
-"mx-2\"/>返回編輯模式</span>"
+"<span class=\"text-nowrap\"><i class=\"fa fa-arrow-right mx-2\"/> "
+"返回編輯模式</span>"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form

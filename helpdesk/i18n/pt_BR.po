@@ -84,7 +84,7 @@ msgstr "2 dias para começar"
 #. module: helpdesk
 #: model:helpdesk.sla,name:helpdesk.helpdesk_sla_2
 msgid "7 days to finish"
-msgstr "7 dias para começar"
+msgstr "7 dias para concluir"
 
 #. module: helpdesk
 #: model:helpdesk.sla,name:helpdesk.helpdesk_sla_3
@@ -1993,7 +1993,7 @@ msgstr "É um seguidor"
 #. module: helpdesk
 #: model:helpdesk.ticket.type,name:helpdesk.type_incident
 msgid "Issue"
-msgstr "Incidente"
+msgstr "Ocorrência"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form

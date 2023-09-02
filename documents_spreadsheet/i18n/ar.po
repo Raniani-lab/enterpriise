@@ -311,7 +311,7 @@ msgstr "مراجعات "
 #. module: documents_spreadsheet
 #: model:ir.actions.act_window,name:documents_spreadsheet.save_spreadsheet_template_action
 msgid "Save as template"
-msgstr "حفظ كما القالب"
+msgstr "حفظ كقالب "
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__sequence

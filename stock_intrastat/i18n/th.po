@@ -33,7 +33,7 @@ msgstr ""
 #. module: stock_intrastat
 #: model:ir.model.fields,field_description:stock_intrastat.field_stock_warehouse__intrastat_region_id
 msgid "Intrastat region"
-msgstr ""
+msgstr "ภูมิภาคอินทราสแทต"
 
 #. module: stock_intrastat
 #: model:ir.model.fields,help:stock_intrastat.field_stock_warehouse__company_country_id

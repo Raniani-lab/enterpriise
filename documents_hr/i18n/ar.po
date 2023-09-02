@@ -149,11 +149,9 @@ msgstr "الموظف"
 #: code:addons/documents_hr/models/hr_employee.py:0
 #, python-format
 msgid ""
-"Employee's private email must be set to use \"Send Access Link\" function:\n"
+"Employee's related user and private email must be set to use \"Send Access Link\" function:\n"
 "%s"
 msgstr ""
-"يجب أن يتم إعداد البريد الإلكتروني الخاص للموظف لاستخدام وظيفة \"إرسال رابط الوصول\": \n"
-"%s"
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_employees
@@ -185,12 +183,12 @@ msgstr "الموارد البشرية"
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_hr_departure_wizard__send_hr_documents_access_link
 msgid "Send Access Link"
-msgstr "إرسال الرابط الوصول"
+msgstr "إرسال رابط الوصول "
 
 #. module: documents_hr
 #: model:ir.actions.server,name:documents_hr.ir_actions_server_send_access_link
 msgid "Send HR Documents Access Link"
-msgstr "إرسال رابط الوصول إلى مستندات المواد البشرية "
+msgstr "إرسال رابط الوصول إلى مستندات الموارد البشرية "
 
 #. module: documents_hr
 #: model:ir.model.fields,help:documents_hr.field_hr_departure_wizard__send_hr_documents_access_link
@@ -202,14 +200,14 @@ msgstr ""
 #. module: documents_hr
 #: model:mail.template,description:documents_hr.mail_template_document_folder_link
 msgid "Sent manually when recording an employee departure"
-msgstr "يتم إرساله يدويًا عند تسجيل ملف الموظف الاقلاع"
+msgstr "يتم إرساله يدوياً عند تسجيل مغادرة أحد الموظفين "
 
 #. module: documents_hr
 #. odoo-python
 #: code:addons/documents_hr/models/hr_employee.py:0
 #, python-format
 msgid "The access link has been sent to the employee."
-msgstr "وصول الرابط تم إرسالها إلى الموظف"
+msgstr "تم إرسال رابط الوصول إلى الموظف. "
 
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_res_users
@@ -245,4 +243,4 @@ msgstr "مساحة العمل الافتراضية للموارد البشرية
 #. module: documents_hr
 #: model:mail.template,subject:documents_hr.mail_template_document_folder_link
 msgid "{{ object.name }}, your personal documents access link is available"
-msgstr "{{ object.name }}, صفحتك الشخصية مستندات التمكن من الرابط متاح"
+msgstr "{{ object.name }}، رابط الوصول إلى مستنداتك الشخصية متاح "

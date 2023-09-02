@@ -97,7 +97,7 @@ msgstr "Einkaufsaufträge"
 #. module: approvals_purchase
 #: model:ir.model.fields,field_description:approvals_purchase.field_approval_product_line__po_uom_qty
 msgid "Purchase UoM Quantity"
-msgstr "Einkaufs-Maßeinheitsmenge"
+msgstr "Menge der Einkaufsmaßeinheit"
 
 #. module: approvals_purchase
 #: model:ir.model.fields,help:approvals_purchase.field_approval_product_line__po_uom_qty

@@ -175,6 +175,8 @@ msgid ""
 "be claimed within 8 weeks starting from the date on which your account was "
 "debited."
 msgstr ""
+"根据您与银行达成的协议的条款和细则，作为您的权利之一，您有权从银行获得退款。您可以从银行获得一份声明，该声明解释了您的权利。退款必须在账户扣款之日起 8"
+" 周内申请。"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__message_attachment_count
@@ -840,7 +842,7 @@ msgstr "SDD计划是根据客户的授权而设定的。"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "SEPA Business-to-Business Direct Debit Mandate"
-msgstr ""
+msgstr "SEPA 企业对企业直接扣账授权"
 
 #. module: account_sepa_direct_debit
 #: model:account.payment.method,name:account_sepa_direct_debit.payment_method_sdd
@@ -1026,7 +1028,7 @@ msgid ""
 " not entitled to a refund from your bank after your account has been "
 "debited, but you are entitled to request your bank not to debit your account"
 " up until the day on which the payment is due."
-msgstr ""
+msgstr "本授权仅适用于企业对企业交易。您的账户被扣款后，您无权要求银行退款，但您有权要求银行在付款到期日之前，不从您的账户扣款。"
 
 #. module: account_sepa_direct_debit
 #. odoo-python

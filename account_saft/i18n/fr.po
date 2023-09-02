@@ -70,3 +70,10 @@ msgstr ""
 #, python-format
 msgid "SAFT is only compatible with one column group."
 msgstr "SAFT n'est compatible qu'avec un seul groupe de colonnes."
+
+#. module: account_saft
+#: code:addons/account_saft/models/account_general_ledger.py:0
+#, python-format
+msgid "Please define one or more Contacts belonging to your company."
+msgstr ""
+"Veuillez définir un ou plusieurs contacts appartenant à votre société."

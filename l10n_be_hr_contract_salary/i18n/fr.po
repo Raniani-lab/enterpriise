@@ -27,6 +27,14 @@ msgid "13th Month"
 msgstr "13ème mois"
 
 #. module: l10n_be_hr_contract_salary
+#. odoo-python
+#: code:addons/l10n_be_hr_contract_salary/models/hr_contract.py:0
+#: code:addons/l10n_be_hr_contract_salary/models/hr_contract.py:0
+#, python-format
+msgid "%s € (CO2 Fee) + %s € (Rent)"
+msgstr "%s € (taxe CO2) + %s € (loyer)"
+
+#. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage.value,name:l10n_be_hr_contract_salary.l10n_be_representation_fees_value_2
 msgid "150 €"
 msgstr "150 €"
@@ -34,7 +42,7 @@ msgstr "150 €"
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage.value,name:l10n_be_hr_contract_salary.l10n_be_mobile_value_1
 msgid "30.0 €"
-msgstr "30.0 €"
+msgstr "30,0 €"
 
 #. module: l10n_be_hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_contract_salary.res_config_settings_view_form
@@ -109,7 +117,7 @@ msgstr "Enfants handicapés"
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_disabled_spouse_bool
 msgid "Disabled Spouse"
-msgstr "Conjoint handicapé"
+msgstr "Conjoint(e) handicapé(e)"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_other_disabled_juniors_dependant
@@ -129,12 +137,12 @@ msgstr "Divorcé(e)"
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage,name:l10n_be_hr_contract_salary.l10n_be_double_holiday
 msgid "Double Holiday Pay"
-msgstr "Double Pécule"
+msgstr "Double pécule de vacances"
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,field_description:l10n_be_hr_contract_salary.field_hr_contract__double_holiday_wage
 msgid "Double Holiday Wage"
-msgstr "Solde du pécule de Double Vacances"
+msgstr "Double pécule de vacances"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_driving_license
@@ -184,7 +192,7 @@ msgstr "Afficher la liste des véhicules neufs"
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage,name:l10n_be_hr_contract_salary.l10n_be_fuel_card
 msgid "Fuel Card"
-msgstr "Carte Essence"
+msgstr "Carte essence"
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model,name:l10n_be_hr_contract_salary.model_generate_simulation_link
@@ -199,7 +207,7 @@ msgstr "Assurance groupe"
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage,name:l10n_be_hr_contract_salary.l10n_be_hospital_insurance
 msgid "Hospital Insurance"
-msgstr "Assurance Hospitalisation"
+msgstr "Assurance hospitalisation"
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,field_description:l10n_be_hr_contract_salary.field_hr_contract__id_card
@@ -214,7 +222,7 @@ msgstr "Copie de la carte d'identité (recto-verso)"
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,help:l10n_be_hr_contract_salary.field_hr_job__l10n_be_contract_ip
 msgid "If checked, the job position is eligible to Intellectual Property"
-msgstr "Si coché, le poste est éligible à la propriété intellectuelle"
+msgstr "Si coché, la fonction est éligible à la propriété intellectuelle"
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,help:l10n_be_hr_contract_salary.field_hr_job__l10n_be_contract_withholding_taxes_exemption
@@ -222,14 +230,14 @@ msgid ""
 "If checked, the job position will grant a withholding taxes exemption to "
 "eligible employees"
 msgstr ""
-"Si coché, le poste accordera une exemption du précompte professionnel aux "
-"employés exigibles"
+"Si coché, la fonction accordera une exemption du précompte professionnel aux"
+" employés exigibles"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage,name:l10n_be_hr_contract_salary.l10n_be_intellectual_property
 #: model:ir.model.fields,field_description:l10n_be_hr_contract_salary.field_hr_job__l10n_be_contract_ip
 msgid "Intellectual Property"
-msgstr "Propriété Intellectuelle"
+msgstr "Propriété intellectuelle"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage,name:l10n_be_hr_contract_salary.l10n_be_internet
@@ -245,7 +253,7 @@ msgstr "Facture d'abonnement internet"
 #. module: l10n_be_hr_contract_salary
 #: model:ir.actions.server,name:l10n_be_hr_contract_salary.action_hr_job_payroll_configuration
 msgid "Job Configuration"
-msgstr "Configuration de l'offre d'emploi"
+msgstr "Configuration de la fonction"
 
 #. module: l10n_be_hr_contract_salary
 #. odoo-python
@@ -253,17 +261,17 @@ msgstr "Configuration de l'offre d'emploi"
 #: model:ir.model,name:l10n_be_hr_contract_salary.model_hr_job
 #, python-format
 msgid "Job Position"
-msgstr "Poste Occupé"
+msgstr "Fonction"
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.ui.menu,name:l10n_be_hr_contract_salary.menu_hr_job_positions
 msgid "Job Positions"
-msgstr "Postes de travail"
+msgstr "Fonctions"
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.ui.menu,name:l10n_be_hr_contract_salary.menu_hr_job_configuration
 msgid "Jobs"
-msgstr "Postes"
+msgstr "Emplois"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.job,name:l10n_be_hr_contract_salary.job_developer_belgium
@@ -273,7 +281,7 @@ msgstr "Développeur junior BE"
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_km_home_work
 msgid "Km Home/Work"
-msgstr "Km Domicile - Bureau"
+msgstr "Km Domicile/Lieu de travail"
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,field_description:l10n_be_hr_contract_salary.field_hr_contract__l10n_be_bicyle_cost
@@ -298,7 +306,7 @@ msgstr "Marié(e)"
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage,name:l10n_be_hr_contract_salary.l10n_be_meal_vouchers
 msgid "Meal Vouchers"
-msgstr "Chèques Repas"
+msgstr "Chèques-repas"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_mobile_invoice
@@ -352,7 +360,7 @@ msgstr "Congés payés"
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model,name:l10n_be_hr_contract_salary.model_hr_payslip
 msgid "Pay Slip"
-msgstr "Feuille de paie"
+msgstr "Fiche de paie"
 
 #. module: l10n_be_hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_contract_salary.hr_job_view_form
@@ -377,7 +385,7 @@ msgstr "Abonnement téléphonique"
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage,name:l10n_be_hr_contract_salary.l10n_be_representation_fees
 msgid "Representation Fees"
-msgstr "Frais de Représentation"
+msgstr "Frais de représentation"
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,field_description:l10n_be_hr_contract_salary.field_hr_contract__sim_card
@@ -423,17 +431,17 @@ msgstr ""
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_spouse_birthdate
 msgid "Spouse Birthdate"
-msgstr "Date de naissance du conjoint"
+msgstr "Date de naissance du (de la) conjoint(e)"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_spouse_complete_name
 msgid "Spouse Name and First Name"
-msgstr "Nom et prénom du conjoint"
+msgstr "Nom et prénom du (de la) conjoint(e)"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_spouse_fiscal_status
 msgid "Spouse Professional Situation"
-msgstr "Situation professionnelle du conjoint"
+msgstr "Situation professionnelle du (de la) conjoint(e)"
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,help:l10n_be_hr_contract_salary.field_generate_simulation_link__new_car
@@ -513,4 +521,4 @@ msgstr "Oui"
 #: code:addons/l10n_be_hr_contract_salary/controllers/main.py:0
 #, python-format
 msgid "• Available in %s"
-msgstr "Disponible dans %s"
+msgstr "• Disponible dans %s"

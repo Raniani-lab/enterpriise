@@ -11,10 +11,11 @@
 # Martin Trigaux, 2022
 # karolína schusterová <karolina.schusterova@vdp.sk>, 2022
 # Rastislav Brencic <rastislav.brencic@azet.sk>, 2022
+# Aleš Fiala <f.ales1@seznam.cz>, 2023
 # Jiří Podhorecký, 2023
 # Jakub Smolka, 2023
-# Aleš Fiala <f.ales1@seznam.cz>, 2023
 # Tomáš Píšek, 2023
+# Ivana Bartonkova, 2023
 # 
 msgid ""
 msgstr ""
@@ -22,7 +23,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Tomáš Píšek, 2023\n"
+"Last-Translator: Ivana Bartonkova, 2023\n"
 "Language-Team: Czech (https://app.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1057,7 +1058,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_payroll_dashboard_root
 msgid "Dashboard"
-msgstr "Ovládací panel"
+msgstr "Dashboard"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_line_view_search_register

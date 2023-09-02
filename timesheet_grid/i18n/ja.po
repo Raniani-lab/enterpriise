@@ -1205,7 +1205,7 @@ msgstr "タイムシート"
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_timesheets_analysis_report
 msgid "Timesheets Analysis Report"
-msgstr ""
+msgstr "タイムシート分析レポート"
 
 #. module: timesheet_grid
 #. odoo-python

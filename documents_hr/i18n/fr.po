@@ -151,11 +151,9 @@ msgstr "Employé"
 #: code:addons/documents_hr/models/hr_employee.py:0
 #, python-format
 msgid ""
-"Employee's private email must be set to use \"Send Access Link\" function:\n"
+"Employee's related user and private email must be set to use \"Send Access Link\" function:\n"
 "%s"
 msgstr ""
-"L'email privé de l'employé doit être configuré pour utiliser la fonction \"Envoyer le lien d'accès\" :\n"
-"%s"
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_employees

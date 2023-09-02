@@ -2011,6 +2011,13 @@ msgid "Next signatory is \"%s\""
 msgstr ""
 
 #. module: sign
+#. odoo-python
+#: code:addons/sign/models/sign_template.py:0
+#, python-format
+msgid "No attachment was provided"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_action
 msgid "No document yet"
 msgstr ""
@@ -2078,7 +2085,7 @@ msgstr "Количество ошибок"
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "Количество сообщений, требующих действия"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error_counter

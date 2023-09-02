@@ -1080,7 +1080,7 @@ msgstr "ドキュメント作成mixin"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Does not contain"
-msgstr ""
+msgstr "有価証券の価格に基づく割引率"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__domain
@@ -1236,7 +1236,7 @@ msgstr "財務"
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_financial
 msgid "Financial"
-msgstr ""
+msgstr "財務"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_fiscal

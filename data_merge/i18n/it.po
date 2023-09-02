@@ -375,6 +375,8 @@ msgid ""
 "If the model already has a custom merge method, the class attribute `_merge_disabled` is set to true on\n"
 "             that model and the generic data merge action should not be available on that model."
 msgstr ""
+"Se il modello possiede già un metodo di unione personalizzato l'attributo class `_merge_disabled` è configurato come vero sul\n"
+"             modello e l'azione generica per l'unione dei dati non deve essere disponibile su quel modello."
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__is_deleted
@@ -470,7 +472,7 @@ msgstr "Unisci"
 #. module: data_merge
 #: model:ir.ui.menu,name:data_merge.ir_model_menu_merge_action_manager
 msgid "Merge Action Manager"
-msgstr ""
+msgstr "Manager azione unisci"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_rule__match_mode
@@ -485,24 +487,24 @@ msgstr "Modalità di unione"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_ir_model__ref_merge_ir_act_server_id
 msgid "Merge Server Action"
-msgstr ""
+msgstr "Azione server unisci"
 
 #. module: data_merge
 #: model:ir.actions.act_window,name:data_merge.ir_model_action_merge
 msgid "Merge action Manager"
-msgstr ""
+msgstr "Manager azione unisci"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__is_contextual_merge_action
 msgid "Merge action attached"
-msgstr ""
+msgstr "Azione unisci allegata"
 
 #. module: data_merge
 #. odoo-python
 #: code:addons/data_merge/models/data_merge_model.py:0
 #, python-format
 msgid "Missing required PostgreSQL extension: unaccent"
-msgstr ""
+msgstr "L'estensione PostgreSQL richiesta manca: unaccent"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__res_model_id
@@ -605,7 +607,7 @@ msgstr "Record idonei al procedimento di deduplicazione"
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "Records must be of the same model"
-msgstr ""
+msgstr "Le registrazioni devono essere sullo stesso modello"
 
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_data_merge_model__merge_threshold
@@ -671,14 +673,14 @@ msgstr "La frequenza di notifica deve essere maggiore di 0"
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "The referenced record does not exist"
-msgstr ""
+msgstr "La registrazione indicata non esiste"
 
 #. module: data_merge
 #. odoo-javascript
 #: code:addons/data_merge/static/src/views/data_merge_list_view.js:0
 #, python-format
 msgid "The selected records have been merged"
-msgstr ""
+msgstr "Le registrazioni selezionate sono state unite"
 
 #. module: data_merge
 #. odoo-python
@@ -692,7 +694,7 @@ msgstr "Il modello bersaglio non esiste."
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "There is not referenced record"
-msgstr ""
+msgstr "Non c'è nessuna registrazione indicata"
 
 #. module: data_merge
 #: model:ir.model.constraint,message:data_merge.constraint_data_merge_model_uniq_name

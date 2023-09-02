@@ -29,7 +29,7 @@ msgid ""
 "Movement data records of type 2.%s are not supported "
 msgstr ""
 "\n"
-"Les transactions de type 2.%s ne sont pas supportées"
+"Les transactions de type 2.%s ne sont pas prises en charge"
 
 #. module: l10n_be_coda
 #. odoo-python
@@ -124,7 +124,8 @@ msgstr "Notes CODA"
 #, python-format
 msgid "CODA V%s statements are not supported, please contact your bank"
 msgstr ""
-"Les relevés au format CODA V%s ne sont pas supportés, contactez votre banque"
+"Les relevés au format CODA V%s ne sont pas pris en charge, contactez votre "
+"banque"
 
 #. module: l10n_be_coda
 #. odoo-python
@@ -134,8 +135,8 @@ msgid ""
 "CODA parsing error on information data record 3.2, seq nr %s! Please report "
 "this issue via your Odoo support channel."
 msgstr ""
-"Erreur d'analyse du CODA sur l'enregistrement 3.2, séquence %s! Merci de "
-"rapporter ce problème via votre canal de soutien Odoo."
+"Erreur de parsing du CODA sur l'enregistrement 3.2, séquence %s! Merci de "
+"rapporter ce problème via votre canal d'assistance Odoo."
 
 #. module: l10n_be_coda
 #. odoo-python
@@ -145,8 +146,8 @@ msgid ""
 "CODA parsing error on information data record 3.3, seq nr %s! Please report "
 "this issue via your Odoo support channel."
 msgstr ""
-"Erreur pour parser le fichier CODA sur l'enregistrement 3.3, séquence %s! "
-"Merci de rapporter ce problème au support Odoo."
+"Erreur de parsing du fichier CODA sur l'enregistrement 3.3, séquence %s! "
+"Merci de rapporter ce problème à l'assistance Odoo."
 
 #. module: l10n_be_coda
 #. odoo-python
@@ -156,8 +157,8 @@ msgid ""
 "CODA parsing error on movement data record 2.2, seq nr %s! Please report "
 "this issue via your Odoo support channel."
 msgstr ""
-"Erreur d'analyse du fichier CODA sur l'enregistrement 2.2, séquence %s! "
-"Merci de rapporter ce problème au support Odoo."
+"Erreur de parsing du fichier CODA sur l'enregistrement 2.2, séquence %s! "
+"Merci de rapporter ce problème à l'assistance d'Odoo."
 
 #. module: l10n_be_coda
 #. odoo-python
@@ -167,8 +168,8 @@ msgid ""
 "CODA parsing error on movement data record 2.3, seq nr %s! Please report "
 "this issue via your Odoo support channel."
 msgstr ""
-"Erreur d'analyse du fichier CODA sur l'enregistrement 2.3, séquence %s! "
-"Merci de rapporter ce problème au support Odoo."
+"Erreur de parsing du fichier CODA sur l'enregistrement 2.3, séquence %s! "
+"Merci de rapporter ce problème à l'assistance d'Odoo."
 
 #. module: l10n_be_coda
 #. odoo-python
@@ -234,7 +235,7 @@ msgstr "Retrait d'espèces à un guichet automatique"
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "Charge for safe custody"
-msgstr "Droit de garde"
+msgstr "Frais de garde"
 
 #. module: l10n_be_coda
 #. odoo-python
@@ -264,7 +265,7 @@ msgstr "Chèques"
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "Closing"
-msgstr "Fermeture"
+msgstr "Clôture"
 
 #. module: l10n_be_coda
 #. odoo-python
@@ -853,7 +854,7 @@ msgstr "Centralisation financière (débit)"
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "Financial centralization"
-msgstr "Centralisation Financière"
+msgstr "Centralisation financière"
 
 #. module: l10n_be_coda
 #. odoo-python
@@ -885,14 +886,16 @@ msgstr "Avance à terme fixe - intérêts uniquement"
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "Foreign bank accounts with BBAN structure are not supported "
-msgstr "Les comptes étrangers avec une structure BBAN ne sont pas supportés"
+msgstr ""
+"Les comptes étrangers avec une structure BBAN ne sont pas pris en charge"
 
 #. module: l10n_be_coda
 #. odoo-python
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "Foreign bank accounts with IBAN structure are not supported "
-msgstr "Les comptes étrangers avec une structure IBAN ne sont pas supportés"
+msgstr ""
+"Les comptes étrangers avec une structure IBAN ne sont pas pris en charge"
 
 #. module: l10n_be_coda
 #. odoo-python
@@ -1779,7 +1782,7 @@ msgstr "Règlement d'une acceptation bancaire d'escompte"
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "Settlement of fixed advance"
-msgstr "Paiement d'une avance à terme fixe"
+msgstr "Règlement d'une avance à terme fixe"
 
 #. module: l10n_be_coda
 #. odoo-python
@@ -2023,7 +2026,7 @@ msgstr "Type de transaction R"
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "Type of structured communication not supported: "
-msgstr "Type de communication structurée non pris en charge :"
+msgstr "Type de communication structurée non pris en charge :"
 
 #. module: l10n_be_coda
 #. odoo-python
@@ -2038,7 +2041,7 @@ msgstr "Transaction non définie"
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "Unexecutable reimbursement"
-msgstr "Remboursement non exécutable"
+msgstr "Remboursement inexécutable"
 
 #. module: l10n_be_coda
 #. odoo-python
@@ -2102,7 +2105,7 @@ msgstr "Voucher non payé"
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "Unsupported bank account structure "
-msgstr "Structure de compte bancaire non supportée"
+msgstr "Structure de compte bancaire non prise en charge"
 
 #. module: l10n_be_coda
 #. odoo-python
@@ -2817,7 +2820,7 @@ msgstr "extourner"
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "reversal of purchases"
-msgstr "contre-passation des achats"
+msgstr "extourne d'achats"
 
 #. module: l10n_be_coda
 #. odoo-python

@@ -7,7 +7,6 @@
 # Cécile Collart <cco@odoo.com>, 2023
 # stegjgza des, 2023
 # Jolien De Paepe, 2023
-# Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-09 11:44+0000\n"
 "PO-Revision-Date: 2023-02-03 07:08+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +25,9 @@ msgstr ""
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
 msgid "(including amounts that are related to other taxable periods):"
-msgstr "(incluant les montants relatifs à d'autres périodes imposables):"
+msgstr ""
+"(y compris les sommes qui sont un rapport avec d'autres périodes imposables)"
+" :"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -35,7 +36,7 @@ msgid ""
 "                                                enter the amount actually paid in"
 msgstr ""
 ",\n"
-"                                                inscrire le montant effectivement payé en"
+"                                                inscrivez le montant réellement payé en"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -54,7 +55,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "1. NN ou NE:"
-msgstr ""
+msgstr "1. NN ou NE :"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -368,12 +369,12 @@ msgstr "281.50 - Frais"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_281_50_view_form
 msgid "281.50 Form"
-msgstr ""
+msgstr "Fiche 281.50"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_view_form
 msgid "281.50 Forms"
-msgstr ""
+msgstr "Fiches 281.50"
 
 #. module: l10n_be_reports
 #: model:ir.actions.report,name:l10n_be_reports.action_report_partner_281_50_pdf
@@ -389,7 +390,7 @@ msgstr "281.50 en XML"
 #: model:ir.model.fields,field_description:l10n_be_reports.field_res_partner__forms_281_50
 #: model:ir.model.fields,field_description:l10n_be_reports.field_res_users__forms_281_50
 msgid "281.50 forms"
-msgstr ""
+msgstr "Fiches 281.50"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_creances_plus_d_un_an0
@@ -419,7 +420,7 @@ msgstr "3 - Stocks et commandes en cours d'exécution"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "3. Identity of the debtor of the income"
-msgstr "3. Identité du bénéficiaire des revenus"
+msgstr "3. Identité du débiteur des revenus"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -435,12 +436,12 @@ msgstr "30/36 - Actions"
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_view_form
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_view_tree
 msgid "325 Form"
-msgstr ""
+msgstr "Relevé 325"
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_form_325_wizard
 msgid "325 Form Wizard"
-msgstr ""
+msgstr "Assistant Relevé 325"
 
 #. module: l10n_be_reports
 #: model:ir.actions.report,name:l10n_be_reports.action_report_325_form_pdf
@@ -450,7 +451,7 @@ msgstr "325 PDF"
 #. module: l10n_be_reports
 #: model:ir.actions.act_window,name:l10n_be_reports.action_open_325_tree_view
 msgid "325 forms"
-msgstr ""
+msgstr "Relevés 325"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_commandes0
@@ -460,7 +461,7 @@ msgstr "37 - Commandes en cours d'exécution"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
 msgid "4. Comments:"
-msgstr "4. Commentaires :"
+msgstr "4. Commentaire :"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -468,6 +469,8 @@ msgid ""
 "4. Domicile (natural persons), registered office or main administrative\n"
 "                                                office (companies and other institutions)"
 msgstr ""
+"4. Domicile (personnes physiques), siège social ou établissement principal administratif\n"
+"                                                 (sociétés et autres institutions)"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_creances_au_plus_un_an_commerciales0
@@ -578,6 +581,11 @@ msgid ""
 "                                                headquarters) when it is a statement specific to that administrative or\n"
 "                                                operating headquarters:"
 msgstr ""
+"5. Siège administratif ou d'exploitation (sociétés et autres\n"
+"                                                institutions)\n"
+"                                                ou siège d'exploitation (personnes physiques qui disposent de plusieurs de ces sièges\n"
+"                                                ) lorsqu'il s'agit d'un relevé propre à ce siège administratif ou\n"
+"                                                d'exploitation :"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_tresorerie0
@@ -912,6 +920,9 @@ msgid ""
 "<span>EC Sales taxes report total does not match Tax Report lines 44 + 46L +"
 " 46T - 48s44 - 48s46L - 48s46T.</span>"
 msgstr ""
+"<span>Total du relevé à la TVA des opérations intracommunautaires ne "
+"correspond pas aux lignes de la déclaration à la TVA 44 + 46L + 46T - 48s44 "
+"- 48s46L - 48s46T.</span>"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_actif_title0
@@ -921,7 +932,7 @@ msgstr "ACTIF"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "AMOUNT TOTAL"
-msgstr ""
+msgstr "MONTANT TOTAL"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__atn
@@ -948,7 +959,7 @@ msgstr "Adresse"
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__partner_address
 msgid "Address of the partner when the form was created"
-msgstr ""
+msgstr "Adresse du partenaire quand la fiche a été créée"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_affectation
@@ -998,7 +1009,7 @@ msgstr "Audit"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_bce_number
 msgid "BCE number"
-msgstr ""
+msgstr "Numéro d'entreprise"
 
 #. module: l10n_be_reports
 #: model:account.report.column,name:l10n_be_reports.account_financial_report_be_balancesheet0_column
@@ -1009,7 +1020,7 @@ msgstr "Solde"
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_ec_sales_report_handler
 msgid "Belgian EC Sales Report Custom Handler"
-msgstr ""
+msgstr "Gestionnaire personnalisé du relevé intracommunautaire en Belgique"
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_reports_periodic_vat_xml_export
@@ -1020,7 +1031,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_tax_report_handler
 msgid "Belgian Tax Report Custom Handler"
-msgstr ""
+msgstr "Gestionnaire personnalisé de la déclaration à la TVA belge"
 
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.account_financial_report_be_balancesheet0
@@ -1030,7 +1041,7 @@ msgstr "Bilan"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "CERTIFIED AS ACCURATE"
-msgstr ""
+msgstr "CERTIFIE EXACT"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__calling_export_wizard_id
@@ -1047,7 +1058,7 @@ msgstr "Annuler"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_50_divider_pdf
 msgid "Carry over from the previous divider"
-msgstr ""
+msgstr "Report de l'intercalaire précédent"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.view_account_financial_report_export
@@ -1058,12 +1069,12 @@ msgstr "Choisissez les options avant d'exporter en XML"
 #: model:ir.model.fields,field_description:l10n_be_reports.field_res_partner__citizen_identification
 #: model:ir.model.fields,field_description:l10n_be_reports.field_res_users__citizen_identification
 msgid "Citizen Identification"
-msgstr "Identification du citoyen"
+msgstr "Numéro national"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_citizen_identification
 msgid "Citizen identification number"
-msgstr ""
+msgstr "Numéro national"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_city
@@ -1073,7 +1084,7 @@ msgstr "Ville"
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__partner_city
 msgid "City of the partner when the form was created"
-msgstr ""
+msgstr "Ville du partenaire quand la fiche a été créée"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__client_nihil
@@ -1122,6 +1133,7 @@ msgstr "Société : %s"
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "Company name or exact name (companies and other institutions)"
 msgstr ""
+"Raison sociale ou dénomination exacte (sociétés et autres institutions)"
 
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.account_financial_report_be_profitandloss0
@@ -1158,7 +1170,7 @@ msgstr "Code du pays"
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__country_id
 msgid "Country of the partner when the form was created"
-msgstr ""
+msgstr "Pays du partenaire quand la fiche a été créée"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_charges0
@@ -1202,7 +1214,7 @@ msgstr "Devise"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "DESIGNATION OF THE FORMS"
-msgstr ""
+msgstr "DESIGNATION DES FICHES"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__debtor_id
@@ -1212,58 +1224,58 @@ msgstr "Débiteur"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__debtor_address
 msgid "Debtor Address"
-msgstr ""
+msgstr "Adresse du débiteur"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__debtor_bce_number
 msgid "Debtor BCE Number"
-msgstr ""
+msgstr "Numéro d'entreprise du débiteur"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__debtor_citizen_identification
 msgid "Debtor Citizen Identification"
-msgstr ""
+msgstr "Numéro national du débiteur"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__debtor_city
 msgid "Debtor City"
-msgstr ""
+msgstr "Ville du débiteur"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__debtor_country_id
 msgid "Debtor Country"
-msgstr ""
+msgstr "Pays du débiteur"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__debtor_name
 msgid "Debtor Name"
-msgstr ""
+msgstr "Nom du débiteur"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__debtor_phone_number
 msgid "Debtor Phone Number"
-msgstr ""
+msgstr "Numéro de téléphone du débiteur"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__debtor_zip
 msgid "Debtor ZIP"
-msgstr ""
+msgstr "Code postal du débiteur"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__company_id
 msgid "Debtor company"
-msgstr ""
+msgstr "Société du débiteur"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__company_id
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325__company_id
 msgid "Debtor for which the form is created"
-msgstr ""
+msgstr "Débiteur pour lequel la fiche a été créée"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__debtor_is_natural_person
 msgid "Debtor is Natural Person"
-msgstr ""
+msgstr "Débiteur est une personne physique"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__display_name
@@ -1271,24 +1283,24 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325_wizard__display_name
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__display_name
 msgid "Display Name"
-msgstr "Nom affiché"
+msgstr "Nom d'affichage"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_50_divider_pdf
 msgid "Divider N°"
-msgstr ""
+msgstr "Intercalaire n°"
 
 #. module: l10n_be_reports
 #. odoo-python
 #: code:addons/l10n_be_reports/models/account_281_50_form.py:0
 #, python-format
 msgid "Download 281.50 Form PDF"
-msgstr ""
+msgstr "Télécharger la fiche 281.50 PDF"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_281_50_view_form
 msgid "Download pdf"
-msgstr ""
+msgstr "Télécharger PDF"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields.selection,name:l10n_be_reports.selection__l10n_be_form_325__state__draft
@@ -1298,7 +1310,7 @@ msgstr "Brouillon"
 #. module: l10n_be_reports
 #: model:ir.model.fields.selection,name:l10n_be_reports.selection__l10n_be_form_325__sender_lang_code__1
 msgid "Dutch"
-msgstr ""
+msgstr "Néerlandais"
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -1310,7 +1322,7 @@ msgstr "Audit du relevé à la TVA des opérations intracommunautaires"
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.belgian_ec_sales_report
 msgid "EC Sales List"
-msgstr "Relevé intra-communautaire"
+msgstr "Relevé intracommunautaire"
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -1351,12 +1363,12 @@ msgstr "Assistant d'export pour les rapports de comptabilité"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__exposed_expenses
 msgid "Exposed expenses"
-msgstr ""
+msgstr "Frais exposés"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "FINANCES"
-msgstr ""
+msgstr "FINANCES"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -1366,12 +1378,12 @@ msgstr "FICHE N° 281.50 (commissions, courtages, etc) - ANNÉE"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "FORMS 325.50"
-msgstr ""
+msgstr "RELEVES 325.50"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "Federal Public Service"
-msgstr ""
+msgstr "Service Public Fédéral"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__fees
@@ -1393,7 +1405,7 @@ msgstr "Abonnés (Partenaires)"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_50_divider_pdf
 msgid "Form 281.50 N°"
-msgstr ""
+msgstr "Numéro de la fiche N° 281.50"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__form_325_id
@@ -1409,17 +1421,17 @@ msgstr "Fichier formulaire"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__form_281_50_ids
 msgid "Forms 281.50"
-msgstr ""
+msgstr "Fiches 281.50"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__form_281_50_count
 msgid "Forms 281.50 count"
-msgstr ""
+msgstr "Nombre de fiches 281.50"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__form_281_50_total_amount
 msgid "Forms 281.50 total"
-msgstr ""
+msgstr "Fiches 281.50 total"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields.selection,name:l10n_be_reports.selection__l10n_be_form_325__sender_lang_code__2
@@ -1429,32 +1441,32 @@ msgstr "Français"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "GENERAL TAX ADMINISTRATION"
-msgstr ""
+msgstr "ADMINISTRATION GENERALE DE LA FISCALITE"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_view_form
 msgid "Generate 281.50 forms PDF"
-msgstr ""
+msgstr "Générer fiches 281.50 en PDF"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_view_form
 msgid "Generate 281.50 forms XML"
-msgstr ""
+msgstr "Générer fiches 281.50 en XML"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_wizard_view_form
 msgid "Generate 325 form"
-msgstr ""
+msgstr "Générer relevé 325"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_view_form
 msgid "Generate 325 form PDF"
-msgstr ""
+msgstr "Générer relevé 325 en PDF"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields.selection,name:l10n_be_reports.selection__l10n_be_form_325__state__generated
 msgid "Generated"
-msgstr ""
+msgstr "Généré"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields.selection,name:l10n_be_reports.selection__l10n_be_form_325__sender_lang_code__3
@@ -1464,17 +1476,17 @@ msgstr "Allemand"
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_report_l10n_be_reports_report_281_50_pdf
 msgid "Get 281.50 report as PDF."
-msgstr "Obtenir le rapport 281.50 au format PDF."
+msgstr "Obtenir la fiche 281.50 au format PDF."
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_report_l10n_be_reports_report_281_50_xml
 msgid "Get 281.50 report as XML."
-msgstr "Obtenir le rapport 281.50 au format XML."
+msgstr "Obtenir la fiche 281.50 au format XML."
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_report_l10n_be_reports_report_325_pdf
 msgid "Get 325 Report as PDF"
-msgstr ""
+msgstr "Obtenir le relevé 325 au format PDF"
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -1482,6 +1494,8 @@ msgstr ""
 #, python-format
 msgid "Grouping by ID key is not supported by partner VAT custom engine."
 msgstr ""
+"Le regroupement par ID clé n'est pas pris en charge par le moteur "
+"personnalisé des clients assujettis à la TVA."
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__has_message
@@ -1500,7 +1514,7 @@ msgstr "ID"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__official_id
 msgid "Identification number"
-msgstr ""
+msgstr "Numéro d'identification"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__message_needaction
@@ -1519,13 +1533,13 @@ msgstr "Si coché, certains messages ont une erreur de livraison."
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__income_debtor_bce_number
 msgid "Income debtor BCE number"
-msgstr ""
+msgstr "Numéro d'entreprise du débiteur des revenus"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325__is_test
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325_wizard__is_test
 msgid "Indicates if the 325 is a test"
-msgstr ""
+msgstr "Indique si le relevé 325 est un test"
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -1544,11 +1558,13 @@ msgstr "Est un abonné"
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__partner_is_natural_person
 msgid "Is the partner a natural person? (as opposed to a moral person)"
 msgstr ""
+"Le partenaire est-il une personne physique ? (par opposition à une personne "
+"morale)"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_job_position
 msgid "Job position"
-msgstr ""
+msgstr "Fonction"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50____last_update
@@ -1564,7 +1580,7 @@ msgstr "Dernière modification le"
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325_wizard__write_uid
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__write_uid
 msgid "Last Updated by"
-msgstr "Mis à jour par"
+msgstr "Dernière mise à jour par"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__write_date
@@ -1572,12 +1588,12 @@ msgstr "Mis à jour par"
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325_wizard__write_date
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__write_date
 msgid "Last Updated on"
-msgstr "Mis à jour le"
+msgstr "Dernière mise à jour le"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "Lastname, Firstname (natural persons)"
-msgstr ""
+msgstr "Nom, prénoms (personnes physiques)"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -1596,12 +1612,17 @@ msgid ""
 "                                    <br/>\n"
 "                                    Zip code and city"
 msgstr ""
+"Nom et prénom (ou dénomination) des bénéficiaires\n"
+"                                    <br/>\n"
+"                                    Rue, numéro et éventuellement boîte\n"
+"                                    <br/>\n"
+"                                    Code postal et commune"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_res_partner__forms_281_50
 #: model:ir.model.fields,help:l10n_be_reports.field_res_users__forms_281_50
 msgid "List of 281.50 forms for this partner"
-msgstr ""
+msgstr "Liste des fiches 281.50 de ce partenaire"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_main_attachment_id
@@ -1637,22 +1658,22 @@ msgstr "Modification"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_50_divider_pdf
 msgid "NN or NE:"
-msgstr ""
+msgstr "NN ou NE :"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "NUMBER OF FORMS"
-msgstr ""
+msgstr "NOMBRE DE FICHES ETABLIES"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__partner_name
 msgid "Name of the partner when the form was created"
-msgstr ""
+msgstr "Nom du partenaire quand la fiche a été créée"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_is_natural_person
 msgid "Natural person"
-msgstr ""
+msgstr "Personne physique"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.filter_info_template
@@ -1738,22 +1759,22 @@ msgstr "Nombre de messages avec des erreurs d'envoi"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "N° 1"
-msgstr ""
+msgstr "N° 1"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "N° 2"
-msgstr ""
+msgstr "N° 2"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "N° 3"
-msgstr ""
+msgstr "N° 3"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
 msgid "NÉANT"
-msgstr ""
+msgstr "NÉANT"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_view_form
@@ -1801,12 +1822,12 @@ msgstr "PASSIF"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "PAYROLL DEDUCTIONS"
-msgstr ""
+msgstr "PRECOMPTE PROFESSIONNEL"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__paid_amount
 msgid "Paid amount"
-msgstr ""
+msgstr "Montant payé"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_id
@@ -1830,11 +1851,13 @@ msgstr "Liste annuelle des clients assujettis à la TVA"
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_partner_vat_handler
 msgid "Partner VAT Listing Custom Handler"
 msgstr ""
+"Gestionnaire personnalisé de la liste annuelle des clients assujettis à la "
+"TVA"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__partner_id
 msgid "Partner for which this 281.50 form has been created"
-msgstr ""
+msgstr "Partenaire pour lequel cette fiche 281.50 a été créée"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.view_partner_281_50_required_fields
@@ -1849,7 +1872,7 @@ msgstr "Assistant d'exportation de rapports périodiques de TVA"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "Postal code and city"
-msgstr ""
+msgstr "N° postal et commune"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -1868,6 +1891,9 @@ msgid ""
 "                                                        <br/>\n"
 "                                                        (For administration use only)"
 msgstr ""
+"DATE DE RECEPTION\n"
+"                                                        <br/>\n"
+"                                                        (cadré réservé à l'administration)"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__reference_year
@@ -1878,17 +1904,17 @@ msgstr "Année de référence"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__reference_year
 msgid "Reference year"
-msgstr ""
+msgstr "Année de référence"
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_form_281_50
 msgid "Represents a 281.50 form"
-msgstr ""
+msgstr "Représente une fiche 281.50"
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_form_325
 msgid "Represents a 325 form"
-msgstr ""
+msgstr "Représente un relevé 325"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_has_sms_error
@@ -1899,12 +1925,12 @@ msgstr "Erreur d'envoi SMS"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "SUMMARY STATEMENT YEAR"
-msgstr ""
+msgstr "RELEVE RECAPITULATIF ANNEE"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "SUMMARY TABLE OF RECORDS AND PAYROLL DEDUCTIONS (1)"
-msgstr ""
+msgstr "TABLEAU RECAPITULATIF DES FICHES ET DU PRECOMPTE PROFESSIONNEL (1)"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields.selection,name:l10n_be_reports.selection__l10n_be_form_325__sending_type__1
@@ -1921,37 +1947,37 @@ msgstr "Expéditeur"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__sender_address
 msgid "Sender Address"
-msgstr ""
+msgstr "Adresse de l'expéditeur"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__sender_bce_number
 msgid "Sender BCE Number"
-msgstr ""
+msgstr "Numéro d'entreprise de l'expéditeur"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__sender_city
 msgid "Sender City"
-msgstr ""
+msgstr "Ville de l'expéditeur"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__sender_lang_code
 msgid "Sender Language Code"
-msgstr ""
+msgstr "Code de langue de l'expéditeur"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__sender_name
 msgid "Sender Name"
-msgstr ""
+msgstr "Nom de l'expéditeur"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__sender_phone_number
 msgid "Sender Phone Number"
-msgstr ""
+msgstr "Numéro de téléphone de l'expéditeur"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__sender_zip
 msgid "Sender ZIP"
-msgstr ""
+msgstr "Code postal de l'expéditeur"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325_wizard__sending_type
@@ -1961,7 +1987,7 @@ msgstr "Type d'envoi"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__sending_type
 msgid "Sending type"
-msgstr ""
+msgstr "Type d'envoi"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.view_account_financial_report_export
@@ -1986,6 +2012,9 @@ msgid ""
 "following pieces of information are set: street, zip code, country%s and vat"
 " or citizen identification."
 msgstr ""
+"Certains partenaires ne sont pas correctement configurés. Assurez-vous que "
+"les données suivantes sont définies : rue, code postal, ville%s et numéro de"
+" TVA ou numéro national."
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -2003,12 +2032,12 @@ msgstr "État"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "Street and n°"
-msgstr ""
+msgstr "Rue et n°"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "TOTAL AMOUNT"
-msgstr ""
+msgstr "MONTANT TOTAL"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_actif0
@@ -2023,12 +2052,12 @@ msgstr "TOTAL DU PASSIF"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "TOTAUX"
-msgstr ""
+msgstr "TOTAUX"
 
 #. module: l10n_be_reports
 #: model:account.report.column,name:l10n_be_reports.account_financial_report_ec_sales_tax
 msgid "Tax Code"
-msgstr ""
+msgstr "Code fiscal"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_res_partner__form_file
@@ -2040,19 +2069,19 @@ msgstr "Champ technique pour stocker tous les fichiers de formulaires."
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__is_test
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325_wizard__is_test
 msgid "Test Form"
-msgstr ""
+msgstr "Relevé test"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325_wizard__sender_id
 msgid "The company responsible for sending the form."
-msgstr ""
+msgstr "La société chargée de l'envoi du relevé."
 
 #. module: l10n_be_reports
 #. odoo-python
 #: code:addons/l10n_be_reports/wizard/l10n_be_325_form_wizard.py:0
 #, python-format
 msgid "The reference year must be a number."
-msgstr ""
+msgstr "L'année de référence doit être un chiffre."
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_res_partner__citizen_identification
@@ -2061,6 +2090,8 @@ msgid ""
 "This code corresponds to the personal identification number for the tax "
 "authorities."
 msgstr ""
+"Ce code correspond au numéro d'identification personnelle pour les autorités"
+" fiscales."
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325__sending_type
@@ -2083,28 +2114,30 @@ msgstr "Ce champ représente la nature du formulaire."
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_50_divider_pdf
 msgid "To be completed only if this divider is not the first or the only one"
 msgstr ""
+"À ne compléter que si cet intercalaire n'est ni le premier ni l'unique "
+"intercalaire"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_50_divider_pdf
 msgid "Total amount or to be transferred to the next divider:"
-msgstr ""
+msgstr "Total général ou à reporter sur l'intercalaire suivant :"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_50_divider_pdf
 msgid "Total mentionned in box 3 e of the form 281.50"
-msgstr ""
+msgstr "Total mentionné au cadre 3, e de la fiche N° 281.50"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__total_remuneration
 msgid "Total remuneration"
-msgstr ""
+msgstr "Rémunération totale"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__treatment_type
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__treatment_type
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325_wizard__treatment_type
 msgid "Treatment Type"
-msgstr "Type de traitements"
+msgstr "Type de traitement"
 
 #. module: l10n_be_reports
 #: model:account.report.column,name:l10n_be_reports.l10n_be_partner_vat_listing_turnover
@@ -2133,7 +2166,7 @@ msgstr "Audit de la liste de la TVA"
 #: model:account.report.column,name:l10n_be_reports.account_financial_report_ec_sales_vat
 #: model:account.report.column,name:l10n_be_reports.l10n_be_partner_vat_listing_vat_number
 msgid "VAT Number"
-msgstr "Numéro de TVA intracommunautaire"
+msgstr "Numéro de TVA"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_produits0
@@ -2189,7 +2222,7 @@ msgstr "Oui"
 #: code:addons/l10n_be_reports/models/account_325_form.py:0
 #, python-format
 msgid "You already generated 281.50 forms for this 325 form."
-msgstr ""
+msgstr "Vous avez déjà généré des fiches 281.50 pour ce relevé 325."
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -2199,6 +2232,8 @@ msgstr ""
 msgid ""
 "You can't delete a 281.50 for which its form 325 xml has been generated"
 msgstr ""
+"Vous ne pouvez pas supprimer une fiche 281.50 pour laquelle le relevé 325 "
+"xml a été généré"
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -2206,6 +2241,8 @@ msgstr ""
 #, python-format
 msgid "You can't use a reference year in the future or for the current year."
 msgstr ""
+"Vous ne pouvez pas utiliser une année de référence dans le futur ou pour "
+"l'année en cours."
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -2224,7 +2261,7 @@ msgstr "Code postal"
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__partner_zip
 msgid "Zip of the partner when the form was created"
-msgstr ""
+msgstr "Code postal du partenaire quand la fiche a été créée"
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -2234,6 +2271,8 @@ msgid ""
 "[44] < ([00] + [01] + [02] + [03] + [45] + [46] + [47] + [48] + [49]) * 200 "
 "if [88] > 99.999"
 msgstr ""
+"[44] < ([00] + [01] + [02] + [03] + [45] + [46] + [47] + [48] + [49]) * 200 "
+"if [88] > 99.999"
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -2269,15 +2308,15 @@ msgid ""
 "                                                <br/>\n"
 "                                                e) Total (see also in sections f and g below):"
 msgstr ""
-"a) Commissions, courtages, remises commerciales, etc. :\n"
+"a) Commissions, courtages, ristournes commerciales, etc. :\n"
 "<br/>\n"
-"b) Honoraires et vacations :\n"
+"b) Honoraires et vacations :\n"
 "<br/>\n"
 "c) Avantages de toute nature (nature : ................)\n"
 "<br/>\n"
 "d) Frais exposés pour compte du bénéficiaire :\n"
 "<br/>\n"
-"e) Total (voir également dans les sections f et g ci-dessous) :"
+"e) Total (voir aussi rubriques f et g ci-après) :"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.res_partner_view_form_inherit
@@ -2292,7 +2331,7 @@ msgstr "par ex. 2018"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "established by :"
-msgstr ""
+msgstr "établi par :"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -2305,13 +2344,13 @@ msgid ""
 "                                            - trainers, coaches and accompaniers for their activity for the\n"
 "                                            benefit of the athletes:"
 msgstr ""
-"f) S'il y a lieu, inscrivez ci-contre le montant indiqué au point e\n"
+"f) S'il y a lieu, mentionnez ici le montant indiqué à la rubrique e\n"
 "à titre d'indemnités versées à :\n"
 "<br/>\n"
-"- des sportifs pour leurs performances sportives :\n"
+"- des sportifs pour leurs prestations sportives :\n"
 "<br/>\n"
 "- des formateurs, entraîneurs et accompagnateurs pour leurs activités\n"
-"dispensées aux sportifs :"
+"au profit de sportifs :"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -2319,3 +2358,5 @@ msgid ""
 "g) If the amount indicated in item e above does not coincide with\n"
 "                                                the amount actually paid in"
 msgstr ""
+"g) Si le montant indiqué à la rubrique e ne coïncide pas avec \n"
+"                                                le montant réellement payé en"

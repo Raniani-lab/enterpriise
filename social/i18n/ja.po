@@ -793,7 +793,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post__link_url
 msgid "Link URL"
-msgstr ""
+msgstr "リンクURL"
 
 #. module: social
 #. odoo-javascript
@@ -1474,6 +1474,13 @@ msgstr ""
 #: model:ir.actions.server,name:social.ir_cron_post_scheduled_ir_actions_server
 #: model:ir.cron,cron_name:social.ir_cron_post_scheduled
 msgid "Social: Publish Scheduled Posts"
+msgstr ""
+
+#. module: social
+#. openerp-web
+#: code:addons/social/static/src/js/stream_post_comments.js:0
+#, python-format
+msgid "Something went wrong while posting the comment."
 msgstr ""
 
 #. module: social

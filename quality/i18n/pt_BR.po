@@ -1013,7 +1013,7 @@ msgstr "Tipo de atividade de exceção registrada."
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_tag__color
 msgid "Used in the kanban view"
-msgstr ""
+msgstr "Usado na visualização de kanban"
 
 #. module: quality
 #: model:res.groups,name:quality.group_quality_user

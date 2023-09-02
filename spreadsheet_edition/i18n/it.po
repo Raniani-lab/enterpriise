@@ -39,14 +39,14 @@ msgstr "Aggiungi nuovo filtro..."
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "After next"
-msgstr ""
+msgstr "Dopo il successivo"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/list/side_panels/listing_all_side_panel.js:0
 #, python-format
 msgid "Are you sure you want to delete this list ?"
-msgstr ""
+msgstr "Sei sicuro di voler eliminare questo elenco?"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -60,7 +60,7 @@ msgstr "Sei sicuro di voler eliminare la tabella pivot?"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Automatically filter on the current period"
-msgstr ""
+msgstr "Filtra automaticamente sul periodo attuale"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -75,7 +75,7 @@ msgstr "Indietro"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "Before previous"
-msgstr ""
+msgstr "Prima del precedente "
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -99,17 +99,17 @@ msgstr "Annulla"
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
 #, python-format
 msgid "Clear history"
-msgstr ""
+msgstr "Cancella cronologia"
 
 #. module: spreadsheet_edition
 #: model:ir.model,name:spreadsheet_edition.model_spreadsheet_collaborative_mixin
 msgid "Collaboration on spreadsheets"
-msgstr ""
+msgstr "Collaborazione su fogli di calcolo"
 
 #. module: spreadsheet_edition
 #: model:ir.model,name:spreadsheet_edition.model_spreadsheet_revision
 msgid "Collaborative spreadsheet revision"
-msgstr ""
+msgstr "Revisione collaborativa foglio di calcolo"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__commands
@@ -161,7 +161,7 @@ msgstr "Data"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Date field"
-msgstr ""
+msgstr "Campo data"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -246,14 +246,14 @@ msgstr "Modifica"
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
 msgid "Edit domain"
-msgstr ""
+msgstr "Modifica dominio"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Field matching"
-msgstr ""
+msgstr "Corrispondenza del campo"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -314,7 +314,7 @@ msgstr "Inserisci cella pivot"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.xml:0
 #, python-format
 msgid "Insert the first"
-msgstr ""
+msgstr "Inserisci il primo"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -365,14 +365,14 @@ msgstr "Collegamento menu nel foglio di calcolo"
 #: code:addons/spreadsheet_edition/static/src/bundle/chart/odoo_menu/chart_panel.xml:0
 #, python-format
 msgid "Link to Odoo menu"
-msgstr ""
+msgstr "Link al menu Odoo"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/list/side_panels/listing_details_side_panel.xml:0
 #, python-format
 msgid "List Name"
-msgstr ""
+msgstr "Nome elenco"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -393,7 +393,7 @@ msgstr "Crea una copia"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Match this filter to a field for each data source"
-msgstr ""
+msgstr "Associa il filtro a un campo per ogni fonte di dati\\"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -431,7 +431,7 @@ msgstr "Mese"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "Name of the %s:"
-msgstr ""
+msgstr "Nome del %s:"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -478,21 +478,21 @@ msgstr "Ok"
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__parent_revision_id
 msgid "Parent Revision"
-msgstr ""
+msgstr "Revisione genitore"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.xml:0
 #, python-format
 msgid "Period offset"
-msgstr ""
+msgstr "Periodo di compensazione"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "Period offset applied to this source"
-msgstr ""
+msgstr "Periodo di compensazione applicato a questa fonte"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -582,7 +582,7 @@ msgstr "Aggiorna valori"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Related model"
-msgstr ""
+msgstr "Modello correlato"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -596,7 +596,7 @@ msgstr "Relazione"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/filter_editor_side_panel.js:0
 #, python-format
 msgid "Relative Period"
-msgstr ""
+msgstr "Periodo relativo"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -618,7 +618,7 @@ msgstr "Rinomina"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "Requires a selected field"
-msgstr ""
+msgstr "Richiede un campo selezionato"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__revision_id
@@ -668,7 +668,7 @@ msgstr "Ricerca..."
 #: code:addons/spreadsheet_edition/static/src/bundle/list/index.js:0
 #, python-format
 msgid "See list properties"
-msgstr ""
+msgstr "Vedi proprietà elenco"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -689,7 +689,7 @@ msgstr "Seleziona un menu..."
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "Select a spreadsheet to insert your %s."
-msgstr ""
+msgstr "Seleziona un foglio di calcolo per inserire il tuo %s."
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -710,7 +710,7 @@ msgstr "Seleziona i record da inserire"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/index.js:0
 #, python-format
 msgid "Set as filter"
-msgstr ""
+msgstr "Imposta come filtro"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -770,7 +770,7 @@ msgstr "Testo"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Time range"
-msgstr ""
+msgstr "Intervallo di tempo"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -801,14 +801,14 @@ msgstr "Anno"
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.js:0
 #, python-format
 msgid "ascending"
-msgstr ""
+msgstr "ascendente"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.js:0
 #, python-format
 msgid "descending"
-msgstr ""
+msgstr "discendente"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -836,7 +836,7 @@ msgstr "link"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "list"
-msgstr ""
+msgstr "elenco"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -849,7 +849,7 @@ msgstr "mai"
 #. module: spreadsheet_edition
 #: model:ir.model.constraint,message:spreadsheet_edition.constraint_spreadsheet_revision_parent_revision_unique
 msgid "o-spreadsheet revision refused due to concurrency"
-msgstr ""
+msgstr "revisione o-spreadsheet rifiutata per via della concorrenza"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

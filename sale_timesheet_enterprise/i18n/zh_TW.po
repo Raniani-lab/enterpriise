@@ -82,7 +82,7 @@ msgstr ""
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_form
 msgid "Hours Spent"
-msgstr "時間花費"
+msgstr "已工作時數"
 
 #. module: sale_timesheet_enterprise
 #. odoo-python
@@ -125,7 +125,7 @@ msgstr ""
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_total_hours_spent
 msgid "Portal Total Hours Spent"
-msgstr ""
+msgstr "客戶頁面總工作時數"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_form
@@ -154,7 +154,7 @@ msgstr "銷售訂單明細"
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_tree
 msgid "Sub-tasks Hours Spent"
-msgstr "子任務耗時"
+msgstr "子任務工作時數"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_project_task

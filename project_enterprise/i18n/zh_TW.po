@@ -115,7 +115,7 @@ msgstr "分配類別"
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view_no_title
 msgid "Assignees"
-msgstr "執行者"
+msgstr "受指派人"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.view_task_confirm_schedule_wizard_form
@@ -453,7 +453,7 @@ msgstr "未分配的任務"
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form_in_gantt
 msgid "Unschedule"
-msgstr ""
+msgstr "取消排期"
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_res_users

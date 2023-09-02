@@ -158,7 +158,7 @@ msgstr "表示名"
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_sale_order__commission_plan_frozen
 msgid "Freeze Plan"
-msgstr ""
+msgstr "プランを凍結"
 
 #. module: partner_commission
 #: model_terms:ir.ui.view,arch_db:partner_commission.res_config_settings_view_form

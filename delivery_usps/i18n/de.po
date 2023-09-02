@@ -208,7 +208,7 @@ msgstr "Paketlänge"
 #. module: delivery_usps
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_first_class_mail_type__package_service
 msgid "Package Service"
-msgstr "Verpackungsservice"
+msgstr "Paketservice"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_custom_container_width

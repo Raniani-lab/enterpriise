@@ -404,7 +404,7 @@ msgstr "Ziellagerort"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "Destination Package"
-msgstr "Zielverpackung"
+msgstr "Zielpaket"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1309,7 +1309,7 @@ msgstr "Quelllagerort"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "Source Package"
-msgstr "Quellverpackung"
+msgstr "Quellpaket"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_package_type

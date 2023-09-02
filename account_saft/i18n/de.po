@@ -73,3 +73,5 @@ msgstr "SAFT ist nur mit einer Spaltengruppen kompatibel."
 #, python-format
 msgid "Please define one or more Contacts belonging to your company."
 msgstr ""
+"Bitte legen Sie einen oder mehrere Kontakte fest, die zu Ihrem Unternehmen "
+"gehören."

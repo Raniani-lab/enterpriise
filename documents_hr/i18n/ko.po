@@ -150,11 +150,9 @@ msgstr "임직원"
 #: code:addons/documents_hr/models/hr_employee.py:0
 #, python-format
 msgid ""
-"Employee's private email must be set to use \"Send Access Link\" function:\n"
+"Employee's related user and private email must be set to use \"Send Access Link\" function:\n"
 "%s"
 msgstr ""
-"직원의 개인 이메일은 '액세스 링크 보내기' 기능을 사용하도록 설정해야 합니다:\n"
-"%s"
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_employees

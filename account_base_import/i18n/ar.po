@@ -197,7 +197,7 @@ msgstr "استيراد شجرة الحسابات والأرصدة المبدئي
 #: code:addons/account_base_import/static/src/js/account_import_guide.js:0
 #, python-format
 msgid "Install a module"
-msgstr "تثبيت تطبيق "
+msgstr "قم بتثبيت تطبيق "
 
 #. module: account_base_import
 #: model:ir.model,name:account_base_import.model_account_move_line

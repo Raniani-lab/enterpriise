@@ -54,6 +54,8 @@ msgid ""
 "All fields will be automated by Artificial Intelligence, it might take 5 "
 "seconds."
 msgstr ""
+"Todos os campos serão automatizados pela inteligência artificial, o que pode"
+" levar 5 segundos."
 
 #. module: hr_recruitment_extract
 #. odoo-python
@@ -98,17 +100,17 @@ msgstr "Configurações"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__res_company__recruitment_extract_show_ocr_option_selection__auto_send
 msgid "Digitize automatically"
-msgstr ""
+msgstr "Digitalizar automaticamente"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__res_company__recruitment_extract_show_ocr_option_selection__manual_send
 msgid "Digitize on demand only"
-msgstr ""
+msgstr "Somente digitalizar sob demanda"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__res_company__recruitment_extract_show_ocr_option_selection__no_send
 msgid "Do not digitize"
-msgstr ""
+msgstr "Não digitalizar"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_error_message
@@ -191,7 +193,7 @@ msgstr ""
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_actions_server_digitize_cv
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "Send For Digitization"
-msgstr ""
+msgstr "Enviar para digitalização"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_company__recruitment_extract_show_ocr_option_selection
@@ -228,6 +230,8 @@ msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
 "between 5 and 10 seconds."
 msgstr ""
+"A extração de dados ainda não foi concluída. A extração geralmente leva de 5"
+" a 10 segundos."
 
 #. module: hr_recruitment_extract
 #. odoo-python

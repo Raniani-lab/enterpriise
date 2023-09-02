@@ -744,7 +744,7 @@ msgstr "الحسابات التحليلية:"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__filter_analytic_groupby
 msgid "Analytic Group By"
-msgstr "التحليلي تجميع حسب"
+msgstr "التجميع التحليلي حسب "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -2014,6 +2014,28 @@ msgstr "إدراج تذييل هنا "
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "Intra-community taxes are applied on"
 msgstr "الضرائب بين المجتمعات مطبقة على "
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Invalid domain formula in expression %r of line %r: %s"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Invalid method %r"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Invalid subformula in expression %r of line %r: %s"
+msgstr ""
 
 #. module: account_reports
 #. odoo-python

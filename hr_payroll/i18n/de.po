@@ -395,7 +395,7 @@ msgstr "Zuschuss"
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_salary_rule__condition_select__none
 msgid "Always True"
-msgstr "Immer Wahr"
+msgstr "Immer wahr"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__amount
@@ -2774,7 +2774,7 @@ msgstr "Prozentsatz"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__amount_percentage
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_salary_rule__amount_select__percentage
 msgid "Percentage (%)"
-msgstr "Prozent (%)"
+msgstr "Prozentsatz (%)"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__amount_percentage_base

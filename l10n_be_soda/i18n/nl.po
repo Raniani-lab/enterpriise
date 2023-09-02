@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2023
-# Gunther Clauwaert <gclauwae@hotmail.com>, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-03 07:14+0000\n"
 "PO-Revision-Date: 2023-02-03 07:15+0000\n"
-"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,6 +40,8 @@ msgid ""
 "The SODA Entry could not be created: \n"
 "The company VAT number found in at least one document doesn't match the one from the company's journal."
 msgstr ""
+"De SODA boeking kon niet worden gemaakt: \n"
+"Het btw-nummer van het bedrijf dat in ten minste één document is gevonden, komt niet overeen met het btw-nummer van het dagboek van het bedrijf."
 
 #. module: l10n_be_soda
 #. odoo-python
@@ -49,10 +51,12 @@ msgid ""
 "The SODA Entry could not be created: \n"
 "The company VAT number found in the document doesn't match the one from the company's journal."
 msgstr ""
+"De SODA boeking kon niet worden gemaakt:\n"
+"Het btw-nummer van het bedrijf dat in het document is gevonden komt niet overeen met het btw-nummer uit het dagboek van het bedrijf."
 
 #. module: l10n_be_soda
 #. odoo-python
 #: code:addons/l10n_be_soda/models/account_journal.py:0
 #, python-format
 msgid "The entry %s has already been uploaded (%s)."
-msgstr "De invoer %s werd al geüpload (%s)."
+msgstr "De boeking %s werd al geüpload (%s)."

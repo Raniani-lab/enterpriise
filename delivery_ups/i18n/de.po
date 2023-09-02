@@ -200,12 +200,12 @@ msgstr "PDF"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_package_dimension_unit
 msgid "Package Size Unit"
-msgstr "Abmessungseinheit der Verpackung"
+msgstr "Abmessungseinheit des Pakets"
 
 #. module: delivery_ups
 #: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Package Weight Unit"
-msgstr "Gewichtseinheit der Verpackung"
+msgstr "Gewichtseinheit des Pakets"
 
 #. module: delivery_ups
 #. odoo-python

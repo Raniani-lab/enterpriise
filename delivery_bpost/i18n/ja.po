@@ -248,7 +248,7 @@ msgstr "配送方法"
 #. module: delivery_bpost
 #: model:ir.model,name:delivery_bpost.model_stock_package_type
 msgid "Stock package type"
-msgstr ""
+msgstr "在庫梱包タイプ"
 
 #. module: delivery_bpost
 #. odoo-python

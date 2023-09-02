@@ -4,7 +4,7 @@
 # 
 # Translators:
 # M Palau <mpalau@tda.ad>, 2022
-# jabelchi, 2022
+# Josep Anton Belchi, 2022
 # Quim - eccit <quim@eccit.com>, 2022
 # Martin Trigaux, 2022
 # marcescu, 2022
@@ -141,11 +141,9 @@ msgstr "Empleat"
 #: code:addons/documents_hr/models/hr_employee.py:0
 #, python-format
 msgid ""
-"Employee's private email must be set to use \"Send Access Link\" function:\n"
+"Employee's related user and private email must be set to use \"Send Access Link\" function:\n"
 "%s"
 msgstr ""
-"El correu electrònic privat del treballador s'ha d'establir per utilitzar la funció \"Envia l'enllaç d'accés\":\n"
-"%s"
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_employees

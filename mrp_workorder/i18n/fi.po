@@ -1244,6 +1244,15 @@ msgstr "Et ole asettanut lopputuotteelle eränumeroa tai sarjanumeroa"
 #. odoo-python
 #: code:addons/mrp_workorder/models/mrp_workorder.py:0
 #, python-format
+msgid ""
+"You need to complete Quality Checks using the Tablet View before marking "
+"Work Order as Done."
+msgstr ""
+
+#. module: mrp_workorder
+#. odoo-python
+#: code:addons/mrp_workorder/models/mrp_workorder.py:0
+#, python-format
 msgid "You should provide a lot/serial number for the final product"
 msgstr "Lopullisen tuotteen erä- tai sarjanumero on ilmoitettava"
 

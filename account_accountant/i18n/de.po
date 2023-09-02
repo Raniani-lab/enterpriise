@@ -80,7 +80,7 @@ msgid ""
 "%(display_name_html)s with an open amount of %(open_amount)s will be reduced"
 " by %(amount)s."
 msgstr ""
-"%(display_name_html)s über einen offenen Betrag von%(open_amount)s wird um "
+"%(display_name_html)s über einen offenen Betrag von %(open_amount)s wird um "
 "%(amount)s reduziert."
 
 #. module: account_accountant
@@ -1831,7 +1831,7 @@ msgstr "Währung des Steuerbasisbetrags"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Tax Included in Price"
-msgstr "Steuer im Preis enthalten"
+msgstr "Steuer im Preis inbegriffen"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__tax_lock_date

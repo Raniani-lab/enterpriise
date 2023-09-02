@@ -461,4 +461,4 @@ msgstr "per anno"
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "This recurrence unit is not supported."
-msgstr ""
+msgstr "Quest'unità di ricorrenza non è supportata."

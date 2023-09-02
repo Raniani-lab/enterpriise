@@ -1544,10 +1544,7 @@ msgid ""
 "Prevents Tax Returns modification prior to the defined date (Journal Entries"
 " involving taxes). The Tax Return Lock Date is automatically set when the "
 "corresponding Journal Entry is posted."
-msgstr ""
-"Prevents Tax Returns modification prior to the defined date (Journal Entries"
-" involving taxes). The Tax Return Lock Date is automatically set when the "
-"corresponding Journal Entry is posted."
+msgstr "在設定的日期之前，防止用戶修改報稅表（涉及稅項的日記賬記項）。「報稅鎖定日期」會在相應的日記賬記項過賬時自動設置。"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1791,7 +1788,7 @@ msgstr "稅金再分配明細"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__tax_lock_date
 msgid "Tax Return Lock Date"
-msgstr "Tax Return Lock Date"
+msgstr "報稅鎖定日期"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_tag_ids

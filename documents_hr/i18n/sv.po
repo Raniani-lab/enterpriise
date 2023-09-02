@@ -8,7 +8,7 @@
 # Anders Wallenquist <anders.wallenquist@vertel.se>, 2022
 # Chrille Hedberg <hedberg.chrille@gmail.com>, 2022
 # Mikael Åkerberg <mikael.akerberg@mariaakerberg.com>, 2023
-# Lasse Larsson, 2023
+# Lasse L, 2023
 # Muhammad Yaseen, 2023
 # 
 msgid ""
@@ -153,11 +153,9 @@ msgstr "Anställd"
 #: code:addons/documents_hr/models/hr_employee.py:0
 #, python-format
 msgid ""
-"Employee's private email must be set to use \"Send Access Link\" function:\n"
+"Employee's related user and private email must be set to use \"Send Access Link\" function:\n"
 "%s"
 msgstr ""
-"Anställdas privata e-post måste vara inställd för att använda funktionen \"Skicka åtkomstlänk\":\n"
-"%s"
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_employees

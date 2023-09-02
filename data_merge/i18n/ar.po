@@ -5,7 +5,6 @@
 # Translators:
 # Martin Trigaux, 2022
 # Mehjabin Farsana, 2022
-# Niyas Raphy, 2023
 # Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
@@ -668,7 +667,7 @@ msgstr "يجب أن يكون تواتر الإشعارات أكبر من 0 "
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "The referenced record does not exist"
-msgstr "المشار إليها السجل غير موجود"
+msgstr "السجل المشار إليه غير موجود "
 
 #. module: data_merge
 #. odoo-javascript

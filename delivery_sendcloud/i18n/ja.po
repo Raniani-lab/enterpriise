@@ -437,7 +437,7 @@ msgstr ""
 #. module: delivery_sendcloud
 #: model:ir.model,name:delivery_sendcloud.model_stock_package_type
 msgid "Stock package type"
-msgstr ""
+msgstr "在庫梱包タイプ"
 
 #. module: delivery_sendcloud
 #. odoo-python

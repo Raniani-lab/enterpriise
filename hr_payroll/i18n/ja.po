@@ -261,6 +261,15 @@ msgid ""
 "</tbody></table>\n"
 "            "
 msgstr ""
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
+"    <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
+"         <t t-esc=\"object.employee_id.name\"></t>様、新しい給与明細の用意ができました。<br><br>\n"
+"        従業員ポータルでPDFをご確認下さい。<br><br>\n"
+"        よろしくお願いします。<br>\n"
+"        人事部\n"
+"    </td></tr>\n"
+"</tbody></table>\n"
+"            "
 
 #. module: hr_payroll
 #: model:ir.model.constraint,message:hr_payroll.constraint_hr_work_entry_type_is_unforeseen_is_leave

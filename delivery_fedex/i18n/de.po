@@ -402,7 +402,7 @@ msgstr "PRIORITY_OVERNIGHT"
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Package Weight Unit"
-msgstr "Gewichtseinheit der Verpackung"
+msgstr "Gewichtseinheit des Pakets"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_developer_password

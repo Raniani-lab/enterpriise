@@ -67,3 +67,9 @@ msgstr ""
 #, python-format
 msgid "SAFT is only compatible with one column group."
 msgstr "SAFT on yhteensopiva vain yhden sarakkeen ryhmien kanssa."
+
+#. module: account_saft
+#: code:addons/account_saft/models/account_general_ledger.py:0
+#, python-format
+msgid "Please define one or more Contacts belonging to your company."
+msgstr ""

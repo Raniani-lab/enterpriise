@@ -5,7 +5,6 @@
 # Translators:
 # Martin Trigaux, 2022
 # Hassan Najm <hassannjm@gmail.com>, 2022
-# Niyas Raphy, 2022
 # Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
@@ -202,7 +201,7 @@ msgstr "المُعرف"
 #. module: delivery_sendcloud
 #: model_terms:ir.ui.view,arch_db:delivery_sendcloud.view_delivery_carrier_form
 msgid "Integration"
-msgstr "اندماج"
+msgstr "الربط "
 
 #. module: delivery_sendcloud
 #. odoo-python
@@ -306,7 +305,7 @@ msgstr "إرجاع "
 #. module: delivery_sendcloud
 #: model:ir.model.fields,field_description:delivery_sendcloud.field_sendcloud_shipping_wizard__return_carrier
 msgid "Return Carrier"
-msgstr "يعود الناقل"
+msgstr "شركة شحن عمليات الإرجاع "
 
 #. module: delivery_sendcloud
 #: model:ir.model.fields,field_description:delivery_sendcloud.field_sendcloud_shipping_wizard__return_country_ids
@@ -414,7 +413,7 @@ msgstr "الشحن"
 #. module: delivery_sendcloud
 #: model:ir.model.fields,field_description:delivery_sendcloud.field_sendcloud_shipping_product__carrier
 msgid "Shipping Carrier"
-msgstr "الشحن الناقل"
+msgstr "شركة الشحن "
 
 #. module: delivery_sendcloud
 #: model:ir.model,name:delivery_sendcloud.model_delivery_carrier

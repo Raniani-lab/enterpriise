@@ -3,7 +3,6 @@
 # 	* documents_project
 # 
 # Translators:
-# Niyas Raphy, 2023
 # Martin Trigaux, 2023
 # Malaz Abuidris <msea@odoo.com>, 2023
 # 
@@ -246,7 +245,7 @@ msgstr ""
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_task__project_use_documents
 msgid "Use Documents"
-msgstr "يستخدم مستندات"
+msgstr "استخدم المستندات "
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_validate

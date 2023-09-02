@@ -716,7 +716,7 @@ msgstr "Unité de mesure d'encodage"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "Enter"
-msgstr "Saisir"
+msgstr "Enter"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
@@ -1193,7 +1193,7 @@ msgid ""
 "description to automatically log your activity.</i>"
 msgstr ""
 "Arrêtez le <b>minuteur</b> lorsque vous avez terminé. <i>Astuce : appuyez "
-"sur <b>[Entrer]</b> dans la description pour enregistrer votre activité "
+"sur <b>[Enter]</b> dans la description pour enregistrer votre activité "
 "automatiquement.</i>"
 
 #. module: timesheet_grid
@@ -1719,7 +1719,7 @@ msgstr "appuyer sur"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "press Shift + a letter shortcut"
-msgstr "appuyer sur Maj + une lettre de raccourci"
+msgstr "appuyer sur Shift + une lettre de raccourci"
 
 #. module: timesheet_grid
 #. odoo-javascript

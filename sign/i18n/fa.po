@@ -8,11 +8,11 @@
 # Mohammad Tahmasebi <hit.tah75@gmail.com>, 2023
 # Faraz Sadri Alamdari <ifarazir@gmail.com>, 2023
 # سید محمد آذربرا <mohammadazarbara98@gmail.com>, 2023
-# F Hariri <fhari1234@gmail.com>, 2023
 # Hamed Mohammadi <hamed@dehongi.com>, 2023
 # Martin Trigaux, 2023
 # Hanna Kheradroosta, 2023
 # fardin mardani, 2023
+# F Hariri <fhari1234@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -20,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: fardin mardani, 2023\n"
+"Last-Translator: F Hariri <fhari1234@gmail.com>, 2023\n"
 "Language-Team: Persian (https://app.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2002,6 +2002,13 @@ msgstr ""
 #, python-format
 msgid "Next signatory is \"%s\""
 msgstr ""
+
+#. module: sign
+#. odoo-python
+#: code:addons/sign/models/sign_template.py:0
+#, python-format
+msgid "No attachment was provided"
+msgstr "هیچ پیوستی ارائه نشد"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_action

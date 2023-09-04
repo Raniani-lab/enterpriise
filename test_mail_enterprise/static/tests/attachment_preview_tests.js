@@ -198,10 +198,7 @@ QUnit.test("Attachment on side on new record", async () => {
     };
     patchUiSize({ size: SIZES.XXL });
     const { openFormView } = await start({ serverData: { views } });
-    openFormView("mail.test.simple.main.attachment", undefined, {
-        waitUntilDataLoaded: false,
-        waitUntilMessagesLoaded: false,
-    });
+    openFormView("mail.test.simple.main.attachment");
     await contains(".o_form_sheet_bg + .o-mail-Form-chatter");
     await contains(".o_attachment_preview", { count: 0 });
 });

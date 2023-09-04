@@ -57,10 +57,7 @@ QUnit.test("Click on PhoneField link triggers a call", async (assert) => {
             }),
         },
     });
-    await openFormView("fake", fakeId, {
-        waitUntilDataLoaded: false,
-        waitUntilMessagesLoaded: false,
-    });
+    await openFormView("fake", fakeId);
     await click(".o_field_phone a:eq(0)");
     await def;
     assert.verifySteps(["call placed"]);
@@ -75,10 +72,7 @@ QUnit.test(
             serverData: { views },
             services: { voip: makeFakeVoipService() },
         });
-        await openFormView("fake", fakeId, {
-            waitUntilDataLoaded: false,
-            waitUntilMessagesLoaded: false,
-        });
+        await openFormView("fake", fakeId);
         await click(".o_field_phone a:eq(0)");
         await nextTick();
         await contains(".o_form_readonly");

@@ -1,4 +1,7 @@
-/** @odoo-module **/
+/* @odoo-module */
+
+import { contains } from "@bus/../tests/helpers/test_utils";
+
 import {
     click,
     getFixture,
@@ -587,9 +590,9 @@ QUnit.module("Studio", (hooks) => {
         await click(target, ".o_web_studio_app_creator_next");
         await editInput(target, ".o_web_studio_menu_creator input", "testMenu");
         await click(target, ".o_web_studio_app_creator_next");
-        await owl.App.afterNextRender(() => click(target, ".o_web_studio_model_configurator_next"));
+        await click(target, ".o_web_studio_model_configurator_next");
+        await contains(".o_web_studio_action_editor");
         assert.verifySteps(["error"]);
-        assert.containsOnce(target, ".o_web_studio_action_editor");
     });
 
     QUnit.test("open same record when leaving form", async function (assert) {

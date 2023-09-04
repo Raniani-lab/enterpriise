@@ -146,15 +146,12 @@ function parseServerValues(fields, values) {
 }
 
 export class GanttModel extends Model {
-    static services = ["notification"];
-
-    setup(params, services) {
+    setup(params) {
         /** @type {Data} */
         this.data = {};
         /** @type {MetaData} */
         this.metaData = params.metaData;
 
-        this.notificationService = services.notification;
         this.searchParams = null;
 
         /** @type {Set<RowId>} */
@@ -945,16 +942,9 @@ export class GanttModel extends Model {
      */
     _getGroupedBy(metaData, searchParams) {
         let groupedBy = [...searchParams.groupBy];
+        groupedBy = this._filterDateIngroupedBy(metaData, groupedBy);
         if (!groupedBy.length) {
             groupedBy = metaData.defaultGroupBy;
-        }
-
-        const lengthBeforeFiltering = groupedBy.length;
-        groupedBy = this._filterDateIngroupedBy(metaData, groupedBy);
-        if (groupedBy.length !== lengthBeforeFiltering) {
-            this.notificationService.add(_t("Grouping by date is not supported"), {
-                type: "danger",
-            });
         }
         return groupedBy;
     }

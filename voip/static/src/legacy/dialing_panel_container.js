@@ -1,12 +1,8 @@
 /* @odoo-module */
 
 import { Component, xml } from "@odoo/owl";
-
+import { useWidget } from "@web/legacy/utils";
 import { DialingPanel } from "@voip/legacy/dialing_panel";
-
-import { ComponentAdapter } from "@web/legacy/js/owl_compatibility";
-
-export class DialingPanelAdapter extends ComponentAdapter {}
 
 /**
  * Main component to wrap the DialingPanel. Ideally, it should conditionally
@@ -16,15 +12,10 @@ export class DialingPanelAdapter extends ComponentAdapter {}
  * converted in owl (e.g. rpcs done in the service at deployment).
  */
 export class DialingPanelContainer extends Component {
-    static components = { DialingPanelAdapter };
     static props = {};
-    static template = xml`
-        <div class="o_voip_dialing_panel_container">
-            <DialingPanelAdapter Component="DialingPanel"/>
-        </div>
-    `;
+    static template = xml`<div class="o_voip_dialing_panel_container" t-ref="container"/>`;
 
     setup() {
-        this.DialingPanel = DialingPanel;
+        useWidget("container", DialingPanel);
     }
 }

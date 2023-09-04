@@ -120,7 +120,7 @@ class WorldlineDriver(Driver):
                 ticket=customer_receipt.value,
                 ticket_merchant=merchant_receipt.value,
                 card=card.value,
-                transaction_id=transaction['action_identifier'],
+                transaction_id=transaction['actionIdentifier'],
             )
         elif result == 0:
             # Transaction failed

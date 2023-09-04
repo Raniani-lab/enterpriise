@@ -170,5 +170,5 @@ QUnit.test("Allow channel commands for whatsapp channels", async (assert) => {
     await openDiscuss(channelId);
     await insertText(".o-mail-Composer-input", "/");
     await contains(".o-mail-NavigableList");
-    await contains(".o-mail-NavigableList-item", {count: 2})
+    await contains(".o-mail-NavigableList-item", { text: "leaveLeave this channel" });
 });

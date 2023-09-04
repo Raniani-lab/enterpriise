@@ -1,7 +1,8 @@
 /** @odoo-module **/
 
 import { _t } from "@web/core/l10n/translation";
-import { formatFloat, formatPercentage } from "@web/views/fields/formatters";
+import { formatPercentage } from "@web/views/fields/formatters";
+import { formatFloat } from "@web/core/utils/numbers";
 
 import { Component } from "@odoo/owl";
 import { Dropdown } from "@web/core/dropdown/dropdown";

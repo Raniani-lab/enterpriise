@@ -1,7 +1,8 @@
 /** @odoo-module **/
 
 import { session } from '@web/session';
-import { formatFloat, formatFloatTime } from '@web/views/fields/formatters';
+import { formatFloatTime } from '@web/views/fields/formatters';
+import { formatFloat } from "@web/core/utils/numbers";
 import { useService } from "@web/core/utils/hooks";
 import { HelpdeskTeamTarget } from "../helpdesk_team_target/helpdesk_team_target";
 

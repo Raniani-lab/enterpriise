@@ -4,7 +4,7 @@ import { _t } from "@web/core/l10n/translation";
 import { useBus, useService } from "@web/core/utils/hooks";
 import { escape } from "@web/core/utils/strings";
 import { memoize } from "@web/core/utils/functions";
-import { formatFloat } from "@web/views/fields/formatters";
+import { formatFloat } from "@web/core/utils/numbers";
 import { useSetupView } from "@web/views/view_hook";
 import { PdfManager } from "@documents/owl/components/pdf_manager/pdf_manager";
 import { x2ManyCommands } from "@web/core/orm_service";

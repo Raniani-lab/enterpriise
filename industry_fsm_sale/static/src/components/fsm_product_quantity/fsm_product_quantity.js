@@ -3,7 +3,7 @@
 import { registry } from "@web/core/registry";
 import { useAutofocus } from "@web/core/utils/hooks";
 import { archParseBoolean } from '@web/views/utils';
-import { formatFloat } from "@web/views/fields/formatters";
+import { formatFloat } from "@web/core/utils/numbers";
 import { FloatField, floatField } from '@web/views/fields/float/float_field';
 
 const { useState, useRef, useEffect } = owl;
@@ -35,7 +35,7 @@ export class FsmProductQuantity extends FloatField {
         if (!this.state.readonly && this.props.inputType === "number") {
             return this.props.record.data[this.props.name];
         }
-        return formatFloat(this.props.record.data[this.props.name], { noTrailingZeros: true });
+        return formatFloat(this.props.record.data[this.props.name], { trailingZeros: false });
     }
 
     toggleMode() {

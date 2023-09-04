@@ -1,6 +1,7 @@
 /* @odoo-module */
 
-import { formatFloat, formatFloatTime } from "@web/views/fields/formatters";
+import { formatFloatTime } from "@web/views/fields/formatters";
+import { formatFloat } from "@web/core/utils/numbers";
 import { GanttRenderer } from "@web_gantt/gantt_renderer";
 import { getUnionOfIntersections } from "@web_gantt/gantt_helpers";
 import { PlanningEmployeeAvatar } from "./planning_employee_avatar";
@@ -311,7 +312,7 @@ export class PlanningGanttRenderer extends GanttRenderer {
         return { start, stop };
     }
 
-    
+
 }
 PlanningGanttRenderer.rowHeaderTemplate = "planning.PlanningGanttRenderer.RowHeader";
 PlanningGanttRenderer.pillTemplate = "planning.PlanningGanttRenderer.Pill";

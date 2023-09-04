@@ -3,7 +3,7 @@
 import { _t } from "@web/core/l10n/translation";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import DocumentViewer from "@mrp_workorder/components/viewer";
-import { formatFloat } from "@web/views/fields/formatters";
+import { formatFloat } from "@web/core/utils/numbers";
 import { FloatField } from "@web/views/fields/float/float_field";
 import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
 import { TabletImageField } from "@quality/tablet_image_field/tablet_image_field";

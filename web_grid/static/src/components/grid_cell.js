@@ -3,7 +3,8 @@
 import { registry } from "@web/core/registry";
 
 import { useNumpadDecimal } from "@web/views/fields/numpad_decimal_hook";
-import { formatInteger, formatFloat } from "@web/views/fields/formatters";
+import { formatInteger } from "@web/views/fields/formatters";
+import { formatFloat } from "@web/core/utils/numbers";
 import { parseInteger, parseFloat } from "@web/views/fields/parsers";
 import { useInputHook } from "@web_grid/hooks/input_hook";
 

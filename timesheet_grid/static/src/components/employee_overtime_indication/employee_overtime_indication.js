@@ -1,6 +1,7 @@
 /** @odoo-module */
 
-import { formatFloat, formatFloatTime } from "@web/views/fields/formatters";
+import { formatFloatTime } from "@web/views/fields/formatters";
+import { formatFloat } from "@web/core/utils/numbers";
 
 import { Component } from "@odoo/owl";
 

@@ -1113,12 +1113,12 @@ Content-Disposition: form-data; name="xml"; filename="xml"
            <SOAP-ENV:Header/>
            <ns1:Body>
               <ns0:Consulta>
-                 <ns0:expresionImpresa>${data}</ns0:expresionImpresa>
+                 <ns0:expresionImpresa>{data}</ns0:expresionImpresa>
               </ns0:Consulta>
            </ns1:Body>
         </SOAP-ENV:Envelope>"""
         namespace = {'a': 'http://schemas.datacontract.org/2004/07/Sat.Cfdi.Negocio.ConsultaCfdi.Servicio'}
-        params = '?re=%s&amp;rr=%s&amp;tt=%s&amp;id=%s' % (
+        params = "<![CDATA[?re=%s&rr=%s&tt=%s&id=%s]]>" % (
             tools.html_escape(supplier_rfc or ''),
             tools.html_escape(customer_rfc or ''),
             total or 0.0, uuid or '')

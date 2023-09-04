@@ -170,9 +170,9 @@ class WhatsAppComposer(models.TransientModel):
         for rec in self:
             freetext_btn_vars = rec.wa_template_id.variable_ids.filtered(lambda line: line.line_type == 'button' and line.field_type == 'free_text')
             if not rec.button_dynamic_url_1:
-                rec.button_dynamic_url_1 = freetext_btn_vars.demo_value if len(freetext_btn_vars) > 0 else ''
-            if not rec.button_dynamic_url_1:
-                rec.button_dynamic_url_2 = freetext_btn_vars.demo_value if len(freetext_btn_vars) > 1 else ''
+                rec.button_dynamic_url_1 = freetext_btn_vars[0].demo_value if len(freetext_btn_vars) > 0 else ''
+            if not rec.button_dynamic_url_2:
+                rec.button_dynamic_url_2 = freetext_btn_vars[1].demo_value if len(freetext_btn_vars) > 1 else ''
 
     @api.depends('wa_template_id')
     def _compute_free_text(self):

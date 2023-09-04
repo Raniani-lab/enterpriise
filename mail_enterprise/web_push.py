@@ -10,6 +10,7 @@ import textwrap
 import time
 
 from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import ec, utils
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.kdf.hkdf import HKDF
@@ -31,7 +32,7 @@ def generate_web_push_vapid_key():
     These keys will be used during communication with the endpoint/browser
     https://www.rfc-editor.org/rfc/rfc8292
     """
-    private_key = ec.generate_private_key(ec.SECP256R1())
+    private_key = ec.generate_private_key(ec.SECP256R1(), default_backend())
     private_int = private_key.private_numbers().private_value
     private = private_int.to_bytes(32, 'big')
     private_string = base64.urlsafe_b64encode(private).decode('ascii').strip('=')

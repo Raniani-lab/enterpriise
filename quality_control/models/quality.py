@@ -199,7 +199,7 @@ class QualityCheck(models.Model):
     def _compute_qty_to_test(self):
         for qc in self:
             if qc.is_lot_tested_fractionally:
-                qc.qty_to_test = float_round(qc.qty_line * qc.testing_percentage_within_lot / 100, precision_rounding=self.product_id.uom_id.rounding, rounding_method="UP")
+                qc.qty_to_test = float_round(qc.qty_line * qc.testing_percentage_within_lot / 100, precision_rounding=qc.product_id.uom_id.rounding or 0.01, rounding_method="UP")
             else:
                 qc.qty_to_test = qc.qty_line
 

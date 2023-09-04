@@ -310,7 +310,6 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
                        account_move_line.id AS aml_id
                   FROM {tables}
              LEFT JOIN amount_residuals_by_aml_id ara ON ara.aml_id = account_move_line.id
-                  JOIN account_journal journal ON account_move_line.journal_id = journal.id
                   JOIN account_account account ON account_move_line.account_id = account.id
                   JOIN res_currency currency ON currency.id = account_move_line.currency_id
                   JOIN custom_currency_table ON custom_currency_table.currency_id = currency.id
@@ -322,7 +321,6 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
                              AND (account_move_line.currency_id != account_move_line.company_currency_id)
                             )
                        )
-                   AND journal.type NOT IN ('bank', 'cash')
                    AND (account_move_line.move_id NOT IN ({select_part_exchange_move_id}))
                    AND {'NOT EXISTS' if line_code == 'to_adjust' else 'EXISTS'} (
                         SELECT * FROM account_account_exclude_res_currency_provision WHERE account_account_id = account_id AND res_currency_id = account_move_line.currency_id

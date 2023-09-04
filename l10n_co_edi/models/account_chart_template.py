@@ -7,20 +7,7 @@ class AccountChartTemplate(models.AbstractModel):
 
     @template('co', 'account.tax')
     def _get_co_edi_account_tax(self):
-        return {
-            'l10n_co_tax_8': {'l10n_co_edi_type': self.env.ref('l10n_co_edi.tax_type_0').id},
-            'l10n_co_tax_4': {'l10n_co_edi_type': self.env.ref('l10n_co_edi.tax_type_0').id},
-            'l10n_co_tax_9': {'l10n_co_edi_type': self.env.ref('l10n_co_edi.tax_type_0').id},
-            'l10n_co_tax_10': {'l10n_co_edi_type': self.env.ref('l10n_co_edi.tax_type_0').id},
-            'l10n_co_tax_11': {'l10n_co_edi_type': self.env.ref('l10n_co_edi.tax_type_0').id},
-            'l10n_co_tax_53': {'l10n_co_edi_type': self.env.ref('l10n_co_edi.tax_type_5').id},
-            'l10n_co_tax_54': {'l10n_co_edi_type': self.env.ref('l10n_co_edi.tax_type_5').id},
-            'l10n_co_tax_55': {'l10n_co_edi_type': self.env.ref('l10n_co_edi.tax_type_4').id},
-            'l10n_co_tax_56': {'l10n_co_edi_type': self.env.ref('l10n_co_edi.tax_type_4').id},
-            'l10n_co_tax_57': {'l10n_co_edi_type': self.env.ref('l10n_co_edi.tax_type_6').id},
-            'l10n_co_tax_58': {'l10n_co_edi_type': self.env.ref('l10n_co_edi.tax_type_6').id},
-            'l10n_co_tax_covered_goods': {'l10n_co_edi_type': self.env.ref('l10n_co_edi.tax_type_0').id},
-        }
+        return self._parse_csv('co', 'account.tax', module='l10n_co_edi')
 
     @template('co', 'account.tax.group')
     def _get_co_edi_account_tax_group(self):

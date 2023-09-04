@@ -1957,7 +1957,6 @@ class TestAccountAsset(TestAccountReportsCommon):
                 (account_e.id, 'Xbox', 500),
             ]
         ]).validate()
-        self.env['account.move']._autopost_draft_entries()
 
         # Configure the depreciation schedule report.
         report = self.env.ref('account_asset.assets_report')

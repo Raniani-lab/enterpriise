@@ -12,8 +12,8 @@ import {
     KnowledgeSidebarWorkspaceSection
 } from "./sidebar_section";
 import { throttleForAnimation } from "@web/core/utils/timing";
+import { useNestedSortable } from "@web/core/utils/nested_sortable";
 import { useService } from "@web/core/utils/hooks";
-import { useSortableList } from "@knowledge/js/sortableList";
 import { useRecordObserver } from "@web/model/relational_model/utils";
 
 import { Component, onWillStart, reactive, useRef, useState, useChildSubEnv } from "@odoo/owl";
@@ -94,7 +94,7 @@ export class KnowledgeSidebar extends Component {
         this.loadArticles();
 
         // Resequencing of the favorite articles
-        useSortableList({
+        useNestedSortable({
             ref: this.favoriteTree,
             elements: ".o_tree > li",
             edgeScrolling: {
@@ -110,7 +110,7 @@ export class KnowledgeSidebar extends Component {
         });
 
         // Resequencing and rehierarchisation of articles
-        useSortableList({
+        useNestedSortable({
             ref: this.mainTree,
             groups: () => this.isInternalUser ? ".o_section" : ".o_section[data-section='private']",
             connectGroups: () => this.isInternalUser,

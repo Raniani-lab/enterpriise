@@ -3,6 +3,7 @@
 import { _t } from "@web/core/l10n/translation";
 import { browser } from "@web/core/browser/browser";
 import { SearchPanel } from "@web/search/search_panel/search_panel";
+import { useNestedSortable } from "@web/core/utils/nested_sortable";
 import { usePopover } from "@web/core/popover/popover_hook";
 import { useService } from "@web/core/utils/hooks";
 import { utils as uiUtils } from "@web/core/ui/ui_service";
@@ -46,6 +47,48 @@ export class DocumentsSearchPanel extends SearchPanel {
 
         onWillStart(async () => {
             this.isDocumentManager = await this.user.hasGroup("documents.group_documents_manager");
+        });
+
+        useNestedSortable({
+            ref: this.root,
+            groups: ".o_search_panel_category",
+            elements: "li:not(.o_all_category)",
+            enable: () => this.isDocumentManager,
+            nest: true,
+            nestInterval: 10,
+            /**
+             * When the placeholder moves, unfold the new parent and show/hide carets
+             * where needed.
+             * @param {DOMElement} parent - parent element of where the element was moved
+             * @param {DOMElement} newGroup - group in which the element was moved
+             * @param {DOMElement} prevPos.parent - element's parent before the move
+             * @param {DOMElement} placeholder - hint element showing the current position
+             */
+            onMove: ({ parent, newGroup, prevPos, placeholder }) => {
+                if (parent) {
+                    parent.classList.add("o_has_treeEntry");
+                    placeholder.classList.add("o_treeEntry");
+                    const parentSectionId = parseInt(newGroup.dataset.sectionId);
+                    const parentValueId = parseInt(parent.dataset.valueId);
+                    this.state.expanded[parentSectionId][parentValueId] = true;
+                } else {
+                    placeholder.classList.remove("o_treeEntry");
+                }
+                if (prevPos.parent && !prevPos.parent.querySelector("li")) {
+                    prevPos.parent.classList.remove("o_has_treeEntry");
+                }
+            },
+            onDrop: async ({ element, parent, next }) => {
+                const draggingFolderId = parseInt(element.dataset.valueId);
+                const parentFolderId = parent ? parseInt(parent.dataset.valueId) : false;
+                const beforeFolderId = next ? parseInt(next.dataset.valueId) : false;
+                await this.orm.call("documents.folder", "move_folder_to", [
+                    [draggingFolderId],
+                    parentFolderId,
+                    beforeFolderId,
+                ]);
+                await this._reloadSearchModel(true);
+            },
         });
     }
 
@@ -252,20 +295,6 @@ export class DocumentsSearchPanel extends SearchPanel {
         return false;
     }
 
-    onDragStartFolder(value, ev) {
-        if (!value.id || !this.isDocumentManager) {
-            return;
-        }
-        ev.dataTransfer.setData("o_documents_drag_folder", "");
-        const newElement = document.createElement("span");
-        newElement.classList.add("o_documents_drag_icon");
-        newElement.innerText = value.display_name;
-        document.body.append(newElement);
-        ev.dataTransfer.setDragImage(newElement, -5, -5);
-        this.draggingFolder = value;
-        setTimeout(() => newElement.remove());
-    }
-
     /**
      * @param {Object} section
      * @param {Object} value
@@ -295,22 +324,7 @@ export class DocumentsSearchPanel extends SearchPanel {
         }
         if (ev.dataTransfer.types.includes("o_documents_data")) {
             await this.onDropDocuments(section, value, ev);
-        } else if (ev.dataTransfer.types.includes("o_documents_drag_folder")) {
-            await this.onDropFolder(section, value, ev);
         }
-    }
-
-    async onDropFolder(section, value, ev) {
-        if (
-            !this.isValidDragTransfer(section, value, ev.currentTarget, ev.dataTransfer) ||
-            this.draggingFolder.id === value.id
-        ) {
-            return;
-        }
-        // Dropping a folder into another one makes the dropped folder a child of the parent
-        await this.orm.call("documents.folder", "set_parent_folder", [[this.draggingFolder.id], value.id]);
-        await this._reloadSearchModel(true);
-        this.render(true);
     }
 
     /**

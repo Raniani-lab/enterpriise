@@ -65,7 +65,7 @@
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
             </t>
             <div class="card">
-                <img src="/web_enterprise/static/img/odoo-icon-192x192.png" alt="Odoo logo"/>
+                <img t-attf-src="data:image/png;base64,{{odoo_icon}}" alt="Odoo logo"/>
                 <h1>You are offline</h1>
                 <p>Check your network connection and come back here. Odoo will load as soon as you're back online.</p>
                 <button onclick="location.reload()">Check again</button>

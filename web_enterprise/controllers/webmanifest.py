@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
+import base64
 import json
 import mimetypes
 
@@ -86,7 +86,12 @@ class WebManifest(http.Controller):
             body = f.read()
             return body
 
+    def _icon_path(self):
+        return 'web_enterprise/static/img/odoo-icon-192x192.png'
+
     @http.route('/web/offline', type='http', auth='public', methods=['GET'])
     def offline(self):
         """ Returns the offline page delivered by the service worker """
-        return request.render('web_enterprise.webclient_offline')
+        return request.render('web_enterprise.webclient_offline', {
+            'odoo_icon': base64.b64encode(file_open(self._icon_path(), 'rb').read())
+        })

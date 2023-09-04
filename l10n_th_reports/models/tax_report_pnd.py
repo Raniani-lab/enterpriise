@@ -53,6 +53,7 @@ class TaxReportPND(models.AbstractModel):
                 JOIN account_tax tax on tax.id = account_move_line.tax_line_id
                 LEFT JOIN res_country_state state on partner.state_id = state.id
             WHERE {where_clause}
+         ORDER BY date, partner.name, account_move_line__move_id.name, account_move_line.id
         """
 
         params = [title, dp, dp, dp, *where_params]

@@ -3,7 +3,6 @@
 import { _t } from "@web/core/l10n/translation";
     import PosComponent from "point_of_sale.PosComponent";
     import ProductScreen from "point_of_sale.ProductScreen";
-    import { useListener } from "@web/core/utils/hooks";
     import Registries from "point_of_sale.Registries";
 
     const { onWillStart, useState } = owl;
@@ -12,7 +11,6 @@ import { _t } from "@web/core/l10n/translation";
         // TODO: add the clock in/out ticket and push it to the blackbox.
         setup() {
             super.setup();
-            useListener('click', this.onClick);
             this.state = useState({ status: 0 });
             onWillStart(this.onWillStart);
         }

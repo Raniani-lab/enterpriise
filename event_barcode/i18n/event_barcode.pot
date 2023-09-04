@@ -16,6 +16,18 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: event_barcode
+#: model_terms:ir.ui.view,arch_db:event_barcode.event_event_view_form
+msgid "<span class=\"o_stat_text\">Registration Desk</span>"
+msgstr ""
+
+#. module: event_barcode
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.xml:0
+#, python-format
+msgid "Answers"
+msgstr ""
+
+#. module: event_barcode
 #: model:ir.model.fields,field_description:event_barcode.field_event_registration__barcode
 #: model_terms:ir.ui.view,arch_db:event_barcode.event_report_template_full_page_ticket_inherit_barcode
 msgid "Barcode"

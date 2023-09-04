@@ -258,3 +258,10 @@ msgstr ""
 #, python-format
 msgid "Yes"
 msgstr ""
+
+#. module: l10n_mx_edi_pos
+#. odoo-python
+#: code:addons/l10n_mx_edi_pos/models/pos_order.py:0
+#, python-format
+msgid "You cannot refund multiple invoices at once."
+msgstr ""

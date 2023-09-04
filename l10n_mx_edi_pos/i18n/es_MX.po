@@ -269,3 +269,10 @@ msgstr "Sin efectos fiscales"
 #, python-format
 msgid "Yes"
 msgstr "Sí"
+
+#. module: l10n_mx_edi_pos
+#. odoo-python
+#: code:addons/l10n_mx_edi_pos/models/pos_order.py:0
+#, python-format
+msgid "You cannot refund multiple invoices at once."
+msgstr "No se pueden reembolsar varias facturas a la vez."

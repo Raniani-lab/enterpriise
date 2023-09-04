@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields
+from odoo import models, fields, _
+from odoo.exceptions import ValidationError
 from odoo.addons.l10n_mx_edi.models.account_move import USAGE_SELECTION
 
 
@@ -31,6 +32,9 @@ class PosOrder(models.Model):
 
     def _prepare_invoice_vals(self):
         # OVERRIDE
+        if self.company_id.country_id.code == 'MX' and len(self.refunded_order_ids.account_move) > 1:
+            # raise before the super() call to avoid a traceback
+            raise ValidationError(_("You cannot refund multiple invoices at once."))
         vals = super()._prepare_invoice_vals()
         if self.company_id.country_id.code == 'MX':
             vals.update({
@@ -40,4 +44,6 @@ class PosOrder(models.Model):
                 'l10n_mx_edi_payment_method_id': self.payment_ids.sorted(
                     lambda p: -p.amount)[:1].payment_method_id.l10n_mx_edi_payment_method_id.id,
             })
+            if self.refunded_order_ids.account_move:
+                vals['l10n_mx_edi_cfdi_origin'] = '03|' + self.refunded_order_ids.account_move.l10n_mx_edi_cfdi_uuid
         return vals

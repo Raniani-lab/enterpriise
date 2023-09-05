@@ -605,9 +605,7 @@ msgid "Other Receivable (-)"
 msgstr ""
 
 #. module: l10n_tr_reports
-#: model:account.report.line,name:l10n_tr_reports.account_report_line_trbs_12
 #: model:account.report.line,name:l10n_tr_reports.account_report_line_trbs_13
-#: model:account.report.line,name:l10n_tr_reports.account_report_line_trbs_22
 #: model:account.report.line,name:l10n_tr_reports.account_report_line_trbs_23
 msgid "Other Receivables"
 msgstr ""
@@ -1041,6 +1039,12 @@ msgstr ""
 #: model:account.report.line,name:l10n_tr_reports.account_report_line_trbs_32
 #: model:account.report.line,name:l10n_tr_reports.account_report_line_trbs_42
 msgid "Trade Payables"
+msgstr ""
+
+#. module: l10n_tr_reports
+#: model:account.report.line,name:l10n_tr_reports.account_report_line_trbs_12
+#: model:account.report.line,name:l10n_tr_reports.account_report_line_trbs_22
+msgid "Trade Receivables"
 msgstr ""
 
 #. module: l10n_tr_reports

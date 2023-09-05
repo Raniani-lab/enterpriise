@@ -23,13 +23,13 @@
                     <record id="account_report_line_trbs_1" model="account.report.line">
                         <field name="name">Current Assets</field>
                         <field name="code">TRBS_1</field>
-                        <field name="aggregation_formula">TRBS_10.balance + TRBS_11.balance + TRBS_12.balance + TRBS_13.balance + TRBS_15.balance + TRBS_17.balance + TRBS_18.balance - TRBS_19.balance</field>
+                        <field name="aggregation_formula">TRBS_10.balance + TRBS_11.balance + TRBS_12.balance + TRBS_13.balance + TRBS_15.balance + TRBS_17.balance + TRBS_18.balance + TRBS_19.balance</field>
                         <field name="children_ids">
                             <record id="account_report_line_trbs_10" model="account.report.line">
                                 <field name="name">Liquid Assets</field>
                                 <field name="code">TRBS_10</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">100 + 101 + 102 - 103 + 108</field>
+                                <field name="aggregation_formula">TRBS_100.balance + TRBS_101.balance + TRBS_102.balance - TRBS_103.balance + TRBS_108.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_100" model="account.report.line">
                                         <field name="name">Cash</field>
@@ -61,7 +61,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">- 103</field>
+                                        <field name="account_codes_formula">-103</field>
                                     </record>
                                     <record id="account_report_line_trbs_108" model="account.report.line">
                                         <field name="name">Other Liquid Assets</field>
@@ -77,7 +77,7 @@
                                 <field name="name">Marketable Securities</field>
                                 <field name="code">TRBS_11</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">110 + 111 + 112 + 118 - 119</field>
+                                <field name="aggregation_formula">TRBS_110.balance + TRBS_111.balance + TRBS_112.balance + TRBS_118.balance - TRBS_119.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_110" model="account.report.line">
                                         <field name="name">Common Stocks</field>
@@ -122,10 +122,10 @@
                                 </field>
                             </record>
                             <record id="account_report_line_trbs_12" model="account.report.line">
-                                <field name="name">Other Receivables</field>
+                                <field name="name">Trade Receivables</field>
                                 <field name="code">TRBS_12</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">120 + 121 - 122 + 126 + 127 + 128 - 129</field>
+                                <field name="aggregation_formula">TRBS_120.balance + TRBS_121.balance - TRBS_122.balance + TRBS_126.balance + TRBS_127.balance + TRBS_128.balance - TRBS_129.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_120" model="account.report.line">
                                         <field name="name">Customers</field>
@@ -133,7 +133,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">120</field>
+                                        <field name="account_codes_formula">120 + 124</field>
                                     </record>
                                     <record id="account_report_line_trbs_121" model="account.report.line">
                                         <field name="name">Notes Receivable</field>
@@ -141,7 +141,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">121</field>
+                                        <field name="account_codes_formula">121 + 123</field>
                                     </record>
                                     <record id="account_report_line_trbs_122" model="account.report.line">
                                         <field name="name">Discount on Notes Receivable (-)</field>
@@ -189,7 +189,7 @@
                                 <field name="name">Other Receivables</field>
                                 <field name="code">TRBS_13</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">131 + 132 + 133 + 135 + 136 - 137 - 138 - 139</field>
+                                <field name="aggregation_formula">TRBS_131.balance + TRBS_132.balance + TRBS_133.balance + TRBS_135.balance + TRBS_136.balance - TRBS_137.balance + TRBS_138.balance - TRBS_139.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_131" model="account.report.line">
                                         <field name="name">Receivables from Shareholders</field>
@@ -261,7 +261,7 @@
                                 <field name="name">Inventories</field>
                                 <field name="code">TRBS_15</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">150 + 151 + 152 + 153 + 157 - 158 + 159</field>
+                                <field name="aggregation_formula">TRBS_150.balance + TRBS_151.balance + TRBS_152.balance + TRBS_153.balance + TRBS_157.balance - TRBS_158.balance + TRBS_159.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_150" model="account.report.line">
                                         <field name="name">Raw Materials and Supplies</field>
@@ -325,7 +325,7 @@
                                 <field name="name">Contract Progress Costs</field>
                                 <field name="code">TRBS_17</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">170 + 179</field>
+                                <field name="aggregation_formula">TRBS_170.balance + TRBS_179.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_170" model="account.report.line">
                                         <field name="name">Contract Progress Costs</field>
@@ -349,7 +349,7 @@
                                 <field name="name">Prepaid Expenses and Income Accruals</field>
                                 <field name="code">TRBS_18</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">180 + 181</field>
+                                <field name="aggregation_formula">TRBS_180.balance + TRBS_181.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_180" model="account.report.line">
                                         <field name="name">Prepaid Expenses for The Following Months</field>
@@ -373,7 +373,7 @@
                                 <field name="name">Other Current Assets</field>
                                 <field name="code">TRBS_19</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">190 + 191 + 192 + 193 + 195 + 196 + 197 + 198 - 199</field>
+                                <field name="aggregation_formula">TRBS_190.balance + TRBS_191.balance + TRBS_192.balance + TRBS_193.balance + TRBS_195.balance + TRBS_196.balance + TRBS_197.balance + TRBS_198.balance - TRBS_199.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_190" model="account.report.line">
                                         <field name="name">Deferred Vat</field>
@@ -457,10 +457,10 @@
                         <field name="aggregation_formula">TRBS_22.balance + TRBS_23.balance + TRBS_24.balance + TRBS_25.balance + TRBS_26.balance + TRBS_27.balance + TRBS_28.balance + TRBS_29.balance</field>
                         <field name="children_ids">
                             <record id="account_report_line_trbs_22" model="account.report.line">
-                                <field name="name">Other Receivables</field>
+                                <field name="name">Trade Receivables</field>
                                 <field name="code">TRBS_22</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">220 + 221 - 222 + 226 - 229</field>
+                                <field name="aggregation_formula">TRBS_220.balance + TRBS_221.balance - TRBS_222.balance + TRBS_226.balance - TRBS_229.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_220" model="account.report.line">
                                         <field name="name">Customers</field>
@@ -468,7 +468,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">220</field>
+                                        <field name="account_codes_formula">220 + 224</field>
                                     </record>
                                     <record id="account_report_line_trbs_221" model="account.report.line">
                                         <field name="name">Notes Receivable</field>
@@ -508,7 +508,7 @@
                                 <field name="name">Other Receivables</field>
                                 <field name="code">TRBS_23</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">231 + 232 + 233 + 235 + 236 - 237 - 239</field>
+                                <field name="aggregation_formula">TRBS_231.balance + TRBS_232.balance + TRBS_233.balance + TRBS_235.balance + TRBS_236.balance - TRBS_237.balance - TRBS_239.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_231" model="account.report.line">
                                         <field name="name">Receivables from Shareholders</field>
@@ -572,7 +572,7 @@
                                 <field name="name">Financial Fixed Assets</field>
                                 <field name="code">TRBS_24</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">240 - 241 + 242 - 243 - 244 + 245 - 246 - 247 + 248 - 249</field>
+                                <field name="aggregation_formula">TRBS_240.balance - TRBS_241.balance + TRBS_242.balance - TRBS_243.balance - TRBS_244.balance + TRBS_245.balance - TRBS_246.balance - TRBS_247.balance + TRBS_248.balance - TRBS_249.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_240" model="account.report.line">
                                         <field name="name">Long-Term Marketable Securities</field>
@@ -660,7 +660,7 @@
                                 <field name="name">Tangible Fixed Assets</field>
                                 <field name="code">TRBS_25</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">250 + 251 + 252 + 253 + 254 + 255 + 256 - 257 + 258 + 259</field>
+                                <field name="aggregation_formula">TRBS_250.balance + TRBS_251.balance + TRBS_252.balance + TRBS_253.balance + TRBS_254.balance + TRBS_255.balance + TRBS_256.balance - TRBS_257.balance + TRBS_258.balance + TRBS_259.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_250" model="account.report.line">
                                         <field name="name">Land</field>
@@ -748,7 +748,7 @@
                                 <field name="name">Intangible Fixed Assets</field>
                                 <field name="code">TRBS_26</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">260 + 261 + 262 + 263 + 264 + 267 - 268 + 269</field>
+                                <field name="aggregation_formula">TRBS_260.balance + TRBS_261.balance + TRBS_262.balance + TRBS_263.balance + TRBS_264.balance + TRBS_267.balance - TRBS_268.balance + TRBS_269.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_260" model="account.report.line">
                                         <field name="name">Rights</field>
@@ -820,7 +820,7 @@
                                 <field name="name">Assets Subject to Amortization</field>
                                 <field name="code">TRBS_27</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">271 + 272 + 277 - 278 + 279</field>
+                                <field name="aggregation_formula">TRBS_271.balance + TRBS_272.balance + TRBS_277.balance - TRBS_278.balance + TRBS_279.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_271" model="account.report.line">
                                         <field name="name">Research Expenses</field>
@@ -868,7 +868,7 @@
                                 <field name="name">Prepaid Expenses and Accrued Income</field>
                                 <field name="code">TRBS_28</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">280 + 281</field>
+                                <field name="aggregation_formula">TRBS_280.balance + TRBS_281.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_280" model="account.report.line">
                                         <field name="name">Prepaid Expenses for Following Years</field>
@@ -892,7 +892,7 @@
                                 <field name="name">Other Fixed Assets</field>
                                 <field name="code">TRBS_29</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">291 + 292 + 293 + 294 + 295 + 297 - 298 - 299</field>
+                                <field name="aggregation_formula">TRBS_291.balance + TRBS_292.balance + TRBS_293.balance + TRBS_294.balance + TRBS_295.balance + TRBS_297.balance - TRBS_298.balance - TRBS_299.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_291" model="account.report.line">
                                         <field name="name">Vat Deductible in The Following Years</field>
@@ -978,7 +978,7 @@
                                 <field name="name">Financial Liabilities</field>
                                 <field name="code">TRBS_30</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">300 + 303 + 304 + 305 + 306 - 308 + 309</field>
+                                <field name="aggregation_formula">TRBS_300.balance + TRBS_303.balance + TRBS_304.balance + TRBS_305.balance + TRBS_306.balance - TRBS_308.balance + TRBS_309.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_300" model="account.report.line">
                                         <field name="name">Bank Loans</field>
@@ -986,7 +986,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">300</field>
+                                        <field name="account_codes_formula">-300</field>
                                     </record>
                                     <record id="account_report_line_trbs_303" model="account.report.line">
                                         <field name="name">Principal and Interest Payments of Long-Term Loans</field>
@@ -994,7 +994,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">303</field>
+                                        <field name="account_codes_formula">-303</field>
                                     </record>
                                     <record id="account_report_line_trbs_304" model="account.report.line">
                                         <field name="name">Principal, Instalment and Interest Payments of Bonds</field>
@@ -1002,7 +1002,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">304</field>
+                                        <field name="account_codes_formula">-304</field>
                                     </record>
                                     <record id="account_report_line_trbs_305" model="account.report.line">
                                         <field name="name">Bonds and Shares Issued</field>
@@ -1010,7 +1010,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">305</field>
+                                        <field name="account_codes_formula">-305</field>
                                     </record>
                                     <record id="account_report_line_trbs_306" model="account.report.line">
                                         <field name="name">Other Marketable Securities Issued</field>
@@ -1018,7 +1018,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">306</field>
+                                        <field name="account_codes_formula">-306</field>
                                     </record>
                                     <record id="account_report_line_trbs_308" model="account.report.line">
                                         <field name="name">Premium Reserves of Marketable Securities (-)</field>
@@ -1026,7 +1026,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">- 308</field>
+                                        <field name="account_codes_formula">308</field>
                                     </record>
                                     <record id="account_report_line_trbs_309" model="account.report.line">
                                         <field name="name">Other Financial Liabilities</field>
@@ -1034,7 +1034,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">309</field>
+                                        <field name="account_codes_formula">-301 - 302 - 309</field>
                                     </record>
                                 </field>
                             </record>
@@ -1042,7 +1042,7 @@
                                 <field name="name">Trade Payables</field>
                                 <field name="code">TRBS_32</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">320 + 321 - 322 + 326 + 329</field>
+                                <field name="aggregation_formula">TRBS_320.balance + TRBS_321.balance - TRBS_322.balance + TRBS_326.balance + TRBS_329.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_320" model="account.report.line">
                                         <field name="name">Suppliers</field>
@@ -1050,7 +1050,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">320</field>
+                                        <field name="account_codes_formula">-320</field>
                                     </record>
                                     <record id="account_report_line_trbs_321" model="account.report.line">
                                         <field name="name">Notes Payable</field>
@@ -1058,7 +1058,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">321</field>
+                                        <field name="account_codes_formula">-321</field>
                                     </record>
                                     <record id="account_report_line_trbs_322" model="account.report.line">
                                         <field name="name">Discount on Notes Payable (-)</field>
@@ -1066,7 +1066,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">- 322</field>
+                                        <field name="account_codes_formula">322</field>
                                     </record>
                                     <record id="account_report_line_trbs_326" model="account.report.line">
                                         <field name="name">Deposits and Guarantees Given</field>
@@ -1074,7 +1074,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">326</field>
+                                        <field name="account_codes_formula">-326</field>
                                     </record>
                                     <record id="account_report_line_trbs_329" model="account.report.line">
                                         <field name="name">Other Trade Payables</field>
@@ -1082,7 +1082,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">329</field>
+                                        <field name="account_codes_formula">-329</field>
                                     </record>
                                 </field>
                             </record>
@@ -1090,7 +1090,7 @@
                                 <field name="name">Other Liabilities</field>
                                 <field name="code">TRBS_33</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">331 + 332 + 333 + 335 + 336 - 337</field>
+                                <field name="aggregation_formula">TRBS_331.balance + TRBS_332.balance + TRBS_333.balance + TRBS_335.balance + TRBS_336.balance - TRBS_337.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_331" model="account.report.line">
                                         <field name="name">Payables to Shareholders</field>
@@ -1098,7 +1098,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">331</field>
+                                        <field name="account_codes_formula">-331</field>
                                     </record>
                                     <record id="account_report_line_trbs_332" model="account.report.line">
                                         <field name="name">Payables to Subsidiaries</field>
@@ -1106,7 +1106,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">332</field>
+                                        <field name="account_codes_formula">-332</field>
                                     </record>
                                     <record id="account_report_line_trbs_333" model="account.report.line">
                                         <field name="name">Payables to Affiliated Companies</field>
@@ -1114,7 +1114,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">333</field>
+                                        <field name="account_codes_formula">-333</field>
                                     </record>
                                     <record id="account_report_line_trbs_335" model="account.report.line">
                                         <field name="name">Payables to Personnel</field>
@@ -1122,7 +1122,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">335</field>
+                                        <field name="account_codes_formula">-335</field>
                                     </record>
                                     <record id="account_report_line_trbs_336" model="account.report.line">
                                         <field name="name">Other Miscellaneous Payaples</field>
@@ -1130,7 +1130,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">336</field>
+                                        <field name="account_codes_formula">-336</field>
                                     </record>
                                     <record id="account_report_line_trbs_337" model="account.report.line">
                                         <field name="name">Discount on Other Notes Payable (-)</field>
@@ -1138,7 +1138,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">- 337</field>
+                                        <field name="account_codes_formula">337</field>
                                     </record>
                                 </field>
                             </record>
@@ -1146,7 +1146,7 @@
                                 <field name="name">Advances Received</field>
                                 <field name="code">TRBS_34</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">340 + 349</field>
+                                <field name="aggregation_formula">TRBS_340.balance + TRBS_349.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_340" model="account.report.line">
                                         <field name="name">Advances Taken for Orders</field>
@@ -1154,7 +1154,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">340</field>
+                                        <field name="account_codes_formula">-340</field>
                                     </record>
                                     <record id="account_report_line_trbs_349" model="account.report.line">
                                         <field name="name">Other Advances Taken</field>
@@ -1162,7 +1162,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">349</field>
+                                        <field name="account_codes_formula">-349</field>
                                     </record>
                                 </field>
                             </record>
@@ -1170,7 +1170,7 @@
                                 <field name="name">Contract Progress Income</field>
                                 <field name="code">TRBS_35</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">350</field>
+                                <field name="aggregation_formula">TRBS_350.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_350" model="account.report.line">
                                         <field name="name">Contract Progress Income</field>
@@ -1178,7 +1178,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">350</field>
+                                        <field name="account_codes_formula">-350</field>
                                     </record>
                                 </field>
                             </record>
@@ -1186,7 +1186,7 @@
                                 <field name="name">Taxes Payable and Other Fiscal Liabilities</field>
                                 <field name="code">TRBS_36</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">360 + 361 + 368 + 369</field>
+                                <field name="aggregation_formula">TRBS_360.balance + TRBS_361.balance + TRBS_368.balance + TRBS_369.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_360" model="account.report.line">
                                         <field name="name">Taxes and Funds Payable</field>
@@ -1194,7 +1194,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">360</field>
+                                        <field name="account_codes_formula">-360</field>
                                     </record>
                                     <record id="account_report_line_trbs_361" model="account.report.line">
                                         <field name="name">Social Security Premiums Payable</field>
@@ -1202,7 +1202,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">361</field>
+                                        <field name="account_codes_formula">-361</field>
                                     </record>
                                     <record id="account_report_line_trbs_368" model="account.report.line">
                                         <field name="name">Overdue, Deferred Payables Or Payables on Instalments to The State</field>
@@ -1210,7 +1210,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">368</field>
+                                        <field name="account_codes_formula">-368</field>
                                     </record>
                                     <record id="account_report_line_trbs_369" model="account.report.line">
                                         <field name="name">Other Miscellaneous Liabilities</field>
@@ -1218,7 +1218,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">369</field>
+                                        <field name="account_codes_formula">-369</field>
                                     </record>
                                 </field>
                             </record>
@@ -1226,7 +1226,7 @@
                                 <field name="name">Provisions for Liabilities and Expenses</field>
                                 <field name="code">TRBS_37</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">370 + 371 + 372 + 373 + 379</field>
+                                <field name="aggregation_formula">TRBS_370.balance + TRBS_371.balance + TRBS_372.balance + TRBS_373.balance + TRBS_379.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_370" model="account.report.line">
                                         <field name="name">Provisions for Tax and Other Liabilities Relating to The Profit of The Period</field>
@@ -1234,7 +1234,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">370</field>
+                                        <field name="account_codes_formula">-370</field>
                                     </record>
                                     <record id="account_report_line_trbs_371" model="account.report.line">
                                         <field name="name">Prepaid Tax and Other Liabilities for The Current Year Profit (-)</field>
@@ -1242,7 +1242,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">371</field>
+                                        <field name="account_codes_formula">-371</field>
                                     </record>
                                     <record id="account_report_line_trbs_372" model="account.report.line">
                                         <field name="name">Provision for Severance Payments</field>
@@ -1250,7 +1250,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">372</field>
+                                        <field name="account_codes_formula">-372</field>
                                     </record>
                                     <record id="account_report_line_trbs_373" model="account.report.line">
                                         <field name="name">Provision for Expenses Relating to Costing</field>
@@ -1258,7 +1258,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">373</field>
+                                        <field name="account_codes_formula">-373</field>
                                     </record>
                                     <record id="account_report_line_trbs_379" model="account.report.line">
                                         <field name="name">Provision for Other Liabilities and Expenses</field>
@@ -1266,7 +1266,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">379</field>
+                                        <field name="account_codes_formula">-379</field>
                                     </record>
                                 </field>
                             </record>
@@ -1274,7 +1274,7 @@
                                 <field name="name">Income and Expense Accruals Relating to Future Months</field>
                                 <field name="code">TRBS_38</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">380 + 381</field>
+                                <field name="aggregation_formula">TRBS_380.balance + TRBS_381.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_380" model="account.report.line">
                                         <field name="name">Deferred Income for The Following Months</field>
@@ -1282,7 +1282,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">380</field>
+                                        <field name="account_codes_formula">-380</field>
                                     </record>
                                     <record id="account_report_line_trbs_381" model="account.report.line">
                                         <field name="name">Expense Accruals</field>
@@ -1290,7 +1290,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">381</field>
+                                        <field name="account_codes_formula">-381</field>
                                     </record>
                                 </field>
                             </record>
@@ -1298,7 +1298,7 @@
                                 <field name="name">Other Short Term Liabilities</field>
                                 <field name="code">TRBS_39</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">391 + 392 + 393 + 397 + 399</field>
+                                <field name="aggregation_formula">TRBS_391.balance + TRBS_392.balance + TRBS_393.balance + TRBS_397.balance + TRBS_399.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_391" model="account.report.line">
                                         <field name="name">Vat Calculated</field>
@@ -1306,7 +1306,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">391</field>
+                                        <field name="account_codes_formula">-391</field>
                                     </record>
                                     <record id="account_report_line_trbs_392" model="account.report.line">
                                         <field name="name">Other Vat</field>
@@ -1314,7 +1314,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">392</field>
+                                        <field name="account_codes_formula">-392</field>
                                     </record>
                                     <record id="account_report_line_trbs_393" model="account.report.line">
                                         <field name="name">Headquarters and Branches Current Account</field>
@@ -1322,7 +1322,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">393</field>
+                                        <field name="account_codes_formula">-393</field>
                                     </record>
                                     <record id="account_report_line_trbs_397" model="account.report.line">
                                         <field name="name">Stock Count and Delivery Surpluses</field>
@@ -1330,7 +1330,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">397</field>
+                                        <field name="account_codes_formula">-397</field>
                                     </record>
                                     <record id="account_report_line_trbs_399" model="account.report.line">
                                         <field name="name">Other Miscellaneous Short-Term Liabilities</field>
@@ -1338,7 +1338,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">399</field>
+                                        <field name="account_codes_formula">-399</field>
                                     </record>
                                 </field>
                             </record>
@@ -1353,7 +1353,7 @@
                                 <field name="name">Financial Liabilities</field>
                                 <field name="code">TRBS_40</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">400 + 405 + 407 - 408 + 409</field>
+                                <field name="aggregation_formula">TRBS_400.balance + TRBS_405.balance + TRBS_407.balance - TRBS_408.balance + TRBS_409.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_400" model="account.report.line">
                                         <field name="name">Bank Loans</field>
@@ -1361,7 +1361,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">400</field>
+                                        <field name="account_codes_formula">-400</field>
                                     </record>
                                     <record id="account_report_line_trbs_405" model="account.report.line">
                                         <field name="name">Bonds Issued</field>
@@ -1369,7 +1369,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">405</field>
+                                        <field name="account_codes_formula">-405</field>
                                     </record>
                                     <record id="account_report_line_trbs_407" model="account.report.line">
                                         <field name="name">Other Marketable Securities Issued</field>
@@ -1377,7 +1377,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">407</field>
+                                        <field name="account_codes_formula">-407</field>
                                     </record>
                                     <record id="account_report_line_trbs_408" model="account.report.line">
                                         <field name="name">Premium Reserves of Marketable Securities (-)</field>
@@ -1385,7 +1385,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">- 408</field>
+                                        <field name="account_codes_formula">408</field>
                                     </record>
                                     <record id="account_report_line_trbs_409" model="account.report.line">
                                         <field name="name">Other Financial Liabilities</field>
@@ -1393,7 +1393,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">409</field>
+                                        <field name="account_codes_formula">-401 - 402 - 409</field>
                                     </record>
                                 </field>
                             </record>
@@ -1401,7 +1401,7 @@
                                 <field name="name">Trade Payables</field>
                                 <field name="code">TRBS_42</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">420 + 421 - 422 + 426 + 429</field>
+                                <field name="aggregation_formula">TRBS_420.balance + TRBS_421.balance - TRBS_422.balance + TRBS_426.balance + TRBS_429.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_420" model="account.report.line">
                                         <field name="name">Suppliers</field>
@@ -1409,7 +1409,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">420</field>
+                                        <field name="account_codes_formula">-420</field>
                                     </record>
                                     <record id="account_report_line_trbs_421" model="account.report.line">
                                         <field name="name">Notes Payable</field>
@@ -1417,7 +1417,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">421</field>
+                                        <field name="account_codes_formula">-421</field>
                                     </record>
                                     <record id="account_report_line_trbs_422" model="account.report.line">
                                         <field name="name">Discount on Notes Payable (-)</field>
@@ -1425,7 +1425,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">- 422</field>
+                                        <field name="account_codes_formula">422</field>
                                     </record>
                                     <record id="account_report_line_trbs_426" model="account.report.line">
                                         <field name="name">Deposits and Guarantees Taken</field>
@@ -1433,7 +1433,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">426</field>
+                                        <field name="account_codes_formula">-426</field>
                                     </record>
                                     <record id="account_report_line_trbs_429" model="account.report.line">
                                         <field name="name">Other Trade Payables</field>
@@ -1441,7 +1441,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">429</field>
+                                        <field name="account_codes_formula">-429</field>
                                     </record>
                                 </field>
                             </record>
@@ -1449,7 +1449,7 @@
                                 <field name="name">Other Liabilities</field>
                                 <field name="code">TRBS_43</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">431 + 432 + 433 + 436 - 437 + 438</field>
+                                <field name="aggregation_formula">TRBS_431.balance + TRBS_432.balance + TRBS_433.balance + TRBS_436.balance - TRBS_437.balance + TRBS_438.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_431" model="account.report.line">
                                         <field name="name">Payables to Shareholders</field>
@@ -1457,7 +1457,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">431</field>
+                                        <field name="account_codes_formula">-431</field>
                                     </record>
                                     <record id="account_report_line_trbs_432" model="account.report.line">
                                         <field name="name">Payables to Subsidaries</field>
@@ -1465,7 +1465,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">432</field>
+                                        <field name="account_codes_formula">-432</field>
                                     </record>
                                     <record id="account_report_line_trbs_433" model="account.report.line">
                                         <field name="name">Payables to Affiliated Companies</field>
@@ -1473,7 +1473,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">433</field>
+                                        <field name="account_codes_formula">-433</field>
                                     </record>
                                     <record id="account_report_line_trbs_436" model="account.report.line">
                                         <field name="name">Other Miscellaneous Payables</field>
@@ -1481,7 +1481,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">436</field>
+                                        <field name="account_codes_formula">-436</field>
                                     </record>
                                     <record id="account_report_line_trbs_437" model="account.report.line">
                                         <field name="name">Discount on Other Notes Payable (-)</field>
@@ -1489,7 +1489,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">- 437</field>
+                                        <field name="account_codes_formula">437</field>
                                     </record>
                                     <record id="account_report_line_trbs_438" model="account.report.line">
                                         <field name="name">Liabilities to The State (Deferred Or Payable in Instalments)</field>
@@ -1497,7 +1497,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">438</field>
+                                        <field name="account_codes_formula">-438</field>
                                     </record>
                                 </field>
                             </record>
@@ -1505,7 +1505,7 @@
                                 <field name="name">Advances Received</field>
                                 <field name="code">TRBS_44</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">440 + 449</field>
+                                <field name="aggregation_formula">TRBS_440.balance + TRBS_449.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_440" model="account.report.line">
                                         <field name="name">Advances Taken for Orders</field>
@@ -1513,7 +1513,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">440</field>
+                                        <field name="account_codes_formula">-440</field>
                                     </record>
                                     <record id="account_report_line_trbs_449" model="account.report.line">
                                         <field name="name">Other Advances Taken</field>
@@ -1521,7 +1521,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">449</field>
+                                        <field name="account_codes_formula">-449</field>
                                     </record>
                                 </field>
                             </record>
@@ -1529,7 +1529,7 @@
                                 <field name="name">Provisions for Liabilities and Expenses</field>
                                 <field name="code">TRBS_47</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">472 + 479</field>
+                                <field name="aggregation_formula">TRBS_472.balance + TRBS_479.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_472" model="account.report.line">
                                         <field name="name">Provisions for Severance Payments</field>
@@ -1537,7 +1537,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">472</field>
+                                        <field name="account_codes_formula">-472</field>
                                     </record>
                                     <record id="account_report_line_trbs_479" model="account.report.line">
                                         <field name="name">Provisions for Other Liabilities and Expenses</field>
@@ -1545,7 +1545,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">479</field>
+                                        <field name="account_codes_formula">-479</field>
                                     </record>
                                 </field>
                             </record>
@@ -1553,7 +1553,7 @@
                                 <field name="name">Income and Expenses Accruals Relating to Future Periods</field>
                                 <field name="code">TRBS_48</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">480 + 481</field>
+                                <field name="aggregation_formula">TRBS_480.balance + TRBS_481.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_480" model="account.report.line">
                                         <field name="name">Provisions for Termination Indemnities</field>
@@ -1561,7 +1561,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">480</field>
+                                        <field name="account_codes_formula">-480</field>
                                     </record>
                                     <record id="account_report_line_trbs_481" model="account.report.line">
                                         <field name="name">Provisions for Other Debts and Expenses</field>
@@ -1569,7 +1569,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">481</field>
+                                        <field name="account_codes_formula">-481</field>
                                     </record>
                                 </field>
                             </record>
@@ -1577,7 +1577,7 @@
                                 <field name="name">Other Long Term Liabilities</field>
                                 <field name="code">TRBS_49</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">492 + 493 + 499</field>
+                                <field name="aggregation_formula">TRBS_492.balance + TRBS_493.balance + TRBS_499.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_492" model="account.report.line">
                                         <field name="name">Vat Deferred Or Postponed to The Following Years</field>
@@ -1585,7 +1585,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">492</field>
+                                        <field name="account_codes_formula">-492</field>
                                     </record>
                                     <record id="account_report_line_trbs_493" model="account.report.line">
                                         <field name="name">Participation in The Establishment</field>
@@ -1593,7 +1593,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">493</field>
+                                        <field name="account_codes_formula">-493</field>
                                     </record>
                                     <record id="account_report_line_trbs_499" model="account.report.line">
                                         <field name="name">Other Miscellaneous Long-Term Liabilities</field>
@@ -1601,7 +1601,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">499</field>
+                                        <field name="account_codes_formula">-499</field>
                                     </record>
                                 </field>
                             </record>
@@ -1616,7 +1616,7 @@
                                 <field name="name">Paid-in Capital</field>
                                 <field name="code">TRBS_50</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">500 - 501</field>
+                                <field name="aggregation_formula">TRBS_500.balance - TRBS_501.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_500" model="account.report.line">
                                         <field name="name">Capital</field>
@@ -1624,7 +1624,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">500</field>
+                                        <field name="account_codes_formula">-500</field>
                                     </record>
                                     <record id="account_report_line_trbs_501" model="account.report.line">
                                         <field name="name">Unpaid Capital (-)</field>
@@ -1632,7 +1632,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">- 501</field>
+                                        <field name="account_codes_formula">501</field>
                                     </record>
                                 </field>
                             </record>
@@ -1640,7 +1640,7 @@
                                 <field name="name">Capital Reserves</field>
                                 <field name="code">TRBS_52</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">520 + 521 + 522 + 523 + 529</field>
+                                <field name="aggregation_formula">TRBS_520.balance + TRBS_521.balance + TRBS_522.balance + TRBS_523.balance + TRBS_524.balance + TRBS_529.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_520" model="account.report.line">
                                         <field name="name">Premium Reserves</field>
@@ -1648,7 +1648,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">520</field>
+                                        <field name="account_codes_formula">-520</field>
                                     </record>
                                     <record id="account_report_line_trbs_521" model="account.report.line">
                                         <field name="name">Profit from Invalidation of Shares</field>
@@ -1656,7 +1656,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">521</field>
+                                        <field name="account_codes_formula">-521</field>
                                     </record>
                                     <record id="account_report_line_trbs_522" model="account.report.line">
                                         <field name="name">Fixed Asset Revaluation Fund</field>
@@ -1664,7 +1664,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">522</field>
+                                        <field name="account_codes_formula">-522</field>
                                     </record>
                                     <record id="account_report_line_trbs_523" model="account.report.line">
                                         <field name="name">Revaluation Fund of Investments</field>
@@ -1672,7 +1672,15 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">523</field>
+                                        <field name="account_codes_formula">-523</field>
+                                    </record>
+                                    <record id="account_report_line_trbs_524" model="account.report.line">
+                                        <field name="name">Cost Increases Fund</field>
+                                        <field name="code">TRBS_524</field>
+                                        <field name="hide_if_zero" eval="True"/>
+                                        <field name="groupby">account_id</field>
+                                        <field name="foldable" eval="True"/>
+                                        <field name="account_codes_formula">-524</field>
                                     </record>
                                     <record id="account_report_line_trbs_529" model="account.report.line">
                                         <field name="name">Other Capital Reserves</field>
@@ -1680,7 +1688,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">529</field>
+                                        <field name="account_codes_formula">-529</field>
                                     </record>
                                 </field>
                             </record>
@@ -1688,7 +1696,7 @@
                                 <field name="name">Profit Reserves</field>
                                 <field name="code">TRBS_54</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">540 + 541 + 542 + 548 + 549</field>
+                                <field name="aggregation_formula">TRBS_540.balance + TRBS_541.balance + TRBS_542.balance + TRBS_548.balance + TRBS_549.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_540" model="account.report.line">
                                         <field name="name">Legal Reserves</field>
@@ -1696,7 +1704,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">540</field>
+                                        <field name="account_codes_formula">-540</field>
                                     </record>
                                     <record id="account_report_line_trbs_541" model="account.report.line">
                                         <field name="name">Statuary Reserves</field>
@@ -1704,7 +1712,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">541</field>
+                                        <field name="account_codes_formula">-541</field>
                                     </record>
                                     <record id="account_report_line_trbs_542" model="account.report.line">
                                         <field name="name">General Reserves</field>
@@ -1712,7 +1720,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">542</field>
+                                        <field name="account_codes_formula">-542</field>
                                     </record>
                                     <record id="account_report_line_trbs_548" model="account.report.line">
                                         <field name="name">Other Retained Profits</field>
@@ -1720,7 +1728,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">548</field>
+                                        <field name="account_codes_formula">-548</field>
                                     </record>
                                     <record id="account_report_line_trbs_549" model="account.report.line">
                                         <field name="name">Special Reserves</field>
@@ -1728,7 +1736,7 @@
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">549</field>
+                                        <field name="account_codes_formula">-549</field>
                                     </record>
                                 </field>
                             </record>
@@ -1736,15 +1744,40 @@
                                 <field name="name">Retained Earnings</field>
                                 <field name="code">TRBS_57</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">570</field>
+                                <field name="aggregation_formula">TRBS_570.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_570" model="account.report.line">
                                         <field name="name">Previous Years’ Profits</field>
                                         <field name="code">TRBS_570</field>
                                         <field name="hide_if_zero" eval="True"/>
-                                        <field name="groupby">account_id</field>
-                                        <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">570</field>
+                                        <field name="groupby" eval="False"/>
+                                        <field name="foldable" eval="False"/>
+                                        <field name="account_codes_formula" eval="False"/>
+                                    </record>
+                                    <record id="account_report_line_trbs_570" model="account.report.line">
+                                        <field name="expression_ids">
+                                            <record id="account_report_line_trbs_570_accounts" model="account.report.expression">
+                                                <field name="label">accounts</field>
+                                                <field name="engine">account_codes</field>
+                                                <field name="formula">-57 - 58 - 59</field>
+                                            </record>
+                                            <record id="account_report_line_trbs_570_earnings" model="account.report.expression">
+                                                <field name="label">earnings</field>
+                                                <field name="engine">domain</field>
+                                                <field name="formula" eval="[
+                                                    '|', ('account_id.code', '=like', '6%'),
+                                                         ('account_id.code', '=like', '7%'),
+                                                ]"/>
+                                                <field name="subformula">-sum</field>
+                                                <field name="date_scope">to_beginning_of_fiscalyear</field>
+                                            </record>
+                                            <record id="account_report_line_trbs_570_balance" model="account.report.expression">
+                                                <field name="label">balance</field>
+                                                <field name="engine">aggregation</field>
+                                                <field name="formula">TRBS_570.accounts + TRBS_570.earnings</field>
+                                                <field name="subformula">if_above(TRY(0))</field>
+                                            </record>
+                                        </field>
                                     </record>
                                 </field>
                             </record>
@@ -1765,9 +1798,19 @@
                                         <field name="name">Previous Years’ Losses</field>
                                         <field name="code">TRBS_580</field>
                                         <field name="hide_if_zero" eval="True"/>
-                                        <field name="groupby">account_id</field>
-                                        <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">580</field>
+                                        <field name="groupby" eval="False"/>
+                                        <field name="foldable" eval="False"/>
+                                        <field name="account_codes_formula" eval="False"/>
+                                    </record>
+                                    <record id="account_report_line_trbs_580" model="account.report.line">
+                                        <field name="expression_ids">
+                                            <record id="account_report_line_trbs_580_balance" model="account.report.expression">
+                                                <field name="label">balance</field>
+                                                <field name="engine">aggregation</field>
+                                                <field name="formula">-TRBS_570.accounts - TRBS_570.earnings</field>
+                                                <field name="subformula">if_above(TRY(0))</field>
+                                            </record>
+                                        </field>
                                     </record>
                                 </field>
                             </record>
@@ -1775,23 +1818,53 @@
                                 <field name="name">Net Income (Loss) for the Period</field>
                                 <field name="code">TRBS_59</field>
                                 <field name="hide_if_zero" eval="True"/>
-                                <field name="account_codes_formula">590 - 591</field>
+                                <field name="aggregation_formula">TRBS_590.balance - TRBS_591.balance</field>
                                 <field name="children_ids">
                                     <record id="account_report_line_trbs_590" model="account.report.line">
                                         <field name="name">Net Profit for The Period</field>
                                         <field name="code">TRBS_590</field>
                                         <field name="hide_if_zero" eval="True"/>
-                                        <field name="groupby">account_id</field>
-                                        <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">590</field>
+                                        <field name="groupby" eval="False"/>
+                                        <field name="foldable" eval="False"/>
+                                        <field name="account_codes_formula" eval="False"/>
+                                    </record>
+                                    <record id="account_report_line_trbs_590" model="account.report.line">
+                                        <field name="expression_ids">
+                                            <record id="account_report_line_trbs_590_earnings" model="account.report.expression">
+                                                <field name="label">earnings</field>
+                                                <field name="engine">domain</field>
+                                                <field name="formula" eval="[
+                                                    '|', ('account_id.code', '=like', '6%'),
+                                                         ('account_id.code', '=like', '7%'),
+                                                ]"/>
+                                                <field name="subformula">-sum</field>
+                                                <field name="date_scope">from_fiscalyear</field>
+                                            </record>
+                                            <record id="account_report_line_trbs_590_balance" model="account.report.expression">
+                                                <field name="label">balance</field>
+                                                <field name="engine">aggregation</field>
+                                                <field name="formula">TRBS_590.earnings</field>
+                                                <field name="subformula">if_above(TRY(0))</field>
+                                            </record>
+                                        </field>
                                     </record>
                                     <record id="account_report_line_trbs_591" model="account.report.line">
                                         <field name="name">Net Loss for The Period (-)</field>
                                         <field name="code">TRBS_591</field>
                                         <field name="hide_if_zero" eval="True"/>
-                                        <field name="groupby">account_id</field>
-                                        <field name="foldable" eval="True"/>
-                                        <field name="account_codes_formula">- 591</field>
+                                        <field name="groupby" eval="False"/>
+                                        <field name="foldable" eval="False"/>
+                                        <field name="account_codes_formula" eval="False"/>
+                                    </record>
+                                    <record id="account_report_line_trbs_591" model="account.report.line">
+                                        <field name="expression_ids">
+                                            <record id="account_report_line_trbs_591_balance" model="account.report.expression">
+                                                <field name="label">balance</field>
+                                                <field name="engine">aggregation</field>
+                                                <field name="formula">-TRBS_590.earnings</field>
+                                                <field name="subformula">if_above(TRY(0))</field>
+                                            </record>
+                                        </field>
                                     </record>
                                 </field>
                             </record>

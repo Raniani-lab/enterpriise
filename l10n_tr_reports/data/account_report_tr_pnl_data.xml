@@ -20,8 +20,8 @@
                     <record id="account_report_line_tr_pl_profit_lost_from_ordinary_operations_balance"
                             model="account.report.expression">
                         <field name="label">balance</field>
-                        <field name="engine">account_codes</field>
-                        <field name="formula">- 60 + 61 + 62 + 63 - 64 + 65 + 66</field>
+                        <field name="engine">aggregation</field>
+                        <field name="formula">TR_PL_OPERATING_PROFIT_LOST.balance + TR_PL_NON_OPERATING_PROFIT_LOST.balance</field>
                         <field name="date_scope">normal</field>
                     </record>
                 </field>
@@ -34,9 +34,8 @@
                             <record id="account_report_line_tr_pl_operating_profit_lost_balance"
                                     model="account.report.expression">
                                 <field name="label">balance</field>
-                                <field name="engine">account_codes</field>
-                                <field name="formula">- 60 + 61 + 62 + 63</field>
-                                <field name="date_scope">normal</field>
+                                <field name="engine">aggregation</field>
+                                <field name="formula">TR_PL_GROSS_SALES_PROFIT_LOST.balance - TR_PL_OPERATING_EXPENSES_63.balance</field>
                             </record>
                         </field>
                         <field name="children_ids">
@@ -48,9 +47,8 @@
                                     <record id="account_report_line_tr_pl_gross_sales_profit_lost_balance"
                                             model="account.report.expression">
                                         <field name="label">balance</field>
-                                        <field name="engine">account_codes</field>
-                                        <field name="formula">- 60 + 61 + 62</field>
-                                        <field name="date_scope">normal</field>
+                                        <field name="engine">aggregation</field>
+                                        <field name="formula">TR_PL_NET_SALES.balance - TR_PL_COST_OF_SALES_62.balance</field>
                                     </record>
                                 </field>
                                 <field name="children_ids">
@@ -62,9 +60,8 @@
                                             <record id="account_report_line_tr_pl_net_sales_balance"
                                                     model="account.report.expression">
                                                 <field name="label">balance</field>
-                                                <field name="engine">account_codes</field>
-                                                <field name="formula">- 60 + 61</field>
-                                                <field name="date_scope">normal</field>
+                                                <field name="engine">aggregation</field>
+                                                <field name="formula">TR_PL_GROSS_SALES_60.balance - TR_PL_SALES_DEDUCTIONS_61.balance</field>
                                             </record>
                                         </field>
                                         <field name="children_ids">
@@ -109,7 +106,7 @@
                                                     model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">- 62</field>
+                                                <field name="formula">62</field>
                                                 <field name="date_scope">normal</field>
                                             </record>
                                         </field>
@@ -142,9 +139,8 @@
                             <record id="account_report_line_tr_pl_non_operating_profit_lost_balance"
                                     model="account.report.expression">
                                 <field name="label">balance</field>
-                                <field name="engine">account_codes</field>
-                                <field name="formula">- 64 + 65 + 66</field>
-                                <field name="date_scope">normal</field>
+                                <field name="engine">aggregation</field>
+                                <field name="formula">TR_PL_NON_OPERATING_REVENUES_PROFIT_64.balance - TR_PL_NON_OPERATING_EXPENSES_LOSSES_65.balance - TR_PL_FINANCIAL_EXPENSES_66.balance</field>
                             </record>
                         </field>
                         <field name="children_ids">
@@ -205,9 +201,8 @@
                     <record id="account_report_line_tr_pl_extraordinary_profit_lost_balance"
                             model="account.report.expression">
                         <field name="label">balance</field>
-                        <field name="engine">account_codes</field>
-                        <field name="formula">- 67 + 68</field>
-                        <field name="date_scope">normal</field>
+                        <field name="engine">aggregation</field>
+                        <field name="formula">TR_PL_EXTRAORDINARY_REVENUES_PROFIT_67.balance - TR_PL_EXTRAORDINARY_EXPENSES_LOSSES_68.balance</field>
                     </record>
                 </field>
                 <field name="children_ids">
@@ -253,9 +248,8 @@
                     <record id="account_report_line_tr_pl_net_period_profit_or_loss_692_balance"
                             model="account.report.expression">
                         <field name="label">balance</field>
-                        <field name="engine">account_codes</field>
-                        <field name="formula">- 690 + 691</field>
-                        <field name="date_scope">normal</field>
+                        <field name="engine">aggregation</field>
+                        <field name="formula">TR_PL_PROFIT_OR_LOSS_FOR_THE_PERIOD_690.balance - TR_PL_PROV_TAXES_STATUTORY_OBLIG_691.balance</field>
                     </record>
                 </field>
                 <field name="children_ids">

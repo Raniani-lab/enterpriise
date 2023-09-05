@@ -28,7 +28,7 @@ from hashlib import sha256
 from PIL import UnidentifiedImageError
 
 from odoo import api, fields, models, http, _, Command
-from odoo.tools import config, get_lang, is_html_empty, formataddr, groupby, format_date
+from odoo.tools import config, email_normalize, get_lang, is_html_empty, format_date, formataddr, groupby
 from odoo.exceptions import UserError, ValidationError
 
 TTFSearchPath.append(os.path.join(config["root_path"], "..", "addons", "web", "static", "fonts", "sign"))
@@ -349,7 +349,7 @@ class SignRequest(models.Model):
             {'model_description': 'signature', 'company': self.communication_company_id or self.create_uid.company_id},
             {'email_from': self.create_uid.email_formatted,
              'author_id': self.create_uid.partner_id.id,
-             'email_to': formataddr((partner.name, partner.email_formatted)),
+             'email_to': partner.email_formatted,
              'subject': subject},
             force_send=force_send,
             lang=partner_lang,
@@ -852,6 +852,7 @@ class SignRequestItem(models.Model):
 
     def _send_signature_access_mail(self):
         for signer in self:
+            signer_email_normalized = email_normalize(signer.signer_email or '')
             signer_lang = get_lang(self.env, lang_code=signer.partner_id.lang).code
             context = {'lang': signer_lang}
             body = self.env['ir.qweb']._render('sign.sign_template_mail_request', {
@@ -870,7 +871,7 @@ class SignRequestItem(models.Model):
                 {'model_description': _('Signature'), 'company': signer.communication_company_id or signer.sign_request_id.create_uid.company_id},
                 {'email_from': signer.create_uid.email_formatted,
                  'author_id': signer.create_uid.partner_id.id,
-                 'email_to': formataddr((signer.partner_id.name, signer.signer_email)),
+                 'email_to': formataddr((signer.partner_id.name, signer_email_normalized)),
                  'attachment_ids': attachment_ids,
                  'subject': signer.sign_request_id.subject},
                 force_send=True,

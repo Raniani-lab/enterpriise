@@ -101,7 +101,7 @@ export class StockMove extends Component {
         }
         const quantity = this.isComplete ? 0 : this.toConsumeQuantity;
         this.props.record.update({ quantity_done: quantity });
-        this.props.record.save({ noReload: true });
+        this.props.record.save({ reload: false });
     }
 
     get state() {

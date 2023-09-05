@@ -115,11 +115,11 @@ export class QualityCheck extends MrpWorkorder {
 
     async onFileUploaded(info) {
         this.props.record.update({ picture: info.data, quality_state: "pass" });
-        this.props.record.save({ noReload: true });
+        this.props.record.save({ reload: false });
     }
 
     _pass() {
         this.props.record.update({ quality_state: "pass" });
-        this.props.record.save({ noReload: true });
+        this.props.record.save({ reload: false });
     }
 }

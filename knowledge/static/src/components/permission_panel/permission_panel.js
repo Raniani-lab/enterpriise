@@ -305,7 +305,7 @@ export class PermissionPanel extends Component {
             });
         } else if (reloadAll && reloadArticleId) {  // Lose write access
             if (this.props.record.isDirty) {
-                await this.props.record.save({noReload: true});
+                await this.props.record.save({ reload: false });
             }
             await this.env.model.root.load();
             return false;

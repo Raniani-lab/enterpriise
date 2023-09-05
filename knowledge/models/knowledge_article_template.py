@@ -27,6 +27,7 @@ class ArticleTemplate(models.Model):
     cover_image_id = fields.Many2one("knowledge.cover", string="Article cover")
     cover_image_url = fields.Char(related="cover_image_id.attachment_url", string="Cover url")
     description = fields.Char(string="Description", translate=True, help="Description of the template")
+    full_width = fields.Boolean(string="Full width")
     icon = fields.Char(string="Emoji")
     is_template_item = fields.Boolean(string="Is Item?", compute="_compute_is_template_item", readonly=False, store=True)
     name = fields.Char(string="Title", translate=True, required=True)
@@ -146,6 +147,7 @@ class ArticleTemplate(models.Model):
             "article_properties": self.template_properties or {},
             "article_properties_definition": self.template_properties_definition,
             "cover_image_id": self.cover_image_id.id,
+            "full_width": self.full_width,
             "icon": self.icon,
             "name": article.name or self.name
         }
@@ -164,6 +166,7 @@ class ArticleTemplate(models.Model):
                 "article_properties_definition": template.template_properties_definition,
                 "body": template.body,
                 "cover_image_id": template.cover_image_id.id,
+                "full_width": template.full_width,
                 "icon": template.icon,
                 "is_article_item": template.is_template_item,
                 "name": template.name,

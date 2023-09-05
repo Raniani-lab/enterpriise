@@ -1,17 +1,27 @@
 <odoo noupdate="1">
     <!-- Categories -->
-    <record model="knowledge.article.template.category" id="knowledge_article_template_category_recommended">
-        <field name="name">Recommended</field>
-        <field name="sequence">0</field>
+    <record model="knowledge.article.template.category" id="knowledge_article_template_category_productivity">
+        <field name="name">Productivity</field>
+        <field name="sequence">100</field>
     </record>
 
-    <record model="knowledge.article.template.category" id="knowledge_article_template_category_sales_and_marketing">
-        <field name="name">Sales &amp; Marketing</field>
-        <field name="sequence">100</field>
+    <record model="knowledge.article.template.category" id="knowledge_article_template_category_sales">
+        <field name="name">Sales</field>
+        <field name="sequence">200</field>
+    </record>
+
+    <record model="knowledge.article.template.category" id="knowledge_article_template_category_marketing">
+        <field name="name">Marketing</field>
+        <field name="sequence">300</field>
     </record>
 
     <record model="knowledge.article.template.category" id="knowledge_article_template_category_company_organization">
         <field name="name">Company Organization</field>
-        <field name="sequence">200</field>
+        <field name="sequence">400</field>
+    </record>
+
+    <record model="knowledge.article.template.category" id="knowledge_article_template_category_product_management">
+        <field name="name">Product Management</field>
+        <field name="sequence">500</field>
     </record>
 </odoo>

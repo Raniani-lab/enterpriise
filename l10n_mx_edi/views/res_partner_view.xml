@@ -8,7 +8,7 @@
             <field name="inherit_id" ref="account.view_partner_property_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//notebook[last()]" position="inside">
-                    <page string="MX EDI" name="addenda" invisible="'MX'.lower() not in (fiscal_country_codes or '').lower()">
+                    <page string="MX EDI" name="addenda" invisible="'MX' not in fiscal_country_codes">
                         <group>
                             <field name="country_code" invisible="1"/>
                             <field name="l10n_mx_edi_addenda"/>

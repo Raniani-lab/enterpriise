@@ -18,7 +18,7 @@
                 </div>
             </xpath>
             <xpath expr="//field[@name='name']" position="after">
-                <field name="is_taxcloud" invisible="'us' not in (fiscal_country_codes or '').lower()"/>
+                <field name="is_taxcloud" invisible="'US' not in fiscal_country_codes"/>
             </xpath>
         </field>
     </record>

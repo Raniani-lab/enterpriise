@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//group[@name='accounting_entries']" position="after">
                 <group string="Peru" name="peru"
-                       invisible="country_code not in ['PE', False] or 'PE'.lower() not in (fiscal_country_codes or '').lower()">
+                       invisible="country_code not in ['PE', False] or 'PE' not in fiscal_country_codes">
                     <field name="l10n_pe_edi_operator_license"
                         invisible="company_type != 'person'"/>
                     <field name="l10n_pe_edi_mtc_number"

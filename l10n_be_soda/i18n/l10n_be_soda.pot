@@ -33,7 +33,7 @@ msgstr ""
 #, python-format
 msgid ""
 "The SODA Entry could not be created: \n"
-"The company VAT number found in at least one document doesn't match the one from the company's journal."
+"The company VAT number found in at least one document doesn't seem to correspond to this company's VAT number nor company id"
 msgstr ""
 
 #. module: l10n_be_soda
@@ -41,8 +41,8 @@ msgstr ""
 #: code:addons/l10n_be_soda/models/account_journal.py:0
 #, python-format
 msgid ""
-"The SODA Entry could not be created: \n"
-"The company VAT number found in the document doesn't match the one from the company's journal."
+"The Soda Entry could not be created: \n"
+"The imported document doesn't seem to correspond to this company's VAT number nor company id"
 msgstr ""
 
 #. module: l10n_be_soda

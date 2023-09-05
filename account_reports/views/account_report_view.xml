@@ -163,6 +163,7 @@
                                       <field name="filter_partner"/>
                                       <field name="filter_show_draft"/>
                                       <field name="filter_unreconciled"/>
+                                      <field name="filter_aml_ir_filters"/>
                                     </group>
                                 </group>
                             </page>

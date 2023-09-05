@@ -100,6 +100,24 @@ export class AccountReportFilters extends Component {
         return listToDisplay.concat(selectedAccountType.map(accountType => accountType.name)).join(', ')
     }
 
+    get selectedAmlIrFilters() {
+        const selected = [];
+
+        for (const amlIrFilter of this.controller.options.aml_ir_filters)
+            if (amlIrFilter.selected) {
+                selected.push(amlIrFilter);
+            }
+
+        if (!selected.length)
+            return _t("None");
+
+        else if (selected.length === 1)
+            return selected[0].name;
+
+        else if (selected.length > 1)
+            return _t("%s selected", selected.length)
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     // Helpers
     //------------------------------------------------------------------------------------------------------------------

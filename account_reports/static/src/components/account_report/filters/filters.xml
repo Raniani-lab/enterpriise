@@ -88,5 +88,12 @@
                 <t t-call="account_reports.AccountReportFilterFiscalPosition"/>
             </div>
         </t>
+
+        <!-- User defined filter on journal items -->
+        <t t-if="'aml_ir_filters' in controller.options and controller.options.aml_ir_filters.length > 0">
+            <div id="filter_aml_ir_filters">
+                <t t-call="account_reports.AccountReportAmlIrFilters"/>
+            </div>
+        </t>
     </t>
 </templates>

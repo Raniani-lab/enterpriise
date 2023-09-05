@@ -162,6 +162,12 @@
                         <t t-call="account_reports.filter_extra_options_template"/>
                     </t>
                 </div>
+                <div class="col-12" name="aml_ir_filters">
+                    <t t-if="options.get('aml_ir_filters') and any(opt['selected'] for opt in options['aml_ir_filters'])">
+                        Filters:
+                        <t t-out="', '.join(opt['name'] for opt in options['aml_ir_filters'] if opt['selected'])"/>
+                    </t>
+                </div>
             </div>
         </div>
     </template>

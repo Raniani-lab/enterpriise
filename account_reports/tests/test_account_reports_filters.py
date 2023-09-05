@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=C0326
 from odoo.tests import tagged
-from odoo import fields
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+from odoo import Command, fields
+from .common import TestAccountReportsCommon
 from odoo.tools import date_utils
 from odoo.tools.misc import formatLang, format_date
 
@@ -11,7 +12,7 @@ from freezegun import freeze_time
 
 
 @tagged('post_install', '-at_install')
-class TestAccountReportsFilters(AccountTestInvoicingCommon):
+class TestAccountReportsFilters(TestAccountReportsCommon):
 
     def _assert_filter_date(self, report, previous_options, expected_date_values):
         """ Initializes and checks the 'date' option computed for the provided report and previous_options
@@ -1110,4 +1111,70 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'date_to': '2019-05-31',
                 },
             ],
+        )
+
+
+    ####################################################
+    # User Defined Filters on Journal Items
+    ####################################################
+
+    @freeze_time('2023-09-01')
+    def test_filter_aml_ir_filters(self):
+        # Test user-defined filter set on journal items used as report options
+
+        filter_record = self.env['ir.filters'].create({
+            'model_id': 'account.move.line',
+            'user_id': self.uid,
+            'name': 'To Check',
+            'domain': '[("move_id.to_check", "=", True)]',
+        })
+
+        report = self.env['account.report'].create({
+            'name': 'Test ir filters',
+            'filter_aml_ir_filters': True,
+            'root_report_id': self.env.ref("account_reports.profit_and_loss").id,
+            'column_ids': [
+                Command.create({
+                    'name': 'Balance',
+                    'expression_label': 'balance',
+                }),
+            ],
+            'line_ids': [
+                Command.create({
+                    'name': 'Line 1',
+                    'expression_ids': [
+                        Command.create({
+                            'label': 'balance',
+                            'engine': 'domain',
+                            'formula': '[("account_id.account_type", "=", "income")]',
+                            'subformula': '-sum',
+                        }),
+                    ],
+                }),
+            ],
+        })
+
+        moves = (
+                self.init_invoice("out_invoice", self.partner_a, "2023-09-01", amounts=[1000])
+                + self.init_invoice("out_invoice", self.partner_a, "2023-09-01", amounts=[1000])
+        )
+        moves[0].to_check = True
+        moves.action_post()
+
+        options = self._generate_options(report, '2023-01-01', '2023-12-31')
+
+        for opt in options['aml_ir_filters']:
+            if opt['id'] == filter_record.id:
+                opt['selected'] = True
+                break
+
+        # Ensure that only the move with the 'to_check' attribute is included in the report
+        self.assertLinesValues(
+            report._get_lines(options),
+            #      Name   Balance
+            [       0,      1],
+            [
+                ('Line 1', 1000)
+            ],
+            options
         )

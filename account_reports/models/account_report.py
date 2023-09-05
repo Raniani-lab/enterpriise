@@ -322,6 +322,42 @@ class AccountReport(models.Model):
         selected_journals = self._get_options_journals(options)
         return selected_journals and [('journal_id', 'in', [j['id'] for j in selected_journals])] or []
 
+    # ####################################################
+    # OPTIONS: USER DEFINED FILTERS ON AML
+    ####################################################
+    def _init_options_aml_ir_filters(self, options, previous_options=None):
+        options['aml_ir_filters'] = []
+        if not self.filter_aml_ir_filters:
+            return
+
+        ir_filters = self.env['ir.filters'].search([('model_id', '=', 'account.move.line')])
+        if not ir_filters:
+            return
+
+        aml_ir_filters = [{'id': x.id, 'name': x.name, 'selected': False} for x in ir_filters]
+        previous_options_aml_ir_filters = previous_options.get('aml_ir_filters', []) if previous_options else []
+        previous_options_filters_map = {filter_item['id']: filter_item for filter_item in previous_options_aml_ir_filters}
+
+        for filter_item in aml_ir_filters:
+            if filter_item['id'] in previous_options_filters_map:
+                filter_item['selected'] = previous_options_filters_map[filter_item['id']]['selected']
+
+        options['aml_ir_filters'] = aml_ir_filters
+
+    @api.model
+    def _get_options_aml_ir_filters(self, options):
+        selected_filters_ids = [
+            filter_item['id']
+            for filter_item in options.get('aml_ir_filters', [])
+            if filter_item['selected']
+        ]
+
+        if not selected_filters_ids:
+            return []
+
+        selected_ir_filters = self.env['ir.filters'].browse(selected_filters_ids)
+        return osv.expression.OR([filter_record._get_eval_domain() for filter_record in selected_ir_filters])
+
     ####################################################
     # OPTIONS: date + comparison
     ####################################################
@@ -1569,6 +1605,7 @@ class AccountReport(models.Model):
         domain += self._get_options_unreconciled_domain(options)
         domain += self._get_options_fiscal_position_domain(options)
         domain += self._get_options_account_type_domain(options)
+        domain += self._get_options_aml_ir_filters(options)
 
         if self.only_tax_exigible:
             domain += self.env['account.move.line']._get_tax_exigible_domain()

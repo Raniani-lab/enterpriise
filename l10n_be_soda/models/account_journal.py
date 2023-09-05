@@ -3,6 +3,7 @@
 import io
 
 from lxml import etree
+import re
 
 from odoo import _, models
 from odoo.exceptions import UserError
@@ -52,14 +53,16 @@ class AccountJournal(models.Model):
         for attachment in attachments:
             parsed_attachment = etree.parse(io.BytesIO(attachment.raw))
             # The document VAT number must match the journal's company's VAT number
-            journal_company_vat = self.company_id.vat
-            if parsed_attachment.find('.//EntNum').text != journal_company_vat:
+            journal_company_vat = self.company_id.company_registry or self.company_id.vat and re.search(r'\d+', self.company_id.vat).group()
+            parsed_ent_num = parsed_attachment.find('.//EntNum')
+            ent_num = parsed_ent_num.text and re.search(r'\d+', parsed_ent_num.text).group()
+            if ent_num != journal_company_vat:
                 if len(attachments) == 1:
-                    message = _('The SODA Entry could not be created: \n'
-                                'The company VAT number found in the document doesn\'t match the one from the company\'s journal.')
+                    message = _('The Soda Entry could not be created: \n'
+                                'The imported document doesn\'t seem to correspond to this company\'s VAT number nor company id')
                 else:
                     message = _('The SODA Entry could not be created: \n'
-                                'The company VAT number found in at least one document doesn\'t match the one from the company\'s journal.')
+                                'The company VAT number found in at least one document doesn\'t seem to correspond to this company\'s VAT number nor company id')
                 raise UserError(message)
             # account.move.ref is SocialNumber+SequenceNumber : check that this move has not already been imported
             ref = "%s-%s" % (parsed_attachment.find('.//Source').text, parsed_attachment.find('.//SeqNumber').text)

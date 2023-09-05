@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 import io
 
 from collections import defaultdict
@@ -7,10 +9,9 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
-from odoo.fields import Command
 from odoo.tools import format_date, xlsxwriter
 
-from odoo.addons.l10n_hk_hr_payroll.const import MONTH_SELECTION
+from odoo.addons.l10n_hk_hr_payroll.models.l10n_hk_ird import MONTH_SELECTION
 
 
 class L10nHkManulifeMpf(models.Model):
@@ -64,8 +65,9 @@ class L10nHkManulifeMpf(models.Model):
                 ('date_to', '<=', end_period),
             ])
             sheet.update({
-                'line_ids': [Command.clear()] + [
-                    Command.create({'employee_id': exmpoyee.id}) for exmpoyee in all_payslips.employee_id]
+                'line_ids': [(5, 0, 0)] + [
+                    (0, 0, {'employee_id': employee.id}) for employee in all_payslips.employee_id
+                ]
             })
 
     @api.depends('xlsx_filename')

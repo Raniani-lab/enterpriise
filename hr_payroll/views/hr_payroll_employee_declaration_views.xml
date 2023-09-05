@@ -9,6 +9,8 @@
                     <button name="action_generate_pdf" string="Generate PDFs" type="object"/>
                 </header>
                 <field name="employee_id" options="{'no_create': True, 'no_create_edit': True}" widget="many2one_avatar_user"/>
+                <field name="res_model" column_invisible="True"/>
+                <field name="res_id" column_invisible="True"/>
                 <field name="pdf_filename" column_invisible="True"/>
                 <field name="pdf_file" readonly="1" filename="pdf_filename" widget="binary"/>
                 <field name="pdf_to_generate" optional="hide"/>

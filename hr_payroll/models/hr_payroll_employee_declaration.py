@@ -19,7 +19,7 @@ class HrPayrollEmployeeDeclaration(models.Model):
         'Declaration Model Name', required=True, index=True)
     res_id = fields.Many2oneReference(
         'Declaration Model Id', index=True, model_field='res_model', required=True)
-    employee_id = fields.Many2one('hr.employee')
+    employee_id = fields.Many2one('hr.employee', domain="['|', ('active', '=', True), ('active', '=', False)]")
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company, required=True)
     pdf_file = fields.Binary('PDF File', readonly=True, attachment=False)
     pdf_filename = fields.Char()
@@ -29,6 +29,10 @@ class HrPayrollEmployeeDeclaration(models.Model):
         ('pdf_to_generate', 'Queued PDF generation'),
         ('pdf_generated', 'Generated PDF'),
     ], compute='_compute_state', store=True)
+
+    _sql_constraints = [
+        ('unique_employee_sheet', 'unique(employee_id, res_model, res_id)', 'An employee can only have one declaration per sheet.'),
+    ]
 
     @api.depends('pdf_to_generate', 'pdf_file')
     def _compute_state(self):
@@ -51,6 +55,9 @@ class HrPayrollEmployeeDeclaration(models.Model):
             sheet = self.env[res_model].browse(res_id)
             report_id = sheet._get_pdf_report().id
             rendering_data = sheet._get_rendering_data(declarations.employee_id)
+            if 'error' in rendering_data:
+                sheet.pdf_error = rendering_data['error']
+                continue
             rendering_data = sheet._post_process_rendering_data_pdf(rendering_data)
 
             pdf_files = []

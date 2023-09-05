@@ -3,9 +3,11 @@
 
 from . import hr_contract
 from . import hr_employee
+from . import hr_departure_reason
 from . import hr_payslip
 from . import hr_payslip_run
 from . import hr_payslip_worked_days
+from . import hr_payroll_employee_declaration
 from . import hr_work_entry_type
 from . import res_bank
 from . import l10n_hk_ird

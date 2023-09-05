@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import date
@@ -9,7 +10,7 @@ from odoo.osv import expression
 
 class L10nHkRental(models.Model):
     _name = 'l10n_hk.rental'
-    _description = "Rental"
+    _description = "Hong Kong: Rental"
 
     name = fields.Char("Rental Reference", required=True)
     active = fields.Boolean(default=True)
@@ -20,23 +21,46 @@ class L10nHkRental(models.Model):
         ('close', 'Expired'),
         ('cancel', 'Cancelled'),
     ], default='draft', required=True, copy=False)
-    employee_id = fields.Many2one('hr.employee', string='Employee', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", required=True)
-    date_start = fields.Date('Start Date', required=True, default=fields.Date.today, index=True)
+    employee_id = fields.Many2one(
+        'hr.employee',
+        string='Employee',
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        required=True)
+    date_start = fields.Date(
+        'Start Date', required=True, default=fields.Date.today, index=True)
     date_end = fields.Date('End Date')
-    amount = fields.Monetary("Rental Amount", required=True)
-    nature = fields.Selection([('flat', 'Flat'), ('hotel', 'Hotel')], string='Rental Type', default='flat', required=True)
-    company_id = fields.Many2one('res.company', store=True, readonly=False, compute='_compute_company_id', default=lambda self: self.env.company, required=True)
-    currency_id = fields.Many2one(string="Currency", related='company_id.currency_id', readonly=True)
+    amount = fields.Monetary(
+        "Rental Amount", required=True)
+    nature = fields.Selection(
+        selection=[
+            ('flat', 'Flat'),
+            ('hotel', 'Hotel')
+        ], string='Rental Type', default='flat', required=True)
+    company_id = fields.Many2one(
+        'res.company',
+        store=True,
+        readonly=False,
+        compute='_compute_company_id',
+        default=lambda self: self.env.company,
+        required=True)
+    currency_id = fields.Many2one(
+        string="Currency",
+        related='company_id.currency_id',
+        readonly=True)
     rentals_count = fields.Integer(related='employee_id.l10n_hk_rentals_count')
 
     @api.depends('employee_id')
     def _compute_company_id(self):
-        for rental in self.filtered('employee_id'):
+        for rental in self:
+            if not rental.employee_id:
+                continue
             rental.company_id = rental.employee_id.company_id
 
     @api.constrains('employee_id', 'state', 'date_start', 'date_end')
     def _check_current_rental(self):
-        for rental in self.filtered(lambda r: (r.state not in ['draft', 'cancel'] and r.employee_id)):
+        for rental in self:
+            if rental.state in ['draft', 'cancel'] or not rental.employee_id:
+                continue
             domain = [
                 ('id', '!=', rental.id),
                 ('employee_id', '=', rental.employee_id.id),
@@ -81,7 +105,6 @@ class L10nHkRental(models.Model):
         ])
         if rentals_to_open:
             rentals_to_open.write({'state': 'open'})
-
         return True
 
     def _assign_open_rental(self):

@@ -47,3 +47,6 @@ class HrPayrollDeclarationMixin(models.AbstractModel):
 
     def _get_posted_mail_template(self):
         return self.env.ref('documents_hr_payroll.mail_template_new_declaration', raise_if_not_found=False)
+
+    def _get_posted_document_owner(self, employee):
+        return employee.user_id

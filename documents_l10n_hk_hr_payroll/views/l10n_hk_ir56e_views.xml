@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="l10n_hk_ir56b_view_form" model="ir.ui.view">
-        <field name="name">l10n_hk_ir56b.view.form.inherit</field>
-        <field name="model">l10n_hk.ir56b</field>
-        <field name="inherit_id" ref="l10n_hk_hr_payroll.l10n_hk_ir56b_view_form"/>
+    <record id="l10n_hk_ir56e_view_form" model="ir.ui.view">
+        <field name="name">l10n_hk_ir56e.view.form.inherit</field>
+        <field name="model">l10n_hk.ir56e</field>
+        <field name="inherit_id" ref="l10n_hk_hr_payroll.l10n_hk_ir56e_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//p[@name='save_warning']" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -20,7 +20,7 @@
                 <field name="documents_enabled" invisible="1"/>
                 <div>
                     <div invisible="documents_enabled">
-                        <p><strong>Warning: </strong>In order to post the IR56B sheets in the employee portal, you have to Enable "Human Resources" in the <a name="%(documents.configuration_action)d" type="action" class="oe_link">"Documents" app settings</a>.</p>
+                        <p><strong>Warning: </strong>In order to post the IR56E sheets in the employee portal, you have to Enable "Human Resources" in the <a name="%(documents.configuration_action)d" type="action" class="oe_link">"Documents" app settings</a>.</p>
                     </div>
                 </div>
             </p>

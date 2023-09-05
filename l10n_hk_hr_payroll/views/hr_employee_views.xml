@@ -32,7 +32,7 @@
                 <label for="l10n_hk_rental_id"/>
                 <div class="o_row">
                     <field name="l10n_hk_rental_id" readonly="1" invisible="company_country_code != 'HK'"/>
-                    <button class="btn btn-link" type="object" name="action_open_rentals" invisible="l10n_hk_rental_id">
+                    <button class="btn btn-link" type="object" name="action_open_rentals">
                         <span class="fa fa-arrow-right"></span><span> History</span>
                     </button>
                 </div>

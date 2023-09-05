@@ -1,18 +1,15 @@
+# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 import base64
-import logging
 
 from lxml import etree
 from collections import defaultdict
 
 from odoo import _, api, fields, models
-from odoo.fields import Command
 from odoo.exceptions import UserError
 from odoo.tools import format_date
 
-from odoo.addons.l10n_hk_hr_payroll.const import AREA_CODE_MAP
-
-_logger = logging.getLogger(__name__)
 
 
 class L10nHkIr56b(models.Model):
@@ -22,9 +19,6 @@ class L10nHkIr56b(models.Model):
     _order = 'start_period'
 
     type_of_form = fields.Selection(selection_add=[('S', "Supplementary")], ondelete={'S': 'cascade'})
-    line_ids = fields.One2many(
-        'l10n_hk.ir56b.line', 'sheet_id', string="Appendices",
-        compute='_compute_line_ids', store=True, readonly=False)
 
     @api.depends('xml_file')
     def _compute_validation_state(self):
@@ -51,8 +45,7 @@ class L10nHkIr56b(models.Model):
                 record.xml_validation_state = 'invalid'
                 record.error_message = str(err)
 
-    @api.depends('start_period', 'end_period', 'company_id')
-    def _compute_line_ids(self):
+    def action_generate_declarations(self):
         for sheet in self:
             all_payslips = self.env['hr.payslip'].search([
                 ('state', 'in', ['done', 'paid']),
@@ -62,9 +55,13 @@ class L10nHkIr56b(models.Model):
             ])
             all_employees = all_payslips.employee_id.filtered(lambda e: not e.contract_warning)
             sheet.update({
-                'line_ids': [Command.clear()] + [
-                    Command.create({'employee_id': exmpoyee.id}) for exmpoyee in all_employees]
+                'line_ids': [(5, 0, 0)] + [(0, 0, {
+                    'employee_id': employee.id,
+                    'res_model': 'l10n_hk.ir56b',
+                    'res_id': sheet.id,
+                }) for employee in all_employees]
             })
+        return super().action_generate_declarations()
 
     @api.depends('start_period', 'end_period')
     def _compute_display_name(self):
@@ -114,7 +111,7 @@ class L10nHkIr56b(models.Model):
             if employee.identification_id:
                 hkid = employee.identification_id.strip().upper()
             else:
-                ppnum = ', '.join([employee.passport_id, employee.l10n_hk_passport_place_of_issue])
+                ppnum = f'{employee.passport_id}, {employee.l10n_hk_passport_place_of_issue}'
 
             spouse_name, spouse_hkid, spouse_passport = '', '', ''
             if employee.marital == 'married':
@@ -127,6 +124,11 @@ class L10nHkIr56b(models.Model):
             employee_address = ', '.join(i for i in [
                 employee.private_street, employee.private_street2, employee.private_city, employee.private_state_id.name, employee.private_country_id.name] if i)
 
+            AREA_CODE_MAP = {
+                'HK': 'H',
+                'KLN': 'K',
+                'NT': 'N',
+            }
             area_code = AREA_CODE_MAP.get(employee.private_state_id.code, 'F')
 
             start_date = self.start_period if self.start_period > employee.first_contract_date else employee.first_contract_date
@@ -233,40 +235,15 @@ class L10nHkIr56b(models.Model):
         self.xml_file = base64.encodebytes(xml_formatted_str)
         self.state = 'waiting'
 
-class L10nHkIr56bLine(models.Model):
-    _name = 'l10n_hk.ir56b.line'
-    _description = 'IR56B Line'
+    def _get_pdf_report(self):
+        return self.env.ref('l10n_hk_hr_payroll.action_report_employee_ir56b')
 
-    employee_id = fields.Many2one('hr.employee', string='Employee', required=True)
-    pdf_file = fields.Binary(string='PDF File', readonly=True)
-    pdf_filename = fields.Char(string='PDF Filename', readonly=True)
-    sheet_id = fields.Many2one('l10n_hk.ir56b', string='IR56B', required=True, ondelete='cascade')
-    pdf_to_generate = fields.Boolean()
+    def _get_pdf_filename(self, employee):
+        self.ensure_one()
+        return _('%s_-_IR56B_-_%s', employee.name, self.start_year)
 
-    _sql_constraints = [
-        ('unique_employee', 'unique(employee_id, sheet_id)', 'An employee can only have one IR56B line per sheet.'),
-    ]
-
-    def _generate_pdf(self):
-        report_sudo = self.env["ir.actions.report"].sudo()
-        report_id = self.env.ref('l10n_hk_hr_payroll.action_report_employee_ir56b').id
-
-        for sheet in self.sheet_id:
-            lines = self.filtered(lambda l: l.sheet_id == sheet)
-            rendering_data = sheet._get_rendering_data(lines.employee_id)
-            if 'error' in rendering_data:
-                sheet.pdf_error = rendering_data['error']
-                continue
-            pdf_files = []
-            sheet_count = len(rendering_data['employees_data'])
-            counter = 1
-            for sheet_data in rendering_data['employees_data']:
-                _logger.info('Printing IR56B sheet (%s/%s)', counter, sheet_count)
-                counter += 1
-                sheet_filename = '%s_-_IR56B_-_%s' % (sheet_data['employee'].name, sheet.start_year)
-                sheet_file, dummy = report_sudo.with_context(allowed_company_ids=sheet_data['employee'].company_id.ids)._render_qweb_pdf(
-                    report_id, [sheet_data['employee']], data={**sheet_data, **rendering_data['data']})
-                pdf_files.append((sheet_data['employee'], sheet_filename, sheet_file))
-
-            if pdf_files:
-                sheet._process_files(pdf_files)
+    def _post_process_rendering_data_pdf(self, rendering_data):
+        result = {}
+        for sheet_values in rendering_data['employees_data']:
+            result[sheet_values['employee']] = {**sheet_values, **rendering_data['data']}
+        return result

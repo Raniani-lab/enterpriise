@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="l10n_hk_ir56g_view_form" model="ir.ui.view">
         <field name="name">l10n_hk_ir56g.view.form</field>
         <field name="model">l10n_hk.ir56g</field>
         <field name="arch" type="xml">
             <form string="IR56G Sheet">
-                <header>
-                    <button string="Create PDFs" name="action_generate_pdf" type="object" class="btn-primary" />
-                </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_declarations" type="object" class="oe_stat_button" icon="fa-users">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value"><field name="lines_count"/></span>
+                                <span class="o_stat_text">Eligible Employees</span>
+                            </div>
+                        </button>
+                    </div>
                     <field name="state" invisible="1" />
                     <group>
                         <group>
@@ -29,15 +33,7 @@
                             <field name="pdf_error" readonly="1" nolabel="1"/>
                         </p>
                     </div>
-                    <field name="line_ids">
-                        <tree no_open="1" editable="bottom">
-                            <field name="employee_id" widget="many2one_avatar_user"/>
-                            <field name="pdf_filename" invisible="1"/>
-                            <field name="pdf_file" readonly="1" filename="pdf_filename" widget="binary"/>
-                            <field name="pdf_to_generate" groups="base.group_no_one"/>
-                            <button string="Configure" class="float-end btn-secondary" type="object" name="action_open_detail"/>
-                        </tree>
-                    </field>
+                    <p name="save_warning" invisible="state != 'done'">The files won't be posted in the employee portal if you don't have the Documents app.</p>
                 </sheet>
             </form>
         </field>
@@ -118,6 +114,4 @@
             </form>
         </field>
     </record>
-
-    <menuitem id="menu_l10n_hk_ir56g" name="IR56G Sheet" action="l10n_hk_ir56g_action" parent="l10n_hk_hr_payroll.menu_reporting_l10n_hk" sequence="93"/>
 </odoo>

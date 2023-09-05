@@ -1,18 +1,32 @@
+# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import base64
 
 from datetime import date
+from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import format_date
 from odoo.modules.module import get_resource_path
 
-from odoo.addons.l10n_hk_hr_payroll.const import MONTH_SELECTION
-
+MONTH_SELECTION = [
+    ('1', 'January'),
+    ('2', 'February'),
+    ('3', 'March'),
+    ('4', 'April'),
+    ('5', 'May'),
+    ('6', 'June'),
+    ('7', 'July'),
+    ('8', 'August'),
+    ('9', 'September'),
+    ('10', 'October'),
+    ('11', 'November'),
+    ('12', 'December'),
+]
 
 class L10nHkIrd(models.AbstractModel):
     _name = 'l10n_hk.ird'
+    _inherit = 'hr.payroll.declaration.mixin'
     _description = 'IRD Sheet'
     _order = 'start_period'
 
@@ -24,7 +38,6 @@ class L10nHkIrd(models.AbstractModel):
             raise UserError(_("Please configure the Employer's Name and the Employer's File Number in the company settings."))
         return super().default_get(field_list)
 
-    company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
     state = fields.Selection([('draft', 'Draft'), ('waiting', 'Waiting'), ('done', 'Done')], default='draft')
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id')
     start_year = fields.Integer(required=True, default=lambda self: fields.Date.today().year - 1)
@@ -51,6 +64,9 @@ class L10nHkIrd(models.AbstractModel):
     error_message = fields.Char('Error Message', compute='_compute_validation_state', store=True)
     pdf_error = fields.Text('PDF Error Message')
 
+    def _country_restriction(self):
+        return 'HK'
+
     @api.constrains('year_of_employer_return')
     def _check_year_of_employer_return(self):
         for report in self.filtered(lambda c: c.year_of_employer_return):
@@ -68,7 +84,7 @@ class L10nHkIrd(models.AbstractModel):
     def _compute_period(self):
         for record in self:
             record.start_period = date(record.start_year, int(record.start_month), 1)
-            record.end_period = date(record.end_year, int(record.end_month), 31)
+            record.end_period = date(record.end_year, int(record.end_month), 1) + relativedelta(day=31)
 
     @api.depends('start_period')
     def _compute_display_name(self):
@@ -127,17 +143,3 @@ class L10nHkIrd(models.AbstractModel):
             'NAME_OF_SIGNER': self.name_of_signer,
             'Designation': self.designation_of_signer,
         }
-
-    def action_generate_pdf(self):
-        self.line_ids.write({'pdf_to_generate': True})
-        self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
-
-    def _process_files(self, files):
-        self.ensure_one()
-        self.pdf_error = False
-        for employee, filename, data in files:
-            line = self.line_ids.filtered(lambda l: l.employee_id.id == employee.id)
-            line.write({
-                'pdf_file': base64.encodebytes(data),
-                'pdf_filename': filename,
-            })

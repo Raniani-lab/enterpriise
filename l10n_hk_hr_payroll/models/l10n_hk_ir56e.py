@@ -1,10 +1,8 @@
+# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import logging
 
-from odoo import api, fields, models
+from odoo import api, models, _
 from odoo.tools import format_date
-
-_logger = logging.getLogger(__name__)
 
 
 class L10nHkIr56e(models.Model):
@@ -12,8 +10,6 @@ class L10nHkIr56e(models.Model):
     _inherit = 'l10n_hk.ird'
     _description = 'IR56E Sheet'
     _order = 'submission_date'
-
-    line_ids = fields.One2many('l10n_hk.ir56e.line', 'sheet_id', string="Appendices")
 
     @api.depends('submission_date')
     def _compute_display_name(self):
@@ -34,7 +30,7 @@ class L10nHkIr56e(models.Model):
             if employee.identification_id:
                 hkid = employee.identification_id.strip().upper()
             else:
-                ppnum = ', '.join([employee.passport_id, employee.l10n_hk_passport_place_of_issue])
+                ppnum = f'{employee.passport_id}, {employee.l10n_hk_passport_place_of_issue}'
 
             spouse_name, spouse_hkid, spouse_passport = '', '', ''
             if employee.marital == 'married':
@@ -80,40 +76,18 @@ class L10nHkIr56e(models.Model):
 
         return {'data': main_data, 'employees_data': employees_data}
 
-class L10nHkIr56eLine(models.Model):
-    _name = 'l10n_hk.ir56e.line'
-    _description = 'IR56E Line'
+    def _get_pdf_report(self):
+        return self.env.ref('l10n_hk_hr_payroll.action_report_employee_ir56e')
 
-    employee_id = fields.Many2one('hr.employee', string='Employee', required=True)
-    pdf_file = fields.Binary(string='PDF File', readonly=True)
-    pdf_filename = fields.Char(string='PDF Filename', readonly=True)
-    sheet_id = fields.Many2one('l10n_hk.ir56e', string='IR56E', required=True, ondelete='cascade')
-    pdf_to_generate = fields.Boolean()
+    def _get_pdf_filename(self, employee):
+        self.ensure_one()
+        return _('%s_-_IR56E-%s', employee.name, self.submission_date)
 
-    _sql_constraints = [
-        ('unique_employee', 'unique(employee_id, sheet_id)', 'An employee can only have one IR56E line per sheet.'),
-    ]
+    def _post_process_rendering_data_pdf(self, rendering_data):
+        result = {}
+        for sheet_values in rendering_data['employees_data']:
+            result[sheet_values['employee']] = {**sheet_values, **rendering_data['data']}
+        return result
 
-    def _generate_pdf(self):
-        report_sudo = self.env["ir.actions.report"].sudo()
-        report_id = self.env.ref('l10n_hk_hr_payroll.action_report_employee_ir56e').id
-
-        for sheet in self.sheet_id:
-            lines = self.filtered(lambda l: l.sheet_id == sheet)
-            rendering_data = sheet._get_rendering_data(lines.employee_id)
-            if 'error' in rendering_data:
-                sheet.pdf_error = rendering_data['error']
-                continue
-            pdf_files = []
-            sheet_count = len(rendering_data['employees_data'])
-            counter = 1
-            for sheet_data in rendering_data['employees_data']:
-                _logger.info('Printing IR56E sheet (%s/%s)', counter, sheet_count)
-                counter += 1
-                sheet_filename = '%s_-_IR56E' % (sheet_data['employee'].name)
-                sheet_file, dummy = report_sudo.with_context(allowed_company_ids=sheet_data['employee'].company_id.ids)._render_qweb_pdf(
-                    report_id, [sheet_data['employee']], data={**sheet_data, **rendering_data['data']})
-                pdf_files.append((sheet_data['employee'], sheet_filename, sheet_file))
-
-            if pdf_files:
-                sheet._process_files(pdf_files)
+    def _get_posted_document_owner(self, employee):
+        return employee.contract_id.hr_responsible_id or self.env.user

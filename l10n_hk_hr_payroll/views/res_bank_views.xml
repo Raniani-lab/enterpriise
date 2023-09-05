@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="view_res_bank_form_inherit_l10n_hk_hr_payroll" model="ir.ui.view">
         <field name="name">res.bank.view.form.inherit</field>
         <field name="model">res.bank</field>
@@ -13,5 +12,4 @@
             </xpath>
         </field>
     </record>
-
 </odoo>

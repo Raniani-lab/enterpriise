@@ -41,7 +41,7 @@ class HrPayrollEmployeeDeclaration(models.Model):
             if line.pdf_filename not in posted_documents and line.pdf_file:
                 lines_to_post += line
                 create_vals.append({
-                    'owner_id': line.employee_id.user_id.id,
+                    'owner_id': self.env[line.res_model]._get_posted_document_owner(line.employee_id).id,
                     'datas': line.pdf_file,
                     'name': line.pdf_filename,
                     'folder_id': line.company_id.documents_payroll_folder_id.id,

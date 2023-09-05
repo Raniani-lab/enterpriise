@@ -1,17 +1,14 @@
+# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 import base64
-import logging
 
 from datetime import date
-from lxml import etree
 from collections import defaultdict
+from lxml import etree
 
-from odoo import _, fields, models, api
+from odoo import _, models, api
 from odoo.exceptions import UserError
-
-from odoo.addons.l10n_hk_hr_payroll.const import AREA_CODE_MAP
-
-_logger = logging.getLogger(__name__)
 
 
 class L10nHkIr56f(models.Model):
@@ -19,8 +16,6 @@ class L10nHkIr56f(models.Model):
     _inherit = 'l10n_hk.ird'
     _description = 'IR56F Sheet'
     _order = 'start_period'
-
-    line_ids = fields.One2many('l10n_hk.ir56f.line', 'sheet_id', string="Appendices")
 
     @api.depends('xml_file')
     def _compute_validation_state(self):
@@ -50,9 +45,9 @@ class L10nHkIr56f(models.Model):
     @api.model
     def _check_employees(self, employees):
         error_messages = super()._check_employees(employees)
-        invalid_lines = self.line_ids.filtered(lambda line: not line.cessation_reason)
+        invalid_lines = self.line_ids.filtered(lambda line: not line.employee_id.departure_reason_id.l10n_hk_ir56f_code)
         if invalid_lines:
-            error_messages += '\n' + _("The following employees don't have a valid cessation reason: %s") % ', '.join(invalid_lines.employee_id.mapped('name'))
+            error_messages += '\n' + _("The following employees don't have a valid departure reason: %s") % ', '.join(invalid_lines.employee_id.mapped('name'))
         return error_messages
 
     def _get_rendering_data(self, employees):
@@ -96,7 +91,7 @@ class L10nHkIr56f(models.Model):
             if employee.identification_id:
                 hkid = employee.identification_id.strip().upper()
             else:
-                ppnum = ', '.join([employee.passport_id, employee.l10n_hk_passport_place_of_issue])
+                ppnum = f'{employee.passport_id}, {employee.l10n_hk_passport_place_of_issue}'
 
             spouse_name, spouse_hkid, spouse_passport = '', '', ''
             if employee.marital == 'married':
@@ -109,6 +104,11 @@ class L10nHkIr56f(models.Model):
             employee_address = ', '.join(i for i in [
                 employee.private_street, employee.private_street2, employee.private_city, employee.private_state_id.name, employee.private_country_id.name] if i)
 
+            AREA_CODE_MAP = {
+                'HK': 'H',
+                'KLN': 'K',
+                'NT': 'N',
+            }
             area_code = AREA_CODE_MAP.get(employee.private_state_id.code, 'F')
 
             start_date = self.start_period if self.start_period > employee.first_contract_date else employee.first_contract_date
@@ -119,6 +119,19 @@ class L10nHkIr56f(models.Model):
                 ('date_start', '<=', self.end_period),
                 '|', ('date_end', '>', start_date), ('date_end', '=', False),
             ]).sorted('date_start')
+
+            departure_code = sheet_line.employee_id.departure_reason_id.l10n_hk_ir56f_code
+            if departure_code == 5:
+                departure_reason_other = sheet_line.employee_id.departure_description
+                departure_reason_str = sheet_line.employee_id.departure_description
+            else:
+                departure_reason_other = ''
+                departure_reason_str = {
+                    '1': 'Resignation',
+                    '2': 'Retirement',
+                    '3': 'Dismissal',
+                    '4': 'Death',
+                }[departure_code]
 
             sheet_values = {
                 'employee': employee,
@@ -144,9 +157,9 @@ class L10nHkIr56f(models.Model):
                 'AreaCodeResAddr': area_code,
                 'Capacity': employee.job_title,
                 'CESSATION_DATE': end_date,
-                'CESSATION_REASON': sheet_line.cessation_reason,
-                'CESSATION_REASON_OTHER': sheet_line.cessation_reason_other if sheet_line.cessation_reason == '5' else '',
-                'cessation_reason_str': sheet_line.cessation_reason_other if sheet_line.cessation_reason == '5' else dict(sheet_line._fields['cessation_reason'].selection).get(sheet_line.cessation_reason),
+                'CESSATION_REASON': departure_code,
+                'CESSATION_REASON_OTHER': departure_reason_other,
+                'cessation_reason_str': departure_reason_str,
                 'RTN_ASS_YR': self.end_year,
                 'StartDateOfEmp': start_date,
                 'EndDateOfEmp': end_date,
@@ -220,49 +233,18 @@ class L10nHkIr56f(models.Model):
         self.xml_file = base64.encodebytes(xml_formatted_str)
         self.state = 'waiting'
 
-class L10nHkIr56bLine(models.Model):
-    _name = 'l10n_hk.ir56f.line'
-    _description = 'IR56F Line'
+    def _get_pdf_report(self):
+        return self.env.ref('l10n_hk_hr_payroll.action_report_employee_ir56f')
 
-    employee_id = fields.Many2one('hr.employee', string='Employee', required=True)
-    pdf_file = fields.Binary(string='PDF File', readonly=True)
-    pdf_filename = fields.Char(string='PDF Filename', readonly=True)
-    sheet_id = fields.Many2one('l10n_hk.ir56f', string='IR56F', required=True, ondelete='cascade')
-    pdf_to_generate = fields.Boolean()
+    def _get_pdf_filename(self, employee):
+        self.ensure_one()
+        return _('%s_-_IR56F_-_%s', employee.name, self.start_year)
 
-    cessation_reason = fields.Selection(
-        selection=[('1', 'Resignation'),
-                   ('2', 'Retirement'),
-                   ('3', 'Dismissal'),
-                   ('4', 'Death'),
-                   ('5', 'Others')],
-        string="Reason for Cessation")
-    cessation_reason_other = fields.Char("Reason for Cessation (Other)")
+    def _post_process_rendering_data_pdf(self, rendering_data):
+        result = {}
+        for sheet_values in rendering_data['employees_data']:
+            result[sheet_values['employee']] = {**sheet_values, **rendering_data['data']}
+        return result
 
-    _sql_constraints = [
-        ('unique_employee', 'unique(employee_id, sheet_id)', 'An employee can only have one IR56F line per sheet.'),
-    ]
-
-    def _generate_pdf(self):
-        report_sudo = self.env["ir.actions.report"].sudo()
-        report_id = self.env.ref('l10n_hk_hr_payroll.action_report_employee_ir56f').id
-
-        for sheet in self.sheet_id:
-            lines = self.filtered(lambda l: l.sheet_id == sheet)
-            rendering_data = sheet._get_rendering_data(lines.employee_id)
-            if 'error' in rendering_data:
-                sheet.pdf_error = rendering_data['error']
-                continue
-            pdf_files = []
-            sheet_count = len(rendering_data['employees_data'])
-            counter = 1
-            for sheet_data in rendering_data['employees_data']:
-                _logger.info('Printing IR56F sheet (%s/%s)', counter, sheet_count)
-                counter += 1
-                sheet_filename = '%s_-_IR56F_-_%s' % (sheet_data['employee'].name, sheet.start_year)
-                sheet_file, dummy = report_sudo.with_context(allowed_company_ids=sheet_data['employee'].company_id.ids)._render_qweb_pdf(
-                    report_id, [sheet_data['employee']], data={**sheet_data, **rendering_data['data']})
-                pdf_files.append((sheet_data['employee'], sheet_filename, sheet_file))
-
-            if pdf_files:
-                sheet._process_files(pdf_files)
+    def _get_posted_document_owner(self, employee):
+        return employee.contract_id.hr_responsible_id or self.env.user

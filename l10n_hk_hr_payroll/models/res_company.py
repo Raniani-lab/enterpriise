@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import _, api, fields, models
@@ -21,10 +22,11 @@ class ResCompany(models.Model):
     @api.constrains("l10n_hk_employer_file_number")
     def _check_l10n_hk_employer_file_number(self):
         for company in self:
-            if company.l10n_hk_employer_file_number:
-                file_number = company.l10n_hk_employer_file_number.strip()
-                if len(file_number) != 12 or file_number[3] != '-':
-                    raise UserError(_("The Employer's File Number must be in the format of XXX-XXXXXXXX."))
+            if not company.l10n_hk_employer_file_number:
+                continue
+            file_number = company.l10n_hk_employer_file_number.strip()
+            if len(file_number) != 12 or file_number[3] != '-':
+                raise UserError(_("The Employer's File Number must be in the format of XXX-XXXXXXXX."))
 
     @api.constrains("l10n_hk_manulife_mpf_scheme")
     def _check_l10n_hk_manulife_mpf_scheme(self):

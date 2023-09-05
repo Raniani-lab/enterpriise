@@ -34,7 +34,7 @@ class HrPayrollDeclarationMixin(models.AbstractModel):
         'hr.payroll.employee.declaration', 'res_id', string='Declarations')
     lines_count = fields.Integer(compute='_compute_lines_count')
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
-    pdfs_generated = fields.Boolean(compute="_compute_pdfs_generated")
+    pdf_error = fields.Text('PDF Error Message')
 
     def action_generate_declarations(self):
         for sheet in self:
@@ -59,11 +59,6 @@ class HrPayrollDeclarationMixin(models.AbstractModel):
             'context': {'default_res_model': self._name, 'default_res_id': self.id},
         }
 
-    @api.depends("line_ids.pdf_file")
-    def _compute_pdfs_generated(self):
-        for sheet in self:
-            sheet.pdfs_generated = any(l.pdf_file for l in sheet.line_ids)
-
     def _country_restriction(self):
         return False
 
@@ -78,6 +73,7 @@ class HrPayrollDeclarationMixin(models.AbstractModel):
 
     def _process_files(self, files):
         self.ensure_one()
+        self.pdf_error = False
         for employee, filename, data in files:
             line = self.line_ids.filtered(lambda l: l.employee_id == employee)
             line.write({

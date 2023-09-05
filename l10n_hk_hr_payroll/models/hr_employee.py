@@ -86,16 +86,6 @@ class HrEmployee(models.Model):
     l10n_hk_rentals_count = fields.Integer(
         compute='_compute_l10n_hk_rentals_count',
         groups="hr.group_hr_user")
-    l10n_hk_rental_date_start = fields.Date(
-        "Rental Start Date",
-        groups="hr.group_hr_user",
-        tracking=True,
-        copy=False)
-    l10n_hk_rental_amount = fields.Monetary(
-        "Rental Amount",
-        groups="hr.group_hr_user",
-        tracking=True,
-        copy=False)
     l10n_hk_years_of_service = fields.Float(
         "Years of Service",
         compute="_compute_l10n_hk_years_of_service",
@@ -173,20 +163,7 @@ class HrEmployee(models.Model):
     def action_open_rentals(self):
         self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id('l10n_hk_hr_payroll.action_l10n_hk_rental')
-        action['views'] = [(False, 'form')]
-        if not self.l10n_hk_rental_ids:
-            action['context'] = {'default_employee_id': self.id}
-            action['target'] = 'new'
-            return action
-
-        target_rental = self.l10n_hk_rental_id
-        if target_rental:
-            action['res_id'] = target_rental.id
-            return action
-
-        target_rental = self.l10n_hk_rental_ids.filtered(lambda r: r.state == 'draft')
-        if target_rental:
-            action['res_id'] = target_rental[0].id
-
-        action['res_id'] = self.l10n_hk_rental_ids[0].id
+        action['views'] = [(False, 'list'), (False, 'form')]
+        action['domain'] = [('id', 'in', self.l10n_hk_rental_ids.ids)]
+        action['context'] = {'default_employee_id': self.id}
         return action

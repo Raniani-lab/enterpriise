@@ -3,8 +3,14 @@
 
 from ast import literal_eval
 
-from odoo import api, fields, models, _
+from odoo import api, Command, fields, models, _
 from odoo.addons.sale.models.sale_order import SALE_ORDER_STATE
+
+
+class BaseAutomation(models.Model):
+    _inherit = 'base.automation'
+
+    is_sale_order_alert = fields.Boolean(readonly=True, default=False, string='Is Sale Order Alert')
 
 
 class SaleOrderAlert(models.Model):
@@ -22,13 +28,24 @@ class SaleOrderAlert(models.Model):
             res['model_id'] = self.env['ir.model']._get_id('sale.order')
         return res
 
-    automation_id = fields.Many2one('base.automation', 'Automated Action', required=True, ondelete='restrict')
+    automation_id = fields.Many2one('base.automation', 'Automation Rule', required=True, ondelete='restrict')
+    action_id = fields.Many2one('ir.actions.server', string='Server Action', ondelete='restrict')
+
+    template_id = fields.Many2one(related='action_id.template_id', readonly=False)
+    sms_template_id = fields.Many2one(related='action_id.sms_template_id', readonly=False)
+    activity_type_id = fields.Many2one(related='action_id.activity_type_id', readonly=False)
+    activity_summary = fields.Char(related='action_id.activity_summary', readonly=False)
+    activity_note = fields.Html(related='action_id.activity_note', readonly=False)
+    activity_date_deadline_range = fields.Integer(related='action_id.activity_date_deadline_range', readonly=False)
+    activity_date_deadline_range_type = fields.Selection(related='action_id.activity_date_deadline_range_type', readonly=False)
+    activity_user_id = fields.Many2one(related='action_id.activity_user_id', readonly=False)
+
     action = fields.Selection([
         ('next_activity', 'Create next activity'),
         ('mail_post', 'Send an email to the customer'),
         ('sms', 'Send an SMS Text Message to the customer'),
         ('set_health_value', 'Set Contract Health value')
-    ], string='Action', required=True, default=None)
+    ], string='Action To Do', required=True, default=None)
     trigger_condition = fields.Selection([
         ('on_create_or_write', 'Modification'), ('on_time', 'Timed Condition')], string='Trigger On', required=True, default='on_create_or_write')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
@@ -92,6 +109,68 @@ class SaleOrderAlert(models.Model):
         for alert in self:
             alert.automation_id.trigger = alert.trigger_condition
 
+    def _get_action_activity_values(self):
+        if self.activity_user == 'users':
+            action_commands = [Command.create({
+                'name': '%s-%s' % (self.name, seq),
+                'sequence': seq,
+                'state': 'next_activity',
+                'model_id': self.model_id.id,
+                'activity_summary': self.activity_summary,
+                'activity_type_id': self.activity_type_id.id,
+                'activity_note': self.activity_note,
+                'activity_date_deadline_range': self.activity_date_deadline_range,
+                'activity_date_deadline_range_type': self.activity_date_deadline_range_type,
+                'activity_user_type': 'specific',
+                'activity_user_id': user.id,
+                'usage': 'base_automation',
+            }) for seq, user in enumerate(self.activity_user_ids, 1)]
+            return {
+                'state': 'multi',
+                'child_ids': action_commands
+            }
+        elif self.activity_user == 'contract':
+            return {
+                'state': 'next_activity',
+                'activity_user_type': 'generic',
+                'activity_user_field_name': 'user_id',
+            }
+        elif self.activity_user == 'channel_leader':
+            return {
+                'state': 'next_activity',
+                'activity_user_type': 'generic',
+                'activity_user_field_name': 'team_user_id',
+            }
+
+    def _get_alert_domain(self):
+        domain = [('is_subscription', '=', True)]
+        if self.subscription_template_ids:
+            domain += [('sale_order_template_id', 'in', self.subscription_template_ids.ids)]
+        if self.customer_ids:
+            domain += [('partner_id', 'in', self.customer_ids.ids)]
+        if self.team_ids:
+            domain += [('team_id', 'in', self.team_ids.ids)]
+        if self.company_id:
+            domain += [('company_id', '=', self.company_id.id)]
+        if self.mrr_min:
+            domain += [('recurring_monthly', '>=', self.mrr_min)]
+        if self.mrr_max:
+            domain += [('recurring_monthly', '<=', self.mrr_max)]
+        if self.product_ids:
+            domain += [('order_line.product_id', 'in', self.product_ids.ids)]
+        if self.mrr_change_amount:
+            if self.mrr_change_unit == 'percentage':
+                domain += [('kpi_%s_mrr_percentage' % self.mrr_change_period, '>', self.mrr_change_amount / 100)]
+            else:
+                domain += [('kpi_%s_mrr_delta' % self.mrr_change_period, '>', self.mrr_change_amount)]
+        if self.rating_percentage:
+            domain += [('percentage_satisfaction', self.rating_operator, self.rating_percentage)]
+        if self.subscription_state:
+            domain += [('subscription_state', '=', self.subscription_state)]
+        if self.order_state:
+            domain += [('state', '=', self.order_state)]
+        return domain
+
     def _get_selection_mrr_change_unit(self):
         return [('percentage', '%'), ('currency', self.env.company.currency_id.symbol)]
 
@@ -100,99 +179,82 @@ class SaleOrderAlert(models.Model):
             domain = literal_eval(alert.filter_domain) if alert.filter_domain else []
             alert.subscription_count = self.env['sale.order'].search_count(domain)
 
-    def _configure_filter_pre_domain(self):
-        for alert in self:
-            domain = []
-            if alert.subscription_state_from:
-                domain = [('subscription_state', '=', alert.subscription_state_from)]
-            super(SaleOrderAlert, alert).write({'filter_pre_domain': domain})
+    def _create_actions(self):
+        action_values = [{
+            'name': alert.name,
+            'usage': 'base_automation',
+            'model_id': alert.model_id.id,
+            'base_automation_id': alert.automation_id.id,
+        } for alert in self]
 
-    def _configure_filter_domain(self, vals_list):
-        for alert, vals in zip(self, vals_list):
-            if vals.get('filter_domain'):
-                # Write or create has already set the value
-                continue
-            domain = [('is_subscription', '=', True)]
-            if alert.subscription_template_ids:
-                domain += [('sale_order_template_id', 'in', alert.subscription_template_ids.ids)]
-            if alert.customer_ids:
-                domain += [('partner_id', 'in', alert.customer_ids.ids)]
-            if alert.team_ids:
-                domain += [('team_id', 'in', alert.team_ids.ids)]
-            if alert.company_id:
-                domain += [('company_id', '=', alert.company_id.id)]
-            if alert.mrr_min:
-                domain += [('recurring_monthly', '>=', alert.mrr_min)]
-            if alert.mrr_max:
-                domain += [('recurring_monthly', '<=', alert.mrr_max)]
-            if alert.product_ids:
-                domain += [('order_line.product_id', 'in', alert.product_ids.ids)]
-            if alert.mrr_change_amount:
-                if alert.mrr_change_unit == 'percentage':
-                    domain += [('kpi_%s_mrr_percentage' % alert.mrr_change_period, '>', alert.mrr_change_amount / 100)]
-                else:
-                    domain += [('kpi_%s_mrr_delta' % alert.mrr_change_period, '>', alert.mrr_change_amount)]
-            if alert.rating_percentage:
-                domain += [('percentage_satisfaction', alert.rating_operator, alert.rating_percentage)]
-            if alert.subscription_state:
-                domain += [('subscription_state', '=', alert.subscription_state)]
-            if alert.order_state:
-                domain += [('state', '=', alert.order_state)]
-            super(SaleOrderAlert, alert).write({'filter_domain': domain})
+        actions = self.env['ir.actions.server'].create(action_values)
 
-    def unlink(self):
-        self.automation_id.active = False
-        return super().unlink()
+        for alert, action in zip(self, actions):
+            alert.action_id = action
+            alert.action_server_ids = [action.id]
 
-    def _configure_alert_from_action(self, vals_list):
+    def _configure_alerts(self, vals_list):
         # Unlink the children server actions if not needed anymore
-        self.filtered(lambda alert: alert.action != 'next_activity' and alert.child_ids).unlink()
+        self.filtered(lambda alert: alert.action != 'next_activity' and alert.action_id.child_ids).action_id.child_ids.unlink()
+
         field_names = ['subscription_state', 'health']
         tag_fields = self.env['ir.model.fields'].search([('model', 'in', self.mapped('model_name')), ('name', 'in', field_names)])
+
         for alert, vals in zip(self, vals_list):
+            # Configure alert
+            alert_values = {}
+            if not vals.get('filter_domain'):
+                alert_values['filter_domain'] = alert._get_alert_domain()
+            if alert.subscription_state_from:
+                alert_values['filter_pre_domain'] = [('subscription_state', '=', alert.subscription_state_from)]
+            if alert_values:
+                alert.write(alert_values)
+
+            # Configure action
+            action_values = {}
             field_name = None
-            action_value = None
             if alert.action == 'subscription_state' and alert.subscription_state:
                 field_name = 'subscription_state'
-                action_value = alert.subscription_state
-            elif alert.action == 'set_health_value':
+                action_values['selection_value'] = alert.subscription_state
+            elif alert.action == 'set_health_value' and alert.health:
                 field_name = 'health'
-                action_value = alert.health
-            if field_name and action_value:
-                tag_field = tag_fields.filtered(lambda t: t.name == field_name)
-                # Require sudo to write on ir.actions.server fields
-                super(SaleOrderAlert, alert.sudo()).write({
-                    'state': 'object_write',
-                    'fields_lines': [(5, 0, 0), (0, False, {
-                        'evaluation_type': 'value',
-                        'col1': tag_field.id,
-                        'value': action_value})
-                    ]}
-                )
+                action_values['value'] = alert.health
 
+            if field_name:
+                tag_field = tag_fields.filtered(lambda t: t.name == field_name)
+                action_values['state'] = 'object_write'
+                action_values['update_field_id'] = tag_field.id
+                action_values['evaluation_type'] = 'value'
             elif vals.get('action') in ('mail_post', 'sms'):
-                super(SaleOrderAlert, alert).write({'state': vals['action']})
+                action_values['state'] = vals['action']
             elif vals.get('action') == 'next_activity' or vals.get('activity_user_ids') or vals.get('activity_user'):
-                alert._set_activity_action()
+                self.action_id.child_ids.unlink()
+                action_values = alert._get_action_activity_values()
+
+            if action_values:
+                alert.action_id.write(action_values)
 
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            vals['is_sale_order_alert'] = True
             if vals.get('trigger_condition'):
                 vals['trigger'] = vals['trigger_condition']
         alerts = super().create(vals_list)
-        alerts._configure_filter_domain(vals_list)
-        alerts._configure_filter_pre_domain()
-        alerts._configure_alert_from_action(vals_list)
+        alerts._create_actions()
+        alerts._configure_alerts(vals_list)
         return alerts
 
     def write(self, vals):
         if vals.get('trigger_condition'):
             vals['trigger'] = vals['trigger_condition']
         res = super().write(vals)
-        self._configure_filter_domain([vals])
-        self._configure_alert_from_action([vals])
+        self._configure_alerts([vals])
         return res
+
+    def unlink(self):
+        self.automation_id.active = False
+        return super().unlink()
 
     def action_view_subscriptions(self):
         self.ensure_one()
@@ -215,52 +277,9 @@ class SaleOrderAlert(models.Model):
             'active_ids': subs.ids,
             'domain_post': domain,
         }
-        self.action_server_id.with_context(**ctx).run()
-
-    def _set_activity_action(self):
-        self.child_ids.unlink()
-        for alert in self:
-            if self.activity_user == 'users':
-                seq = 1
-                action_values = []
-                for user in alert.activity_user_ids:
-                    action_values.append({
-                        'name': '%s-%s' % (alert.name, seq),
-                        'sequence': seq,
-                        'state': 'next_activity',
-                        'model_id': alert.model_id.id,
-                        'activity_summary': alert.activity_summary,
-                        'activity_type_id': alert.activity_type_id.id,
-                        'activity_note': alert.activity_note,
-                        'activity_date_deadline_range': alert.activity_date_deadline_range,
-                        'activity_date_deadline_range_type': alert.activity_date_deadline_range_type,
-                        'activity_user_type': 'specific',
-                        'activity_user_id': user.id,
-                        'usage': 'base_automation',
-                    })
-                    seq += 1
-                action_ids = self.env['ir.actions.server'].create(action_values)
-                alert.write({
-                    'state': 'multi',
-                    'child_ids': [(4, act_id) for act_id in action_ids.ids]
-                })
-            elif self.activity_user == 'contract':
-                alert.write({
-                    'state': 'next_activity',
-                    'activity_user_type': 'generic',
-                    'activity_user_field_name': 'user_id',
-                })
-            elif self.activity_user == 'channel_leader':
-                alert.write({
-                    'state': 'next_activity',
-                    'activity_user_type': 'generic',
-                    'activity_user_field_name': 'team_user_id',
-                })
+        for action_server in self.action_server_ids.with_context(**ctx):
+            action_server.run()
 
     def _compute_nextcall(self):
         cron = self.env.ref('sale_subscription.ir_cron_sale_subscription_update_kpi', raise_if_not_found=False)
-        if not cron:
-            self.update({'cron_nextcall': False})
-        else:
-            nextcall = cron.read(fields=['nextcall'])[0]
-            self.update({'cron_nextcall': fields.Datetime.to_string(nextcall['nextcall'])})
+        self.cron_nextcall = cron.nextcall if cron else False

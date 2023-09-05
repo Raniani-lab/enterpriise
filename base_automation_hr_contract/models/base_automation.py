@@ -12,17 +12,17 @@ class BaseAutomation(models.Model):
     trg_date_resource_field_id = fields.Many2one('ir.model.fields', string='Use employee work schedule', help='Use the user\'s working schedule.')
 
     @api.model
-    def _check_delay(self, action, record, record_dt):
+    def _check_delay(self, automation, record, record_dt):
         """ Override the check of delay to try to use a user-related calendar.
             If no calendar is found, fallback on the default behavior.
         """
-        if action.trg_date_range_type == 'day' and action.trg_date_resource_field_id:
-            user = record[action.trg_date_resource_field_id.name]
+        if automation.trg_date_range_type == 'day' and automation.trg_date_resource_field_id:
+            user = record[automation.trg_date_resource_field_id.name]
             calendar = user.employee_id.contract_id.resource_calendar_id
             if calendar:
                 return calendar.plan_days(
-                    action.trg_date_range,
+                    automation.trg_date_range,
                     fields.Datetime.from_string(record_dt),
                     compute_leaves=True,
                 )
-        return super(BaseAutomation, self)._check_delay(action, record, record_dt)
+        return super(BaseAutomation, self)._check_delay(automation, record, record_dt)

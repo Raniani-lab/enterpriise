@@ -6,6 +6,7 @@ import { patch } from "@web/core/utils/patch";
 import { ListRenderer } from "@web/views/list/list_renderer";
 import { PromoteStudioDialog } from "@web_enterprise/webclient/promote_studio_dialog/promote_studio_dialog";
 import { useState, onWillUnmount } from "@odoo/owl";
+import { _t } from "@web/core/l10n/translation";
 
 export const patchListRendererDesktop = () => ({
     setup() {
@@ -88,7 +89,9 @@ export const patchListRendererDesktop = () => ({
      * @private
      */
     onSelectedAddCustomField() {
-        this.env.services.dialog.add(PromoteStudioDialog, {});
+        this.env.services.dialog.add(PromoteStudioDialog, {
+            title: _t("Odoo Studio - Add new fields to any view"),
+        });
     },
 });
 

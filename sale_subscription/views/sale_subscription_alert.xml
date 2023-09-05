@@ -86,9 +86,9 @@
                                    invisible="action != 'set_health_value'"
                                    readonly="id"
                                    required="action == 'set_health_value'"/>
-                            <div class="text-muted fst-italic" colspan="2" invisible="not id">
+                            <em class="text-muted" colspan="2" invisible="not id">
                                 Action data can not be updated to avoid unexpected behaviors. Create a new action instead.
-                            </div>
+                            </em>
                         </group>
                         <group name="action_details">
                             <field name="model_id" invisible="1"/>
@@ -140,7 +140,7 @@
         <field name="name">sale.subscription.alert.view.tree</field>
         <field name="model">sale.order.alert</field>
         <field name="arch" type="xml">
-            <tree string="Automated actions">
+            <tree string="Automation Rules">
                 <field name="name" string="Name"/>
                 <field name="action"/>
                 <field name="trigger_condition"/>
@@ -150,7 +150,7 @@
     </record>
 
     <record id="sale_subscription_alert_action" model="ir.actions.act_window">
-        <field name="name">Automated actions</field>
+        <field name="name">Automation Rules</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order.alert</field>
         <field name="view_mode">tree,form</field>
@@ -161,6 +161,27 @@
             <p>
               Trigger alerts for salespersons or customers: churn, invoice not paid, upsell, etc.
             </p>
+        </field>
+    </record>
+
+    <record id="sale_subscription_base_automation_form" model="ir.ui.view">
+        <field name="name">base.automation.form</field>
+        <field name="model">base.automation</field>
+        <field name="inherit_id" ref="base_automation.view_base_automation_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='active']" position="after">
+                <field name="is_sale_order_alert" invisible="1" />
+            </xpath>
+            <xpath expr="//field[@name='action_server_ids']" position="attributes">
+                <attribute name="readonly">is_sale_order_alert</attribute>
+            </xpath>
+            <xpath expr="//field[@name='action_server_ids']" position="before">
+                <p>
+                    <em class="text-muted" invisible="not is_sale_order_alert">
+                        Action data can not be updated to avoid unexpected behaviors. Create a new automation rule instead.
+                    </em>
+                </p>
+            </xpath>
         </field>
     </record>
 </odoo>

@@ -222,6 +222,7 @@
 
         <record id="subscription_alert_percent_revenue" model="sale.order.alert">
             <field name="name">Take action on less satisfied clients</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
             <field name="rating_operator">&lt;</field>
             <field name="rating_percentage">30</field>
             <field name="trigger_condition">on_time</field>
@@ -238,6 +239,7 @@
 
         <record id="subscription_alert_bad_health" model="sale.order.alert">
             <field name="name">Update health value according to MRR</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
             <field name="mrr_min">0</field>
             <field name="mrr_max">20</field>
             <field name="subscription_state">3_progress</field>

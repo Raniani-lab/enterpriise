@@ -15,15 +15,6 @@ let target;
 QUnit.module("Studio", (hooks) => {
     hooks.beforeEach(() => {
         serverData = getActionManagerServerData();
-        serverData.views["base.automation,false,list"] = '<tree><field name="name"/></tree>';
-        serverData.views["base.automation,false,search"] = "<search></search>";
-        serverData.models["base.automation"] = {
-            fields: {
-                id: { string: "Id", type: "integer" },
-                name: { string: "Name", type: "char" },
-            },
-            records: [],
-        };
         registerStudioDependencies();
         patchWithCleanup(session, { is_system: true });
         target = getFixture();
@@ -78,6 +69,18 @@ QUnit.module("Studio", (hooks) => {
     });
 
     QUnit.test("should render the no content helper of studio actions", async function (assert) {
+        serverData.views["base.automation,false,kanban"] =
+            '<kanban><t t-name="kanban-box"><field name="name"/></t></kanban>';
+        serverData.views["base.automation,false,list"] = '<tree><field name="name"/></tree>';
+        serverData.views["base.automation,false,form"] = '<form><field name="name"/></form>';
+        serverData.views["base.automation,false,search"] = "<search></search>";
+        serverData.models["base.automation"] = {
+            fields: {
+                id: { string: "Id", type: "integer" },
+                name: { string: "Name", type: "char" },
+            },
+            records: [],
+        };
         const webClient = await createEnterpriseWebClient({ serverData });
         await doAction(webClient, 3);
         await click(target.querySelector(".o_web_studio_navbar_item button"));

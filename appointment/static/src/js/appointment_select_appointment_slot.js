@@ -166,7 +166,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
             commonUrlParams: commonUrlParams,
             resourceAssignMethod: resourceAssignMethod,
             scheduleBasedOn: scheduleBasedOn,
-            slotDate: DateTime.fromJSDate(slotDate).toFormat("cccc dd MMMM yyyy"),
+            slotDate: DateTime.fromISO(slotDate).toFormat("cccc dd MMMM yyyy"),
             slots: slots,
             getAvailableResources: (slot) => {
                 return scheduleBasedOn === 'resources' ? JSON.stringify(slot['available_resources']) : false;

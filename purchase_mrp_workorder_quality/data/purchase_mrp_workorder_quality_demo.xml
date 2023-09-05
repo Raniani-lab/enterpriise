@@ -88,10 +88,11 @@
 
         <function model="mrp.workorder" name="button_start">
             <value model="mrp.production" eval="obj().env.ref('purchase_mrp_workorder_quality.mrp_production').workorder_ids.ids"/>
+            <value eval="True"/>
         </function>
 
         <record id="stock_production_lot" model="stock.lot">
-            <field name="name">0000000000003</field>
+            <field name="name">T0002</field>
             <field name="product_id" ref="mrp.product_product_computer_desk"/>
             <field name="product_qty">1</field>
             <field name="company_id" ref="base.main_company"/>
@@ -99,7 +100,7 @@
 
         <function model="quality.check" name="write">
             <value model="mrp.production" eval="obj().env.ref('purchase_mrp_workorder_quality.mrp_production').workorder_ids.current_quality_check_id.id"/>
-            <value model="stock.lot" eval="{'lot_id': obj().search([('name', '=', '0000000000003')], limit=1).id}"/>
+            <value model="stock.lot" eval="{'lot_id': obj().search([('name', '=', 'T0002')], limit=1).id}"/>
         </function>
         <function model="quality.check" name="write">
             <value model="mrp.production" eval="obj().env.ref('purchase_mrp_workorder_quality.mrp_production').workorder_ids.current_quality_check_id.id"/>

@@ -2,7 +2,7 @@
 
 import { _t } from "@web/core/l10n/translation";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import DocumentViewer from '@mrp_workorder/components/viewer';
+import DocumentViewer from "@mrp_workorder/components/viewer";
 import { formatFloat } from "@web/views/fields/formatters";
 import { FloatField } from "@web/views/fields/float/float_field";
 import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
@@ -16,7 +16,7 @@ export class MrpQualityCheckConfirmationDialog extends ConfirmationDialog {
         reload: { type: Function, optional: true },
         qualityCheckDone: { type: Function, optional: true },
         worksheetData: { type: Object, optional: true },
-        checkInstruction: { type: Object, optional: true},
+        checkInstruction: { type: Object, optional: true },
     };
     static template = "mrp_workorder.MrpQualityCheckConfirmationDialog";
     static components = {
@@ -33,9 +33,10 @@ export class MrpQualityCheckConfirmationDialog extends ConfirmationDialog {
         this.notification = useService("notification");
         this.action = useService("action");
         useBus(this.props.record.model.bus, "update", this.render.bind(this, true));
-        useBus(this.barcode.bus, 'barcode_scanned', (event) => this._onBarcodeScanned(event.detail.barcode));
+        useBus(this.barcode.bus, "barcode_scanned", (event) =>
+            this._onBarcodeScanned(event.detail.barcode)
+        );
         this.formatFloat = formatFloat;
-        this.recordData = this.props.record.data;
         const { component_tracking, test_type, product_tracking } = this.recordData;
         this.displayLot =
             Boolean(component_tracking && component_tracking !== "none") ||
@@ -117,6 +118,16 @@ export class MrpQualityCheckConfirmationDialog extends ConfirmationDialog {
         }
     }
 
+    async actionGenerateSerial() {
+        await this.props.record.model.orm.call(
+            "quality.check",
+            "action_generate_serial_number_and_pass",
+            [this.props.record.resId]
+        );
+        await this.props.record.load();
+        this.render();
+    }
+
     get lotInfo() {
         const productId = this.recordData.component_id?.[0] || this.props.record.data.product_id[0];
         return {
@@ -162,5 +173,9 @@ export class MrpQualityCheckConfirmationDialog extends ConfirmationDialog {
             name: "qty_done",
             record: this.props.record,
         };
+    }
+
+    get recordData() {
+        return this.props.record.data;
     }
 }

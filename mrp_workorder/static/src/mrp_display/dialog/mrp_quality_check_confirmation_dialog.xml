@@ -37,6 +37,8 @@
                         <div name="lot_id" class="o_field_widget col-4">
                             <Many2OneField t-props="lotInfo"/>
                         </div>
+                        <button t-if="!recordData.lot_id and recordData.test_type === 'register_production'"
+                            class="btn btn-info fa fa-plus col-1" t-on-click="actionGenerateSerial"/>
                     </div>
                 </div>
             </t>

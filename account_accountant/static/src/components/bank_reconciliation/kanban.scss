@@ -28,18 +28,18 @@
         }
 
         .journal-balance {
-            padding-right: var(--KanbanRecord-padding-h);
-            padding-left: var(--KanbanRecord-padding-h);
+            margin: 0px var(--KanbanRecord-margin-h) -1px;
+            padding: $o-kanban-inside-vgutter calc(var(--KanbanRecord-padding-h));
             min-height: $o-statbutton-height;
         }
 
         .kanban-statement {
+            margin: 0px var(--KanbanRecord-margin-h) -1px;
             padding: $o-kanban-inside-vgutter calc(var(--KanbanRecord-padding-h));
-            .kanban-statement-subline{
-                padding-top: 16px;
-                &.btn-link{
-                    color: var(--body-color);
-                }
+            .kanban-statement-subline {
+                border: none;
+                font-size: 16px;
+                padding: 16px 0 0 0;
             }
         }
 

@@ -19,14 +19,4 @@
             </t>
         </xpath>
     </t>
-
-    <t t-name="account_reports_cash_basis.CashBasisReportFilterExtraOptionsPDF" inherit_id="account_reports.pdf_export_filters">
-        <xpath expr="//div/div/div[@name='pdf_options_header']" position="inside">
-            <t t-if="report.filter_cash_basis">
-                <t t-if="report.filter_show_draft or options['unreconciled'] or options.get('include_analytic_without_aml') == True">,</t>
-                <t t-if="options['report_cash_basis']"> Cash Basis</t>
-                <t t-else=""> Accrual Basis</t>
-            </t>
-        </xpath>
-    </t>
 </templates>

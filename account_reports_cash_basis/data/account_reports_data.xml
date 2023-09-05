@@ -19,4 +19,14 @@
     <record id="account_reports.trial_balance_report" model="account.report">
         <field name="filter_cash_basis" eval="True"/>
     </record>
+
+    <template id="filter_extra_options_template_cash_basis" inherit_id="account_reports.filter_extra_options_template">
+        <xpath expr="//t[@t-if=&quot;options.get('include_analytic_without_aml')&quot;]" position="after">
+            <t t-if="report.filter_cash_basis">
+                <t t-if="report.filter_show_draft or options['unreconciled'] or options.get('include_analytic_without_aml')">,</t>
+                <t t-if="options['report_cash_basis']"> Cash Basis</t>
+                <t t-else=""> Accrual Basis</t>
+            </t>
+        </xpath>
+    </template>
 </odoo>

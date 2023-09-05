@@ -304,7 +304,7 @@
             <t t-if="report.filter_show_draft and options['unreconciled']">, </t>
             <t t-if="options['unreconciled']">Only Show Unreconciled Entries</t>
         </t>
-        <t t-if="options.get('include_analytic_without_aml') == True">
+        <t t-if="options.get('include_analytic_without_aml')">
             <t t-if="report.filter_show_draft and options['include_analytic_without_aml']">,</t>
             Including Analytic Simulations
         </t>

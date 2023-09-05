@@ -1002,6 +1002,7 @@ QUnit.module("Views", (hooks) => {
                 4,
                 "4 overtimes indication should be displayed in 4 cells displaying barchart total should not be visible"
             );
+            await nextTick();
             await triggerEvent(columnTotalEl, "", "mouseover");
             await nextTick();
             assert.containsOnce(

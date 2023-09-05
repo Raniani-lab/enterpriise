@@ -2,7 +2,7 @@
 import { PreparationDisplay } from "@pos_preparation_display/app/components/preparation_display/preparation_display";
 import { makeEnv, startServices } from "@web/env";
 import { App, whenReady } from "@odoo/owl";
-import { templates, setLoadXmlDefaultApp } from "@web/core/assets";
+import { templates } from "@web/core/assets";
 import { session } from "@web/session";
 import { renderToString } from "@web/core/utils/render";
 import { _t } from "@web/core/l10n/translation";
@@ -30,7 +30,6 @@ import { _t } from "@web/core/l10n/translation";
     });
 
     renderToString.app = app;
-    setLoadXmlDefaultApp(app);
     const root = await app.mount(document.body);
 
     odoo.__WOWL_DEBUG__ = { root };

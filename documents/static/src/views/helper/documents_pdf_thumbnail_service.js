@@ -3,7 +3,7 @@
 import { registry } from "@web/core/registry";
 import { useBus } from "@web/core/utils/hooks";
 import { Mutex } from "@web/core/utils/concurrency";
-import { getBundle, loadBundle } from "@web/core/assets";
+import { loadBundle } from "@web/core/assets";
 
 const { useComponent } = owl;
 
@@ -27,13 +27,10 @@ export const documentsPdfThumbnailService = {
                 return;
             }
             try {
-                let libs;
                 try {
-                    libs = await getBundle('documents.pdf_js_assets');
+                    await loadBundle('documents.pdf_js_assets');
                 } catch {
-                    libs = await getBundle('web.pdf_js_lib');
-                } finally {
-                    await loadBundle(libs);
+                    await loadBundle('web.pdf_js_lib');
                 }
                 // Force usage of worker to avoid hanging the tab.
                 initialWorkerSrc = window.pdfjsLib.GlobalWorkerOptions.workerSrc;

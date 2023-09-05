@@ -2,7 +2,7 @@
 
 import { PdfGroupName } from '@documents/owl/components/pdf_group_name/pdf_group_name';
 import { PdfPage } from '@documents/owl/components/pdf_page/pdf_page';
-import { getBundle, loadBundle } from "@web/core/assets";
+import { loadBundle } from "@web/core/assets";
 import { useCommand } from "@web/core/commands/command_hook";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { Dialog } from "@web/core/dialog/dialog";
@@ -615,13 +615,10 @@ export class PdfManager extends Component {
      * @private
      */
     async _loadAssets() {
-        let libs;
         try {
-            libs = await getBundle("documents.pdf_js_assets");
+            await loadBundle("documents.pdf_js_assets");
         } catch {
-            libs = await getBundle("web.pdf_js_lib");
-        } finally {
-            await loadBundle(libs);
+            await loadBundle("web.pdf_js_lib");
         }
     }
     /**

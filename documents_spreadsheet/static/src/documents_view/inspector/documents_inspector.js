@@ -2,7 +2,7 @@
 
 import { _t } from "@web/core/l10n/translation";
 import { patch } from "@web/core/utils/patch";
-import { getBundle, loadBundle } from "@web/core/assets";
+import { loadBundle } from "@web/core/assets";
 import { useService } from "@web/core/utils/hooks";
 import {
     inspectorFields,
@@ -109,7 +109,7 @@ patch(DocumentsInspector.prototype, {
         if (selection.every((doc) => doc.data.handler !== "spreadsheet")) {
             return vals;
         }
-        await getBundle("spreadsheet.o_spreadsheet").then(loadBundle);
+        await loadBundle("spreadsheet.o_spreadsheet");
         const spreadsheetShares = [];
         for (const document of selection) {
             if (document.data.handler === "spreadsheet") {

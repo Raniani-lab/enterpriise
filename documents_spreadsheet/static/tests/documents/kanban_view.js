@@ -16,7 +16,7 @@ import {
     patchWithCleanup,
 } from "@web/../tests/helpers/utils";
 import { setupViewRegistries } from "@web/../tests/views/helpers";
-import { getBundle, loadBundle } from "@web/core/assets";
+import { loadBundle } from "@web/core/assets";
 import { registry } from "@web/core/registry";
 import { fileUploadService } from "@web/core/file_upload/file_upload_service";
 import { browser } from "@web/core/browser/browser";
@@ -114,7 +114,7 @@ QUnit.module(
                 display_name: "Workspace1",
                 has_write_access: true,
             });
-            await getBundle("spreadsheet.o_spreadsheet").then(loadBundle);
+            await loadBundle("spreadsheet.o_spreadsheet");
             const model = new Model();
             const documentId = pyEnv["documents.document"].create({
                 name: "My spreadsheet",
@@ -188,7 +188,7 @@ QUnit.module(
                 display_name: "Workspace1",
                 has_write_access: true,
             });
-            await getBundle("spreadsheet.o_spreadsheet").then(loadBundle);
+            await loadBundle("spreadsheet.o_spreadsheet");
             const model = new Model();
             const documentId = pyEnv["documents.document"].create({
                 name: "My spreadsheet",
@@ -250,7 +250,7 @@ QUnit.module(
                 display_name: "Workspace1",
                 has_write_access: true,
             });
-            await getBundle("spreadsheet.o_spreadsheet").then(loadBundle);
+            await loadBundle("spreadsheet.o_spreadsheet");
             const model = new Model();
             const documentId = pyEnv["documents.document"].create({
                 name: "My spreadsheet",

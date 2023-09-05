@@ -2,7 +2,7 @@
 
 import { TemplateDialog } from "@documents_spreadsheet/spreadsheet_template/spreadsheet_template_dialog";
 import { useService } from "@web/core/utils/hooks";
-import { getBundle, loadBundle } from "@web/core/assets";
+import { loadBundle } from "@web/core/assets";
 
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { SpreadsheetCloneXlsxDialog } from "@documents_spreadsheet/spreadsheet_clone_xlsx_dialog/spreadsheet_clone_xlsx_dialog";
@@ -34,14 +34,17 @@ export const DocumentsSpreadsheetControllerMixin = () => ({
     async sharePopupAction(documentShareVals) {
         const selection = this.env.model.root.selection;
         const documents = selection.length ? selection : this.env.model.root.records;
-        if (this.env.model.useSampleModel || documents.every((doc) => doc.data.handler !== "spreadsheet")) {
+        if (
+            this.env.model.useSampleModel ||
+            documents.every((doc) => doc.data.handler !== "spreadsheet")
+        ) {
             return documentShareVals;
         }
         const spreadsheetShares = [];
         for (const doc of documents) {
             if (doc.data.handler === "spreadsheet") {
                 const resId = doc.resId;
-                await getBundle("spreadsheet.o_spreadsheet").then(loadBundle);
+                await loadBundle("spreadsheet.o_spreadsheet");
                 const { fetchSpreadsheetModel, freezeOdooData } = await odoo.runtimeImport(
                     "@spreadsheet/helpers/model"
                 );

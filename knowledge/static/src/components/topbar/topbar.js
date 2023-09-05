@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { getBundle, loadBundle } from "@web/core/assets";
+import { loadBundle } from "@web/core/assets";
 import { formatDateTime } from '@web/core/l10n/dates';
 import { loadEmoji } from '@web/core/emoji_picker/emoji_picker';
 import { registry } from '@web/core/registry';
@@ -176,8 +176,7 @@ class KnowledgeTopbar extends Component {
      *
      */
     async exportToPdf() {
-        const assets = await getBundle("knowledge.assets_knowledge_print");
-        await loadBundle(assets);
+        await loadBundle("knowledge.assets_knowledge_print");
         window.print();
     }
 

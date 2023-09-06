@@ -124,7 +124,7 @@ class SocialTwitterController(SocialController):
             ('stream_id', '=', stream_id)
         ], limit=1)
         if not tweet:
-            raise NotFound()
+            raise UserError(_('This Tweet has been deleted.'))
         try:
             return tweet._twitter_do_retweet()
         except UserError as error:
@@ -145,7 +145,7 @@ class SocialTwitterController(SocialController):
             ('stream_id', '=', stream_id)
         ], limit=1)
         if not tweet.exists():
-            return NotFound()
+            raise UserError(_('This Tweet has been deleted.'))
         try:
             return tweet._twitter_undo_retweet()
         except UserError as error:
@@ -167,7 +167,7 @@ class SocialTwitterController(SocialController):
             ('stream_id', '=', stream_id)
         ], limit=1)
         if not tweet:
-            return NotFound()
+            return json.dumps({'error': _('This Tweet has been deleted.')})
         try:
             return json.dumps(tweet._twitter_tweet_quote(message))
         except UserError as error:

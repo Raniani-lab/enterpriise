@@ -246,7 +246,7 @@
                                         </img>
                                     </div>
                                 </div>
-                                <div t-if="isManageable" class="o_social_icon_dropdown o_social_manage_comment dropdown">
+                                <div t-if="isManageable()" class="o_social_icon_dropdown o_social_manage_comment dropdown">
                                     <button t-attf-class="btn dropdown-toggle {{ bubble_design ? 'bg-200 px-3 rounded-pill border-0' : '' }}"
                                         type="button" t-attf-id="post_actions_{{ comment.id }}"
                                         data-bs-toggle="dropdown"

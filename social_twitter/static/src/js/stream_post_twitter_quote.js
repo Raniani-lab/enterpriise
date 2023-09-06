@@ -53,6 +53,11 @@ export class StreamPostTwitterQuote extends SocialPostFormatterMixin(Component) 
         return this.props.originalPost;
     }
 
+    get JSON() {
+        // The @StreamPostCommentsOriginalPost template needs to have JSON in its evaluation
+        // context and the @TwitterQuoteDialog template inherits from it
+        return JSON;
+    }
 }
 
 StreamPostTwitterQuote.template = "social_twitter.TwitterQuoteDialog";

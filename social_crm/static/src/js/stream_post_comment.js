@@ -13,8 +13,8 @@ patch(StreamPostComment.prototype, {
         this.actionService = useService("action");
     },
 
-    get isManageable() {
-        return super.isManageable || this.isConvertibleToLead();
+    isManageable() {
+        return super.isManageable() || this.isConvertibleToLead();
     },
 
     isConvertibleToLead() {

@@ -263,10 +263,11 @@ class SocialStreamPostTwitter(models.Model):
 
     def _twitter_undo_retweet(self):
         """ Deletes the retweet of the given stream post from Twitter """
+        tweet_id = self.twitter_retweeted_tweet_id_str or self.twitter_tweet_id
         account = self.stream_id.account_id
         unretweet_endpoint = url_join(
             self.env['social.media']._TWITTER_ENDPOINT,
-            '/2/users/%s/retweets/%s' % (account.twitter_user_id, self.twitter_retweeted_tweet_id_str),
+            '/2/users/%s/retweets/%s' % (account.twitter_user_id, tweet_id),
         )
 
         headers = account._get_twitter_oauth_header(unretweet_endpoint, method='DELETE')
@@ -284,7 +285,7 @@ class SocialStreamPostTwitter(models.Model):
 
         retweets = self.search([
             ('twitter_author_id', '=', self.stream_id.account_id.twitter_user_id),
-            ('twitter_retweeted_tweet_id_str', '=', self.twitter_retweeted_tweet_id_str or self.twitter_tweet_id),
+            ('twitter_retweeted_tweet_id_str', '=', tweet_id),
         ])
         retweets.unlink()
         return True

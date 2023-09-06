@@ -121,7 +121,7 @@ export class StreamPostComment extends SocialPostFormatterMixin(Component) {
         return this.isAuthor;
     }
 
-    get isManageable() {
+    isManageable() {
         return this.isDeletable || this.isEditable;
     }
 

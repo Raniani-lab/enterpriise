@@ -1182,6 +1182,8 @@ class SaleOrder(models.Model):
             'subscription_id': subscription.id,
             'pricelist_id': subscription.pricelist_id.id,
             'partner_id': subscription.partner_id.id,
+            'partner_invoice_id': subscription.partner_invoice_id.id,
+            'partner_shipping_id': subscription.partner_shipping_id.id,
             'order_line': order_lines,
             'analytic_account_id': subscription.analytic_account_id.id,
             'subscription_state': subscription_state,

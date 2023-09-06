@@ -312,8 +312,12 @@ class TestSubscription(TestSubscriptionCommon):
         """ Test subscription renewal """
         with freeze_time("2021-11-18"):
             # We reset the renew alert to make sure it will run with freezetime
-            self.subscription.write({'start_date': False, 'next_invoice_date': False})
-            # add an so line with a different uom
+            self.subscription.write({
+                'start_date': False,
+                'next_invoice_date': False,
+                'partner_invoice_id': self.partner_a_invoice.id,
+                'partner_shipping_id': self.partner_a_shipping.id,
+            })            # add an so line with a different uom
             uom_dozen = self.env.ref('uom.product_uom_dozen').id
             self.subscription_tmpl.recurring_rule_count = 2 # end after 2 months to adapt to the following line
             self.subscription_tmpl.recurring_rule_type = 'month'
@@ -339,6 +343,8 @@ class TestSubscription(TestSubscriptionCommon):
         with freeze_time("2021-12-18"):
             action = self.subscription.prepare_renewal_order()
             renewal_so = self.env['sale.order'].browse(action['res_id'])
+            self.assertEqual(renewal_so.partner_invoice_id, self.partner_a_invoice)
+            self.assertEqual(renewal_so.partner_shipping_id, self.partner_a_shipping)
             # check produt_uom_qty
             self.assertEqual(renewal_so.sale_order_template_id.id, self.subscription.sale_order_template_id.id,
                              'sale_subscription: renewal so should have the same template')
@@ -424,6 +430,8 @@ class TestSubscription(TestSubscriptionCommon):
             self.subscription.write({
                 'partner_id': self.partner.id,
                 'recurrence_id': self.recurrence_month.id,
+                'partner_invoice_id': self.partner_a_invoice.id,
+                'partner_shipping_id': self.partner_a_shipping.id,
                 'order_line': [Command.create({'product_id': self.product.id,
                                                'name': "Monthly cheap",
                                                'price_unit': 42,
@@ -444,6 +452,8 @@ class TestSubscription(TestSubscriptionCommon):
         with freeze_time("2021-01-15"):
             action = self.subscription.prepare_upsell_order()
             upsell_so = self.env['sale.order'].browse(action['res_id'])
+            self.assertEqual(upsell_so.partner_invoice_id, self.partner_a_invoice)
+            self.assertEqual(upsell_so.partner_shipping_id, self.partner_a_shipping)
             self.assertEqual(upsell_so.order_line.mapped('product_uom_qty'), [0, 0, 0], 'The upsell order has 0 quantity')
             note = upsell_so.order_line.filtered('display_type')
             self.assertEqual(note.name, 'Recurring products are discounted according to the prorated period from 01/15/2021 to 01/31/2021')

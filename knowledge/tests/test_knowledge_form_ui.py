@@ -230,7 +230,7 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
             'name': 'Readonly Article 1',
             'internal_permission': 'read',
             'article_member_ids': [(0, 0, {
-                'partner_id': self.env.ref('base.user_admin').id,
+                'partner_id': self.env.ref('base.partner_admin').id,
                 'permission': 'write',
             })],
             'is_article_visible_by_everyone': True,
@@ -238,10 +238,10 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
             'name': 'Readonly Article 2',
             'internal_permission': False,
             'article_member_ids': [(0, 0, {
-                'partner_id': self.env.ref('base.user_admin').id,
+                'partner_id': self.env.ref('base.partner_admin').id,
                 'permission': 'write',
             }), (0, 0, {
-                'partner_id': self.env.ref('base.user_demo').id,
+                'partner_id': self.env.ref('base.partner_demo').id,
                 'permission': 'read',
             })],
             'is_article_visible_by_everyone': True,

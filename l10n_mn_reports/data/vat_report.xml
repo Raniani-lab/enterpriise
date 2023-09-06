@@ -176,7 +176,7 @@
                         <field name="name">Tax imposed (26=25*10%)</field>
                         <field name="code">VAT_LINE27</field>
                         <field name="sequence">1026</field>
-                        <field name="aggregation_formula">VAT_LINE25.balance * 0.10</field>
+                        <field name="aggregation_formula">VAT_LINE26.balance * 0.10</field>
                     </record>
                     <record id="vat_report_line28" model="account.report.line">
                         <field name="name">Income from the sale of goods subject to zero value added tax (27)</field>
@@ -322,7 +322,7 @@
                                 <field name="name">VAT paid on imported goods and services regardless of taxable goods and services during the reporting period (48)</field>
                                 <field name="code">VAT_LINE46</field>
                                 <field name="sequence">2048</field>
-                                <field name="domain_formula">sum([('tax_tag_ids','=', ref('l10n_mn.vat_report_tag48')),('tax_line_id','!=',False)])</field>
+                                <field name="domain_formula">sum([('tax_tag_ids','=', ref('l10n_mn.vat_report_tag46')),('tax_line_id','!=',False)])</field>
                             </record>
                         </field>
                     </record>
@@ -425,13 +425,13 @@
                         <field name="name">Purchase returns and discounts (60)</field>
                         <field name="code">VAT_LINE58</field>
                         <field name="sequence">5060</field>
-                        <field name="domain_formula">sum([('tax_tag_ids','=',ref('l10n_mn.vat_report_tag58a'))])</field>
+                        <field name="domain_formula">-sum([('tax_tag_ids','=',ref('l10n_mn.vat_report_tag58a'))])</field>
                     </record>
                     <record id="vat_report_line59" model="account.report.line">
                         <field name="name">Deductible VAT (61)</field>
                         <field name="code">VAT_LINE59</field>
                         <field name="sequence">5061</field>
-                        <field name="domain_formula">sum([('tax_tag_ids','=',ref('l10n_mn.vat_report_tag59a'))])</field>
+                        <field name="domain_formula">-sum([('tax_tag_ids','=',ref('l10n_mn.vat_report_tag59a'))])</field>
                     </record>
                 </field>
             </record>

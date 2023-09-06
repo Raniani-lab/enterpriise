@@ -170,6 +170,31 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
             articles[1].with_user(self.env.ref('base.user_demo').id).user_favorite_sequence,
         )
 
+    def test_knowledge_resequence_children_of_readonly_parent_tour(self):
+        """Make sure that a user can move children articles under a readonly
+        parent.
+        """
+        parent = self.env['knowledge.article'].create({
+            'name': 'Readonly Parent',
+            'internal_permission': 'read',
+            'article_member_ids': [(0, 0, {
+                'partner_id': self.env.ref('base.partner_admin').id,
+                'permission': 'write',
+            })]
+        })
+        self.env['knowledge.article'].create([{
+            'name': 'Child 1',
+            'internal_permission': 'write',
+            'sequence': 1,
+            'parent_id': parent.id,
+        }, {
+            'name': 'Child 2',
+            'internal_permission': 'write',
+            'sequence': 2,
+            'parent_id': parent.id,
+        }])
+        self.start_tour('/knowledge/article/%s' % parent.id, 'knowledge_resequence_children_of_readonly_parent_tour', login='demo')
+
     def test_knowledge_properties_tour(self):
         """Test article properties panel"""
         parent_article = self.env['knowledge.article'].create([{

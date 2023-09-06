@@ -84,7 +84,6 @@
             <t t-set="isActive" t-value="article.id == active_article_id if active_article_id else False"/>
             <!-- readonly is used to for the drag and drop cancel.-->
             <li t-attf-class="o_article
-                              #{ 'readonly' if readonly else '' }
                               #{ 'o_article_tree_child' if has_parent else ''}
                               #{ 'o_article_has_children' if children else ''}
                               #{ 'o_knowledge_article_force_show_active_article' if is_force_show_active_article else ''}"
@@ -92,7 +91,7 @@
                 t-att-data-article-id="article.id" t-att-data-parent-id="article.parent_id.id"
                 t-att-data-favorite-article-id="favorite.id if favorite else False"
                 t-att-data-category="article.category">
-                <div t-attf-class="#{ '' if not isFavoriteTree and readonly else 'o_article_handle' } d-flex align-items-center #{ 'o_article_active fw-bold text-900' if isActive else 'text-muted' }">
+                <div t-attf-class="#{ '' if not isFavoriteTree and readonly else 'o_article_handle' } #{ 'readonly' if readonly else '' } d-flex align-items-center #{ 'o_article_active fw-bold text-900' if isActive else 'text-muted' }">
                     <button type="button"
                             class="flex-shrink-1 o_article_caret btn text-muted p-0 border-0 invisible">
                         <i t-att-class="'align-self-center fa fa-fw fa-caret-' + ('down' if unfoldChildren or not children else 'right')"/>

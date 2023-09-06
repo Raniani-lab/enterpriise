@@ -725,7 +725,7 @@ class Article(models.Model):
         _resequence = False
         if 'parent_id' in vals:
             parent = self.env['knowledge.article']
-            if vals.get('parent_id'):
+            if vals.get('parent_id') and self.filtered(lambda r: r.parent_id.id != vals['parent_id']):
                 parent = self.browse(vals['parent_id'])
                 try:
                     parent.check_access_rights('write')

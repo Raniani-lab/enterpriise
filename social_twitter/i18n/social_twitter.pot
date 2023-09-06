@@ -452,6 +452,13 @@ msgid ""
 msgstr ""
 
 #. module: social_twitter
+#. odoo-python
+#: code:addons/social_twitter/controllers/main.py:0
+#, python-format
+msgid "This Tweet has been deleted."
+msgstr ""
+
+#. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_follow
 msgid "Tweets of"
 msgstr ""

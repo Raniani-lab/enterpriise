@@ -12,8 +12,8 @@ patch(StreamPostComment.prototype, 'stream_post_comment_crm', {
         this.actionService = useService("action");
     },
 
-    get isManageable() {
-        return super.isManageable || this.isConvertibleToLead();
+    isManageable() {
+        return this._super() || this.isConvertibleToLead();
     },
 
     isConvertibleToLead() {

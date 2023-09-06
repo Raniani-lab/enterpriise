@@ -13,10 +13,11 @@ class AccountJournal(models.Model):
             ('out_withhold', "Sales Withhold"),
             ('in_withhold', "Purchase Withhold")],
         string="Withhold Type",
+        help="Ecuador: Select if you want to use this Journal to create Purchase or Sales withholdings.",
     )
     l10n_ec_is_purchase_liquidation = fields.Boolean(
         string="Purchase Liquidations",
-        help="Check if this journal is dedicated to purchase liquidations")
+        help="Ecuador: Check if this journal is dedicated to purchase liquidations")
 
     @api.depends('l10n_ec_withhold_type', 'l10n_ec_is_purchase_liquidation', 'l10n_latam_use_documents')
     def _compute_edi_format_ids(self):

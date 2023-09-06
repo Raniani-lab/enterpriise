@@ -68,12 +68,12 @@ class AccountMove(models.Model):
         size=49,
         copy=False, index=True, readonly=True,
         tracking=True,
-        help="EDI authorization number (same as access key), set upon posting",
+        help="Ecuador: EDI authorization number (same as access key), set upon posting",
     )
     l10n_ec_authorization_date = fields.Datetime(
         string="Authorization date",
         copy=False, readonly=True, tracking=True,
-        help="Set once the government authorizes the document, unset if document is cancelled.",
+        help="Ecuador: Date on which government authorizes the document, unset if document is cancelled.",
     )
     l10n_latam_internal_type = fields.Selection(related='l10n_latam_document_type_id.internal_type')
 

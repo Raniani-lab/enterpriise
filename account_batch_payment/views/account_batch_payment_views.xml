@@ -158,7 +158,7 @@ if records:
                             <div t-attf-class="oe_kanban_global_click">
                                 <div class="row mb4">
                                     <div class="col-6 o_kanban_record_headings">
-                                        <strong>
+                                        <strong class="o_kanban_record_title">
                                             <span>
                                                 <field name="name" readonly="state != 'draft'"/>
                                             </span>

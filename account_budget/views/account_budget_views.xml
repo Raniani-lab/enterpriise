@@ -194,7 +194,7 @@ Budgets
                         <div t-attf-class="oe_kanban_global_click">
                             <div class="row mb4">
                                 <div class="col-8">
-                                    <strong>
+                                    <strong class="o_kanban_record_title">
                                         <field name="name" readonly="state == 'done'"/>
                                     </strong>
                                 </div>

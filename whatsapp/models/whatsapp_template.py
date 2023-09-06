@@ -1,7 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
-import base64
 import re
 
 from markupsafe import Markup
@@ -685,8 +684,8 @@ class WhatsAppTemplate(models.Model):
                 report_name = self.display_name + '.' + report_format
             return self.env['ir.attachment'].create({
                 'name': report_name,
-                'datas': base64.b64encode(report_content),
-                'type': 'application/pdf',
+                'raw': report_content,
+                'mimetype': 'application/pdf',
             })
         return self.env['ir.attachment']
 

@@ -34,7 +34,7 @@
                             <t t-component="env.component('AccountReportEllipsis')" t-props="{
                                 name: props.cell.name?.toString(),
                                 type: props.cell.figure_type,
-                                maxCharacters: 32,
+                                maxCharacters: 50,
                             }"/>
                         </a>
                     </t>
@@ -42,7 +42,7 @@
                         <t t-component="env.component('AccountReportEllipsis')" t-props="{
                             name: props.cell.name?.toString(),
                             type: props.cell.figure_type,
-                            maxCharacters: 32,
+                            maxCharacters: 50,
                         }"/>
                     </t>
                 </div>

@@ -2,6 +2,7 @@
 
 import LineComponent from '@stock_barcode/components/line';
 import { patch } from "@web/core/utils/patch";
+import { parseDateTime } from "@web/core/l10n/dates";
 
 patch(LineComponent.prototype, {
     get isUseExpirationDate() {
@@ -13,7 +14,7 @@ patch(LineComponent.prototype, {
         if (!dateTimeStrUTC) {
             return '';
         }
-        const dateTimeStrLocal = moment.utc(dateTimeStrUTC).local().format('YYYY-MM-DD');
-        return new Date(dateTimeStrLocal).toLocaleDateString();
+        const dateTimeLocal = parseDateTime(dateTimeStrUTC).toJSDate();
+        return dateTimeLocal.toLocaleDateString();
     },
 });

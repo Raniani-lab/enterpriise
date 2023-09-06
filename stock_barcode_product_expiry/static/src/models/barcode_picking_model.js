@@ -2,6 +2,14 @@
 
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
 import { patch } from "@web/core/utils/patch";
+import { serializeDateTime } from "@web/core/l10n/dates";
+const { DateTime } = luxon;
+
+function getFormattedDate(value) {
+    // convert to noon to avoid most timezone issues
+    const date = DateTime.fromJSDate(value).set({ hours: 12, minutes: 0, seconds: 0 });
+    return serializeDateTime(date);
+}
 
 patch(BarcodePickingModel.prototype, {
 
@@ -16,9 +24,7 @@ patch(BarcodePickingModel.prototype, {
         const result = {};
         const { rule, value } = data;
         if (rule.type === 'expiration_date') {
-            // convert to noon to avoid most timezone issues
-            value.setHours(12, 0, 0);
-            result.expirationDate = moment.utc(value).format('YYYY-MM-DD HH:mm:ss');
+            result.expirationDate = getFormattedDate(value);
             result.match = true;
         } else if (rule.type === 'use_date') {
             result.useDate = value;
@@ -35,9 +41,7 @@ patch(BarcodePickingModel.prototype, {
         if (product && useDate && !expirationDate) {
             const value = new Date(useDate);
             value.setDate(useDate.getDate() + product.use_time);
-            // convert to noon to avoid most timezone issues
-            value.setHours(12, 0, 0);
-            barcodeData.expirationDate = moment.utc(value).format('YYYY-MM-DD HH:mm:ss');
+            barcodeData.expirationDate = getFormattedDate(value);
         }
         return barcodeData;
     },

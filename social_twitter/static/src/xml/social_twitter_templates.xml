@@ -23,7 +23,45 @@
                     </div>
                 </div>
             </div>
+            <t t-if="originalPost.twitter_quoted_tweet_id_str?.raw_value"
+                t-call="social_twitter.StreamPostQuotedTweet">
+                <t t-set="post" t-value="originalPost"/>
+                <t t-set="formattedMessage">
+                    <t t-out="_formatCommentStreamPost(post.twitter_quoted_tweet_message.raw_value)"/>
+                </t>
+            </t>
         </xpath>
+    </t>
+
+    <t t-name="social_twitter.StreamPostQuotedTweet">
+        <t t-set="unknown_author_name_label">Unknown</t>
+        <div class="border rounded p-2 my-2">
+            <t t-set="author_info">
+                <span t-if="post.twitter_profile_image_url.raw_value"
+                    class="o_social_stream_post_author_image o_social_author_image o_avatar position-relative rounded overflow-hidden">
+                    <img t-att-src="post.twitter_quoted_tweet_profile_image_url.raw_value
+                        or '/base/static/img/avatar_grey.png'"
+                        alt="Author Image" class="rounded"/>
+                </span>
+                <span class="o_social_stream_post_author_image o_social_author_image o_avatar position-relative rounded overflow-hidden"/>
+                <span class="o_social_stream_post_author_name text-truncate ms-2"
+                    t-esc="post.twitter_quoted_tweet_author_name.value or unknown_author_name_label"
+                    t-att-title="post.twitter_quoted_tweet_author_name.value or unknown_author_name_label"/>
+            </t>
+            <a t-if="post.twitter_quoted_tweet_author_link.value"
+                class="o_social_stream_post_author d-inline-flex align-items-center"
+                t-att-href="post.twitter_quoted_tweet_author_link.value"
+                t-att-title="post.twitter_quoted_tweet_author_name.value or unknown_author_name_label"
+                t-out="author_info"
+                target="_blank"/>
+            <div t-else=""
+                class="o_social_stream_post_author d-inline-flex align-items-center"
+                t-out="author_info"/>
+            <div name="o_social_stream_post_message_text" class="o_social_stream_post_message_text overflow-hidden">
+                <span t-if="formattedMessage" t-out="formattedMessage"/>
+                <span t-else="" class="fst-italic">Empty tweet</span>
+            </div>
+        </div>
     </t>
 
     <t t-inherit="social.StreamPostCommentsReply" t-inherit-mode="extension">

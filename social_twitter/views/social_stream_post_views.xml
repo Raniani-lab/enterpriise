@@ -26,39 +26,13 @@
                 <img t-if="record.twitter_profile_image_url.raw_value" t-att-src="record.twitter_profile_image_url.raw_value" alt="Author Image" class="rounded"/>
             </xpath>
             <xpath expr="//div[@name='o_social_stream_post_message_body']" position="inside">
-                <div class="border rounded p-2" t-if="record.twitter_quoted_tweet_id_str.raw_value">
-                    <t t-set="author_info">
-                        <t t-if="record.twitter_profile_image_url.raw_value">
-                            <span class="o_social_stream_post_author_image o_social_author_image o_avatar position-relative rounded overflow-hidden">
-                                <t t-if="record.twitter_quoted_tweet_profile_image_url.raw_value">
-                                    <img t-att-src="record.twitter_quoted_tweet_profile_image_url.raw_value" alt="Author Image" class="rounded"/>
-                                </t>
-                                <t t-else="">
-                                    <img src="/base/static/img/avatar_grey.png" alt="Author Image" class="rounded"/>
-                                </t>
-                            </span>
-                        </t>
-                        <span class="o_social_stream_post_author_image o_social_author_image o_avatar position-relative rounded overflow-hidden"/>
-                        <span class="o_social_stream_post_author_name text-truncate ms-2"
-                            t-esc="record.twitter_quoted_tweet_author_name.value or 'Unknown'"
-                            t-att-title="record.twitter_quoted_tweet_author_name.value or 'Unknown'"/>
+                <t t-if="record.twitter_quoted_tweet_id_str?.value"
+                    t-call="social_twitter.StreamPostQuotedTweet">
+                    <t t-set="post" t-value="record"/>
+                    <t t-set="formattedMessage">
+                        <field name="twitter_quoted_tweet_message" widget="social_post_formatter"/>
                     </t>
-                    <a t-if="record.twitter_quoted_tweet_author_link.value"
-                        class="o_social_stream_post_author d-inline-flex align-items-center"
-                        t-att-href="record.twitter_quoted_tweet_author_link.value"
-                        t-att-title="record.twitter_quoted_tweet_author_name.value or 'Unknown'"
-                        t-out="author_info"
-                        target="_blank"/>
-                    <div t-else=""
-                        class="o_social_stream_post_author d-inline-flex align-items-center"
-                        t-out="author_info"/>
-                    <div name="o_social_stream_post_message_text" class="o_social_stream_post_message_text overflow-hidden">
-                        <t t-if="record.twitter_quoted_tweet_message.raw_value">
-                            <field name="twitter_quoted_tweet_message" widget="social_post_formatter"/>
-                        </t>
-                        <t t-else=""><span class="fst-italic">Empty tweet</span></t>
-                    </div>
-                </div>
+                </t>
             </xpath>
             <xpath expr="//div[hasclass('o_social_stream_post_message')]" position="inside">
                 <div class="o_social_stream_post_twitter_stats px-2 d-flex justify-content-around" t-if="record.media_type.raw_value === 'twitter'">

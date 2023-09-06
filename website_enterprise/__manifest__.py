@@ -19,6 +19,7 @@ This module overrides community website features and introduces enterprise look 
     'assets': {
         'website.assets_editor': [
             'website_enterprise/static/src/js/systray_items/*.js',
+            'website_enterprise/static/src/services/color_scheme_service_patch.js',
         ],
     }
 }

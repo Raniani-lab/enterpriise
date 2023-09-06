@@ -15,12 +15,15 @@ export const colorSchemeService = {
     start(env, { ui }) {
         userMenuRegistry.add("color_scheme.switch", switchColorSchemeItem);
         return {
-            switchToColorScheme(scheme) {
+            switchToColorScheme: (scheme) => {
                 cookie.set("color_scheme", scheme);
                 ui.block();
-                browser.location.reload();
+                this.reload();
             },
         };
+    },
+    reload() {
+        browser.location.reload();
     },
 };
 serviceRegistry.add("color_scheme", colorSchemeService);

@@ -3,7 +3,6 @@
 import { HtmlField, htmlField } from "@web_editor/js/backend/html_field";
 import { patch } from "@web/core/utils/patch";
 import { templates } from "@web/core/assets";
-import { _t } from "@web/core/l10n/translation";
 import { decodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
 import { Deferred, Mutex } from "@web/core/utils/concurrency";
 import { useService } from "@web/core/utils/hooks";
@@ -585,11 +584,6 @@ const HtmlFieldPatch = {
 patch(HtmlField.prototype, HtmlFieldPatch);
 
 patch(htmlField, {
-    supportedOptions: [...htmlField.supportedOptions, {
-        label: _t("Enable Knowledge commands"),
-        name: "knowledge_commands",
-        type: "boolean"
-    }],
     extractProps(fieldInfo) {
         const props = super.extractProps(...arguments);
         props.wysiwygOptions.knowledgeCommands = fieldInfo.options.knowledge_commands;

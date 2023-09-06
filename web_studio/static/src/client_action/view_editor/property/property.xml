@@ -27,6 +27,7 @@
                     name="props.name"
                     value="!!props.value"
                     onChange="(value) => this.props.onChange(value, this.props.name)"
+                    disabled="props.isReadonly"
                 >
                     <t t-slot="default" />
                     <sup t-if="props.tooltip" class="text-info p-1" t-att-data-tooltip="props.tooltip" t-esc="'?'"/>
@@ -36,7 +37,7 @@
                 </a>
             </div>
         </t>
-        <div t-elif="props.type === 'domain'" class="o_web_studio_property o_web_studio_sidebar_text mt-3 d-flex flex-column" t-att-class="props.class">
+        <div t-elif="props.type === 'domain'" class="o_web_studio_property o_web_studio_sidebar_text my-2 d-flex flex-column" t-att-class="props.class">
             <label t-att-for="props.name">
                 <t t-slot="default" />
                 <sup t-if="props.tooltip" class="text-info p-1" t-att-data-tooltip="props.tooltip" t-esc="'?'"/>
@@ -53,7 +54,7 @@
             />
         </div>
 
-        <div t-else="" class="o_web_studio_property o_web_studio_sidebar_text mt-3 d-flex flex-column" t-att-class="props.class">
+        <div t-else="" class="o_web_studio_property o_web_studio_sidebar_text my-2 d-flex flex-column" t-att-class="props.class">
             <label t-att-for="props.name">
                 <t t-slot="default" />
                 <sup t-if="props.tooltip" class="text-info p-1" t-att-data-tooltip="props.tooltip" t-esc="'?'"/>

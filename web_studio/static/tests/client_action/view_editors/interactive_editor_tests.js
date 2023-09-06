@@ -16,10 +16,13 @@ import {
     registerViewEditorDependencies,
     selectorContains,
     editAnySelect,
+    createMockViewResult,
 } from "@web_studio/../tests/client_action/view_editors/view_editor_tests_utils";
 import { browser } from "@web/core/browser/browser";
 import { CodeEditor } from "@web/core/code_editor/code_editor";
 import { registry } from "@web/core/registry";
+import { charField } from "@web/views/fields/char/char_field";
+import { COMPUTED_DISPLAY_OPTIONS } from "@web_studio/client_action/view_editor/interactive_editor/properties/field_properties/field_type_properties";
 
 /* global ace */
 
@@ -1128,5 +1131,161 @@ QUnit.module("View Editors", () => {
                 "o_kanban_view my_custom_class my_custom_class2"
             );
         });
+
+        QUnit.test(
+            "options with computed display to have a dynamic sidebar list of options",
+            async function (assert) {
+                let editCount = 0;
+
+                // For this test, create fake options and make them tied to each other,
+                // so the display and visibility is adapted in the editor sidebar
+                patchWithCleanup(charField, {
+                    supportedOptions: [
+                        {
+                            label: "Fake super option",
+                            name: "fake_super_option",
+                            type: "boolean",
+                        },
+                        {
+                            label: "Suboption A",
+                            name: "suboption_a",
+                            type: "string",
+                        },
+                        {
+                            label: "Suboption B",
+                            name: "suboption_b",
+                            type: "boolean",
+                        },
+                        {
+                            label: "Suboption C",
+                            name: "suboption_c",
+                            type: "selection",
+                            choices: [
+                                { label: "September 13", value: "sep_13" },
+                                { label: "September 23", value: "sep_23" },
+                            ],
+                            default: "sep_23",
+                        },
+                        {
+                            label: "Suboption D",
+                            name: "suboption_d",
+                            type: "boolean",
+                        },
+                    ],
+                });
+                patchWithCleanup(COMPUTED_DISPLAY_OPTIONS, {
+                    suboption_a: {
+                        superOption: "fake_super_option",
+                        getInvisible: (value) => !value,
+                    },
+                    suboption_b: {
+                        superOption: "suboption_a",
+                        getReadonly: (value) => !value,
+                    },
+                    suboption_c: {
+                        superOption: "suboption_a",
+                        getInvisible: (value) => !value,
+                    },
+                    suboption_d: {
+                        superOption: "suboption_b",
+                        getValue: (value) => value,
+                        getReadonly: (value) => value,
+                    },
+                });
+
+                const arch = `<form><group>
+                <field name="display_name"/>
+            </group></form>`;
+                await createViewEditor({
+                    type: "form",
+                    serverData,
+                    resModel: "coucou",
+                    arch,
+                    mockRPC: function (route, args) {
+                        if (route === "/web_studio/edit_view") {
+                            editCount++;
+                            if (editCount === 1) {
+                                const newArch =
+                                    "<form><group><field name='display_name' options='{\"fake_super_option\":True}'/></group></form>";
+                                return createMockViewResult(serverData, "form", newArch, "coucou");
+                            }
+                            if (editCount === 2) {
+                                const newArch = `<form><group><field name='display_name' options="{'fake_super_option':True,'suboption_a':'Nice'}"/></group></form>`;
+                                return createMockViewResult(serverData, "form", newArch, "coucou");
+                            }
+                            if (editCount === 3) {
+                                const newArch = `<form><group><field name='display_name' options="{'fake_super_option':True,'suboption_a':'Nice','suboption_b':True}"/></group></form>`;
+                                return createMockViewResult(serverData, "form", newArch, "coucou");
+                            }
+                        }
+                    },
+                });
+
+                await click(target.querySelector('[name="display_name"]').parentElement);
+                assert.containsN(
+                    target,
+                    ".o_web_studio_property",
+                    9,
+                    "9 options are available in the sidebar"
+                );
+
+                await click(target.querySelector("input[id=fake_super_option]"));
+                assert.containsN(
+                    target,
+                    ".o_web_studio_property",
+                    12,
+                    "12 options are available in the sidebar"
+                );
+                assert.containsOnce(
+                    target,
+                    ".o_web_studio_property input[id='suboption_b'][disabled]",
+                    "Suboption B is greyed and disabled"
+                );
+                assert.containsOnce(
+                    target,
+                    ".o_web_studio_property input[id='suboption_d']:not([disabled])",
+                    "Suboption D is enabled"
+                );
+                assert.strictEqual(
+                    target.querySelector(".o_web_studio_property input[id='suboption_d']").checked,
+                    false,
+                    "Suboption D is not checked"
+                );
+
+                await editInput(target.querySelector("input[id=suboption_a]", null, "Nice"));
+                assert.containsN(
+                    target,
+                    ".o_web_studio_property",
+                    13,
+                    "13 options are available in the sidebar"
+                );
+
+                await click(target.querySelector("input[id=suboption_b]"));
+                assert.containsN(
+                    target,
+                    ".o_web_studio_property",
+                    13,
+                    "13 options are available in the sidebar"
+                );
+                assert.containsOnce(
+                    target,
+                    ".o_web_studio_property input[id='suboption_d'][disabled]",
+                    "Suboption D is greyed and disabled"
+                );
+                assert.strictEqual(
+                    target.querySelector(".o_web_studio_property input[id='suboption_d']").checked,
+                    true,
+                    "Suboption D is checked"
+                );
+                const computedOptions = target.querySelectorAll(
+                    ".o_web_studio_property:nth-child(n+8):nth-last-child(n+5) label"
+                );
+                assert.strictEqual(
+                    [...computedOptions].map((label) => label.textContent).join(", "),
+                    "Suboption A, Suboption B, Suboption D, Suboption C",
+                    "options are ordered and grouped with the corresponding super option"
+                );
+            }
+        );
     });
 });

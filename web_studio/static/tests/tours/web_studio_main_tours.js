@@ -1032,9 +1032,9 @@ registry.category("web_tour.tours").add("web_studio_approval_tour", {
             trigger: ".breadcrumb .o_back_button",
         },
         {
-            trigger: 'body .o_modules_kanban',
+            trigger: "body .o_modules_kanban",
             isCheck: true,
-        }
+        },
     ],
 });
 
@@ -1332,9 +1332,12 @@ registry.category("web_tour.tours").add("web_studio_alter_field_existing_in_mult
 });
 
 const buttonToogleStudio = {
-    trigger : `button[title="Toggle Studio"]`,
-}
-const addActionButtonModalSteps = (ActionLabel = "web_studio_new_button_action_name", ActionName = "Privacy Lookup") => [
+    trigger: `button[title="Toggle Studio"]`,
+};
+const addActionButtonModalSteps = (
+    ActionLabel = "web_studio_new_button_action_name",
+    ActionName = "Privacy Lookup"
+) => [
     {
         trigger: ".o-web-studio-editor--add-button-action",
     },
@@ -1350,8 +1353,7 @@ const addActionButtonModalSteps = (ActionLabel = "web_studio_new_button_action_n
         run: `text ${ActionName}`,
     },
     {
-        trigger:
-            `.o-web-studio-editor--modal-add-action .o-autocomplete--dropdown-menu li a:not(:has(.fa-spin)):contains(${ActionName})`,
+        trigger: `.o-web-studio-editor--modal-add-action .o-autocomplete--dropdown-menu li a:not(:has(.fa-spin)):contains(${ActionName})`,
         run(helpers) {
             const el = Array.from(this.$anchor).find((el) => el.textContent === ActionName);
             return helpers.click($(el));
@@ -1360,7 +1362,7 @@ const addActionButtonModalSteps = (ActionLabel = "web_studio_new_button_action_n
     {
         trigger: "footer button.o-web-studio-editor--add-button-confirm",
     },
-]
+];
 
 registry.category("web_tour.tours").add("web_studio_test_create_action_button_in_form_view", {
     test: true,
@@ -1374,29 +1376,31 @@ registry.category("web_tour.tours").add("web_studio_test_create_action_button_in
         buttonToogleStudio,
         ...addActionButtonModalSteps(),
         {
-            trigger: '.o_web_studio_leave a',
+            trigger: ".o_web_studio_leave a",
         },
         stepNotInStudio(".o_form_view"),
-    ]
+    ],
 });
 
-registry.category("web_tour.tours").add("web_studio_test_create_second_action_button_in_form_view", {
-    test: true,
-    steps: () => [
-        {
-            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
-        },
-        {
-            trigger: ".o_form_view .o_form_editable",
-        },
-        buttonToogleStudio,
-        ...addActionButtonModalSteps("web_studio_other_button_action_name", "Download (vCard)"),
-        {
-            trigger: '.o_web_studio_leave a',
-        },
-        stepNotInStudio(".o_form_view"),
-    ]
-});
+registry
+    .category("web_tour.tours")
+    .add("web_studio_test_create_second_action_button_in_form_view", {
+        test: true,
+        steps: () => [
+            {
+                trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+            },
+            {
+                trigger: ".o_form_view .o_form_editable",
+            },
+            buttonToogleStudio,
+            ...addActionButtonModalSteps("web_studio_other_button_action_name", "Download (vCard)"),
+            {
+                trigger: ".o_web_studio_leave a",
+            },
+            stepNotInStudio(".o_form_view"),
+        ],
+    });
 
 registry.category("web_tour.tours").add("web_studio_test_create_action_button_in_list_view", {
     test: true,
@@ -1416,10 +1420,10 @@ registry.category("web_tour.tours").add("web_studio_test_create_action_button_in
         },
         ...addActionButtonModalSteps(),
         {
-            trigger: '.o_web_studio_leave a',
+            trigger: ".o_web_studio_leave a",
         },
         stepNotInStudio(".o_list_view"),
-    ]
+    ],
 });
 
 registry.category("web_tour.tours").add("web_studio_test_remove_action_button_in_form_view", {
@@ -1442,10 +1446,10 @@ registry.category("web_tour.tours").add("web_studio_test_remove_action_button_in
             trigger: "footer.modal-footer>button.btn-primary",
         },
         {
-            trigger: '.o_web_studio_leave a',
+            trigger: ".o_web_studio_leave a",
         },
         stepNotInStudio(".o_form_view"),
-    ]
+    ],
 });
 
 registry.category("web_tour.tours").add("web_studio_test_remove_action_button_in_list_view", {
@@ -1474,10 +1478,10 @@ registry.category("web_tour.tours").add("web_studio_test_remove_action_button_in
             trigger: "footer.modal-footer>button.btn-primary",
         },
         {
-            trigger: '.o_web_studio_leave a',
+            trigger: ".o_web_studio_leave a",
         },
         stepNotInStudio(".o_list_view"),
-    ]
+    ],
 });
 
 registry.category("web_tour.tours").add("web_studio_monetary_create", {
@@ -1517,7 +1521,7 @@ registry.category("web_tour.tours").add("web_studio_monetary_create", {
         {
             trigger: ".o_web_studio_properties.active",
             isCheck: true,
-        }
+        },
     ],
 });
 
@@ -1676,7 +1680,7 @@ registry.category("web_tour.tours").add("web_studio_monetary_change_currency_not
         {
             trigger: ".o_web_studio_properties.active",
             isCheck: true,
-        }
+        },
     ],
 });
 

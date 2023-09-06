@@ -4,7 +4,7 @@ from markupsafe import Markup
 
 from odoo.addons.mrp.tests import common
 from odoo.tests import Form, HttpCase, tagged
-from .test_workorder import TestWorkOrder
+from .test_workorder import TestWorkOrderCommon
 
 
 class TestWorkorderClientActionCommon(common.TestMrpCommon):
@@ -283,7 +283,7 @@ class TestPickingWorkorderClientActionSuggestImprovement(TestWorkorderClientActi
 
 
 @tagged('post_install', '-at_install')
-class TestPickingWorkorderClientAction(TestWorkOrder, HttpCase):
+class TestPickingWorkorderClientAction(TestWorkOrderCommon, HttpCase):
     def test_add_component(self):
         self.bom_submarine.bom_line_ids.write({'operation_id': False})
         self.bom_submarine.operation_ids = False

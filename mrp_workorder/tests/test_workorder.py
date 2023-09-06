@@ -9,10 +9,10 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-class TestWorkOrder(common.TestMrpCommon):
+class TestWorkOrderCommon(common.TestMrpCommon):
     @classmethod
     def setUpClass(cls):
-        super(TestWorkOrder, cls).setUpClass()
+        super(TestWorkOrderCommon, cls).setUpClass()
         # Products and lots
         cls.submarine_pod = cls.env['product.product'].create({
             'name': 'Submarine pod',
@@ -151,6 +151,7 @@ class TestWorkOrder(common.TestMrpCommon):
         Quant._update_available_quantity(cls.metal_cylinder, cls.location_1, 6.0, lot_id=cls.mc1)
         Quant._update_available_quantity(cls.trapped_child, cls.location_1, 36.0)
 
+class TestWorkOrder(TestWorkOrderCommon):
     def test_assign_1(self):
         unit = self.ref("uom.product_uom_unit")
         self.stock_location = self.env.ref('stock.stock_location_stock')

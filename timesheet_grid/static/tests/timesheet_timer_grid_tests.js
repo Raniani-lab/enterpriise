@@ -1,5 +1,6 @@
 /** @odoo-module */
 
+import { browser } from "@web/core/browser/browser";
 import { Domain } from "@web/core/domain";
 import { registry } from "@web/core/registry";
 import { ormService } from "@web/core/orm_service";
@@ -10,6 +11,7 @@ import {
     getFixture,
     getNodesTextContent,
     nextTick,
+    patchWithCleanup,
     triggerEvent,
     clickOpenM2ODropdown,
 } from "@web/../tests/helpers/utils";
@@ -1005,6 +1007,11 @@ QUnit.module("Views", (hooks) => {
                 views: [[false, "grid"]],
                 context: { group_by: ["project_id", "task_id"] },
             });
+
+            patchWithCleanup(browser, {
+                setTimeout: (fn) => fn(),
+                clearTimeout: () => {},
+            });
             const columnTotalEls = target.querySelectorAll(".o_grid_column_total");
             const columnTotalWithBarchartTotalTitle = {
                 danger: [],
@@ -1068,7 +1075,6 @@ QUnit.module("Views", (hooks) => {
             );
             await nextTick();
             await triggerEvent(columnTotalEl, "", "mouseover");
-            await nextTick();
             assert.containsOnce(
                 target,
                 ".o_grid_bar_chart_container.o_grid_highlighted .o_grid_bar_chart_overtime",

@@ -68,9 +68,12 @@
                 <field name="request_to_switch" invisible="1"/>
                 <field name="repeat" invisible="1"/>
                 <field name="color" invisible="1" />
-                <div class="alert alert-info oe_edit_only mb-2" role="status" invisible="not id or not repeat">
-                    <span class="ms-2 me-4">Edit</span>
-                    <field name="recurrence_update" widget="radio" class="mb-0" options="{'horizontal': true}"/>
+                <div class="alert alert-info oe_edit_only mb-2 d-lg-flex align-items-center" role="status" invisible="not id or not repeat">
+                    <div class="my-2">
+                        <span class="ms-0 me-4">Edit</span>
+                    </div>
+                    <field name="recurrence_update" widget="radio" class="mb-0 d-sm-block d-lg-none" options="{'horizontal': false}"/>
+                    <field name="recurrence_update" widget="radio" class="mb-0 d-lg-block d-none" options="{'horizontal': true}"/>
                 </div>
                 <div role="alert" class="alert alert-warning mb-2 text-center" invisible="overlap_slot_count == 0 and (not request_to_switch or allow_self_unassign)">
                     <span class="align-middle" invisible="overlap_slot_count == 0">Prepare for the ultimate multi-tasking challenge:</span>

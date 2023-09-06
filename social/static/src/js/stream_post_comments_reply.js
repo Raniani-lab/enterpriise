@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { FileUploader } from "@web/views/fields/file_handler";
 import { useAutofocus, useService } from "@web/core/utils/hooks";
 import { useEmojiPicker } from "@web/core/emoji_picker/emoji_picker";
@@ -84,8 +85,7 @@ export class StreamPostCommentsReply extends Component {
                 this.props.onAddComment(comment);
             } else {
                 this.notification.add(
-                    this.env._t("Something went wrong while posting the comment.") +
-                        `\n${comment.error}`,
+                    _t("Something went wrong while posting the comment. \n%s", comment.error),
                     { type: "danger" }
                 );
             }

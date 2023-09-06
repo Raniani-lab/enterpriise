@@ -88,8 +88,10 @@ class SocialTwitterController(SocialController):
         if f'@{answering_to.lower()}' not in message.lower():
             message = f"@{answering_to} {message}"
 
+        files = request.httprequest.files.getlist('attachment')
+        attachment = files and files[0]
         try:
-            return json.dumps(stream_post._twitter_comment_add(stream, comment_id, message))
+            return json.dumps(stream_post._twitter_comment_add(stream, comment_id, message, attachment))
         except Exception as e:
             return json.dumps({'error': str(e)})
 
@@ -168,8 +170,10 @@ class SocialTwitterController(SocialController):
         ], limit=1)
         if not tweet:
             return json.dumps({'error': _('This Tweet has been deleted.')})
+        files = request.httprequest.files.getlist('attachment')
+        attachment = files and files[0]
         try:
-            return json.dumps(tweet._twitter_tweet_quote(message))
+            return json.dumps(tweet._twitter_tweet_quote(message, attachment))
         except UserError as error:
             return json.dumps({
                 'error': str(error)
@@ -238,11 +242,8 @@ class SocialTwitterController(SocialController):
                 'image': base64.b64encode(requests.get(twitter_account_information['profile_image_url'], timeout=10).content)
             })
 
-    def _twitter_get_account_information(self, media, oauth_token, oauth_token_secret, screen_name=None):
-        """Get the information about the Twitter account.
-
-        TODO: screen_name is not used, remove in master
-        """
+    def _twitter_get_account_information(self, media, oauth_token, oauth_token_secret):
+        """Get the information about the Twitter account."""
         twitter_account_info_url = url_join(
             request.env['social.media']._TWITTER_ENDPOINT,
             '/2/users/me')

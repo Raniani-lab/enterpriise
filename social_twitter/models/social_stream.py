@@ -48,15 +48,15 @@ class SocialStreamTwitter(models.Model):
 
     def _fetch_stream_data(self):
         if self.media_id.media_type != 'twitter':
-            return super(SocialStreamTwitter, self)._fetch_stream_data()
+            return super()._fetch_stream_data()
 
         if self.stream_type_id.stream_type == 'twitter_user_mentions':
             return self._fetch_tweets('/2/users/%s/mentions' % self.account_id.twitter_user_id)
-        elif self.stream_type_id.stream_type == 'twitter_follow':
+        if self.stream_type_id.stream_type == 'twitter_follow':
             return self._fetch_tweets('/2/users/%s/tweets' % self.twitter_followed_account_id.twitter_id)
-        elif self.stream_type_id.stream_type == 'twitter_likes':
+        if self.stream_type_id.stream_type == 'twitter_likes':
             return self._fetch_tweets('/2/users/%s/liked_tweets' % self.twitter_followed_account_id.twitter_id)
-        elif self.stream_type_id.stream_type == 'twitter_keyword':
+        if self.stream_type_id.stream_type == 'twitter_keyword':
             keyword = self.twitter_searched_keyword
             if not keyword.startswith("#"):
                 keyword = "#%s" % keyword
@@ -66,7 +66,7 @@ class SocialStreamTwitter(models.Model):
         self.ensure_one()
         query_params = {
             'max_results': 100,
-            'tweet.fields': 'created_at,public_metrics,referenced_tweets',
+            'tweet.fields': 'created_at,public_metrics,referenced_tweets,conversation_id',
             'expansions': 'author_id,attachments.media_keys,referenced_tweets.id,referenced_tweets.id.author_id',
             'user.fields': 'id,name,username,profile_image_url',
             'media.fields': 'type,url,preview_image_url',
@@ -116,12 +116,14 @@ class SocialStreamTwitter(models.Model):
             self.account_id._action_disconnect_accounts(result)
             return False
 
-        result_tweets = result.get('data', [])
+        tweets_by_tweet_id = {
+            tweet['id']: tweet
+            for tweet in result.get('data', [])
+        }
 
-        tweets_ids = [tweet.get('id') for tweet in result_tweets]
         existing_tweets = self.env['social.stream.post'].sudo().search([
             ('stream_id', '=', self.id),
-            ('twitter_tweet_id', 'in', tweets_ids)
+            ('twitter_tweet_id', 'in', list(tweets_by_tweet_id)),
         ])
         existing_tweets_by_tweet_id = {
             tweet.twitter_tweet_id: tweet for tweet in existing_tweets
@@ -144,7 +146,7 @@ class SocialStreamTwitter(models.Model):
             for tweet in result.get('includes', {}).get('tweets', [])
         }
 
-        for tweet in result_tweets:
+        for twitter_tweet_id, tweet in tweets_by_tweet_id.items():
             public_metrics = tweet.get('public_metrics', {})
             user_info = users_per_id.get(tweet.get('author_id'), {})
             created_date = tweet.get('created_at')
@@ -157,7 +159,8 @@ class SocialStreamTwitter(models.Model):
                 'published_date': created_date,
                 'twitter_likes_count': public_metrics.get('like_count'),
                 'twitter_retweet_count': public_metrics.get('retweet_count'),
-                'twitter_tweet_id': tweet.get('id'),
+                'twitter_tweet_id': twitter_tweet_id,
+                'twitter_conversation_id': tweet.get('conversation_id'),
                 'twitter_author_id': tweet.get('author_id'),
                 'twitter_screen_name': user_info.get('username'),
                 'twitter_profile_image_url': user_info.get('profile_image_url'),
@@ -205,7 +208,3 @@ class SocialStreamTwitter(models.Model):
             if media['type'] == 'photo'
         ]
         return {'stream_post_image_ids': [(0, 0, attachment) for attachment in images]} if images else {}
-
-    def _lookup_tweets(self, tweet_ids):
-        """TODO: remove in master."""
-        return {}

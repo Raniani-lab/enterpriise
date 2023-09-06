@@ -49,17 +49,15 @@ class SocialAccountTwitter(models.Model):
         res.filtered(lambda account: account.media_type == 'twitter')._create_default_stream_twitter()
         return res
 
-    def twitter_search_users(self, query):
+    def twitter_get_user_by_username(self, username):
         """Search a user based on his username (e.g: "fpodoo").
 
         Can not search by name, can only get user by their usernames
         See: https://developer.twitter.com/en/docs/twitter-api/users/lookup/api-reference
-
-        TODO: in master, return a single dict instead of a list
         """
         user_search_endpoint = url_join(
             self.env['social.media']._TWITTER_ENDPOINT,
-            '/2/users/by/username/%s' % query)
+            '/2/users/by/username/%s' % username)
         params = {'user.fields': 'id,name,username,description,profile_image_url'}
         headers = self._get_twitter_oauth_header(
             user_search_endpoint,
@@ -72,18 +70,7 @@ class SocialAccountTwitter(models.Model):
             headers=headers,
             timeout=5
         )
-        if response.ok and response.json().get('data'):
-            result = response.json()['data']
-            return [{
-                # TODO: in master, use same format as the API
-                'id_str': result['id'],
-                'name': result['name'],
-                'screen_name': result['username'],
-                'description': result['description'],
-                # TODO: in master, rename "profile_image_url_https" into "profile_image_url"
-                'profile_image_url_https': result['profile_image_url'],
-            }]
-        return []
+        return response.json().get('data', False) if response.ok else False
 
     def _create_default_stream_twitter(self):
         """ This will create a stream of type 'Twitter Follow' for each added accounts.
@@ -192,10 +179,6 @@ class SocialAccountTwitter(models.Model):
             'file_size': image.file_size,
             'mimetype': image.mimetype
         } for image in image_ids])
-
-    def _format_bytes_to_images_twitter(self, attachment):
-        # TODO: remove in master
-        return []
 
     def _format_images_twitter(self, image_ids):
         """ Twitter needs a special kind of uploading to process images.

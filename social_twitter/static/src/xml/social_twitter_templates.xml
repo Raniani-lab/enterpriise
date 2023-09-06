@@ -65,10 +65,10 @@
     <li t-name="social_twitter.users_autocomplete_element">
         <div role="menuitem" href="#"
             t-attf-class="dropdown-item o_social_twitter_users_autocomplete_suggestion clearfix#{suggestion_index == 0 and ' active' or ''}">
-            <img t-att-src="suggestion['profile_image_url_https']" alt="Twitter Profile Image"/>
+            <img t-att-src="suggestion['profile_image_url']" alt="Twitter Profile Image"/>
             <div class="o_twitter_users_autocomplete_info">
                 <strong><span class="o_twitter_users_autocomplete_info_name">
-                    <t t-esc="suggestion['name']" /> - @<t t-esc="suggestion['screen_name']" />
+                    <t t-esc="suggestion['name']" /> - @<t t-esc="suggestion['username']" />
                 </span></strong>
                 <br/>
                 <span><small t-esc="suggestion['description']" /></span>

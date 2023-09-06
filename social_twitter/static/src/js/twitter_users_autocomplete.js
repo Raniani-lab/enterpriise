@@ -19,12 +19,12 @@ export class TwitterUsersAutocompleteField extends CharField {
                 source: async (request, response) => {
                     const accountId = this.props.record.data.account_id[0];
 
-                    const suggestions = await this.orm.call(
+                    const userInfo = await this.orm.call(
                         'social.account',
-                        'twitter_search_users',
+                        'twitter_get_user_by_username',
                         [[accountId], request.term]
                     );
-                    response(suggestions);
+                    response(userInfo ? [userInfo] : []);
                 },
                 select: (ev, ui) => {
                     $(this.input.el).val(ui.item.name);
@@ -48,7 +48,7 @@ export class TwitterUsersAutocompleteField extends CharField {
             'create',
             [{
                 name: twitterUser.name,
-                twitter_id: twitterUser.id_str
+                twitter_id: twitterUser.id
             }]
         );
 

@@ -17,6 +17,7 @@ class SocialStreamPostTwitter(models.Model):
     _inherit = 'social.stream.post'
 
     twitter_tweet_id = fields.Char('Twitter Tweet ID', index=True)
+    twitter_conversation_id = fields.Char('Twitter Conversation ID')
     twitter_author_id = fields.Char('Twitter Author ID')
     twitter_screen_name = fields.Char('Twitter Screen Name')
     twitter_profile_image_url = fields.Char('Twitter Profile Image URL')
@@ -94,12 +95,11 @@ class SocialStreamPostTwitter(models.Model):
     # COMMENTS / LIKES
     # ========================================================
 
-    def _twitter_comment_add(self, stream, comment_id, message):
+    def _twitter_comment_add(self, stream, comment_id, message, attachment):
         self.ensure_one()
         tweet_id = comment_id or self.twitter_tweet_id
-        tweet = self._twitter_post_tweet(stream, message, reply={'in_reply_to_tweet_id': tweet_id})
-        # TODO: in master, use "in_reply_to_tweet_id" instead of "in_reply_to_status_id_str"
-        tweet['in_reply_to_status_id_str'] = tweet_id
+        tweet = self._twitter_post_tweet(stream, message, attachment, reply={'in_reply_to_tweet_id': tweet_id})
+        tweet['in_reply_to_tweet_id'] = tweet_id
         return tweet
 
     def _twitter_comment_fetch(self, page=1):
@@ -113,34 +113,12 @@ class SocialStreamPostTwitter(models.Model):
         """
         self.ensure_one()
 
-        # Find the conversation id of the Tweet
-        # TODO in master: store "conversation_id" and "created_at" as field when we fetch the stream post
-        endpoint_url = url_join(self.env['social.media']._TWITTER_ENDPOINT, '/2/tweets')
-        query_params = {'ids': self.twitter_tweet_id, 'tweet.fields': 'conversation_id,created_at'}
-        headers = self.stream_id.account_id._get_twitter_oauth_header(
-            endpoint_url,
-            params=query_params,
-            method='GET',
-        )
-        result = requests.get(
-            endpoint_url,
-            query_params,
-            headers=headers,
-            timeout=5,
-        )
-        if not result.ok:
-            raise UserError(_("Failed to fetch the conversation id: '%s' using the account %s.", result.text, self.stream_id.account_id.name))
-
-        if result.json().get('errors'):
-            if result.json().get('errors')[0].get('title') == 'Not Found Error':
-                raise UserError(_("Oops! Couldn't find this tweet on Twitter.com"))
-            raise UserError(result.json()['errors'][0].get('detail'))
-
-        result = result.json()['data'][0]
+        if not self.twitter_conversation_id:
+            raise UserError(_('This tweet is outdated, please refresh the stream and try again.'))
 
         endpoint_url = url_join(self.env['social.media']._TWITTER_ENDPOINT, '/2/tweets/search/recent')
         query_params = {
-            'query': 'conversation_id:%s' % result['conversation_id'],
+            'query': f'conversation_id:{self.twitter_conversation_id}',
             'since_id': self.twitter_tweet_id,
             'max_results': 100,
             'tweet.fields': 'conversation_id,created_at,public_metrics,referenced_tweets',
@@ -290,31 +268,21 @@ class SocialStreamPostTwitter(models.Model):
         retweets.unlink()
         return True
 
-    def _twitter_tweet_quote(self, message, attachment=None):
+    def _twitter_tweet_quote(self, message, attachment):
         """
         :param werkzeug.datastructures.FileStorage attachment:
         Creates a new quotes for the current stream post on Twitter.
         If the stream post does not have any message, a retweet will be created instead of a quote.
-
-        TODO: in master, remove attachment argument (or use it, and make it consistent with `_twitter_comment_add`)
         """
         self.ensure_one()
-        if not message:
+        if not message and not attachment:
             return self._twitter_do_retweet()
-        self._twitter_post_tweet(self.stream_id, message, quote_tweet_id=self.twitter_tweet_id)
+        self._twitter_post_tweet(self.stream_id, message, attachment, quote_tweet_id=self.twitter_tweet_id)
         return True
 
     # ========================================================
     # UTILITY / MISC
     # ========================================================
-
-    def _add_comments_favorites(self, filtered_tweets):
-        # TODO: remove in master
-        return []
-
-    def _accumulate_tweets(self, endpoint_url, query_params, search_query, query_count=1, force_max_id=None):
-        # TODO: remove in master
-        return []
 
     def _fetch_matching_post(self):
         self.ensure_one()
@@ -323,17 +291,13 @@ class SocialStreamPostTwitter(models.Model):
             return self.env['social.live.post'].search(
                 [('twitter_tweet_id', '=', self.twitter_tweet_id)], limit=1
             ).post_id
-        else:
-            return super(SocialStreamPostTwitter, self)._fetch_matching_post()
+        return super()._fetch_matching_post()
 
-    def _twitter_post_tweet(self, stream, message, **additionnal_params):
+    def _twitter_post_tweet(self, stream, message, attachment, **additionnal_params):
         data = {
             'text': message,
             **additionnal_params,
         }
-
-        files = request.httprequest.files.getlist('attachment')
-        attachment = files and files[0]
 
         images_attachments_ids = None
         if attachment:
@@ -370,7 +334,6 @@ class SocialStreamPostTwitter(models.Model):
                 'id': self.account_id.twitter_user_id,
                 'name': self.account_id.name,
                 'username': self.account_id.social_account_handle,
-                # TODO: in master, remove "profile_image_url_https"
                 'profile_image_url': '/web/image/social.account/%s/image' % stream.account_id.id,
             },
             **additionnal_params,

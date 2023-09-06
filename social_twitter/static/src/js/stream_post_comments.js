@@ -64,10 +64,14 @@ export class StreamPostCommentsTwitter extends StreamPostComments {
             return result;
         }, []);
 
-        const tweetId = replyToCommentId ? replyToCommentId : this.originalPost.twitter_tweet_id.raw_value;
-        const existingAnswers = allCommentsFlatten.filter((comment) =>
-            comment.from && comment.from.screen_name === this.mediaSpecificProps.twitterUserScreenName
-            && comment.in_reply_to_status_id_str === tweetId
+        const tweetId = String(
+            replyToCommentId ? replyToCommentId : this.originalPost.twitter_tweet_id.raw_value
+        );
+        const existingAnswers = allCommentsFlatten.filter(
+            (comment) =>
+                comment.from &&
+                comment.from.screen_name === this.mediaSpecificProps.twitterUserScreenName &&
+                String(comment.in_reply_to_tweet_id) === tweetId
         );
 
         if (existingAnswers.length >= MAX_ALLOWED_REPLIES) {

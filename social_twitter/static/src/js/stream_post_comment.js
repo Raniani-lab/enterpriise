@@ -13,7 +13,7 @@ export class StreamPostCommentTwitter extends StreamPostComment {
     //--------
 
     get authorPictureSrc() {
-        return this.comment.from.profile_image_url_https
+        return this.comment.from.profile_image_url
     }
 
     get link() {

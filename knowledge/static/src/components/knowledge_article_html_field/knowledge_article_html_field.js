@@ -13,7 +13,6 @@ import { KnowledgePlugin } from "@knowledge/js/knowledge_plugin";
 import { PromptEmbeddedViewNameDialog } from "@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { KnowledgeWysiwyg } from '@knowledge/js/knowledge_wysiwyg';
 import { _t } from "@web/core/l10n/translation";
 
 
@@ -27,10 +26,6 @@ import { _t } from "@web/core/l10n/translation";
  */
 export class KnowledgeArticleHtmlField extends HtmlField {
     static template = "knowledge.KnowledgeArticleHtmlField";
-    static components = {
-        ...HtmlField.components,
-        Wysiwyg: KnowledgeWysiwyg,
-     };
 
     /**
      * @override
@@ -55,7 +50,7 @@ export class KnowledgeArticleHtmlField extends HtmlField {
 
     get wysiwygOptions() {
         const wysiwygOptions = super.wysiwygOptions;
-        wysiwygOptions.editorPlugins = [wysiwygOptions.editorPlugins, KnowledgePlugin].flat();
+        wysiwygOptions.editorPlugins = [...wysiwygOptions.editorPlugins, KnowledgePlugin];
         return wysiwygOptions;
     }
 
@@ -198,6 +193,11 @@ export class KnowledgeArticleHtmlField extends HtmlField {
         this.wysiwyg.setValue(body);
         await this.env.renameArticle(title);
         await this.props.record.update(values);
+    }
+
+    async _lazyloadWysiwyg() {
+        await super._lazyloadWysiwyg(...arguments);
+        this.Wysiwyg = (await odoo.loader.modules.get('@knowledge/js/knowledge_wysiwyg')).KnowledgeWysiwyg;
     }
 }
 

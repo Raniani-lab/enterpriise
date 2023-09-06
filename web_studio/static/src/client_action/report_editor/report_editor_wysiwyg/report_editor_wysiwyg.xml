@@ -5,7 +5,7 @@
     <div class="o-web-studio-report-editor-wysiwyg h-100 w-100 position-relative">
       <UndoRedo state="undoRedoState"/>
       <ReportEditorIframe iframeKey="reportEditorModel.reportQweb || ''" iframeSource="reportQweb" onIframeLoaded.bind="onIframeLoaded" />
-      <Wysiwyg t-if="state.wysiwygKey and this.iframeRef?.el" t-key="state.wysiwygKey" t-props="wysiwygProps" />
+      <t t-if="state.wysiwygKey and this.iframeRef?.el" t-component="this.Wysiwyg" t-props="wysiwygProps" t-key="state.wysiwygKey" />
     </div>
 </t>
 

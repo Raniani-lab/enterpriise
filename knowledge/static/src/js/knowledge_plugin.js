@@ -2,6 +2,7 @@
 
 import { _t } from '@web/core/l10n/translation';
 import { decodeDataBehaviorProps, getVideoUrl } from '@knowledge/js/knowledge_utils';
+import { registry } from "@web/core/registry";
 
 /**
  * Plugin for OdooEditor. This plugin will allow us to clean/transform the
@@ -46,3 +47,5 @@ export class KnowledgePlugin {
         }
     }
 }
+
+registry.category("wysiwygPlugins").add("Knowledge", KnowledgePlugin);

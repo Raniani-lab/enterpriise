@@ -2,7 +2,7 @@
 
 import { HtmlField, htmlField } from "@web_editor/js/backend/html_field";
 import { patch } from "@web/core/utils/patch";
-import { templates } from "@web/core/assets";
+import { templates, loadBundle } from "@web/core/assets";
 import {
     copyOids,
     decodeDataBehaviorProps,
@@ -695,6 +695,13 @@ const HtmlFieldPatch = {
             }
         }
         return behaviorsData;
+    },
+    async _lazyloadWysiwyg() {
+        await super._lazyloadWysiwyg(...arguments);
+        let wysiwygModule = await odoo.loader.modules.get('@knowledge/js/wysiwyg');
+        if (!wysiwygModule) {
+            await loadBundle('knowledge.assets_wysiwyg');
+        }
     },
 
     /**

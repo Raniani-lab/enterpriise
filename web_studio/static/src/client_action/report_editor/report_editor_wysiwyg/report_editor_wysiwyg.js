@@ -1,12 +1,11 @@
 /** @odoo-module */
-import { Component, onMounted, onWillDestroy, onWillUnmount, reactive, useState } from "@odoo/owl";
+import { Component, onWillStart, onMounted, onWillDestroy, onWillUnmount, reactive, useState } from "@odoo/owl";
+import { loadBundle } from "@web/core/assets";
 import { _t } from "@web/core/l10n/translation";
 import { usePopover } from "@web/core/popover/popover_hook";
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 import { sortBy } from "@web/core/utils/arrays";
 import { useOwnedDialogs, useService } from "@web/core/utils/hooks";
-
-import { Wysiwyg } from "@web_editor/js/wysiwyg/wysiwyg";
 import { QWebPlugin } from "@web_editor/js/backend/QWebPlugin";
 
 import { StudioDynamicPlaceholderPopover } from "./studio_dynamic_placeholder_popover";
@@ -152,7 +151,6 @@ function computeTableLayout(table) {
 
 export class ReportEditorWysiwyg extends Component {
     static components = {
-        Wysiwyg,
         CharField,
         Record,
         Many2ManyTagsField,
@@ -191,6 +189,11 @@ export class ReportEditorWysiwyg extends Component {
         useEditorMenuItem({
             component: ReportEditorSnackbar,
             props: { state: reportEditorModel, onSave: this.save.bind(this) },
+        });
+
+        onWillStart(async () => {
+            await loadBundle('web_editor.backend_assets_wysiwyg');
+            this.Wysiwyg = (await odoo.loader.modules.get('@web_editor/js/wysiwyg/wysiwyg')).Wysiwyg;
         });
 
         onWillUnmount(() => {

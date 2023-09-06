@@ -61,11 +61,6 @@
             'knowledge/static/src/views/**/*',
             'knowledge/static/src/services/**/*',
             'knowledge/static/src/macros/**/*',
-            'knowledge/static/src/js/wysiwyg.js',
-            'knowledge/static/src/js/knowledge_wysiwyg.js',
-            'knowledge/static/src/xml/knowledge_editor.xml',
-            'knowledge/static/src/xml/knowledge_article_templates.xml',
-            'knowledge/static/src/js/knowledge_clipboard_whitelist.js',
         ],
         "web.assets_web_dark": [
             'knowledge/static/src/scss/knowledge_views.dark.scss',
@@ -83,10 +78,18 @@
             'knowledge/static/tests/knowledge_form_view_tests.js',
             'knowledge/static/tests/form_controller_patch_tests.js',
             'knowledge/static/tests/knowledge_external_embeds_hotkeys.js',
-            'knowledge/static/tests/knowledge_form_view_tests.js'
+            'knowledge/static/tests/knowledge_form_view_tests.js',
+            ('include', 'knowledge.assets_wysiwyg'),
         ],
         'web.tests_assets': [
             'knowledge/static/tests/mock_services.js',
+        ],
+        'knowledge.assets_wysiwyg': [
+            'knowledge/static/src/js/wysiwyg.js',
+            'knowledge/static/src/js/knowledge_wysiwyg.js',
+            'knowledge/static/src/xml/knowledge_editor.xml',
+            'knowledge/static/src/xml/knowledge_article_templates.xml',
+            'knowledge/static/src/js/knowledge_clipboard_whitelist.js',
         ],
         'knowledge.webclient': [
             ('include', 'web.assets_backend'),

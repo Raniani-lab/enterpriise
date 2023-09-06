@@ -106,10 +106,17 @@ class SaleOrderLine(models.Model):
     def _compute_price_unit(self):
         line_to_recompute = self.env['sale.order.line']
         for line in self:
-            if not line.parent_line_id:
+            # Recompute order lines if part of a regular sale order.
+            # This check avoids breaking other module's tests which trigger this function.
+            if not line.order_id.is_subscription:
                 line_to_recompute |= line
                 continue
-            line.price_unit = line.parent_line_id.price_unit
+            if line.parent_line_id:
+                # Carry custom price of recurring products from previous subscription after renewal.
+                line.price_unit = line.parent_line_id.price_unit
+            elif line.product_id.recurring_invoice or not line.price_unit:
+                # Recompute prices for subscription products or regular products when these are first inserted.
+                line_to_recompute |= line
         super(SaleOrderLine, line_to_recompute)._compute_price_unit()
 
     @api.depends('product_id', 'order_id.recurrence_id')
@@ -214,8 +221,14 @@ class SaleOrderLine(models.Model):
                                         ", ".join(['Month, Year', 'One Time'])))
             line.recurring_monthly = line.price_subtotal * INTERVAL_FACTOR[line.order_id.recurrence_id.unit] / line.order_id.recurrence_id.duration
 
-    @api.depends('order_id.subscription_id', 'product_id', 'product_uom', 'price_unit', 'order_id')
+    @api.depends('order_id.subscription_id', 'product_id', 'product_uom', 'price_unit', 'order_id', 'order_id.recurrence_id')
     def _compute_parent_line_id(self):
+        """
+        Compute the link between a SOL and the line in the parent order. The matching is done based on several
+        fields values like the price_unit, the uom, etc. The method does not depend on pricelist_id or currency_id
+        on purpose because '_compute_price_unit' depends on 'parent_line_id' and it triggered side effects
+        when we added these dependencies.
+        """
         parent_line_ids = self.order_id.subscription_id.order_line
         for line in self:
             if not line.order_id.subscription_id or not line.product_id.recurring_invoice:
@@ -224,9 +237,9 @@ class SaleOrderLine(models.Model):
             matching_line_ids = parent_line_ids.filtered(
                 lambda l:
                 (l.order_id, l.product_id, l.product_uom, l.order_id.currency_id,
-                 l.order_id.currency_id.round(l.price_unit) if l.order_id.currency_id else round(l.price_unit, 2)) ==
+                 l.order_id.currency_id.round(l.price_unit) if l.order_id.currency_id else round(l.price_unit, 2), l.order_id.recurrence_id) ==
                 (line.order_id.subscription_id, line.product_id, line.product_uom, line.order_id.currency_id,
-                 line.order_id.currency_id.round(line.price_unit) if line.order_id.currency_id else round(line.price_unit, 2)
+                 line.order_id.currency_id.round(line.price_unit) if line.order_id.currency_id else round(line.price_unit, 2), line.order_id.recurrence_id
                  )
             )
             if matching_line_ids:

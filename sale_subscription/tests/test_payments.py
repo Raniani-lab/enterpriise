@@ -386,7 +386,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
                               active_ids=sub0.invoice_ids.ids).create(
                 {
                     'currency_id': sub0.currency_id.id,
-                    'amount': 300,
+                    'amount': 400,
                 })._create_payments()
 
             self.assertTrue(sub0.invoice_ids.payment_state in ['in_payment', 'paid'])

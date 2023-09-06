@@ -542,7 +542,7 @@ class TestSubscription(TestSubscriptionCommon):
             # discounts for: 12d/31d; 40d/59d; 21d/31d (shifted); 31d/41d; 59d/78d;
             self.assertEqual(discounts, [0, 32, 32, 32, 32], 'Prorated prices should be applied')
             prices = [round(v, 2) for v in upsell_so.order_line.sorted('pricing_id').mapped('price_subtotal')]
-            self.assertEqual(prices, [0.0, 28.48, 1.36, 28.48, 28.48], 'Prorated prices should be applied')
+            self.assertEqual(prices, [0.0, 28.48, 28.48, 28.48, 28.48], 'Prorated prices should be applied')
 
     def test_recurring_revenue(self):
         """Test computation of recurring revenue"""
@@ -1657,13 +1657,24 @@ class TestSubscription(TestSubscriptionCommon):
             'partner_id': self.user_portal.partner_id.id,
             'pricelist_id': self.company_data['default_pricelist'].id,
             'recurrence_id': self.recurrence_week.id,
-            'order_line': [Command.create({
+            'order_line': [
+                Command.create({
                 'product_id': product.product_variant_ids[-1].id,
                 'product_uom_qty': 1
-            })]
+                }),
+                Command.create({
+                    'product_id': product.product_variant_ids[0].id,
+                    'product_uom_qty': 1
+                })
+            ]
         })
-        # check that correct pricing is being used
+        # check that correct pricings are being used
         self.assertEqual(sale_order.order_line[0].pricing_id.id, pricing2.id)
+        self.assertEqual(sale_order.order_line[1].pricing_id.id, cheaper_pricing.id)
+
+        # check that correct price units were selected
+        self.assertEqual(sale_order.order_line[0].price_unit, 25)
+        self.assertEqual(sale_order.order_line[1].price_unit, 10)
 
     def test_upsell_parent_line_id(self):
         with freeze_time("2022-01-01"):
@@ -1690,13 +1701,11 @@ class TestSubscription(TestSubscriptionCommon):
             upsell_so = self.env['sale.order'].browse(action['res_id'])
             # Create new lines that should be aligned with existing ones
             parent_line_id = upsell_so.order_line.parent_line_id
-            self.assertEqual(upsell_so.order_line.parent_line_id, parent_line_id, "The parent line is the one from the subscription")
+            self.assertEqual(self.subscription.order_line, parent_line_id, "The parent line is the one from the subscription")
             first_line_id = upsell_so.order_line[0] # line 0 is the upsell line
             first_line_id.product_id = self.product2
             self.assertFalse(first_line_id.parent_line_id, "The new line should not have a parent line")
             upsell_so.currency_id = False
-            upsell_so.currency_id = False
-            first_line_id._compute_parent_line_id()
             self.assertFalse(first_line_id.parent_line_id, "The new line should not have a parent line even without currency_id")
             self.subscription._compute_pricelist_id() # reset the currency_id
             upsell_so._compute_pricelist_id()
@@ -1725,6 +1734,12 @@ class TestSubscription(TestSubscriptionCommon):
             upsell_so.action_confirm()
             self.assertEqual(self.subscription.order_line[0].product_uom_qty, 4, "The original line qty should be 4 (1 + 3 upsell line 1)")
             self.assertEqual(self.subscription.order_line[1].product_uom_qty, 2, "The new line qty should be 2 (upsell line 0)")
+
+            action = self.subscription.prepare_renewal_order()
+            renew_so = self.env['sale.order'].browse(action['res_id'])
+            parent_line_id = renew_so.order_line.parent_line_id
+            self.assertEqual(self.subscription.order_line, parent_line_id, "The parent line is the one from the subscription")
+            renew_so.recurrence_id = self.recurrence_year.id
 
     def test_subscription_constraint(self):
         self.subscription.recurrence_id = False
@@ -1878,7 +1893,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(upsell_so.start_date, datetime.date(2022, 10, 2))
             self.assertEqual(upsell_so.next_invoice_date, datetime.date(2024, 1, 1))
 
-            self.assertEqual(upsell_so_2.amount_untaxed, 7.98, 'We only invoice for the period before the renewal')
+            self.assertEqual(upsell_so_2.amount_untaxed, 29.92, 'We only invoice for the period before the renewal')
             self.assertEqual(upsell_so_2.order_line.mapped('product_uom_qty'), [1.0, 1.0, 0])
             for discount, value in zip(upsell_so_2.order_line.mapped('discount'), [75.07, 75.07, 0.0]):
                 self.assertAlmostEqual(discount, value)
@@ -2359,3 +2374,204 @@ class TestSubscription(TestSubscriptionCommon):
                       in renew_logs]
 
         self.assertEqual(renew_data, [('0_creation', today, 'progress', 63, 63)])
+
+    def test_renew_pricelist_currency_update(self):
+        """
+        Assert that after renewing a subscription, changing the pricelist
+        to another one will recompute the order lines pricings.
+        """
+        with freeze_time("2023-04-04"):
+            default_pricelist = self.company_data['default_pricelist']
+            other_currency = self.env.ref('base.EUR')
+            other_currency.action_unarchive()
+            other_pricelist = self.env['product.pricelist'].create({
+                'name': 'Test Pricelist (EUR)',
+                'currency_id': other_currency.id,
+            })
+            other_currency.rate_ids = [Command.create({'rate': 20})]
+            pricing_month_1_usd = self.env['product.pricing'].create({
+                'recurrence_id': self.recurrence_month.id,
+                'price': 100,
+                'pricelist_id': default_pricelist.id,
+            })
+            pricing_month_2_eur = self.env['product.pricing'].create({
+                'recurrence_id': self.recurrence_month.id,
+                'price': 200,
+                'pricelist_id': other_pricelist.id,
+            })
+            sub_product_tmpl = self.env['product.template'].create({
+                'name': 'BaseTestProduct',
+                'type': 'service',
+                'recurring_invoice': True,
+                'uom_id': self.env.ref('uom.product_uom_unit').id,
+                'product_pricing_ids': [Command.set((pricing_month_1_usd | pricing_month_2_eur).ids)]
+            })
+            sub = self.subscription.create({
+                'name': 'Company1 - Currency1',
+                'partner_id': self.user_portal.partner_id.id,
+                'currency_id': self.company.currency_id.id,
+                'recurrence_id': self.recurrence_month.id,
+                'pricelist_id': default_pricelist.id,
+                'order_line': [Command.create({
+                    'name': "Product 1",
+                    'product_id': sub_product_tmpl.product_variant_id.id,
+                    'product_uom_qty': 1,
+                    'product_uom': sub_product_tmpl.uom_id.id
+                })]
+            })
+            sub.action_confirm()
+            self.flush_tracking()
+
+            # Assert that order line was created with correct pricing and currency.
+            self.assertEqual(sub.order_line[0].price_unit, 100.0, "Subscription product's order line must be created with default pricelist pricing (USD) having the price unit as 100.0.")
+            self.assertEqual(sub.order_line[0].order_id.currency_id.id, self.company.currency_id.id, "Subscription product's order line must be created with the default company currency (USD).")
+            self.assertEqual(sub.pricelist_id.id, default_pricelist.id, "Subscription must be created with the default company pricelist (in USD).")
+            self.env['sale.order']._cron_recurring_create_invoice()
+            self.flush_tracking()
+
+        with freeze_time("2023-04-05"):
+            action = sub.prepare_renewal_order()
+            renewal_so = self.env['sale.order'].browse(action['res_id'])
+
+            # Assert that parent_line_id is saved in renewed subscription.
+            self.assertEqual(renewal_so.order_line[0].parent_line_id.id, sub.order_line[0].id, "The parent line of the order line should have been saved after subscription renewal.")
+            renewal_so.pricelist_id = other_pricelist.id
+
+            # Computes the updated price unit through 'Update Prices' button.
+            renewal_so.action_update_prices()
+            renewal_so.invalidate_recordset()
+
+            # Assert that updated pricing has the correct currency, price_unit and pricelist.
+            self.assertEqual(renewal_so.pricelist_id.id, other_pricelist.id, "Pricelist must update to the new one (in EUR) after performing a manual update.")
+            self.assertEqual(renewal_so.order_line[0].currency_id.id, other_currency.id, "Order line's currency should have been updated from USD to EUR after changing the pricelist.")
+            self.assertEqual(renewal_so.order_line[0].price_unit, 200.0, "Order line's price unit must update to 200.0 according to the new pricelist pricing (in EUR).")
+
+            # Update prices button removes the parent_line_id of order lines to recalculate pricings.
+            self.assertFalse(renewal_so.order_line[0].parent_line_id, "Parent order line should not exist anymore after updating prices, it was intentionally deleted for forcing price recalculation.")
+
+    def test_recurrence_field_automatic_price_unit_update(self):
+        """
+        Assert that after changing the 'Recurrence' field of a subscription,
+        prices will recompute automatically ONLY for subscription products.
+        """
+        default_pricelist = self.company_data['default_pricelist']
+        other_currency = self.env.ref('base.EUR')
+        other_currency.action_unarchive()
+        pricing_month_1_eur = self.env['product.pricing'].create({
+            'recurrence_id': self.recurrence_month.id,
+            'price': 100,
+            'pricelist_id': default_pricelist.id,
+        })
+        pricing_year_1_eur = self.env['product.pricing'].create({
+            'recurrence_id': self.recurrence_year.id,
+            'price': 1000,
+            'pricelist_id': default_pricelist.id,
+        })
+        simple_product = self.product.copy({'recurring_invoice': False})
+        simple_product_order_line = {
+            'name': self.product.name,
+            'product_id': simple_product.id,
+            'product_uom_qty': 2.0,
+            'product_uom': simple_product.uom_id.id
+        }
+        sub_product_tmpl = self.env['product.template'].create({
+            'name': 'BaseTestProduct',
+            'type': 'service',
+            'recurring_invoice': True,
+            'uom_id': self.env.ref('uom.product_uom_unit').id,
+            'product_pricing_ids': [Command.set((pricing_month_1_eur | pricing_year_1_eur).ids)]
+        })
+        sub_product_order_line = {
+            'name': "Product 1",
+            'product_id': sub_product_tmpl.product_variant_id.id,
+            'product_uom_qty': 1,
+            'product_uom': sub_product_tmpl.uom_id.id
+        }
+        sub = self.subscription.create({
+            'name': 'Company1 - Currency1',
+            'partner_id': self.user_portal.partner_id.id,
+            'currency_id': self.company.currency_id.id,
+            'recurrence_id': self.recurrence_month.id,
+            'pricelist_id': default_pricelist.id,
+            'order_line': [
+                Command.create(sub_product_order_line),
+                Command.create(simple_product_order_line)
+            ]
+        })
+        sub.action_confirm()
+        self.flush_tracking()
+        # Assert that order lines were created with correct pricing and currency.
+        self.assertEqual(sub.order_line[0].price_unit, 100.0, "Subscription product's order line should have its price unit as 100.0 according to the 'Monthly' pricing during creation.")
+        self.assertEqual(sub.order_line[1].price_unit, 50.0, "Simple product's order line must have its default price unit of 50.0 during creation.")
+
+        # Change the 'Recurrence' field and check if price unit updated ONLY in the recurring order line.
+        sub.recurrence_id = self.recurrence_year.id
+        self.assertEqual(sub.order_line[0].price_unit, 1000.0, "Subscription product's order line must have its unit price as 1000.0 after 'Recurrence' is changed to 'Yearly'.")
+        self.assertEqual(sub.order_line[1].price_unit, 50.0, "Simple product's order line must not update its price unit, it must be kept as 50.0 during the 'Recurrence' field changes.")
+
+        # Update price of normal product and check if it is updated in recurrence (it should not!)
+        sub.order_line[1].product_id.list_price = 70.0
+        self.assertEqual(sub.order_line[1].price_unit, 50.0, "Simple product's price unit must be kept as 50.0 even though the product price was updated outside the subscription scope.")
+        self.env['sale.order']._cron_recurring_create_invoice()
+        self.flush_tracking()
+
+        # Change again the 'Recurrence' field and check if the price unit update during renewal was done in the recurring order line.
+        action = sub.prepare_renewal_order()
+        renewal_so = self.env['sale.order'].browse(action['res_id'])
+        renewal_so.recurrence_id = self.recurrence_month.id
+        self.assertEqual(renewal_so.order_line[0].price_unit, 100.0, "Subscription product's order line must have its unit price as 100.0 after 'Recurrence' is changed to 'Monthly'.")
+
+        # Change the 'Recurrence' field to yearly and ensure that price was updated accordingly for the subscription product.
+        renewal_so.recurrence_id = self.recurrence_year.id
+        self.assertEqual(renewal_so.order_line[0].price_unit, 1000.0, "Subscription product's order line must have its unit price as 1000.0 after 'Recurrence' is changed to 'Yearly'.")
+
+    def test_new_recurrence_id_optional_products_price_update(self):
+        """
+        Assert that after changing the 'Recurrence' field of a subscription, prices will be recomputed
+        for Optional Products with time-based pricing linked to the subscription template.
+        """
+        # Define a subscription template with a optional product having time-based pricing.
+        self.product.product_tmpl_id.product_pricing_ids.unlink()
+        self.env['product.pricing'].create({
+            'price': 150,
+            'recurrence_id': self.recurrence_month.id,
+            'product_template_id': self.product.product_tmpl_id.id
+        })
+        self.env['product.pricing'].create({
+            'price': 1000,
+            'recurrence_id': self.recurrence_year.id,
+            'product_template_id': self.product.product_tmpl_id.id
+        })
+        template = self.subscription_tmpl = self.env['sale.order.template'].create({
+            'name': 'Subscription template with time-based pricing on optional product',
+            'note': "This is the template description",
+            'auto_close_limit': 5,
+            'recurrence_id': self.recurrence_year.id,
+            'sale_order_template_line_ids': [Command.create({
+                'name': "monthly",
+                'product_id': self.product.id,
+                'product_uom_qty': 1,
+                'product_uom_id': self.product.uom_id.id
+            })],
+            'sale_order_template_option_ids': [Command.create({
+                'name': "line 1",
+                'product_id': self.product.id,
+                'quantity': 1,
+                'uom_id': self.product.uom_id.id,
+            })],
+        })
+        # Create the subscription based on the subscription template.
+        subscription = self.env['sale.order'].create({
+            'name': 'TestSubscription',
+            'is_subscription': True,
+            'partner_id': self.user_portal.partner_id.id,
+            'pricelist_id': self.company_data['default_pricelist'].id,
+            'recurrence_id': self.recurrence_month.id,
+            'sale_order_template_id': template.id,
+        })
+        subscription._onchange_sale_order_template_id()
+
+        # Assert that optional product has its price updated after changing the 'recurrence' field.
+        self.assertEqual(subscription.sale_order_option_ids.price_unit, 150, "The price unit for the optional product must be 150.0 due to 'Monthly' value in the 'Recurrence' field.")
+        subscription.recurrence_id = self.recurrence_year.id
+        self.assertEqual(subscription.sale_order_option_ids.price_unit, 1000, "The price unit for the optional product must update to 1000.0 after changing the 'Recurrence' field to 'Yearly'.")

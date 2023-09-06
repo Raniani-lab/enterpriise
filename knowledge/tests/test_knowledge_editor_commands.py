@@ -49,7 +49,7 @@ class TestKnowledgeEditorCommands(HttpCase):
         # Test the behaviour of the kanban when the parent article is readonly
         self.article.write({
             'article_member_ids': [(0, 0, {
-                'partner_id': self.ref('base.user_admin'),
+                'partner_id': self.ref('base.partner_admin'),
                 'permission': 'write',
             })],
             'internal_permission': 'read',
@@ -62,7 +62,7 @@ class TestKnowledgeEditorCommands(HttpCase):
         # Test the behaviour of the list when the parent article is readonly
         self.article.write({
             'article_member_ids': [(0, 0, {
-                'partner_id': self.ref('base.user_admin'),
+                'partner_id': self.ref('base.partner_admin'),
                 'permission': 'write',
             })],
             'internal_permission': 'read',

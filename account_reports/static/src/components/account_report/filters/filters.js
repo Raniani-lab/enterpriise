@@ -193,7 +193,7 @@ export class AccountReportFilters extends Component {
                 'action': journal.selected ? "remove" : "add",
                 'id': parseInt(journal.id),
             };
-        
+
         journal.selected = !journal.selected;
 
         await this.controller.reload('journals', this.controller.options);
@@ -205,20 +205,9 @@ export class AccountReportFilters extends Component {
     }
 
     async filterTaxUnit(taxUnit) {
-        this.controller.updateOption('tax_unit', taxUnit.id);
-        this.controller.saveSessionOptions(this.controller.options);
-
-        const selectedCompanies = new Set(this.companyService.allowedCompanyIds)
-        const taxUnitCompanies = new Set(taxUnit.company_ids);
-
-        // We remove all elements that are present on both sets
-        selectedCompanies.forEach((companyId) => {
-           if (taxUnitCompanies.has(companyId)) {
-               taxUnitCompanies.delete(companyId);
-               selectedCompanies.delete(companyId);
-           }
-        });
-
-        await this.companyService.setCompanies("toggle", ...selectedCompanies, ...taxUnitCompanies);
+        // force the company to those impacted by the tax units
+        this.companyService.nextAvailableCompanies.splice(0, this.companyService.nextAvailableCompanies.length);
+        taxUnit.company_ids.forEach((company_id) => this.companyService.setCompanies("toggle", company_id))
+        this.companyService.logNextCompanies()
     }
 }

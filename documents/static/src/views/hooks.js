@@ -5,10 +5,10 @@ import { useBus, useService } from "@web/core/utils/hooks";
 import { escape } from "@web/core/utils/strings";
 import { memoize } from "@web/core/utils/functions";
 import { formatFloat } from "@web/core/utils/numbers";
+import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
 import { useSetupView } from "@web/views/view_hook";
 import { PdfManager } from "@documents/owl/components/pdf_manager/pdf_manager";
 import { x2ManyCommands } from "@web/core/orm_service";
-import { ShareFormViewDialog } from "@documents/views/helper/share_form_view_dialog";
 
 const { EventBus, onWillStart, markup, useComponent, useEnv, useRef, useSubEnv } = owl;
 
@@ -188,7 +188,7 @@ export function useDocumentView(helpers) {
             const shareResId = act.res_id;
             let saved = false;
             dialogService.add(
-                ShareFormViewDialog,
+                FormViewDialog,
                 {
                     resModel: "documents.share",
                     resId: shareResId,

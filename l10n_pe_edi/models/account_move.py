@@ -66,7 +66,7 @@ class AccountMove(models.Model):
     l10n_pe_edi_cancel_reason = fields.Char(
         string="Cancel Reason",
         copy=False,
-        help="Reason given by the user to cancel this move, structure of voided summary: sac:VoidReasonDescription")
+        help="Peru: Reason given by the user for cancelling this move, structure of voided summary: sac:VoidReasonDescription.")
     l10n_pe_edi_operation_type = fields.Selection(
         selection=[
             ('0101', '[0101] Internal sale'),
@@ -93,17 +93,17 @@ class AccountMove(models.Model):
         string="Operation Type (PE)",
         store=True, readonly=False,
         compute='_compute_l10n_pe_edi_operation_type',
-        help="Defines the operation type, all the options can be used for all the document types, except "
+        help="Peru: Defines the operation type, all the options can be used for all the document types, except "
              "'[0113] Internal Sale-NRUS' that is for document type 'Boleta' and '[0112] Internal Sale - Sustains "
              "Natural Person Deductible Expenses' exclusive for document type 'Factura'"
-             "It can't be changed after validation. This is an optional feature added to avoid a warning. Catalog No. 51")
+             "It can't be changed after validation. This is an optional feature added to avoid a warning. Catalog No. 51.")
     l10n_pe_edi_legend = fields.Selection(
         selection=CATALOG52,
-        string="Legend Code")
+        string="Legend Code", help="Peru: Specific operation type code.")
     l10n_pe_edi_legend_value = fields.Char(
         string="Legend",
         store=True, readonly=False, compute='_compute_l10n_pe_edi_legend_value',
-        help="Text to indicate the legend or the amount in letters.")
+        help="Peru: Specific operation type value.")
 
     # -------------------------------------------------------------------------
     # COMPUTE METHODS

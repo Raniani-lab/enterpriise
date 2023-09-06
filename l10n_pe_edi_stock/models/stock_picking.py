@@ -73,7 +73,10 @@ class Picking(models.Model):
         selection=[
             ('01', 'Public transport'),
             ('02', 'Private transport'),
-        ], copy=False)
+        ],
+        copy=False,
+        help="Peru: Select if transport is internal (private: own company) or external (public: transport company).",
+    )
     l10n_pe_edi_status = fields.Selection(
         selection=[
             ('to_send', 'To Send'),

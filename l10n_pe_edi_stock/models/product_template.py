@@ -23,5 +23,5 @@ class ProductTemplate(models.Model):
             ('2302200000', 'Not applicable'),
         ],
         string="Tariff Fraction (PE)",
-        help="The tariff fraction number corresponding to the product."
+        help="Peru: The tariff fraction of the product. This takes the form of the HS Code of the corresponding description."
     )

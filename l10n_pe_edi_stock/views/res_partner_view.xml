@@ -5,9 +5,9 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="account.view_partner_property_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//group[@name='accounting_entries']" position="after">
+            <xpath expr="//group[@name='fiscal_information']" position="after">
                 <group string="Peru" name="peru"
-                       invisible="country_code not in ['PE', False] or 'PE' not in fiscal_country_codes">
+                       invisible="'PE' not in fiscal_country_codes">
                     <field name="l10n_pe_edi_operator_license"
                         invisible="company_type != 'person'"/>
                     <field name="l10n_pe_edi_mtc_number"

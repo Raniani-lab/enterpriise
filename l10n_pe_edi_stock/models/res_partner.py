@@ -10,14 +10,14 @@ class ResPartner(models.Model):
     )
     l10n_pe_edi_mtc_number = fields.Char(
         string="MTC Registration Number",
-        help="The company's MTC registration number, for generating the Delivery Guide."
+        help="Peru: Ministry of Transport and Communication Registration Number."
     )
     l10n_pe_edi_authorization_issuing_entity = fields.Selection(
         selection=ISSUING_ENTITY,
         string="Authorization Issuing Entity",
-        help="The issuing entity of the company's special authorization number, for generating the Delivery Guide."
+        help="Peru: Entity issuing the special authorization for the transportation of the goods."
     )
     l10n_pe_edi_authorization_number = fields.Char(
         string="Authorization Number",
-        help="The company's special authorization number, for generating the Delivery Guide.",
+        help="Peru: Authorization number for the transportation of the goods.",
     )

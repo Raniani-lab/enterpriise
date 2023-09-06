@@ -37,10 +37,11 @@ class ResPartner(models.Model):
             ('03', 'Temporary'),
         ],
         string='External Trade',
-        help="Indicates whether the partner is foreign and if a External Trade complement is required"
-             "Not Set: No Complement"
-             "02 - Definitive: Adds the External Trade complement to CFDI"
-             "03 - Temporal: Used when exporting goods for a temporary period")
+        help="Mexico: Indicates whether the partner is foreign and if an External Trade complement is required."
+             "01 - Not Set: No Complement."
+             "02 - Definitive: Adds the External Trade complement to CFDI."
+             "03 - Temporal: Used when exporting goods for a temporary period.",
+    )
 
     @api.depends('l10n_mx_edi_locality_id')
     def _compute_l10n_mx_edi_locality(self):

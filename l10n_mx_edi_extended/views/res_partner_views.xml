@@ -78,7 +78,7 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="account.view_partner_property_form"/>
             <field name="arch" type="xml">
-                <group name="sale" position="inside">
+                <group name="fiscal_information" position="inside">
                     <field name="l10n_mx_edi_external_trade" invisible="'MX' not in fiscal_country_codes"/>
                 </group>
                 <xpath expr="//field[@name='vat']" position="after">

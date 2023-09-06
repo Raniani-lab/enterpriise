@@ -68,7 +68,7 @@ MX_PACKAGING_CATALOG = [
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    l10n_mx_edi_hazardous_material_code = fields.Char(string="Hazardous Material Designation Code (MX)")
+    l10n_mx_edi_hazardous_material_code = fields.Char(string="Hazardous Material Designation Code")
     l10n_mx_edi_hazard_package_type = fields.Selection(
         selection=MX_PACKAGING_CATALOG,
-        string="Hazardous Packaging (MX)")
+        string="Hazardous Packaging")

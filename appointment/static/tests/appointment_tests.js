@@ -308,7 +308,7 @@ QUnit.test('discard slot in calendar', async function (assert) {
     assert.containsNone(target, '.o_calendar_slot');
 
     // Same behavior as previous next button
-    await click(target.querySelector('.ui-datepicker-calendar > tbody > tr:nth-child(2) > td:nth-child(6) > a'));
+    await click(target.querySelector('.o_datetime_picker .o_date_item_cell:nth-of-type(13)'));
     await nextTick();
     assert.containsOnce(target, '.fc-event', 'There is one calendar event');
     assert.containsNone(target, '.o_calendar_slot', 'There is no slot yet');
@@ -418,7 +418,7 @@ QUnit.test("create slots for custom appointment type", async function (assert) {
     assert.containsNone(target, '.o_calendar_slot');
 
     // Same behavior as previous next button
-    await click(target.querySelector('.ui-datepicker-calendar > tbody > tr:nth-child(2) > td:nth-child(6) > a'));
+    await click(target.querySelector('.o_datetime_picker .o_date_item_cell:nth-of-type(13)'));
     assert.containsOnce(target, '.fc-event', 'There is one calendar event');
     assert.containsNone(target, '.o_calendar_slot', 'There is no slot yet');
 
@@ -473,7 +473,7 @@ QUnit.test('filter works in slots-creation mode', async function (assert) {
         "The calendar is now in a mode to create custom appointment time slots");
 
     // Same behavior as previous next button
-    await click(target.querySelector('.ui-datepicker-calendar > tbody > tr:nth-child(2) > td:nth-child(6) > a'));
+    await click(target.querySelector('.o_datetime_picker .o_date_item_cell:nth-of-type(13)'));
     assert.containsOnce(target, '.fc-event');
     assert.containsNone(target, '.o_calendar_slot');
 

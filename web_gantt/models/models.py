@@ -6,6 +6,7 @@ from lxml.builder import E
 
 from odoo import _, api, models
 from odoo.exceptions import UserError
+from odoo.tools.misc import OrderedSet, unique
 
 
 class Base(models.AbstractModel):
@@ -45,6 +46,59 @@ class Base(models.AbstractModel):
         view.set('date_stop', self._stop_name)
 
         return view
+
+    @api.model
+    def get_gantt_data(
+        self, domain, groupby, read_specification, limit=None, offset=0,
+    ):
+        """
+        Returns the result of a read_group (and optionally search for and read records inside each
+        group), and the total number of groups matching the search domain.
+
+        :param domain: search domain
+        :param groupby: list of field to group on (see ``groupby``` param of ``read_group``)
+        :param read_specification: web_read specification to read records within the groups
+        :param limit: see ``limit`` param of ``read_group``
+        :param offset: see ``offset`` param of ``read_group``
+        :return: {
+            'groups': [
+                {
+                    '<groupby_1>': <value_groupby_1>,
+                    ...,
+                    '__record_ids': [<ids>]
+                }
+            ],
+            'records': [<record data>]
+            'length': total number of groups
+        }
+        """
+        # TODO: group_expand doesn't currently respect the limit/offset
+        lazy = not limit and not offset and len(groupby) == 1
+        # Because there is no limit by group, we can fetch record_ids as aggregate
+        final_result = self.web_read_group(
+            domain, ['__record_ids:array_agg(id)'], groupby,
+            limit=limit, offset=offset, lazy=lazy,
+        )
+
+        all_record_ids = tuple(unique(
+            record_id
+            for one_group in final_result['groups']
+            for record_id in one_group['__record_ids']
+        ))
+        # Do search_fetch to order records (model order can be no-trivial)
+        all_records = self.search_fetch([('id', 'in', all_record_ids)], read_specification.keys())
+        final_result['records'] = all_records.web_read(read_specification)
+
+        ordered_set_ids = OrderedSet(all_records._ids)
+        for group in final_result['groups']:
+            # Reorder __record_ids
+            group['__record_ids'] = list(ordered_set_ids & OrderedSet(group['__record_ids']))
+            # We don't need these in the gantt view
+            del group['__domain']
+            del group[f'{groupby[0]}_count' if lazy else '__count']
+            group.pop('__fold', None)
+
+        return final_result
 
     @api.model
     def web_gantt_reschedule(

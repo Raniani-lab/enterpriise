@@ -16,6 +16,7 @@ def _get_init_messaging_result(self):
         'should_auto_reject_incoming_calls': False,
         'voip_secret': False,
         'voip_username': False,
+        'is_discuss_sidebar_category_whatsapp_open': True,
     })
     res['voipConfig'] = {
         'mode': 'demo',

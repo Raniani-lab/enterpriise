@@ -51,7 +51,7 @@
                         <h1>
                             <field name="employee_id"
                                 domain="[('id', 'in', employee_autocomplete_ids)]"
-                                readonly="state != 'new' or not is_manager"
+                                readonly="state != 'new'"
                                 placeholder="e.g. John Doe"
                                 options="{'relation': 'hr.employee.public'}"
                                 widget="many2one_avatar_employee"/>
@@ -89,7 +89,8 @@
                                         <h3>Employee's Feedback</h3>
                                         <div class="h-100" invisible="state == 'done'">
                                             <span class="text-end" invisible="employee_feedback_published">Not Visible to Manager</span>
-                                            <span class="text-end" invisible="not employee_feedback_published">Visible &amp; Editable by Manager</span>
+                                            <span class="text-end" invisible="not employee_feedback_published or state == 'new'">Visible to Manager</span>
+                                            <span class="text-end" invisible="not employee_feedback_published or state != 'new'">Visible &amp; Editable by Manager</span>
                                             <field name="employee_feedback_published" nolabel="1" widget="boolean_toggle_confirm"
                                                 invisible="state == 'new' and employee_user_id == uid" class="ms-2 me-0"/>
                                         </div>

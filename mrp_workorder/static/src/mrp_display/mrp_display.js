@@ -12,7 +12,7 @@ import { makeActiveField } from "@web/model/relational_model/utils";
 import { MrpDisplayEmployeesPanel } from "@mrp_workorder/mrp_display/employees_panel";
 import { SelectionPopup } from "@mrp_workorder/components/popup";
 import { PinPopup } from "@mrp_workorder/components/pin_popup";
-import { useConnectedEmployee } from "@mrp_workorder/views/hooks/employee_hooks";
+import { useConnectedEmployee } from "@mrp_workorder/mrp_display/hooks/employee_hooks";
 import { SearchBar } from "@web/search/search_bar/search_bar";
 import { Component, onWillDestroy, onWillStart, useState, useSubEnv } from "@odoo/owl";
 
@@ -85,7 +85,7 @@ export class MrpDisplay extends Component {
         });
 
         this.showEmployeesPanel = true;
-        this.useEmployee = useConnectedEmployee("mrp_display", this.props.context);
+        this.useEmployee = useConnectedEmployee("mrp_display", this.props.context, this.env);
         this.barcode = useService("barcode");
         useBus(this.barcode.bus, "barcode_scanned", (event) =>
             this._onBarcodeScanned(event.detail.barcode)

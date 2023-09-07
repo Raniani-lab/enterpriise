@@ -37,7 +37,7 @@ class HrEmployee(models.Model):
         # to the connected employees are not persisted in the session. To hack around this we always set the owner
         # to the user that is logging out, and we change it back after (or to False if the admin logs out).
         employees = request.session.get(EMPLOYEES_CONNECTED, [])
-        owner = request.session.get(SESSION_OWNER, [])
+        owner = request.session.get(SESSION_OWNER, False)
         if (self.pin_validation(pin) or unchecked) and self.id in employees:
             request.session[SESSION_OWNER] = self.id
             employees.remove(self.id)
@@ -47,6 +47,11 @@ class HrEmployee(models.Model):
             request.session[SESSION_OWNER] = owner
             return True
         return False
+
+    def remove_session_owner(self):
+        self.ensure_one()
+        if self.id == request.session.get(SESSION_OWNER):
+            request.session[SESSION_OWNER] = False
 
     def _get_employee_fields_for_tablet(self):
         return [

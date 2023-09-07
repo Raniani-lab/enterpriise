@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-        <record id="show_sign_order" model="res.groups">
-            <field name="name">Enable Signing Order</field>
-            <field name="category_id" ref="base.module_category_hidden"/>
-        </record>
-
         <record id="manage_template_access" model="res.groups">
             <field name="name">Manage template access</field>
             <field name="category_id" ref="base.module_category_hidden"/>

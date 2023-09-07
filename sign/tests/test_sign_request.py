@@ -453,7 +453,6 @@ class TestSignRequest(SignRequestCommon):
         self.assertEqual([record['mail_sent_order'] for record in wizard.signer_ids._records], [1, 1, 1])
 
     def test_sign_send_request_order_with_order(self):
-        show_sign_order_user = new_test_user(self.env, login="user_show_sign_order", groups='sign.group_sign_manager,sign.show_sign_order')
-        wizard = Form(self.env['sign.send.request'].with_user(show_sign_order_user).with_context(active_id=self.template_3_roles.id, sign_directly_without_mail=False))
+        wizard = Form(self.env['sign.send.request'].with_context(active_id=self.template_3_roles.id, sign_directly_without_mail=False))
         wizard.set_sign_order = True
         self.assertEqual([record['mail_sent_order'] for record in wizard.signer_ids._records], [1, 2, 3])

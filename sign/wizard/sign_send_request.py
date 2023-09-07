@@ -47,7 +47,11 @@ class SignSendRequest(models.TransientModel):
         default=lambda self: self.env.context.get('active_id', None),
     )
     signer_ids = fields.One2many('sign.send.request.signer', 'sign_send_request_id', string="Signers")
-    set_sign_order = fields.Boolean(string="Specify Signing Order", help="Signatures will be requested from lowest order to highest order.")
+    set_sign_order = fields.Boolean(string="Specify Signing Order",
+                                    help="""Specify the order for each signer. The signature request only gets sent to \
+                                    the next signers in the sequence when all signers from the previous level have \
+                                    signed the document.
+                                    """)
     signer_id = fields.Many2one('res.partner', string="Send To")
     signers_count = fields.Integer()
     cc_partner_ids = fields.Many2many('res.partner', string="Copy to", help="Contacts in copy will be notified by email once the document is either fully signed or refused.")

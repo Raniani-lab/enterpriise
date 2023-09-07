@@ -39,10 +39,7 @@
                             <field name="module_sign_itsme"/>
                             <widget name="iap_buy_more_credits" service_name="itsme_proxy" hide_service="1"/>
                         </setting>
-                        <setting help="Allow users to define a signing order, where recipients are only notified when it is their turn to sign." id="enable_sign_order">
-                            <field name="group_show_sign_order"/>
-                        </setting>
-                        <setting help="Allow users to define the users or groups which have access to the template." id="enable_sign_order">
+                        <setting help="Allow users to define the users or groups which have access to the template." id="manage_template_access">
                             <field name="group_manage_template_access"/>
                         </setting>
                         <setting id="sms" string="Authenticate by SMS" documentation="/applications/marketing/sms_marketing/pricing/pricing_and_faq.html" help="Deliver one-time codes by SMS to identify signatories when signing a document.">

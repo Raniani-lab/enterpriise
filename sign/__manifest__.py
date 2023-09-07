@@ -79,6 +79,7 @@ Let your customers follow the signature process easily.
             'sign/static/src/views/**/*',
             'sign/static/src/dialogs/**/*',
             'sign/static/src/services/**/*',
+            'sign/static/src/fields/**/*',
         ],
         'web.assets_frontend': [
             'sign/static/src/components/**/*',

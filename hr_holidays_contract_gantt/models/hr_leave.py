@@ -20,7 +20,7 @@ class HrLeave(models.Model):
         employee_ids = tag_employee_rows(rows)
         employees = self.env['hr.employee'].browse(employee_ids)
 
-        employee_contracts = self.env['hr.contract'].search([
+        employee_contracts = self.env['hr.contract'].sudo().search([
             ('state', '!=', 'cancel'),
             ('employee_id', 'in', employees.ids),
             ('date_start', '<=', end_date),

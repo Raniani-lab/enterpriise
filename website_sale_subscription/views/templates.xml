@@ -39,9 +39,7 @@
     <template id="cart_summary_inherit_website_sale_subscription" inherit_id="website_sale.cart_summary">
         <xpath expr="//td[hasclass('td-price')]" position="inside">
             <div t-if="line.temporal_type == 'subscription'">
-                <span>per</span>
-                <span t-if="line.order_id.recurrence_id.duration > 1" t-esc="line.order_id.recurrence_id.duration"/>
-                <span t-esc="line.order_id.recurrence_id.unit"/>
+                <span t-esc="line.order_id.recurrence_id.temporal_unit_display"/>
             </div>
         </xpath>
     </template>

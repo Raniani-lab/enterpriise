@@ -1,10 +1,10 @@
 /** @odoo-module **/
 
 import { _t } from "@web/core/l10n/translation";
-import { Markup } from "@web/legacy/js/core/utils";
 import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
-const { markup } = owl;
+
+import { markup } from "@odoo/owl";
 
 registry.category("web_tour.tours").add('social_tour', {
         url: "/web",
@@ -14,17 +14,17 @@ registry.category("web_tour.tours").add('social_tour', {
         stepUtils.showAppsMenuItem(),
         {
             trigger: '.o_app[data-menu-xmlid="social.menu_social_global"]',
-            content: Markup(_t("Let's create your own <b>social media</b> dashboard.")),
+            content: markup(_t("Let's create your own <b>social media</b> dashboard.")),
             position: 'bottom',
             edition: 'enterprise',
         }, {
             trigger: 'button.o_stream_post_kanban_new_stream',
-            content: Markup(_t("Let's <b>connect</b> to Facebook, LinkedIn or Twitter.")),
+            content: markup(_t("Let's <b>connect</b> to Facebook, LinkedIn or Twitter.")),
             position: 'bottom',
             edition: 'enterprise',
         }, {
             trigger: '.o_social_media_cards',
-            content: Markup(_t("Choose which <b>account</b> you would like to link first.")),
+            content: markup(_t("Choose which <b>account</b> you would like to link first.")),
             position: 'right',
             edition: 'enterprise',
         }, {

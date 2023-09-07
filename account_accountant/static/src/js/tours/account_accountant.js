@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
     import { _t } from "@web/core/l10n/translation";
-    import { Markup } from "@web/legacy/js/core/utils";
     import { registry } from "@web/core/registry";
     import { stepUtils } from "@web_tour/tour_service/tour_utils";
     import { patch } from "@web/core/utils/patch";
@@ -45,7 +44,7 @@
             // While not ideal, it is ok, since that means the user obviously knows how to create a vendor bill...
             {
                 trigger: 'button.btn-primary[name="action_create_vendor_bill"]',
-                content: Markup(_t('Create your first vendor bill.<br/><br/><i>Tip: If you don’t have one on hand, use our sample bill.</i>')),
+                content: markup(_t('Create your first vendor bill.<br/><br/><i>Tip: If you don’t have one on hand, use our sample bill.</i>')),
                 position: 'bottom',
             }, {
                 trigger: 'button[name="apply"]',
@@ -95,7 +94,7 @@
         steps: () => [
             {
                 trigger: 'button.btn-primary[name="check_status"]',
-                content: Markup(_t('Let’s use AI to fill in the form<br/><br/><i>Tip: If the OCR is not done yet, wait a few more seconds and try again.</i>')),
+                content: markup(_t('Let’s use AI to fill in the form<br/><br/><i>Tip: If the OCR is not done yet, wait a few more seconds and try again.</i>')),
                 position: 'bottom',
             }
         ]

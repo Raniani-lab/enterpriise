@@ -5,8 +5,9 @@
 import { registry } from "@web/core/registry";
 import '@industry_fsm/js/tours/industry_fsm_tour';
 import { _t } from "@web/core/l10n/translation";
-import { Markup } from "@web/legacy/js/core/utils";
 import { patch } from "@web/core/utils/patch";
+
+import { markup } from "@odoo/owl";
 
 patch(registry.category("web_tour.tours").get("industry_fsm_tour"), {
     steps() {
@@ -23,11 +24,11 @@ patch(registry.category("web_tour.tours").get("industry_fsm_tour"), {
             position: 'right',
         }, {
             trigger: '.o_field_text textarea',
-            content: Markup(_t('Choose a <b>name</b> for your product <i>(e.g. Bolts, Screws, Boiler, etc.).</i>')),
+            content: markup(_t('Choose a <b>name</b> for your product <i>(e.g. Bolts, Screws, Boiler, etc.).</i>')),
             position: 'right',
         }, {
             trigger: ".breadcrumb-item.o_back_button",
-            content: Markup(_t("Use the breadcrumbs to navigate to your <b>list of products</b>.")),
+            content: markup(_t("Use the breadcrumbs to navigate to your <b>list of products</b>.")),
             position: "bottom",
         }, {
             trigger: "button[name='fsm_add_quantity']",
@@ -38,7 +39,7 @@ patch(registry.category("web_tour.tours").get("industry_fsm_tour"), {
         }, {
             trigger: ".breadcrumb-item.o_back_button",
             extra_trigger: '.o_fsm_product_kanban_view',
-            content: Markup(_t("Use the breadcrumbs to return to your <b>task</b>.")),
+            content: markup(_t("Use the breadcrumbs to return to your <b>task</b>.")),
             position: "bottom"
         });
         const fsmCreateInvoiceStepIndex = originalSteps.findIndex((step) => step.id === "fsm_invoice_create");

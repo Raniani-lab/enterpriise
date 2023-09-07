@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component } from '@odoo/owl';
+import { Component, markup } from '@odoo/owl';
 import { renderToElement } from "@web/core/utils/render";
 import { Wysiwyg } from '@web_editor/js/wysiwyg/wysiwyg';
 import { PromptEmbeddedViewNameDialog } from '@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog';
@@ -9,7 +9,6 @@ import {
     setCursorEnd,
 } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
 import { ArticleSelectionBehaviorDialog } from '@knowledge/components/behaviors/article_behavior_dialog/article_behavior_dialog';
-import { Markup } from "@web/legacy/js/core/utils";
 import {
     encodeDataBehaviorProps,
 } from "@knowledge/js/knowledge_utils";
@@ -356,7 +355,7 @@ patch(Wysiwyg.prototype, {
             const fileBlock = renderToElement('knowledge.WysiwygFileBehavior', {
                 behaviorType: "o_knowledge_behavior_type_file",
                 fileName: element.title,
-                fileImage: Markup(element.outerHTML),
+                fileImage: markup(element.outerHTML),
                 behaviorProps: encodeDataBehaviorProps({
                     fileName: element.title,
                     fileExtension: extension,

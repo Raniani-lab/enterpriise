@@ -1,16 +1,17 @@
 /** @odoo-module **/
 
 import { _t } from "@web/core/l10n/translation";
-import { Markup } from "@web/legacy/js/core/utils";
 import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
+
+import { markup } from "@odoo/owl";
 
 registry.category("web_tour.tours").add('rental_tour', {
     url: "/web",
     sequence: 240,
     steps: () => [stepUtils.showAppsMenuItem(), {
     trigger: '.o_app[data-menu-xmlid="sale_renting.rental_menu_root"]',
-    content: Markup(_t("Want to <b>rent products</b>? \n Let's discover Odoo Rental App.")),
+    content: markup(_t("Want to <b>rent products</b>? \n Let's discover Odoo Rental App.")),
     position: 'bottom',
     edition: 'enterprise'
 }, {

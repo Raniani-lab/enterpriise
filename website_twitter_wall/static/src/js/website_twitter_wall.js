@@ -1,9 +1,10 @@
 /** @odoo-module **/
 
 import { renderToElement } from "@web/core/utils/render";
-import { Markup } from "@web/legacy/js/core/utils";
 import Widget from "@web/legacy/js/core/widget";
 import publicWidget from "@web/legacy/js/public/public_widget";
+
+import { markup } from "@odoo/owl";
 
 var TweetWall = Widget.extend({
     template: 'website_twitter_wall_tweets',
@@ -117,7 +118,7 @@ var TweetWall = Widget.extend({
             self.pool_cache[tweet.id].round = leastRound + 1;
             $(renderToElement('website_twitter_wall_tweets', {
                 tweet_id: tweet.id,
-                tweet: Markup(tweet.tweet_html),
+                tweet: markup(tweet.tweet_html),
             })).prependTo(self.prependTweetsTo);
             var nextPrepend = self.prependTweetsTo.next('.o-tw-walls-col');
             self.prependTweetsTo = nextPrepend.length ? nextPrepend.first() : $('.o-tw-walls-col').first();

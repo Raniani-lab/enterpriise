@@ -5,9 +5,7 @@
     import { _t } from "@web/core/l10n/translation";
     import Class from "@web/legacy/js/core/class";
     import devices from "point_of_sale.devices";
-    import { range } from "@web/core/utils/numbers";
-    import utils from "@web/legacy/js/core/utils";
-    const round_pr = utils.round_precision;
+    import { range, roundPrecision } from "@web/core/utils/numbers";
 
     var orderline_super = models.Orderline.prototype;
     models.Orderline = models.Orderline.extend({
@@ -457,7 +455,7 @@
                     Object.entries(price_per_tax_letter).forEach((tax) => {
                         tax[1] = tax[1] / 100; // was in eurocents
                         if (tax[1] > 0.00001) {
-                            var percentage_of_this_tax_in_total = round_pr(tax[1] / order_total, 0.01);
+                            var percentage_of_this_tax_in_total = roundPrecision(tax[1] / order_total, 0.01);
 
                             // add correct tax on product
                             var new_line_tax = self.taxes.find((pos_tax) => {
@@ -723,11 +721,11 @@
                 return line.get_price_without_tax() > 0;
             });
 
-            var total_without_tax = round_pr(positive_orderlines.reduce((function(sum, orderLine) {
+            var total_without_tax = roundPrecision(positive_orderlines.reduce((function(sum, orderLine) {
                 return sum + orderLine.get_price_without_tax();
             }), 0), this.pos.currency.rounding);
 
-            var total_tax = round_pr(positive_orderlines.reduce((function(sum, orderLine) {
+            var total_tax = roundPrecision(positive_orderlines.reduce((function(sum, orderLine) {
                 return sum + orderLine.get_tax();
             }), 0), this.pos.currency.rounding);
 
@@ -1044,7 +1042,7 @@
         // euro => '050') and encoded as a string
         _amount_to_fdm_amount_string: function (amount) {
             amount *= 100; // to eurocent
-            amount = round_pr(amount, 0.01); // make sure it's properly rounded (to avoid eg. x.9999999999999999999)
+            amount = roundPrecision(amount, 0.01); // make sure it's properly rounded (to avoid eg. x.9999999999999999999)
             amount = amount.toString();
 
             while (amount.length < 3) {

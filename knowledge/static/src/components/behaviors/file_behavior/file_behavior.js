@@ -5,7 +5,7 @@ import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behav
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { AttachToMessageMacro, UseAsAttachmentMacro } from "@knowledge/macros/file_macros";
 import { useService } from "@web/core/utils/hooks";
-import utils from "@web/legacy/js/core/utils";
+import { getDataURLFromFile } from "@web/core/utils/urls";
 import {
     encodeDataBehaviorProps,
 } from "@knowledge/js/knowledge_utils";
@@ -132,7 +132,7 @@ export class FileBehavior extends AbstractBehavior {
         try {
             const response = await window.fetch(href);
             const blob = await response.blob();
-            const dataURL = await utils.getDataURLFromFile(blob);
+            const dataURL = await getDataURLFromFile(blob);
             attachment = await this.rpcService('/web_editor/attachment/add_data', {
                 name: fileLink.getAttribute('title'),
                 data: dataURL.split(',')[1],

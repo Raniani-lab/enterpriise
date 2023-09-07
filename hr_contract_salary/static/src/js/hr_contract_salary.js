@@ -2,10 +2,10 @@
 
 import { KeepLast } from "@web/core/utils/concurrency";
 import publicWidget from "@web/legacy/js/public/public_widget";
-import utils from "@web/legacy/js/core/utils";
 import { debounce } from "@web/core/utils/timing";
 import { _t } from "@web/core/l10n/translation";
 import { renderToElement } from "@web/core/utils/render";
+import { getDataURLFromFile } from "@web/core/utils/urls";
 
 publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     selector: '#hr_cs_form',
@@ -125,7 +125,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         const file = $("input[name='" + documentName + "']");
         return new Promise(async resolve => {
             if (file[0].files[0]) {
-                const testString = await utils.getDataURLFromFile(file[0].files[0]);
+                const testString = await getDataURLFromFile(file[0].files[0]);
                 const regex = new RegExp(",(.{0,})", "g");
                 const img_src = regex.exec(testString)[1];
                 resolve(img_src);
@@ -447,7 +447,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
 
     async onchangeDocument(input) {
         if (input.target.files) {
-            const testString = await utils.getDataURLFromFile(input.target.files[0]);
+            const testString = await getDataURLFromFile(input.target.files[0]);
             const regex = new RegExp(",(.{0,})", "g");
             const img_src = regex.exec(testString)[1];
             if (img_src.startsWith('JVBERi0')) {

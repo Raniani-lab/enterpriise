@@ -3,7 +3,7 @@
 import { _t } from "@web/core/l10n/translation";
 import { Component, onWillStart, useState } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog";
-import { groupBy } from "@web/legacy/js/core/utils";
+import { groupBy } from "@web/core/utils/arrays";
 import { HtmlField } from "@web_editor/js/backend/html_field";
 import { Record } from "@web/views/record";
 import { useService } from "@web/core/utils/hooks";

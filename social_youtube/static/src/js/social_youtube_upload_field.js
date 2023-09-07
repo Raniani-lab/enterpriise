@@ -3,16 +3,14 @@
 import { registry } from "@web/core/registry";
 import { CharField, charField } from '@web/views/fields/char/char_field';
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import {
-    useService,
-} from "@web/core/utils/hooks";
+import { useService } from "@web/core/utils/hooks";
+import { humanSize } from "@web/core/utils/binary";
 
 const {
     useRef,
     useState,
 } = owl;
 import { _t } from "@web/core/l10n/translation";
-import utils from '@web/legacy/js/core/utils';
 
 /**
  * Override of the FieldChar that will handle the YouTube video upload process.
@@ -295,7 +293,7 @@ export class YoutubeUploadField extends CharField {
         if (file.size > this.maxUploadSize) {
             const message = _t(
                 "The selected video exceeds the maximum allowed size of %s.",
-                utils.human_size(this.maxUploadSize)
+                humanSize(this.maxUploadSize)
             );
             this.notification.add(message, {
                 title: _t("Video Upload"),

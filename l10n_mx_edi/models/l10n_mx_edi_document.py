@@ -39,6 +39,7 @@ class L10nMxEdiDocument(models.Model):
             ('invoice_sent_failed', "Send In Error"),
             ('invoice_cancel', "Cancel"),
             ('invoice_cancel_failed', "Cancel In Error"),
+            ('invoice_received', "Received"),
             ('payment_sent_pue', "PUE Payment"),
             ('payment_sent', "Payment Sent"),
             ('payment_sent_failed', "Payment Send In Error"),
@@ -840,6 +841,11 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 ('move_id.l10n_mx_edi_cfdi_state', '=', 'cancel'),
                 ('state', 'in', ('invoice_cancel', 'payment_cancel')),
                 ('sat_state', 'not in', ('cancelled', 'skip')),
+            ],
+            # always show the 'Update SAT' button for imports, since originator may cancel the invoice anytime
+            [
+                ('state', '=', 'invoice_received'),
+                ('move_id.state', '=', 'posted'),
             ],
         ]
 

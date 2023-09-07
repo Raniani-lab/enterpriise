@@ -96,7 +96,7 @@ class TestCFDIInvoice(TestMxEdiCommon):
             'amount_type': 'percent',
             'amount': 16,
             'type_tax_use': 'sale',
-            'l10n_mx_tax_type': 'Tasa',
+            'l10n_mx_factor_type': 'Tasa',
             'price_include': True,
             'include_base_amount': True,
             'invoice_repartition_line_ids': [
@@ -349,3 +349,85 @@ class TestCFDIInvoice(TestMxEdiCommon):
         with self.with_mocked_pac_sign_success():
             invoice._l10n_mx_edi_cfdi_invoice_try_send()
         self._assert_invoice_cfdi(invoice, 'test_invoice_company_branch')
+
+    @freeze_time('2017-01-01')
+    def test_import_invoice_cfdi(self):
+        # Invoice with payment policy = PUE, otherwise 'FormaPago' (payment method) is set to '99' ('Por Definir')
+        # and the initial payment method cannot be backtracked at import
+        invoice = self._create_invoice(
+            invoice_date_due='2017-01-01',  # PUE
+            invoice_line_ids=[
+                Command.create({
+                    'product_id': self.product.id,
+                    'price_unit': 500.0,
+                    'tax_ids': [Command.set(self.tax_16.ids)],
+                }),
+            ],
+        )
+        # Modify the vat, otherwise there are 2 partners with the same vat
+        invoice.partner_id.vat = "XIA190128J62"
+
+        with self.with_mocked_pac_sign_success():
+            invoice._l10n_mx_edi_cfdi_invoice_try_send()
+
+        new_invoice = self._upload_document_on_journal(
+            journal=self.company_data['default_journal_sale'],
+            content=invoice.l10n_mx_edi_document_ids.attachment_id.raw.decode(),
+            filename=invoice.l10n_mx_edi_document_ids.attachment_id.name,
+        )
+
+        # Check the newly created invoice
+        expected_vals, expected_line_vals = self._export_move_vals(invoice)
+        self.assertRecordValues(new_invoice, [expected_vals])
+        self.assertRecordValues(new_invoice.invoice_line_ids, expected_line_vals)
+
+        # the state of the document should be "Sent"
+        self.assertEqual(new_invoice.l10n_mx_edi_invoice_document_ids.state, "invoice_sent")
+        new_invoice.action_post()
+        # the "Request Cancel" button should appear after posting
+        self.assertTrue(new_invoice.need_cancel_request)
+        # the "Update SAT" button should appear
+        self.assertTrue(new_invoice.l10n_mx_edi_update_sat_needed)
+
+    @freeze_time('2017-01-01')
+    def test_import_bill_cfdi(self):
+        # Invoice with payment policy = PUE, otherwise 'FormaPago' (payment method) is set to '99' ('Por Definir')
+        # and the initial payment method cannot be backtracked at import
+        invoice = self._create_invoice(
+            invoice_date_due='2017-01-01',  # PUE
+            invoice_line_ids=[
+                Command.create({
+                    'product_id': self.product.id,
+                    'price_unit': 500.0,
+                    'tax_ids': [Command.set(self.tax_16.ids)],
+                }),
+            ],
+        )
+
+        with self.with_mocked_pac_sign_success():
+            invoice._l10n_mx_edi_cfdi_invoice_try_send()
+
+        new_bill = self._upload_document_on_journal(
+            journal=self.company_data['default_journal_purchase'],
+            content=invoice.l10n_mx_edi_document_ids.attachment_id.raw.decode(),
+            filename=invoice.l10n_mx_edi_document_ids.attachment_id.name,
+        )
+
+        # Check the newly created bill
+        expected_vals, expected_line_vals = self._export_move_vals(invoice)
+        expected_vals.update({
+            'partner_id': invoice.company_id.partner_id.id,
+            'l10n_mx_edi_payment_policy': False,
+        })
+        self.assertRecordValues(new_bill, [expected_vals])
+        expected_line_vals[0]['tax_ids'] = self.env['account.chart.template'].ref('tax14').ids
+        self.assertRecordValues(new_bill.invoice_line_ids, expected_line_vals)
+
+        # the state of the document should be "Sent"
+        self.assertEqual(new_bill.l10n_mx_edi_invoice_document_ids.state, "invoice_received")
+        # the "Update SAT" button should appear continuously (after posting)
+        new_bill.action_post()
+        self.assertTrue(new_bill.l10n_mx_edi_update_sat_needed)
+        with self.with_mocked_sat_call(lambda _x: 'valid'):
+            new_bill.l10n_mx_edi_cfdi_try_sat()
+        self.assertTrue(new_bill.l10n_mx_edi_update_sat_needed)

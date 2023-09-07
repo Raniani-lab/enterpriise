@@ -64,13 +64,13 @@ class TestMxEdiCommon(AccountTestInvoicingCommon):
         cls.tax_16 = cls.env["account.chart.template"].ref('tax12')
         cls.tax_0 = cls.env["account.chart.template"].ref('tax9')
         cls.tax_0_exento = cls.tax_0.copy()
-        cls.tax_0_exento.l10n_mx_tax_type = 'Exento'
+        cls.tax_0_exento.l10n_mx_factor_type = 'Exento'
         cls.tax_10_negative = cls.env['account.tax'].create({
             'name': 'tax_10_negative',
             'amount_type': 'percent',
             'amount': -10,
             'type_tax_use': 'sale',
-            'l10n_mx_tax_type': 'Tasa',
+            'l10n_mx_factor_type': 'Tasa',
             'invoice_repartition_line_ids': [
                 Command.create({'repartition_type': 'base'}),
                 Command.create({'repartition_type': 'tax', 'tag_ids': [Command.set(cls.tag_iva.ids)]}),
@@ -208,7 +208,7 @@ class TestMxEdiCommon(AccountTestInvoicingCommon):
                     xsi:schemaLocation="http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigitalv11.xsd"
                     Version="1.1"
                     UUID="{uuid}"
-                    FechaTimbrado="___ignore___"
+                    FechaTimbrado="2017-01-01T18:56:50"
                     RfcProvCertif="___ignore___"
                     SelloCFD="___ignore___"/>
             """
@@ -322,6 +322,40 @@ class TestMxEdiCommon(AccountTestInvoicingCommon):
         document = payment.l10n_mx_edi_payment_document_ids.filtered(lambda x: x.state == 'payment_sent')[:1]
         self.assertTrue(document)
         self._assert_document_cfdi(document, filename)
+
+    def _upload_document_on_journal(self, journal, content, filename):
+        attachment = self.env['ir.attachment'].create({
+            'raw': content,
+            'name': filename,
+        })
+        action_vals = journal.create_document_from_attachment(attachment.ids)
+        return self.env['account.move'].browse(action_vals['res_id'])
+
+    def _export_move_vals(self, move):
+        move_vals = {
+            field: move[field].id if move._fields[field].type == 'many2one' else move[field]
+            for field in [
+                'currency_id',
+                'partner_id',
+                'amount_tax',
+                'amount_untaxed',
+                'amount_total',
+                'invoice_date',
+                'l10n_mx_edi_payment_method_id',
+                'l10n_mx_edi_payment_policy',
+                'l10n_mx_edi_usage',
+                'l10n_mx_edi_cfdi_uuid',
+            ]
+        }
+        move_line_vals = [{
+            'quantity': line.quantity,
+            'price_unit': line.price_unit,
+            'discount': line.discount,
+            'product_id': line.product_id.id,
+            'product_uom_id': line.product_uom_id.id,
+            'tax_ids': line.tax_ids.ids,
+        } for line in move.invoice_line_ids]
+        return move_vals, move_line_vals
 
 
 class TestMxEdiCommonExternal(TestMxEdiCommon):

@@ -454,6 +454,20 @@ msgid "Coordinados"
 msgstr ""
 
 #. module: l10n_mx_edi
+#. odoo-python
+#: code:addons/l10n_mx_edi/models/account_move.py:0
+#, python-format
+msgid "Could not retrieve the %s tax with rate %s%%."
+msgstr ""
+
+#. module: l10n_mx_edi
+#. odoo-python
+#: code:addons/l10n_mx_edi/models/account_move.py:0
+#, python-format
+msgid "Could not retrieve the tax with rate %s%%."
+msgstr ""
+
+#. module: l10n_mx_edi
 #: model:ir.model,name:l10n_mx_edi.model_res_country
 msgid "Country"
 msgstr ""
@@ -665,6 +679,13 @@ msgstr ""
 #. module: l10n_mx_edi
 #: model:ir.model.fields,help:l10n_mx_edi.field_l10n_mx_edi_payment_method__active
 msgid "If this payment way is not used by the company could be deactivated."
+msgstr ""
+
+#. module: l10n_mx_edi
+#. odoo-python
+#: code:addons/l10n_mx_edi/models/account_move.py:0
+#, python-format
+msgid "Importing a CFDI Payment is not supported."
 msgstr ""
 
 #. module: l10n_mx_edi

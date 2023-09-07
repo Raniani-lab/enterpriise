@@ -458,6 +458,20 @@ msgid "Coordinados"
 msgstr ""
 
 #. module: l10n_mx_edi
+#. odoo-python
+#: code:addons/l10n_mx_edi/models/account_move.py:0
+#, python-format
+msgid "Could not retrieve the %s tax with rate %s%%."
+msgstr "No se ha podido recuperar el impuesto %s con tipo %s%%."
+
+#. module: l10n_mx_edi
+#. odoo-python
+#: code:addons/l10n_mx_edi/models/account_move.py:0
+#, python-format
+msgid "Could not retrieve the tax with rate %s%%."
+msgstr "No se ha podido recuperar el impuesto con tipo %s%%."
+
+#. module: l10n_mx_edi
 #: model:ir.model,name:l10n_mx_edi.model_res_country
 msgid "Country"
 msgstr "País"
@@ -679,6 +693,13 @@ msgstr ""
 msgid "If this payment way is not used by the company could be deactivated."
 msgstr ""
 "Si esta forma de pago no es usada por la compañía puede ser desactivada."
+
+#. module: l10n_mx_edi
+#. odoo-python
+#: code:addons/l10n_mx_edi/models/account_move.py:0
+#, python-format
+msgid "Importing a CFDI Payment is not supported."
+msgstr "No es posible importar un pago CFDI."
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_bank_statement_line__l10n_mx_edi_cfdi_origin

@@ -41,6 +41,8 @@ USAGE_SELECTION = [
     ('S01', "Without fiscal effects"),
 ]
 
+TAX_TYPE_TO_CFDI_CODE = {'isr': '001', 'iva': '002', 'ieps': '003'}
+
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
@@ -77,6 +79,7 @@ class AccountMove(models.Model):
         selection=[
             ('sent', 'Signed'),
             ('cancel', 'Cancelled'),
+            ('received', 'Received'),
         ],
         store=True,
         copy=False,
@@ -435,9 +438,9 @@ class AccountMove(models.Model):
             move.l10n_mx_edi_cfdi_attachment_id = None
             if move.is_invoice():
                 for doc in move.l10n_mx_edi_invoice_document_ids.sorted():
-                    if doc.state == 'invoice_sent':
+                    if doc.state in ('invoice_sent', 'invoice_received'):
                         move.l10n_mx_edi_cfdi_sat_state = doc.sat_state
-                        move.l10n_mx_edi_cfdi_state = 'sent'
+                        move.l10n_mx_edi_cfdi_state = 'sent' if doc.state == 'invoice_sent' else 'received'
                         move.l10n_mx_edi_cfdi_attachment_id = doc.attachment_id
                         break
                     elif doc.state == 'invoice_cancel':
@@ -1055,16 +1058,9 @@ class AccountMove(models.Model):
         def grouping_key_generator(_base_line, tax_values):
             tax_rep = tax_values['tax_repartition_line']
             tax = tax_rep.tax_id
-            tags = tax_rep.tag_ids
-            if len(tags) == 1:
-                tag_name = {'ISR': '001', 'IVA': '002', 'IEPS': '003'}.get(tags[0].name)
-            elif tax.l10n_mx_tax_type == 'Exento':
-                tag_name = '002'
-            else:
-                tag_name = None
             return {
-                'tipo_factor': tax.l10n_mx_tax_type,
-                'impuesto': tag_name,
+                'tipo_factor': tax.l10n_mx_factor_type,
+                'impuesto': TAX_TYPE_TO_CFDI_CODE.get(tax.l10n_mx_tax_type),
                 'tax_amount_field': tax.amount,
             }
 
@@ -2201,3 +2197,150 @@ class AccountMove(models.Model):
             if doc.state == 'payment_sent':
                 self.l10n_mx_edi_cfdi_invoice_try_cancel_payment(doc.invoice_ids)
                 break
+
+    # -------------------------------------------------------------------------
+    # CFDI: IMPORT
+    # -------------------------------------------------------------------------
+
+    def _l10n_mx_edi_import_cfdi_fill_invoice_line(self, tree, line):
+        # Product
+        code = tree.attrib.get('NoIdentificacion')  # default_code if export from Odoo
+        unspsc_code = tree.attrib.get('ClaveProdServ')  # UNSPSC code
+        description = tree.attrib.get('Descripcion')  # label of the invoice line "[{p.default_code}] {p.name}"
+        cleaned_name = re.sub(r"^\[.*\] ", "", description)
+        product = self.env['product.product']._retrieve_product(
+            name=cleaned_name,
+            default_code=code,
+            extra_domain=[('unspsc_code_id.code', '=', unspsc_code)],
+        )
+        if not product:
+            product = self.env['product.product']._retrieve_product(name=cleaned_name, default_code=code)
+        line.product_id = product
+        # Taxes
+        impuesto_to_type = {v: k for k, v in TAX_TYPE_TO_CFDI_CODE.items()}
+        tax_ids = []
+        for tax_el in tree.findall("{*}Impuestos/{*}Traslados/{*}Traslado"):
+            amount = float(tax_el.attrib.get('TasaOCuota'))*100
+            domain = [
+                *self.env['account.journal']._check_company_domain(line.company_id),
+                ('amount', '=', amount),
+                ('type_tax_use', '=', 'sale' if self.journal_id.type == 'sale' else 'purchase'),
+                ('amount_type', '=', 'percent'),
+                ('company_id', '=', self.company_id.id),
+            ]
+            tax_type = impuesto_to_type.get(tax_el.attrib.get('Impuesto'))
+            if tax_type:
+                domain.append(('l10n_mx_tax_type', '=', tax_type))
+            tax = self.env['account.tax'].search(domain, limit=1)
+            if tax:
+                tax_ids.append(tax.id)
+            elif tax_type:
+                line.move_id.message_post(body=_("Could not retrieve the %s tax with rate %s%%.") % (tax_type, amount))
+            else:
+                line.move_id.message_post(body=_("Could not retrieve the tax with rate %s%%.") % amount)
+        # Discount
+        discount_percent = 0
+        discount_amount = float(tree.attrib.get('Descuento') or 0)
+        gross_price_subtotal_before_discount = float(tree.attrib.get('Importe'))
+        if not self.currency_id.is_zero(discount_amount):
+            discount_percent = (discount_amount/gross_price_subtotal_before_discount)*100
+
+        line.write({
+            'quantity': float(tree.attrib.get('Cantidad')),
+            'price_unit': float(tree.attrib.get('ValorUnitario')),
+            'discount': discount_percent,
+            'tax_ids': [Command.set(tax_ids)],
+        })
+        return True
+
+    def _l10n_mx_edi_import_cfdi_fill_partner(self, tree):
+        role = "Receptor" if self.journal_id.type == 'sale' else "Emisor"
+        partner_node = tree.find("{*}" + role)
+        rfc = partner_node.attrib.get('Rfc')
+        name = partner_node.attrib.get('Nombre')
+        partner = self.partner_id._retrieve_partner(
+            name=name,
+            vat=rfc,
+            company=self.company_id,
+        )
+        # create a partner if it's not found
+        if not partner:
+            partner = self.env['res.partner'].create({
+                'name': name,
+                'vat': rfc if rfc not in ('XAXX010101000', 'XEXX010101000') else False,
+            })
+        return partner
+
+    def _l10n_mx_edi_import_cfdi_fill_invoice(self, tree):
+        # Partner
+        cfdi_vals = self.env['l10n_mx_edi.document']._decode_cfdi_attachment(etree.tostring(tree))
+        partner = self._l10n_mx_edi_import_cfdi_fill_partner(tree)
+        if not partner:
+            return
+        self.partner_id = partner
+        # Payment way
+        forma_pago = tree.attrib.get('FormaPago')
+        self.l10n_mx_edi_payment_method_id = self.env['l10n_mx_edi.payment.method'].search(
+            [('code', '=', forma_pago)], limit=1)
+        # Payment policy
+        self.l10n_mx_edi_payment_policy = tree.attrib.get('MetodoPago')
+        # Usage
+        usage = cfdi_vals['usage']
+        if usage in dict(self._fields['l10n_mx_edi_usage'].selection):
+            self.l10n_mx_edi_usage = usage
+        # Invoice date
+        date = cfdi_vals['stamp_date'] or cfdi_vals['emission_date_str']
+        if date:
+            self.invoice_date = datetime.strptime(date, '%Y-%m-%d %H:%M:%S').date()
+        # Currency
+        currency_name = tree.attrib.get('Moneda')
+        currency = self.env['res.currency'].search([('name', '=', currency_name)], limit=1)
+        if currency:
+            self.currency_id = currency
+        # Fiscal folio
+        self.l10n_mx_edi_cfdi_uuid = cfdi_vals['uuid']
+        # Lines
+        for invl_el in tree.findall("{*}Conceptos/{*}Concepto"):
+            line = self.invoice_line_ids.create({'move_id': self.id, 'company_id': self.company_id.id})
+            self._l10n_mx_edi_import_cfdi_fill_invoice_line(invl_el, line)
+        return True
+
+    def _l10n_mx_edi_import_cfdi_invoice(self, invoice, file_data, new=False):
+        # decode the move_type
+        invoice.ensure_one()
+        tree = file_data['xml_tree']
+        # handle payments
+        if tree.findall('.//{*}Pagos'):
+            invoice.message_post(body=_("Importing a CFDI Payment is not supported."))
+            return
+        move_type = 'refund' if tree.attrib.get('TipoDeComprobante') == 'E' else 'invoice'
+        if invoice.journal_id.type == 'sale':
+            move_type = 'out_' + move_type
+        elif invoice.journal_id.type == 'purchase':
+            move_type = 'in_' + move_type
+        else:
+            return
+        invoice.move_type = move_type
+        # fill the invoice
+        invoice._l10n_mx_edi_import_cfdi_fill_invoice(tree)
+        # create the document
+        attachment = self.env['ir.attachment'].create({
+            'name': file_data['filename'],
+            'raw': file_data['content'],
+            'description': "CFDI",
+        })
+        self.env['l10n_mx_edi.document'].create({
+            'move_id': invoice.id,
+            'invoice_ids': [Command.set(invoice.ids)],
+            'state': 'invoice_sent' if invoice.is_sale_document() else 'invoice_received',
+            'sat_state': 'not_defined',
+            'attachment_id': attachment.id,
+            'datetime': fields.Datetime.now(),
+        })
+        return True
+
+    def _get_edi_decoder(self, file_data, new=False):
+        # EXTENDS 'account'
+        if file_data['type'] == 'xml' and file_data['xml_tree'].prefix == 'cfdi':
+            return self._l10n_mx_edi_import_cfdi_invoice
+        return super()._get_edi_decoder(file_data, new=new)

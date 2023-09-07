@@ -83,6 +83,13 @@ class SocialStreamPostTwitter(models.Model):
                 current.twitter_author_id == account.twitter_user_id for current in potential_retweets
             )
 
+    def _compute_is_author(self):
+        twitter_posts = self._filter_by_media_types(['twitter'])
+        super(SocialStreamPostTwitter, (self - twitter_posts))._compute_is_author()
+
+        for post in twitter_posts:
+            post.is_author = post.twitter_author_id == post.account_id.twitter_user_id
+
     # ========================================================
     # COMMENTS / LIKES
     # ========================================================
@@ -357,6 +364,7 @@ class SocialStreamPostTwitter(models.Model):
         # we can not use fields expansion when creating a tweet,
         # so we fill manually the missing values to not recall the API
         tweet.update({
+            'author_id': self.account_id.twitter_user_id,
             'author': {
                 'id': self.account_id.twitter_user_id,
                 'name': self.account_id.name,

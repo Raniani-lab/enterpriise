@@ -40,6 +40,7 @@
                 <field name="account_id"/>
                 <field name="message"/>
                 <field name="media_type"/>
+                <field name="is_author"/>
                 <field name="link_url"/>
                 <field name="link_image_url"/>
                 <field name="link_title"/>

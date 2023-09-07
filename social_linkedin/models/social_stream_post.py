@@ -49,6 +49,13 @@ class SocialStreamPostLinkedIn(models.Model):
             else:
                 post.post_link = False
 
+    def _compute_is_author(self):
+        linkedin_posts = self._filter_by_media_types(['linkedin'])
+        super(SocialStreamPostLinkedIn, (self - linkedin_posts))._compute_is_author()
+
+        for post in linkedin_posts:
+            post.is_author = post.linkedin_author_urn == post.account_id.linkedin_account_urn
+
     # ========================================================
     # COMMENTS / LIKES
     # ========================================================

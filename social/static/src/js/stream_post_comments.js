@@ -85,6 +85,9 @@ export class StreamPostComments extends SocialPostFormatterMixin(Component) {
         return StreamPostCommentsReply;
     }
 
+    get isAuthor() {
+        return this.originalPost.is_author && this.originalPost.is_author.raw_value;
+    }
 }
 
 StreamPostComments.template = 'social.StreamPostComments';

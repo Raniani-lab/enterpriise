@@ -28,7 +28,11 @@
                             <span class="o_stat_text">Goals</span>
                         </div>
                     </button>
-                    <button class="oe_stat_button" name="action_open_employee_appraisals" icon="fa-star-half-o" type="object" invisible="employee_appraisal_count &lt; 2 or not employee_id">
+                    <button class="oe_stat_button"
+                        name="action_open_employee_appraisals"
+                        groups="hr.group_hr_user"
+                        icon="fa-star-half-o" type="object"
+                        invisible="employee_appraisal_count &lt; 2 or not employee_id">
                         <div class="o_field_widget o_stat_info">
                             <span class="o_stat_value"><field name="employee_appraisal_count"/></span>
                             <span class="o_stat_text">Appraisals</span>

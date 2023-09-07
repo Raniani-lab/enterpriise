@@ -97,23 +97,8 @@ class Sign(http.Controller):
             'readonly': not (current_request_item and current_request_item.state == 'sent' and sign_request.state in ['sent', 'shared']),
             'sign_item_types': sign_item_types,
             'sign_item_select_options': sign_request.template_id.sign_item_ids.mapped('option_ids'),
-            'refusal_allowed': sign_request.refusal_allowed and sign_request.state == 'sent',
             'portal': post.get('portal'),
             'company_id': (sign_request.communication_company_id or sign_request.create_uid.company_id).id,
-        }
-
-    def _get_document_context(self, sign_request_id, token):
-        sign_request_sudo = http.request.env['sign.request'].sudo().browse(sign_request_id).exists()
-        if not sign_request_sudo:
-            return {}
-        current_request_item_sudo = sign_request_sudo.request_item_ids.filtered(lambda r: consteq(r.access_token, token))
-        if not current_request_item_sudo:
-            return {}
-
-        refusal_allowed = current_request_item_sudo and current_request_item_sudo.state == 'sent' and sign_request_sudo.state == 'sent' and sign_request_sudo.refusal_allowed
-        return {
-            'refusal_allowed': refusal_allowed,
-            'sign_request_token': sign_request_sudo.access_token,
         }
 
     # -------------
@@ -278,7 +263,10 @@ class Sign(http.Controller):
         context = self.get_document_qweb_context(request_id, token)
         return {
             'html': request.env['ir.qweb']._render('sign._doc_sign', context),
-            'context': self._get_document_context(request_id, token)
+            'context': {
+                'refusal_allowed': context['current_request_item'] and context['current_request_item'].state == 'sent' and context['sign_request'].state == 'sent',
+                'sign_request_token': context['sign_request'].access_token,
+            }
         }
 
     @http.route(["/sign/update_user_signature"], type="json", auth="user")
@@ -397,7 +385,6 @@ class Sign(http.Controller):
                 ("sign_request_id", "=", sign_request_id),
                 ("access_token", "=", token),
                 ("state", "=", "sent"),
-                ("sign_request_id.refusal_allowed", "=", True),
             ],
             limit=1,
         )

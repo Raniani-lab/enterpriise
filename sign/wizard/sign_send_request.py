@@ -52,7 +52,6 @@ class SignSendRequest(models.TransientModel):
     signers_count = fields.Integer()
     cc_partner_ids = fields.Many2many('res.partner', string="Copy to", help="Contacts in copy will be notified by email once the document is either fully signed or refused.")
     is_user_signer = fields.Boolean(compute='_compute_is_user_signer')
-    refusal_allowed = fields.Boolean(default=False, string="Can be refused", help="Allow the contacts to refuse the document for a specific reason.")
 
     subject = fields.Char(string="Subject", required=True)
     message = fields.Html("Message", help="Message to be sent to signers of the specified document")
@@ -125,7 +124,6 @@ class SignSendRequest(models.TransientModel):
         message = self.message
         message_cc = self.message_cc
         attachment_ids = self.attachment_ids
-        refusal_allowed = self.refusal_allowed
         sign_request = self.env['sign.request'].create({
             'template_id': template_id,
             'request_item_ids': [Command.create({
@@ -138,7 +136,6 @@ class SignSendRequest(models.TransientModel):
             'message': message,
             'message_cc': message_cc,
             'attachment_ids': [Command.set(attachment_ids.ids)],
-            'refusal_allowed': refusal_allowed,
             'validity': self.validity,
             'reminder': self.reminder,
         })

@@ -172,10 +172,6 @@ class TestSignRequest(SignRequestCommon):
         sign_request_item_customer._edit_and_sign(self.customer_sign_values)
 
         # refuse
-        self.assertFalse(sign_request_3_roles.refusal_allowed, 'The default value for refusal_allowed should be False')
-        with self.assertRaises(UserError, msg='Refuse should not be allowed'):
-            sign_request_item_employee._refuse("bad document")
-        sign_request_3_roles.refusal_allowed = True
         with self.assertRaises(UserError, msg='A signed sign.request.item cannot be refused'):
             sign_request_item_customer._refuse("bad document")
         sign_request_item_customer_token = sign_request_item_customer.access_token
@@ -299,7 +295,6 @@ class TestSignRequest(SignRequestCommon):
         self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_1.id)), 1, 'An activity for the new signer should be created')
 
         # refuse
-        sign_request_3_roles.refusal_allowed = True
         sign_request_item_employee._refuse('bad request')
 
         # reassign

@@ -77,7 +77,6 @@ class SignRequest(models.Model):
     share_link = fields.Char(string="Share Link", compute='_compute_share_link')
 
     request_item_ids = fields.One2many('sign.request.item', 'sign_request_id', string="Signers", copy=True)
-    refusal_allowed = fields.Boolean(default=False, string="Can be refused", help="Allow the contacts to refuse the document for a specific reason.")
     state = fields.Selection([
         ("shared", "Shared"),
         ("sent", "Sent"),
@@ -331,7 +330,7 @@ class SignRequest(models.Model):
         :param str refusal_reason: the refusal reason provided by the refuser
         """
         self.ensure_one()
-        if self.state != 'sent' or not self.refusal_allowed:
+        if self.state != 'sent':
             raise UserError(_("This sign request cannot be refused"))
         self._check_senders_validity()
         self.write({'state': 'refused'})

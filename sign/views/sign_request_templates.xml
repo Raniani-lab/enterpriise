@@ -77,11 +77,11 @@
                         </div>
                         <div class="justify-content-end d-flex">
                             <t t-call="sign.signer_status_wrapper"/>
-                            <t t-set="has_actions" t-value="(current_request_item and current_request_item.state == 'sent' and sign_request.refusal_allowed) or sign_request.state == 'signed'"/>
+                            <t t-set="has_actions" t-value="(current_request_item and current_request_item.state == 'sent') or sign_request.state == 'signed'"/>
                             <div class="dropdown" t-if="portal or has_actions">
                                 <a role="button" class="fa fa-bars btn" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu"/>
                                 <div class="dropdown-menu dropdown-menu-end" role="menu">
-                                    <a t-if="sign_request.state == 'sent' and sign_request.refusal_allowed" role="menuitem" href="#" class="dropdown-item o_sign_refuse_document_button">Refuse Document</a>
+                                    <a t-if="sign_request.state == 'sent'" role="menuitem" href="#" class="dropdown-item o_sign_refuse_document_button">Refuse Document</a>
                                     <a t-if="sign_request.state == 'signed'" role="menuitem" t-attf-href="/sign/download/{{sign_request.id}}/{{sign_request.access_token}}/completed" class="dropdown-item">Document <i class="fa fa-download"/></a>
                                     <a t-if="sign_request.state == 'signed'" role="menuitem" t-attf-href="/sign/download/{{sign_request.id}}/{{sign_request.access_token}}/log" class="dropdown-item">Certificate <i class="fa fa-download"/></a>
                                     <div t-if="portal and has_actions" class="dropdown-divider"></div>

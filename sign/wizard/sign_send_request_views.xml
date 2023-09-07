@@ -48,7 +48,6 @@
                             <group string="Signature Options">
                                 <field name="filename" placeholder="Name for the file"  colspan="2"/>
                                 <field name="set_sign_order" invisible="signers_count &lt; 2" groups="sign.show_sign_order"/>
-                                <field name="refusal_allowed"/>
                             </group>
                             <group string="Expiration &amp; Reminders">
                                 <field name="validity"/>

@@ -4,18 +4,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 13.0+e\n"
+"Project-Id-Version: Odoo Server 16.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-08 01:23+0000\n"
-"PO-Revision-Date: 2023-03-07 22:32-0300\n"
-"Last-Translator: Daniel Blanco <daniel@blancomartin.cl>\n"
+"POT-Creation-Date: 2023-09-07 08:41+0000\n"
+"PO-Revision-Date: 2023-09-07 08:41+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
-"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
 
 #. module: l10n_cl_edi
 #: model:mail.template,body_html:l10n_cl_edi.email_template_receipt_ack
@@ -110,17 +108,12 @@ msgid ""
 "\n"
 "            \n"
 "                <header>\n"
-"                <strong>Electronic Invoicing - Reception of Services or "
-"Goods RG 19.983 - <t t-out=\"object.display_name or ''\"></t></strong>\n"
+"                <strong>Electronic Invoicing - Reception of Services or Goods RG 19.983 - <t t-out=\"object.display_name or ''\"></t></strong>\n"
 "                </header>\n"
-"                <p>In the attached file you will find the reception of goods "
-"RG 19.983 for Electronic Tax Document(s).</p>\n"
-"                <p>El acuse de recibo que se declara en este acto, de "
-"acuerdo a lo dispuesto en la letra b)\n"
-"                del Art. 4, y la letra c) del Art. 5 de la Ley 19.983, "
-"acredita que la entrega de\n"
-"                mercaderias o servicio(s) prestado(s) ha(n) sido recibido(s)."
-"</p>\n"
+"                <p>In the attached file you will find the reception of goods RG 19.983 for Electronic Tax Document(s).</p>\n"
+"                <p>El acuse de recibo que se declara en este acto, de acuerdo a lo dispuesto en la letra b)\n"
+"                del Art. 4, y la letra c) del Art. 5 de la Ley 19.983, acredita que la entrega de\n"
+"                mercaderias o servicio(s) prestado(s) ha(n) sido recibido(s).</p>\n"
 "                <br /><br /><br /><br />\n"
 "                <p>Sent Using Odoo</p>\n"
 "            \n"
@@ -129,17 +122,12 @@ msgstr ""
 "\n"
 "            \n"
 "                <header>\n"
-"                <strong>Facturación Electrónica - Recepción de bienes o "
-"servicios RG 19.983 - <t t-out=\"object.display_name or ''\"></t></strong>\n"
+"                <strong>Facturación Electrónica - Recepción de bienes o servicios RG 19.983 - <t t-out=\"object.display_name or ''\"></t></strong>\n"
 "                </header>\n"
-"                <p>En el archivo adjunto encontrará la recepción de bienes o "
-"servicios RG 19.983 para Documentos Tributarios Electrónicos.</p>\n"
-"                <p>El acuse de recibo que se declara en este acto, de "
-"acuerdo a lo dispuesto en la letra b)\n"
-"                del Art. 4, y la letra c) del Art. 5 de la Ley 19.983, "
-"acredita que la entrega de\n"
-"                mercaderias o servicio(s) prestado(s) ha(n) sido recibido(s)."
-"</p>\n"
+"                <p>En el archivo adjunto encontrará la recepción de bienes o servicios RG 19.983 para Documentos Tributarios Electrónicos.</p>\n"
+"                <p>El acuse de recibo que se declara en este acto, de acuerdo a lo dispuesto en la letra b)\n"
+"                del Art. 4, y la letra c) del Art. 5 de la Ley 19.983, acredita que la entrega de\n"
+"                mercaderias o servicio(s) prestado(s) ha(n) sido recibido(s).</p>\n"
 "                <br /><br /><br /><br />\n"
 "                <p>Enviado Usando Odoo</p>\n"
 "            \n"
@@ -182,12 +170,6 @@ msgid "- It was not possible to get a response after %s retries."
 msgstr "- No fue posible obtener una semilla después de %s reintentos."
 
 #. module: l10n_cl_edi
-#: model:ir.actions.server,name:l10n_cl_edi.ir_cron_load_sii_xsd_files_ir_actions_server
-#: model:ir.cron,cron_name:l10n_cl_edi.ir_cron_load_sii_xsd_files
-msgid "0. Cron Job - Load XSD Files (Chilean SII)"
-msgstr "0. Acción Planificada - Obtener archivos XSD (SII Chile)"
-
-#. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.dte_subtemplate
 msgid "01"
 msgstr ""
@@ -215,7 +197,6 @@ msgstr "1. Anula Documento de referencia"
 
 #. module: l10n_cl_edi
 #: model:ir.actions.server,name:l10n_cl_edi.ir_cron_send_send_ir_actions_server
-#: model:ir.cron,cron_name:l10n_cl_edi.ir_cron_send_send
 msgid "1. Cron Job - Send document to SII"
 msgstr "1. Acción Planificada. Trabajo de envío documento al SII"
 
@@ -233,9 +214,10 @@ msgstr "2. Corrige Texto en Documento de Referencia"
 
 #. module: l10n_cl_edi
 #: model:ir.actions.server,name:l10n_cl_edi.ir_cron_sii_request_ir_actions_server
-#: model:ir.cron,cron_name:l10n_cl_edi.ir_cron_sii_request
 msgid "2. Cron Job - General Jobs with SII and electronic invoicing for Chile"
-msgstr "2. Acción Planificada - Acciones Generales con el SII y facturación electrónica para Chile"
+msgstr ""
+"2. Acción Planificada - Acciones Generales con el SII y facturación "
+"electrónica para Chile"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__account_payment_term__l10n_cl_sii_code__2
@@ -259,11 +241,11 @@ msgstr "3: Otro"
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
 msgid ""
-"<br/><br/>If you are trying to test %s of documents, you should send this %s "
-"as a vendor to %s before doing the test."
+"<br/><br/>If you are trying to test %s of documents, you should send this %s"
+" as a vendor to %s before doing the test."
 msgstr ""
-"<br/><br/>Si está tratando de testear %s de documentos, debería enviar este/"
-"a %s como proveedor a %s antes de realizar el test."
+"<br/><br/>Si está tratando de testear %s de documentos, debería enviar "
+"este/a %s como proveedor a %s antes de realizar el test."
 
 #. module: l10n_cl_edi
 #: model:mail.template,body_html:l10n_cl_edi.l10n_cl_edi_email_template_invoice
@@ -277,7 +259,7 @@ msgid ""
 "         <t t-else=\"\">\n"
 "            <t t-out=\"object.partner_id.name or ''\">Deco Addict</t>,\n"
 "        </t>\n"
-"        <br/><br/>\n"
+"        <br><br>\n"
 "        Here is your\n"
 "        <t t-if=\"object.name\">\n"
 "            invoice <strong t-out=\"object.name or ''\">INV/2021/05/0004</strong>\n"
@@ -296,7 +278,7 @@ msgid ""
 "        <t t-else=\"\">\n"
 "            Please remit payment at your earliest convenience.\n"
 "        </t>\n"
-"        <br/><br/>\n"
+"        <br><br>\n"
 "        Do not hesitate to contact us if you have any questions.\n"
 "    </p>\n"
 "</div>\n"
@@ -340,71 +322,12 @@ msgstr ""
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/fetchmail_server.py:0
 #, python-format
-msgid "<li><b>Name</b>: %(name)s</li><li><b>RUT</b>: %(vat)s</li><li><b>Address</b>: %(address)s</li>"
-msgstr "<li><b>Nombre</b>: %(name)s</li><li><b>RUT</b>: %(vat)s</li><li><b>Dirección</b>: %(address)s</li>"
-
-#. module: l10n_cl_edi
-#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
 msgid ""
-"<span class=\"o_form_label\">Economical Activities Information</span>\n"
-"                            <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\" role=\"img\"/>"
+"<li><b>Name</b>: %(name)s</li><li><b>RUT</b>: "
+"%(vat)s</li><li><b>Address</b>: %(address)s</li>"
 msgstr ""
-"<span class=“o_form_label”>Información de Actividades Económicas</span>\n"
-"                            <span class=“fa fa-lg fa-building-o” title=“Values set here are company-specific.” aria-label=“Values set here are company-specific.” groups=“base.group_multi_company” role=“img”/>"
-
-#. module: l10n_cl_edi
-#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
-msgid ""
-"<span class=\"o_form_label\">Email Alias Electronic Invoicing</span>\n"
-"                            <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\" role=\"img\"/>"
-msgstr ""
-"<span class=“o_form_label”>Seudónimo de Email para Facturación Electrónica</span>\n"
-"                            <span class=“fa fa-lg fa-building-o” title=“Values set here are company-specific.” aria-label=“Values set here are company-specific.” groups=“base.group_multi_company” role=“img”/>"
-
-#. module: l10n_cl_edi
-#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
-msgid ""
-"<span class=\"o_form_label\">Email Box Electronic Invoicing</span>\n"
-"                            <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\" role=\"img\"/>"
-msgstr ""
-"<span class=“o_form_label”>Cuenta de Correo para Factura Electrónica</span>\n"
-"                            <span class=“fa fa-lg fa-building-o” title=“Values set here are company-specific.” aria-label=“Values set here are company-specific.” groups=“base.group_multi_company” role=“img”/>"
-
-#. module: l10n_cl_edi
-#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
-msgid ""
-"<span class=\"o_form_label\">Legal Electronic Invoicing Data</span>\n"
-"                            <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\" role=\"img\"/>"
-msgstr ""
-"<span class=“o_form_label”>Información legal para Facturación Electrónica</span>\n"
-"                            <span class=“fa fa-lg fa-building-o” title=“Values set here are company-specific.” aria-label=“Values set here are company-specific.” groups=“base.group_multi_company” role=“img”/>"
-
-#. module: l10n_cl_edi
-#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
-msgid ""
-"<span class=\"o_form_label\">SII Web Services</span>\n"
-"                            <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\" role=\"img\"/>"
-msgstr ""
-"<span class=“o_form_label”>Servicios Web SII</span>\n"
-"                            <span class=“fa fa-lg fa-building-o” title=“Values set here are company-specific.” aria-label=“Values set here are company-specific.” groups=“base.group_multi_company” role=“img”/>"
-
-#. module: l10n_cl_edi
-#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
-msgid ""
-"<span class=\"o_form_label\">Signature Certificates</span>\n"
-"                            <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\" role=\"img\"/>"
-msgstr ""
-"<span class=“o_form_label”>Certificados de Firma Digital</span>\n"
-"                            <span class=“fa fa-lg fa-building-o” title=“Values set here are company-specific.” aria-label=“Values set here are company-specific.” groups=“base.group_multi_company” role=“img”/>"
-
-#. module: l10n_cl_edi
-#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
-msgid ""
-"<span class=\"o_form_label\">Tax payer information</span>\n"
-"                            <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\" role=\"img\"/>"
-msgstr ""
-"<span class=“o_form_label”>Información del contribuyente</span>\n"
-"                            <span class=“fa fa-lg fa-building-o” title=“Values set here are company-specific.” aria-label=“Values set here are company-specific.” groups=“base.group_multi_company” role=“img”/>"
+"<li><b>Nombre</b>: %(name)s</li><li><b>RUT</b>: "
+"%(vat)s</li><li><b>Dirección</b>: %(address)s</li>"
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.barcode_stamp_footer
@@ -447,17 +370,25 @@ msgstr "<strong>WARNING: Simulando %s en modo Demo</strong>"
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/fetchmail_server.py:0
 #, python-format
-msgid "<strong>Warning:</strong> The total amount of the DTE's XML is %s and the total amount calculated by Odoo is %s. Typically this is caused by additional lines in the detail or by unidentified taxes, please check if a manual correction is needed."
-msgstr "<strong>Advertencia:</strong> El monto total del XML de este DTE es %s y el monto total calculado por Odoo es %s. Tipicamente esto puede ser causado por lineas adicionales en el detalle o por impuestos no identificados, por favor revise si se requiere una corrección manual del documento."
+msgid ""
+"<strong>Warning:</strong> The total amount of the DTE's XML is %s and the "
+"total amount calculated by Odoo is %s. Typically this is caused by "
+"additional lines in the detail or by unidentified taxes, please check if a "
+"manual correction is needed."
+msgstr ""
+"<strong>Advertencia:</strong> El monto total del XML de este DTE es %s y el "
+"monto total calculado por Odoo es %s. Tipicamente esto puede ser causado por"
+" lineas adicionales en el detalle o por impuestos no identificados, por "
+"favor revise si se requiere una corrección manual del documento."
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
 msgid ""
 "<strong>Warning:</strong> there is no shared digital signature for this company. You need to define at least one certificate without a user.\n"
-"                                            Otherwise, you will need to send electronic invoices to the SII manually, and Odoo won't be able to send automatic receipt acknowledgements for vendor bills."
+"                                    Otherwise, you will need to send electronic invoices to the SII manually, and Odoo won't be able to send automatic receipt acknowledgements for vendor bills."
 msgstr ""
-"<strong>Advertencia:</strong> no hay ningún certificado compartido para esta compañía. Necesitas definir al menos un certificado sin usuario.\n"
-"                                            De lo contrario, necesitaras enviar las facturas al SII de manera manual y Odoo no tendrá la capacidad de enviar acuses de recibo para los documentos de proveedores."
+"<strong>Atención:</strong> no hay firma digital compartida para esta empresa. Necesita definir al menos un certificado sin usuario.\n"
+"                                    De lo contrario, tendrá que enviar las facturas electrónicas al SII manualmente, y Odoo no podrá enviar acuses de recibo automáticos para las facturas de proveedores."
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.certificate_form_view
@@ -490,9 +421,14 @@ msgid "Accepted With Objections"
 msgstr "Aceptado con reparos"
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields.selection,name:l10n_cl_edi.selection__account_move__l10n_cl_dte_acceptation_status__accepted_goods
+msgid "Accepted and RG 19983"
+msgstr "Aceptado y RG 19983"
+
+#. module: l10n_cl_edi
 #: model:ir.model,name:l10n_cl_edi.model_account_move_reversal
 msgid "Account Move Reversal"
-msgstr "Reversión de Movimiento"
+msgstr "Revocación de movimiento en cuenta"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__account_move__l10n_cl_dte_acceptation_status__ack_sent
@@ -528,7 +464,7 @@ msgstr "Códigos de Actividad"
 #. module: l10n_cl_edi
 #: model:ir.model,name:l10n_cl_edi.model_account_debit_note
 msgid "Add Debit Note wizard"
-msgstr "Asistente de Notas de Débito"
+msgstr "Wizard para agregar Nota de Débito"
 
 #. module: l10n_cl_edi
 #. odoo-python
@@ -548,8 +484,15 @@ msgstr "Permite esconder la actividad sin suprimirla."
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_l10n_cl_account_invoice_reference__l10n_cl_reference_doc_internal_type
-msgid "Analog to odoo account.move.move_type but with more options allowing to identify the kind of document we are working with. (not only related to account.move, could be for documents of other models like stock.picking)"
-msgstr "Análogo a odoo account.move.move_type pero con más opciones permitiendo identificar el tipo de documento con el que realizamos la búsqueda. (No solo relacionado a account.move, podría ser para documentos de otros modelos como por ejemplo stock.picking)"
+msgid ""
+"Analog to odoo account.move.move_type but with more options allowing to "
+"identify the kind of document we are working with. (not only related to "
+"account.move, could be for documents of other models like stock.picking)"
+msgstr ""
+"Análogo a odoo account.move.move_type pero con más opciones permitiendo "
+"identificar el tipo de documento con el que realizamos la búsqueda. (No solo"
+" relacionado a account.move, podría ser para documentos de otros modelos "
+"como por ejemplo stock.picking)"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__res_company__l10n_cl_sii_regional_office__ur_anc
@@ -593,6 +536,7 @@ msgstr "La consulta de estado reclamo falló debido a:"
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
+#: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
 msgid "Asking for claim status with response:"
 msgstr "Consultando el estado de reclamo con la siguiente respuesta:"
@@ -605,6 +549,11 @@ msgstr "Adjunto"
 #. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__res_company__l10n_cl_sii_regional_office__ur_ays
 msgid "Aysén"
+msgstr ""
+
+#. module: l10n_cl_edi
+#: model:ir.model.fields.selection,name:l10n_cl_edi.selection__res_company__l10n_cl_sii_regional_office__ur_buin
+msgid "Buin"
 msgstr ""
 
 #. module: l10n_cl_edi
@@ -658,7 +607,9 @@ msgstr ""
 #: code:addons/l10n_cl_edi/models/l10n_cl_dte_caf.py:0
 #, python-format
 msgid "Caf vat %s should be the same that assigned company's vat: %s!"
-msgstr "El RUT %s del CAF de la compañía debería ser el mismo que el RUT de la compañía asignado: %s!"
+msgstr ""
+"El RUT %s del CAF de la compañía debería ser el mismo que el RUT de la "
+"compañía asignado: %s!"
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.l10n_cl_latam_document_type_view
@@ -755,7 +706,17 @@ msgstr ""
 #. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__res_company__l10n_cl_sii_regional_office__ur_chc
 msgid "Chile Chico"
-msgstr "Chile Chico"
+msgstr ""
+
+#. module: l10n_cl_edi
+#: model:ir.model.fields,help:l10n_cl_edi.field_res_config_settings__l10n_cl_activity_description
+msgid "Chile: Economic activity"
+msgstr ""
+
+#. module: l10n_cl_edi
+#: model:ir.model.fields,help:l10n_cl_edi.field_res_config_settings__l10n_cl_dte_email
+msgid "Chile: Email used to send and receive electronic documents"
+msgstr "Chile: El correo electrónico se utiliza para enviar y recibir documentos electrónicos"
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.view_account_journal_form
@@ -804,9 +765,10 @@ msgstr "Reclamo por Falta Total de Mercadería"
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
+#: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "Claim status was not sending to SII. This feature is not available in certification/test mode"
-msgstr "La consulta de estado de reclamo no fue enviada al SII porque esta característica no está disponible (modo test/certificación)"
+msgid "Claim status"
+msgstr "Estado de la solicitud"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__account_move__l10n_cl_claim__rcd
@@ -869,7 +831,7 @@ msgstr ""
 #. module: l10n_cl_edi
 #: model:ir.model,name:l10n_cl_edi.model_res_config_settings
 msgid "Config Settings"
-msgstr "Configuraciones"
+msgstr "Opciones de configuración"
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
@@ -940,7 +902,8 @@ msgstr "Creado en"
 #. module: l10n_cl_edi
 #: model:ir.model,name:l10n_cl_edi.model_l10n_cl_account_invoice_reference
 msgid "Cross Reference Docs for Chilean Electronic Invoicing"
-msgstr "Documentos de Referencia Cruzada para facturación electrónica de Chile"
+msgstr ""
+"Documentos de Referencia Cruzada para facturación electrónica de Chile"
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.view_invoice_form
@@ -1004,8 +967,6 @@ msgstr "Acuse de recibo de bienes o servicios"
 
 #. module: l10n_cl_edi
 #: model:mail.template,subject:l10n_cl_edi.email_template_receipt_goods
-#, fuzzy
-#| msgid "Commercial Rejection response - {{ object.name }}"
 msgid "DTE Reception of Services Or Goods - {{ object.name }}"
 msgstr "Respuesta de Rechazo Comercial - {{ object.name }}"
 
@@ -1060,7 +1021,9 @@ msgstr "El DTE ha sido enviado al cliente"
 #: code:addons/l10n_cl_edi/models/fetchmail_server.py:0
 #, python-format
 msgid "DTE reception status established as <b>%s</b> by incoming email"
-msgstr "El estado de recepción del DTE se estableció como <b>%s</b> a través de email entrante"
+msgstr ""
+"El estado de recepción del DTE se estableció como <b>%s</b> a través de "
+"email entrante"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_fetchmail_server__l10n_cl_is_dte
@@ -1070,11 +1033,11 @@ msgstr "Servidor de DTE"
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
 msgid ""
-"Define the tax payer type and SII regional office for your company. This is mandatory for\n"
-"                                electronic invoicing."
+"Define the tax payer type and SII regional office for your company. This is "
+"mandatory for electronic invoicing."
 msgstr ""
-"Defina el tipo de contribuyente y la oficina regional que corresponde a su compañía. Esto es requerido para\n"
-"                                Facturación electrónica."
+" Defina el tipo de contribuyente y la oficina regional del SII para su empresa. Esto es "
+"obligatorio para la facturación electrónica."
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.ack_template
@@ -1092,16 +1055,14 @@ msgstr "Nombre mostrado"
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
-#, fuzzy, python-format
-#| msgid "Document claim failed with response:"
+#, python-format
 msgid "Document %s failed with the following response:"
 msgstr "Documento %s falló con la siguiente respuesta:"
 
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
-#, fuzzy, python-format
-#| msgid "Document acceptance was accepted with response:"
+#, python-format
 msgid "Document %s was accepted with the following response:"
 msgstr "Documento %s fue aceptado con la siguiente respuesta:"
 
@@ -1130,6 +1091,11 @@ msgid "Document acceptance or claim failed due to:"
 msgstr "La aceptación del documento falló debido a:"
 
 #. module: l10n_cl_edi
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
+msgid "Economical Activities Information"
+msgstr "Información sobre actividades económicas"
+
+#. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.view_invoice_form
 msgid "Electronic Invoice"
 msgstr "Factura Electrónica"
@@ -1144,6 +1110,16 @@ msgstr "Facturación Electrónica"
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
 msgid "Email Alias"
 msgstr "Seudónimo de Email"
+
+#. module: l10n_cl_edi
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
+msgid "Email Alias Electronic Invoicing"
+msgstr "Email Alias Facturación electrónica"
+
+#. module: l10n_cl_edi
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
+msgid "Email Box Electronic Invoicing"
+msgstr "Buzón de correo electrónico Facturación electrónica"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_dte_caf__final_nb
@@ -1196,16 +1172,14 @@ msgstr "Error en el tamaño del archivo (Demasiado grande o demasiado pequeño)"
 #. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_settings__l10n_cl_activity_description
 msgid "Glosa Giro"
-msgstr "Glosa Giro"
+msgstr ""
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
 msgid ""
-"Hint: \"Factura Electrónica/Sistema de Certificación de Mercado/Actualizar\n"
-"                                datos de la empresa autorizada\"."
+"Hint: \"Factura Electrónica/Sistema de Certificación de Mercado/Actualizar "
+"datos de la empresa autorizada\"."
 msgstr ""
-"Pista: \"Factura Electrónica/Sistema de Certificación de Mercado/Actualizar\n"
-"                                datos de la empresa autorizada\"."
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_account_invoice_reference__id
@@ -1213,7 +1187,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_company_activities__id
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_dte_caf__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.dte_subtemplate
@@ -1222,13 +1196,32 @@ msgstr ""
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_l10n_cl_certificate__user_id
-msgid "If this certificate has an owner, he will be the only user authorized to use it, otherwise, the certificate will be shared with other users of the current company"
-msgstr "Si este certificado tiene un propietario, él será el único usuario autorizado a utilizarlo, de lo contrario, el certificado será compartido con otros usuarios de la compañía actual"
+msgid ""
+"If this certificate has an owner, he will be the only user authorized to use"
+" it, otherwise, the certificate will be shared with other users of the "
+"current company"
+msgstr ""
+"Si este certificado tiene un propietario, él será el único usuario "
+"autorizado a utilizarlo, de lo contrario, el certificado será compartido con"
+" otros usuarios de la compañía actual"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_l10n_cl_company_activities__tax_category
-msgid "If your company is 2nd category tax payer type, you should use activity codes of type 2, otherwise they should be type 1. If your activity is affected by vat tax depending on other situations, SII uses type ND. In every cases the tax category is defined by the CIIU4.CL nomenclature adopted by SII, and you should only add new activities in case they are added in the future."
-msgstr "Si su compañía es un tipo de contribuyente de segunda categoría, Ud. debería usar códigos de actividad de tipo 2, de lo contrario deberían ser de tipo 1. Si su actividad está afectada por el IVA dependiendo de diversas situaciones, el SII utiliza tipo \"ND\". En todos los casos la categoría es definida por la nomenclatura CIIU4.CL adoptada por el SII y Ud debería solamente agregar nuevas actividades en el caso que fuesen agregadas en el futuro."
+msgid ""
+"If your company is 2nd category tax payer type, you should use activity "
+"codes of type 2, otherwise they should be type 1. If your activity is "
+"affected by vat tax depending on other situations, SII uses type ND. In "
+"every cases the tax category is defined by the CIIU4.CL nomenclature adopted"
+" by SII, and you should only add new activities in case they are added in "
+"the future."
+msgstr ""
+"Si su compañía es un tipo de contribuyente de segunda categoría, Ud. debería"
+" usar códigos de actividad de tipo 2, de lo contrario deberían ser de tipo "
+"1. Si su actividad está afectada por el IVA dependiendo de diversas "
+"situaciones, el SII utiliza tipo \"ND\". En todos los casos la categoría es "
+"definida por la nomenclatura CIIU4.CL adoptada por el SII y Ud debería "
+"solamente agregar nuevas actividades en el caso que fuesen agregadas en el "
+"futuro."
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__res_company__l10n_cl_sii_regional_office__ur_ill
@@ -1242,8 +1235,12 @@ msgstr "En Uso"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_l10n_cl_dte_caf__status
-msgid "In Use: means that the CAF file is being used. Spent: means that the number interval has been exhausted."
-msgstr "En Uso: significa que el CAF está siendo utilizado. Consumido: significa que el intervalo de folios se ha agotado."
+msgid ""
+"In Use: means that the CAF file is being used. Spent: means that the number "
+"interval has been exhausted."
+msgstr ""
+"En Uso: significa que el CAF está siendo utilizado. Consumido: significa que"
+" el intervalo de folios se ha agotado."
 
 #. module: l10n_cl_edi
 #: model:ir.model,name:l10n_cl_edi.model_fetchmail_server
@@ -1254,15 +1251,22 @@ msgstr "Servidor de correo entrante"
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/fetchmail_server.py:0
 #, python-format
-msgid "Incoming SII DTE result:<br/> <li><b>ESTADO</b>: %s</li><li><b>REVISIONDTE/ESTADO</b>: %s</li><li><b>REVISIONDTE/DETALLE</b>: %s</li>"
-msgstr "Resultado entrante desde el SII sobre el DTE:<br/> <li><b>ESTADO</b>: %s</li><li><b>REVISIONDTE/ESTADO</b>: %s</li><li><b>REVISIONDTE/DETALLE</b>: %s</li>"
+msgid ""
+"Incoming SII DTE result:<br/> <li><b>ESTADO</b>: "
+"%s</li><li><b>REVISIONDTE/ESTADO</b>: %s</li><li><b>REVISIONDTE/DETALLE</b>:"
+" %s</li>"
+msgstr ""
+"Resultado entrante desde el SII sobre el DTE:<br/> <li><b>ESTADO</b>: "
+"%s</li><li><b>REVISIONDTE/ESTADO</b>: %s</li><li><b>REVISIONDTE/DETALLE</b>:"
+" %s</li>"
 
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/fetchmail_server.py:0
 #, python-format
 msgid "Incoming SII DTE result:<br/><li><b>ESTADO</b>: %s</li>"
-msgstr "DTE entrante, con el siguiente resultado:<br/><li><b>ESTADO</b>: %s</li>"
+msgstr ""
+"DTE entrante, con el siguiente resultado:<br/><li><b>ESTADO</b>: %s</li>"
 
 #. module: l10n_cl_edi
 #. odoo-python
@@ -1294,8 +1298,12 @@ msgstr "Esquema inválido"
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "Invoice %s has the currency %s inactive. Please activate the currency and try again."
-msgstr "El DTE %s tiene la moneda %s inactiva. Por favor active la moneda e intente nuevamente."
+msgid ""
+"Invoice %s has the currency %s inactive. Please activate the currency and "
+"try again."
+msgstr ""
+"El DTE %s tiene la moneda %s inactiva. Por favor active la moneda e intente "
+"nuevamente."
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__res_company__l10n_cl_sii_regional_office__ur_iqu
@@ -1313,13 +1321,6 @@ msgstr "Existe un certificado compartido?"
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_dte_caf__issued_date
 msgid "Issued Date"
 msgstr "Fecha de Emisión"
-
-#. module: l10n_cl_edi
-#. odoo-python
-#: code:addons/l10n_cl_edi/models/account_move.py:0
-#, python-format
-msgid "It is not possible to validate invoices in %s for %s, please convert it to CLP"
-msgstr "No es posible validar DTEs en %s para %s, por favor conviértala a CLP"
 
 #. module: l10n_cl_edi
 #. odoo-python
@@ -1353,12 +1354,12 @@ msgstr "Diario"
 #. module: l10n_cl_edi
 #: model:ir.model,name:l10n_cl_edi.model_account_move
 msgid "Journal Entry"
-msgstr "Entrada de diario"
+msgstr "Asiento contable"
 
 #. module: l10n_cl_edi
 #: model:ir.model,name:l10n_cl_edi.model_account_move_line
 msgid "Journal Item"
-msgstr "Apunte del diario"
+msgstr "Apunte contable"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_latam_document_type__l10n_cl_show_caf_button
@@ -1391,14 +1392,6 @@ msgid "Lanco"
 msgstr ""
 
 #. module: l10n_cl_edi
-#: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_account_invoice_reference____last_update
-#: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_certificate____last_update
-#: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_company_activities____last_update
-#: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_dte_caf____last_update
-msgid "Last Modified on"
-msgstr "Última modificación en"
-
-#. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_certificate__last_token
 msgid "Last Token"
 msgstr "Ultimo token"
@@ -1427,12 +1420,17 @@ msgstr "Ultimo mensaje leído (CL)"
 #. module: l10n_cl_edi
 #: model:ir.model,name:l10n_cl_edi.model_l10n_latam_document_type
 msgid "Latam Document Type"
-msgstr "Tipo Documento (LA)"
+msgstr "Tipo de Documento Latam"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__res_company__l10n_cl_sii_regional_office__ur_leb
 msgid "Lebu"
 msgstr ""
+
+#. module: l10n_cl_edi
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
+msgid "Legal Electronic Invoicing Data"
+msgstr "Datos legales de facturación electrónica"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__res_company__l10n_cl_sii_regional_office__ur_lin
@@ -1445,20 +1443,35 @@ msgid "Los Andes"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields.selection,name:l10n_cl_edi.selection__res_company__l10n_cl_sii_regional_office__ur_losrios
+msgid "Los Ríos"
+msgstr ""
+
+#. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__res_company__l10n_cl_sii_regional_office__ur_log
 msgid "Los Ángeles"
+msgstr ""
+
+#. module: l10n_cl_edi
+#: model:ir.model.fields.selection,name:l10n_cl_edi.selection__res_company__l10n_cl_sii_regional_office__ur_maipu
+msgid "Maipu"
 msgstr ""
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__account_journal__l10n_cl_point_of_sale_type__manual
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__account_move__l10n_cl_dte_status__manual
 msgid "Manual"
-msgstr "Manual"
+msgstr ""
+
+#. module: l10n_cl_edi
+#: model:ir.model.fields.selection,name:l10n_cl_edi.selection__res_company__l10n_cl_sii_regional_office__ur_melipilla
+msgid "Melipilla"
+msgstr ""
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__l10n_cl_company_activities__tax_category__nd
 msgid "ND"
-msgstr "ND"
+msgstr ""
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_account_debit_note__l10n_cl_corrected_text
@@ -1482,6 +1495,7 @@ msgstr "No es posible obtener una semilla"
 
 #. module: l10n_cl_edi
 #. odoo-python
+#: code:addons/l10n_cl_edi/models/l10n_cl_edi_util.py:0
 #: code:addons/l10n_cl_edi/models/l10n_cl_edi_util.py:0
 #, python-format
 msgid "No response trying to get a token"
@@ -1517,7 +1531,9 @@ msgstr "Nro documento origen"
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_l10n_cl_account_invoice_reference__origin_doc_number
 msgid "Origin document number, the document you are referring to"
-msgstr "Número de documento de origen. Es el documento al cual Ud. se está refiriendo"
+msgstr ""
+"Número de documento de origen. Es el documento al cual Ud. se está "
+"refiriendo"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_account_debit_note__l10n_cl_original_text
@@ -1589,37 +1605,41 @@ msgstr ""
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
 msgid "Please assign a partner before sending the acknowledgement"
-msgstr "Por favor, establezca un proveedor antes de enviar el acuse de recibo por email"
+msgstr ""
+"Por favor, establezca un proveedor antes de enviar el acuse de recibo por "
+"email"
 
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
-#, fuzzy, python-format
-#| msgid "The document name"
+#, python-format
 msgid "Please check the document number"
 msgstr "El nombre de documento"
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
-msgid "Please choose your DTE service provider. If possible, avoid selecting SII Demo mode in a production database."
-msgstr "Por favor seleccione su proveedor de DTE. De ser posible, evite seleccionar el modo demo en una base de producción."
+msgid ""
+"Please choose your DTE service provider. If possible, avoid selecting SII "
+"Demo mode in a production database."
+msgstr ""
+"Por favor seleccione su proveedor de DTE. De ser posible, evite seleccionar "
+"el modo demo en una base de producción."
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_res_company__l10n_cl_company_activity_ids
 #: model:ir.model.fields,help:l10n_cl_edi.field_res_config_settings__l10n_cl_company_activity_ids
-#: model:ir.model.fields,help:l10n_cl_edi.field_res_config_test__l10n_cl_company_activity_ids
 msgid ""
 "Please select the SII registered economic activities codes for the company"
 msgstr ""
 "Por favor seleccione las actividades económicas registradas en el SII para "
 "la compañía"
 
-
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_res_company__l10n_cl_dte_service_provider
 #: model:ir.model.fields,help:l10n_cl_edi.field_res_config_settings__l10n_cl_dte_service_provider
 msgid "Please select your company service provider for DTE service."
-msgstr "Por favor seleccione su proveedor de servicio de DTE para su compañía."
+msgstr ""
+"Por favor seleccione su proveedor de servicio de DTE para su compañía."
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_account_journal__l10n_cl_point_of_sale_name
@@ -1682,6 +1702,7 @@ msgstr ""
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/l10n_cl_edi_util.py:0
+#: code:addons/l10n_cl_edi/models/l10n_cl_edi_util.py:0
 #, python-format
 msgid "RUT validation error"
 msgstr "Error de validación de RUT"
@@ -1728,11 +1749,9 @@ msgstr "Registros de Referencia"
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
 msgid ""
-"Register up to four economical activity codes and description for your company. This is mandatory for\n"
-"                                electronic invoicing."
+"Register up to four economical activity codes and description for your "
+"company. This is mandatory for electronic invoicing."
 msgstr ""
-"Registre hasta cuatro códigos de actividades económicas y la descripción del giro para su compañía. Esto es requerido para\n"
-"                            Facturación electrónica."
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__account_move__l10n_cl_dte_status__rejected
@@ -1855,8 +1874,18 @@ msgid "SII Send file"
 msgstr "Archivo XML de envío al SII"
 
 #. module: l10n_cl_edi
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
+msgid "SII Web Services"
+msgstr ""
+
+#. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__res_company__l10n_cl_sii_regional_office__ur_saa
 msgid "San Antonio"
+msgstr ""
+
+#. module: l10n_cl_edi
+#: model:ir.model.fields.selection,name:l10n_cl_edi.selection__res_company__l10n_cl_sii_regional_office__ur_sanbernardo
+msgid "San Bernardo"
 msgstr ""
 
 #. module: l10n_cl_edi
@@ -1932,6 +1961,11 @@ msgstr "Envío del DTE al SII falló debido a:"
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__account_move__l10n_cl_dte_partner_status__sent
 msgid "Sent"
 msgstr "Enviado"
+
+#. module: l10n_cl_edi
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
+msgid "Signature Certificates"
+msgstr ""
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_certificate__signature_filename
@@ -2010,6 +2044,11 @@ msgstr ""
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
+msgid "Tax payer information"
+msgstr "Información sobre el contribuyente"
+
+#. module: l10n_cl_edi
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
 msgid "Taxpayer"
 msgstr "Contribuyente"
 
@@ -2028,27 +2067,28 @@ msgstr ""
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "The %s %s has not a DTE email defined. This is mandatory for electronic invoicing."
-msgstr "%s %s no tiene un email DTE definido. Esto es requerido para facturación electrónica."
+msgid ""
+"The %s %s has not a DTE email defined. This is mandatory for electronic "
+"invoicing."
+msgstr ""
+"%s %s no tiene un email DTE definido. Esto es requerido para facturación "
+"electrónica."
 
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/l10n_cl_dte_caf.py:0
 #, python-format
-msgid "The VAT of your company has not been configured. Please go to your company data and add it."
-msgstr "El RUT de su compañía no ha sido configurado. Por favor vaya a los datos de su compañía y agréguelo."
+msgid ""
+"The VAT of your company has not been configured. Please go to your company "
+"data and add it."
+msgstr ""
+"El RUT de su compañía no ha sido configurado. Por favor vaya a los datos de "
+"su compañía y agréguelo."
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.barcode_stamp_footer
 msgid "The VAT tax of this boleta is:"
-msgstr ""
-
-#. module: l10n_cl_edi
-#. odoo-python
-#: code:addons/l10n_cl_edi/models/l10n_cl_edi_util.py:0
-#, python-format
-msgid "The XSD validation files from SII have not been found"
-msgstr ""
+msgstr "El IVA de esta boleta es:"
 
 #. module: l10n_cl_edi
 #. odoo-python
@@ -2060,16 +2100,10 @@ msgstr "Este certificado ha vencido. Fecha/hora de vencimiento es %s"
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/l10n_cl_certificate.py:0
+#: code:addons/l10n_cl_edi/models/l10n_cl_certificate.py:0
 #, python-format
 msgid "The certificate signature_key_file is invalid: %s."
 msgstr "La firma del certificado es inválido: %s."
-
-#. module: l10n_cl_edi
-#. odoo-python
-#: code:addons/l10n_cl_edi/models/account_move.py:0
-#, python-format
-msgid "The claim status was not sent to SII as this feature does not work in certification/test mode"
-msgstr "El reclamo no fue enviado al SII porque esta característica no está disponible en modo certificación/Test"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_l10n_cl_certificate__cert_expiration
@@ -2080,14 +2114,6 @@ msgstr "La fecha de vencimiento del certificado"
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "The document type with code %s cannot be accepted"
-msgstr "El tipo de documento con código %s no puede ser aceptado"
-
-#. module: l10n_cl_edi
-#. odoo-python
-#: code:addons/l10n_cl_edi/models/account_move.py:0
-#, fuzzy, python-format
-#| msgid "The document type with code %s cannot be claimed"
 msgid "The document type with code %s cannot be %s"
 msgstr "El tipo de documento con el código %s no puede ser %s"
 
@@ -2114,8 +2140,13 @@ msgstr "El servidor debe ser de tipo IMAP."
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "The stamp date and time cannot be prior to the invoice issue date and time. TIP: check in your user preferences if the timezone is \"America/Santiago\""
-msgstr "La fecha y hora del timbre no puede ser anterior a la fecha y hora de emisión de la factura. Consejo: revise en sus preferencias de usuario si la zona horaria es “America/Santiago”"
+msgid ""
+"The stamp date and time cannot be prior to the invoice issue date and time. "
+"TIP: check in your user preferences if the timezone is \"America/Santiago\""
+msgstr ""
+"La fecha y hora del timbre no puede ser anterior a la fecha y hora de "
+"emisión de la factura. Consejo: revise en sus preferencias de usuario si la "
+"zona horaria es “America/Santiago”"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_dte_acceptation_status
@@ -2128,7 +2159,8 @@ msgid ""
 "    Claimed: the DTE was claimed by us for vendor bills, by our customers for customer invoices.\n"
 "    Accepted: the DTE was accepted by us for vendor bills, by our customers for customer invoices.\n"
 "    Reception 19983: means that the merchandise or services reception has been created and sent.\n"
-"    Accepted and RG 19983: means that both the content of the document has been accepted and the merchandise or services reception has been received as well.\n"
+"    Accepted and RG 19983: means that both the content of the document has been accepted and the merchandise or \n"
+"services reception has been received as well.\n"
 "    "
 msgstr ""
 "El estado de aceptación del DTE\n"
@@ -2145,25 +2177,40 @@ msgstr ""
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/l10n_latam_document_type.py:0
 #, python-format
-msgid "There are no CAFs available for folio %s in the sequence of %s. Please upload a CAF file or ask for a new one at www.sii.cl website"
-msgstr "No hay CAFs disponible para el folio %s en la secuencia de %s. Por favor subo un archivo CAF o solicite uno nuevo en el sitio www.sii.cl"
+msgid ""
+"There are no CAFs available for folio %s in the sequence of %s. Please "
+"upload a CAF file or ask for a new one at www.sii.cl website"
+msgstr ""
+"No hay CAFs disponible para el folio %s en la secuencia de %s. Por favor "
+"subo un archivo CAF o solicite uno nuevo en el sitio www.sii.cl"
 
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/l10n_latam_document_type.py:0
 #, python-format
-msgid "There are no CAFs available. Please upload a CAF file or ask for a new one at www.sii.cl website"
-msgstr "No hay CAFs disponibles. Por favor suba un archivo CAF o solicite uno nuevo en el sitio www.sii.cl"
+msgid ""
+"There are no CAFs available. Please upload a CAF file or ask for a new one "
+"at www.sii.cl website"
+msgstr ""
+"No hay CAFs disponibles. Por favor suba un archivo CAF o solicite uno nuevo "
+"en el sitio www.sii.cl"
 
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "There are no activity codes configured in your company. This is mandatory for electronic invoicing. Please go to your company and set the correct activity codes (www.sii.cl - Mi SII)"
-msgstr "No hay códigos de actividad económica configurados en su compañía. Esto es mandatorio para facturación electrónica. Por favor, vaya a los datos de su comañía y coloque los códigos de actividad correctos (www.sii.cl - Mi SII)"
+msgid ""
+"There are no activity codes configured in your company. This is mandatory "
+"for electronic invoicing. Please go to your company and set the correct "
+"activity codes (www.sii.cl - Mi SII)"
+msgstr ""
+"No hay códigos de actividad económica configurados en su compañía. Esto es "
+"mandatorio para facturación electrónica. Por favor, vaya a los datos de su "
+"comañía y coloque los códigos de actividad correctos (www.sii.cl - Mi SII)"
 
 #. module: l10n_cl_edi
 #. odoo-python
+#: code:addons/l10n_cl_edi/models/l10n_cl_edi_util.py:0
 #: code:addons/l10n_cl_edi/models/l10n_cl_edi_util.py:0
 #, python-format
 msgid "There is an unexpected response from SII"
@@ -2173,22 +2220,38 @@ msgstr "Hay una respuesta inesperada desde el SII"
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "There is no SII Regional Office configured in your company. This is mandatory for electronic invoicing. Please go to your company and set the regional office, according to your company address (www.sii.cl - Mi SII)"
-msgstr "No hay una oficina regional configurada para su compañía. Esto es mandatorio para facturación electrónica. Por favor vaya a los datos de su compañía y coloque la oficina regional correcta, acorde a la dirección de su compañía."
+msgid ""
+"There is no SII Regional Office configured in your company. This is "
+"mandatory for electronic invoicing. Please go to your company and set the "
+"regional office, according to your company address (www.sii.cl - Mi SII)"
+msgstr ""
+"No hay una oficina regional configurada para su compañía. Esto es mandatorio"
+" para facturación electrónica. Por favor vaya a los datos de su compañía y "
+"coloque la oficina regional correcta, acorde a la dirección de su compañía."
 
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "There is no address configured in your customer %s record. This is mandatory for electronic invoicing for this type of document. Please go to the partner record and set the address"
-msgstr "No hay una dirección configurada en el registro %s de su cliente. Esto es requerido para la facturación electrónica, para este tipo de documento. Por favor abra el registro del cliente y establezca la dirección"
+msgid ""
+"There is no address configured in your customer %s record. This is mandatory"
+" for electronic invoicing for this type of document. Please go to the "
+"partner record and set the address"
+msgstr ""
+"No hay una dirección configurada en el registro %s de su cliente. Esto es "
+"requerido para la facturación electrónica, para este tipo de documento. Por "
+"favor abra el registro del cliente y establezca la dirección"
 
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "There is no signature available to send acknowledge or acceptation of this DTE. Please setup your digital signature"
-msgstr "No hay una firma disponible para enviar el acuse de recibo o aceptación de este DTE. Por favor, establezca su firma digital"
+msgid ""
+"There is no signature available to send acknowledge or acceptation of this "
+"DTE. Please setup your digital signature"
+msgstr ""
+"No hay una firma disponible para enviar el acuse de recibo o aceptación de "
+"este DTE. Por favor, establezca su firma digital"
 
 #. module: l10n_cl_edi
 #. odoo-python
@@ -2201,77 +2264,126 @@ msgstr "No hay un certificado válido para la compañía: %s"
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "There is not an activity description configured in the customer %s record. This is mandatory for electronic invoicing for this type of document. Please go to the partner record and set the activity description"
-msgstr "No hay un giro configurado en el registro de su cliente %s. Esto es obligatorio para la facturación electrónica. Por favor, vaya a los datos de su cliente y coloque el giro"
+msgid ""
+"There is not an activity description configured in the customer %s record. "
+"This is mandatory for electronic invoicing for this type of document. Please"
+" go to the partner record and set the activity description"
+msgstr ""
+"No hay un giro configurado en el registro de su cliente %s. Esto es "
+"obligatorio para la facturación electrónica. Por favor, vaya a los datos de "
+"su cliente y coloque el giro"
 
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "This %s is in SII status %s. It cannot be reset to draft state. Instead you should revert it."
-msgstr "Este %s se encuentra en estado: %s. en el SII. No puede establecido a estado borrador. En su lugar Uds. debe revertirlo."
+msgid ""
+"This %s is in SII status %s. It cannot be reset to draft state. Instead you "
+"should revert it."
+msgstr ""
+"Este %s se encuentra en estado: %s. en el SII. No puede establecido a estado"
+" borrador. En su lugar Uds. debe revertirlo."
 
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "This %s is in SII status: %s. It cannot be cancelled. Instead you should revert it."
-msgstr "Este %s se encuentra en estado: %s. en el SII. No puede ser cancelado. En su lugar Uds. debe revertirlo."
+msgid ""
+"This %s is in SII status: %s. It cannot be cancelled. Instead you should "
+"revert it."
+msgstr ""
+"Este %s se encuentra en estado: %s. en el SII. No puede ser cancelado. En su"
+" lugar Uds. debe revertirlo."
 
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "This %s is in the intermediate state: 'Ask for Status in the SII'. You will be able to cancel it only when the document has reached the state of rejection. Otherwise, if it were accepted or objected you should revert it with a suitable document instead of cancelling it."
-msgstr "Esta %s se encuentra en el estado intermedio: 'Consultar Estado en SII'. Ud podrá cancelarla unicamente cuando el documento haya llegado a estado de rechazo. De lo contrario, si llegó a estado de 'aceptado' o 'aceptado con reparos', en lugar de cancelarlo, deberá revertirlo con un documento adecuado."
+msgid ""
+"This %s is in the intermediate state: 'Ask for Status in the SII'. You will "
+"be able to cancel it only when the document has reached the state of "
+"rejection. Otherwise, if it were accepted or objected you should revert it "
+"with a suitable document instead of cancelling it."
+msgstr ""
+"Esta %s se encuentra en el estado intermedio: 'Consultar Estado en SII'. Ud "
+"podrá cancelarla unicamente cuando el documento haya llegado a estado de "
+"rechazo. De lo contrario, si llegó a estado de 'aceptado' o 'aceptado con "
+"reparos', en lugar de cancelarlo, deberá revertirlo con un documento "
+"adecuado."
 
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "This %s is in the intermediate state: 'Ask for Status in the SII'. You will be able to reset it to draft only when the document has reached the state of rejection. Otherwise, if it were accepted or objected you should revert it with a suitable document instead of cancelling it."
-msgstr "Esta %s se encuentra en el estado intermedio: 'Consultar Estado en SII'. Ud podrá reestablecerla a borrador unicamente cuando el documento haya llegado a estado de rechazo. De lo contrario, si llegó a estado de 'aceptado' o 'aceptado con reparos', en lugar de pasarlo a borrador, deberá revertirlo con un documento adecuado."
+msgid ""
+"This %s is in the intermediate state: 'Ask for Status in the SII'. You will "
+"be able to reset it to draft only when the document has reached the state of"
+" rejection. Otherwise, if it were accepted or objected you should revert it "
+"with a suitable document instead of cancelling it."
+msgstr ""
+"Esta %s se encuentra en el estado intermedio: 'Consultar Estado en SII'. Ud "
+"podrá reestablecerla a borrador unicamente cuando el documento haya llegado "
+"a estado de rechazo. De lo contrario, si llegó a estado de 'aceptado' o "
+"'aceptado con reparos', en lugar de pasarlo a borrador, deberá revertirlo "
+"con un documento adecuado."
 
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "This %s is rejected by SII. Instead of creating a reverse, you should set it to draft state, correct it and post it again."
-msgstr "Esta %s fue rechazada por el SII. En lugar de crear una reversión, Ud. debería establecerla en estado de borrador, corregirla y publicarla nuevamente."
+msgid ""
+"This %s is rejected by SII. Instead of creating a reverse, you should set it"
+" to draft state, correct it and post it again."
+msgstr ""
+"Esta %s fue rechazada por el SII. En lugar de crear una reversión, Ud. "
+"debería establecerla en estado de borrador, corregirla y publicarla "
+"nuevamente."
 
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "This DTE has been generated in DEMO Mode. It is considered as accepted and it won't be sent to SII."
-msgstr "Este DTE ha sido generado en modo DEMO. Se considera como aceptado y no será enviado al SII."
+msgid ""
+"This DTE has been generated in DEMO Mode. It is considered as accepted and "
+"it won't be sent to SII."
+msgstr ""
+"Este DTE ha sido generado en modo DEMO. Se considera como aceptado y no será"
+" enviado al SII."
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_sii_barcode
 #: model:ir.model.fields,help:l10n_cl_edi.field_account_move__l10n_cl_sii_barcode
 #: model:ir.model.fields,help:l10n_cl_edi.field_account_payment__l10n_cl_sii_barcode
-msgid "This XML contains the portion of the DTE XML that should be coded in PDF417 and printed in the invoice barcode should be present in the printed invoice report to be valid"
-msgstr "Este XML contiene la porción del DTE que debe ser codificada en código de barras formato PDF417 para imprimir el código de barras, el que debe estar presente en el reporte de factura para que el mismo sea válido"
+msgid ""
+"This XML contains the portion of the DTE XML that should be coded in PDF417 "
+"and printed in the invoice barcode should be present in the printed invoice "
+"report to be valid"
+msgstr ""
+"Este XML contiene la porción del DTE que debe ser codificada en código de "
+"barras formato PDF417 para imprimir el código de barras, el que debe estar "
+"presente en el reporte de factura para que el mismo sea válido"
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
 msgid ""
-"This alias will be used as sender in the outgoing emails when you send invoices attached to your customers\n"
-"                                and with invoice acknowledge / acceptation or claim sent to your vendors."
+"This alias will be used as sender in the outgoing emails when you send "
+"invoices attached to your customers and with invoice acknowledge / "
+"acceptation or claim sent to your vendors."
 msgstr ""
-"Este seudónimo será usado como remitente en los emails salientes cuando Ud. envía facturas adjuntas a sus clientes\n"
-"                                y con acuses de recibo / aceptaciones y reclamos enviados a sus proveedores."
+"Este alias se utilizará como remitente en los correos electrónicos salientes cuando envíe "
+"facturas adjuntas a sus clientes y con acuse de recibo / "
+"aceptación o reclamación enviadas a sus proveedores."
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
 msgid ""
-"This email account should match both emails declared on the SII\n"
-"                                site in the section: \"ACTUALIZACION DE DATOS DEL CONTRIBUYENTE\",\n"
-"                                \"Mail Contacto SII\" and \"Mail Contacto Empresas\"."
+"This email account should match both emails declared on the SII site in the "
+"section: \"ACTUALIZACION DE DATOS DEL CONTRIBUYENTE\", \"Mail Contacto SII\""
+" and \"Mail Contacto Empresas\"."
 msgstr ""
-"Esta cuenta de email debe coincidir ambos emails declarados en el sitio del SII\n"
-"                                En la sección: “ACTUALIZACION DE DATOS DEL CONTRIBUYENTE”,\n"
-"                                “Mail Contacto SII” y “Mail Contacto Empresas”."
+"Esta cuenta de correo electrónico debe coincidir con los dos correos electrónicos declarados en el sitio SII en la "
+"sección: \"ACTUALIZACION DE DATOS DEL CONTRIBUYENTE\", \"Mail Contacto SII\""
+"y \"Mail Contacto Empresas\."
 
 #. module: l10n_cl_edi
 #. odoo-python
@@ -2289,13 +2401,21 @@ msgstr "Esta factura ya se está procesando."
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_l10n_cl_certificate__subject_serial_number
-msgid "This is the document of the owner of this certificate.Some certificates does not provide this number and you must fill it by hand"
-msgstr "Este es el documento del propietario del certificado. Algunos certificados no proveen este número y debe ser llenado manualmente"
+msgid ""
+"This is the document of the owner of this certificate.Some certificates does"
+" not provide this number and you must fill it by hand"
+msgstr ""
+"Este es el documento del propietario del certificado. Algunos certificados "
+"no proveen este número y debe ser llenado manualmente"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_account_journal__l10n_cl_point_of_sale_name
-msgid "This is the name that you want to assign to your point of sale. It is not mandatory."
-msgstr "Este es el nombre que Ud quiera asignarle a su punto de venta. El mismo no es mandatorio."
+msgid ""
+"This is the name that you want to assign to your point of sale. It is not "
+"mandatory."
+msgstr ""
+"Este es el nombre que Ud quiera asignarle a su punto de venta. El mismo no "
+"es mandatorio."
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_account_debit_note__l10n_cl_original_text
@@ -2316,22 +2436,35 @@ msgstr "Este número es necesario solo si el SII se lo ha provisto."
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_fetchmail_server__l10n_cl_last_uid
-msgid "This value is pointing to the number of the last message read by odoo in the inbox. This value will be updated by the system during its normaloperation."
-msgstr "Este número apunta al número del último mensaje leído por Odoo en el email entrante. Este valor será actualizado por el sistema durante su operación normal."
+msgid ""
+"This value is pointing to the number of the last message read by odoo in the"
+" inbox. This value will be updated by the system during its normaloperation."
+msgstr ""
+"Este número apunta al número del último mensaje leído por Odoo en el email "
+"entrante. Este valor será actualizado por el sistema durante su operación "
+"normal."
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_res_company__l10n_cl_dte_resolution_number
 #: model:ir.model.fields,help:l10n_cl_edi.field_res_config_settings__l10n_cl_dte_resolution_number
-#: model:ir.model.fields,help:l10n_cl_edi.field_res_config_test__l10n_cl_dte_resolution_number
-msgid "This value must be provided and must appear in your pdf or printed tribute document, under the electronic stamp to be legally valid."
-msgstr "Este valor debe ser provisto y debe aparecer en su PDF o documento tributario impreso, debajo del timbre electrónica para que el mismo sea válido."
+msgid ""
+"This value must be provided and must appear in your pdf or printed tribute "
+"document, under the electronic stamp to be legally valid."
+msgstr ""
+"Este valor debe ser provisto y debe aparecer en su PDF o documento "
+"tributario impreso, debajo del timbre electrónica para que el mismo sea "
+"válido."
 
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "Ticket is not allowed, please contact your administrator to install the l10n_cl_edi_boletas module"
-msgstr "La Boleta no está permitida, por favor, contacte con su administrador para instalar el módulo l10n_cl_edi_boletas"
+msgid ""
+"Ticket is not allowed, please contact your administrator to install the "
+"l10n_cl_edi_boletas module"
+msgstr ""
+"La Boleta no está permitida, por favor, contacte con su administrador para "
+"instalar el módulo l10n_cl_edi_boletas"
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.barcode_stamp_footer
@@ -2345,7 +2478,9 @@ msgstr ""
 #: code:addons/l10n_cl_edi/models/res_company.py:0
 #, python-format
 msgid "To create demo CAF files, you must define the company VAT first."
-msgstr "Para crear archivos CAF de demo, debe tener predefinido el RUT de la compañía."
+msgstr ""
+"Para crear archivos CAF de demo, debe tener predefinido el RUT de la "
+"compañía."
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__res_company__l10n_cl_sii_regional_office__ur_toc
@@ -2359,6 +2494,9 @@ msgstr "Hora del Token"
 
 #. module: l10n_cl_edi
 #. odoo-python
+#: code:addons/l10n_cl_edi/models/l10n_cl_edi_util.py:0
+#: code:addons/l10n_cl_edi/models/l10n_cl_edi_util.py:0
+#: code:addons/l10n_cl_edi/models/l10n_cl_edi_util.py:0
 #: code:addons/l10n_cl_edi/models/l10n_cl_edi_util.py:0
 #, python-format
 msgid "Token cannot be generated. Please try again"
@@ -2378,8 +2516,12 @@ msgstr "Suba el archivo XML del CAF en este contenedor"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_l10n_cl_account_invoice_reference__reference_doc_code
-msgid "Use one of these codes for credit or debit notes that intend to change taxable data in the origin referred document"
-msgstr "Utilice uno de estos códigos para notas de crédito o débito que cambian datos imponibles en el documento original"
+msgid ""
+"Use one of these codes for credit or debit notes that intend to change "
+"taxable data in the origin referred document"
+msgstr ""
+"Utilice uno de estos códigos para notas de crédito o débito que cambian "
+"datos imponibles en el documento original"
 
 #. module: l10n_cl_edi
 #: model:ir.model,name:l10n_cl_edi.model_l10n_cl_edi_util
@@ -2405,15 +2547,19 @@ msgstr ""
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/fetchmail_server.py:0
 #, python-format
-msgid "Vendor Bill DTE has been generated for the following vendor: </br>"
-msgstr "El DTE del proveedor ha sido generado por el siguiente proveedor: </br>"
+msgid "Vendor Bill DTE has been generated for the following vendor:"
+msgstr "Se ha generado la factura de proveedor DTE para el siguiente proveedor:"
 
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/fetchmail_server.py:0
 #, python-format
-msgid "Vendor not found: You can generate this vendor manually with the following information: </br>"
-msgstr "Proveedor no encontrado: Ud. puede generar este proveedor manualmente con la siguiente información: </br>"
+msgid ""
+"Vendor not found: You can generate this vendor manually with the following "
+"information:"
+msgstr ""
+"Proveedor no encontrado: Puede generar este proveedor manualmente con la siguiente "
+"información:"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__res_company__l10n_cl_sii_regional_office__ur_vic
@@ -2447,15 +2593,22 @@ msgstr "Donde dice: %s debería decir: %s"
 #. odoo-python
 #: code:addons/l10n_cl_edi/wizard/account_move_debit.py:0
 #, python-format
-msgid "You can add a debit note only if the %s is accepted or objected by SII. "
-msgstr "Ud. puede agregar una nota de débito solo si este/a %s es aceptado/a por el SII. "
+msgid ""
+"You can add a debit note only if the %s is accepted or objected by SII. "
+msgstr ""
+"Ud. puede agregar una nota de débito solo si este/a %s es aceptado/a por el "
+"SII. "
 
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "You have not selected an invoicing service provider for your company. Please go to your company and select one"
-msgstr "No ha seleccionado un proveedor de facturación electrónica para su compañía. Por favor vaya a su compañía y seleccione uno"
+msgid ""
+"You have not selected an invoicing service provider for your company. Please"
+" go to your company and select one"
+msgstr ""
+"No ha seleccionado un proveedor de facturación electrónica para su compañía."
+" Por favor vaya a su compañía y seleccione uno"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_journal_point_of_sale_type
@@ -2489,8 +2642,14 @@ msgstr "Necesita proveer una razón para el reembolso. "
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "Your company has not an activity description configured. This is mandatory for electronic invoicing. Please go to your company and set the correct one (www.sii.cl - Mi SII)"
-msgstr "Su compañía no tiene descripción de la actividad configurada (giro). Esto es mandatorio para facturación electrónica. Por favor vaya a los datos de su compañía y establezca el valor correcto (www.sii.cl - Mi SII)"
+msgid ""
+"Your company has not an activity description configured. This is mandatory "
+"for electronic invoicing. Please go to your company and set the correct one "
+"(www.sii.cl - Mi SII)"
+msgstr ""
+"Su compañía no tiene descripción de la actividad configurada (giro). Esto es"
+" mandatorio para facturación electrónica. Por favor vaya a los datos de su "
+"compañía y establezca el valor correcto (www.sii.cl - Mi SII)"
 
 #. module: l10n_cl_edi
 #. odoo-python
@@ -2502,8 +2661,7 @@ msgstr "Aceptación"
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
-#, fuzzy, python-format
-#| msgid "Claim"
+#, python-format
 msgid "claim"
 msgstr "Reclamo"
 
@@ -2543,7 +2701,14 @@ msgstr "recepción de bienes o servicios RG 19.983"
 #. module: l10n_cl_edi
 #: model:mail.template,subject:l10n_cl_edi.l10n_cl_edi_email_template_invoice
 msgid "{{ object.company_id.name }} DTE (Ref {{ (object.name or 'n/a') }})"
-msgstr "{{ object.company_id.name }} Documento Tributario Electrónico (Ref {{ (object.name or 'n/a') }})"
+msgstr ""
+"{{ object.company_id.name }} Documento Tributario Electrónico (Ref {{ "
+"(object.name or 'n/a') }})"
+
+#. module: l10n_cl_edi
+#: model:ir.model.fields.selection,name:l10n_cl_edi.selection__res_company__l10n_cl_sii_regional_office__ur_nunoa
+msgid "Ñuñoa"
+msgstr ""
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.invoice_status_form_cl

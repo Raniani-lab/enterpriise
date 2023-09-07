@@ -4,18 +4,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server 16.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-09 09:25+0000\n"
-"PO-Revision-Date: 2022-11-09 10:26+0100\n"
-"Last-Translator: Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>\n"
+"POT-Creation-Date: 2023-09-07 08:28+0000\n"
+"PO-Revision-Date: 2023-09-07 08:28+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
-"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-"X-Generator: Poedit 2.3\n"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields.selection,name:l10n_mx_reports.selection__res_partner__l10n_mx_type_of_operation__03
@@ -33,12 +31,14 @@ msgid " 85 - Others"
 msgstr " 85 - Otros"
 
 #. module: l10n_mx_reports
+#. odoo-python
 #: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #, python-format
 msgid "Accounts with too much tags"
 msgstr "Cuentas con demasiadas etiquetas"
 
 #. module: l10n_mx_reports
+#. odoo-python
 #: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #, python-format
 msgid "Accounts without tag"
@@ -55,10 +55,12 @@ msgid "Attachment"
 msgstr "Adjunto"
 
 #. module: l10n_mx_reports
+#. odoo-python
+#: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #, python-format
 msgid "COA SAT (XML)"
-msgstr "COA SAT (XML)"
+msgstr ""
 
 #. module: l10n_mx_reports
 #: model:ir.model,name:l10n_mx_reports.model_res_partner
@@ -72,34 +74,18 @@ msgid "Country"
 msgstr "País"
 
 #. module: l10n_mx_reports
+#. odoo-python
 #: code:addons/l10n_mx_reports/models/account_diot.py:0
-#: model:account.report,name:l10n_mx_reports.diot_report
-#: model:account.report.expression,report_line_name:l10n_mx_reports.diot_report_line_counter
-#: model:account.report.expression,report_line_name:l10n_mx_reports.diot_report_line_country_code
-#: model:account.report.expression,report_line_name:l10n_mx_reports.diot_report_line_exempt
-#: model:account.report.expression,report_line_name:l10n_mx_reports.diot_report_line_importation_16
-#: model:account.report.expression,report_line_name:l10n_mx_reports.diot_report_line_operation_type_code
-#: model:account.report.expression,report_line_name:l10n_mx_reports.diot_report_line_paid_0
-#: model:account.report.expression,report_line_name:l10n_mx_reports.diot_report_line_paid_16
-#: model:account.report.expression,report_line_name:l10n_mx_reports.diot_report_line_paid_16_non_cred
-#: model:account.report.expression,report_line_name:l10n_mx_reports.diot_report_line_paid_8
-#: model:account.report.expression,report_line_name:l10n_mx_reports.diot_report_line_paid_8_non_cred
-#: model:account.report.expression,report_line_name:l10n_mx_reports.diot_report_line_partner_nationality
-#: model:account.report.expression,report_line_name:l10n_mx_reports.diot_report_line_partner_vat_number
-#: model:account.report.expression,report_line_name:l10n_mx_reports.diot_report_line_refunds
-#: model:account.report.expression,report_line_name:l10n_mx_reports.diot_report_line_third_party_code
-#: model:account.report.expression,report_line_name:l10n_mx_reports.diot_report_line_withheld
-#: model:account.report.line,name:l10n_mx_reports.diot_report_line
-#: model:ir.actions.client,name:l10n_mx_reports.action_account_report_diot
 #, python-format
 msgid "DIOT"
-msgstr "DIOT"
+msgstr ""
 
 #. module: l10n_mx_reports
+#. odoo-python
 #: code:addons/l10n_mx_reports/models/account_diot.py:0
 #, python-format
 msgid "DIOT (txt)"
-msgstr "DIOT (txt)"
+msgstr ""
 
 #. module: l10n_mx_reports
 #: model_terms:ir.ui.view,arch_db:l10n_mx_reports.res_partner_account_diot_form_oml
@@ -107,16 +93,18 @@ msgid "DIOT Information"
 msgstr "Información DIOT"
 
 #. module: l10n_mx_reports
+#. odoo-python
 #: code:addons/l10n_mx_reports/models/account_diot.py:0
 #, python-format
 msgid "DPIVA"
-msgstr "DPIVA"
+msgstr ""
 
 #. module: l10n_mx_reports
+#. odoo-python
 #: code:addons/l10n_mx_reports/models/account_diot.py:0
 #, python-format
 msgid "DPIVA (txt)"
-msgstr "DPIVA (txt)"
+msgstr ""
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__demonym
@@ -124,26 +112,22 @@ msgid "Demonym"
 msgstr "Demónimo"
 
 #. module: l10n_mx_reports
-#: model:account.report.column,name:l10n_mx_reports.diot_report_exempt
-msgid "Exempt"
-msgstr "Exento"
-
-#. module: l10n_mx_reports
-#: model:account.report.column,name:l10n_mx_reports.diot_report_importation_16
-msgid "Importation 16%"
-msgstr "Importación 16%"
-
-#. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__l10n_mx_type_of_operation
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_users__l10n_mx_type_of_operation
-msgid "Indicate the operations type that makes this supplier. Is the second column in DIOT report"
-msgstr "Indique el tipo de operaciones que realiza este proveedor. Es la segunda columna del informe DIOT"
+msgid ""
+"The type of operations that this supplier performs. This is the second column in DIOT report"
+msgstr ""
+"Indique el tipo de operaciones que realiza este proveedor. Es la segunda "
+"columna del informe DIOT"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__l10n_mx_type_of_third
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_users__l10n_mx_type_of_third
-msgid "Indicate the type of third that is the supplier. Is the first column in DIOT report."
-msgstr "Indique el tipo de tercero que es el proveedor. Es la primera columna del informe DIOT."
+msgid ""
+"Describes what type of third party the supplier is. This is the first column in DIOT report."
+msgstr ""
+"Indique el tipo de tercero que es el proveedor. Es la primera columna del "
+"informe DIOT."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__l10n_mx_nationality
@@ -152,23 +136,10 @@ msgid "L10N Mx Nationality"
 msgstr "Nacionalidad"
 
 #. module: l10n_mx_reports
-#: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__l10n_mx_type_of_operation
-#: model:ir.model.fields,field_description:l10n_mx_reports.field_res_users__l10n_mx_type_of_operation
-msgid "L10N Mx Type Of Operation"
-msgstr "Tipo de Operación"
-
-#. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__l10n_mx_type_of_third
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_users__l10n_mx_type_of_third
 msgid "L10N Mx Type Of Third"
 msgstr "Tipo de Tercero"
-
-#. module: l10n_mx_reports
-#: model:ir.actions.server,name:l10n_mx_reports.ir_cron_load_xsd_file_ir_actions_server
-#: model:ir.cron,cron_name:l10n_mx_reports.ir_cron_load_xsd_file
-#: model:ir.cron,name:l10n_mx_reports.ir_cron_load_xsd_file
-msgid "Load XSD File (Mexican reports)"
-msgstr "Cargar archivo XSD (informes mexicanos)"
 
 #. module: l10n_mx_reports
 #: model:ir.model,name:l10n_mx_reports.model_l10n_mx_report_handler
@@ -176,15 +147,12 @@ msgid "Mexican Account Report Custom Handler"
 msgstr "Manejador personalizado de informes de cuentas mexicanas"
 
 #. module: l10n_mx_reports
-#: model:ir.ui.menu,name:l10n_mx_reports.account_reports_legal_mexican_statements_menu
-msgid "Mexico"
-msgstr "México"
-
-#. module: l10n_mx_reports
+#. odoo-python
 #: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #, python-format
 msgid "Missing Debit or Credit balance account tag in database."
-msgstr "Falta la etiqueta de cuenta de saldo deudor o acreedor en la base de datos."
+msgstr ""
+"Falta la etiqueta de cuenta de saldo deudor o acreedor en la base de datos."
 
 #. module: l10n_mx_reports
 #: model:account.report.column,name:l10n_mx_reports.diot_report_partner_nationality
@@ -194,99 +162,94 @@ msgstr "Nacionalidad"
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__l10n_mx_nationality
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_users__l10n_mx_nationality
-msgid "Nationality based in the supplier country. Is the seventh column in DIOT report"
-msgstr "Nacionalidad basada en el país proveedor. Es la séptima columna del informe DIOT"
+msgid ""
+"Nationality based in the supplier country. Is the seventh column in DIOT "
+"report"
+msgstr ""
+"Nacionalidad basada en el país proveedor. Es la séptima columna del informe "
+"DIOT"
 
 #. module: l10n_mx_reports
+#. odoo-python
+#: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #, python-format
 msgid "Only Mexican company can generate SAT report."
 msgstr "Sólo empresa mexicana puede generar informe del SAT."
 
 #. module: l10n_mx_reports
-#: model:account.report.column,name:l10n_mx_reports.diot_report_paid_0
-msgid "Paid 0%"
-msgstr "Pagado 0%"
-
-#. module: l10n_mx_reports
-#: model:account.report.column,name:l10n_mx_reports.diot_report_paid_16
-msgid "Paid 16%"
-msgstr "Pagado 16%"
-
-#. module: l10n_mx_reports
-#: model:account.report.column,name:l10n_mx_reports.diot_report_paid_16_non_cred
-msgid "Paid 16% - Non-Creditable"
-msgstr "Pagado 16% - No acreditable"
-
-#. module: l10n_mx_reports
-#: model:account.report.column,name:l10n_mx_reports.diot_report_paid_8
-msgid "Paid 8 %"
-msgstr "Pagado 8 %"
-
-#. module: l10n_mx_reports
-#: model:account.report.column,name:l10n_mx_reports.diot_report_paid_8_non_cred
-msgid "Paid 8 % - Non-Creditable"
-msgstr "Pagado 8 % - No acreditable"
-
-#. module: l10n_mx_reports
+#. odoo-python
 #: code:addons/l10n_mx_reports/models/account_diot.py:0
 #, python-format
 msgid "Partner missing informations"
 msgstr "Información que falta a los socios"
 
 #. module: l10n_mx_reports
-#: model:account.report.column,name:l10n_mx_reports.diot_report_refunds
-msgid "Refunds"
-msgstr "Reembolsos"
-
-#. module: l10n_mx_reports
+#. odoo-python
+#: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #, python-format
 msgid "SAT (XML)"
-msgstr "SAT (XML)"
+msgstr ""
 
 #. module: l10n_mx_reports
+#. odoo-python
 #: code:addons/l10n_mx_reports/models/account_diot.py:0
 #, python-format
 msgid "See the list of partners"
 msgstr "Ver la lista de socios"
 
 #. module: l10n_mx_reports
+#. odoo-python
+#: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #, python-format
 msgid "Show list"
 msgstr "Mostrar lista"
 
 #. module: l10n_mx_reports
+#. odoo-python
 #: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #, python-format
-msgid "Some account prefixes used in your trial balance use both Debit and Credit balance account tags. This is not allowed."
-msgstr "Algunos prefijos de cuenta utilizados en su balance de sumas y saldos utilizan a la vez etiquetas de cuenta de saldo deudor y acreedor. Esto no está permitido."
+msgid ""
+"Some account prefixes used in your trial balance use both Debit and Credit "
+"balance account tags. This is not allowed."
+msgstr ""
+"Algunos prefijos de cuenta utilizados en su balance de sumas y saldos "
+"utilizan a la vez etiquetas de cuenta de saldo deudor y acreedor. Esto no "
+"está permitido."
 
 #. module: l10n_mx_reports
+#. odoo-python
 #: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #, python-format
-msgid "Some accounts present in your trial balance don't have a Debit or a Credit balance account tag."
-msgstr "Algunas cuentas presentes en su balance de sumas y saldos no tienen una etiqueta de cuenta deudora o acreedora de saldo."
+msgid ""
+"Some accounts present in your trial balance don't have a Debit or a Credit "
+"balance account tag."
+msgstr ""
+"Algunas cuentas presentes en su balance de sumas y saldos no tienen una "
+"etiqueta de cuenta deudora o acreedora de saldo."
 
 #. module: l10n_mx_reports
+#. odoo-python
 #: code:addons/l10n_mx_reports/models/account_diot.py:0
 #, python-format
-msgid "The report cannot be generated because some partners are missing a valid RFC or type of operation"
-msgstr "El informe no se puede generar porque a algunos interlocutores les falta un RFC válido o tipo de operación"
-
-#. module: l10n_mx_reports
-#: model:ir.ui.menu,name:l10n_mx_reports.menu_action_account_report_diot
-msgid "Transactions with third parties [ DIOT ]"
-msgstr "Transacciones con terceros [DIOT]"
+msgid ""
+"The report cannot be generated because some partners are missing a valid RFC"
+" or type of operation"
+msgstr ""
+"El informe no se puede generar porque a algunos interlocutores les falta un "
+"RFC válido o tipo de operación"
 
 #. module: l10n_mx_reports
 #: model:ir.model,name:l10n_mx_reports.model_account_trial_balance_report_handler
 msgid "Trial Balance Custom Handler"
-msgstr "Balance de Sumas y Saldos Gestor Personalizado"
+msgstr "Gestor personalizado de saldos de prueba"
 
 #. module: l10n_mx_reports
 #: model:account.report.column,name:l10n_mx_reports.diot_operation_type
+#: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__l10n_mx_type_of_operation
+#: model:ir.model.fields,field_description:l10n_mx_reports.field_res_users__l10n_mx_type_of_operation
 msgid "Type of Operation"
 msgstr "Tipo de Operación"
 
@@ -301,12 +264,9 @@ msgid "VAT"
 msgstr "RFC"
 
 #. module: l10n_mx_reports
-#: model:account.report.column,name:l10n_mx_reports.diot_report_withheld
-msgid "Withheld"
-msgstr "Retenido"
-
-#. module: l10n_mx_reports
+#. odoo-python
 #: code:addons/l10n_mx_reports/models/account_diot.py:0
 #, python-format
 msgid "You can only export one period at a time with this file format!"
-msgstr "Con este formato de archivo sólo se puede exportar un periodo cada vez."
+msgstr ""
+"Con este formato de archivo sólo se puede exportar un periodo cada vez."

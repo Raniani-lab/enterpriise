@@ -1,44 +1,19 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#     * l10n_pe_edi_stock
+# 	* l10n_pe_edi_stock
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server 16.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-20 17:29+0000\n"
-"PO-Revision-Date: 2022-05-20 17:27+0000\n"
+"POT-Creation-Date: 2023-09-07 09:59+0000\n"
+"PO-Revision-Date: 2023-09-07 09:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: l10n_pe_edi_stock
-#: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_partner__l10n_pe_edi_operator_license
-#: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_users__l10n_pe_edi_operator_license
-msgid "(Applicable only for drivers) This person's driver's license number, for generating the Delivery Guide."
-msgstr "(Aplica solo para choferes) Número de licencia de conducir de esta persona, para generar la Guía de Entrega."
-
-#. module: l10n_pe_edi_stock
-#: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_partner__l10n_pe_edi_mtc_number
-#: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_users__l10n_pe_edi_mtc_number
-msgid "(Applicable only for transport companies) The company's MTC registration number, for generating the Delivery Guide."
-msgstr "(Aplica solo para empresas de transporte) Número de registro MTC de la empresa, para generar la Guía de Remisión."
-
-#. module: l10n_pe_edi_stock
-#: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_partner__l10n_pe_edi_authorization_number
-#: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_users__l10n_pe_edi_authorization_number
-msgid "(Applicable only for transport companies) The company's special authorization number, for generating the Delivery Guide."
-msgstr "(Aplica solo para empresas de transporte) El número de autorización especial de la empresa, para generar la Guía de Remisión."
-
-#. module: l10n_pe_edi_stock
-#: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_partner__l10n_pe_edi_authorization_issuing_entity
-#: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_users__l10n_pe_edi_authorization_issuing_entity
-msgid "(Applicable only for transport companies) The issuing entity of the company's special authorization number, for generating the Delivery Guide."
-msgstr "(Aplicable solo para empresas de transporte) La entidad emisora del número de autorización especial de la empresa, para la generación de la Guía de Remisión."
 
 #. module: l10n_pe_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_pe_edi_stock.l10n_pe_edi_guiaremision_report_delivery_document
@@ -77,8 +52,12 @@ msgstr "<strong>Número de autorización especial:</strong>"
 
 #. module: l10n_pe_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_pe_edi_stock.l10n_pe_edi_guiaremision_report_delivery_document
-msgid "<strong>This document is a printed representation of a Guía de Remisión. Please review in www.sunat.gob.pe</strong>"
-msgstr "<strong>Este documento es una representación impresa de la Guía de Remisión. Favor de consultarlo en www.sunat.gob.pe</strong>"
+msgid ""
+"<strong>This document is a printed representation of a Guía de Remisión. "
+"Please review in www.sunat.gob.pe</strong>"
+msgstr ""
+"<strong>Este documento es una representación impresa de la Guía de Remisión."
+" Favor de consultarlo en www.sunat.gob.pe</strong>"
 
 #. module: l10n_pe_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_pe_edi_stock.l10n_pe_edi_guiaremision_report_delivery_document
@@ -88,7 +67,9 @@ msgstr "<strong>Fecha de inicio del traslado</strong>"
 #. module: l10n_pe_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_pe_edi_stock.l10n_pe_edi_guiaremision_report_delivery_document
 msgid "<strong>Transfer indicator in M1 or L category vehicles:</strong>"
-msgstr "<strong>Indicador de transferencia en vehículos de categoría M1 o L:</strong>"
+msgstr ""
+"<strong>Indicador de transferencia en vehículos de categoría M1 o "
+"L:</strong>"
 
 #. module: l10n_pe_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_pe_edi_stock.l10n_pe_edi_guiaremision_report_delivery_document
@@ -99,8 +80,12 @@ msgstr "<strong>Tipo de transporte</strong>"
 #. odoo-python
 #: code:addons/l10n_pe_edi_stock/models/stock_picking.py:0
 #, python-format
-msgid "A delivery guide with this number is already registered with SUNAT. Click on 'Retry' to try sending with a new number."
-msgstr "Una guía de entrega con este número ya está registrada en la SUNAT. Haga clic en 'Reintentar' para intentar enviar con un nuevo número."
+msgid ""
+"A delivery guide with this number is already registered with SUNAT. Click on"
+" 'Retry' to try sending with a new number."
+msgstr ""
+"Una guía de entrega con este número ya está registrada en la SUNAT. Haga "
+"clic en 'Reintentar' para intentar enviar con un nuevo número."
 
 #. module: l10n_pe_edi_stock
 #. odoo-python
@@ -116,8 +101,14 @@ msgstr "Agregar un nuevo vehículo para la guía de remisión de PE"
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,help:l10n_pe_edi_stock.field_stock_picking__l10n_pe_edi_observation
-msgid "Additional information to be displayed in the Delivery Slip in order to clarify or complement information about the transferred products. Maximum length: 250 characters."
-msgstr "Información adicional a exhibir en el Albarán de Entrega con el fin de aclarar o complementar información sobre los productos transferidos. Longitud máxima: 250 caracteres."
+msgid ""
+"Additional information to be displayed in the Delivery Slip in order to "
+"clarify or complement information about the transferred products. Maximum "
+"length: 250 characters."
+msgstr ""
+"Información adicional a exhibir en el Albarán de Entrega con el fin de "
+"aclarar o complementar información sobre los productos transferidos. "
+"Longitud máxima: 250 caracteres."
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields.selection,name:l10n_pe_edi_stock.selection__product_template__l10n_pe_edi_tariff_fraction__2207200010
@@ -151,12 +142,16 @@ msgstr ""
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields.selection,name:l10n_pe_edi_stock.selection__stock_picking__l10n_pe_edi_related_document_type__66
-msgid "Autorización de Circulación para transporte de carga y mercancías en Lima Metropolitana"
+msgid ""
+"Autorización de Circulación para transporte de carga y mercancías en Lima "
+"Metropolitana"
 msgstr ""
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields.selection,name:l10n_pe_edi_stock.selection__stock_picking__l10n_pe_edi_related_document_type__76
-msgid "Autorización para manejo y recojo de residuos sólidos peligrosos y no peligrosos"
+msgid ""
+"Autorización para manejo y recojo de residuos sólidos peligrosos y no "
+"peligrosos"
 msgstr ""
 
 #. module: l10n_pe_edi_stock
@@ -191,7 +186,9 @@ msgstr "Azúcar de caña"
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields.selection,name:l10n_pe_edi_stock.selection__stock_picking__l10n_pe_edi_related_document_type__77
-msgid "Certificado fitosanitario la movilización de plantas, productos vegetales, y otros artículos reglamentados"
+msgid ""
+"Certificado fitosanitario la movilización de plantas, productos vegetales, y"
+" otros artículos reglamentados"
 msgstr ""
 
 #. module: l10n_pe_edi_stock
@@ -224,12 +221,16 @@ msgstr ""
 #. module: l10n_pe_edi_stock
 #: model:ir.model,name:l10n_pe_edi_stock.model_res_config_settings
 msgid "Config Settings"
-msgstr "Opciones de Configuración"
+msgstr "Opciones de configuración"
 
 #. module: l10n_pe_edi_stock
-#: model_terms:ir.ui.view,arch_db:l10n_pe_edi_stock.res_config_settings_form_inherit_l10n_pe_edi_stock
-msgid "Configure SUNAT API credentials for delivery guide. Please be aware that there is no testing environment for delivery guide."
-msgstr "Configurar credenciales API SUNAT para guía de remisión. Tenga en cuenta que no hay un entorno de prueba para la guía de remisión."
+#: model_terms:ir.ui.view,arch_db:l10n_pe_edi_stock.res_config_settings_form_inherit_l10n_pe_edi
+msgid ""
+"Configure SUNAT API credentials for delivery guide. Please be aware that "
+"there is no testing environment for delivery guide."
+msgstr ""
+" Configure las credenciales de la API de SUNAT para la guía de entrega. Tenga en cuenta que "
+"no existe un entorno de pruebas para la guía de entrega."
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields.selection,name:l10n_pe_edi_stock.selection__stock_picking__l10n_pe_edi_reason_for_transfer__05
@@ -270,7 +271,8 @@ msgstr "No se pudo descomprimir el archivo ZIP recibido de SUNAT."
 #: code:addons/l10n_pe_edi_stock/models/stock_picking.py:0
 #, python-format
 msgid "Could not identify content in the response retrieved from SUNAT."
-msgstr "No se pudo identificar el contenido en la respuesta recuperada de la SUNAT."
+msgstr ""
+"No se pudo identificar el contenido en la respuesta recuperada de la SUNAT."
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,field_description:l10n_pe_edi_stock.field_stock_picking__country_code
@@ -285,12 +287,12 @@ msgstr "Crea el primer vehículo"
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,field_description:l10n_pe_edi_stock.field_l10n_pe_edi_vehicle__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creado por"
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,field_description:l10n_pe_edi_stock.field_l10n_pe_edi_vehicle__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creado el"
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields.selection,name:l10n_pe_edi_stock.selection__stock_picking__l10n_pe_edi_related_document_type__81
@@ -348,6 +350,9 @@ msgstr "Constancia de recepcion (CDR) para la transferencia %s"
 
 #. module: l10n_pe_edi_stock
 #. odoo-python
+#: code:addons/l10n_pe_edi_stock/models/stock_picking.py:0
+#: code:addons/l10n_pe_edi_stock/models/stock_picking.py:0
+#: code:addons/l10n_pe_edi_stock/models/stock_picking.py:0
 #: code:addons/l10n_pe_edi_stock/models/stock_picking.py:0
 #, python-format
 msgid "Details:"
@@ -451,7 +456,9 @@ msgstr ""
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields.selection,name:l10n_pe_edi_stock.selection__stock_picking__l10n_pe_edi_related_document_type__68
-msgid "Habilitación Sanitaria de Transporte Terrestre de Productos Pesqueros y Acuícolas"
+msgid ""
+"Habilitación Sanitaria de Transporte Terrestre de Productos Pesqueros y "
+"Acuícolas"
 msgstr ""
 
 #. module: l10n_pe_edi_stock
@@ -466,8 +473,12 @@ msgstr "ID (identificación)"
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,help:l10n_pe_edi_stock.field_l10n_pe_edi_vehicle__operator_id
-msgid "If set, this person will be auto-filled as the vehicle operator when selecting this vehicle in a transfer."
-msgstr "Este valor será utilizado por defecto en la transferencia. Se recomienda definir este valor cuando el vehículo tiene siempre el mismo operador."
+msgid ""
+"If set, this person will be auto-filled as the vehicle operator when "
+"selecting this vehicle in a transfer."
+msgstr ""
+"Este valor será utilizado por defecto en la transferencia. Se recomienda "
+"definir este valor cuando el vehículo tiene siempre el mismo operador."
 
 #. module: l10n_pe_edi_stock
 #. odoo-python
@@ -488,13 +499,13 @@ msgstr "Emisor ambulante traslado CP"
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,field_description:l10n_pe_edi_stock.field_l10n_pe_edi_vehicle__write_uid
-msgid "Last Updated by"
-msgstr ""
+msgid "Última actualización por"
+msgstr "Última actualización"
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,field_description:l10n_pe_edi_stock.field_l10n_pe_edi_vehicle__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Última actualización el"
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,field_description:l10n_pe_edi_stock.field_l10n_pe_edi_vehicle__license_plate
@@ -563,8 +574,12 @@ msgstr "Servicio Nacional Forestal y de Fauna Silvestre"
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields.selection,name:l10n_pe_edi_stock.selection__l10n_pe_edi_vehicle__authorization_issuing_entity__01
 #: model:ir.model.fields.selection,name:l10n_pe_edi_stock.selection__res_partner__l10n_pe_edi_authorization_issuing_entity__01
-msgid "National Superintendency for the Control of Security Services, Weapons, Ammunition and Explosives for Civil Use"
-msgstr "Superintendencia Nacional para el Control de los Servicios de Seguridad, Armas, Municiones y Explosivos de Uso Civil"
+msgid ""
+"National Superintendency for the Control of Security Services, Weapons, "
+"Ammunition and Explosives for Civil Use"
+msgstr ""
+"Superintendencia Nacional para el Control de los Servicios de Seguridad, "
+"Armas, Municiones y Explosivos de Uso Civil"
 
 #. module: l10n_pe_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_pe_edi_stock.l10n_pe_edi_guiaremision_report_delivery_document
@@ -590,8 +605,12 @@ msgstr "Notas:"
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,help:l10n_pe_edi_stock.field_stock_picking__l10n_pe_edi_ticket_number
-msgid "Number issued by SUNAT when sending the delivery guide, used to retrieve the CDR."
-msgstr "Número emitido por la SUNAT al enviar la guía de entrega, utilizado para recuperar laCDR."
+msgid ""
+"Number issued by SUNAT when sending the delivery guide, used to retrieve the"
+" CDR."
+msgstr ""
+"Número emitido por la SUNAT al enviar la guía de entrega, utilizado para "
+"recuperar laCDR."
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,field_description:l10n_pe_edi_stock.field_stock_picking__l10n_pe_edi_observation
@@ -631,7 +650,7 @@ msgstr "Guía de Remisión PE"
 #. module: l10n_pe_edi_stock
 #: model:ir.model,name:l10n_pe_edi_stock.model_l10n_pe_edi_vehicle
 msgid "PE EDI Vehicle"
-msgstr ""
+msgstr "Vehículo PE EDI"
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_company__l10n_pe_edi_stock_client_password
@@ -646,7 +665,8 @@ msgstr ""
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields.selection,name:l10n_pe_edi_stock.selection__stock_picking__l10n_pe_edi_related_document_type__67
-msgid "Permiso de Operación Especial para el servicio de transporte de MATPEL - MTC"
+msgid ""
+"Permiso de Operación Especial para el servicio de transporte de MATPEL - MTC"
 msgstr ""
 
 #. module: l10n_pe_edi_stock
@@ -656,16 +676,61 @@ msgid "Peru"
 msgstr "Perú"
 
 #. module: l10n_pe_edi_stock
-#: model_terms:ir.ui.view,arch_db:l10n_pe_edi_stock.res_config_settings_form_inherit_l10n_pe_edi_stock
+#: model_terms:ir.ui.view,arch_db:l10n_pe_edi_stock.res_config_settings_form_inherit_l10n_pe_edi
 msgid "Peru Delivery Guide"
-msgstr "Guía de Remisión Perú"
+msgstr "Guía de envíos a Perú"
+
+#. module: l10n_pe_edi_stock
+#: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_partner__l10n_pe_edi_authorization_number
+#: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_users__l10n_pe_edi_authorization_number
+msgid "Peru: Authorization number for the transportation of the goods."
+msgstr ""
+"(Aplica solo para empresas de transporte) El número de autorización especial"
+" de la empresa, para generar la Guía de Remisión."
+
+#. module: l10n_pe_edi_stock
+#: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_partner__l10n_pe_edi_authorization_issuing_entity
+#: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_users__l10n_pe_edi_authorization_issuing_entity
+msgid ""
+"Peru: Entity issuing the special authorization for the transportation of the"
+" goods."
+msgstr ""
+"(Aplicable solo para empresas de transporte) La entidad emisora del número "
+"de autorización especial de la empresa, para la generación de la Guía de "
+"Remisión."
+
+#. module: l10n_pe_edi_stock
+#: model:ir.model.fields,help:l10n_pe_edi_stock.field_product_product__l10n_pe_edi_tariff_fraction
+#: model:ir.model.fields,help:l10n_pe_edi_stock.field_product_template__l10n_pe_edi_tariff_fraction
+msgid ""
+"Peru: The tariff fraction of the product. This takes the form of the HS Code of the corresponding description."
+msgstr "El número de partida arancelaria correspondiente al producto."
+
+#. module: l10n_pe_edi_stock
+#: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_partner__l10n_pe_edi_mtc_number
+#: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_users__l10n_pe_edi_mtc_number
+msgid "Peru: Ministry of Transport and Communication Registration Number."
+msgstr ""
+"(Aplica solo para empresas de transporte) Número de registro MTC de la "
+"empresa, para generar la Guía de Remisión."
+
+#. module: l10n_pe_edi_stock
+#: model:ir.model.fields,help:l10n_pe_edi_stock.field_stock_picking__l10n_pe_edi_transport_type
+msgid ""
+"Peru: Select if transport is internal (private: own company) or external "
+"(public: transport company)."
+msgstr ""
+"Perú: Seleccione si el transporte es interno (privado: empresa propia) o externo "
+"(público: empresa de transporte)."
 
 #. module: l10n_pe_edi_stock
 #. odoo-python
 #: code:addons/l10n_pe_edi_stock/models/stock_picking.py:0
 #, python-format
 msgid "Please set a Delivery Address as the delivery guide needs one."
-msgstr "La dirección de entrega es un campo requerido en la Guía de Remisión, favor de especificarla"
+msgstr ""
+"La dirección de entrega es un campo requerido en la Guía de Remisión, favor "
+"de especificarla"
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields.selection,name:l10n_pe_edi_stock.selection__stock_picking__l10n_pe_edi_transport_type__02
@@ -776,9 +841,9 @@ msgid "Special Authorization Issuing Entity"
 msgstr "Entidad Emisora de Autorización Especial"
 
 #. module: l10n_pe_edi_stock
-#: model_terms:ir.ui.view,arch_db:l10n_pe_edi_stock.res_config_settings_form_inherit_l10n_pe_edi_stock
+#: model_terms:ir.ui.view,arch_db:l10n_pe_edi_stock.res_config_settings_form_inherit_l10n_pe_edi
 msgid "Sunat Delivery Guide API"
-msgstr "API SUNAT Guia de Remisión"
+msgstr "Sunat Guía de entrega API"
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,field_description:l10n_pe_edi_stock.field_product_product__l10n_pe_edi_tariff_fraction
@@ -788,8 +853,11 @@ msgstr "Partida Arancelaria (PE)"
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_company__l10n_pe_edi_stock_token
-msgid "Temporary authentication token used for accessing the SUNAT API endpoints."
-msgstr "Token de autenticación temporal utilizado para acceder a los puntos finales de la API de SUNAT."
+msgid ""
+"Temporary authentication token used for accessing the SUNAT API endpoints."
+msgstr ""
+"Token de autenticación temporal utilizado para acceder a los puntos finales "
+"de la API de SUNAT."
 
 #. module: l10n_pe_edi_stock
 #. odoo-python
@@ -819,7 +887,9 @@ msgstr "Favor de incluir el Distrito en el contacto del cliente."
 #: code:addons/l10n_pe_edi_stock/models/stock_picking.py:0
 #, python-format
 msgid "The company's ID type must be set to RUC on the company contact page."
-msgstr "El tipo de identificación de la empresa debe establecerse en RUC en la página de contacto de la empresa."
+msgstr ""
+"El tipo de identificación de la empresa debe establecerse en RUC en la "
+"página de contacto de la empresa."
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,help:l10n_pe_edi_stock.field_stock_picking__l10n_pe_edi_departure_start_date
@@ -830,8 +900,12 @@ msgstr "La fecha en la que se espera que comience la transferencia."
 #. odoo-python
 #: code:addons/l10n_pe_edi_stock/models/stock_picking.py:0
 #, python-format
-msgid "The delivery guide is being processed by SUNAT. Click on 'Retry' to refresh the state."
-msgstr "La guía de remision está siendo procesada por la SUNAT. Haga clic en 'Reintentar' para actualizar el estado."
+msgid ""
+"The delivery guide is being processed by SUNAT. Click on 'Retry' to refresh "
+"the state."
+msgstr ""
+"La guía de remision está siendo procesada por la SUNAT. Haga clic en "
+"'Reintentar' para actualizar el estado."
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,help:l10n_pe_edi_stock.field_l10n_pe_edi_vehicle__authorization_issuing_entity
@@ -839,7 +913,7 @@ msgid "The issuing entity of the vehicle's special authorization"
 msgstr "La entidad emisora de la autorización especial del vehículo"
 
 #. module: l10n_pe_edi_stock
-#: model:ir.model.fields,help:l10n_pe_edi_stock.field_stock_picking__l10n_pe_edi_document_number
+#: model:ir.model.fields,help:l10n_pe_edi_stock.field_stock_picking__l10n_latam_document_number
 msgid "The number of the related document."
 msgstr "El número del documento relacionado."
 
@@ -863,15 +937,13 @@ msgid "The origin address must have a defined street."
 msgstr "La dirección de origen debe tener una calle definida."
 
 #. module: l10n_pe_edi_stock
-#: model:ir.model.fields,help:l10n_pe_edi_stock.field_product_product__l10n_pe_edi_tariff_fraction
-#: model:ir.model.fields,help:l10n_pe_edi_stock.field_product_template__l10n_pe_edi_tariff_fraction
-msgid "The tariff fraction number corresponding to the product."
-msgstr "El número de partida arancelaria correspondiente al producto."
-
-#. module: l10n_pe_edi_stock
 #: model:ir.model.fields,help:l10n_pe_edi_stock.field_stock_picking__l10n_pe_edi_operator_id
-msgid "The transport provider in case of public transport, else the internal operator."
-msgstr "Si el transporte es público, favor de especificar el proveedor de transporte o bien el operador interno."
+msgid ""
+"The transport provider in case of public transport, else the internal "
+"operator."
+msgstr ""
+"Si el transporte es público, favor de especificar el proveedor de transporte"
+" o bien el operador interno."
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,help:l10n_pe_edi_stock.field_stock_picking__l10n_pe_edi_related_document_type
@@ -884,6 +956,15 @@ msgstr "El tipo del documento relacionado."
 #, python-format
 msgid "There was an error communicating with the SUNAT service."
 msgstr "Hubo un error de comunicación con el servicio SUNAT."
+
+#. module: l10n_pe_edi_stock
+#: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_partner__l10n_pe_edi_operator_license
+#: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_users__l10n_pe_edi_operator_license
+msgid ""
+"This person's driver's license number, for generating the Delivery Guide."
+msgstr ""
+"(Aplica solo para choferes) Número de licencia de conducir de esta persona, "
+"para generar la Guía de Entrega."
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,field_description:l10n_pe_edi_stock.field_stock_picking__l10n_pe_edi_ticket_number
@@ -906,6 +987,11 @@ msgid "Transfer"
 msgstr "Albarán"
 
 #. module: l10n_pe_edi_stock
+#: model:ir.model.fields,field_description:l10n_pe_edi_stock.field_stock_picking__l10n_pe_edi_departure_start_date
+msgid "Transfer Start Date"
+msgstr "Fecha de inicio del traslado"
+
+#. module: l10n_pe_edi_stock
 #: model:ir.model.fields.selection,name:l10n_pe_edi_stock.selection__stock_picking__l10n_pe_edi_reason_for_transfer__04
 msgid "Transfer between establishments of the same company"
 msgstr "Transferencias entre establecimientos de la misma empresa"
@@ -914,11 +1000,6 @@ msgstr "Transferencias entre establecimientos de la misma empresa"
 #: model:ir.model.fields.selection,name:l10n_pe_edi_stock.selection__stock_picking__l10n_pe_edi_reason_for_transfer__17
 msgid "Transfer of goods for transformation"
 msgstr "Transferencia de bienes para transformación"
-
-#. module: l10n_pe_edi_stock
-#: model:ir.model.fields,field_description:l10n_pe_edi_stock.field_stock_picking__l10n_pe_edi_departure_start_date
-msgid "Transfer start date"
-msgstr "Fecha de inicio del traslado"
 
 #. module: l10n_pe_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_pe_edi_stock.view_picking_edi_form
@@ -932,13 +1013,21 @@ msgstr "Tipo de transporte"
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields.selection,name:l10n_pe_edi_stock.selection__product_template__l10n_pe_edi_tariff_fraction__2207100000
-msgid "Undenatured ethyl alcohol with an alcoholic strength by volume of at least 80% vol"
-msgstr "Alcohol etílico sin desnaturalizar con grado alcohólico volumétrico superior o igual al 80 % vol"
+msgid ""
+"Undenatured ethyl alcohol with an alcoholic strength by volume of at least "
+"80% vol"
+msgstr ""
+"Alcohol etílico sin desnaturalizar con grado alcohólico volumétrico superior"
+" o igual al 80 % vol"
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields.selection,name:l10n_pe_edi_stock.selection__product_template__l10n_pe_edi_tariff_fraction__2208901000
-msgid "Undenatured ethyl alcohol with an alcoholic strength by volume of less than 80% vol"
-msgstr "Alcohol etílico sin desnaturalizar con grado alcohólico volumétrico inferior al 80% vol"
+msgid ""
+"Undenatured ethyl alcohol with an alcoholic strength by volume of less than "
+"80% vol"
+msgstr ""
+"Alcohol etílico sin desnaturalizar con grado alcohólico volumétrico inferior"
+" al 80% vol"
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,help:l10n_pe_edi_stock.field_res_company__l10n_pe_edi_stock_client_username
@@ -974,8 +1063,14 @@ msgstr "Vehículos (PE)"
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields,help:l10n_pe_edi_stock.field_l10n_pe_edi_vehicle__is_m1l
-msgid "Whether the vehicle belongs to either of the M1 and L classes, i.e. motor vehicles with less than four wheels and motor vehicles for transporting passengers with no more than 8 seats."
-msgstr "Si el vehículo pertenece a cualquiera de las clases M1 y L, es decir, vehículos de menos de cuatro ruedas y vehículos para transportepasajeros con no más de 8 asientos."
+msgid ""
+"Whether the vehicle belongs to either of the M1 and L classes, i.e. motor "
+"vehicles with less than four wheels and motor vehicles for transporting "
+"passengers with no more than 8 seats."
+msgstr ""
+"Si el vehículo pertenece a cualquiera de las clases M1 y L, es decir, "
+"vehículos de menos de cuatro ruedas y vehículos para transportepasajeros con"
+" no más de 8 asientos."
 
 #. module: l10n_pe_edi_stock
 #: model:ir.model.fields.selection,name:l10n_pe_edi_stock.selection__product_template__l10n_pe_edi_tariff_fraction__1701910000
@@ -1020,7 +1115,9 @@ msgstr "Es necesario  seleccionar el vehículo de la transferencia."
 #: code:addons/l10n_pe_edi_stock/models/stock_picking.py:0
 #, python-format
 msgid "You must select a transport type to generate the delivery guide."
-msgstr "Es necesario seleccionar el Tipo de trasporte para generar la Guía de Remisión."
+msgstr ""
+"Es necesario seleccionar el Tipo de trasporte para generar la Guía de "
+"Remisión."
 
 #. module: l10n_pe_edi_stock
 #: model:ir.actions.act_window,name:l10n_pe_edi_stock.vehicle_list_action

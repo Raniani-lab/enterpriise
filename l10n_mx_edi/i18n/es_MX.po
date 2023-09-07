@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~16.4+e\n"
+"Project-Id-Version: Odoo Server 16.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-17 14:35+0000\n"
-"PO-Revision-Date: 2023-08-17 14:35+0000\n"
+"POT-Creation-Date: 2023-09-07 08:00+0000\n"
+"PO-Revision-Date: 2023-09-07 08:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -171,6 +171,7 @@ msgstr "Cuenta Ord."
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__g01
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__g01
 msgid "Acquisition of merchandise"
 msgstr "Adquisición de mercancías"
 
@@ -217,7 +218,7 @@ msgstr ""
 #: model:ir.model,name:l10n_mx_edi.model_ir_attachment
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_l10n_mx_edi_document__attachment_id
 msgid "Attachment"
-msgstr "Archivo adjunto"
+msgstr "Adjunto"
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.res_config_settings_view_form
@@ -418,10 +419,16 @@ msgstr ""
 #. module: l10n_mx_edi
 #: model:ir.model,name:l10n_mx_edi.model_res_company
 msgid "Companies"
-msgstr "Empresas"
+msgstr "Compañías"
+
+#. module: l10n_mx_edi
+#: model:ir.model.fields,field_description:l10n_mx_edi.field_l10n_mx_edi_certificate__company_id
+msgid "Company"
+msgstr ""
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__i04
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__i04
 msgid "Computer equipment and accessories"
 msgstr "Equipo de cómputo y accesorios"
 
@@ -443,6 +450,7 @@ msgstr ""
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__i01
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__i01
 msgid "Constructions"
 msgstr "Construcciones"
 
@@ -506,7 +514,7 @@ msgstr "Creado el"
 #: model:ir.model,name:l10n_mx_edi.model_res_currency
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document
 msgid "Currency"
-msgstr "Divisa"
+msgstr "Moneda"
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_account_bank_statement_line__l10n_mx_edi_cfdi_customer_rfc
@@ -535,6 +543,7 @@ msgstr ""
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__d09
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__d09
 msgid "Deposits in savings accounts, premiums based on pension plans."
 msgstr ""
 "Depósitos en cuentas para el ahorro, primas que tengan como base planes de "
@@ -542,6 +551,7 @@ msgstr ""
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__i05
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__i05
 msgid "Dices, dies, molds, matrices and tooling"
 msgstr "Dados, troqueles, moldes, matrices y herramental"
 
@@ -554,6 +564,7 @@ msgstr "Nombre mostrado"
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__d04
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__d04
 msgid "Donations"
 msgstr "Donativos"
 
@@ -627,6 +638,11 @@ msgid "Fiscal Regime is required for all partners (used in CFDI)"
 msgstr ""
 
 #. module: l10n_mx_edi
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.l10n_mx_fiscal_regime_receptor
+msgid "Fiscal Regime:"
+msgstr ""
+
+#. module: l10n_mx_edi
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_bank_statement_line__l10n_mx_edi_cfdi_uuid
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_move__l10n_mx_edi_cfdi_uuid
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_payment__l10n_mx_edi_cfdi_uuid
@@ -643,6 +659,7 @@ msgstr "Forzar CFDI"
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__d03
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__d03
 msgid "Funeral expenses"
 msgstr "Gastos funerales"
 
@@ -654,6 +671,7 @@ msgstr ""
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__g03
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__g03
 msgid "General expenses"
 msgstr "Gastos en general"
 
@@ -755,6 +773,8 @@ msgstr ""
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_bank_statement_line__l10n_mx_edi_payment_method_id
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_move__l10n_mx_edi_payment_method_id
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_payment__l10n_mx_edi_payment_method_id
+#: model:ir.model.fields,help:l10n_mx_edi.field_res_partner__l10n_mx_edi_payment_method_id
+#: model:ir.model.fields,help:l10n_mx_edi.field_res_users__l10n_mx_edi_payment_method_id
 msgid ""
 "Indicates the way the invoice was/will be paid, where the options could be: "
 "Cash, Nominal Check, Credit Card, etc. Leave empty if unkown and the XML "
@@ -939,21 +959,25 @@ msgstr "Parámetros MX"
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__d08
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__d08
 msgid "Mandatory School Transportation Expenses"
 msgstr "Gastos de transportación escolar obligatoria"
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__d02
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__d02
 msgid "Medical expenses for disability"
 msgstr "Gastos médicos por incapacidad o discapacidad"
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__d07
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__d07
 msgid "Medical insurance premiums"
 msgstr "Primas por seguros de gastos médicos"
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__d01
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__d01
 msgid "Medical, dental and hospital expenses."
 msgstr "Honorarios médicos, dentales y gastos hospitalarios."
 
@@ -1012,7 +1036,7 @@ msgstr "PAC no especificado."
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_res_partner__l10n_mx_edi_no_tax_breakdown
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_res_users__l10n_mx_edi_no_tax_breakdown
 msgid "No Tax Breakdown"
-msgstr ""
+msgstr "No sujeto de desglose"
 
 #. module: l10n_mx_edi
 #. odoo-python
@@ -1054,6 +1078,7 @@ msgstr ""
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__i02
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__i02
 msgid "Office furniture and equipment investment"
 msgstr "Mobilario y equipo de oficina por inversiones"
 
@@ -1075,6 +1100,7 @@ msgstr "Monto Original"
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__i08
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__i08
 msgid "Other machinery and equipment"
 msgstr "Otra maquinaria y equipo"
 
@@ -1172,6 +1198,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_account_move__l10n_mx_edi_payment_method_id
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_account_payment__l10n_mx_edi_payment_method_id
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_account_payment_register__l10n_mx_edi_payment_method_id
+#: model:ir.model.fields,field_description:l10n_mx_edi.field_res_partner__l10n_mx_edi_payment_method_id
+#: model:ir.model.fields,field_description:l10n_mx_edi.field_res_users__l10n_mx_edi_payment_method_id
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.view_l10n_mx_payment_method_form
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.view_l10n_mx_payment_method_tree
 msgid "Payment Way"
@@ -1194,6 +1222,7 @@ msgstr "Pagos"
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__d10
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__d10
 msgid "Payments for educational services (Colegiatura)"
 msgstr "Pagos por servicios educativos (colegiaturas)"
 
@@ -1228,6 +1257,7 @@ msgstr "Quadrum (antes finkok)"
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__d05
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__d05
 msgid "Real interest effectively paid for mortgage loans (room house)"
 msgstr ""
 "Intereses reales efectivamente pagados por créditos hipotecarios (casa "
@@ -1246,6 +1276,7 @@ msgstr ""
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__g02
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__g02
 msgid "Returns, discounts or bonuses"
 msgstr "Devoluciones, descuentos o bonificaciones"
 
@@ -1299,6 +1330,7 @@ msgstr ""
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__i07
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__i07
 msgid "Satellite communications"
 msgstr "Comunicaciones satelitales"
 
@@ -1355,7 +1387,14 @@ msgstr ""
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_company__l10n_mx_edi_pac__solfact
 msgid "Solucion Factible"
-msgstr "Solución factible"
+msgstr ""
+
+#. module: l10n_mx_edi
+#. odoo-python
+#: code:addons/l10n_mx_edi/models/l10n_mx_edi_document.py:0
+#, python-format
+msgid "Some documents are being sent by another process already."
+msgstr ""
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_account_bank_statement_line__l10n_mx_edi_certificate_id
@@ -1391,6 +1430,7 @@ msgstr "RFC del Proveedor"
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__i06
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__i06
 msgid "Telephone communications"
 msgstr "Comunicaciones telefónicas"
 
@@ -1495,6 +1535,14 @@ msgid "The certificate key and/or password is/are invalid."
 msgstr "La clave del certificado y/o la contraseña es/son inválidos."
 
 #. module: l10n_mx_edi
+#: model:ir.model.fields,help:l10n_mx_edi.field_res_partner__l10n_mx_edi_usage
+#: model:ir.model.fields,help:l10n_mx_edi.field_res_users__l10n_mx_edi_usage
+msgid ""
+"The code that corresponds to the use that will be made of the receipt by the"
+" recipient."
+msgstr ""
+
+#. module: l10n_mx_edi
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_bank_statement_line__l10n_mx_edi_cfdi_customer_rfc
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_move__l10n_mx_edi_cfdi_customer_rfc
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_payment__l10n_mx_edi_cfdi_customer_rfc
@@ -1587,6 +1635,7 @@ msgstr "Importe total"
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__i03
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__i03
 msgid "Transportation equipment"
 msgstr "Equipo de transporte"
 
@@ -1610,6 +1659,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_account_bank_statement_line__l10n_mx_edi_usage
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_account_move__l10n_mx_edi_usage
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_account_payment__l10n_mx_edi_usage
+#: model:ir.model.fields,field_description:l10n_mx_edi.field_res_partner__l10n_mx_edi_usage
+#: model:ir.model.fields,field_description:l10n_mx_edi.field_res_users__l10n_mx_edi_usage
 msgid "Usage"
 msgstr "Uso"
 
@@ -1668,11 +1719,13 @@ msgstr "Vista"
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__d06
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__d06
 msgid "Voluntary contributions to SAR"
 msgstr "Aportaciones voluntarias al SAR"
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__s01
+#: model:ir.model.fields.selection,name:l10n_mx_edi.selection__res_partner__l10n_mx_edi_usage__s01
 msgid "Without fiscal effects"
 msgstr ""
 

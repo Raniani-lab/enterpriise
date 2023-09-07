@@ -18,27 +18,27 @@ msgstr ""
 #. module: l10n_mx_edi_stock_extended
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi_stock_extended.l10n_mx_edi_cartaporte_report_delivery_comex
 msgid "<strong>Customs Number</strong>"
-msgstr ""
+msgstr "<strong>Número de aduana</strong>"
 
 #. module: l10n_mx_edi_stock_extended
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi_stock_extended.l10n_mx_edi_cartaporte_report_delivery_comex
 msgid "<strong>Environment Insurer</strong>"
-msgstr ""
+msgstr "<strong>Aseguradora medioambiental</strong>"
 
 #. module: l10n_mx_edi_stock_extended
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi_stock_extended.l10n_mx_edi_cartaporte_report_delivery_comex
 msgid "<strong>Environment Policy No</strong>"
-msgstr ""
+msgstr "<strong>Política medioambiental No</strong>"
 
 #. module: l10n_mx_edi_stock_extended
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi_stock_extended.l10n_mx_edi_cartaporte_report_delivery_comex
 msgid "<strong>Hazard Code</strong>"
-msgstr ""
+msgstr "<strong>Código de peligrosidad</strong>"
 
 #. module: l10n_mx_edi_stock_extended
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi_stock_extended.l10n_mx_edi_cartaporte_report_delivery_comex
 msgid "<strong>Packaging</strong>"
-msgstr ""
+msgstr "<strong>Envasado</strong>"
 
 #. module: l10n_mx_edi_stock_extended
 #. odoo-python
@@ -46,6 +46,7 @@ msgstr ""
 #, python-format
 msgid "A zip code and state are required to generate a delivery guide"
 msgstr ""
+"El Código Postal y el Estado son requeridos para generar la Carta Porte"
 
 #. module: l10n_mx_edi_stock_extended
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock_extended.selection__product_template__l10n_mx_edi_hazard_package_type__1a2
@@ -331,19 +332,19 @@ msgstr ""
 #. module: l10n_mx_edi_stock_extended
 #: model:ir.model.fields,field_description:l10n_mx_edi_stock_extended.field_l10n_mx_edi_vehicle__environment_insurer
 msgid "Environment Insurer"
-msgstr ""
+msgstr "Aseguradora de medio ambiente"
 
 #. module: l10n_mx_edi_stock_extended
 #: model:ir.model.fields,field_description:l10n_mx_edi_stock_extended.field_product_product__l10n_mx_edi_hazardous_material_code
 #: model:ir.model.fields,field_description:l10n_mx_edi_stock_extended.field_product_template__l10n_mx_edi_hazardous_material_code
 msgid "Hazardous Material Designation Code"
-msgstr ""
+msgstr "Código de designación de material peligroso"
 
 #. module: l10n_mx_edi_stock_extended
 #: model:ir.model.fields,field_description:l10n_mx_edi_stock_extended.field_product_product__l10n_mx_edi_hazard_package_type
 #: model:ir.model.fields,field_description:l10n_mx_edi_stock_extended.field_product_template__l10n_mx_edi_hazard_package_type
 msgid "Hazardous Packaging"
-msgstr ""
+msgstr "Envases peligrosos"
 
 #. module: l10n_mx_edi_stock_extended
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock_extended.selection__product_template__l10n_mx_edi_hazard_package_type__3a2
@@ -378,7 +379,7 @@ msgstr ""
 #. module: l10n_mx_edi_stock_extended
 #: model:ir.model,name:l10n_mx_edi_stock_extended.model_l10n_mx_edi_vehicle
 msgid "MX EDI Vehicle"
-msgstr ""
+msgstr "Vehículo MX EDI"
 
 #. module: l10n_mx_edi_stock_extended
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock_extended.selection__product_template__l10n_mx_edi_hazard_package_type__z01
@@ -397,11 +398,19 @@ msgid ""
 " - 6 digits of the progressive numbering of the custom.\n"
 "example: 15  48  3009  0001235"
 msgstr ""
+"Campo opcional para introducir la información aduanera en el caso de ventas de primera mano de bienes importados o en el caso de operaciones de comercio exterior con bienes o servicios.\n"
+"El formato debe ser:\n"
+" - 2 dígitos del año de validación seguidos de dos espacios.\n"
+" - 2 dígitos del despacho aduanero seguidos de dos espacios.\n"
+" - 4 dígitos del número de serie seguidos de dos espacios."
+" - 1 dígito correspondiente al último dígito del año en curso, excepto en el caso de una aduana consolidada iniciada en el año anterior de la solicitud original de rectificación.\n"
+" - 6 dígitos de la numeración progresiva de la aduana.\n"
+"ejemplo: 15 48 3009 0001235"
 
 #. module: l10n_mx_edi_stock_extended
 #: model:ir.model,name:l10n_mx_edi_stock_extended.model_product_template
 msgid "Product"
-msgstr ""
+msgstr "Producto"
 
 #. module: l10n_mx_edi_stock_extended
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock_extended.selection__product_template__l10n_mx_edi_hazard_package_type__5m1
@@ -458,8 +467,10 @@ msgid ""
 "The name of the insurer that covers the liability risks of the environment "
 "when transporting hazardous materials"
 msgstr ""
+"El nombre de la aseguradora que cubre los riesgos de responsabilidad civil del medio ambiente"
+"al transportar materiales peligrosos"
 
 #. module: l10n_mx_edi_stock_extended
 #: model:ir.model,name:l10n_mx_edi_stock_extended.model_stock_picking
 msgid "Transfer"
-msgstr ""
+msgstr "Albarán"

@@ -2,7 +2,7 @@
 import threading
 import time
 
-from odoo import api, fields, models, tools, _
+from odoo import api, fields, models, SUPERUSER_ID, tools, _
 from odoo.tools import date_utils
 
 
@@ -99,7 +99,7 @@ class AccountBankStatementLine(models.Model):
                 st_line_vals_list.append(st_line_vals)
 
             if st_line_vals_list:
-                line_to_reconcile += self.env['account.bank.statement.line'].with_context(skip_statement_line_cron_trigger=True).create(st_line_vals_list)
+                line_to_reconcile += self.with_user(SUPERUSER_ID).env['account.bank.statement.line'].with_context(skip_statement_line_cron_trigger=True).create(st_line_vals_list)
             # Set last sync date as the last transaction date
             journal.account_online_account_id.sudo().write({'last_sync': sorted_transactions[-1]['date']})
 

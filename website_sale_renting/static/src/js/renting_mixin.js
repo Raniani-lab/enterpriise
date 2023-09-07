@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
-import { serializeDateTime, deserializeDateTime } from "@web/core/l10n/dates";
-import { momentToLuxon } from "@website_sale_renting/js/date_utils";
+import { serializeDateTime, deserializeDateTime, parseDateTime, ConversionError, parseDate } from "@web/core/l10n/dates";
 import { sprintf } from "@web/core/utils/strings";
 import { _t } from "@web/core/l10n/translation";
 
@@ -77,15 +76,17 @@ export const RentingMixin = {
      *
      * @private
      */
-    _getDateFromInputOrDefault(picker, fieldName, inputName) {
-        let date = picker && picker[fieldName];
-        if (!date || !date._isValid) {
+    _getDateFromInputOrDefault(input, fieldName, inputName) {
+        const parse = this._isDurationWithHours() ? parseDateTime : parseDate;
+        try {
+            return parse(input?.value);
+        } catch (e) {
+            if (!(e instanceof ConversionError)) {
+                throw e;
+            }
             const $defaultDate = this.el.querySelector('input[name="default_' + inputName + '"]');
-            date = $defaultDate && deserializeDateTime($defaultDate.value);
-        } else {
-            date = momentToLuxon(date);
+            return $defaultDate && deserializeDateTime($defaultDate.value);
         }
-        return date;
     },
 
     /**
@@ -95,12 +96,12 @@ export const RentingMixin = {
      * @param {$.Element} $product
      */
     _getRentingDates($product) {
-        const rentingDates = ($product || this.$el).find("input[name=renting_dates]");
-        if (rentingDates.length) {
-            const picker = rentingDates.data("daterangepicker");
+        const [startDate] = ($product || this.$el).find("input[name=renting_start_date]");
+        const [endDate] = ($product || this.$el).find("input[name=renting_end_date]");
+        if (startDate || endDate) {
             return {
-                start_date: this._getDateFromInputOrDefault(picker, "startDate", "start_date"),
-                end_date: this._getDateFromInputOrDefault(picker, "endDate", "end_date"),
+                start_date: this._getDateFromInputOrDefault(startDate, "startDate", "start_date"),
+                end_date: this._getDateFromInputOrDefault(endDate, "endDate", "end_date"),
             };
         }
         return {};
@@ -120,6 +121,5 @@ export const RentingMixin = {
                 end_date: serializeDateTime(end_date),
             };
         }
-    }
-
+    },
 };

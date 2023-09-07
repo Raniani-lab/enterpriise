@@ -22,25 +22,27 @@ registry.category("web_tour.tours").add('shop_buy_rental_stock_product', {
         },
         {
             content: "Check if the default data is in the date picker input",
-            trigger: 'input[name=renting_dates][data-has-default-dates=true]',
+            trigger: '.o_daterange_picker[data-has-default-dates=true]',
             run: function () {}, // it's a check
         },
         {
             content: "Open daterangepicker",
-            trigger: '#rentingDates [data-toggle="daterange"]',
+            trigger: 'input[name=renting_start_date]',
+            run: "click",
         },
         {
-            content: "Change hours",
-            extra_trigger: '.daterangepicker.o_website_sale_renting',
-            trigger: '#rentingDates input',
-            run: function () {
-                const daterangepicker = this.$anchor.data('daterangepicker');
-                daterangepicker.setEndDate(daterangepicker.endDate.add(3, 'hours'));
-            }
+            content: "Pick start time",
+            trigger: '.o_time_picker_select:nth(0)',
+            run: "text 8",
+        },
+        {
+            content: "Pick end time",
+            trigger: '.o_time_picker_select:nth(2)',
+            run: "text 12",
         },
         {
             content: "Apply change",
-            trigger: '.daterangepicker.o_website_sale_renting button.applyBtn',
+            trigger: '.o_datetime_buttons button.o_apply',
         },
         {
             content: "Add one quantity",

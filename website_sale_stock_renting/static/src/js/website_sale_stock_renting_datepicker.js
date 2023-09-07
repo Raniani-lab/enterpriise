@@ -85,14 +85,14 @@ WebsiteSaleDaterangePicker.include({
      *
      * This function is used in the daterange picker objects and meant to be easily overriden.
      *
-     * @param {moment} date
+     * @param {DateTime} date
      * @private
      */
     _isCustomDate(date) {
         const result = this._super.apply(this, arguments);
         const productId = this._getProductId();
         if (!productId) {
-            return;
+            return [];
         }
         const dateStart = date.startOf('day');
         for (const interval of this.rentingAvailabilities[productId]) {

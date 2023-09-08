@@ -278,6 +278,7 @@
                                 <div class="d-flex flex-column justify-content-between pb-4 mb-2">
                                     <field name="display_name"/>
                                     <field name="article_properties" widget="properties"/>
+                                    <field name="parent_id" invisible="1"/>
                                 </div>
                             </div>
                             <div class="o_kanban_record_bottom d-flex flex-column align-items-end justify-content-between">
@@ -361,6 +362,8 @@
                 <group expand="0" string="Group By">
                     <filter name="group_by_category" domain="[]" context="{'group_by': 'category'}"/>
                     <filter name="group_by_menu_article" context="{'group_by': 'root_article_id'}"/>
+                    <separator/>
+                    <filter name="group_by_article_properties" domain="[]" context="{'group_by': 'article_properties'}"/>
                 </group>
             </search>
         </field>
@@ -388,6 +391,9 @@
                     domain="[('active', '=', False)]"/>
                 <group expand="0" string="Group By">
                     <filter name="group_by_stage" string="Stage" domain="[]" context="{'group_by': 'stage_id'}"/>
+                    <separator/>
+                    <filter name="group_by_article_properties" domain="[]"
+                        context="{'group_by': 'article_properties'}"/>
                 </group>
             </search>
         </field>

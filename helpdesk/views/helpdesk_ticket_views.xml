@@ -128,6 +128,13 @@
         <field name="inherit_id" ref="helpdesk_tickets_view_search_base"/>
         <field name="priority">20</field>
         <field name="arch" type="xml">
+            <field name="description" position="after">
+                <field name="properties"/>
+            </field>
+            <filter name="created_by" position="after">
+                <separator/>
+                <filter string="Properties" name="group_by_properties" context="{'group_by': 'properties'}"/>
+            </filter>
             <filter name="archive" position="before">
                 <filter string="Unread Messages" name="message_needaction" domain="[('message_needaction', '=', True)]" groups="mail.group_mail_notification_type_inbox"/>
                 <separator/>

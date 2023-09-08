@@ -20,10 +20,10 @@ class AccountReport(models.Model):
 class PeruvianTaxPle141ReportCustomHandler(models.AbstractModel):
     _name = "l10n_pe.tax.ple.14.1.report.handler"
     _inherit = "l10n_pe.tax.ple.report.handler"
-    _description = "PLE Sales Report 14.1"
+    _description = "PLE Sales Report 14.1 (Now RVIE 14.2)"
 
     def _get_report_number(self):
-        return "1401"
+        return "14040002"
 
     def export_to_txt(self, options):
         def format_float(amount):
@@ -45,11 +45,12 @@ class PeruvianTaxPle141ReportCustomHandler(models.AbstractModel):
             serie_folio_related = self._get_serie_folio(columns["related_document"])
             data.append(
                 {
-                    "period": "%s00" % period[:6],
-                    "identificator_type_date": "%s" % line[0],
-                    "identificator_correlative": "M%s" % line[0],
+                    "ruc": columns["company_vat"],
+                    "company_name": columns["company_name"],
+                    "period": "%s" % period[:6],
+                    "car": "",
                     "invoice_date": columns["invoice_date"].strftime("%d/%m/%Y") if columns["invoice_date"] else "",
-                    "date_due": columns["date_due"].strftime("%d/%m/%Y") if columns["date_due"] else "",
+                    "date_due": "",
                     "document_type": columns["document_type"],
                     "document_serie": serie_folio["serie"].replace(" ", ""),
                     "document_number": serie_folio["folio"].replace(" ", ""),
@@ -57,21 +58,21 @@ class PeruvianTaxPle141ReportCustomHandler(models.AbstractModel):
                     "customer_id": columns["partner_lit_code"],
                     "customer_vat": columns["customer_vat"] or "",
                     "customer": columns["customer"],
-                    "base_exp": format_float(columns["base_exp"]) or "",
-                    "base_igv": format_float(columns["base_igv"]) or "",
-                    "amount_discount": "",
-                    "tax_igv": format_float(columns["tax_igv"]) or "",
-                    "tax_igv_discount": "",
-                    "base_exo": format_float(columns["base_exo"]) or "",
-                    "base_ina": format_float(columns["base_ina"]) or "",
-                    "tax_isc": format_float(columns["tax_isc"]) or "",
-                    "base_ivap": format_float(columns["base_ivap"]) or "",
-                    "tax_ivap": format_float(columns["tax_ivap"]) or "",
+                    "base_exp": format_float(columns["base_exp"]) or "0.00",
+                    "base_igv": format_float(columns["base_igv"]) or "0.00",
+                    "amount_discount": "0.00",
+                    "tax_igv": format_float(columns["tax_igv"]) or "0.00",
+                    "tax_igv_discount": "0.00",
+                    "base_exo": format_float(columns["base_exo"]) or "0.00",
+                    "base_ina": format_float(columns["base_ina"]) or "0.00",
+                    "tax_isc": format_float(columns["tax_isc"]) or "0.00",
+                    "base_ivap": format_float(columns["base_ivap"]) or "0.00",
+                    "tax_ivap": format_float(columns["tax_ivap"]) or "0.00",
                     "vat_icbper": format_float(columns["vat_icbper"]) or "0.00",
-                    "tax_oth": "",
-                    "amount_total": columns["amount_total"] or "",
+                    "tax_oth": "0.00",
+                    "amount_total": columns["amount_total"] or "0.00",
                     "currency": columns["currency"],
-                    "rate": "%.3f" % abs(columns["rate"]),
+                    "rate": ("%.3f" % abs(columns["rate"])) if columns["currency"] != "PEN" else "",
                     "emission_date_related": columns["emission_date_related"].strftime("%d/%m/%Y") if columns[
                         "emission_date_related"] else "",
                     "document_type_related": columns["document_type_related"] or "",
@@ -80,9 +81,6 @@ class PeruvianTaxPle141ReportCustomHandler(models.AbstractModel):
                     "contract_identification_OSIC": "",  # Exclusive use of operators of irregular companies, consortia
                     "currency_error": "",
                     "canceled_by_payment": "",
-                    "invoice_status": self._get_document_status(
-                        columns["status"], columns["invoice_date"], columns["date"]
-                    ),
                     "final_pipe": "",  # this field is only to print a technical closing pipe
                 }
             )

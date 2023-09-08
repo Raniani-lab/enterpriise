@@ -122,6 +122,8 @@ class PeruvianTaxPleReportCustomHandler(models.AbstractModel):
                         "partner_country_agreement_code": query_res_lines[0]["partner_country_agreement_code"],
                         "usage_type_code": query_res_lines[0]["usage_type_code"],
                         "service_modality": query_res_lines[0]["service_modality"],
+                        "company_vat": query_res_lines[0]["company_vat"],
+                        "company_name": query_res_lines[0]["company_name"],
                     }
                 return result
 
@@ -206,6 +208,8 @@ SELECT
     debit_origin.invoice_date as debit_origin_date,
     debit_origin.l10n_latam_document_type_id as debit_origin_document_type_id,
     ldt_debit_origin.code as debit_origin_document_type,
+    partner_company.vat  AS company_vat,
+    company.name AS company_name,
     sum(CASE WHEN btg.id = {tax_group_igv}
         THEN account_move_line.balance ELSE Null END) as base_igv,
     sum(CASE WHEN ntg.id = {tax_group_igv}
@@ -317,6 +321,12 @@ LEFT JOIN
 LEFT JOIN
     account_journal AS aj
     ON aj.id = account_move_line__move_id.journal_id
+LEFT JOIN
+    res_company AS company
+    ON company.id = account_move_line__move_id.company_id
+LEFT JOIN
+    res_partner AS partner_company
+    ON partner_company.id = company.partner_id
 WHERE
     {where_clause}
     AND (account_move_line.tax_line_id is not null or btg.l10n_pe_edi_code is not null)
@@ -324,7 +334,7 @@ WHERE
 GROUP BY
     account_move_line__move_id.id, rp.id, lit.id, rc.id, account_move_line__move_id__l10n_latam_document_type_id.id,
     reversed_entry.id, ldt_reversed_entry.id, debit_origin.id,
-    ldt_debit_origin.id, dua.id, ldt_dua.id, rpc.id, lprt.id
+    ldt_debit_origin.id, dua.id, ldt_dua.id, rpc.id, lprt.id, company.id, partner_company.id
 ORDER BY
     account_move_line__move_id.date, account_move_line__move_id.name
         """
@@ -334,6 +344,7 @@ ORDER BY
 
         return build_result(query_res_lines)
 
+    # TODO: To be deprecated
     def _get_document_status(self, state, invoice_date, date):
         """From SUNAT documentation:
         1. Required
@@ -375,7 +386,7 @@ ORDER BY
         # http://orientacion.sunat.gob.pe/index.php/empresas-menu/libros-y-registros-vinculados-asuntos-tributarios-empresas/sistema-de-libros-electronicos-ple/6560-05-nomenclatura-de-libros-electronicos
         date = datetime.strptime(options["date"]["date_from"], DEFAULT_SERVER_DATE_FORMAT)
         has_data = int(bool(data))
-        report_filename = "LE%s%s%02d00%s00001%s11" % (
+        report_filename = "LE%s%s%02d00%s1%s12" % (
             self.env.company.vat, date.year, date.month, self._get_report_number(), has_data)
 
         return {

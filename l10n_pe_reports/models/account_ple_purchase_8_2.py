@@ -6,10 +6,10 @@ from odoo import models
 class PeruvianTaxPle82ReportCustomHandler(models.AbstractModel):
     _name = "l10n_pe.tax.ple.8.2.report.handler"
     _inherit = "l10n_pe.tax.ple.report.handler"
-    _description = "PLE Purchase Report 8.2"
+    _description = "PLE Purchase Report 8.2 (Now RCE 8.5)"
 
     def _get_report_number(self):
-        return "0802"
+        return "08050000"
 
     def export_to_txt(self, options):
         def format_float(amount):
@@ -33,23 +33,22 @@ class PeruvianTaxPle82ReportCustomHandler(models.AbstractModel):
                 _get_invoice_name(columns["invoice_dua_name"], columns["invoice_dua_document_type"]))
             data.append(
                 {
-                    "period": "%s00" % period[:6],
-                    "identificator_type_date": "%s" % line[0],
-                    "identificator_correlative": "M%s" % line[0],
+                    "period": "%s" % period[:6],
+                    "car": "",
                     "invoice_date": columns["invoice_date"].strftime("%d/%m/%Y") if columns["invoice_date"] else "",
                     "document_type": columns["document_type"],
-                    "document_serie": serie_folio["serie"].replace(" ", ""),
-                    "document_number": serie_folio["folio"].replace(" ", ""),
+                    "document_serie": serie_folio["serie"].replace(" ", "")[1:],
+                    "document_number": serie_folio["folio"].replace(" ", "").lstrip("0"),
                     "base_igv": format_float(columns["base_igv"]) or "0.0",
                     "other_concepts": "",  # Otros conceptos adicionales
                     "amount_total": columns["amount_total"] or "",
                     "dua_type": columns["invoice_dua_document_type"] or "",
-                    "dua_serie": self._get_serie_folio(serie_folio_dua["serie"])["folio"].replace(" ", ""),
+                    "dua_serie": self._get_serie_folio(serie_folio_dua["serie"])["folio"].replace(" ", "")[1:],
                     "dua_dsi_year": columns["invoice_dua_date"].year if columns["invoice_dua_date"] else "",
-                    "dua_number": serie_folio_dua["folio"],
+                    "dua_number": serie_folio_dua["folio"].lstrip("0"),
                     "tax_igv": format_float(columns["tax_igv"]) or "",
                     "currency": columns["currency"],
-                    "rate": "%.3f" % abs(columns["rate"]),
+                    "rate": ("%.3f" % abs(columns["rate"])) if columns["currency"] != "PEN" else "",
                     "client_country": columns["partner_country_code"] or "",
                     "customer": columns["customer"],
                     "client_address": (columns["partner_street"] or "")[:100],
@@ -58,17 +57,17 @@ class PeruvianTaxPle82ReportCustomHandler(models.AbstractModel):
                     "payment_name": "",
                     "payment_country": "",
                     "relation": "",
-                    "rent": "",  # Renta Bruta
-                    "deduction": "",  # Deducción / Costo de Enajenación de bienes de capital
-                    "rent_net": "",  # Renta Neta
-                    "withholding_rate": "",  # Tasa de retención
-                    "withholding_tax": "",  # Impuesto retenido
+                    "rent": "0.00",  # Renta Bruta
+                    "deduction": "0.00",  # Deducción / Costo de Enajenación de bienes de capital
+                    "rent_net": "0.00",  # Renta Neta
+                    "withholding_rate": "0.00",  # Tasa de retención
+                    "withholding_tax": "0.00",  # Impuesto retenido
                     "agreement": (columns["partner_country_agreement_code"] or "00").zfill(2),
                     "amount_exonerated_total": format_float(columns["base_exo"]) or "",
                     "rent_type": columns["usage_type_code"] or "",
                     "modality": columns["service_modality"] or "",
                     "art_76": "",  # Aplicación del penultimo parrafo del Art. 76° de la Ley del Impuesto a la Renta
-                    "invoice_status": "0",
+                    "car_cp": "",
                     "final_pipe": "",  # this field is only to print a technical closing pipe
                 }
             )

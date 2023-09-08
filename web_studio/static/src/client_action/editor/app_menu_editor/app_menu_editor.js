@@ -1,8 +1,8 @@
 /** @odoo-module */
-import { Component, useEffect, useRef, useState } from "@odoo/owl";
+import { Component, useRef, useState } from "@odoo/owl";
 import { useBus, useService, useOwnedDialogs } from "@web/core/utils/hooks";
 import { Dialog } from "@web/core/dialog/dialog";
-import { localization } from "@web/core/l10n/localization";
+import { useNestedSortable } from "@web/core/utils/nested_sortable";
 import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
 import { MenuCreatorDialog } from "@web_studio/client_action/menu_creator/menu_creator";
 import { useDialogConfirmation, useSubEnvAndServices } from "@web_studio/client_action/utils";
@@ -32,46 +32,20 @@ class EditMenuDialog extends Component {
         this.title = _t("Edit Menu");
 
         // States and data
-        this.state = useState({ tree: {}, flatMenus: {}, renderId: 1 });
+        this.state = useState({ tree: {}, flatMenus: {} });
         this.state.tree = this.getTree();
         this.toMove = {};
         this.toDelete = [];
 
         // DragAndDrop to move menus around
         const root = useRef("root");
-        // Bug in owl: t-ref with t-key
-        const itemsList = {
-            get el() {
-                return root.el.querySelector(".oe_menu_editor");
-            },
-        };
-
-        useEffect(() => {
-            const el = itemsList.el;
-            if (!el) {
-                return;
-            }
-
-            // FIXME: useSortable doesn't handle this use case yet
-            // use JQuery UI with lead feet instead.
-            $(el).nestedSortable({
-                listType: "ul",
-                handle: ".o-draggable-handle",
-                items: "li",
-                maxLevels: 5,
-                toleranceElement: "> div",
-                forcePlaceholderSize: true,
-                opacity: 0.6,
-                placeholder: "oe_menu_placeholder",
-                doNotClear: true,
-                tolerance: "pointer",
-                attribute: "data-item-id",
-                relocate: this.moveMenu.bind(this),
-                rtl: localization.direction === "rtl",
-            });
-            return () => {
-                $(el).nestedSortable("destroy");
-            };
+        useNestedSortable({
+            ref: root,
+            handle: ".o-draggable-handle",
+            nest: true,
+            maxLevels: 5,
+            useElementSize: true,
+            onDrop: this.moveMenu.bind(this),
         });
 
         const { confirm, cancel } = useDialogConfirmation({
@@ -116,8 +90,8 @@ class EditMenuDialog extends Component {
         return item;
     }
 
-    moveMenu(ev, uiHelper) {
-        const menuId = parseInt(uiHelper.item[0].dataset.itemId);
+    moveMenu({ element, parent, previous }) {
+        const menuId = parseInt(element.dataset.itemId);
         const menu = this.flatMenus[menuId];
 
         // Remove element from parent's children (since we are moving it, this is the mandatory first step)
@@ -125,29 +99,21 @@ class EditMenuDialog extends Component {
         parentMenu.children = parentMenu.children.filter((m) => m.id !== menuId);
 
         // Determine next parent
-        const parentLi = uiHelper.item[0].parentElement.closest("li");
-        if (parseInt(parentLi.dataset.itemId) !== parentMenu.id) {
-            parentMenu = this.flatMenus[parentLi.dataset.itemId];
+        const parentLi = parent?.closest("li");
+        const parentMenuId = parentLi ? parseInt(parentLi.dataset.itemId) : this.mainItem.id;
+        if (parentMenuId !== parentMenu.id) {
+            parentMenu = this.flatMenus[parentMenuId];
             menu.parentId = parentMenu.id;
         }
 
         // Determine at which position we should place the element
-        let previous = uiHelper.item[0].previousElementSibling;
-        let next = uiHelper.item[0].nextElementSibling;
-
         if (previous) {
-            previous = this.flatMenus[previous.dataset.itemId];
-            const index = parentMenu.children.findIndex((child) => child === previous);
+            const previousMenu = this.flatMenus[previous.dataset.itemId];
+            const index = parentMenu.children.findIndex((child) => child === previousMenu);
             parentMenu.children.splice(index + 1, 0, menu);
-        } else if (next) {
-            next = this.flatMenus[next.dataset.itemId];
-            const index = parentMenu.children.findIndex((child) => child === next);
-            parentMenu.children.splice(index, 0, menu);
         } else {
-            parentMenu.children.push(menu);
+            parentMenu.children.unshift(menu);
         }
-        // Forces nestedSortable to reinstantiate to avoid conflicts with owl
-        this.state.renderId++;
 
         // Last step: prepare the data that can be sent to the server.
         this.toMove[menuId] = {
@@ -167,7 +133,6 @@ class EditMenuDialog extends Component {
         }
         parentMenu.children = parentMenu.children.filter((m) => m.id !== menu.id);
         this.toDelete.push(menu.id);
-        this.state.renderId++;
     }
 
     editItem(menu) {

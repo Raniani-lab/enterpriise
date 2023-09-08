@@ -7,13 +7,18 @@ import { MainComponentsContainer } from "@web/core/main_components_container";
 
 import { AppMenuEditor } from "@web_studio/client_action/editor/app_menu_editor/app_menu_editor";
 
-import { getFixture, mount, click, editInput, nextTick } from "@web/../tests/helpers/utils";
+import {
+    dragAndDrop,
+    getFixture,
+    mount,
+    click,
+    editInput,
+    nextTick,
+} from "@web/../tests/helpers/utils";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { mapLegacyEnvToWowlEnv } from "@web/legacy/utils";
 import makeTestEnvironment from "@web/../tests/legacy/helpers/test_env";
 
-import { dom } from "@web/../tests/legacy/helpers/test_utils";
-const dragAndDrop = dom.dragAndDrop;
 import { setupViewRegistries } from "@web/../tests/views/helpers";
 
 QUnit.module("Studio Navbar > AppMenuEditor", (hooks) => {
@@ -238,11 +243,26 @@ QUnit.module("Studio Navbar > AppMenuEditor", (hooks) => {
 
         await click(target, ".o_web_edit_menu");
 
+        // Avoid flickering of the modal content always centered
+        const modalDialog = target.querySelector(".modal .modal-dialog");
+        modalDialog.classList.remove("modal-dialog-centered");
+
         // move submenu above root menu
-        await dragAndDrop(
-            target.querySelector("li[data-item-id='221'] .o-draggable-handle"),
-            target.querySelector("li[data-item-id='21'] .o-draggable-handle")
-        );
+        const fromSelector = "li[data-item-id='221'] .o-draggable-handle";
+        const fromNode = target.querySelector(fromSelector);
+        const fromRect = fromNode.getBoundingClientRect();
+
+        const containerNode = target.querySelector(".oe_menu_editor");
+        const containerNodeRect = containerNode.getBoundingClientRect();
+
+        const position = {
+            x: 0,
+            y: fromRect.top - containerNodeRect.top + fromRect.height / 2,
+        };
+
+        await dragAndDrop(fromNode, containerNode, position);
+        await dragAndDrop(fromSelector, "li[data-item-id='21'] .o-draggable-handle");
+
         await click(target, ".o-web-studio-appmenu-editor footer .btn-primary");
         assert.verifySteps([
             "/web/dataset/call_kw/ir.ui.menu/customize",

@@ -346,7 +346,7 @@ export class AccountReportController {
         This allows a more intelligent reloading of the previous options during user navigation (especially concerning sections and variants;
         you expect your report to open by default the same section as last time you opened it in this http session).
         */
-        return `account.report:${ this.actionReportId }:${ session.company_id }`;
+        return `account.report:${ this.actionReportId }:${ session.user_companies.current_company }`;
     }
 
     useSessionOptions(type) {

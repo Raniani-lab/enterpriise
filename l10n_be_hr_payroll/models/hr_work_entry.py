@@ -7,10 +7,6 @@ from odoo import api, fields, models, _
 class HrWorkEntry(models.Model):
     _inherit = 'hr.work.entry'
 
-    is_credit_time = fields.Boolean(
-        string='Credit time', readonly=True,
-        help="This is a credit time work entry.")
-
     def init(self):
         # speeds up `l10n_be.work.entry.daily.benefit.report`
         self.env.cr.execute("""
@@ -19,12 +15,6 @@ class HrWorkEntry(models.Model):
                 WHERE state IN ('draft', 'validated');
         """)
         super().init()
-
-    def _get_leaves_entries_outside_schedule(self):
-        return super()._get_leaves_entries_outside_schedule().filtered(lambda w: not w.is_credit_time)
-
-    def _get_duration_is_valid(self):
-        return super()._get_duration_is_valid() and not self.is_credit_time
 
     @api.model_create_multi
     def create(self, vals_list):

@@ -5,11 +5,21 @@ from collections import defaultdict
 from datetime import datetime, date, time
 import pytz
 
-from odoo import models, _
+from odoo import fields, models, _
 from odoo.exceptions import UserError
 
 class HrWorkEntry(models.Model):
     _inherit = 'hr.work.entry'
+
+    is_credit_time = fields.Boolean(
+        string='Credit time', readonly=True,
+        help="This is a credit time work entry.")
+
+    def _get_leaves_entries_outside_schedule(self):
+        return super()._get_leaves_entries_outside_schedule().filtered(lambda w: not w.is_credit_time)
+
+    def _get_duration_is_valid(self):
+        return super()._get_duration_is_valid() and not self.is_credit_time
 
     def _get_work_duration(self, date_start, date_stop):
         """

@@ -233,10 +233,8 @@ class HrContract(models.Model):
                     'contract_id': contract.id,
                     'company_id': contract.company_id.id,
                     'state': 'draft',
+                    'is_credit_time': True,
                 }
-                # YTI TODO: Clean this brol in master
-                if 'is_credit_time' in self.env['hr.work.entry']:
-                    new_vals['is_credit_time'] = True
                 contract_vals.append(new_vals)
         return contract_vals
 

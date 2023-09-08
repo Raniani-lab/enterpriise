@@ -12,8 +12,6 @@ from odoo.tools.float_utils import float_compare
 class HrPayslipWorkedDays(models.Model):
     _inherit = 'hr.payslip.worked_days'
 
-    is_credit_time = fields.Boolean(string='Credit Time')
-
     @api.depends('is_paid', 'is_credit_time', 'number_of_hours', 'payslip_id', 'contract_id.wage', 'payslip_id.sum_worked_hours')
     def _compute_amount(self):
         super_self = self.env['hr.payslip.worked_days']

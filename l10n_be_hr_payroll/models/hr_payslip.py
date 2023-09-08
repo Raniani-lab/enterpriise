@@ -352,29 +352,6 @@ class Payslip(models.Model):
         number_of_month = min(12, number_of_month)
         return total_amount / number_of_month if number_of_month else 0
 
-    def _get_credit_time_lines(self):
-        lines_vals = self._get_worked_day_lines(domain=[('is_credit_time', '=', True)], check_out_of_contract=False)
-        for line_vals in lines_vals:
-            line_vals['is_credit_time'] = True
-        return lines_vals
-
-    def _get_out_of_contract_calendar(self):
-        self.ensure_one()
-        if self.contract_id.time_credit:
-            return self.contract_id.standard_calendar_id
-        return super()._get_out_of_contract_calendar()
-
-    def _get_new_worked_days_lines(self):
-        if not self.contract_id.time_credit:
-            return super()._get_new_worked_days_lines()
-        if self.struct_id.use_worked_day_lines:
-            worked_days_line_values = self._get_worked_day_lines(domain=[('is_credit_time', '=', False)])
-            for vals in worked_days_line_values:
-                vals['is_credit_time'] = False
-            credit_time_line_values = self._get_credit_time_lines()
-            return [(0, 0, vals) for vals in worked_days_line_values + credit_time_line_values]
-        return []
-
     def _get_base_local_dict(self):
         res = super()._get_base_local_dict()
         res.update({

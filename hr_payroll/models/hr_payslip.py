@@ -350,10 +350,10 @@ class HrPayslip(models.Model):
             payslip.gross_wage = line_values['GROSS'][payslip._origin.id]['total']
             payslip.net_wage = line_values['NET'][payslip._origin.id]['total']
 
-    @api.depends('worked_days_line_ids.number_of_hours', 'worked_days_line_ids.is_paid')
+    @api.depends('worked_days_line_ids.number_of_hours', 'worked_days_line_ids.is_paid', 'worked_days_line_ids.is_credit_time')
     def _compute_worked_hours(self):
         for payslip in self:
-            payslip.sum_worked_hours = sum([line.number_of_hours for line in payslip.worked_days_line_ids])
+            payslip.sum_worked_hours = sum([line.number_of_hours for line in payslip.worked_days_line_ids if not line.is_credit_time])
 
     def _compute_is_superuser(self):
         self.update({'is_superuser': self.env.user._is_superuser() and self.user_has_groups("base.group_no_one")})
@@ -592,6 +592,8 @@ class HrPayslip(models.Model):
 
     def _get_out_of_contract_calendar(self):
         self.ensure_one()
+        if self.contract_id.time_credit:
+            return self.contract_id.standard_calendar_id
         return self.contract_id.resource_calendar_id
 
     def _get_worked_day_lines_values(self, domain=None):
@@ -951,9 +953,21 @@ class HrPayslip(models.Model):
             # YTI Note: We can't use a batched create here as the payslip may not exist
             slip.update({'worked_days_line_ids': slip._get_new_worked_days_lines()})
 
+    def _get_credit_time_lines(self):
+        lines_vals = self._get_worked_day_lines(domain=[('is_credit_time', '=', True)], check_out_of_contract=False)
+        for line_vals in lines_vals:
+            line_vals['is_credit_time'] = True
+        return lines_vals
+
     def _get_new_worked_days_lines(self):
         if self.struct_id.use_worked_day_lines:
-            return [(0, 0, vals) for vals in self._get_worked_day_lines()]
+            if not self.contract_id.time_credit:
+                return [(0, 0, vals) for vals in self._get_worked_day_lines()]
+            worked_days_line_values = self._get_worked_day_lines(domain=[('is_credit_time', '=', False)])
+            for vals in worked_days_line_values:
+                vals['is_credit_time'] = False
+            credit_time_line_values = self._get_credit_time_lines()
+            return [(0, 0, vals) for vals in worked_days_line_values + credit_time_line_values]
         return []
 
     def _get_salary_line_total(self, code):

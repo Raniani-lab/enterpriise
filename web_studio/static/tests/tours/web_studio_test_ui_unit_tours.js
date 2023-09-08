@@ -402,6 +402,7 @@ registry.category("web_tour.tours").add("web_studio_custom_selection_field_edit_
             trigger: ".modal-footer .btn-primary",
         },
         {
+            extra_trigger: "body:not(:has(.modal))",
             trigger: ".o_web_studio_leave",
         },
         {
@@ -417,12 +418,44 @@ registry.category("web_tour.tours").add("web_studio_custom_selection_field_edit_
         {
             in_modal: true,
             trigger: ".o_web_studio_add_selection .o-web-studio-interactive-list-item-input",
+            run: "text another value cancel",
+        },
+        {
+            trigger: ".o_web_studio_add_selection .o-web-studio-interactive-list-edit-item",
+        },
+        {
+            trigger: ".o_web_studio_selection_editor li:nth-child(2)",
+            async run() {
+                assertEqual(this.$anchor[0].textContent, "another value cancel");
+            },
+        },
+        {
+            trigger: ".modal-footer .btn-secondary",
+        },
+        {
+            trigger: ".o_web_studio_sidebar .o_web_studio_edit_selection_values",
+        },
+        {
+            trigger: ".o_web_studio_selection_editor li",
+            run() {
+                assertEqual(
+                    Array.from(this.$anchor)
+                        .map((el) => el.textContent)
+                        .join(" "),
+                    "some value"
+                );
+            },
+        },
+        {
+            in_modal: true,
+            trigger: ".o_web_studio_add_selection .o-web-studio-interactive-list-item-input",
             run: "text another value",
         },
         {
             trigger: ".modal-footer .btn-primary",
         },
         {
+            extra_trigger: "body:not(:has(.modal))",
             trigger: ".o_web_studio_leave",
         },
         stepNotInStudio(),
@@ -862,8 +895,7 @@ registry.category("web_tour.tours").add("web_studio_test_move_similar_field", {
         },
         {
             trigger: ".o_web_studio_leave",
-            run() {
-            },
+            run() {},
         },
-    ]
+    ],
 });

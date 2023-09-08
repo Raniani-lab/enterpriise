@@ -612,7 +612,7 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
             limit=1
         )
 
-        self.assertCountEqual(selection_field.selection_ids.mapped("name"), ["some value", "another value"])
+        self.assertEqual(selection_field.selection_ids.mapped("name"), ["some value", "another value"])
 
     def test_create_new_model_from_existing_view(self):
         self.testView.write({

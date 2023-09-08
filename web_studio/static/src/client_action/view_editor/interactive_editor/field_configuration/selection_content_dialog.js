@@ -116,9 +116,12 @@ export class SelectionContentDialog extends Component {
     }
 
     setItemValue(item, value) {
-        const inEdition = !!this.editedItem;
+        if (item.id !== "new" && item.id !== this.editedItem.id) {
+            return;
+        }
+        const isEditingLabel = item.id !== "new";
         item = this.getSelectionFromItem(item);
-        item[0] = inEdition ? this.editedItem.name : value;
+        item[0] = isEditingLabel ? this.editedItem.name : value;
         item[1] = value;
     }
 

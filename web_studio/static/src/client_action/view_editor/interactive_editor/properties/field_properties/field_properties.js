@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { Component, onWillStart, onWillUpdateProps, useState } from "@odoo/owl";
+import { Component, onWillStart, onWillUpdateProps, useState, toRaw } from "@odoo/owl";
 import { _t } from "@web/core/l10n/translation";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { Property } from "@web_studio/client_action/view_editor/property/property";
@@ -170,33 +170,40 @@ export class FieldProperties extends Component {
     }
 
     editSelectionChoices() {
+        const field = this.props.node.field;
         this.dialog.add(SelectionContentDialog, {
-            defaultChoices: this.props.node.field["selection"],
+            defaultChoices: toRaw(field).selection.map((s) => [...s]),
             onConfirm: async (choices) => {
                 const result = await this.rpc("/web_studio/edit_field", {
                     model_name: this.env.viewEditorModel.resModel,
-                    field_name: this.props.node.field.name,
+                    field_name: field.name,
                     values: { selection: JSON.stringify(choices) },
                     force_edit: false,
                 });
+                let reflectChanges = !result;
                 if (result && result.records_linked) {
+                    reflectChanges = false;
                     await new Promise((resolve) => {
                         this.dialog.add(ConfirmationDialog, {
                             body:
                                 result.message ||
                                 _t("Are you sure you want to remove the selection values?"),
-                            confirm: () => {
-                                this.rpc("/web_studio/edit_field", {
+                            confirm: async () => {
+                                await this.rpc("/web_studio/edit_field", {
                                     model_name: this.env.viewEditorModel.resModel,
-                                    field_name: this.props.node.field.name,
+                                    field_name: field.name,
                                     values: { selection: JSON.stringify(choices) },
                                     force_edit: true,
                                 });
+                                reflectChanges = true;
                                 resolve();
                             },
                             cancel: () => resolve(),
                         });
                     });
+                }
+                if (reflectChanges) {
+                    field.selection = choices;
                 }
             },
         });

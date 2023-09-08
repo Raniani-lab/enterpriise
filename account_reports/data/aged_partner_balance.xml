@@ -5,6 +5,7 @@
         <field name="filter_date_range" eval="False"/>
         <field name="filter_unfold_all" eval="True"/>
         <field name="filter_partner" eval="True"/>
+        <field name="filter_account_type" eval="True"/>
         <field name="filter_period_comparison" eval="False"/>
         <field name="filter_hierarchy">never</field>
         <field name="filter_show_draft" eval="False"/>
@@ -173,6 +174,7 @@
         <field name="filter_unfold_all" eval="True"/>
         <field name="filter_partner" eval="True"/>
         <field name="filter_period_comparison" eval="False"/>
+        <field name="filter_account_type" eval="True"/>
         <field name="filter_hierarchy">never</field>
         <field name="filter_show_draft" eval="False"/>
         <field name="filter_multi_company">selector</field>

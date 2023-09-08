@@ -3,7 +3,7 @@
     <record id="partner_ledger_report" model="account.report">
         <field name="name">Partner Ledger</field>
         <field name="filter_show_draft" eval="True"/>
-        <field name="filter_account_type">payable_receivable</field>
+        <field name="filter_account_type" eval="True"/>
         <field name="filter_partner" eval="True"/>
         <field name="filter_unfold_all" eval="True"/>
         <field name="filter_unreconciled" eval="True"/>

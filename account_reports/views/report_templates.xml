@@ -630,8 +630,6 @@
         <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
             <span class="fa fa-user"/>
             Account:
-            <t t-set="names_selected" t-value="[options['account_type'][n]['name'] for n in range(len(options['account_type'])) if options['account_type'][n]['selected']]"/>
-            <t t-set="num_selected" t-value="len(names_selected)"/>
             <t t-out="options['account_display_name']"/>
         </button>
         <div class="dropdown-menu o_filter_menu" role="menu">

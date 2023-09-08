@@ -38,9 +38,6 @@ export default class SpreadsheetComponent extends Component {
             raiseError: this.raiseError.bind(this),
             askConfirmation: this.askConfirmation.bind(this),
         });
-
-        this.pivot = undefined;
-        this.confirmDialog = () => true;
     }
 
     /**

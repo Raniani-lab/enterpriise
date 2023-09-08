@@ -227,15 +227,14 @@ class TestMpsMps(common.TransactionCase):
         line is updated.
         """
         mps_dates = self.env.company._get_date_range()
-        MrpProductionSchedule = self.env['mrp.production.schedule']
         forecast_screw = self.env['mrp.product.forecast'].create({
             'production_schedule_id': self.mps_screw.id,
-            'date': MrpProductionSchedule._context_date(mps_dates[0][0]),
+            'date': mps_dates[0][0],
             'forecast_qty': 100
         })
         self.env['mrp.product.forecast'].create({
             'production_schedule_id': self.mps_screw.id,
-            'date': MrpProductionSchedule._context_date(mps_dates[1][0]),
+            'date': mps_dates[1][0],
             'forecast_qty': 100
         })
 
@@ -305,12 +304,11 @@ class TestMpsMps(common.TransactionCase):
             'delay': 7,
         })
         self.screw.seller_ids = [(6, 0, [seller.id])]
-        MrpProductionSchedule = self.env['mrp.production.schedule']
 
         mps_dates = self.env.company._get_date_range()
         self.env['mrp.product.forecast'].create({
             'production_schedule_id': self.mps_screw.id,
-            'date': MrpProductionSchedule._context_date(mps_dates[0][0]),
+            'date': mps_dates[0][0],
             'forecast_qty': 100
         })
 
@@ -335,7 +333,7 @@ class TestMpsMps(common.TransactionCase):
 
         self.env['mrp.product.forecast'].create({
             'production_schedule_id': self.mps_screw.id,
-            'date': MrpProductionSchedule._context_date(mps_dates[1][0]),
+            'date': mps_dates[1][0],
             'forecast_qty': 100
         })
 
@@ -369,7 +367,7 @@ class TestMpsMps(common.TransactionCase):
 
         self.env['mrp.product.forecast'].create({
             'production_schedule_id': self.mps_screw.id,
-            'date': MrpProductionSchedule._context_date(mps_dates[2][0]),
+            'date': mps_dates[2][0],
             'forecast_qty': 100
         })
         mps_screw = self.mps_screw.get_production_schedule_view_state()[0]
@@ -409,12 +407,11 @@ class TestMpsMps(common.TransactionCase):
         a production schedule impact the indirect demand on other production
         that have a component as product.
         """
-        MrpProductionSchedule = self.env['mrp.production.schedule']
         mps_dates = self.env.company._get_date_range()
 
         self.env['mrp.product.forecast'].create({
             'production_schedule_id': self.mps_table.id,
-            'date': MrpProductionSchedule._context_date(mps_dates[0][0]),
+            'date': mps_dates[0][0],
             'forecast_qty': 2
         })
 
@@ -432,7 +429,7 @@ class TestMpsMps(common.TransactionCase):
 
         self.env['mrp.product.forecast'].create({
             'production_schedule_id': self.mps_wardrobe.id,
-            'date': MrpProductionSchedule._context_date(mps_dates[0][0]),
+            'date': mps_dates[0][0],
             'forecast_qty': 3
         })
 
@@ -450,7 +447,7 @@ class TestMpsMps(common.TransactionCase):
         # for current period.
         self.env['mrp.product.forecast'].create({
             'production_schedule_id': self.mps_table.id,
-            'date': MrpProductionSchedule._context_date(mps_dates[1][0]),
+            'date': mps_dates[1][0],
             'forecast_qty': 2
         })
         mps_drawer, mps_screw = (self.mps_drawer | self.mps_screw).get_production_schedule_view_state()
@@ -509,7 +506,7 @@ class TestMpsMps(common.TransactionCase):
 
         self.env['mrp.product.forecast'].create({
             'production_schedule_id': mps_cabinet.id,
-            'date': self.env['mrp.production.schedule']._context_date(mps_dates[0][0]),
+            'date': mps_dates[0][0],
             'forecast_qty': 2
         })
 

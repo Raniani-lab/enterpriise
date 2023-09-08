@@ -10,8 +10,6 @@ from odoo.tools.date_utils import add, subtract
 from odoo.tools.float_utils import float_round
 from odoo.osv.expression import OR, AND
 from collections import OrderedDict
-import pytz
-from datetime import datetime, time
 
 
 class MrpProductionSchedule(models.Model):
@@ -64,8 +62,8 @@ class MrpProductionSchedule(models.Model):
         :rtype: dict
         """
         self.ensure_one()
-        date_start = self._utc_date(fields.Datetime.from_string(date_start_str))
-        date_stop = self._utc_date(fields.Datetime.from_string(date_stop_str), end=True)
+        date_start = fields.Date.from_string(date_start_str)
+        date_stop = fields.Date.from_string(date_stop_str)
         domain_moves = self._get_moves_domain(date_start, date_stop, 'outgoing')
         moves_by_date = self._get_moves_and_date(domain_moves)
         picking_ids = self._filter_moves(moves_by_date, date_start, date_stop).mapped('picking_id').ids
@@ -88,8 +86,8 @@ class MrpProductionSchedule(models.Model):
         :return: action values that open the forecast details wizard
         :rtype: dict
         """
-        date_start = self._utc_date(fields.Date.from_string(date_start_str))
-        date_stop = self._utc_date(fields.Date.from_string(date_stop_str), end=True)
+        date_start = fields.Date.from_string(date_start_str)
+        date_stop = fields.Date.from_string(date_stop_str)
         domain_moves = self._get_moves_domain(date_start, date_stop, 'incoming')
         moves_by_date = self._get_moves_and_date(domain_moves)
         move_ids = self._filter_moves(moves_by_date, date_start, date_stop).ids
@@ -355,11 +353,6 @@ class MrpProductionSchedule(models.Model):
             read_fields.append('product_uom_id')
         production_schedule_states = schedules_to_compute.read(read_fields)
         production_schedule_states_by_id = {mps['id']: mps for mps in production_schedule_states}
-
-        date_range = [(self._context_date(x), self._context_date(y)) for x, y in date_range]
-        date_range_year_minus_1 = [(self._context_date(x), self._context_date(y)) for x, y in date_range_year_minus_1]
-        date_range_year_minus_2 = [(self._context_date(x), self._context_date(y)) for x, y in date_range_year_minus_2]
-
         for production_schedule in indirect_demand_order:
             # Bypass if the schedule is only used in order to compute indirect
             # demand.
@@ -698,8 +691,7 @@ class MrpProductionSchedule(models.Model):
                        date_range[index][1] >= date_planned):
                 index += 1
             quantity = line.product_uom._compute_quantity(line.product_qty, line.product_id.uom_id)
-            key = ((self._context_date(date_range[index][0]), self._context_date(date_range[index][1])), line.product_id, line.order_id.picking_type_id.warehouse_id)
-            incoming_qty[key] += quantity
+            incoming_qty[date_range[index], line.product_id, line.order_id.picking_type_id.warehouse_id] += quantity
 
         # Get quantity on incoming moves
         # TODO: issue since it will use one search by move. Should use a
@@ -715,7 +707,7 @@ class MrpProductionSchedule(models.Model):
             # current time interval.
             while not (date_range[index][0] <= date and date_range[index][1] >= date):
                 index += 1
-            key = ((self._context_date(date_range[index][0]), self._context_date(date_range[index][1])), move.product_id, move.location_dest_id.warehouse_id)
+            key = (date_range[index], move.product_id, move.location_dest_id.warehouse_id)
             if move.state == 'done':
                 incoming_qty_done[key] += move.product_qty
             else:
@@ -889,7 +881,7 @@ class MrpProductionSchedule(models.Model):
         res_moves = []
         for move in moves:
             delay = self._get_dest_moves_delay(move)
-            date = move.date + relativedelta(days=delay)
+            date = fields.Date.to_date(move.date) + relativedelta(days=delay)
             res_moves.append((move, date))
         return res_moves
 
@@ -919,7 +911,7 @@ class MrpProductionSchedule(models.Model):
             # current time interval.
             while not (date_range[index][0] <= date and date_range[index][1] >= date):
                 index += 1
-            key = ((self._context_date(date_range[index][0]), self._context_date(date_range[index][1])), move.product_id, move.location_id.warehouse_id)
+            key = (date_range[index], move.product_id, move.location_id.warehouse_id)
             if move.state == 'done':
                 outgoing_qty_done[key] += move.product_uom_qty
             else:
@@ -964,24 +956,13 @@ class MrpProductionSchedule(models.Model):
         res_purchase_lines = []
         for line in purchase_lines:
             if not line.move_dest_ids:
-                res_purchase_lines.append((line, line.date_planned))
+                res_purchase_lines.append((line, fields.Date.to_date(line.date_planned)))
                 continue
             delay = max(map(self._get_dest_moves_delay, line.move_dest_ids))
-            date = line.date_planned + relativedelta(days=delay)
+            date = fields.Date.to_date(line.date_planned) + relativedelta(days=delay)
             res_purchase_lines.append((line, date))
 
         return res_purchase_lines
-
-    def _context_date(self, date):
-        return fields.Datetime.context_timestamp(self, date).replace(tzinfo=None).date()
-
-    def _utc_date(self, date, end=False):
-        timezone = self.env.context.get('tz') or self.env.user.tz or 'UTC'
-        res = datetime.combine(date, time(23, 59, 59) if end else time(0, 0, 0))
-        res = pytz.timezone(timezone).localize(res)
-        res = res.astimezone(pytz.utc)
-        res = res.replace(tzinfo=None)
-        return res
 
 class MrpProductForecast(models.Model):
     _name = 'mrp.product.forecast'

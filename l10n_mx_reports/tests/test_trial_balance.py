@@ -108,8 +108,10 @@ class TestL10nMXTrialBalanceReport(TestAccountReportsCommon):
             <catalogocuentas:Ctas CodAgrup="115.06" NumCta="115.06" Desc="Mercanc&#237;as en poder de terceros" Nivel="2" Natur="D"/>
             <catalogocuentas:Ctas CodAgrup="118" NumCta="118" Desc="Impuestos acreditables pagados" Nivel="1" Natur="D"/>
             <catalogocuentas:Ctas CodAgrup="118.01" NumCta="118.01" Desc="IVA acreditable pagado" Nivel="2" Natur="D"/>
+            <catalogocuentas:Ctas CodAgrup="118.03" NumCta="118.03" Desc="IEPS acreditable pagado" Nivel="2" Natur="D"/>
             <catalogocuentas:Ctas CodAgrup="119" NumCta="119" Desc="Impuestos acreditables por pagar" Nivel="1" Natur="D"/>
             <catalogocuentas:Ctas CodAgrup="119.01" NumCta="119.01" Desc="IVA pendiente de pago" Nivel="2" Natur="D"/>
+            <catalogocuentas:Ctas CodAgrup="119.03" NumCta="119.03" Desc="IEPS pendiente de pago" Nivel="2" Natur="D"/>
             <catalogocuentas:Ctas CodAgrup="120" NumCta="120" Desc="Anticipo a proveedores" Nivel="1" Natur="D"/>
             <catalogocuentas:Ctas CodAgrup="120.01" NumCta="120.01" Desc="Anticipo a proveedores nacional" Nivel="2" Natur="D"/>
             <catalogocuentas:Ctas CodAgrup="120.02" NumCta="120.02" Desc="Anticipo a proveedores extranjero" Nivel="2" Natur="D"/>
@@ -123,8 +125,10 @@ class TestL10nMXTrialBalanceReport(TestAccountReportsCommon):
             <catalogocuentas:Ctas CodAgrup="206.05" NumCta="206.05" Desc="Otros anticipos de clientes" Nivel="2" Natur="A"/>
             <catalogocuentas:Ctas CodAgrup="208" NumCta="208" Desc="Impuestos trasladados cobrados" Nivel="1" Natur="A"/>
             <catalogocuentas:Ctas CodAgrup="208.01" NumCta="208.01" Desc="IVA trasladado cobrado" Nivel="2" Natur="A"/>
+            <catalogocuentas:Ctas CodAgrup="208.02" NumCta="208.02" Desc="IEPS trasladado cobrado" Nivel="2" Natur="A"/>
             <catalogocuentas:Ctas CodAgrup="209" NumCta="209" Desc="Impuestos trasladados no cobrados" Nivel="1" Natur="A"/>
             <catalogocuentas:Ctas CodAgrup="209.01" NumCta="209.01" Desc="IVA trasladado no cobrado" Nivel="2" Natur="A"/>
+            <catalogocuentas:Ctas CodAgrup="209.02" NumCta="209.02" Desc="IEPS trasladado no cobrado" Nivel="2" Natur="A"/>
             <catalogocuentas:Ctas CodAgrup="216" NumCta="216" Desc="Impuestos retenidos" Nivel="1" Natur="A"/>
             <catalogocuentas:Ctas CodAgrup="216.03" NumCta="216.03" Desc="Impuestos retenidos de ISR por arrendamiento" Nivel="2" Natur="A"/>
             <catalogocuentas:Ctas CodAgrup="216.04" NumCta="216.04" Desc="Impuestos retenidos de ISR por servicios profesionales" Nivel="2" Natur="A"/>

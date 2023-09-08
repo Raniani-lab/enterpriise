@@ -15,6 +15,21 @@ result_name = inputs.COMMISSION.name
         <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
     </record>
 
+    <record id="l10n_us_employee_salary_tips" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="name">Tips</field>
+        <field name="code">TIPS</field>
+        <field name="sequence">5</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = inputs.TIPS</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = inputs.TIPS.amount
+result_name = inputs.TIPS.name
+        </field>
+        <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
+    </record>
+
     <record id="l10n_us_employee_salary_pre_tax_401" model="hr.salary.rule">
         <field name="category_id" ref="l10n_us_hr_payroll.hr_payroll_pre_tax_benefits"/>
         <field name="name">Contributions to retirement Plans</field>
@@ -700,6 +715,21 @@ result_rate = payslip.rule_parameter('l10n_us_ca_ett_rate')
         </field>
         <field name="appears_on_payslip" eval="False"/>
         <field name="partner_id" ref="res_partner_edd_ca"/>
+        <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
+    </record>
+
+    <record id="l10n_us_employee_salary_allocated_tips" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="name">Allocated Tips</field>
+        <field name="code">ALLOCATEDTIPS</field>
+        <field name="sequence">180</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = inputs.ALLOCATEDTIPS</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = inputs.ALLOCATEDTIPS.amount
+result_name = inputs.ALLOCATEDTIPS.name
+        </field>
         <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
     </record>
 

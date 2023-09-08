@@ -1296,3 +1296,42 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'NET': 49379.56,
         }
         self._validate_payslip(payslip, payslip_results)
+
+    def test_056_tips(self):
+        self.contract.write({
+            'wage': 3416.68,
+            'schedule_pay': 'semi-monthly',
+        })
+
+        payslip = self._generate_payslip(datetime.date(2023, 4, 1), datetime.date(2023, 4, 15))
+        payslip.write({
+            'input_line_ids': [(0, 0, {
+                'input_type_id': self.env.ref('l10n_us_hr_payroll.input_tips').id,
+                'amount': 500,
+            }), (0, 0, {
+                'input_type_id': self.env.ref('l10n_us_hr_payroll.input_allocated_tips').id,
+                'amount': 300,
+            })]
+        })
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 3416.68,
+            'TIPS': 500.0,
+            'GROSS': 3916.68,
+            'TAXABLE': 3916.68,
+            'FIT': -539.19,
+            'MEDICARE': -56.79,
+            'MEDICAREADD': 0,
+            'SST': -242.83,
+            'STATEINCOMETAX': -229.65,
+            'CASDITAX': -35.25,
+            'COMPANYFUTA': 235.0,
+            'COMPANYMEDICARE': 56.79,
+            'COMPANYSOCIAL': 242.83,
+            'COMPANYSUI': 66.58,
+            'COMPANYCAETT': 3.92,
+            'ALLOCATEDTIPS': 300.0,
+            'NET': 3112.96,
+        }
+        self._validate_payslip(payslip, payslip_results)

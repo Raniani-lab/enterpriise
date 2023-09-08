@@ -54,30 +54,19 @@ export default class SpreadsheetComponent extends Component {
             title: _t("Odoo Spreadsheet"),
             body,
             confirm,
-            cancel: this.closeDialog.bind(this),
+            cancel: () => {}, // Must be defined to display the Cancel button
             confirmLabel: _t("Confirm"),
         });
     }
 
     _getLinesNumber(callback) {
-        this.dialog.add(
-            InputDialog,
-            {
-                body: _t("Select the number of records to insert"),
-                confirm: callback,
-                title: _t("Re-insert list"),
-                inputValue: DEFAULT_LINES_NUMBER,
-                inputType: "number",
-            },
-            { onClose: this.closeDialog.bind(this) }
-        );
-    }
-
-    /**
-     * Close the dialog.
-     */
-    closeDialog() {
-        document.querySelector(".o-grid>input").focus();
+        this.dialog.add(InputDialog, {
+            body: _t("Select the number of records to insert"),
+            confirm: callback,
+            title: _t("Re-insert list"),
+            inputValue: DEFAULT_LINES_NUMBER,
+            inputType: "number",
+        });
     }
 
     /**
@@ -100,7 +89,6 @@ export default class SpreadsheetComponent extends Component {
         this.dialog.add(ConfirmationDialog, {
             title: _t("Odoo Spreadsheet"),
             body,
-            confirm: this.closeDialog.bind(this),
         });
     }
 }

@@ -104,7 +104,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 ('EXP0 Expense 0',  1000 + 1050,        0.00,        250 + 150,           750 + 900                ),
                 ('EXP1 Expense 1',  1225,               0.00,        350,                 875                      ),
                 ('EXP2 Expense 2',  1680 + 225,         0.00,        600 * (10/30) + 0,   600 * (2 + 14/30) + 225  ),
-                ('Totals',          5180,               0.00,        950,                 4230                     ),
+                ('Total',          5180,               0.00,        950,                 4230                     ),
             ],
             options,
         )
@@ -120,7 +120,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 ('EXP0 Expense 0',  1000 + 1050,        250 + 150,           250 + 300,           500 + 600                ),
                 ('EXP1 Expense 1',  1225,               350,                 350,                 525                      ),
                 ('EXP2 Expense 2',  1680 + 225,         600 * (10/30) + 0,   600 + 0,             600 * (1 + 14/30) + 225  ),
-                ('Totals',          5180,               950,                 1500,                2730                     ),
+                ('Total',          5180,               950,                 1500,                2730                     ),
             ],
             options,
         )
@@ -136,7 +136,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 ('EXP0 Expense 0',  1000 + 1050,        750 + 750,                   250 + 300,              0.0   ),
                 ('EXP1 Expense 1',  1225,               1050,                        175,                    0.0   ),
                 ('EXP2 Expense 2',  1680 + 225,         600 * (2 + 10/30) + 0,       600 * (14/30) + 225,    0.0   ),
-                ('Totals',          5180,               3950,                        1230,                   0.0   ),
+                ('Total',          5180,               3950,                        1230,                   0.0   ),
             ],
             options,
         )
@@ -163,7 +163,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 ('EXP0 Expense 0',  1000 + 1050,        0.0,         750 + 750,              550       ),
                 ('EXP1 Expense 1',  1225,               0.0,         1050,                   175       ),
                 ('EXP2 Expense 2',  1680 + 225,         0.0,         600 * (2 + 10/30) + 0,  280 + 225 ),
-                ('Totals',          5180,               0.0,         3950,                   1230      ),
+                ('Total',          5180,               0.0,         3950,                   1230      ),
             ],
             options,
         )
@@ -179,7 +179,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 ('EXP0 Expense 0',  1000 + 1050,        750 + 750,                   250 + 300,              0.0   ),
                 ('EXP1 Expense 1',  1225,               1050,                        175,                    0.0   ),
                 ('EXP2 Expense 2',  1680 + 225,         600 * (2 + 10/30) + 0,       600 * (14/30) + 225,    0.0   ),
-                ('Totals',          5180,               3950,                        1230,                   0.0   ),
+                ('Total',          5180,               3950,                        1230,                   0.0   ),
             ],
             options,
         )
@@ -206,7 +206,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 ('EXP0 Expense 0',  1000 + 1050,     0.0,        1000 + 1050,    0.0   ),
                 ('EXP1 Expense 1',  1225,            0.0,        1225,           0.0   ),
                 ('EXP2 Expense 2',  1680 + 225,      0.0,        1680 + 225,     0.0   ),
-                ('Totals',          5180,            0.0,        5180,           0.0   ),
+                ('Total',          5180,            0.0,        5180,           0.0   ),
             ],
             options,
         )
@@ -241,7 +241,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 ('REV0 Revenue 0',  1000 + 1050,        0.0,         250 + 150,           750 + 900                ),
                 ('REV1 Revenue 1',  1225,               0.0,         350,                 875                      ),
                 ('REV2 Revenue 2',  1680 + 225,         0.0,         600 * (10/30) + 0,   600 * (2 + 14/30) + 225  ),
-                ('Totals',          5180,               0.0,         950,                 4230                     ),
+                ('Total',          5180,               0.0,         950,                 4230                     ),
             ],
             options,
         )
@@ -257,7 +257,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 ('REV0 Revenue 0',  1000 + 1050,        250 + 150,           250 + 300,           500 + 600                ),
                 ('REV1 Revenue 1',  1225,               350,                 350,                 525                      ),
                 ('REV2 Revenue 2',  1680 + 225,         600 * (10/30) + 0,   600 + 0,             600 * (1 + 14/30) + 225  ),
-                ('Totals',          5180,               950,                 1500,                2730                     ),
+                ('Total',          5180,               950,                 1500,                2730                     ),
             ],
             options,
         )
@@ -273,7 +273,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 ('REV0 Revenue 0',  1000 + 1050,        750 + 750,                   250 + 300,              0.0   ),
                 ('REV1 Revenue 1',  1225,               1050,                        175,                    0.0   ),
                 ('REV2 Revenue 2',  1680 + 225,         600 * (2 + 10/30) + 0,       600 * (14/30) + 225,    0.0   ),
-                ('Totals',          5180,               3950,                        1230,                   0.0   ),
+                ('Total',          5180,               3950,                        1230,                   0.0   ),
             ],
             options,
         )
@@ -300,7 +300,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 ('REV0 Revenue 0',  1000 + 1050,        0.0,         750 + 750,              550       ),
                 ('REV1 Revenue 1',  1225,               0.0,         1050,                   175       ),
                 ('REV2 Revenue 2',  1680 + 225,         0.0,         600 * (2 + 10/30) + 0,  280 + 225 ),
-                ('Totals',          5180,               0.0,         3950,                   1230      ),
+                ('Total',          5180,               0.0,         3950,                   1230      ),
             ],
             options,
         )
@@ -316,7 +316,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 ('REV0 Revenue 0',  1000 + 1050,        750 + 750,                   250 + 300,              0.0   ),
                 ('REV1 Revenue 1',  1225,               1050,                        175,                    0.0   ),
                 ('REV2 Revenue 2',  1680 + 225,         600 * (2 + 10/30) + 0,       600 * (14/30) + 225,    0.0   ),
-                ('Totals',          5180,               3950,                        1230,                   0.0   ),
+                ('Total',          5180,               3950,                        1230,                   0.0   ),
             ],
             options,
         )
@@ -343,7 +343,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 ('REV0 Revenue 0',  1000 + 1050,     0.0,        1000 + 1050,    0.0   ),
                 ('REV1 Revenue 1',  1225,            0.0,        1225,           0.0   ),
                 ('REV2 Revenue 2',  1680 + 225,      0.0,        1680 + 225,     0.0   ),
-                ('Totals',          5180,            0.0,        5180,           0.0   ),
+                ('Total',          5180,            0.0,        5180,           0.0   ),
             ],
             options,
         )
@@ -378,7 +378,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 ('EXP0 Expense 0',  1000 + 1050,        0.0,         418.33,     1631.67    ),
                 ('EXP1 Expense 1',  1225,               0.0,         361.67,     863.33     ),
                 ('EXP2 Expense 2',  1680 + 225,         0.0,         220,        1460 + 225 ),
-                ('Totals',          5180,               0.0,         1000,       4180       ),
+                ('Total',          5180,               0.0,         1000,       4180       ),
             ],
             options,
         )
@@ -394,7 +394,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 ('EXP0 Expense 0',  1000 + 1050,        418.33,      513.33,     1118.33   ),
                 ('EXP1 Expense 1',  1225,               361.67,      326.67,     536.67    ),
                 ('EXP2 Expense 2',  1680 + 225,         220,         560,        900 + 225 ),
-                ('Totals',          5180,               1000,        1400,       2780      ),
+                ('Total',          5180,               1000,        1400,       2780      ),
             ],
             options,
         )
@@ -410,7 +410,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 ('EXP0 Expense 0',  1000 + 1050,        0.0,         1500,       550       ),
                 ('EXP1 Expense 1',  1225,               0.0,         1050,       175       ),
                 ('EXP2 Expense 2',  1680 + 225,         0.0,         1400,       280 + 225 ),
-                ('Totals',          5180,               0.0,         3950,       1230      ),
+                ('Total',          5180,               0.0,         3950,       1230      ),
             ],
             options,
         )
@@ -434,7 +434,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                     ('EXP0 Expense 0',  1000 + 1050,        418.33,      513.33,     1118.33   ),
                     ('EXP1 Expense 1',  1225,               361.67,      326.67,     536.67    ),
                     ('EXP2 Expense 2',  1680 + 225,         220,         560,        900 + 225 ),
-                    ('Totals',          5180,               1000,        1400,       2780      ),
+                    ('Total',          5180,               1000,        1400,       2780      ),
                 ],
                 options,
             )
@@ -452,7 +452,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 ('EXP0 Expense 0',  2000 + 2100,        836.67,      1026.67,    2236.67    ),
                 ('EXP1 Expense 1',  2450,               723.33,      653.33,     1073.33    ),
                 ('EXP2 Expense 2',  3360 + 450,         440,         1120,       1800 + 450 ),
-                ('Totals',          10360,              2000,        2800,       5560       ),
+                ('Total',          10360,              2000,        2800,       5560       ),
             ],
             options,
         )
@@ -476,7 +476,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 ('EXP0 Expense 0',  2050,    0.0,        0.0,        400,        550,        550,        550,                0.0     ),
                 ('EXP1 Expense 1',  1225,    0.0,        0.0,        350,        350,        350,        175,                0.0     ),
                 ('EXP2 Expense 2',  1905,    0.0,        0.0,        200,        600,        600,        505,                0.0     ),
-                ('Totals',          5180,    0.0,        0.0,        950,        1500,       1500,       1230,               0.0     ),
+                ('Total',          5180,    0.0,        0.0,        950,        1500,       1500,       1230,               0.0     ),
             ],
             options,
         )
@@ -544,7 +544,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             [   0,                  1,           2,          3,          4       ],
             [
                 ('EXP0 Expense 0',  1200,        400,        400,        400     ),
-                ('Totals',          1200,        400,        400,        400     ),
+                ('Total',          1200,        400,        400,        400     ),
             ],
             options,
         )
@@ -566,7 +566,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 ('EXP0 Expense 0',  -1000 - 1050,        -418.33,      -513.33,     -1118.33   ),
                 ('EXP1 Expense 1',  -1225,               -361.67,      -326.67,     -536.67    ),
                 ('EXP2 Expense 2',  -1680 - 225,         -220,         -560,        -900 - 225 ),
-                ('Totals',          -5180,               -1000,        -1400,       -2780      ),
+                ('Total',          -5180,               -1000,        -1400,       -2780      ),
             ],
             options,
         )
@@ -613,7 +613,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             [   0,                  1,           2,          3,          4       ],
             [
                 ('EXP0 Expense 0',  1000,        250,        250,        500     ),
-                ('Totals',          1000,        250,        250,        500     ),
+                ('Total',          1000,        250,        250,        500     ),
             ],
             options,
         )
@@ -627,7 +627,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             [   0,                  1,           2,          3,          4       ],
             [
                 ('EXP0 Expense 0',  1000,        500,        250,        250     ),
-                ('Totals',          1000,        500,        250,        250     ),
+                ('Total',          1000,        500,        250,        250     ),
             ],
             options,
         )
@@ -641,7 +641,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             [   0,                  1,           2,          3,          4     ],
             [
                 ('EXP0 Expense 0',  1000,        750,        250,        0     ),
-                ('Totals',          1000,        750,        250,        0     ),
+                ('Total',          1000,        750,        250,        0     ),
             ],
             options,
         )

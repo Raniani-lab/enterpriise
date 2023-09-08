@@ -15,7 +15,7 @@
         <field name="custom_handler_model_id" ref="model_account_partner_ledger_report_handler"/>
         <field name="column_ids">
             <record id="partner_ledger_report_journal_code" model="account.report.column">
-                <field name="name">JRNL</field>
+                <field name="name">Journal</field>
                 <field name="expression_label">journal_code</field>
                 <field name="figure_type">string</field>
             </record>

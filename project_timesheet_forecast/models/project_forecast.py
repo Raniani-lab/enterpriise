@@ -15,7 +15,7 @@ class Forecast(models.Model):
     allow_timesheets = fields.Boolean("Allow timesheets", related='project_id.allow_timesheets', help="Timesheets can be logged on this slot.", readonly=True)
     effective_hours = fields.Float("Effective Hours", compute='_compute_effective_hours', compute_sudo=True, store=True,
         help="Number of hours the employee recorded on their Timesheetes for this task (and its sub-tasks) for the period of this shift.")
-    timesheet_ids = fields.Many2many('account.analytic.line', compute='_compute_effective_hours', compute_sudo=True)
+    timesheet_ids = fields.Many2many('account.analytic.line', compute='_compute_timesheet_ids', compute_sudo=True)
     can_open_timesheets = fields.Boolean(compute='_compute_can_open_timesheet')
     percentage_hours = fields.Float("Progress", compute='_compute_percentage_hours', compute_sudo=True, store=True)
     encode_uom_in_days = fields.Boolean(compute='_compute_encode_uom_in_days')
@@ -47,22 +47,23 @@ class Forecast(models.Model):
             domain = expression.AND([[('account_id', '=', self.project_id.analytic_account_id.id)], domain])
         return domain
 
-    @api.depends('employee_id', 'start_datetime', 'end_datetime', 'project_id.analytic_account_id', 'project_id.analytic_account_id.line_ids', 'project_id.analytic_account_id.line_ids.unit_amount')
+    @api.depends('timesheet_ids')
     def _compute_effective_hours(self):
+        for forecast in self:
+            forecast.effective_hours = sum(
+                timesheet.unit_amount
+                for timesheet in forecast.timesheet_ids
+            )
+
+    @api.depends('employee_id', 'start_datetime', 'end_datetime', 'project_id.analytic_account_id', 'project_id.analytic_account_id.line_ids', 'project_id.analytic_account_id.line_ids.unit_amount')
+    def _compute_timesheet_ids(self):
+        self.timesheet_ids = False
         Timesheet = self.env['account.analytic.line']
         for forecast in self:
-            if not forecast.project_id or not forecast.start_datetime or not forecast.end_datetime:
-                forecast.effective_hours = 0
-                forecast.timesheet_ids = False
-            else:
+            if forecast.project_id and forecast.start_datetime and forecast.end_datetime:
                 domain = forecast._get_timesheet_domain()
                 if domain:
-                    timesheets = Timesheet.search(domain)
-                else:
-                    timesheets = Timesheet.browse()
-
-                forecast.effective_hours = sum(timesheet.unit_amount for timesheet in timesheets)
-                forecast.timesheet_ids = timesheets
+                    forecast.timesheet_ids = Timesheet.search(domain)
 
     def _read_group_fields_nullify(self):
         return super()._read_group_fields_nullify() + ['effective_hours', 'effective_hours_cost', 'percentage_hours']

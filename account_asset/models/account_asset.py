@@ -118,7 +118,7 @@ class AccountAsset(models.Model):
     salvage_value = fields.Monetary(string='Not Depreciable Value',
                                     help="It is the amount you plan to have that you cannot depreciate.")
     total_depreciable_value = fields.Monetary(compute='_compute_total_depreciable_value')
-    gross_increase_value = fields.Monetary(string="Gross Increase Value", compute="_compute_book_value", compute_sudo=True)
+    gross_increase_value = fields.Monetary(string="Gross Increase Value", compute="_compute_gross_increase_value", compute_sudo=True)
     non_deductible_tax_value = fields.Monetary(string="Non Deductible Tax Value", compute="_compute_non_deductible_tax_value", store=True, readonly=True)
     related_purchase_value = fields.Monetary(compute='_compute_related_purchase_value')
 
@@ -291,6 +291,10 @@ class AccountAsset(models.Model):
     def _compute_book_value(self):
         for record in self:
             record.book_value = record.value_residual + record.salvage_value + sum(record.children_ids.mapped('book_value'))
+
+    @api.depends('children_ids.original_value')
+    def _compute_gross_increase_value(self):
+        for record in self:
             record.gross_increase_value = sum(record.children_ids.mapped('original_value'))
 
     @api.depends('original_move_line_ids')

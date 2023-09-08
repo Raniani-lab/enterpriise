@@ -806,15 +806,19 @@ class MrpEcoBomChange(models.Model):
     new_product_qty = fields.Float('New revision quantity', default=0)
     old_operation_id = fields.Many2one('mrp.routing.workcenter', 'Previous Consumed in Operation')
     new_operation_id = fields.Many2one('mrp.routing.workcenter', 'New Consumed in Operation')
-    upd_product_qty = fields.Float('Quantity', compute='_compute_change', store=True)
+    upd_product_qty = fields.Float('Quantity', compute='_compute_upd_product_qty', store=True)
     uom_change = fields.Char('Unit of Measure', compute='_compute_change', compute_sudo=True)
     operation_change = fields.Char(compute='_compute_change', string='Consumed in Operation', compute_sudo=True)
     conflict = fields.Boolean()
 
-    @api.depends('new_product_qty', 'old_product_qty', 'old_operation_id', 'new_operation_id', 'old_uom_id', 'new_uom_id')
-    def _compute_change(self):
+    @api.depends('new_product_qty', 'old_product_qty')
+    def _compute_upd_product_qty(self):
         for rec in self:
             rec.upd_product_qty = rec.new_product_qty - rec.old_product_qty
+
+    @api.depends('old_operation_id', 'new_operation_id', 'old_uom_id', 'new_uom_id')
+    def _compute_change(self):
+        for rec in self:
             rec.operation_change = rec.new_operation_id.name if rec.change_type == 'add' else rec.old_operation_id.name
             rec.uom_change = False
             if (rec.old_uom_id and rec.new_uom_id) and rec.old_uom_id != rec.new_uom_id:

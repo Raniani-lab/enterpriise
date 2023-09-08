@@ -112,7 +112,7 @@ class HrPayslip(models.Model):
     net_wage = fields.Monetary(compute='_compute_basic_net', store=True)
     currency_id = fields.Many2one(related='contract_id.currency_id')
     warning_message = fields.Char(compute='_compute_warning_message', store=True, readonly=True)
-    is_wrong_duration = fields.Boolean(compute='_compute_warning_message', compute_sudo=True)
+    is_wrong_duration = fields.Boolean(compute='_compute_is_wrong_duration', compute_sudo=True)
     is_regular = fields.Boolean(compute='_compute_is_regular')
     has_negative_net_to_report = fields.Boolean()
     negative_net_to_report_display = fields.Boolean(compute='_compute_negative_net_to_report_display')
@@ -893,7 +893,6 @@ class HrPayslip(models.Model):
     def _compute_warning_message(self):
         for slip in self.filtered(lambda p: p.date_to):
             slip.warning_message = False
-            slip.is_wrong_duration = False
             warnings = []
             if slip.contract_id and (slip.date_from < slip.contract_id.date_start
                     or (slip.contract_id.date_end and slip.date_to > slip.contract_id.date_end)):
@@ -908,12 +907,21 @@ class HrPayslip(models.Model):
 
             if (slip.contract_id.schedule_pay or slip.contract_id.structure_type_id.default_schedule_pay)\
                     and slip.date_from + slip._get_schedule_timedelta() != slip.date_to:
-                slip.is_wrong_duration = True
                 warnings.append(_("The duration of the payslip is not accurate according to the structure type."))
 
             if warnings:
                 warnings = [_("This payslip can be erroneous :")] + warnings
                 slip.warning_message = "\n  ・ ".join(warnings)
+
+    @api.depends('date_from', 'date_to', 'struct_id')
+    def _compute_is_wrong_duration(self):
+        for slip in self:
+            slip.is_wrong_duration = slip.date_to and (
+                slip.contract_id.schedule_pay
+                or slip.contract_id.structure_type_id.default_schedule_pay
+            ) and (
+                slip.date_from + slip._get_schedule_timedelta() != slip.date_to
+            )
 
     @api.depends('employee_id', 'contract_id', 'struct_id', 'date_from', 'date_to')
     def _compute_worked_days_line_ids(self):

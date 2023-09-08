@@ -58,15 +58,19 @@ class MrpWorkcenterProductivity(models.Model):
     employee_id = fields.Many2one(
         'hr.employee', string="Employee", compute='_compute_employee',
         help='employee that record this working time', store=True, readonly=False)
-    employee_cost = fields.Monetary('employee_cost', compute='_compute_cost', default=0, store=True)
-    total_cost = fields.Float('Cost', compute='_compute_cost', compute_sudo=True)
+    employee_cost = fields.Monetary('employee_cost', compute='_compute_employee_cost', default=0, store=True)
+    total_cost = fields.Float('Cost', compute='_compute_total_cost', compute_sudo=True)
     currency_id = fields.Many2one(related='company_id.currency_id')
 
-    @api.depends('duration')
-    def _compute_cost(self):
+    @api.depends('employee_id.hourly_cost')
+    def _compute_employee_cost(self):
         for time in self:
             if time.employee_id:
                 time.employee_cost = time.employee_id.hourly_cost
+
+    @api.depends('duration', 'employee_cost')
+    def _compute_total_cost(self):
+        for time in self:
             time.total_cost = time.employee_cost * time.duration / 60
 
     @api.depends('user_id')

@@ -423,7 +423,7 @@ msgstr "Unternehmen"
 #: code:addons/l10n_de_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Configure your company"
-msgstr ""
+msgstr "Ihr Unternehmen konfigurieren"
 
 #. module: l10n_de_reports
 #: model:ir.model,name:l10n_de_reports.model_res_partner
@@ -747,19 +747,19 @@ msgstr "Sie haben bereits einen Partner mit der gleichen Datev-Kennung definiert
 #: code:addons/l10n_de_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Your company's SteuerNummer field should be filled"
-msgstr ""
+msgstr "Die Steuernummer Ihres Unternehmens sollte ausgefüllt sein"
 
 #. module: l10n_de_reports
 #: code:addons/l10n_de_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Your company's SteuerNummer is not compatible with your state"
-msgstr ""
+msgstr "Die Steuernummer Ihres Unternehmens ist nicht mit Ihrem Bundesland kompatibel"
 
 #. module: l10n_de_reports
 #: code:addons/l10n_de_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Your company's SteuerNummer is not valid"
-msgstr ""
+msgstr "Die Steuernummer Ihres Unternehmens ist nicht gültig"
 
 #. module: l10n_de_reports
 #. odoo-python

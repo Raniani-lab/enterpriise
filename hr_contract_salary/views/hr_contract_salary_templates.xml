@@ -84,11 +84,10 @@
                                 <div t-att-class="'folded_content ' + ('d-none' if (advantage.res_field_id and 'fold_' + advantage.field in initial_values and not initial_values['fold_' + advantage.field]) else '')">
                                     <t t-if="advantage.display_type == 'slider'">
                                         <span class="badge text-bg-secondary"><t t-esc="advantage.slider_min"/></span>
-                                        <!-- YTI TODO master: Add step field on slider advantages -->
                                         <input
                                             type="range"
                                             class="advantage_input hr_cs_control_range"
-                                            t-att-step="10 if advantage.field == 'fuel_card' else 1"
+                                            t-att-step="advantage.slider_step or 1"
                                             t-att-min="advantage.slider_min"
                                             t-att-max="advantage.slider_max"
                                             applies-on="contract"

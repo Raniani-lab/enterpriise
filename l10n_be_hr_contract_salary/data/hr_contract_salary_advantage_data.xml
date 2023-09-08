@@ -231,6 +231,7 @@
         <field name="display_type">slider</field>
         <field name="slider_min">0</field>
         <field name="slider_max">500</field>
+        <field name="slider_step">10</field>
     </record>
 
     <record id="l10n_be_yearly_commission" model="hr.contract.salary.advantage">

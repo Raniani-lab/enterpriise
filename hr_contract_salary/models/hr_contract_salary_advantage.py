@@ -85,6 +85,7 @@ class HrContractSalaryAdvantage(models.Model):
     description = fields.Html('Description', translate=True)
     slider_min = fields.Float()
     slider_max = fields.Float()
+    slider_step = fields.Integer(default=1)
     value_ids = fields.One2many('hr.contract.salary.advantage.value', 'advantage_id')
     hide_description = fields.Boolean(help="Hide the description if the advantage is not taken.")
     requested_documents_field_ids = fields.Many2many('ir.model.fields', domain=_get_binary_field_domain, string="Requested Documents")

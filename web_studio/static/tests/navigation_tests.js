@@ -28,6 +28,7 @@ import { registry } from "@web/core/registry";
 import { session } from "@web/session";
 import { patch } from "@web/core/utils/patch";
 import { StudioView } from "@web_studio/client_action/view_editor/studio_view";
+import { ViewEditor } from "@web_studio/client_action/view_editor/view_editor";
 import { StudioClientAction } from "@web_studio/client_action/studio_client_action";
 import { ListEditorRenderer } from "@web_studio/client_action/view_editor/editors/list/list_editor_renderer";
 
@@ -943,5 +944,67 @@ QUnit.module("Studio", (hooks) => {
         await nextTick();
         assert.containsNone(target, ".o_studio_home_menu");
         assert.containsOnce(target, ".o_studio .o_web_studio_kanban_view_editor");
+    });
+
+    QUnit.test("leaving studio with a pending rendering in Studio", async (assert) => {
+        serverData.models.pony.fields.selection = {
+            type: "selection",
+            selection: [["1", "1"]],
+            manual: true,
+        };
+        serverData.models.pony.records = [{ id: 1, selection: "1" }];
+
+        serverData.views["pony,false,form"] = `<form><field name="selection" /></form>`;
+        let vem;
+        patchWithCleanup(ViewEditor.prototype, {
+            setup() {
+                super.setup();
+                vem = this;
+            },
+        });
+
+        const loadActionDef = makeDeferred();
+        let enableRPCWatch = false;
+        const mockRPC = async (route, args) => {
+            if (!enableRPCWatch) {
+                return;
+            }
+            let res;
+            if (route === "/web/action/load") {
+                await loadActionDef;
+            }
+            if (args.method === "web_read") {
+                res = [{ id: args.args[0], selection: "2" }];
+            }
+
+            assert.step(route);
+            return res;
+        };
+
+        await createEnterpriseWebClient({ serverData, mockRPC });
+        await click(target.querySelector(".o_app[data-menu-xmlid=app_2]"));
+        await contains(".o_data_cell");
+        await click(target.querySelector(".o_data_cell"));
+        await contains(".o_form_view");
+        await openStudio(target);
+        await contains(".o_studio");
+
+        await contains(".o_field_widget[name='selection']", { text: "1" });
+
+        enableRPCWatch = true;
+        await click(target.querySelector(".o_web_studio_leave"));
+        vem.viewEditorModel.fields.selection.selection.push(["2", "2"]);
+        await contains(".o_field_widget[name='selection']", { text: "2" });
+
+        loadActionDef.resolve();
+        await loadActionDef;
+        await contains("body:not(:has(.o_studio)) .o_form_view");
+
+        assert.verifySteps([
+            "/web/dataset/call_kw/pony/web_read",
+            "/web/action/load",
+            "/web/dataset/call_kw/pony/get_views",
+            "/web/dataset/call_kw/pony/web_read",
+        ]);
     });
 });

@@ -236,9 +236,10 @@ export const studioService = {
             if (!inStudio) {
                 throw new Error("leave when not in studio???");
             }
-            resetViewCompilerCache();
             env.bus.trigger("CLEAR-CACHES");
+
             const options = {
+                onActionReady: () => resetViewCompilerCache(),
                 stackPosition: "replacePreviousAction", // If target is menu, then replaceCurrent, see comment above why we cannot do this
             };
             let actionId;

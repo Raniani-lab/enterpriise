@@ -2417,5 +2417,43 @@ QUnit.module(
             await click(target, "[name='m2o'] a");
             assert.verifySteps(["onTableClicked"]);
         });
+
+        QUnit.test("invisible relational are fetched", async (assert) => {
+            serverData.models.coucou.fields.product_ids = { type: "one2many", relation: "product" };
+            serverData.models.coucou.records = [
+                {
+                    id: 1,
+                    product_ids: [1],
+                    m2o: 1,
+                },
+            ];
+
+            const mockRPC = (route, args) => {
+                if (args.method === "web_search_read") {
+                    assert.step("web_search_read");
+                    assert.deepEqual(args.kwargs.specification, {
+                        m2o: { fields: { display_name: {} } },
+                        product_ids: { fields: {} },
+                    });
+                }
+            };
+
+            await createViewEditor({
+                serverData,
+                type: "list",
+                resModel: "coucou",
+                arch: '<tree><field name="product_ids" invisible="True" /><field name="m2o" invisible="True" /></tree>',
+                mockRPC,
+            });
+
+            assert.strictEqual(target.querySelector("tbody .o_data_row").innerText.trim(), "");
+            await click(selectorContains(target, ".o_web_studio_sidebar .nav-link", "View"));
+            await click(target, ".o_web_studio_sidebar #show_invisible");
+            assert.strictEqual(
+                target.querySelector("tbody .o_data_row").innerText.trim(),
+                "1 record\t\tA very good product"
+            );
+            assert.verifySteps(["web_search_read"]);
+        });
     }
 );

@@ -210,3 +210,25 @@ export function useExternalParentInModel(model, parentRecord) {
         return load.call(model, params);
     };
 }
+
+export function useModelConfigFetchInvisible(model) {
+    function fixActiveFields(activeFields) {
+        const stack = [activeFields];
+        while (stack.length) {
+            const activeFields = stack.pop();
+            for (const activeField of Object.values(activeFields)) {
+                if ("related" in activeField) {
+                    stack.push(activeField.related.activeFields);
+                }
+                delete activeField.invisible;
+            }
+        }
+        return activeFields;
+    }
+
+    const load = model.load;
+    model.load = (...args) => {
+        fixActiveFields(model.config.activeFields);
+        return load.call(model, ...args);
+    };
+}

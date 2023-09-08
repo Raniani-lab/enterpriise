@@ -5,7 +5,7 @@ import { kanbanView } from "@web/views/kanban/kanban_view";
 import { KanbanEditorRenderer } from "@web_studio/client_action/view_editor/editors/kanban/kanban_editor_renderer";
 import { makeModelErrorResilient } from "@web_studio/client_action/view_editor/editors/utils";
 import { KanbanEditorSidebar } from "./kanban_editor_sidebar/kanban_editor_sidebar";
-import { getStudioNoFetchFields } from "../utils";
+import { getStudioNoFetchFields, useModelConfigFetchInvisible } from "../utils";
 
 class EditorArchParser extends kanbanView.ArchParser {
     parse(arch, models, modelName) {
@@ -68,8 +68,16 @@ class OneRecordModel extends kanbanView.Model {
     }
 }
 
+class KanbanEditorController extends kanbanView.Controller {
+    setup() {
+        super.setup();
+        useModelConfigFetchInvisible(this.model);
+    }
+}
+
 const kanbanEditor = {
     ...kanbanView,
+    Controller: KanbanEditorController,
     ArchParser: EditorArchParser,
     Renderer: KanbanEditorRenderer,
     Model: OneRecordModel,

@@ -3068,6 +3068,35 @@ QUnit.module("View Editors", (hooks) => {
         );
         assert.containsNone(target, ".o-web-studio-edit-x2manys-buttons");
     });
+
+    QUnit.test("invisible relational are fetched", async (assert) => {
+        serverData.models.coucou.fields.product_ids = { type: "one2many", relation: "product" };
+
+        const mockRPC = (route, args) => {
+            if (args.method === "web_read") {
+                assert.step("web_read");
+                assert.deepEqual(args.kwargs.specification, {
+                    m2o: { fields: { display_name: {} } },
+                    product_ids: { fields: {} },
+                });
+            }
+        };
+
+        await createViewEditor({
+            serverData,
+            type: "form",
+            resModel: "coucou",
+            resId: 1,
+            arch: '<form><field name="product_ids" invisible="True" /><field name="m2o" invisible="True" /></form>',
+            mockRPC,
+        });
+
+        assert.containsNone(target, ".o_field_widget");
+        await click(selectorContains(target, ".o_web_studio_sidebar .nav-link", "View"));
+        await click(target, ".o_web_studio_sidebar #show_invisible");
+        assert.containsN(target, ".o_field_widget", 2);
+        assert.verifySteps(["web_read"]);
+    });
 });
 
 QUnit.module("View Editors", (hooks) => {

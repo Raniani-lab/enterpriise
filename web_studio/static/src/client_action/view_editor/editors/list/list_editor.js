@@ -8,7 +8,11 @@ import { ListEditorRenderer, columnsStyling } from "./list_editor_renderer";
 
 import { Component, xml } from "@odoo/owl";
 import { ListEditorSidebar } from "./list_editor_sidebar/list_editor_sidebar";
-import { getStudioNoFetchFields, useExternalParentInModel } from "../utils";
+import {
+    getStudioNoFetchFields,
+    useExternalParentInModel,
+    useModelConfigFetchInvisible,
+} from "../utils";
 
 function parseStudioGroups(node) {
     if (node.hasAttribute("studio_groups")) {
@@ -79,6 +83,7 @@ function useParentedStaticList(model, parentRecord, resIds) {
 class ListEditorController extends listView.Controller {
     setup() {
         super.setup();
+        useModelConfigFetchInvisible(this.model);
         if (this.props.parentRecord) {
             useParentedStaticList(this.model, this.props.parentRecord, this.props.resIds);
         }

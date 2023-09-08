@@ -2,11 +2,15 @@
 
 import { useState, onMounted, onPatched } from "@odoo/owl";
 import { formView } from "@web/views/form/form_view";
-import { useExternalParentInModel } from "@web_studio/client_action/view_editor/editors/utils";
+import {
+    useExternalParentInModel,
+    useModelConfigFetchInvisible,
+} from "@web_studio/client_action/view_editor/editors/utils";
 
 export class FormEditorController extends formView.Controller {
     setup() {
         super.setup();
+        useModelConfigFetchInvisible(this.model);
         this.mailTemplate = null;
         this.hasFileViewerInArch = false;
 

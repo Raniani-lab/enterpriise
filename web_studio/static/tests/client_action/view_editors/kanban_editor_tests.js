@@ -1763,5 +1763,58 @@ QUnit.module(
                 );
             }
         );
+
+        QUnit.test("invisible relational are fetched", async (assert) => {
+            serverData.models.coucou.fields.product_ids = { type: "one2many", relation: "product" };
+            serverData.models.coucou.records = [
+                {
+                    id: 1,
+                    product_ids: [1],
+                    m2o: 1,
+                },
+            ];
+
+            const mockRPC = (route, args) => {
+                if (args.method === "web_search_read") {
+                    assert.step("web_search_read");
+                    assert.deepEqual(args.kwargs.specification, {
+                        m2o: { fields: { display_name: {} } },
+                        product_ids: { fields: {} },
+                    });
+                }
+            };
+
+            await createViewEditor({
+                serverData,
+                type: "kanban",
+                resModel: "coucou",
+                arch: `<kanban>
+                    <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <field name="product_ids" invisible="True" /><field name="m2o" invisible="True" />
+                        </div>
+                    </t>
+                    </templates>
+                    </kanban>`,
+                mockRPC,
+            });
+
+            assert.deepEqual(
+                Array.from(target.querySelectorAll(".o_kanban_record [data-field-name]")).map(
+                    (el) => el.innerText
+                ),
+                []
+            );
+            await click(selectorContains(target, ".o_web_studio_sidebar .nav-link", "View"));
+            await click(target, ".o_web_studio_sidebar #show_invisible");
+            assert.deepEqual(
+                Array.from(target.querySelectorAll(".o_kanban_record [data-field-name]")).map(
+                    (el) => el.innerText
+                ),
+                ["1 record", "A very good product"]
+            );
+            assert.verifySteps(["web_search_read"]);
+        });
     }
 );

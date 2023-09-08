@@ -29,9 +29,12 @@ class ProductProduct(models.Model):
         best_pricing_with_pricelist = self.env['product.pricing']
         best_pricing_without_pricelist = self.env['product.pricing']
         for pricing in available_pricings:
-            if pricing.pricelist_id == pricelist:
+            # If there are any variants for the pricing, check if current product id is included in the variants ids.
+            variants_ids = pricing.product_variant_ids.ids
+            variant_pricing_compatibility = len(variants_ids) == 0 or len(variants_ids) > 0 and self.id in variants_ids
+            if pricing.pricelist_id == pricelist and variant_pricing_compatibility:
                 best_pricing_with_pricelist |= pricing
-            elif not pricing.pricelist_id:
+            elif not pricing.pricelist_id and variant_pricing_compatibility:
                 best_pricing_without_pricelist |= pricing
 
         return best_pricing_with_pricelist[:1] or best_pricing_without_pricelist[:1] or self.env['product.pricing']

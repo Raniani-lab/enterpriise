@@ -31,16 +31,6 @@ patch(registry.category("web_tour.tours").get("planning_test_tour"), {
             trigger: "button[special=cancel]",
             in_modal: true,
             auto: true,
-        },
-        {
-            content: 'wait for the modal to be removed',
-            // the dialog container has an empty div child, and the actual modal gets
-            // added afterwards, so we can check by asserting the nature of the last
-            // child
-            trigger: ".o-overlay-container > :last-child:not([role=dialog])",
-            allowInvisible: true,
-            auto: true,
-            run() {},
         });
 
         return originalSteps; 

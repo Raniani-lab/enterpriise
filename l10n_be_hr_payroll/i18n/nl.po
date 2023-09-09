@@ -4116,7 +4116,7 @@ msgstr "Het werknemersbestand exporteren"
 #: model:hr.leave.type,name:l10n_be_hr_payroll.holiday_type_extra_legal
 #: model:hr.work.entry.type,name:l10n_be_hr_payroll.work_entry_type_extra_legal
 msgid "Extra Legal Time Off"
-msgstr "Extra juridische vrije tijd"
+msgstr "Extra wettelijk verlof"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_individual_account
@@ -4947,7 +4947,7 @@ msgstr "KEY bestand"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_work_entry_type__leave_right
 msgid "Keep Time Off Right"
-msgstr "Houd verlofrecht"
+msgstr "Verlofrecht behouden"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_res_company__onss_key
@@ -6408,7 +6408,7 @@ msgstr "Privéauto terugbetaald bedrag"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_work_entry_type__private_car
 msgid "Private Car Reimbursement"
-msgstr "Terugbetaling eigen auto"
+msgstr "Terugbetaling privé auto"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_salary_private_car
@@ -7976,7 +7976,7 @@ msgstr "Geldig"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_work_entry_type_view_form
 msgid "Valid For Advantages"
-msgstr "Geldig voor voordelen"
+msgstr "Van toepassing op voordelen"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_december_slip_wizard_view_form

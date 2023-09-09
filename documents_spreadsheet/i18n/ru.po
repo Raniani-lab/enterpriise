@@ -8,7 +8,6 @@
 # Иван Дроздов <hiraetari@gmail.com>, 2022
 # Ivan Kropotkin <yelizariev@itpp.dev>, 2022
 # Martin Trigaux, 2022
-# valmasone, 2022
 # Alena Vlasova, 2022
 # Сергей Шебанин <sergey@shebanin.ru>, 2023
 # alenafairy, 2023
@@ -436,7 +435,7 @@ msgstr "Пользователь"
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.res_config_settings_view_form_inherit_documents_spreadsheet
 msgid "Workspace"
-msgstr "Рабочее место"
+msgstr "Каталог"
 
 #. module: documents_spreadsheet
 #. odoo-javascript

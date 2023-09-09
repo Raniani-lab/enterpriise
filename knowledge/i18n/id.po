@@ -2205,7 +2205,7 @@ msgstr "Urutan"
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
 msgid "Shared"
-msgstr ""
+msgstr "Dibagikan"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree_frontend

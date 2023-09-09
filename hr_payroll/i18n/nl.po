@@ -671,7 +671,7 @@ msgstr "Verandering van beroep"
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Check the <strong>Salary Structure Type</strong>."
-msgstr "Controleer het <strong>Soort salarisstructuur</strong>."
+msgstr "Controleer het <strong>Loonstructuurtype</strong>."
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -3176,7 +3176,7 @@ msgstr "Salarisstructuur"
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_payroll_structure_type
 msgid "Salary Structure Type"
-msgstr "Soort salarisstructuur"
+msgstr "Loonstructuurtype"
 
 #. module: hr_payroll
 #: model:ir.actions.act_window,name:hr_payroll.action_view_hr_payroll_structure_from_type
@@ -3214,12 +3214,12 @@ msgstr "Loonbeslag zoeken"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_rule_filter
 msgid "Search Salary Rule"
-msgstr "Zoek salaris regel"
+msgstr "Zoek salarisregel"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_structure_type_view_search
 msgid "Search Structure Type"
-msgstr "Zoek structuur soort"
+msgstr "Zoek structuurtype"
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -3376,18 +3376,18 @@ msgstr "Structuur naam"
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_structure_type_view_tree
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payroll_structure_filter
 msgid "Structure Type"
-msgstr "Structuur soort"
+msgstr "Structuurtype"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_structure_type__struct_type_count
 msgid "Structure Type Count"
-msgstr "Aantal structuur types"
+msgstr "Aantal structuurtypes"
 
 #. module: hr_payroll
 #: model:ir.actions.act_window,name:hr_payroll.action_hr_payroll_structure_type
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_payroll_structure_type
 msgid "Structure Types"
-msgstr "Soorten structuren"
+msgstr "Structuurtypes"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_structure_type__struct_ids
@@ -3770,7 +3770,7 @@ msgstr "Inschrijvingstypes onbetaald werk"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_work_entry_type__unpaid_structure_ids
 msgid "Unpaid in Structures Types"
-msgstr "Onbetaald in typen structuren"
+msgstr "Onbetaald in structuurtypes"
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_work_entry_type__round_days_type__up
@@ -4249,7 +4249,7 @@ msgstr "bijv. Netto salaris"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_employee_grade_form
 msgid "e.g. Regular Pay"
-msgstr "bijv. Normaal betalen"
+msgstr "bijv. Regulier loon"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content

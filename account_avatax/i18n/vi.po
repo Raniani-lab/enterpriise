@@ -526,7 +526,7 @@ msgstr "Địa chỉ, đường"
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_avatax_validate_address
 msgid "Suggests validated addresses from Avatax"
-msgstr ""
+msgstr "Gợi ý các địa chỉ đã xác thực từ Avatax"
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form

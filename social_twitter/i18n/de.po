@@ -91,6 +91,7 @@ msgstr "Es ist ein Fehler aufgetreten (%s)"
 #, python-format
 msgid "Authentication failed. Please enter valid credentials."
 msgstr ""
+"Authentifizierung fehlgeschlagen. Bitte geben Sie gültige Anmeldedaten ein."
 
 #. module: social_twitter
 #. openerp-web
@@ -107,6 +108,8 @@ msgid ""
 "Can not like / unlike the tweet\n"
 "%s."
 msgstr ""
+"Kann den Tweet liken/entliken\n"
+"%s."
 
 #. module: social_twitter
 #. odoo-javascript
@@ -195,13 +198,15 @@ msgstr ""
 msgid ""
 "Failed to delete the Tweet\n"
 "%s."
-msgstr ""
+msgstr "Tweet %s konnte nicht gelöscht werden."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Failed to fetch the conversation id: '%s' using the account %s."
 msgstr ""
+"Die ID der Unterhaltung konnte nicht abgerufen werden: „%s“ mit dem Konto "
+"%s."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
@@ -209,12 +214,15 @@ msgstr ""
 msgid ""
 "Failed to fetch the tweets in the same thread: '%s' using the account %s."
 msgstr ""
+"Die Tweets im selben Thread konnten nicht abgerufen werden: „%s“ mit dem "
+"Konto %s."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Failed to post comment: %s with the account %s."
 msgstr ""
+"Der Kommentar konnte nicht veröffentlicht werden: „%s“ mit dem Konto %s."
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_likes
@@ -306,7 +314,7 @@ msgstr "Name"
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Oops! Couldn't find this tweet on Twitter.com"
-msgstr ""
+msgstr "Hoppla! Wir konnten diesen Tweet nicht auf Twitter.com finden"
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream.py:0
@@ -385,6 +393,8 @@ msgstr "Retweets"
 #, python-format
 msgid "Replies from Tweets older than 7 days must be accessed on Twitter.com"
 msgstr ""
+"Antworten ausTweets, die älter als 7 Tage sind, müssen auf Twitter.com "
+"abgerufen werden"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream__twitter_searched_keyword

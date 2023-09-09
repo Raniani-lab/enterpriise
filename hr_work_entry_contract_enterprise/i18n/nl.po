@@ -57,7 +57,7 @@ msgstr "Werkboekingen"
 #. module: hr_work_entry_contract_enterprise
 #: model:ir.ui.menu,name:hr_work_entry_contract_enterprise.menu_hr_work_entry_type_view
 msgid "Work Entry Types"
-msgstr "Soorten werkboekingen"
+msgstr "Werkboekingstypes"
 
 #. module: hr_work_entry_contract_enterprise
 #: model:ir.ui.menu,name:hr_work_entry_contract_enterprise.menu_resource_calendar_view

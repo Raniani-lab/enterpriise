@@ -219,7 +219,7 @@ msgstr "Faixa personalizada"
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.snippet_options
 msgid "Datepicker"
-msgstr ""
+msgstr "Seletor de data"
 
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.s_rental_search_options

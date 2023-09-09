@@ -29,7 +29,7 @@ msgstr "รายงานการบัญชี"
 #. module: account_reports_cash_basis
 #: model_terms:ir.ui.view,arch_db:account_reports_cash_basis.search_template_extra_options
 msgid "Accrual Basis"
-msgstr ""
+msgstr "การย้ายรายการคงค้าง"
 
 #. module: account_reports_cash_basis
 #: model:ir.model.fields,field_description:account_reports_cash_basis.field_account_report__filter_cash_basis
@@ -40,12 +40,12 @@ msgstr "เงินสด"
 #. module: account_reports_cash_basis
 #: model_terms:ir.ui.view,arch_db:account_reports_cash_basis.search_template_extra_options
 msgid "Cash Basis Method"
-msgstr ""
+msgstr "วิธีเกณฑ์เงินสด"
 
 #. module: account_reports_cash_basis
 #: model:ir.model.fields,help:account_reports_cash_basis.field_account_report__filter_cash_basis
 msgid "Display the option to switch to cash basis mode."
-msgstr ""
+msgstr "แสดงตัวเลือกเพื่อสลับไปยังโหมดเกณฑ์เงินสด"
 
 #. module: account_reports_cash_basis
 #: model:ir.model,name:account_reports_cash_basis.model_account_move_line

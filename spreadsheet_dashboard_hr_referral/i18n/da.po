@@ -31,7 +31,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Applications"
-msgstr "Applikation"
+msgstr "Ansøgninger"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -206,7 +206,7 @@ msgstr "Rate"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recent Applications"
-msgstr ""
+msgstr "Nylige ansøgninger"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript

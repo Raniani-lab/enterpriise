@@ -1392,7 +1392,7 @@ msgstr ""
 #. module: social
 #: model:ir.ui.menu,name:social.menu_social_global
 msgid "Social Marketing"
-msgstr ""
+msgstr "Marketing Sosial"
 
 #. module: social
 #. odoo-javascript

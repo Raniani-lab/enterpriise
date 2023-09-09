@@ -206,6 +206,8 @@ msgstr ""
 #, python-format
 msgid "Failed to fetch the conversation id: '%s' using the account %s."
 msgstr ""
+"Échec de la récupération de l'id de la conversation : '%s' avec le compte "
+"%s."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
@@ -213,12 +215,14 @@ msgstr ""
 msgid ""
 "Failed to fetch the tweets in the same thread: '%s' using the account %s."
 msgstr ""
+"Échec de la récupération des tweets dans le même fil : '%s' avec le compte "
+"%s."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Failed to post comment: %s with the account %s."
-msgstr ""
+msgstr "Échec de la publication du compte : %s avec le compte %s."
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_likes
@@ -310,7 +314,7 @@ msgstr "Nom"
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Oops! Couldn't find this tweet on Twitter.com"
-msgstr ""
+msgstr "Oups ! Impossible de trouver ce tweet sur Twitter.com"
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream.py:0
@@ -389,6 +393,8 @@ msgstr "Retweets"
 #, python-format
 msgid "Replies from Tweets older than 7 days must be accessed on Twitter.com"
 msgstr ""
+"Les réponses aux tweets datant de plus de 7 jours doivent être consultées "
+"sur Twitter.com"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream__twitter_searched_keyword

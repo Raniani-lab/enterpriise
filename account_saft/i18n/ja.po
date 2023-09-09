@@ -65,3 +65,9 @@ msgstr "以下の取引先について、少なくとも1つの住所（郵便�
 #, python-format
 msgid "SAFT is only compatible with one column group."
 msgstr "SAFTは1つの列グループとしか互換性がありません。"
+
+#. module: account_saft
+#: code:addons/account_saft/models/account_general_ledger.py:0
+#, python-format
+msgid "Please define one or more Contacts belonging to your company."
+msgstr "会社に属する連絡先を1つ以上定義して下さい。"

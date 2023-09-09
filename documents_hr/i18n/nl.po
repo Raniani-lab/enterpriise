@@ -155,6 +155,8 @@ msgid ""
 "Employee's related user and private email must be set to use \"Send Access Link\" function:\n"
 "%s"
 msgstr ""
+"De gekoppelde gebruiker en privé e-mail van de werknemer moeten zijn ingesteld om de functie \"Toegangslink verzenden\" te gebruiken:\n"
+"%s"
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_employees

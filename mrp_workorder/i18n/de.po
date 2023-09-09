@@ -920,7 +920,7 @@ msgstr "Anweisungen anzeigen"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.res_config_settings_view_form
 msgid "Show the timer on the work order screen"
-msgstr "Timer auf Arbeitsauftagsbildschirm anzeigen"
+msgstr "Zeigen Sie den Timer im Arbeitsauftagsbildschirm an"
 
 #. module: mrp_workorder
 #: model:product.template,description_sale:mrp_workorder.product_template_stool

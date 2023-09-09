@@ -3811,7 +3811,7 @@ msgstr "الإجمالي الفرعي والإجمالي"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Subtotal & Total can only be used in these models: "
-msgstr ""
+msgstr "يمكن استخدام الإجمالي الفرعي والإجمالي في هذه النماذج فقط: "
 
 #. module: web_studio
 #. odoo-javascript

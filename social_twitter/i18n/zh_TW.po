@@ -410,7 +410,7 @@ msgstr "社交媒體"
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_post
 msgid "Social Post"
-msgstr ""
+msgstr "社交帖文"
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_post_template

@@ -69,122 +69,122 @@ msgstr "10 - Kapital"
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_capitaux_propres0
 msgid "10/15 - Capitaux propres"
-msgstr ""
+msgstr "10/15 - Capitaux propres"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_capital_souscrit0
 msgid "100 - Capital souscrit"
-msgstr ""
+msgstr "100 - Capital souscrit"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_capital_appele0
 msgid "101 - Capital non appelé"
-msgstr ""
+msgstr "101 - Capital non appelé"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_primes_demission0
 msgid "11 - Primes d'émission"
-msgstr ""
+msgstr "11 - Primes d'émission"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_reevaluation0
 msgid "12 - Plus-values de réévaluation"
-msgstr ""
+msgstr "12 - Plus-values de réévaluation"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_reserves0
 msgid "13 - Réserves"
-msgstr ""
+msgstr "13 - Réserves"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_reserve_legale0
 msgid "130 - Réserve légale"
-msgstr ""
+msgstr "130 - Réserve légale"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_reserves_indisponibles0
 msgid "131 - Réserves indisponibles"
-msgstr ""
+msgstr "131 - Réserves indisponibles"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_reserve_actions0
 msgid "1310 - Pour actions propres"
-msgstr ""
+msgstr "1310 - Pour actions propres"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_reserve_autres0
 msgid "1311 - Autres"
-msgstr ""
+msgstr "1311 - Autres"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_reserves_immunisees0
 msgid "132 - Réserves immunisées"
-msgstr ""
+msgstr "132 - Réserves immunisées"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_reserves_disponibles0
 msgid "133 - Réserves disponibles"
-msgstr ""
+msgstr "133 - Réserves disponibles"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_benefice_reporte0
 msgid "14 - Bénéfice (Perte) reporté(e)"
-msgstr ""
+msgstr "14 - Bénéfice (Perte) reporté(e)"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_PL_14
 msgid "14 - Bénéfice (Perte) à reporter"
-msgstr ""
+msgstr "14 - Bénéfice (Perte) à reporter"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_be_current_year_earnings0
 msgid "149 - Bénéfice (Perte) en cours"
-msgstr ""
+msgstr "149 - Bénéfice (Perte) en cours"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_14P
 msgid "14P - Bénéfice (Perte) reporté(e) de l'exercice précédent"
-msgstr ""
+msgstr "14P - Bénéfice (Perte) reporté(e) de l'exercice précédent"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_subsides_capital0
 msgid "15 - Subsides en capital"
-msgstr ""
+msgstr "15 - Subsides en capital"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_provisions0
 msgid "16 - Provisions et impôts différés"
-msgstr ""
+msgstr "16 - Provisions et impôts différés"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_provisions_risques_charges0
 msgid "160/5 - Provisions pour risques et charges"
-msgstr ""
+msgstr "160/5 - Provisions pour risques et charges"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_impots_differes0
 msgid "168 - Impôts différés"
-msgstr ""
+msgstr "168 - Impôts différés"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_dettes_plus_un_an0
 msgid "17 - Dettes à plus d'un an"
-msgstr ""
+msgstr "17 - Dettes à plus d'un an"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_dettes0
 msgid "17/49 - Dettes"
-msgstr ""
+msgstr "17/49 - Dettes"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_dettes_financieres0
 msgid "170/4 - Dettes financières"
-msgstr ""
+msgstr "170/4 - Dettes financières"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_emprunts_obligataires_non_subordones0
 msgid "171 - Emprunts obligataires non subordonnés"
-msgstr ""
+msgstr "171 - Emprunts obligataires non subordonnés"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_dettes_financieres1
@@ -192,31 +192,33 @@ msgid ""
 "172/3 - Etablissements de crédit, dettes de location-financement et "
 "assmilisées"
 msgstr ""
+"172/3 - Etablissements de crédit, dettes de location-financement et "
+"assmilisées"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_dettes_financieres2
 msgid "174/0 - Autres emprunts"
-msgstr ""
+msgstr "174/0 - Autres emprunts"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_dettes_commerciales0
 msgid "175 - Dettes commerciales"
-msgstr ""
+msgstr "175 - Dettes commerciales"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_acomptes_recus0
 msgid "176 - Acomptes recus sur commandes"
-msgstr ""
+msgstr "176 - Acomptes recus sur commandes"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_autres_dettes0
 msgid "178/9 - Autres dettes"
-msgstr ""
+msgstr "178/9 - Autres dettes"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_subsides_avance_aux_associes0
 msgid "19 - Avance aux associés sur répartition de l'actif net"
-msgstr ""
+msgstr "19 - Avance aux associés sur répartition de l'actif net"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -232,57 +234,57 @@ msgstr "2. Telefonnummer:"
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_etablissement0
 msgid "20 - Frais d'établissement"
-msgstr ""
+msgstr "20 - Frais d'établissement"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_actif_imm0
 msgid "20/28 - Actifs immobilisés"
-msgstr ""
+msgstr "20/28 - Actifs immobilisés"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_imm_incorporelles0
 msgid "21 - Immobilisations incorporelles"
-msgstr ""
+msgstr "21 - Immobilisations incorporelles"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_terrains0
 msgid "22 - Terrains et constructions"
-msgstr ""
+msgstr "22 - Terrains et constructions"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_actif_imm_corporelles0
 msgid "22/27 - Immobilisations corporelles"
-msgstr ""
+msgstr "22/27 - Immobilisations corporelles"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_machines0
 msgid "23 - Installations, machines et outillage"
-msgstr ""
+msgstr "23 - Installations, machines et outillage"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_mobilier0
 msgid "24 - Mobilier et matériel roulant"
-msgstr ""
+msgstr "24 - Mobilier et matériel roulant"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_location_financement0
 msgid "25 - Location-financement et droits similaires"
-msgstr ""
+msgstr "25 - Location-financement et droits similaires"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_autres_corp0
 msgid "26 - Autres immobilisations corporelles"
-msgstr ""
+msgstr "26 - Autres immobilisations corporelles"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_imm_en_cours0
 msgid "27 - Immobilisations en cours et acomptes versés"
-msgstr ""
+msgstr "27 - Immobilisations en cours et acomptes versés"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_imm_financieres0
 msgid "28 - Immobilisations financières"
-msgstr ""
+msgstr "28 - Immobilisations financières"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -342,7 +344,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:res.partner.category,name:l10n_be_reports.res_partner_tag_281_50
 msgid "281.50"
-msgstr ""
+msgstr "281.50"
 
 #. module: l10n_be_reports
 #: model:account.account.tag,name:l10n_be_reports.account_tag_281_50_atn
@@ -377,12 +379,12 @@ msgstr "Karten 281.50"
 #. module: l10n_be_reports
 #: model:ir.actions.report,name:l10n_be_reports.action_report_partner_281_50_pdf
 msgid "281.50 PDF"
-msgstr ""
+msgstr "281.50 PDF"
 
 #. module: l10n_be_reports
 #: model:ir.actions.report,name:l10n_be_reports.action_report_partner_281_50_xml
 msgid "281.50 XML"
-msgstr ""
+msgstr "281.50 XML"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_res_partner__forms_281_50
@@ -393,27 +395,27 @@ msgstr "Karten 281.50"
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_creances_plus_d_un_an0
 msgid "29 - Créances à plus d'un an"
-msgstr ""
+msgstr "29 - Créances à plus d'un an"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_actif_circ0
 msgid "29/58 - Actif circulants"
-msgstr ""
+msgstr "29/58 - Actif circulants"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_creances_plus_d_un_an_commerciales0
 msgid "290 - Créances commerciales"
-msgstr ""
+msgstr "290 - Créances commerciales"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_creances_plus_d_un_an_autres0
 msgid "291 - Autres créances"
-msgstr ""
+msgstr "291 - Autres créances"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_stocks_commandes0
 msgid "3 - Stocks et commandes en cours d'exécution"
-msgstr ""
+msgstr "3 - Stocks et commandes en cours d'exécution"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -454,7 +456,7 @@ msgstr "Verzeichnisse 325"
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_commandes0
 msgid "37 - Commandes en cours d'exécution"
-msgstr ""
+msgstr "37 - Commandes en cours d'exécution"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -473,87 +475,87 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_creances_au_plus_un_an_commerciales0
 msgid "40 - Créances commerciales"
-msgstr ""
+msgstr "40 - Créances commerciales"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_creances_au_plus_un_an0
 msgid "40/41 - Créances à un an au plus"
-msgstr ""
+msgstr "40/41 - Créances à un an au plus"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_creances_au_plus_un_an_autres0
 msgid "41 - Autres créances"
-msgstr ""
+msgstr "41 - Autres créances"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_dettes_plus_dun_an_dans_lannee0
 msgid "42 - Dettes à plus d'un an échéant dans l'année"
-msgstr ""
+msgstr "42 - Dettes à plus d'un an échéant dans l'année"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_dettes_un_an_au_plus0
 msgid "42/48 - Dettes à un an au plus"
-msgstr ""
+msgstr "42/48 - Dettes à un an au plus"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_dettes_financieres0b
 msgid "43 - Dettes financières"
-msgstr ""
+msgstr "43 - Dettes financières"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_dettes_financieres1b
 msgid "430/8 - Etablissements de crédit"
-msgstr ""
+msgstr "430/8 - Etablissements de crédit"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_dettes_financieres2b
 msgid "439 - Autres emprunts"
-msgstr ""
+msgstr "439 - Autres emprunts"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_dettes_commerciales0b
 msgid "44 - Dettes commerciales"
-msgstr ""
+msgstr "44 - Dettes commerciales"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_dettes_commerciales_fournisseurs0
 msgid "440/4 - Fournisseurs"
-msgstr ""
+msgstr "440/4 - Fournisseurs"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_effets_a_payer0
 msgid "441 - Effets à payer"
-msgstr ""
+msgstr "441 - Effets à payer"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_dettes_fiscales0
 msgid "45 - Dettes fiscales, salariales et sociales"
-msgstr ""
+msgstr "45 - Dettes fiscales, salariales et sociales"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_dettes_fiscales_impots0
 msgid "450/3 - Impôts"
-msgstr ""
+msgstr "450/3 - Impôts"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_remuneration_charges_sociales
 msgid "454/9 - Rémunérations et charges sociales"
-msgstr ""
+msgstr "454/9 - Rémunérations et charges sociales"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_acomptes_recus0b
 msgid "46 - Acomptes recus sur commandes"
-msgstr ""
+msgstr "46 - Acomptes recus sur commandes"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_autres_dettes1
 msgid "47/8 - Autres dettes"
-msgstr ""
+msgstr "47/8 - Autres dettes"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_regularisation_attente0
 msgid "49 - Comptes de régularisation et d'attente"
-msgstr ""
+msgstr "49 - Comptes de régularisation et d'attente"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_regularisation0
@@ -563,12 +565,12 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_regularisation1
 msgid "492/3 - Comptes de régularisation"
-msgstr ""
+msgstr "492/3 - Comptes de régularisation"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_attente0
 msgid "499 - Comptes d'attente"
-msgstr ""
+msgstr "499 - Comptes d'attente"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -588,22 +590,22 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_tresorerie0
 msgid "50/53 - Placements de trésorerie"
-msgstr ""
+msgstr "50/53 - Placements de trésorerie"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_valeurs_disponibles0
 msgid "54/58 - Valeurs disponibles"
-msgstr ""
+msgstr "54/58 - Valeurs disponibles"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_approvisionnements0
 msgid "60/61 - Approvisionnements, marchandises, services et biens divers"
-msgstr ""
+msgstr "60/61 - Approvisionnements, marchandises, services et biens divers"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_remunerations0
 msgid "62 - Rémunérations, charges sociales et pensions"
-msgstr ""
+msgstr "62 - Rémunérations, charges sociales et pensions"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_amortissements0
@@ -611,6 +613,8 @@ msgid ""
 "630 - Amortissements et réductions de valeur sur frais d'établissement, sur "
 "immobilisations incorporelles et corporelles"
 msgstr ""
+"630 - Amortissements et réductions de valeur sur frais d'établissement, sur "
+"immobilisations incorporelles et corporelles"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_reduction_de_valeur0
@@ -618,6 +622,8 @@ msgid ""
 "631/4 - Réductions de valeur sur stocks, sur commandes en cours d'exécution "
 "et sur créances commerciales: dotations (reprises)"
 msgstr ""
+"631/4 - Réductions de valeur sur stocks, sur commandes en cours d'exécution "
+"et sur créances commerciales: dotations (reprises)"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_provisions_pour_risques_et_charges0
@@ -629,7 +635,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_autres_charges0
 msgid "640/8 - Autres charges d'exploitation"
-msgstr ""
+msgstr "640/8 - Autres charges d'exploitation"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_restructuration0
@@ -637,16 +643,18 @@ msgid ""
 "649 - Charges d'exploitation portées à l'actif au titre de frais de "
 "restructuration"
 msgstr ""
+"649 - Charges d'exploitation portées à l'actif au titre de frais de "
+"restructuration"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_charges_financieres0
 msgid "65 - Charges financières"
-msgstr ""
+msgstr "65 - Charges financières"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_650
 msgid "650 - Charges des dettes"
-msgstr ""
+msgstr "650 - Charges des dettes"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_651
@@ -654,16 +662,18 @@ msgid ""
 "651 - Réductions de valeur sur actifs circulants autres que stocks, "
 "commandes en cours et créances"
 msgstr ""
+"651 - Réductions de valeur sur actifs circulants autres que stocks, "
+"commandes en cours et créances"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_652_9
 msgid "652/9 - Autres charges financières"
-msgstr ""
+msgstr "652/9 - Autres charges financières"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_charges_exceptionnelles0
 msgid "66 - Charges exceptionnelles"
-msgstr ""
+msgstr "66 - Charges exceptionnelles"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_660
@@ -671,11 +681,13 @@ msgid ""
 "660 - Amortissements et réductions de valeur exceptionnels sur frais "
 "d'établissement, sur immobilisations incorporelles et corporelles"
 msgstr ""
+"660 - Amortissements et réductions de valeur exceptionnels sur frais "
+"d'établissement, sur immobilisations incorporelles et corporelles"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_661
 msgid "661 - Réductions de valeur sur immobilisations financières"
-msgstr ""
+msgstr "661 - Réductions de valeur sur immobilisations financières"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_662
@@ -683,16 +695,18 @@ msgid ""
 "662 - Provisions pour risques et charges exceptionnels: dotations "
 "(utilisations)"
 msgstr ""
+"662 - Provisions pour risques et charges exceptionnels: dotations "
+"(utilisations)"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_663
 msgid "663 - Moins-values sur réalisation d'actifs immobilisés"
-msgstr ""
+msgstr "663 - Moins-values sur réalisation d'actifs immobilisés"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_664_8
 msgid "664/8 - Autres charges exceptionnelles"
-msgstr ""
+msgstr "664/8 - Autres charges exceptionnelles"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_669
@@ -700,116 +714,118 @@ msgid ""
 "669 - Charges exceptionnelles portées à l'actif au titre de frais de "
 "restructuration"
 msgstr ""
+"669 - Charges exceptionnelles portées à l'actif au titre de frais de "
+"restructuration"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_impots_sur_le_resultat0
 msgid "67/77 - Impôts sur le résultat"
-msgstr ""
+msgstr "67/77 - Impôts sur le résultat"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_670_3
 msgid "670/3 - Impôts"
-msgstr ""
+msgstr "670/3 - Impôts"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_transfert_aux_impots_differes0
 msgid "680 - Transfert sur les impôts différés"
-msgstr ""
+msgstr "680 - Transfert sur les impôts différés"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_transferts_aux_reserves_immunisees0
 msgid "689 - Transfert aux réserves immunisées"
-msgstr ""
+msgstr "689 - Transfert aux réserves immunisées"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_691
 msgid "691 - au capital et aux primes d'émission"
-msgstr ""
+msgstr "691 - au capital et aux primes d'émission"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_691_692
 msgid "691/2 - Affectation aux capitaux propres"
-msgstr ""
+msgstr "691/2 - Affectation aux capitaux propres"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_6920
 msgid "6920 - à la réserve légale"
-msgstr ""
+msgstr "6920 - à la réserve légale"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_6921
 msgid "6921 - aux autres réserves"
-msgstr ""
+msgstr "6921 - aux autres réserves"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_694
 msgid "694 - Rémunération du capital"
-msgstr ""
+msgstr "694 - Rémunération du capital"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_694_696
 msgid "694/6 - Bénéfice à distribuer"
-msgstr ""
+msgstr "694/6 - Bénéfice à distribuer"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_695
 msgid "695 - Administrateurs ou gérants"
-msgstr ""
+msgstr "695 - Administrateurs ou gérants"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_696
 msgid "696 - Autres allocataires"
-msgstr ""
+msgstr "696 - Autres allocataires"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_chiffre_daffaires0
 msgid "70 - Chiffre d'affaires"
-msgstr ""
+msgstr "70 - Chiffre d'affaires"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_chiffre_daffaires71
 msgid "71 - En-cours de fabrication, produits finis et commandes"
-msgstr ""
+msgstr "71 - En-cours de fabrication, produits finis et commandes"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_chiffre_daffaires72
 msgid "72 - Production immobilisée"
-msgstr ""
+msgstr "72 - Production immobilisée"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_chiffre_daffaires73
 msgid "73 - Cotisations, dons, legs et subsides"
-msgstr ""
+msgstr "73 - Cotisations, dons, legs et subsides"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_chiffre_daffaires74
 msgid "74 - Autres produits d'exploitation"
-msgstr ""
+msgstr "74 - Autres produits d'exploitation"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_produits_financiers0
 msgid "75 - Produits financiers"
-msgstr ""
+msgstr "75 - Produits financiers"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_750
 msgid "750 - Produits des immobilisations financières"
-msgstr ""
+msgstr "750 - Produits des immobilisations financières"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_751
 msgid "751 - Produits des actifs circulants"
-msgstr ""
+msgstr "751 - Produits des actifs circulants"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_752_9
 msgid "752/9 - Autres produits financiers"
-msgstr ""
+msgstr "752/9 - Autres produits financiers"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_produits_exceptionnels0
 msgid "76 - Produits exceptionnels"
-msgstr ""
+msgstr "76 - Produits exceptionnels"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_760
@@ -817,82 +833,84 @@ msgid ""
 "760 - Reprise d'amortissements et de réductions de valeur sur "
 "immobilisations incorporelles et corporelles"
 msgstr ""
+"760 - Reprise d'amortissements et de réductions de valeur sur "
+"immobilisations incorporelles et corporelles"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_761
 msgid "761 - Reprise de réducitons de valeur sur immobilisations financières"
-msgstr ""
+msgstr "761 - Reprise de réducitons de valeur sur immobilisations financières"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_762
 msgid "762 - Reprise de provisions pour risques et charges exceptionnels"
-msgstr ""
+msgstr "762 - Reprise de provisions pour risques et charges exceptionnels"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_730
 msgid "763 - Plus-values sur réalisation d'actifs immobilisés"
-msgstr ""
+msgstr "763 - Plus-values sur réalisation d'actifs immobilisés"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_764_9
 msgid "764/9 - Autres produits exceptionnels"
-msgstr ""
+msgstr "764/9 - Autres produits exceptionnels"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_77
 msgid "77 - Régularisations d'impôts et reprises de provisions fiscales"
-msgstr ""
+msgstr "77 - Régularisations d'impôts et reprises de provisions fiscales"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_prelevements_impots_differes0
 msgid "780 - Prélèvements sur les impôts différés"
-msgstr ""
+msgstr "780 - Prélèvements sur les impôts différés"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_prelevements_reserves_immunisees0
 msgid "789 - Prélèvements sur les réserves immunisées"
-msgstr ""
+msgstr "789 - Prélèvements sur les réserves immunisées"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_791_792
 msgid "791/2 - Prélèvement sur les capitaux propres"
-msgstr ""
+msgstr "791/2 - Prélèvement sur les capitaux propres"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_794
 msgid "794 - Intervention d'associés dans la perte"
-msgstr ""
+msgstr "794 - Intervention d'associés dans la perte"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_benefices_dexploitation0
 msgid "9901 - Bénéfice (Perte) d'exploitation"
-msgstr ""
+msgstr "9901 - Bénéfice (Perte) d'exploitation"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_benefices_courant_avant_impots0
 msgid "9902 - Bénéfice (Perte) courant(e) avant impôts"
-msgstr ""
+msgstr "9902 - Bénéfice (Perte) courant(e) avant impôts"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_benefices_de_lexercice_avant_impots0
 msgid "9903 - Bénéfice (Perte) de l'excercice avant impôts"
-msgstr ""
+msgstr "9903 - Bénéfice (Perte) de l'excercice avant impôts"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_benefices_de_lexercice0
 msgid "9904 - Bénéfice (Perte) de l'exercice"
-msgstr ""
+msgstr "9904 - Bénéfice (Perte) de l'exercice"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_9905bis
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_benefices_de_lexercice_a_affecter0
 msgid "9905 - Bénéfice (Perte) de l'exercice à affecter"
-msgstr ""
+msgstr "9905 - Bénéfice (Perte) de l'exercice à affecter"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_benefice_perte_a_affecter0
 msgid "9906 - Bénéfice (Perte) à affecter"
-msgstr ""
+msgstr "9906 - Bénéfice (Perte) à affecter"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.sales_report_main_template
@@ -907,7 +925,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_actif_title0
 msgid "ACTIF"
-msgstr ""
+msgstr "ACTIF"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -944,7 +962,7 @@ msgstr "Adresse des Partners bei der Erstellung der Karte"
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_affectation
 msgid "Affectations et prélèvements"
-msgstr ""
+msgstr "Affectations et prélèvements"
 
 #. module: l10n_be_reports
 #: model:account.report.column,name:l10n_be_reports.account_financial_report_ec_sales_amount
@@ -1015,7 +1033,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.account_financial_report_be_balancesheet0
 msgid "Bilan"
-msgstr ""
+msgstr "Bilan"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -1025,7 +1043,7 @@ msgstr "FÜR RICHTIG ERKLÄRT"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__calling_export_wizard_id
 msgid "Calling Export Wizard"
-msgstr ""
+msgstr "Calling Export Wizard"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields.selection,name:l10n_be_reports.selection__l10n_be_form_325__treatment_type__3
@@ -1127,7 +1145,7 @@ msgstr "Kontakt"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__control_value
 msgid "Control Value"
-msgstr ""
+msgstr "Control Value"
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -1154,7 +1172,7 @@ msgstr "Land des Partners zum Zeitpunkt der Erstellung der Karte"
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_charges0
 msgid "Coûts des ventes et prestations"
-msgstr ""
+msgstr "Coûts des ventes et prestations"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_wizard_view_form
@@ -1781,6 +1799,8 @@ msgid ""
 "Optional field containing the report export wizard calling this wizard, if "
 "there is one."
 msgstr ""
+"Optional field containing the report export wizard calling this wizard, if "
+"there is one."
 
 #. module: l10n_be_reports
 #: model:ir.model.fields.selection,name:l10n_be_reports.selection__l10n_be_form_325__treatment_type__0
@@ -1797,7 +1817,7 @@ msgstr "Original senden"
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_passif_title0
 msgid "PASSIF"
-msgstr ""
+msgstr "PASSIF"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -1845,7 +1865,7 @@ msgstr "Partner mit fehlenden Informationen"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_account_reports_export_wizard__l10n_be_reports_periodic_vat_wizard_id
 msgid "Periodic VAT Export Wizard"
-msgstr ""
+msgstr "Periodic VAT Export Wizard"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -2019,12 +2039,12 @@ msgstr "GESAMTBETRAG"
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_actif0
 msgid "TOTAL DE L'ACTIF"
-msgstr ""
+msgstr "TOTAL DE L'ACTIF"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_passif0
 msgid "TOTAL DU PASSIF"
-msgstr ""
+msgstr "TOTAL DU PASSIF"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -2147,7 +2167,7 @@ msgstr "Umsatzsteuer-Identifikationsnummer"
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_produits0
 msgid "Ventes et prestations"
-msgstr ""
+msgstr "Ventes et prestations"
 
 #. module: l10n_be_reports
 #. odoo-python

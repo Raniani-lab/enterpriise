@@ -2200,7 +2200,7 @@ msgstr "Actividades atrasadas"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Latest Rating: Dissatisfied"
-msgstr "Última calificación: Satisfecho"
+msgstr "Última calificación: Inconforme"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
@@ -4146,7 +4146,7 @@ msgid ""
 " - Has not started yet.\n"
 " - Has no invoiced period in the future."
 msgstr ""
-"No puede crear una mejora de venta cruzada para esta suscripción porque:\n"
+"No puede crear una venta adicional para esta suscripción porque:\n"
 " - Aún no ha comenzado.\n"
 " - No tiene periodos facturados en el futuro."
 

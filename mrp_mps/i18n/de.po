@@ -599,7 +599,7 @@ msgstr "Bestandsregel"
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "Suggested Replenishment"
-msgstr "Vorschlagene Auffüllung"
+msgstr "Vorgeschlagene Auffüllung"
 
 #. module: mrp_mps
 #: model:ir.model.constraint,message:mrp_mps.constraint_mrp_production_schedule_warehouse_product_ref_uniq

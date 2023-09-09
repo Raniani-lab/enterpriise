@@ -2023,6 +2023,28 @@ msgstr "Застосовуються податки всередині спіл�
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
+msgid "Invalid domain formula in expression %r of line %r: %s"
+msgstr "Недійсна формула домену у виразі рядка: %s"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Invalid method %r"
+msgstr "Недійсний метод"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Invalid subformula in expression %r of line %r: %s"
+msgstr "Недійсна підформула у виразі рядка: %s"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
 msgid "Invalid token '%s' in account_codes formula '%s'"
 msgstr "Недійсний токен '%s' в account_codes formula '%s'"
 

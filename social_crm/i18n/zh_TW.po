@@ -194,7 +194,7 @@ msgstr "社交媒體帳號"
 #. module: social_crm
 #: model:ir.model,name:social_crm.model_social_post
 msgid "Social Post"
-msgstr ""
+msgstr "社交帖文"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__social_stream_post_id

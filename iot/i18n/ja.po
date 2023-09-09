@@ -151,7 +151,7 @@ msgstr "詳細設定/詳細を表示/詳細/詳細情報をクリック"
 msgid ""
 "Click on Proceed to .../Add Exception/Visit this website/Go on to the "
 "webpage"
-msgstr ""
+msgstr "に進む/例外を追加する/このウェブサイトを見る/ウェブサイトに進むをクリック"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action

@@ -13,9 +13,10 @@
 # Martin Trigaux, 2023
 # Rastislav Brencic <rastislav.brencic@azet.sk>, 2023
 # Marek Záda, 2023
-# Jakub Smolka, 2023
 # Tomáš Píšek, 2023
 # Aleš Fiala <f.ales1@seznam.cz>, 2023
+# Ivana Bartonkova, 2023
+# Jakub Smolka, 2023
 # 
 msgid ""
 msgstr ""
@@ -23,7 +24,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Aleš Fiala <f.ales1@seznam.cz>, 2023\n"
+"Last-Translator: Jakub Smolka, 2023\n"
 "Language-Team: Czech (https://app.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -914,7 +915,7 @@ msgstr "Od této chvíle budete možná chtít:"
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Get back to the dashboard using your previous path…"
-msgstr "Vraťte se na řídicí panel pomocí předchozí cesty ..."
+msgstr "Vraťte se na dashboard pomocí předchozí cesty ..."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1167,7 +1168,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Let’s go back to the dashboard."
-msgstr "Vraťme se zpět na hlavní panel."
+msgstr "Vraťte se zpět na dashboard."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1943,7 +1944,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Transaction Details"
-msgstr ""
+msgstr "Detaily transakce"
 
 #. module: account_accountant
 #. odoo-python

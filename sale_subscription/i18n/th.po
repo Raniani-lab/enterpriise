@@ -2122,7 +2122,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_payment_provider
 msgid "Payment Provider"
-msgstr ""
+msgstr "ผู้ให้บริการชำระเงิน"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_payment_token

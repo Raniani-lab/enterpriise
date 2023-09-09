@@ -33,7 +33,7 @@ msgstr "Odoo"
 #. module: account_saft
 #: model_terms:ir.ui.view,arch_db:account_saft.saft_template
 msgid "Odoo SA"
-msgstr ""
+msgstr "Odoo SA"
 
 #. module: account_saft
 #. odoo-python
@@ -57,16 +57,18 @@ msgid ""
 "Please define at least one address (Zip/City) for the following partners: "
 "%s."
 msgstr ""
+"โปรดกำหนดที่อยู่อย่างน้อยหนึ่งแห่ง (รหัสไปรษณีย์/เมือง) "
+"สำหรับพาร์ทเนอร์ต่อไปนี้: %s"
 
 #. module: account_saft
 #. odoo-python
 #: code:addons/account_saft/models/account_general_ledger.py:0
 #, python-format
 msgid "SAFT is only compatible with one column group."
-msgstr ""
+msgstr "SAFT เข้ากันได้กับกลุ่มคอลัมน์เดียวเท่านั้น"
 
 #. module: account_saft
 #: code:addons/account_saft/models/account_general_ledger.py:0
 #, python-format
 msgid "Please define one or more Contacts belonging to your company."
-msgstr ""
+msgstr "โปรดกำหนดที่อยู่ในการติดต่อหนึ่งรายการขึ้นไปที่เป็นของบริษัทของคุณ"

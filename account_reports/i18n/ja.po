@@ -1898,7 +1898,7 @@ msgstr "未記帳仕訳を含む"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "Including Analytic Simulations"
-msgstr ""
+msgstr "分析用シミュレーションを含む"
 
 #. module: account_reports
 #. odoo-python
@@ -1980,6 +1980,28 @@ msgstr "ここに注釈を挿入してください。"
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "Intra-community taxes are applied on"
 msgstr "市町村民税は、以下のものに適用されます："
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Invalid domain formula in expression %r of line %r: %s"
+msgstr " 式%r中の明細 %r: %sの無効なドメイン式"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Invalid method %r"
+msgstr "無効な方法 %r"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Invalid subformula in expression %r of line %r: %s"
+msgstr " 式%r中の明細 %r: %sの無効な部分式"
 
 #. module: account_reports
 #. odoo-python

@@ -544,7 +544,7 @@ msgstr "Max. Toleranz"
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__measure
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Measure"
-msgstr "Werte"
+msgstr "Messung"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__measure_frequency_unit

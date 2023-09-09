@@ -382,7 +382,7 @@ msgstr "社交媒體"
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_post
 msgid "Social Post"
-msgstr ""
+msgstr "社交帖文"
 
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_post_template

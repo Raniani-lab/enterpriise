@@ -3,7 +3,7 @@
 # 	* account_reports_cash_basis
 # 
 # Translators:
-# grazziano <gra.negocia@gmail.com>, 2022
+# grazziano <grazziano.do+transifex@gmail.com>, 2022
 # danimaribeiro <danimaribeiro@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Layna Nascimento, 2023
@@ -46,7 +46,7 @@ msgstr "Método de Regime de Caixa"
 #. module: account_reports_cash_basis
 #: model:ir.model.fields,help:account_reports_cash_basis.field_account_report__filter_cash_basis
 msgid "Display the option to switch to cash basis mode."
-msgstr ""
+msgstr "Exibir opção para alternar para o modo de regime de caixa."
 
 #. module: account_reports_cash_basis
 #: model:ir.model,name:account_reports_cash_basis.model_account_move_line

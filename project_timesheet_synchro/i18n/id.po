@@ -441,7 +441,7 @@ msgstr "Reset"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Run"
-msgstr ""
+msgstr "Jalankan"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript

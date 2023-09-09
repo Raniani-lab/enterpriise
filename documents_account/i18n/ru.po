@@ -9,7 +9,6 @@
 # ILMIR <karamov@it-projects.info>, 2022
 # Martin Trigaux, 2022
 # Ivan Kropotkin <yelizariev@itpp.dev>, 2022
-# valmasone, 2022
 # Alena Vlasova, 2022
 # alenafairy, 2023
 # 
@@ -358,7 +357,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__folder_id
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
 msgid "Workspace"
-msgstr "Рабочее место"
+msgstr "Каталог"
 
 #. module: documents_account
 #. odoo-javascript

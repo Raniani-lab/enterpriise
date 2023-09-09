@@ -89,7 +89,7 @@ msgstr "حدث خطأ ما (%s) "
 #: code:addons/social_twitter/controllers/main.py:0
 #, python-format
 msgid "Authentication failed. Please enter valid credentials."
-msgstr ""
+msgstr "فشلت عملية المصادقة. يرجى إدخال بيانات اعتماد صالحة. "
 
 #. module: social_twitter
 #. openerp-web
@@ -106,6 +106,8 @@ msgid ""
 "Can not like / unlike the tweet\n"
 "%s."
 msgstr ""
+"لا يمكن الإعجاب / عدم الإعجاب بالتغريدة\n"
+"%s. "
 
 #. module: social_twitter
 #. odoo-javascript
@@ -194,25 +196,27 @@ msgid ""
 "Failed to delete the Tweet\n"
 "%s."
 msgstr ""
+"تعذر حذف التغريدة\n"
+"%s. "
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Failed to fetch the conversation id: '%s' using the account %s."
-msgstr ""
+msgstr "تعذر جلب معرف المحادثة: '%s' باستخدام الحساب %s. "
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid ""
 "Failed to fetch the tweets in the same thread: '%s' using the account %s."
-msgstr ""
+msgstr "تعذر جلب التغريدات في نفس المحادثة: '%s' باستخدام الحساب %s. "
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Failed to post comment: %s with the account %s."
-msgstr ""
+msgstr "تعذر نشر التعليق: %s باستخدام الحساب %s. "
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_likes
@@ -302,7 +306,7 @@ msgstr "الاسم"
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Oops! Couldn't find this tweet on Twitter.com"
-msgstr ""
+msgstr "عذراً! لم نتمكن من إيجاد هذه التغريدة على Twitter.com "
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream.py:0
@@ -380,7 +384,7 @@ msgstr "إعادات التغريد "
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Replies from Tweets older than 7 days must be accessed on Twitter.com"
-msgstr ""
+msgstr "يجب الوصول إلى الردود الأقدم من 7 أيام عن طريق Twitter.com "
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream__twitter_searched_keyword

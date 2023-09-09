@@ -3463,7 +3463,7 @@ msgstr ""
 msgid ""
 "Those represent the different categories of things you have to do (e.g. "
 "\"Call\" or \"Send email\")."
-msgstr ""
+msgstr "これらは、やるべきことの様々なカテゴリを表します(例:'電話する'や'Eメールを送る')"
 
 #. module: helpdesk
 #. odoo-javascript

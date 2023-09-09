@@ -2054,14 +2054,14 @@ msgstr "Les taxes intracommunautaires sont appliquées sur"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Invalid domain formula in expression %r of line %r: %s"
-msgstr ""
+msgstr "Formule de domaine invalide dans l'expression %r ou la ligne %r : %s"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Invalid method %r"
-msgstr ""
+msgstr "Méthode invalide %r"
 
 #. module: account_reports
 #. odoo-python
@@ -2069,7 +2069,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Invalid subformula in expression %r of line %r: %s"
-msgstr ""
+msgstr "Sous-formule invalide dans l'expression %r ou la ligne %r : %s"
 
 #. module: account_reports
 #. odoo-python

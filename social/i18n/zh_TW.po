@@ -1415,7 +1415,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_live_post__post_id
 #: model_terms:ir.ui.view,arch_db:social.social_live_post_view_form
 msgid "Social Post"
-msgstr ""
+msgstr "社交帖文"
 
 #. module: social
 #: model:ir.model,name:social.model_social_post_template

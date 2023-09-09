@@ -6,7 +6,6 @@
 # ILMIR <karamov@it-projects.info>, 2022
 # Ivan Kropotkin <yelizariev@itpp.dev>, 2022
 # Сергей Шебанин <sergey@shebanin.ru>, 2022
-# valmasone, 2022
 # Alena Vlasova, 2022
 # Martin Trigaux, 2023
 # alenafairy, 2023
@@ -112,7 +111,7 @@ msgstr "Документы и аналитика"
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_folder
 msgid "Documents Workspace"
-msgstr "Рабочая область документов"
+msgstr "Каталог документов"
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_draft
@@ -264,7 +263,7 @@ msgstr "Проверено"
 #: model:ir.model.fields,field_description:documents_project.field_project_project__documents_folder_id
 #: model:ir.model.fields,field_description:documents_project.field_project_task__documents_folder_id
 msgid "Workspace"
-msgstr "Рабочее место"
+msgstr "Каталог"
 
 #. module: documents_project
 #: model:ir.model.fields,help:documents_project.field_project_project__documents_folder_id

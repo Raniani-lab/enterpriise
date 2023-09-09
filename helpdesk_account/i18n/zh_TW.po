@@ -49,7 +49,7 @@ msgstr "貸記單數目"
 #: model:ir.model,name:helpdesk_account.model_helpdesk_ticket
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_move_reversal__helpdesk_ticket_id
 msgid "Helpdesk Ticket"
-msgstr ""
+msgstr "技術支援請求"
 
 #. module: helpdesk_account
 #: code:addons/helpdesk_account/wizard/account_move_reversal.py:0

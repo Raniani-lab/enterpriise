@@ -27,6 +27,8 @@ msgid ""
 "<span attrs=\"{'invisible': [('encode_uom_in_days', '=', True)]}\"> Hours</span>\n"
 "                            <span attrs=\"{'invisible': [('encode_uom_in_days', '=', False)]}\"> Days</span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('encode_uom_in_days', '=', True)]}\">時間</span>\n"
+"                            <span attrs=\"{'invisible': [('encode_uom_in_days', '=', False)]}\">日</span>"
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_forecast_view_form_inherit_project_timesheet_forecast
@@ -41,7 +43,7 @@ msgstr "割当時間費用"
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,help:project_timesheet_forecast.field_planning_analysis_report__remaining_hours
 msgid "Allocated hours minus the effective hours."
-msgstr ""
+msgstr "割当時間から有効時間を引いたもの。"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_slot__allow_timesheets
@@ -61,7 +63,7 @@ msgstr "担当者"
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_slot__can_open_timesheets
 msgid "Can Open Timesheets"
-msgstr ""
+msgstr "タイムシートを開けます"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__company_id
@@ -100,12 +102,12 @@ msgstr "従業員"
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_slot__encode_uom_in_days
 msgid "Encode Uom In Days"
-msgstr ""
+msgstr "日にちで単位をエンコード"
 
 #. module: project_timesheet_forecast
 #: model:ir.actions.server,name:project_timesheet_forecast.planning_slot_generate_timesheet_action
 msgid "Generate Timesheets"
-msgstr ""
+msgstr "タイムシートを生成"
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
@@ -168,14 +170,14 @@ msgstr "シフトが見つかりません。新しいシフトを作成しまし
 msgid ""
 "Number of hours on the employee's Timesheets for this task (and its sub-"
 "tasks) during the timeframe of the shift."
-msgstr ""
+msgstr "シフトの時間枠の中で、このタスク(およびそのサブタスク)の従業員のタイムシート上の時間数。"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,help:project_timesheet_forecast.field_planning_slot__effective_hours
 msgid ""
 "Number of hours the employee recorded on their Timesheetes for this task "
 "(and its sub-tasks) for the period of this shift."
-msgstr ""
+msgstr "このシフト期間中、従業員がこのタスク(およびそのサブタスク)のためにタイムシートに記録した時間数。"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__planned_hours
@@ -235,37 +237,37 @@ msgstr "役割、プロジェクト、販売オーダにまたがる人的・物
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_analysis_view_tree
 msgid "Sum of Difference"
-msgstr ""
+msgstr "差異合計"
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_analysis_view_tree
 msgid "Sum of Effective Hours"
-msgstr ""
+msgstr "有効時間数合計"
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_analysis_view_tree
 msgid "Sum of Planned Hours"
-msgstr ""
+msgstr "計画時間数合計"
 
 #. module: project_timesheet_forecast
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #, python-format
 msgid "The timesheet entries have successfully been generated."
-msgstr ""
+msgstr "タイムシートエントリが正常に生成されました。"
 
 #. module: project_timesheet_forecast
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #, python-format
 msgid "There are no timesheets to generate or you don't have the right."
-msgstr ""
+msgstr "作成するタイムシートがない、あるいは権限がありません。"
 
 #. module: project_timesheet_forecast
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #, python-format
 msgid ""
 "This project isn't expected to have slot during this period. Planned hours :"
-msgstr ""
+msgstr "このプロジェクトは、この期間中にスロットを持つ予定はありません。計画時間数:"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_slot__timesheet_ids
@@ -276,7 +278,7 @@ msgstr "タイムシート"
 #. module: project_timesheet_forecast
 #: model:ir.model,name:project_timesheet_forecast.model_project_timesheet_forecast_report_analysis
 msgid "Timesheet & Planning Statistics"
-msgstr ""
+msgstr "タイムシートと計画統計"
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_graph
@@ -301,14 +303,14 @@ msgstr "タイムシートと計画分析"
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,help:project_timesheet_forecast.field_planning_slot__allow_timesheets
 msgid "Timesheets can be logged on this slot."
-msgstr ""
+msgstr "タイムシートはこのスロットに記録できます。"
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.actions.act_window,help:project_timesheet_forecast.project_timesheet_forecast_report_action
 msgid ""
 "Track the progress of your projects by comparing the hours initially planned"
 " with the effective hours recorded"
-msgstr ""
+msgstr "最初に計画した時間と記録された有効時間を比較することで、プロジェクトの進捗状況を把握できます。"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__line_type
@@ -319,4 +321,4 @@ msgstr "タイプ"
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #, python-format
 msgid "You do not have the right to create timesheets."
-msgstr ""
+msgstr "タイムシートを作成する権限がありません。"

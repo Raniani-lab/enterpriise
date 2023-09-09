@@ -1537,7 +1537,7 @@ msgstr "Social: geplante Beiträge veröffentlichen"
 #: code:addons/social/static/src/js/stream_post_comments.js:0
 #, python-format
 msgid "Something went wrong while posting the comment."
-msgstr ""
+msgstr "Beim Veröffentlichen des Kommentars ist etwas schiefgelaufen."
 
 #. module: social
 #. odoo-javascript

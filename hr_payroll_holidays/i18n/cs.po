@@ -3,8 +3,8 @@
 # 	* hr_payroll_holidays
 # 
 # Translators:
-# Rastislav Brencic <rastislav.brencic@azet.sk>, 2022
 # karolína schusterová <karolina.schusterova@vdp.sk>, 2022
+# Rastislav Brencic <rastislav.brencic@azet.sk>, 2022
 # Michal Veselý <michal@veselyberanek.net>, 2022
 # Martin Trigaux, 2022
 # Jiří Podhorecký, 2022
@@ -81,7 +81,7 @@ msgstr ""
 #. module: hr_payroll_holidays
 #: model_terms:ir.actions.act_window,help:hr_payroll_holidays.hr_leave_work_entry_action
 msgid "Meet the time off dashboard."
-msgstr "Seznamte se s palubním panelem volna."
+msgstr "Seznamte se s dashboardem dovolených"
 
 #. module: hr_payroll_holidays
 #. odoo-python

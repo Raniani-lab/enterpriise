@@ -291,14 +291,14 @@ msgstr "進行中"
 #: code:addons/industry_fsm_sale/models/product_product.py:0
 #, python-format
 msgid "Invalid operator: %s"
-msgstr ""
+msgstr "無効なオペレータ: %s"
 
 #. module: industry_fsm_sale
 #. odoo-python
 #: code:addons/industry_fsm_sale/models/product_product.py:0
 #, python-format
 msgid "Invalid value: %s"
-msgstr ""
+msgstr "無効な値: %s"
 
 #. module: industry_fsm_sale
 #. odoo-python

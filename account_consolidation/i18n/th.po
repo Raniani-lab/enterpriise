@@ -361,7 +361,7 @@ msgstr "จำนวนสิ่งที่แนบมา"
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.line_template_consolidation_report
 msgid "Audit"
-msgstr ""
+msgstr "ตรวจสอบ"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_search

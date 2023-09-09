@@ -49,7 +49,7 @@ msgstr "Categoria de despesas não autorizadas"
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_account_disallowed_expenses_fleet_report_handler
 msgid "Disallowed Expenses Fleet Custom Handler"
-msgstr ""
+msgstr "Gerenciador personalizado de despesas não permitidas de frota"
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_vehicle__rate_ids
@@ -106,9 +106,9 @@ msgstr "Veículo"
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_fleet_disallowed_expenses_rate
 msgid "Vehicle Disallowed Expenses Rate"
-msgstr ""
+msgstr "Taxa de despesas não permitidas de veículos"
 
 #. module: account_disallowed_expenses_fleet
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses_fleet.disallowed_expenses_fleet_search_template_extra_options
 msgid "Vehicle Split"
-msgstr ""
+msgstr "Veículo dividido"

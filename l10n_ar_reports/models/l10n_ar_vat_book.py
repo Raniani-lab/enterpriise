@@ -147,11 +147,7 @@ class ArgentinianReportCustomHandler(models.AbstractModel):
             expression_label = column['expression_label']
             value = move_vals.get(column['column_group_key'], {}).get(expression_label)
 
-            columns.append({
-                'name': report.format_value(options, value, figure_type=column['figure_type']) if value is not None else None,
-                'no_format': value,
-                'class': 'number' if expression_label in number_values else '',
-            })
+            columns.append(report._build_column_dict(value, column, options=options))
 
         return {
             'id': report._get_generic_line_id('account.move', move_id),
@@ -171,11 +167,7 @@ class ArgentinianReportCustomHandler(models.AbstractModel):
             expression_label = column['expression_label']
             value = total_vals.get(column['column_group_key'], {}).get(expression_label)
 
-            columns.append({
-                'name': report.format_value(options, value, figure_type=column['figure_type']) if value is not None else None,
-                'no_format': value,
-                'class': 'number',
-            })
+            columns.append(report._build_column_dict(value, column, options=options))
         return {
             'id': report._get_generic_line_id(None, None, markup='total'),
             'name': _('Total'),

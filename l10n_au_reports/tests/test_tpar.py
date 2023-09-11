@@ -70,7 +70,7 @@ class TestAustraliaTparReport(TestAccountReportsCommon):
             [
                 ('partner_a',   "22 225 459 588",       50.0,       550.0,       0.0,),
                 ('partner_b',   "11 225 459 588",       30.0,       189.0,     141.0,),
-                ('Total',                   None,       80.0,       739.0,     141.0,),
+                ('Total',                     "",       80.0,       739.0,     141.0,),
             ],
             options,
         )

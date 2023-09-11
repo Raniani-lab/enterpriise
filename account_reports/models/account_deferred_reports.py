@@ -238,10 +238,12 @@ class DeferredReportCustomHandler(models.AbstractModel):
         def get_columns(totals):
             return [
                 report._build_column_dict(
+                    totals[period],
+                    {
+                        'figure_type': 'monetary',
+                        'expression_label': 'total',
+                    },
                     options=options,
-                    no_format=totals[period],
-                    figure_type='monetary',
-                    expression_label='total',
                     currency=self.env.company.currency_id,
                 )
                 for period in periods

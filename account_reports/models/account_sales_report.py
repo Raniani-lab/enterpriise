@@ -134,14 +134,8 @@ class ECSalesReportCustomHandler(models.AbstractModel):
         """
         column_values = []
         for column in options['columns']:
-            expression_label = column['expression_label']
-            value = partner_values[column['column_group_key']].get(expression_label)
-            column_values.append(report._build_column_dict(
-                options=options,
-                no_format=value,
-                figure_type=column['figure_type'],
-                expression_label=column['expression_label'],
-            )) # value is not None => allows to avoid the "0.0" or None values but only those
+            value = partner_values[column['column_group_key']].get(column['expression_label'])
+            column_values.append(report._build_column_dict(value, column, options=options))
 
         return {
             'id': report._get_generic_line_id('res.partner', partner.id, markup=markup),
@@ -161,13 +155,10 @@ class ECSalesReportCustomHandler(models.AbstractModel):
         """
         column_values = []
         for column in options['columns']:
-            value = totals_by_column_group[column['column_group_key']].get(column['expression_label'])
-            column_values.append(report._build_column_dict(
-                options=options,
-                no_format=value if column['figure_type'] == 'monetary' else '',
-                figure_type=column['figure_type'],
-                expression_label=column['expression_label'],
-            ))
+            col_value = totals_by_column_group[column['column_group_key']].get(column['expression_label'])
+            col_value = col_value if column['figure_type'] == 'monetary' else ''
+
+            column_values.append(report._build_column_dict(col_value, column, options=options))
 
         return {
             'id': report._get_generic_line_id(None, None, markup='total'),

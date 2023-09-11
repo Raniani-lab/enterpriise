@@ -59,13 +59,12 @@ class AustralianReportCustomHandler(models.AbstractModel):
             for column in options['columns']:
                 expression_label = column['expression_label']
                 value = partner_info.get(column['column_group_key'], {}).get(expression_label, False)
-                columns.append({
-                    'name': report.format_value(
-                        options, value, company_currency, figure_type=column['figure_type']
-                    ) if column['figure_type'] == 'monetary' else value,
-                    'no_format': value,
-                    'class': column['figure_type'],
-                })
+                columns.append(report._build_column_dict(
+                    value,
+                    column,
+                    options=options,
+                    currency=company_currency,
+                ))
             line = {
                 'id': report._get_generic_line_id('res.partner', partner_id),
                 'caret_options': 'res.partner',
@@ -81,11 +80,11 @@ class AustralianReportCustomHandler(models.AbstractModel):
             for column in options['columns']:
                 expression_label = column['expression_label']
                 value = total_values_dict.get(column['column_group_key'], {}).get(expression_label, False)
-                total_columns.append({
-                    'name': report.format_value(options, value, figure_type=column['figure_type']) if value else None,
-                    'no_format': value,
-                    'class': 'number',
-                })
+                total_columns.append(report._build_column_dict(
+                    value if value else None,
+                    column,
+                    options=options,
+                ))
             total_line = {
                 'id': report._get_generic_line_id(None, None, markup='total'),
                 'name': _('Total'),

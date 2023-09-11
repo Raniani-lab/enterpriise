@@ -844,13 +844,7 @@ class AccountReport(models.Model):
             name = account_group.display_name if account_group else _('(No Group)')
             columns = []
             for column_total, column in zip(column_totals, options['columns']):
-                columns.append(self._build_column_dict(
-                    options=options,
-                    no_format=column_total,
-                    figure_type=column.get('figure_type'),
-                    expression_label=column.get('expression_label'),
-                    blank_if_zero=column['blank_if_zero'],
-                ))
+                columns.append(self._build_column_dict(column_total, column, options=options))
             return {
                 'id': line_id,
                 'name': name,
@@ -2188,17 +2182,12 @@ class AccountReport(models.Model):
                     formatter_params['currency'] = self.env['res.currency'].browse(foreign_currency_id)
 
             column_data = self._build_column_dict(
+                column_value,
+                column_data,
                 options=options,
-                no_format=column_value,
-                figure_type=figure_type,
-                expression_label=column_expr_label,
-                column_group_key=options['columns'][len(columns)]['column_group_key'],
-                auditable=column_value is not None and column_expression.auditable,
+                column_expression=column_expression if column_expression else None,
                 has_sublines=column_has_sublines,
                 report_line_id=line.id,
-                is_zero=column_value is None or (figure_type in ('float', 'integer', 'monetary') and self.is_zero(column_value, figure_type=figure_type, **formatter_params)),
-                green_on_positive=column_expression.green_on_positive,
-                blank_if_zero=column_expression.blank_if_zero or column_data.get('blank_if_zero'),
                 **formatter_params,
             )
 
@@ -2213,27 +2202,40 @@ class AccountReport(models.Model):
         return columns
 
     def _build_column_dict(
-            self, options, no_format, figure_type, expression_label,
-            currency=False, column_group_key=None, report_line_id=None, auditable=False, sortable=False, blank_if_zero=False,
-            has_sublines=False, is_zero=False, green_on_positive=False, digits=1, classes=None,
+            self, col_value, col_data,
+            options=None, currency=False, digits=1,
+            column_expression=None, has_sublines=False,
+            report_line_id=None,
     ):
-        rslt = {
-            'name': self.format_value(options, no_format, figure_type=figure_type, blank_if_zero=blank_if_zero, digits=digits, currency=currency),
-            'no_format': no_format,
-            'figure_type': figure_type,
-            'expression_label': expression_label,
-            'column_group_key': column_group_key,
-            'report_line_id': report_line_id,
-            'auditable': auditable,
-            'sortable': sortable,
+        # Empty column
+        if col_value is None and col_data is None:
+            return {}
+
+        col_data = col_data or {}
+        column_expression = column_expression or self.env['account.report.expression']
+        options = options or {}
+
+        blank_if_zero = column_expression.blank_if_zero or col_data.get('blank_if_zero', False)
+        figure_type = column_expression.figure_type or col_data.get('figure_type', 'string')
+
+        return {
+            'auditable': col_value is not None and column_expression.auditable,
             'blank_if_zero': blank_if_zero,
+            'column_group_key': col_data.get('column_group_key'),
+            'expression_label': col_data.get('expression_label'),
+            'figure_type': figure_type,
+            'green_on_positive': column_expression.green_on_positive,
             'has_sublines': has_sublines,
-            'is_zero': is_zero,
-            'green_on_positive': green_on_positive,
+            'is_zero': col_value is None or (
+                isinstance(col_value, (int, float))
+                and figure_type in ('float', 'integer', 'monetary')
+                and self.is_zero(col_value, currency=currency, figure_type=figure_type, digits=digits)
+            ),
+            'name': self.format_value(options, col_value, currency=currency, blank_if_zero=blank_if_zero, figure_type=figure_type, digits=digits),
+            'no_format': col_value,
+            'report_line_id': report_line_id,
+            'sortable': col_data.get('sortable', False),
         }
-        if classes:
-            rslt['class'] = classes
-        return rslt
 
     def _get_dynamic_lines(self, options, all_column_groups_expression_totals, warnings=None):
         if self.custom_handler_model_id:
@@ -4318,16 +4320,9 @@ class AccountReport(models.Model):
 
             column_values = []
             for column in options['columns']:
-                col_expr_label = column['expression_label']
-                value = prefix_expression_totals_by_group[column['column_group_key']][col_expr_label]
+                col_value = prefix_expression_totals_by_group[column['column_group_key']][column['expression_label']]
 
-                column_values.append(self._build_column_dict(
-                    options=options,
-                    no_format=value,
-                    figure_type=column['figure_type'],
-                    expression_label=column['expression_label'],
-                    blank_if_zero=column['blank_if_zero'],
-                ))
+                column_values.append(self._build_column_dict(col_value, column, options=options))
 
             line_id = self._get_generic_line_id(None, None, parent_line_id=parent_line_dict_id, markup=f"groupby_prefix_group:{prefix_key}")
 
@@ -4810,13 +4805,12 @@ class AccountReport(models.Model):
             col_expr_label = column['expression_label']
 
             if col_value is None or (col_expr_label == 'amount_currency' and not account_currency):
-                line_columns.append({})
+                line_columns.append(self._build_column_dict(None, None))
             else:
                 line_columns.append(self._build_column_dict(
+                    col_value,
+                    column,
                     options=options,
-                    no_format=col_value,
-                    figure_type=column['figure_type'],
-                    expression_label=column['expression_label'],
                     currency=account_currency if col_expr_label == 'amount_currency' else None,
                 ))
 

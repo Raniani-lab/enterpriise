@@ -586,13 +586,8 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
             col_expr_label = column['expression_label']
             value = partner_values[column['column_group_key']].get(col_expr_label)
             unfoldable = unfoldable or (col_expr_label in ('debit', 'credit') and not company_currency.is_zero(value))
-            column_values.append(report._build_column_dict(
-                options=options,
-                no_format=value,
-                figure_type=column['figure_type'],
-                expression_label=column['expression_label'],
-                blank_if_zero=column['blank_if_zero'],
-            ))
+            column_values.append(report._build_column_dict(value, column, options=options))
+
 
         line_id = report._get_generic_line_id('res.partner', partner.id) if partner else report._get_generic_line_id('res.partner', None, markup='no_partner')
 
@@ -624,37 +619,19 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
                 col_value = report._format_aml_name(aml_query_result['name'], aml_query_result['ref'], aml_query_result['move_name'])
             else:
                 col_value = aml_query_result[col_expr_label] if column['column_group_key'] == aml_query_result['column_group_key'] else None
-
             if col_value is None:
-                columns.append({})
+                columns.append(report._build_column_dict(None, None))
             else:
-                col_class = 'number'
-
-                if col_expr_label == 'date_maturity':
-                    formatted_value = format_date(self.env, fields.Date.from_string(col_value))
-                    col_class = 'date'
-                elif col_expr_label == 'amount_currency':
-                    currency = self.env['res.currency'].browse(aml_query_result['currency_id'])
-                    if currency != self.env.company.currency_id:
-                        formatted_value = report.format_value(options, col_value, currency=currency, figure_type=column['figure_type'])
-                    else:
-                        formatted_value = ''
-                elif col_expr_label == 'balance':
+                if col_expr_label == 'balance':
                     col_value += init_bal_by_col_group[column['column_group_key']]
-                    formatted_value = report.format_value(options, col_value, figure_type=column['figure_type'], blank_if_zero=column['blank_if_zero'])
-                else:
-                    if col_expr_label == 'ref':
-                        col_class = 'acc_rep_line_ellipsis'
-                    elif col_expr_label not in ('debit', 'credit'):
-                        col_class = ''
-                    formatted_value = report.format_value(options, col_value, figure_type=column['figure_type'])
 
-                columns.append(report._build_column_dict(
-                    options=options,
-                    no_format=col_value,
-                    figure_type=column['figure_type'],
-                    expression_label=column['expression_label'],
-                ))
+                if col_expr_label == 'amount_currency':
+                    currency = self.env['res.currency'].browse(aml_query_result['currency_id'])
+
+                    if currency == self.env.company.currency_id:
+                        col_value = ''
+
+                columns.append(report._build_column_dict(col_value, column, options=options))
 
         return {
             'id': report._get_generic_line_id('account.move.line', aml_query_result['id'], parent_line_id=partner_line_id),
@@ -669,14 +646,8 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
         column_values = []
         report = self.env['account.report'].browse(options['report_id'])
         for column in options['columns']:
-            col_expr_label = column['expression_label']
-            value = totals_by_column_group[column['column_group_key']].get(column['expression_label'])
-            column_values.append(report._build_column_dict(
-                options=options,
-                no_format=value,
-                figure_type=column['figure_type'],
-                expression_label=column['expression_label'],
-            ))
+            col_value = totals_by_column_group[column['column_group_key']].get(column['expression_label'])
+            column_values.append(report._build_column_dict(col_value, column, options=options))
 
         return {
             'id': report._get_generic_line_id(None, None, markup='total'),

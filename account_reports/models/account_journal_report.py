@@ -279,36 +279,30 @@ class JournalReportCustomHandler(models.AbstractModel):
         has_multicurrency = self.user_has_groups('base.group_multi_currency')
         report = self.env['account.report'].browse(options['report_id'])
         for dummy in options['column_groups']:
-            columns = [{'name': _('Name')}]
             for column in options['columns']:
                 if (column['expression_label'] == 'additional_col_1'):
                     if journal_type in ['sale', 'purchase']:
-                        name = _('Taxes')
+                        col_value = _('Taxes')
                     elif journal_type == 'bank':
-                        name = _('Balance')
+                        col_value = _('Balance')
                     else:
-                        name = ''
+                        col_value = ''
                 elif (column['expression_label'] == 'additional_col_2'):
                     if journal_type in ['sale', 'purchase']:
-                        name = _('Tax Grids')
+                        col_value = _('Tax Grids')
                     elif journal_type == 'bank' and has_multicurrency:
-                        name = _('Amount In Currency')
+                        col_value = _('Amount In Currency')
                     else:
-                        name = ''
+                        col_value = ''
                 else:
-                    name = _(column['name'])
+                    col_value = _(column['name'])
 
-                columns.append(report._build_column_dict(
-                    options=options,
-                    no_format=name,
-                    figure_type=column['figure_type'],
-                    expression_label=column['expression_label'],
-                ))
+                columns.append(report._build_column_dict(col_value, column, options=options))
 
         return {
             'id': report._get_generic_line_id(None, None, parent_line_id=parent_key, markup='headers'),
-            'name': columns[0]['name'],
-            'columns': columns[1:],
+            'name': _('Name'),
+            'columns': columns,
             'level': 3,
             'parent_id': parent_key,
         }
@@ -455,30 +449,14 @@ class JournalReportCustomHandler(models.AbstractModel):
         report = self.env['account.report'].browse(options['report_id'])
 
         for column in options['columns']:
-            col_value = eval_dict[column['column_group_key']]
-
             if column['expression_label'] == 'credit':  # Add a text in the credit column
-                name = _('Starting Balance:') if is_starting_balance else _('Ending Balance:')
-                line_columns.append(report._build_column_dict(
-                    options=options,
-                    no_format=name,
-                    figure_type=column['figure_type'],
-                    expression_label=column['expression_label'],
-                ))
+                col_name = _('Starting Balance:') if is_starting_balance else _('Ending Balance:')
             elif column['expression_label'] == 'additional_col_1':
-                line_columns.append(report._build_column_dict(
-                    options=options,
-                    no_format=col_value,
-                    figure_type=column['figure_type'],
-                    expression_label=column['expression_label'],
-                ))
+                col_name = eval_dict[column['column_group_key']]
             else:
-                line_columns.append(report._build_column_dict(
-                    options=options,
-                    no_format='',
-                    figure_type=column['figure_type'],
-                    expression_label=column['expression_label']
-                ))
+                col_name = ''
+
+            line_columns.append(report._build_column_dict(col_name, column, options=options))
 
         return {
             'id': report._get_generic_line_id(None, None, parent_line_id=parent_line_id, markup='initial' if is_starting_balance else 'final'),
@@ -503,15 +481,21 @@ class JournalReportCustomHandler(models.AbstractModel):
         columns = []
         for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
             values = values[column_group_key]
-            balance = False if column_group_options.get('show_payment_lines') and is_unreconciled_payment else values.get('cumulated_balance')
-            not_receivable_with_partner = values['partner_name'] and values['account_type'] not in ('asset_receivable', 'liability_payable')
-            account_name = '%s %s' % (values['account_code'], values['partner_name'] if values['partner_name'] else values['account_name'])
-            columns.extend([
-                report._build_column_dict(options=options, no_format=account_name, figure_type='string', expression_label='account'),
-                report._build_column_dict(options=options, no_format=values['debit'], figure_type='string', expression_label='label'),
-                report._build_column_dict(options=options, no_format=values['debit'], figure_type='monetary', expression_label='debit'),
-                report._build_column_dict(options=options, no_format=values['credit'], figure_type='monetary', expression_label='credit'),
-            ] + self._get_move_line_additional_col(column_group_options, balance, values, is_unreconciled_payment))
+
+            for column in options['columns']:
+                if column.get('expression_label') not in ['additional_col_1', 'additional_col_2']:
+                    if column.get('expression_label') == 'account':
+                        col_value = '%s %s' % (values['account_code'], values['partner_name'] or values['account_name'])
+                    elif column.get('expression_label') == 'label':
+                        col_value = values['debit']
+                    else:
+                        col_value = values[column.get('expression_label')]
+
+                    columns.append(report._build_column_dict(col_value, column, options=options))
+                else:
+                    balance = False if column_group_options.get('show_payment_lines') and is_unreconciled_payment else values.get('cumulated_balance')
+                    columns += self._get_move_line_additional_col(column_group_options, balance, values, is_unreconciled_payment)
+
         return {
             'id': line_key,
             'name': values['move_name'],
@@ -540,20 +524,24 @@ class JournalReportCustomHandler(models.AbstractModel):
 
         for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
             values = eval_dict[column_group_key]
-            if values['journal_type'] == 'bank':  # For additional lines still showing in the bank journal, make sure to use the partner on the account if available.
-                account_name = '%s %s' % (values['account_code'], values['partner_name'] if values['partner_name'] else values['account_name'])
-                account_name_col = report._build_column_dict(options=options, no_format=account_name, figure_type='string', expression_label='account')
-            else:
-                account_name = '%s %s' % (values['account_code'], values['account_name'])
-                account_name_col = report._build_column_dict(options=options, no_format=account_name, figure_type='string', expression_label='account')
 
-            balance = False if column_group_options.get('show_payment_lines') and is_unreconciled_payment else values.get('cumulated_balance')
-            columns.extend([
-                account_name_col,
-                report._build_column_dict(options=options, no_format=values['name'], figure_type='string', expression_label='label'),
-                report._build_column_dict(options=options, no_format=values['debit'], figure_type='monetary', expression_label='debit'),
-                report._build_column_dict(options=options, no_format=values['credit'], figure_type='monetary', expression_label='credit'),
-            ] + self._get_move_line_additional_col(column_group_options, balance, values, is_unreconciled_payment))
+            for column in options['columns']:
+                if column.get('expression_label') not in ['additional_col_1', 'additional_col_2']:
+                    if column.get('expression_label') == 'account':
+                        if values['journal_type'] == 'bank':  # For additional lines still showing in the bank journal, make sure to use the partner on the account if available.
+                            col_value = '%s %s' % (values['account_code'], values['partner_name'] or values['account_name'])
+                        else:
+                            col_value = '%s %s' % (values['account_code'], values['account_name'])
+                    elif column.get('expression_label') == 'label':
+                        col_value = values['name']
+                    else:
+                        col_value = values[column.get('expression_label')]
+
+                    columns.append(report._build_column_dict(col_value, column, options=options))
+                else:
+                    balance = False if column_group_options.get('show_payment_lines') and is_unreconciled_payment else values.get('cumulated_balance')
+                    columns += self._get_move_line_additional_col(column_group_options, balance, values, is_unreconciled_payment)
+
         return {
             'id': report._get_generic_line_id('account.move.line', values['move_line_id'], parent_line_id=parent_key),
             'name': self._get_aml_line_name(options, journal, line_index, eval_dict, is_unreconciled_payment),
@@ -607,8 +595,8 @@ class JournalReportCustomHandler(models.AbstractModel):
         """
         report = self.env['account.report']
         additional_col = [
-            report._build_column_dict(options=options, no_format='', figure_type='string', expression_label='additional_col_1'),
-            report._build_column_dict(options=options, no_format='', figure_type='string', expression_label='additional_col_2'),
+            report._build_column_dict('', {'figure_type': 'string', 'expression_label': 'additional_col_1'}, options=options),
+            report._build_column_dict('', {'figure_type': 'string', 'expression_label': 'additional_col_2'}, options=options),
         ]
         if values['journal_type'] in ['sale', 'purchase']:
             tax_val = ''
@@ -618,20 +606,27 @@ class JournalReportCustomHandler(models.AbstractModel):
             elif values['tax_base_amount']:
                 # Display the base amount on wich this tax line is based off, formatted as such: "B: $0.0"
                 tax_val = _('B: %s', report.format_value(options, values['tax_base_amount'], blank_if_zero=False, figure_type='monetary'))
-            values['tax_grids'] = values['tax_grids']
             additional_col = [
-                report._build_column_dict(options=options, no_format=tax_val, figure_type='string', expression_label='additional_col_1'),
-                report._build_column_dict(options=options, no_format=', '.join(values['tax_grids']), figure_type='string', expression_label='additional_col_2'),
+                report._build_column_dict(tax_val, {'figure_type': 'string', 'expression_label': 'additional_col_1'}, options=options),
+                report._build_column_dict(', '.join(values['tax_grids']), {'figure_type': 'string', 'expression_label': 'additional_col_2'}, options=options),
             ]
         elif values['journal_type'] == 'bank':
             if values['account_type'] not in ('liability_credit_card', 'asset_cash') and current_balance:
                 additional_col = [
-                    report._build_column_dict(options=options, no_format=current_balance, figure_type='monetary', expression_label='additional_col_1'),
-                    report._build_column_dict(options=options, no_format='', figure_type='string', expression_label='additional_col_2'),
+                    report._build_column_dict(current_balance, {'figure_type': 'monetary', 'expression_label': 'additional_col_1'}, options=options),
+                    report._build_column_dict('', {'figure_type': 'string', 'expression_label': 'additional_col_2'}, options=options),
                 ]
             if self.user_has_groups('base.group_multi_currency') and values['move_line_currency'] != values['company_currency']:
                 amount = -values['amount_currency'] if not is_unreconciled_payment else values['amount_currency']
-                additional_col[-1] = report._build_column_dict(options=options, no_format=amount, figure_type='monetary', expression_label='additional_col_2', currency=self.env['res.currency'].browse(values['move_line_currency']))
+                additional_col[-1] = report._build_column_dict(
+                    amount,
+                    {
+                        'figure_type': 'monetary',
+                        'expression_label': 'additional_col_2',
+                    },
+                    options=options,
+                    currency=self.env['res.currency'].browse(values['move_line_currency']),
+                )
 
         return additional_col
 

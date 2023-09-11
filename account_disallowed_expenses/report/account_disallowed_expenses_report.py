@@ -249,29 +249,23 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
 
         return {'lines': lines}
 
-    def _get_column_values(self, options, values, update_vals=True):
+    def _get_column_values(self, options, values, is_total_line=False):
         column_values = []
 
         report = self.env['account.report'].browse(options['report_id'])
         for column in options['columns']:
             vals = values.get(column['column_group_key'], {})
-            if vals and update_vals:
+            if vals and not is_total_line:
                 vals['rate'] = self._get_current_rate(vals)
                 vals['disallowed_amount'] = self._get_current_disallowed_amount(vals)
             col_val = vals.get(column['expression_label'])
-            blank_totals = column.get('blank_if_zero', False) and update_vals
 
-            if not col_val and blank_totals:
-                column_values.append({})
-            else:
-                column_values.append(report._build_column_dict(
-                    options=options,
-                    no_format=col_val,
-                    figure_type=column['figure_type'],
-                    expression_label=column['expression_label'],
-                    blank_if_zero=blank_totals,
-                    digits=2 if column['figure_type'] == 'percentage' else None,
-                ))
+            column_values.append(report._build_column_dict(
+                col_val,
+                column,
+                options=options,
+                digits=2 if column['figure_type'] == 'percentage' else None,
+            ))
 
         return column_values
 
@@ -285,7 +279,7 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
             'id': report._get_generic_line_id(None, None, markup='total'),
             'name': _('Total'),
             'level': 1,
-            'columns': self._get_column_values(options, totals, update_vals=False),
+            'columns': self._get_column_values(options, totals, is_total_line=True),
         }
 
     def _get_category_line(self, options, values, current, level):

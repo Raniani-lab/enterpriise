@@ -821,33 +821,20 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
             columns = []
             tax_base_amounts = tax_amount_dict['base_amount']
             tax_amounts = tax_amount_dict['tax_amount']
-            for column_group in options['column_groups']:
-                tax_base_amount = tax_base_amounts[column_group]
-                tax_amount = tax_amounts[column_group]
 
-                # Add the tax base amount.
-                if index == len(groupby_fields) - 1:
-                    columns.append(report._build_column_dict(
-                        options=options,
-                        no_format=sign * tax_base_amount,
-                        figure_type='monetary',
-                        expression_label='base_amount'
-                    ))
-                else:
-                    columns.append(report._build_column_dict(
-                        options=options,
-                        no_format='',
-                        figure_type='monetary',
-                        expression_label='base_amount'
-                    ))
+            for column in options['columns']:
+                tax_base_amount = tax_base_amounts[column['column_group_key']]
+                tax_amount = tax_amounts[column['column_group_key']]
 
-                # Add the tax amount.
-                columns.append(report._build_column_dict(
-                    options=options,
-                    no_format=sign * tax_amount,
-                    figure_type='monetary',
-                    expression_label='tax_amount'
-                ))
+                expr_label = column.get('expression_label')
+
+                if expr_label == 'net':
+                    col_value = sign * tax_base_amount if index == len(groupby_fields) - 1 else ''
+
+                if expr_label == 'tax':
+                    col_value = sign * tax_amount
+
+                columns.append(report._build_column_dict(col_value, column, options=options))
 
             # Prepare line.
             default_vals = {

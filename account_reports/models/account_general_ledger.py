@@ -566,21 +566,14 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             col_value = eval_dict[column['column_group_key']].get(column['expression_label'])
             col_expr_label = column['expression_label']
 
-            if col_value is None or (col_expr_label == 'amount_currency' and not account.currency_id):
-                line_columns.append({'expression_label': column['expression_label']})
+            value = None if col_value is None or (col_expr_label == 'amount_currency' and not account.currency_id) else col_value
 
-            else:
-                format_params = {}
-                if col_expr_label == 'amount_currency':
-                    format_params['currency'] = account.currency_id
-
-                line_columns.append(report._build_column_dict(
-                    options=options,
-                    no_format=col_value,
-                    figure_type=column['figure_type'],
-                    expression_label=column['expression_label'],
-                    **format_params,
-                ))
+            line_columns.append(report._build_column_dict(
+                value,
+                column,
+                options=options,
+                currency=account.currency_id if col_expr_label == 'amount_currency' else None,
+            ))
 
         line_id = report._get_generic_line_id('account.account', account.id)
         return {
@@ -598,25 +591,20 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         for column in options['columns']:
             col_expr_label = column['expression_label']
             col_value = eval_dict[column['column_group_key']].get(col_expr_label)
+            col_currency = None
 
-            if col_value is None:
-                line_columns.append({'expression_label': column['expression_label']})
-            else:
-                if col_expr_label == 'amount_currency':
-                    currency = self.env['res.currency'].browse(eval_dict[column['column_group_key']]['currency_id'])
-                    if currency == self.env.company.currency_id:
-                        col_value = None
-                elif col_expr_label == 'balance':
-                    col_value += init_bal_by_col_group[column['column_group_key']]
+            if col_expr_label == 'amount_currency':
+                col_currency = self.env['res.currency'].browse(eval_dict[column['column_group_key']]['currency_id'])
+                col_value = None if col_currency == self.env.company.currency_id else col_value
+            elif col_expr_label == 'balance':
+                col_value += init_bal_by_col_group[column['column_group_key']]
 
-                line_columns.append(report._build_column_dict(
-                    options=options,
-                    no_format=col_value,
-                    figure_type=column['figure_type'],
-                    expression_label=column['expression_label'],
-                    currency=currency if col_expr_label == 'amount_currency' else None,
-                    blank_if_zero=column['blank_if_zero'],
-                ))
+            line_columns.append(report._build_column_dict(
+                col_value,
+                column,
+                options=options,
+                currency=col_currency,
+            ))
 
         aml_id = None
         move_name = None
@@ -645,20 +633,9 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         line_columns = []
         for column in options['columns']:
             col_value = eval_dict[column['column_group_key']].get(column['expression_label'])
-            if col_value is None:
-                line_columns.append(report._build_column_dict(
-                    options=options,
-                    no_format='',
-                    figure_type='monetary',
-                    expression_label=column['expression_label'],
-                ))
-            else:
-                line_columns.append(report._build_column_dict(
-                    options=options,
-                    no_format=col_value,
-                    figure_type='monetary',
-                    expression_label=column['expression_label'],
-                ))
+            col_value = None if col_value is None else col_value
+
+            line_columns.append(report._build_column_dict(col_value, column, options=options))
 
         return {
             'id': report._get_generic_line_id(None, None, markup='total'),

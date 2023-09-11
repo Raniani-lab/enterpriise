@@ -36,22 +36,9 @@ class AssetsReportCustomHandler(models.AbstractModel):
         total_columns = []
         for column_data in options['columns']:
             col_value = totals_by_column_group[column_data['column_group_key']].get(column_data['expression_label'])
-            if column_data.get('figure_type') == 'monetary':
-                total_columns.append(report._build_column_dict(
-                    options=options,
-                    no_format=col_value,
-                    figure_type='monetary',
-                    expression_label=column_data.get('expression_label'),
-                    currency=self.env.company.currency_id,
-                    blank_if_zero=column_data['blank_if_zero'],
-                ))
-            else:
-                total_columns.append(report._build_column_dict(
-                    options=options,
-                    no_format='',
-                    figure_type=column_data.get('figure_type'),
-                    expression_label=column_data.get('expression_label'),
-                ))
+            col_value = col_value if column_data.get('figure_type') == 'monetary' else ''
+
+            total_columns.append(report._build_column_dict(col_value, column_data, options=options))
 
         if lines:
             lines.append({
@@ -98,28 +85,13 @@ class AssetsReportCustomHandler(models.AbstractModel):
                 col_group_key = column_data['column_group_key']
                 expr_label = column_data['expression_label']
                 if col_group_key not in col_group_totals or expr_label not in col_group_totals[col_group_key]:
-                    all_columns.append({})
+                    all_columns.append(report._build_column_dict(None, None))
                     continue
 
                 col_value = col_group_totals[col_group_key][expr_label]
-                if col_value is None:
-                    all_columns.append({})
-                elif column_data['figure_type'] == 'monetary':
-                    all_columns.append(report._build_column_dict(
-                        options=options,
-                        no_format=col_value,
-                        figure_type=column_data['figure_type'],
-                        expression_label=column_data['expression_label'],
-                        currency=company_currency,
-                        blank_if_zero=column_data['blank_if_zero'],
-                    ))
-                else:
-                    all_columns.append(report._build_column_dict(
-                        options=options,
-                        no_format=col_value,
-                        figure_type=column_data['figure_type'],
-                        expression_label=column_data['expression_label'],
-                    ))
+                col_data = None if col_value is None else column_data
+
+                all_columns.append(report._build_column_dict(col_value, col_data, options=options))
 
                 # add to the total line
                 if column_data['figure_type'] == 'monetary':
@@ -348,23 +320,11 @@ class AssetsReportCustomHandler(models.AbstractModel):
 
             # Add totals (columns) to the account line
             for column_index in range(len(options['columns'])):
-                tot_val = group_totals.get(column_index)
-                if tot_val is None:
-                    account_line_vals['columns'].append(report._build_column_dict(
-                        options=options,
-                        no_format='',
-                        figure_type=options['columns'][column_index]['figure_type'],
-                        expression_label=options['columns'][column_index]['expression_label'],
-                    ))
-                else:
-                    account_line_vals['columns'].append(report._build_column_dict(
-                        options=options,
-                        no_format=tot_val,
-                        figure_type=options['columns'][column_index]['figure_type'],
-                        expression_label=options['columns'][column_index]['expression_label'],
-                        currency=self.env.company.currency_id,
-                        blank_if_zero=options['columns'][column_index]['blank_if_zero'],
-                    ))
+                account_line_vals['columns'].append(report._build_column_dict(
+                    group_totals.get(column_index, ''),
+                    options['columns'][column_index],
+                    options=options,
+                ))
 
         return rslt_lines
 

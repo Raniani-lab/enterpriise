@@ -615,15 +615,9 @@ class CashFlowReportCustomHandler(models.AbstractModel):
             expression_label = column['expression_label']
             column_group_key = column['column_group_key']
 
-            value = report_data[layout_line_id].get(expression_label, 0.0).get(column_group_key, 0.0) if layout_line_id in report_data else 0.0
+            value = report_data[layout_line_id][expression_label].get(column_group_key, 0.0) if layout_line_id in report_data else 0.0
 
-            column_values.append(report._build_column_dict(
-                options=options,
-                no_format=value,
-                figure_type=column['figure_type'],
-                expression_label=column['expression_label'],
-                blank_if_zero=column['blank_if_zero'],
-            ))
+            column_values.append(report._build_column_dict(value, column, options=options))
 
         return {
             'id': line_id,
@@ -647,13 +641,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
 
             value = aml_data[expression_label].get(column_group_key, 0.0)
 
-            column_values.append(report._build_column_dict(
-                options=options,
-                no_format=value,
-                figure_type=column['figure_type'],
-                expression_label=column['expression_label'],
-                blank_if_zero=column['blank_if_zero'],
-            ))
+            column_values.append(report._build_column_dict(value, column, options=options))
 
         return {
             'id': line_id,
@@ -675,16 +663,18 @@ class CashFlowReportCustomHandler(models.AbstractModel):
             closing_balance = report_data['closing_balance'][expression_label].get(column_group_key, 0.0) if 'closing_balance' in report_data else 0.0
             net_increase = report_data['net_increase'][expression_label].get(column_group_key, 0.0) if 'net_increase' in report_data else 0.0
 
-            delta = closing_balance - opening_balance - net_increase
+            balance = closing_balance - opening_balance - net_increase
 
-            if not self.env.company.currency_id.is_zero(delta):
+            if not self.env.company.currency_id.is_zero(balance):
                 unexplained_difference = True
 
             column_values.append(report._build_column_dict(
+                balance,
+                {
+                    'figure_type': 'monetary',
+                    'expression_label': 'balance',
+                },
                 options=options,
-                no_format=delta,
-                figure_type='monetary',
-                expression_label='delta',
             ))
 
         if unexplained_difference:

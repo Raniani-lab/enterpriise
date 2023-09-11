@@ -52,15 +52,11 @@ class DutchECSalesReportCustomHandler(models.AbstractModel):
                 value = partner_info.get(column['column_group_key'], {}).get(expression_label)
 
                 if expression_label == 'vat':
-                    column_name = self._format_vat(value, partner_info[column['column_group_key']].get('country_code'))
+                    col_value = self._format_vat(value, partner_info[column['column_group_key']].get('country_code'))
                 else:
-                    column_name = report.format_value(options, value, figure_type=column['figure_type']) if value else None
+                    col_value = value
 
-                columns.append({
-                    'name': column_name,
-                    'no_format': value,
-                    'class': 'number' if expression_label in ('amount_product', 'amount_service', 'total') else '',
-                })
+                columns.append(report._build_column_dict(col_value, column, options=options))
 
             lines.append((0, {
                 'id': report._get_generic_line_id('res.partner', partner_id),
@@ -77,11 +73,7 @@ class DutchECSalesReportCustomHandler(models.AbstractModel):
             for column in options['columns']:
                 expression_label = column['expression_label']
                 value = total_values_dict.get(column['column_group_key']) if expression_label == 'total' else None
-                columns.append({
-                    'name': report.format_value(options, value, figure_type=column['figure_type']) if value else None,
-                    'no_format': value,
-                    'class': 'number',
-                })
+                columns.append(report._build_column_dict(value, column, options=options))
             lines.append((0, {
                 'id': report._get_generic_line_id(None, None, markup='total'),
                 'name': _('Total'),

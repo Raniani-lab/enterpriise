@@ -46,8 +46,13 @@ export class PivotEditorSidebar extends Component {
                     ["model", "=", this.viewEditorModel.resModel],
                     ["name", "in", Object.keys(this.possibleMeasures)],
                 ],
-                relatedFields: {
-                    display_name: { type: "char" },
+                related: {
+                    fields: {
+                        display_name: { type: "char" },
+                    },
+                    activeFields: {
+                        display_name: { type: "char" },
+                    },
                 },
             },
         };

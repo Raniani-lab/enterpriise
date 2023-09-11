@@ -21,6 +21,7 @@ import {
 } from "@web_studio/../tests/client_action/view_editors/view_editor_tests_utils";
 import { CodeEditor } from "@web/core/code_editor/code_editor";
 import { registry } from "@web/core/registry";
+import { PivotEditorSidebar } from "@web_studio/client_action/view_editor/editors/pivot/pivot_editor";
 
 const serviceRegistry = registry.category("services");
 
@@ -173,9 +174,7 @@ QUnit.module(
             );
 
             assert.strictEqual(
-                target.querySelector(
-                    ".o_web_studio_sidebar .o_web_studio_property #help"
-                ).value,
+                target.querySelector(".o_web_studio_sidebar .o_web_studio_property #help").value,
                 "Display Name",
                 "the help tooltip in the sidebar should default to the field tooltip"
             );
@@ -218,6 +217,46 @@ QUnit.module(
             for (const name of charWidgetNames) {
                 assert.ok(displayedWidgetNames.includes(name));
             }
+        });
+
+        QUnit.test("Pivot sidebar should display display name measures", async function (assert) {
+            serverData.models.coucou.fields["foo"] = {
+                string: "Foo",
+                type: "integer",
+                group_operator: "sum",
+            };
+            serverData.models.coucou.records[0].foo = 42;
+            serverData.models.coucou.records[0].foo = 24;
+            patchWithCleanup(PivotEditorSidebar.prototype, {
+                get currentMeasureFields() {
+                    return [1234];
+                },
+            });
+
+            const arch = `
+                <pivot>
+                    <field name="foo" type="measure"/>
+                </pivot>`;
+
+            await createViewEditor({
+                serverData,
+                type: "pivot",
+                resModel: "coucou",
+                arch,
+                mockRPC: function (route, args) {
+                    if (args.method === "web_read" && args.args[0][0] === 1234) {
+                        return [
+                            {
+                                id: 1234,
+                                display_name: "Foo",
+                            },
+                        ];
+                    }
+                },
+            });
+
+            const badge = target.querySelector(".o_pivot_measures_fields .o_tag_badge_text");
+            assert.strictEqual(badge.textContent, "Foo", "the measure name should be displayed");
         });
 
         QUnit.test("folds/unfolds the existing fields into sidebar", async function (assert) {

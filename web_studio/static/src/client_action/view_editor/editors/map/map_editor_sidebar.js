@@ -37,8 +37,13 @@ export class MapEditorSidebar extends Component {
                     ["model", "=", this.viewEditorModel.resModel],
                     ["ttype", "not in", ["many2many", "one2many", "binary"]],
                 ],
-                relatedFields: {
-                    display_name: { type: "char" },
+                related: {
+                    fields: {
+                        display_name: { type: "char" },
+                    },
+                    activeFields: {
+                        display_name: { type: "char" },
+                    },
                 },
             },
         };

@@ -40,6 +40,9 @@ registry.category("web_tour.tours").add("pos_iot_scale_tour", {
         },
         ...ProductScreen.do.clickHomeCategory(),
         {
+            trigger: '.opening-cash-control .button:contains("Open session")'
+        },
+        {
             trigger: '.product:contains("Whiteboard Pen")',
         },
         {
@@ -47,6 +50,9 @@ registry.category("web_tour.tours").add("pos_iot_scale_tour", {
         },
         {
             trigger: ".buy-product",
+        },
+        {
+            trigger: `.order .info-list em:contains("2.35")`
         },
         {
             trigger: ".menu-button",

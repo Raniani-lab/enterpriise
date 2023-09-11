@@ -371,7 +371,7 @@ class WhatsAppTemplate(models.Model):
         file_handle = False
         if attachment:
             try:
-                file_handle = wa_api._upload_demo_document(self.wa_account_id, attachment)
+                file_handle = wa_api._upload_demo_document(attachment)
             except WhatsAppError as e:
                 raise UserError(str(e))
 

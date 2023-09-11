@@ -360,12 +360,6 @@ class AgedPayableCustomHandler(models.AbstractModel):
     _inherit = 'account.aged.partner.balance.report.handler'
     _description = 'Aged Payable Custom Handler'
 
-    def _custom_options_initializer(self, report, options, previous_options=None):
-        super()._custom_options_initializer(report, options, previous_options=previous_options)
-
-        options['account_type'] = [account_type for account_type in options['account_type'] if account_type['id'] not in ('trade_receivable', 'non_trade_receivable')]
-
-
     def open_journal_items(self, options, params):
         payable_account_type = {'id': 'trade_payable', 'name': _("Payable"), 'selected': True}
 
@@ -387,11 +381,6 @@ class AgedReceivableCustomHandler(models.AbstractModel):
     _name = 'account.aged.receivable.report.handler'
     _inherit = 'account.aged.partner.balance.report.handler'
     _description = 'Aged Receivable Custom Handler'
-
-    def _custom_options_initializer(self, report, options, previous_options=None):
-        super()._custom_options_initializer(report, options, previous_options=previous_options)
-
-        options['account_type'] = [account_type for account_type in options['account_type'] if account_type['id'] not in ('trade_payable', 'non_trade_payable')]
 
     def open_journal_items(self, options, params):
         receivable_account_type = {'id': 'trade_receivable', 'name': _("Receivable"), 'selected': True}

@@ -725,48 +725,28 @@ class AccountReport(models.Model):
         Selects a name to display according to the selections.
         The group display name is selected according to the display name of the options selected.
         '''
-        if not self.filter_account_type:
+        if self.filter_account_type == 'disabled':
             return
 
-        options['account_type'] = [
+        account_type_list = [
             {'id': 'trade_receivable', 'name': _("Receivable"), 'selected': True},
             {'id': 'non_trade_receivable', 'name': _("Non Trade Receivable"), 'selected': False},
             {'id': 'trade_payable', 'name': _("Payable"), 'selected': True},
             {'id': 'non_trade_payable', 'name': _("Non Trade Payable"), 'selected': False},
         ]
 
+        if self.filter_account_type == 'receivable':
+            options['account_type'] = account_type_list[:2]
+        elif self.filter_account_type == 'payable':
+            options['account_type'] = account_type_list[2:]
+        else:
+            options['account_type'] = account_type_list
+
         if previous_options and previous_options.get('account_type'):
             previously_selected_ids = {x['id'] for x in previous_options['account_type'] if x.get('selected')}
             for opt in options['account_type']:
                 opt['selected'] = opt['id'] in previously_selected_ids
 
-        selected_options = {x['id']: x['name'] for x in options['account_type'] if x['selected']}
-        selected_ids = set(selected_options.keys())
-        display_names = []
-
-        def check_if_name_applicable(ids_to_match, string_if_match):
-            '''
-            If the ids selected are part of a possible grouping,
-                - append the name of the grouping to display_names
-                - Remove the concerned ids
-            ids_to_match : the ids forming a group
-            string_if_match : the group's name
-            '''
-            if len(selected_ids) == 0:
-                return
-            if ids_to_match.issubset(selected_ids):
-                display_names.append(string_if_match)
-                for selected_id in ids_to_match:
-                    selected_ids.remove(selected_id)
-
-        check_if_name_applicable({'trade_receivable', 'trade_payable', 'non_trade_receivable', 'non_trade_payable'}, _("All receivable/payable"))
-        check_if_name_applicable({'trade_receivable', 'non_trade_receivable'}, _("All Receivable"))
-        check_if_name_applicable({'trade_payable', 'non_trade_payable'}, _("All Payable"))
-        check_if_name_applicable({'trade_receivable', 'trade_payable'}, _("Trade Partners"))
-        check_if_name_applicable({'non_trade_receivable', 'non_trade_payable'}, _("Non Trade Partners"))
-        for sel in selected_ids:
-            display_names.append(selected_options.get(sel))
-        options['account_display_name'] = ', '.join(display_names)
 
     @api.model
     def _get_options_account_type_domain(self, options):

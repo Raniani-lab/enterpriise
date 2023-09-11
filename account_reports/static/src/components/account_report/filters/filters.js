@@ -76,6 +76,30 @@ export class AccountReportFilters extends Component {
                 return section.name;
     }
 
+    get selectedAccountType() {
+        let selectedAccountType = this.controller.options.account_type.filter(accountType => accountType.selected);
+        if (!selectedAccountType.length) { return _t("None"); }
+        if (selectedAccountType.length === 4) { return _t("All"); }
+
+        const accountTypeMappings = [
+            {list: ['trade_receivable', 'non_trade_receivable'], name: _t('All Receivable')},
+            {list: ['trade_payable', 'non_trade_payable'], name: _t('All Payable')},
+            {list: ['trade_receivable', 'trade_payable'], name: _t('Trade Partners')},
+            {list: ['non_trade_receivable', 'non_trade_payable'], name: _t('Non Trade Partners')},
+        ]
+
+        const listToDisplay = []
+        for (const mapping of accountTypeMappings) {
+            if (mapping.list.every(accountType => selectedAccountType.map(accountType => accountType.id).includes(accountType))) {
+                listToDisplay.push(mapping.name);
+                // Delete already checked id
+                selectedAccountType = selectedAccountType.filter(accountType => !mapping.list.includes(accountType.id));
+            }
+        }
+
+        return listToDisplay.concat(selectedAccountType.map(accountType => accountType.name)).join(', ')
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     // Helpers
     //------------------------------------------------------------------------------------------------------------------

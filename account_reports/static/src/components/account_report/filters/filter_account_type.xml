@@ -3,7 +3,7 @@
     <t t-name="account_reports.AccountReportFilterAccountType">
         <Dropdown togglerClass="'btn btn-secondary'">
             <t t-set-slot="toggler">
-                <i class="fa fa-user me-1"/>Account: <t t-esc="controller.options.account_display_name"/>
+                <i class="fa fa-user me-1"/>Account: <t t-out="selectedAccountType"/>
             </t>
 
             <t t-foreach="controller.options.account_type" t-as="accountType" t-key="accountType_index">
@@ -11,7 +11,7 @@
                     class="{ 'selected': accountType.selected }"
                     onSelected="() => this.toggleFilter('account_type.' + accountType_index + '.selected')"
                 >
-                    <t t-esc="accountType.name"/>
+                    <t t-out="accountType.name"/>
                 </DropdownItem>
             </t>
         </Dropdown>

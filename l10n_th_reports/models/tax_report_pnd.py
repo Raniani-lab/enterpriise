@@ -31,7 +31,7 @@ class TaxReportPND(models.AbstractModel):
 
         query = f"""
             SELECT
-                CAST(ROW_NUMBER() OVER() AS TEXT) as rnum,
+                CAST(ROW_NUMBER() OVER(ORDER BY account_move_line__move_id.date, partner.name, account_move_line__move_id.name, account_move_line.id) AS TEXT) as rnum,
                 COALESCE(partner.vat, '') as vat,
                 %s as title,
                 COALESCE(partner.name, '') as name,
@@ -58,7 +58,7 @@ class TaxReportPND(models.AbstractModel):
                 JOIN account_tax tax on tax.id = account_move_line.tax_line_id
                 LEFT JOIN res_country_state state on partner.state_id = state.id
             WHERE {where_clause}
-         ORDER BY date, partner.name, account_move_line__move_id.name, account_move_line.id
+         ORDER BY rnum
         """
 
         params = [title, dp, dp, dp, transport_tax_group, advertising_tax_group, service_tax_group, rental_tax_group, *where_params]

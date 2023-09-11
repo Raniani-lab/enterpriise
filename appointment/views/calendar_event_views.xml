@@ -123,7 +123,7 @@
                                    domain="[('appointment_type_ids', 'in', appointment_type_id)]"/>
                             <div invisible="not appointment_resource_id or not appointment_type_manage_capacity or appointment_type_schedule_based_on != 'resources'" colspan="2">
                                 <label for="resource_total_capacity_reserved" class="me-5"/>
-                                <field name="resource_total_capacity_reserved" string="Total Reserved" class="oe_inline"/>
+                                <field name="resource_total_capacity_reserved" string="Total Reserved" class="oe_inline" invisible="1"/>
                                 <span>people</span>
                             </div>
                         </group>

@@ -2,6 +2,7 @@
 
 import { Record } from "@web/model/relational_model/record";
 import { RelationalModel } from "@web/model/relational_model/relational_model";
+import { parseServerValue } from "@web/model/relational_model/utils";
 
 export class BankRecRecord extends Record {
 
@@ -18,16 +19,39 @@ export class BankRecRecord extends Record {
         return super._update(...arguments);
     }
 
-    updateToDoCommand(methodName, args, kwargs) {
-        return this._update(
-            {
-                todo_command: {
-                    method_name: methodName,
-                    args: args,
-                    kwargs: kwargs,
-                },
+    async updateToDoCommand(methodName, args, kwargs) {
+        this.dirty = true;
+
+        const onChangeFields = ["todo_command"];
+        const changes = {
+            todo_command: {
+                method_name: methodName,
+                args: args,
+                kwargs: kwargs,
             },
+        };
+
+        const localChanges = this._getChanges(
+            { ...this._changes, ...changes },
+            { withReadonly: true }
         );
+        const otherChanges = await this.model._onchange(this.config, {
+            changes: localChanges,
+            fieldNames: onChangeFields,
+            evalContext: this.evalContext,
+        });
+
+        const data = { ...this.data, ...changes };
+        for (const fieldName in otherChanges) {
+            data[fieldName] = parseServerValue(this.fields[fieldName], otherChanges[fieldName]);
+        }
+        const applyChanges = () => {
+            Object.assign(changes, this._parseServerValues(otherChanges, this.data));
+            if (Object.keys(changes).length > 0) {
+                this._applyChanges(changes);
+            }
+        };
+        return { data, applyChanges };
     }
 
     /**

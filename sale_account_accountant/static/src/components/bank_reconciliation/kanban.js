@@ -12,8 +12,7 @@ patch(BankRecKanbanController.prototype, {
     async actionRedirectToSaleOrders(){
         await this.execProtectedBankRecAction(async () => {
             await this.withNewState(async (newState) => {
-                await this.onchange(newState, "redirect_to_matched_sale_orders");
-                const actionData = newState.bankRecRecordData.return_todo_command;
+                const { return_todo_command: actionData } = await this.onchange(newState, "redirect_to_matched_sale_orders");
                 if(actionData){
                     this.action.doAction(actionData);
                 }

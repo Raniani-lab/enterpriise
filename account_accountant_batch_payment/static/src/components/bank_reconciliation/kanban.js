@@ -59,8 +59,7 @@ patch(BankRecKanbanController.prototype, {
     async actionValidateOnCloseWizard(){
         await this.execProtectedBankRecAction(async () => {
             await this.withNewState(async (newState) => {
-                await this.onchange(newState, "validate_no_batch_payment_check");
-                const result = newState.bankRecRecordData.return_todo_command;
+                const { return_todo_command: result } = await this.onchange(newState, "validate_no_batch_payment_check");
                 if(result.done){
                     await this.moveToNextLine(newState);
                 }
@@ -70,12 +69,11 @@ patch(BankRecKanbanController.prototype, {
 
     /** override **/
     async _actionValidate(newState){
-        await super._actionValidate(...arguments);
-        if(!newState.bankRecRecordData){
+        const result = await super._actionValidate(...arguments);
+
+        if(!result){
             return;
         }
-
-        const result = newState.bankRecRecordData.return_todo_command;
 
         if(result.open_batch_rejection_wizard){
             const validateFunc = this.actionValidateOnCloseWizard.bind(this);

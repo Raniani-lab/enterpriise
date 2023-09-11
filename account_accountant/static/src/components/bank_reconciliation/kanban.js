@@ -228,6 +228,10 @@ export class BankRecKanbanController extends KanbanController {
     async withNewState(func){
         const newState = {...this.state};
         await func(newState);
+        if (newState.__commitChanges) {
+            newState.__commitChanges();
+            delete newState.__commitChanges;
+        }
         Object.assign(this.state, newState);
     }
 
@@ -413,45 +417,47 @@ export class BankRecKanbanController extends KanbanController {
     Mount the statement line passed as parameter into the edition widget.
     @param stLineId: The id of the statement line to mount.
     **/
-    async _mountStLineInEdit(newState, stLineId, initialData=null){
+    async _mountStLineInEdit(newState, stLineId, initialData = null) {
         newState.bankRecStLineId = stLineId;
-
-        if(initialData){
+        let data = {};
+        if (initialData) {
             // Restore an existing transaction.
-            await this.onchange(newState, "restore_st_line_data", [initialData]);
-            const bankRecEmbeddedViewsData = this.bankRecModel.root.data.return_todo_command;
-            for(const [key, value] of Object.entries(this.bankRecModel.root.data.return_todo_command)){
-                if(value instanceof Object){
+            data = await this.onchange(newState, "restore_st_line_data", [initialData]);
+            const bankRecEmbeddedViewsData = data.return_todo_command;
+            for (const [key, value] of Object.entries(bankRecEmbeddedViewsData)) {
+                if (value instanceof Object) {
                     bankRecEmbeddedViewsData[key] = Object.assign(
                         {},
                         initialData[key] || {},
-                        value,
+                        value
                     );
-                }else{
+                } else {
                     bankRecEmbeddedViewsData[key] = value;
                 }
             }
             newState.bankRecEmbeddedViewsData = markRaw(bankRecEmbeddedViewsData);
             newState.bankRecNotebookPage = null;
-        }else if(stLineId){
+        } else if (stLineId) {
             // Mount a new transaction.
-            await this.onchange(newState, "mount_st_line", [stLineId]);
-            const bankRecEmbeddedViewsData = this.bankRecModel.root.data.return_todo_command;
+            data = await this.onchange(newState, "mount_st_line", [stLineId]);
+            const bankRecEmbeddedViewsData = data.return_todo_command
             newState.bankRecEmbeddedViewsData = bankRecEmbeddedViewsData;
             newState.bankRecNotebookPage = null;
-        }else{
+        } else {
             // No transaction mounted.
             newState.bankRecNotebookPage = null;
             newState.bankRecRecordData = null;
         }
 
         // Refresh balance.
-        await this.updateJournalState(newState);
+        await this.updateJournalState(newState, data);
 
         // Scroll to the next kanban card iff the view is mounted, a line is selected  and the kanban
         // card is in the view (cannot use .o_bank_rec_selected_st_line as the dom may not be patched yet)
         if (stLineId && this.viewRef.el) {
-            const selectedKanbanCardEl = this.viewRef.el.querySelector(`[st-line-id="${stLineId}"]`);
+            const selectedKanbanCardEl = this.viewRef.el.querySelector(
+                `[st-line-id="${stLineId}"]`
+            );
             if (selectedKanbanCardEl) {
                 scrollTo(selectedKanbanCardEl, {});
             }
@@ -529,12 +535,12 @@ export class BankRecKanbanController extends KanbanController {
     // GLOBAL INFO
     // -----------------------------------------------------------------------------
 
-    async updateJournalState(newState){
+    async updateJournalState(newState, data = {}) {
         // Find the journal.
         let journalId = null;
-        const data = this.bankRecModel.root.data;
-        if(data.st_line_journal_id){
-            journalId = data.st_line_journal_id[0];
+        const stLineJournalId = data.st_line_journal_id;
+        if(stLineJournalId){
+            journalId = stLineJournalId[0];
         }else if(this.model.root.records.length){
             journalId = this.model.root.records[0].data.journal_id[0];
         }else{
@@ -637,9 +643,14 @@ export class BankRecKanbanController extends KanbanController {
 
     async onchange(newState, methodName, args, kwargs){
         const record = this.bankRecModel.root;
-        await record.updateToDoCommand(methodName, args, kwargs);
-        newState.bankRecRecordData = this.bankRecModel.root.data;
-        newState.__bankRecRecordNotify = true;
+        const { data, applyChanges } = await record.updateToDoCommand(methodName, args, kwargs);
+
+        newState.__commitChanges = () => {
+            applyChanges();
+            newState.bankRecRecordData = record.data;
+            newState.__bankRecRecordNotify = true;
+        };
+        return data;
     }
 
     getOne2ManyColumns() {
@@ -825,12 +836,12 @@ export class BankRecKanbanController extends KanbanController {
     }
 
     async _actionValidate(newState){
-        await this.onchange(newState, "validate");
-        const result = newState.bankRecRecordData.return_todo_command;
+        const { return_todo_command: result } = await this.onchange(newState, "validate");
         if(result.done){
             this.incrementReconCounter();
             await this.moveToNextLine(newState);
         }
+        return result;
     }
 
     async actionValidate(){
@@ -844,8 +855,7 @@ export class BankRecKanbanController extends KanbanController {
     async actionReset(){
         await this.execProtectedBankRecAction(async () => {
             await this.withNewState(async (newState) => {
-                await this.onchange(newState, "reset");
-                const result = newState.bankRecRecordData.return_todo_command;
+                const { return_todo_command: result } = await this.onchange(newState, "reset");
 
                 if(result.done){
                     await this.model.root.load();
@@ -880,8 +890,7 @@ export class BankRecKanbanController extends KanbanController {
     async actionToCheck(){
         await this.execProtectedBankRecAction(async () => {
             await this.withNewState(async (newState) => {
-                await this.onchange(newState, "to_check");
-                const result = newState.bankRecRecordData.return_todo_command;
+                const { return_todo_command: result } = await this.onchange(newState, "to_check");
                 if(result.done){
                     await this.moveToNextLine(newState);
                 }
@@ -892,8 +901,7 @@ export class BankRecKanbanController extends KanbanController {
     async actionSetAsChecked(){
         await this.execProtectedBankRecAction(async () => {
             await this.withNewState(async (newState) => {
-                await this.onchange(newState, "set_as_checked");
-                const data = newState.bankRecRecordData;
+                const data = await this.onchange(newState, "set_as_checked");
                 const result = data.return_todo_command;
                 if(result.done && data.state === "reconciled"){
                     await this.moveToNextLine(newState);
@@ -957,8 +965,7 @@ export class BankRecKanbanController extends KanbanController {
         });
     }
 
-    async postprocessLineChangedReturnTodoCommand(newState){
-        const data = newState.bankRecRecordData;
+    async postprocessLineChangedReturnTodoCommand(newState, data) {
         const todo = data.return_todo_command;
         if(!todo){
             return;
@@ -968,7 +975,7 @@ export class BankRecKanbanController extends KanbanController {
             newState.__kanbanNotify = true;
         }
         if(todo.reset_global_info){
-            await this.updateJournalState(newState);
+            await this.updateJournalState(newState, data);
         }
     }
 
@@ -977,8 +984,8 @@ export class BankRecKanbanController extends KanbanController {
             const line = this.getBankRecRecordLineInEdit();
             await this.withNewState(async (newState) => {
                 if(line){
-                    await this.onchange(newState, "line_changed", [line.data.index, fieldName]);
-                    await this.postprocessLineChangedReturnTodoCommand(newState);
+                    const data = await this.onchange(newState, "line_changed", [line.data.index, fieldName]);
+                    await this.postprocessLineChangedReturnTodoCommand(newState, data);
                 }
             });
         });
@@ -989,8 +996,8 @@ export class BankRecKanbanController extends KanbanController {
             const line = this.getBankRecRecordLineInEdit();
             await this.withNewState(async (newState) => {
                 if(line){
-                    await this.onchange(newState, "line_set_partner_receivable_account", [line.data.index])
-                    await this.postprocessLineChangedReturnTodoCommand(newState);
+                    const data = await this.onchange(newState, "line_set_partner_receivable_account", [line.data.index])
+                    await this.postprocessLineChangedReturnTodoCommand(newState, data);
                 }
             });
         });
@@ -1001,8 +1008,8 @@ export class BankRecKanbanController extends KanbanController {
             const line = this.getBankRecRecordLineInEdit();
             await this.withNewState(async (newState) => {
                 if(line){
-                    await this.onchange(newState, "line_set_partner_payable_account", [line.data.index])
-                    await this.postprocessLineChangedReturnTodoCommand(newState);
+                    const data = await this.onchange(newState, "line_set_partner_payable_account", [line.data.index])
+                    await this.postprocessLineChangedReturnTodoCommand(newState, data);
                 }
             });
         });
@@ -1011,9 +1018,7 @@ export class BankRecKanbanController extends KanbanController {
     async actionRedirectToSourceMove(line){
         await this.execProtectedBankRecAction(async () => {
             await this.withNewState(async (newState) => {
-                await this.onchange(newState, "redirect_to_move", [line.data.index])
-                const data = newState.bankRecRecordData;
-                const actionData = data.return_todo_command;
+                const { return_todo_command: actionData } = await this.onchange(newState, "redirect_to_move", [line.data.index])
                 if(actionData){
                     this.action.doAction(actionData);
                 }
@@ -1025,11 +1030,9 @@ export class BankRecKanbanController extends KanbanController {
         await this.execProtectedBankRecAction(async () => {
             const line = this.getBankRecRecordLineInEdit();
             await this.withNewState(async (newState) => {
-                await this.withNewState(async (newState) => {
-                    if(line){
-                        await this.onchange(newState, "apply_line_suggestion", [line.data.index])
-                    }
-                });
+                if(line){
+                    await this.onchange(newState, "apply_line_suggestion", [line.data.index])
+                }
             });
         });
     }

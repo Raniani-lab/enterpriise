@@ -62,26 +62,8 @@ class HrPayslipWorkedDays(models.Model):
                 out_worked_day = worked_day.payslip_id.worked_days_line_ids.filtered(lambda wd: wd.code == 'OUT')
                 if out_worked_day:
                     out_hours = sum([wd.number_of_hours for wd in out_worked_day])
-                    # Don't count out of contract time that actually was a credit time 
-                    if payslip.contract_id.time_credit:
-                        if contract.date_start > payslip.date_from:
-                            start = payslip.date_from
-                            end = contract.date_start
-                            start_dt = tz.localize(fields.Datetime.to_datetime(start))
-                            end_dt = tz.localize(fields.Datetime.to_datetime(end) + timedelta(days=1, seconds=-1))
-                            credit_time_attendances = payslip.contract_id.resource_calendar_id._attendance_intervals_batch(start_dt, end_dt)[False]
-                            standard_attendances = payslip.contract_id.standard_calendar_id._attendance_intervals_batch(start_dt, end_dt)[False]
-                            out_hours -= sum([(stop - start).total_seconds() / 3600 for start, stop, dummy in standard_attendances - credit_time_attendances])
-                        if contract.date_end and contract.date_end < payslip.date_to:
-                            start = contract.date_end
-                            end = payslip.date_to
-                            start_dt = tz.localize(fields.Datetime.to_datetime(start))
-                            end_dt = tz.localize(fields.Datetime.to_datetime(end) + timedelta(days=1, seconds=-1))
-                            credit_time_attendances = payslip.contract_id.resource_calendar_id._attendance_intervals_batch(start_dt, end_dt)[False]
-                            standard_attendances = payslip.contract_id.standard_calendar_id._attendance_intervals_batch(start_dt, end_dt)[False]
-                            out_hours -= sum([(stop - start).total_seconds() / 3600 for start, stop, dummy in standard_attendances - credit_time_attendances])
-
-                    out_ratio = 1 - 3 / (13 * hours_per_week) * out_hours if hours_per_week else 1
+                    out_hours_per_week = worked_day.payslip_id._get_out_of_contract_calendar().hours_per_week
+                    out_ratio = 1 - 3 / (13 * out_hours_per_week) * out_hours if out_hours_per_week else 1
                 else:
                     out_ratio = 1
 
@@ -134,6 +116,7 @@ class HrPayslipWorkedDays(models.Model):
                         wd.number_of_hours
                         for wd in worked_day.payslip_id.worked_days_line_ids
                         if wd.code not in [main_worked_day, 'OUT', 'OVERTIME'] and not wd.is_credit_time])
+
                     if len(work100_wds) > 1:
                         # In this case, we cannot use the hourly formula since the monthly
                         # salary must always be the same, without having an identical number of

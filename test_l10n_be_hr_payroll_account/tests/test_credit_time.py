@@ -335,7 +335,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
         self.assertEqual(payslip_new_contract.contract_id, new_contract)
         self.assertEqual(len(payslip_new_contract.worked_days_line_ids), 3) # Attendance, credit time, out of contract
         attendance_line = payslip_new_contract.worked_days_line_ids[0]
-        self.assertAlmostEqual(attendance_line.amount, 2123.08, places=2)
+        self.assertAlmostEqual(attendance_line.amount, 2067.69, places=2)
         self.assertEqual(attendance_line.number_of_days, 16.0)
         self.assertEqual(float_compare(attendance_line.number_of_hours, 121.6, 2), 0)
         out_of_contract_line = payslip_new_contract.worked_days_line_ids[1]
@@ -348,31 +348,31 @@ class TestCreditTime(AccountTestInvoicingCommon):
         self.assertEqual(float_compare(credit_time_line.number_of_hours, 22.8, 2), 0)
 
         payslip_results = {
-            'BASIC': 2123.08,
+            'BASIC': 2067.69,
             'ATN.INT': 0.0,
             'ATN.MOB': 0.0,
             'ATN.LAP': 0.0,
-            'SALARY': 2123.08,
-            'ONSS': -277.49,
-            'EmpBonus.1': 16.75,
+            'SALARY': 2067.69,
+            'ONSS': -270.25,
+            'EmpBonus.1': 28.9,
             'ATN.CAR': 0,
-            'GROSSIP': 1862.34,
-            'IP.PART': -530.77,
-            'GROSS': 1331.57,
-            'P.P': -72.4,
-            'P.P.DED': 5.55,
+            'GROSSIP': 1826.35,
+            'IP.PART': -516.92,
+            'GROSS': 1309.42,
+            'P.P': -69.59,
+            'P.P.DED': 9.58,
             'ATN.CAR.2': 0.0,
             'ATN.INT.2': 0.0,
             'ATN.MOB.2': 0.0,
             'ATN.LAP.2': 0.0,
-            'M.ONSS': -13.51,
+            'M.ONSS': -9.3,
             'MEAL_V_EMP': -17.44,
             'PUB.TRANS': 0.0,
             'CAR.PRIV': 29.82,
             'REP.FEES': 98.08,
-            'IP': 530.77,
-            'IP.DED': -39.81,
-            'NET': 1852.63,
+            'IP': 516.92,
+            'IP.DED': -38.77,
+            'NET': 1828.72,
         }
         error = []
         line_values = payslip_new_contract._get_line_values(payslip_results.keys())

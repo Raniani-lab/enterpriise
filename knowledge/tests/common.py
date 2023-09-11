@@ -10,8 +10,6 @@ class KnowledgeCommon(MailCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls._activate_multi_company()
-
         cls.user_portal = cls._create_portal_user()
         cls.partner_portal = cls.user_portal.partner_id
 

@@ -17,7 +17,6 @@ class WhatsAppSecurityCase(WhatsAppCommon):
             groups='base.group_user',
             login='company_1_test_employee_2',
         )
-        cls._activate_multi_company()
 
 
 @tagged('wa_account', 'security')

@@ -154,10 +154,9 @@ export class AccountReportFilters extends Component {
                 string: _t(string),
                 relation: relation,
                 type: "many2many",
-                relatedFields: {
-                    display_name: {
-                        type: "char"
-                    },
+                related: {
+                    fields: { display_name: { type: "char" } },
+                    activeFields: { display_name: { type: "char" } },
                 },
             },
         };

@@ -7,7 +7,6 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, Command, fields, models, tools, _
 from odoo.exceptions import AccessError
 from odoo.osv import expression
-from odoo.addons.iap.tools import iap_tools
 from odoo.addons.web.controllers.utils import clean_action
 
 TICKET_PRIORITY = [
@@ -416,7 +415,7 @@ class HelpdeskTicket(models.Model):
 
     @api.model
     def _find_or_create_partner(self, partner_name, partner_email, company=False):
-        parsed_name, parsed_email_normalized = self.env['res.partner']._parse_partner_name(partner_email)
+        parsed_name, parsed_email_normalized = tools.parse_contact_from_email(partner_email)
         if not parsed_name:
             parsed_name = partner_name
         return self.env['res.partner'].with_context(default_company_id=company).find_or_create(

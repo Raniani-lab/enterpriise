@@ -710,6 +710,7 @@ class HrContract(models.Model):
                    dimona_link,
                    self.employee_id.name),
             user_id=self.hr_responsible_id.id or self.env.user.id,
+            summary='Dimona',
             )
 
     def _trigger_l10n_be_next_activities(self):

@@ -11,4 +11,5 @@
         'l10n_us_hr_payroll_account',
     ],
     'license': 'OEEL-1',
+    'post_init_hook': '_generate_payslips',
 }

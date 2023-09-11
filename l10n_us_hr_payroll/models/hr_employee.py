@@ -28,6 +28,18 @@ class HrEmployee(models.Model):
         ('status_2', 'Married: One Income'),
         ('status_4', 'Unmarried Head of Household'),
     ], string="State Tax Filling Status", tracking=True, groups="hr.group_hr_user")
+    l10n_us_statutory_employee = fields.Boolean(
+        string="Statutory Employee",
+        groups="hr.group_hr_user",
+        help="Employees that are exempt from income tax, but subject to FICA Taxes. If checked off it will appear in box 13 of the W2 Report.")
+    l10n_us_retirement_plan = fields.Boolean(
+        string="Retirement Plan",
+        groups="hr.group_hr_user",
+        help="""Employee was an "active participant" in an employer-sponsor retirement plan. If checked off it will appear in box 13 of the W2 Report.""")
+    l10n_us_third_party_sick_pay = fields.Boolean(
+        string="Third-Party Sick Pay",
+        groups="hr.group_hr_user",
+        help="Employee received third-party sick pay benefits from a third party during the tax year. If checked off it will appear in box 13 of the W2 Report.")
 
     @api.constrains('ssnid')
     def _check_ssnid(self):

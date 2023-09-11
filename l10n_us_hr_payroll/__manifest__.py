@@ -34,6 +34,10 @@ United States Payroll Rules.
         'views/hr_contract_views.xml',
         'views/hr_employee_views.xml',
         'views/res_config_settings_views.xml',
+        'views/l10n_us_w2_views.xml',
+        'data/menuitems.xml',
+        'security/ir.model.access.csv',
+        'security/security.xml',
     ],
     'demo': [
         'data/l10n_us_hr_payroll_demo.xml',

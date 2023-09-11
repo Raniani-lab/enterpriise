@@ -7,3 +7,4 @@ from . import hr_employee
 from . import hr_payslip_worked_days
 from . import res_company
 from . import res_config_settings
+from . import l10n_us_w2

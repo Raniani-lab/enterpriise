@@ -16,6 +16,11 @@
                     <field name="l10n_us_w4_withholding_deduction_allowances"/>
                     <field name="l10n_us_w4_step_4c"/>
                 </group>
+                <group name="w2_form" string="W-2 Form" invisible="company_country_code != 'US'">
+                    <field name="l10n_us_statutory_employee"/>
+                    <field name="l10n_us_retirement_plan"/>
+                    <field name="l10n_us_third_party_sick_pay"/>
+                </group>
             </group>
              <xpath expr="//field[@name='registration_number']" position="after">
                 <field name="l10n_us_filing_status" invisible="company_country_code != 'US'"/>

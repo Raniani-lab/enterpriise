@@ -2,8 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _
-from odoo.exceptions import AccessError, ValidationError
-from odoo.tools import formataddr
+from odoo.exceptions import AccessError
 
 
 class HrReferralSendMail(models.TransientModel):

@@ -7,7 +7,6 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, Command, fields, models, tools, _
 from odoo.exceptions import AccessError
 from odoo.osv import expression
-from odoo.addons.iap.tools import iap_tools
 from odoo.addons.web.controllers.utils import clean_action
 
 TICKET_PRIORITY = [
@@ -416,11 +415,11 @@ class HelpdeskTicket(models.Model):
 
     @api.model
     def _find_or_create_partner(self, partner_name, partner_email, company=False):
-        parsed_name, parsed_email = self.env['res.partner']._parse_partner_name(partner_email)
+        parsed_name, parsed_email_normalized = tools.parse_contact_from_email(partner_email)
         if not parsed_name:
             parsed_name = partner_name
         return self.env['res.partner'].with_context(default_company_id=company).find_or_create(
-            tools.formataddr((parsed_name, parsed_email))
+            tools.formataddr((parsed_name, parsed_email_normalized))
         )
 
     @api.model_create_multi
@@ -447,7 +446,6 @@ class HelpdeskTicket(models.Model):
                 if vals.get('team_id'):
                     team = self.env['helpdesk.team'].browse(vals.get('team_id'))
                     company = team.company_id.id
-
                 vals['partner_id'] = self._find_or_create_partner(partner_name, partner_email, company).id
 
         # determine partner email for ticket with partner but no email given
@@ -767,12 +765,18 @@ class HelpdeskTicket(models.Model):
             # we consider that posting a message with a specified recipient (not a follower, a specific one)
             # on a document without customer means that it was created through the chatter using
             # suggested recipients. This heuristic allows to avoid ugly hacks in JS.
-            new_partner = message.partner_ids.filtered(lambda partner: partner.email == self.partner_email)
+            email_normalized = tools.email_normalize(self.partner_email)
+            new_partner = message.partner_ids.filtered(
+                lambda partner: partner.email == self.partner_email or (email_normalized and partner.email_normalized == email_normalized)
+            )
             if new_partner:
+                if new_partner[0].email_normalized:
+                    email_domain = ('partner_email', 'in', [new_partner[0].email, new_partner[0].email_normalized])
+                else:
+                    email_domain = ('partner_email', '=', new_partner[0].email)
                 self.search([
-                    ('partner_id', '=', False),
-                    ('partner_email', '=', new_partner.email),
-                ]).write({'partner_id': new_partner.id})
+                    ('partner_id', '=', False), email_domain,
+                ]).write({'partner_id': new_partner[0].id})
         # use the sanitized body of the email from the message thread to populate the ticket's description
         if not self.description and message.subtype_id == self._creation_subtype() and self.partner_id == message.author_id:
             self.description = message.body

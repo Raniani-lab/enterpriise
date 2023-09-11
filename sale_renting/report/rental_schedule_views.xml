@@ -51,6 +51,7 @@
                 date_start="pickup_date"
                 date_stop="return_date"
                 default_group_by="product_id"
+                groups_limit="20"
                 create="true"
                 on_create="sale_renting.action_create_rental_order"
                 cell_create="false"

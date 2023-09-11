@@ -28,6 +28,10 @@
             <field name="name">Survey user input: officer: create/write/unlink linked to own non private survey only</field>
             <field name="domain_force">['&amp;', ('survey_id.survey_type', '!=', 'appraisal'), ('survey_id.create_uid', '=', user.id)]</field>
         </record>
+        <record id="survey.survey_user_input_rule_survey_user_read" model="ir.rule">
+            <field name="name">Survey user input: officer: all non private</field>
+            <field name="domain_force">[('survey_id.survey_type', '!=', 'appraisal')]</field>
+        </record>
 
         <record id="survey.survey_user_input_line_rule_survey_manager" model="ir.rule">
             <field name="name">Survey user input line: manager: all non private</field>

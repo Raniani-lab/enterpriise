@@ -78,12 +78,17 @@
                     </button>
                     <div class="ms-3">
                         <t t-if="!isMobile">
-                            <div>
-                                <span class="text-muted">Press</span> <b>Enter</b> <span class="text-muted">or [a] to launch the timer</span>
-                            </div>
-                            <div>
-                                <span class="text-muted">Press</span> <b>Shift</b> <span class="text-muted">+ [A] to add <t t-esc="props.stepTimer"/> min</span>
-                            </div>
+                            <t t-if="env.config.viewType == 'grid'">
+                                <div>
+                                    <span class="text-muted">Press</span> <b>Enter</b> <span class="text-muted">or [a] to launch the timer</span>
+                                </div>
+                                <div>
+                                    <span class="text-muted">Press</span> <b>Shift</b> <span class="text-muted">+ [A] to add <t t-esc="props.stepTimer"/> min</span>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <span class="text-muted">Press</span> <b>Enter</b><span class="text-muted"> or click on <i class="fa fa-play mx-2"/></span>
+                            </t>
                         </t>
                         <t t-else=""> <span class="text-muted">Press </span><i class="fa fa-play mx-2"></i> <span class="text-muted">to start the timer</span></t>
                     </div>

@@ -4,6 +4,7 @@ import json
 import logging
 import base64
 import psycopg2
+import uuid
 
 from datetime import timedelta
 from typing import Dict, Any, List, Optional
@@ -26,6 +27,23 @@ class SpreadsheetMixin(models.AbstractModel):
         domain=lambda self: [('res_model', '=', self._name)],
         groups="base.group_system",
     )
+    # The last revision id known by the current transaction.
+    # Another concurrent transaction can have saved a revision after this one
+    # This means it cannot be blindly used to dispatch a new revision.
+    server_revision_id = fields.Char(compute="_compute_server_revision_id", compute_sudo=True)
+
+    @api.depends("spreadsheet_revision_ids", "spreadsheet_snapshot", "spreadsheet_data")
+    def _compute_server_revision_id(self):
+        for spreadsheet in self:
+            revisions = spreadsheet.spreadsheet_revision_ids
+            if revisions:
+                spreadsheet.server_revision_id = revisions[-1].revision_id
+            else:
+                snapshot = spreadsheet._get_spreadsheet_snapshot()
+                if snapshot is False:
+                    spreadsheet.server_revision_id = False
+                else:
+                    spreadsheet.server_revision_id = snapshot.get("revisionId", "START_REVISION")
 
     def copy(self, default=None):
         self.ensure_one()
@@ -166,7 +184,9 @@ class SpreadsheetMixin(models.AbstractModel):
         return is_accepted
 
     def _get_spreadsheet_snapshot(self):
-        if not self.spreadsheet_snapshot:
+        if self.spreadsheet_snapshot is False and self.spreadsheet_data is False:
+            return False
+        elif self.spreadsheet_snapshot is False:
             return json.loads(self.spreadsheet_data)
         return json.loads(base64.decodebytes(self.spreadsheet_snapshot))
 
@@ -341,4 +361,12 @@ class SpreadsheetMixin(models.AbstractModel):
                 'message': self._creation_msg(),
                 'next': new_spreadsheet.action_edit(),
             }
+        }
+
+    def _build_new_revision_data(self, command):
+        return {
+            "type": "REMOTE_REVISION",
+            "serverRevisionId": self.server_revision_id,
+            "nextRevisionId": str(uuid.uuid4()),
+            "commands": [command],
         }

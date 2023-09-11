@@ -78,3 +78,44 @@ class SpreadsheetMixinTest(SpreadsheetTestCase):
         # from snapshot
         data = spreadsheet.get_spreadsheet_history(True)
         self.assertEqual(len(data["revisions"]), 1)
+
+    def test_empty_spreadsheet_server_revision_id(self):
+        spreadsheet = self.env["spreadsheet.test"].create({})
+        self.assertEqual(spreadsheet.server_revision_id, "START_REVISION")
+
+    def test_no_data_server_revision_id(self):
+        spreadsheet = self.env["spreadsheet.test"].create({})
+        spreadsheet.spreadsheet_snapshot = False
+        spreadsheet.spreadsheet_data = False
+        self.assertEqual(spreadsheet.server_revision_id, False)
+
+    def test_last_revision_is_server_revision_id(self):
+        spreadsheet = self.env["spreadsheet.test"].create({})
+
+        revision_data = self.new_revision_data(spreadsheet)
+        next_revision_id = revision_data["nextRevisionId"]
+        spreadsheet.dispatch_spreadsheet_message(revision_data)
+        self.assertEqual(spreadsheet.server_revision_id, next_revision_id)
+
+        # dispatch new revision on top
+        revision_data = self.new_revision_data(spreadsheet)
+        next_revision_id = revision_data["nextRevisionId"]
+        spreadsheet.dispatch_spreadsheet_message(revision_data)
+        self.assertEqual(spreadsheet.server_revision_id, next_revision_id)
+
+    def test_snapshotted_server_revision_id(self):
+        spreadsheet = self.env["spreadsheet.test"].create({})
+        snapshot_revision_id = "snapshot-id"
+        self.snapshot(
+            spreadsheet,
+            spreadsheet.server_revision_id,
+            snapshot_revision_id,
+            {"revisionId": snapshot_revision_id},
+        )
+        self.assertEqual(spreadsheet.server_revision_id, snapshot_revision_id)
+
+        # dispatch revision after snapshot
+        revision_data = self.new_revision_data(spreadsheet)
+        next_revision_id = revision_data["nextRevisionId"]
+        spreadsheet.dispatch_spreadsheet_message(revision_data)
+        self.assertEqual(spreadsheet.server_revision_id, next_revision_id)

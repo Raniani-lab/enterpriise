@@ -22,6 +22,21 @@ class SpreadsheetDashboard(models.Model):
             self._delete_collaborative_data()
         return super().write(vals)
 
+    def get_readonly_dashboard(self):
+        self.ensure_one()
+        data = self.join_spreadsheet_session()
+        snapshot = data["data"]
+        revisions = data["revisions"]
+        update_locale_command = {
+            "type": "UPDATE_LOCALE",
+            "locale": self.env["res.lang"]._get_user_spreadsheet_locale(),
+        }
+        revisions.append(self._build_new_revision_data(update_locale_command))
+        return {
+            "snapshot": snapshot,
+            "revisions": revisions,
+        }
+
     @api.depends("name")
     def _compute_file_name(self):
         for dashboard in self:

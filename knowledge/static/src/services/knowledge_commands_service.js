@@ -28,9 +28,8 @@ import { registry } from "@web/core/registry";
  *
  * 1) @see FormControllerPatch :
  *        It will only be called if the viewed record can be used within the
- *        Knowledge module. Such a record should at least have one field in a
- *        whitelist specified in the controller that is visible and editable by
- *        the current user.
+ *        Knowledge module. Such a record should at least have one html field
+ *        that is visible and editable by the current user.
  * 2) @see ChatterPatch :
  *        It will be called if the currently viewed record (in a Form view) has
  *        a chatter which the user can use to attach files or send messages.

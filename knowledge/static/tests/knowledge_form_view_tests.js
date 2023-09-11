@@ -1,6 +1,8 @@
 /** @odoo-module */
 
 import { onMounted, onWillStart, status } from "@odoo/owl";
+import { FormController } from "@web/views/form/form_controller";
+import { registry } from "@web/core/registry";
 import { click, getFixture, makeDeferred, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { renderToElement } from "@web/core/utils/render";
@@ -11,6 +13,9 @@ import { ArticlesStructureBehavior } from "@knowledge/components/behaviors/artic
 import { TableOfContentBehavior } from "@knowledge/components/behaviors/table_of_content_behavior/table_of_content_behavior";
 import { TemplateBehavior } from "@knowledge/components/behaviors/template_behavior/template_behavior";
 import { KnowledgeArticleFormController } from "@knowledge/js/knowledge_controller";
+import { knowledgeCommandsService } from "@knowledge/services/knowledge_commands_service";
+
+const serviceRegistry = registry.category("services");
 
 
 const articlesStructureSearch = {
@@ -253,6 +258,173 @@ QUnit.module("Knowledge - External View Insertion", (hooks) => {
         assert.containsOnce(editable, '.o_knowledge_behavior_anchor');
         const anchor = editable.querySelector('.o_knowledge_behavior_anchor');
         assert.notOk(anchor.nextSiblingElement, 'The inserted view should be the last element in the article');
+    });
+});
+
+//==============================================================================
+//                                   Macros
+//==============================================================================
+
+QUnit.module("Knowledge - Enable conditions for Macros", (hooks) => {
+    let formController;
+    hooks.beforeEach(() => {
+        patchWithCleanup(FormController.prototype, {
+            setup() {
+                super.setup(...arguments);
+                formController = this;
+            }
+        });
+        fixture = getFixture();
+        serverData = {
+            models: {
+                'knowledge.article': {
+                    fields: {
+                        name: {string: "Name", type: "char"},
+                        body: {string: "Body", type: "html"},
+                    },
+                    records: [{
+                        id: 1,
+                        name: "Article",
+                        body: "<p><br></p>",
+                    }],
+                },
+                'product.product': {
+                    fields: {
+                        note: {string: "Note", type: "html", readonly: true},
+                        memo: {string: "Memo", type: "html"},
+                        description: {string: "Description", type: "html"},
+                        comment: {string: "Comment", type: "html"},
+                        narration: {string: "Narration", type: "html"},
+                        delivery_instructions: {string: "Delivery instructions", type: "html"},
+                        product_details: {string: "Product details", type: "html"},
+                        user_feedback: {string: "User feedback", type: "html"},
+                    },
+                    records: [{
+                        id: 1,
+                        note: "<p>note</p>",
+                        memo: "<p>memo</p>",
+                        description: "<p>description</p>",
+                        comment: "<p>comment</p>",
+                        narration: "<p>narration</p>",
+                        delivery_instructions: "<p>delivery instructions</p>",
+                        product_details: "<p>product details</p>",
+                        user_feedback: "<p>user feedback</p>",
+                    }],
+                }
+            },
+        };
+        setupViewRegistries();
+        // Remove the mock_service (which is a dummy) and replace it with
+        // the real KnowledgeCommandsService.
+        serviceRegistry.remove("knowledgeCommandsService");
+        serviceRegistry.add("knowledgeCommandsService", knowledgeCommandsService);
+    });
+
+    QUnit.test("Don't validate a html field candidate from a forbidden model", async function (assert) {
+        assert.expect(1);
+        arch = `
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <notebook>
+                        <page string='Test page' name='test_page'>
+                            <field name='body'/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        `;
+        await makeView({
+            type: "form",
+            resModel: "knowledge.article",
+            serverData,
+            arch,
+            resId: 1,
+        });
+        formController._evaluateRecordCandidate();
+        // Forbidden models are defined in KNOWLEDGE_EXCLUDED_MODELS in the
+        // Knowledge form_controller_patch. They typically are models which
+        // have a heavily customized form view so a generic macro won't be able
+        // to navigate them. `knowledge.article` is one of them.
+        assert.equal(
+            formController.knowledgeCommandsService.getCommandsRecordInfo(),
+            null
+        );
+    });
+
+    QUnit.test("Validate a visible editable html field with priority", async function (assert) {
+        assert.expect(1);
+        arch = `
+            <form>
+                <sheet>
+                    <group>
+                        <field name="note"/>
+                        <field name="memo" readonly="True"/>
+                        <div invisible="True">
+                            <field name="description"/>
+                        </div>
+                        <field name="comment" invisible="True"/>
+                        <field name="product_details"/>
+                        <field name="narration"/>
+                    </group>
+                </sheet>
+            </form>
+        `;
+        await makeView({
+            type: "form",
+            resModel: "product.product",
+            serverData,
+            arch,
+            resId: 1,
+        });
+        formController._evaluateRecordCandidate();
+        // Here the selected html field should be `narration`, because
+        // every other field declared in the xml view before it is either
+        // readonly (on the model or specifically in the view),
+        // invisible (the field itself or one of its parent nodes),
+        // not in the priority list defined in the Knowledge
+        // form_controller_patch (KNOWLEDGE_RECORDED_FIELD_NAMES).
+        assert.equal(
+            formController.knowledgeCommandsService.getCommandsRecordInfo().fieldInfo.name,
+            "narration",
+        );
+    });
+
+    QUnit.test("Select a candidate in a named page, in order of declaration", async function (assert) {
+        assert.expect(1);
+        arch = `
+            <form>
+                <sheet>
+                    <notebook>
+                        <page string='Unnamed'>
+                            <field name='product_details'/>
+                        </page>
+                        <page string='Named' name='named'>
+                            <field name='user_feedback'/>
+                            <field name='delivery_instructions'/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        `;
+        await makeView({
+            type: "form",
+            resModel: "product.product",
+            serverData,
+            arch,
+            resId: 1,
+        });
+        formController._evaluateRecordCandidate();
+        // Here the selected html field should be `user_feedback`, because
+        // it is the first field declared in the first named page of the
+        // xml view. This test also demonstrates that the alphabetical order
+        // is not considered, since `delivery_instructions` is not chosen.
+        assert.equal(
+            formController.knowledgeCommandsService.getCommandsRecordInfo().fieldInfo.name,
+            "user_feedback",
+        );
     });
 });
 

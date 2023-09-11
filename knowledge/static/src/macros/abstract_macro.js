@@ -103,8 +103,7 @@ export class AbstractMacro {
             this.services.dialog.add(AlertDialog,{
                 body: error.message,
                 title: _t('Error'),
-                cancel: () => {},
-                cancelLabel: _t('Close'),
+                confirmLabel: _t('Close'),
             });
         } else {
             console.error(error);

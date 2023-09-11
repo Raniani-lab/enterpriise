@@ -736,7 +736,7 @@ class HrContractSalary(http.Controller):
         contract = self._check_access_rights(contract_id)
         benefit = request.env['hr.contract.salary.benefit'].sudo().search([
             ('structure_type_id', '=', contract.structure_type_id.id),
-            ('res_field_id.name', '=', benefit_field)])
+            ('res_field_id.name', '=', benefit_field)], limit=1)
         if hasattr(contract, '_get_description_%s' % benefit_field):
             description = getattr(contract, '_get_description_%s' % benefit_field)(new_value)
         else:

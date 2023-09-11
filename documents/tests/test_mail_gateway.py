@@ -14,7 +14,6 @@ class TestMailGateway(MailCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls._init_mail_gateway()
         cls.folder = cls.env['documents.folder'].create({
             'name': 'folder',
         })

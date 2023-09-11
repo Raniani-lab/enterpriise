@@ -1552,14 +1552,18 @@ Are you sure you want to remove the selection values of those records?""") % len
 
     @http.route('/web_studio/get_email_alias', type='json', auth='user')
     def get_email_alias(self, model_name):
-        """ Returns the email alias associated to the model @model_name if both exist
-        """
+        """ Returns the email alias associated to the model @model_name. Only
+        free aliases (not owned by a document using 'parent_*' fields')
+        creating new documents (void 'alias_force_thread_id') are considered. """
         result = {'alias_domain': request.env['ir.config_parameter'].get_param('mail.catchall.domain')}
         model = request.env['ir.model']._get(model_name)
         if model:
+            request.env[model_name].check_access_rights('read')
             email_alias = request.env['mail.alias'].search([
-                ('alias_model_id', '=', model.id),
                 ('alias_force_thread_id', '=', False),
+                ('alias_model_id', '=', model.id),
+                ('alias_parent_model_id', '=', False),
+                ('alias_parent_thread_id', '=', False)
             ], limit=1)
             if email_alias:
                 result['email_alias'] = email_alias.alias_name
@@ -1567,22 +1571,25 @@ Are you sure you want to remove the selection values of those records?""") % len
 
     @http.route('/web_studio/set_email_alias', type='json', auth='user')
     def set_email_alias(self, model_name, value):
-        """ Set the email alias associated to the model @model_name
-             - if there is no email alias, it will be created
-             - otherwise update it, and reset value if asked (do not unlink
-               as it may have unwanted side effects, should be done through
-               UI);
+        """ Set the email alias associated to the model @model_name. Only
+        free aliases (not owned by a document using 'parent_*' fields')
+        creating new documents (void 'alias_force_thread_id') are taken into
+        account; otherwise a new alias is created. When voiding, just keep a
+        void alias, do not unlink aliases as it may have unwanted side effects).
         """
         model_id = request.env['ir.model']._get_id(model_name)
         if model_id:
+            request.env[model_name].check_access_rights('read')
             alias_name = request.env['mail.alias']._sanitize_alias_name(value)
-            email_alias = request.env['mail.alias'].search([
-                ('alias_model_id', '=', model_id),
+            existing_alias = request.env['mail.alias'].search([
                 ('alias_force_thread_id', '=', False),
+                ('alias_model_id', '=', model_id),
+                ('alias_parent_model_id', '=', False),
+                ('alias_parent_thread_id', '=', False)
             ], limit=1)
-            if email_alias:
-                email_alias.alias_name = alias_name
-            else:
+            if existing_alias:
+                existing_alias.alias_name = alias_name
+            elif alias_name:
                 request.env['mail.alias'].create({
                     'alias_model_id': model_id,
                     'alias_name': alias_name,

@@ -79,7 +79,7 @@ tour.register('test_gs1_inventory_lot_serial', {test: true}, [
     //      - (30)5                 > quantity (5)
     {
         trigger: '.o_barcode_client_action',
-        run: 'scan 010011115555571710LOT-AAA\x1D305',
+        run: 'scan 010011115555571710LOT-AAA~305',
     },
     {
         trigger: '.o_barcode_line:contains("AAA")',
@@ -151,7 +151,7 @@ tour.register('test_gs1_inventory_lot_serial', {test: true}, [
     // line and create a new line).
     {
         trigger: '.o_barcode_client_action',
-        run: 'scan 3020\x1D10LOT-AAC',
+        run: 'scan 3020#10LOT-AAC',
     },
     {
         trigger: '.o_barcode_line.o_selected:contains("AAC")',

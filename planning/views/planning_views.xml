@@ -10,7 +10,7 @@
                     <button name="action_planning_publish_and_send" class="btn btn-secondary mx-1"
                         string="Publish &amp; Send" type="object" groups="planning.group_planning_manager" invisible="context.get('search_default_my_shifts')"/>
                 </header>
-                <field name="resource_color" invisible="1"/>
+                <field name="resource_color" column_invisible="1"/>
                 <field name="start_datetime" widget="daterange" options="{'end_date_field': 'end_datetime'}"/>
                 <field name="end_datetime" column_invisible="True" />
                 <field name="allocated_hours" widget="float_time" sum="Allocated Hours" readonly="1" decoration-danger="allocated_percentage &gt; 100"/>

@@ -16,7 +16,7 @@ class AccountBatchPayment(models.Model):
     bacs_multi_mode = fields.Boolean(string="Choose wether you want all the payments to be processed on the same date or to be processed on their invidial days")
     bacs_processing_date = fields.Date(string="BACS Processing Date", default=fields.Date.today(), help="The processing day of the BACS transaction.")
     bacs_expiry_date = fields.Date(string="BACS Expiry Date", help="The date on which the file will expire.")
-    bacs_submission_serial = fields.Char(string="BACS Submission Serial", store=True, default=lambda self: self._default_bacs_submission_serial(), groups="base.group_no_one")
+    bacs_submission_serial = fields.Char(string="BACS Submission Serial", store=True, default=lambda self: self._default_bacs_submission_serial())
 
     def _default_bacs_submission_serial(self):
         """

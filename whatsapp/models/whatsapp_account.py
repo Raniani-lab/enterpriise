@@ -35,7 +35,6 @@ class WhatsAppAccount(models.Model):
 
     allowed_company_ids = fields.Many2many(
         comodel_name='res.company', string="Allowed Company",
-        groups='base.group_multi_company',
         default=lambda self: self.env.company)
     notify_user_ids = fields.Many2many(
         comodel_name='res.users', default=lambda self: self.env.user,

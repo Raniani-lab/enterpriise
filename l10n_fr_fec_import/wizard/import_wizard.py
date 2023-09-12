@@ -104,6 +104,16 @@ class FecImportWizard(models.TransientModel):
     # ------------------------------------
     # Generators
     # -----------------------------------
+    def _make_xml_id(self, prefix, key):
+        if '_' in prefix:
+            raise ValueError('`prefix` cannot contain an underscore')
+        key = key.replace(' ', '_')
+        return f"l10n_fr_fec_import.{self.company_id.id}_{prefix}_{key}"
+
+    def _parse_xml_id(self, xml_id):
+        components = xml_id.split('.', 1)[1].split('_', 2)
+        components[0] = int(components[0])
+        return components
 
     def _generator_fec_account_account(self, rows, cache):
         """ Import the accounts from the FEC file """
@@ -118,11 +128,12 @@ class FecImportWizard(models.TransientModel):
             account_name = record.get("CompteLib", "")
             account_code = account_code_orig[:digits] + account_code_orig[digits:].rstrip('0')
             account_code_stripped = account_code.rstrip('0')
+            account_xml_id = self._make_xml_id('account', account_code)
             if account_code_stripped in accounts.keys():
                 account = accounts[account_code_stripped]
                 if account_code not in new_ids:
                     new_ids[account_code] = {
-                        'xml_id': f"l10n_fr_fec_import.account_{account_code}",
+                        'xml_id': account_xml_id,
                         'record': account,
                         'noupdate': True,
                     }
@@ -134,7 +145,7 @@ class FecImportWizard(models.TransientModel):
                     "account_type": 'asset_current',
                 }
                 cache['account.account'][account_code_stripped] = data
-                yield f"l10n_fr_fec_import.account_{account_code}", data
+                yield account_xml_id, data
         self.env['ir.model.data']._update_xmlids(new_ids.values())
 
 
@@ -179,11 +190,12 @@ class FecImportWizard(models.TransientModel):
         for record in rows:
             journal_code = record.get("JournalCode")
             journal_name = record.get("JournalLib")
+            journal_xml_id = self._make_xml_id('journal', journal_code)
             if journal_code in journals.keys():
                 journal = journals[journal_code]
                 if journal_code not in new_ids:
                     new_ids[journal_code] = {
-                        'xml_id': f"l10n_fr_fec_import.journal_{journal_code}",
+                        'xml_id': journal_xml_id,
                         'record': journal,
                         'noupdate': True,
                     }
@@ -193,7 +205,7 @@ class FecImportWizard(models.TransientModel):
                 "name": "FEC-%s" % (journal_name or journal_code),
                 "type": "general"
             }
-            yield f"l10n_fr_fec_import.journal_{journal_code}", data
+            yield journal_xml_id, data
 
         self.env['ir.model.data']._update_xmlids(new_ids.values())
 
@@ -217,12 +229,13 @@ class FecImportWizard(models.TransientModel):
                     digits = template_data['code_digits']
                     account_code = account_code[:digits] + account_code[digits:].rstrip('0')
                     account = cache['account.account'].get(account_code.rstrip('0'))
+                    account_xml_id = self._make_xml_id('account', account_code)
                     if account['account_type'] == 'asset_receivable':
-                        data["property_account_receivable_id"] = f"l10n_fr_fec_import.account_{account_code}"
+                        data["property_account_receivable_id"] = account_xml_id
                     elif account['account_type'] == 'liability_payable':
-                        data["property_account_payable_id"] = f"l10n_fr_fec_import.account_{account_code}"
+                        data["property_account_payable_id"] = account_xml_id
 
-                yield f"l10n_fr_fec_import.partner_{partner_ref}", data
+                yield self._make_xml_id('partner', partner_ref), data
 
     def _check_rounding_issues(self, moves_dict, balance_dict):
         """ If journals are unbalanced, check if they can be balanced by adding some counterpart line
@@ -285,7 +298,7 @@ class FecImportWizard(models.TransientModel):
                 raise UnbalancedMovesError("Cannot group moves")
 
             # Build the keys with the same format that was used in moves_dict
-            journal_code = journal_id[27:]
+            _cid, _prefix, journal_code = self._parse_xml_id(journal_id)
             if len(key) == 2:
                 move_key = "%s/%04d%02d" % (journal_code, *key)
                 move_date = datetime.date(*key, 1)
@@ -424,8 +437,7 @@ class FecImportWizard(models.TransientModel):
             # Move import --------------------------------------
 
             # Use the journal and the move_name as key for the move in the moves_dict
-            move_key = "l10n_fr_fec_import.move_%s_%s" % (journal_code, move_name.replace(' ', '_'))
-            # move_key = "l10n_fr_fec_import.journal_%s_%s" % (journal_code, move_name)
+            move_key = self._make_xml_id('move', f"{journal_code}_{move_name}")
 
             # Many move_lines may belong to the same move, the move info gets saved in the moves_dict
             data = moves_dict.setdefault(move_key, {
@@ -433,7 +445,7 @@ class FecImportWizard(models.TransientModel):
                 "name": move_name,
                 "date": move_date,
                 "ref": piece_ref,
-                "journal_id": f"l10n_fr_fec_import.journal_{journal_code}",
+                "journal_id": self._make_xml_id('journal', journal_code),
                 "line_ids": [],
             })
             balance_data = balance_dict.setdefault(move_key, {"balance": 0.0, "matching": False})
@@ -445,7 +457,7 @@ class FecImportWizard(models.TransientModel):
                 "company_id": self.company_id.id,
                 "name": move_line_name,
                 "ref": piece_ref,
-                "account_id": f"l10n_fr_fec_import.account_{account_code}",
+                "account_id": self._make_xml_id('account', account_code),
                 "fec_matching_number": matching or False,
                 "tax_ids": [],  # Avoid default taxes on the accounts to be set
             }
@@ -457,7 +469,7 @@ class FecImportWizard(models.TransientModel):
             # the partner information will stay just on the line.
             # It may be updated in the post-processing after all the imports are done.
             if partner_ref:
-                line_data["partner_id"] = f"l10n_fr_fec_import.partner_{partner_ref.replace(' ', '_')}"
+                line_data["partner_id"] = self._make_xml_id('partner', partner_ref)
 
             # Currency
             if currency_name in cache["res.currency"] and amount_currency:

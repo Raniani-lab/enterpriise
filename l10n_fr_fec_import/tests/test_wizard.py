@@ -406,3 +406,11 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
         """
         self._attach_file_to_wizard(test_content, self.wizard)
         self.wizard._import_files()
+
+    def test_fec_import_multicompany(self):
+        self.wizard._import_files(['account.account', 'account.journal', 'res.partner'])
+
+        fr_company2 = self.setup_company_data("Company FR 2", chart_template=self.company.chart_template)['company']
+        wizard2 = self.env['account.fec.import.wizard'].with_company(fr_company2).create({'company_id': fr_company2.id})
+        self._attach_file_to_wizard(self.test_content, wizard2)
+        wizard2._import_files()

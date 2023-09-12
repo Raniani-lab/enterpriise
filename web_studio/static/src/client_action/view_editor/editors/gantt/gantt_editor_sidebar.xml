@@ -80,7 +80,7 @@
                     Default Scale
                 </Property>
                 <Property
-                    name="'color_field'"
+                    name="'color'"
                     type="'selection'"
                     value="modelParams.colorField"
                     childProps="{ choices: colorChoices }"

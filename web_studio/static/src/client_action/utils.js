@@ -49,7 +49,7 @@ export function useDialogConfirmation({ confirm, cancel, before, close }) {
     }
 
     const env = useEnv();
-    env.dialogData.close = () => _cancel();
+    env.dialogData.dismiss = () => _cancel();
 
     return { confirm: _confirm, cancel: _cancel };
 }

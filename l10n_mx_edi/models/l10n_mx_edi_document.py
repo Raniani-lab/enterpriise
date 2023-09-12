@@ -423,7 +423,7 @@ class L10nMxEdiDocument(models.Model):
             })
 
         # Retrieve a valid token.
-        credentials.update(self._l10n_mx_edi_document_get_sw_token(credentials))
+        credentials.update(self._document_get_sw_token(credentials))
 
         return credentials
 
@@ -490,7 +490,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                              'boundary="%s"') % boundary,
         }
 
-        response_json = self._l10n_mx_edi_document_sw_call(credentials['sign_url'], headers, payload=payload)
+        response_json = self._document_sw_call(credentials['sign_url'], headers, payload=payload)
 
         try:
             cfdi_signed = response_json['data']['cfdi']
@@ -531,7 +531,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
             payload_dict['folioSustitucion'] = uuid_replace
         payload = json.dumps(payload_dict)
 
-        response_json = self._l10n_mx_edi_document_sw_call(credentials['cancel_url'], headers, payload=payload.encode('UTF-8'))
+        response_json = self._document_sw_call(credentials['cancel_url'], headers, payload=payload.encode('UTF-8'))
 
         cancelled = response_json['status'] == 'success'
         if cancelled:

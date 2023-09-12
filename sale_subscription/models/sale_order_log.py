@@ -32,8 +32,6 @@ class SaleOrderLog(models.Model):
     user_id = fields.Many2one('res.users', string='Salesperson')
     team_id = fields.Many2one('crm.team', string='Sales Team', ondelete="set null")
     amount_signed = fields.Monetary(index=True)
-    amount_contraction = fields.Monetary(compute='_compute_amount', store=True)
-    amount_expansion = fields.Monetary(compute='_compute_amount', store=True)
     currency_id = fields.Many2one('res.currency', string='Currency', required=True, readonly=True)
     event_date = fields.Date(string='Event Date', required=True, index=True)
     company_id = fields.Many2one('res.company', string='Company', related='order_id.company_id', store=True, readonly=True)
@@ -44,14 +42,6 @@ class SaleOrderLog(models.Model):
     def _compute_origin_order_id(self):
         for log in self:
             log.origin_order_id = log.order_id.origin_order_id or log.order_id
-
-    @api.depends('amount_signed')
-    def _compute_amount(self):
-        for log in self:
-            if log.currency_id.compare_amounts(log.amount_signed, 0) < 0:
-                log.amount_contraction = log.amount_signed
-            else:
-                log.amount_expansion = log.amount_signed
 
     @api.depends('order_id')
     def _compute_origin_order_id(self):

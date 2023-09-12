@@ -74,7 +74,7 @@ registry.category("web_tour.tours").add('test_gs1_inventory_lot_serial', {test: 
     //      - (30)5                 > quantity (5)
     {
         trigger: '.o_barcode_client_action',
-        run: 'scan 010011115555571710LOT-AAA\x1D305',
+        run: 'scan 010011115555571710LOT-AAA~305',
     },
     {
         trigger: '.o_barcode_line:contains("AAA")',
@@ -144,7 +144,7 @@ registry.category("web_tour.tours").add('test_gs1_inventory_lot_serial', {test: 
     // line and create a new line).
     {
         trigger: '.o_barcode_client_action',
-        run: 'scan 3020\x1D10LOT-AAC',
+        run: 'scan 3020##10LOT-AAC',
     },
     {
         trigger: '.o_barcode_line.o_selected:contains("AAC")',
@@ -159,12 +159,17 @@ registry.category("web_tour.tours").add('test_gs1_inventory_lot_serial', {test: 
             helper.assertLineQty(subline, "20");
         }
     },
-    // Scans lot + quantity but with a lot already scanned, so it should
-    // increment the quantity on the line with this lot.
+    // Scans manually (with a custom separator) lot + quantity but with a lot already scanned,
+    // so it should increment the quantity on the line with this lot.
+    { trigger: '.o_barcode_client_action .o_stock_mobile_barcode' },
     {
-        trigger: '.o_barcode_client_action',
-        run: 'scan 300000000510LOT-AAA',
+        trigger: '.modal-content .modal-body #manual_barcode',
+        run: function(actions) {
+            actions.text("305Alt02910LOT-AAA");
+        }
     },
+    { trigger: '.modal-content .modal-footer .btn-primary:not(:disabled)' },
+
     {
         trigger: '.o_barcode_line.o_selected .qty-done:contains("10")',
         run: function () {

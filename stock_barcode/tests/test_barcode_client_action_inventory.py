@@ -405,9 +405,11 @@ class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
 
     def test_gs1_inventory_lot_serial(self):
         """ Checks tracking numbers and quantites are correctly got from GS1
-        barcodes for tracked products."""
+        barcodes for tracked products.
+        Also, this test is an opportunity to ensure custom GS1 separators are used clientside."""
         self.clean_access_rights()
         self.env.company.nomenclature_id = self.env.ref('barcodes_gs1_nomenclature.default_gs1_nomenclature')
+        self.env.company.nomenclature_id.gs1_separator_fnc1 = r'(Alt029|#|\x1D|~)'
 
         product_lot = self.env['product.product'].create({
             'name': 'PRO_GTIN_12_lot',

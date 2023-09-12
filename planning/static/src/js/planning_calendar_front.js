@@ -11,7 +11,6 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
         '/web/static/lib/fullcalendar/core/main.js',
         '/web/static/lib/fullcalendar/core/locales-all.js',
         '/web/static/lib/fullcalendar/interaction/main.js',
-        '/web/static/lib/fullcalendar/moment/main.js',
         '/web/static/lib/fullcalendar/daygrid/main.js',
         '/web/static/lib/fullcalendar/timegrid/main.js',
         '/web/static/lib/fullcalendar/list/main.js'

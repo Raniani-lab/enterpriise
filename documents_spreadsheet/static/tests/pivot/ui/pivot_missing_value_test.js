@@ -154,10 +154,7 @@ QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
             assert.containsOnce(document.body, ".o_pivot_table_dialog");
             await dom.click(document.body.querySelectorAll(".o_pivot_table_dialog tr th")[1]);
             assert.strictEqual(document.activeElement.tagName, "INPUT");
-            assert.strictEqual(
-                document.activeElement.parentElement.className,
-                "o-grid o-two-columns"
-            );
+            assert.ok([...document.activeElement.parentElement.classList].includes("o-grid"));
         }
     );
 

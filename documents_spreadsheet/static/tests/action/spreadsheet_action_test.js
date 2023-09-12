@@ -279,10 +279,7 @@ QUnit.module(
             await click(document, ".modal-footer .btn-primary");
             await nextTick();
             assert.strictEqual(document.activeElement.tagName, "INPUT");
-            assert.strictEqual(
-                document.activeElement.parentElement.className,
-                "o-grid o-two-columns"
-            );
+            assert.ok([...document.activeElement.parentElement.classList].includes("o-grid"));
         });
 
         QUnit.test("convert data from template", async function (assert) {

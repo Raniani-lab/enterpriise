@@ -24,7 +24,6 @@ Accounting Import
         'web.assets_backend': [
             'account_base_import/static/src/js/**/*',
             'account_base_import/static/src/xml/**/*',
-            'account_base_import/static/src/scss/**/*',
         ],
     }
 }

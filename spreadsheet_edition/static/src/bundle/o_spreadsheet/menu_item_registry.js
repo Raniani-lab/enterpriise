@@ -62,11 +62,11 @@ topbarMenuRegistry.addChild("download_as_json", ["file"], {
 });
 
 topbarMenuRegistry.addChild("data_sources_data", ["data"], (env) => {
-    const pivots = env.model.getters.getPivotIds();
-    const children = pivots.map((pivotId, index) => ({
+    let sequence = 1000;
+    const pivots_items = env.model.getters.getPivotIds().map((pivotId, index) => ({
         id: `item_pivot_${pivotId}`,
         name: env.model.getters.getPivotDisplayName(pivotId),
-        sequence: 100 + index,
+        sequence: sequence++,
         execute: (env) => {
             env.model.dispatch("SELECT_PIVOT", { pivotId: pivotId });
             env.openSidePanel("PIVOT_PROPERTIES_PANEL", {});
@@ -74,11 +74,11 @@ topbarMenuRegistry.addChild("data_sources_data", ["data"], (env) => {
         icon: "o-spreadsheet-Icon.PIVOT",
         separator: index === env.model.getters.getPivotIds().length - 1,
     }));
-    const lists = env.model.getters.getListIds().map((listId, index) => {
+    const lists_items = env.model.getters.getListIds().map((listId, index) => {
         return {
             id: `item_list_${listId}`,
             name: env.model.getters.getListDisplayName(listId),
-            sequence: 100 + index + pivots.length,
+            sequence: sequence++,
             execute: (env) => {
                 env.model.dispatch("SELECT_ODOO_LIST", { listId: listId });
                 env.openSidePanel("LIST_PROPERTIES_PANEL", {});
@@ -87,18 +87,34 @@ topbarMenuRegistry.addChild("data_sources_data", ["data"], (env) => {
             separator: index === env.model.getters.getListIds().length - 1,
         };
     });
-    return children.concat(lists).concat([
-        {
-            id: "refresh_all_data",
-            name: _t("Refresh all data"),
-            sequence: 1000,
+    const charts_items = env.model.getters.getOdooChartIds().map((chartId, index) => {
+        return {
+            id: `item_chart_${chartId}`,
+            name: env.model.getters.getOdooChartDisplayName(chartId),
+            sequence: sequence++,
             execute: (env) => {
-                env.model.dispatch("REFRESH_ALL_DATA_SOURCES");
+                env.model.dispatch("SELECT_FIGURE", { id: chartId });
+                env.openSidePanel("ChartPanel");
             },
-            separator: true,
-            icon: "o-spreadsheet-Icon.REFRESH_DATA",
-        },
-    ]);
+            icon: "o-spreadsheet-Icon.INSERT_CHART",
+            separator: index === env.model.getters.getOdooChartIds().length - 1,
+        };
+    });
+    return pivots_items
+        .concat(lists_items)
+        .concat(charts_items)
+        .concat([
+            {
+                id: "refresh_all_data",
+                name: _t("Refresh all data"),
+                sequence: sequence++,
+                execute: (env) => {
+                    env.model.dispatch("REFRESH_ALL_DATA_SOURCES");
+                },
+                separator: true,
+                icon: "o-spreadsheet-Icon.REFRESH_DATA",
+            },
+        ]);
 });
 
 topbarMenuRegistry.addChild("insert_pivot", ["data"], {

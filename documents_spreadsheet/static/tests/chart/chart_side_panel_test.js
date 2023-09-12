@@ -1,6 +1,12 @@
 /** @odoo-module */
 
-import { click, getFixture, triggerEvent, patchWithCleanup } from "@web/../tests/helpers/utils";
+import {
+    click,
+    getFixture,
+    triggerEvent,
+    patchWithCleanup,
+    nextTick,
+} from "@web/../tests/helpers/utils";
 import { createBasicChart } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { createSpreadsheetFromGraphView, openChartSidePanel } from "../utils/chart_helpers";
@@ -117,5 +123,53 @@ QUnit.module("documents_spreadsheet > chart side panel", { beforeEach }, () => {
         await triggerEvent(input, null, "input");
         await triggerEvent(input, null, "change");
         assert.strictEqual(model.getters.getChart(chartId).title, "bla");
+    });
+
+    QUnit.test("Open chart odoo's data properties", async function (assert) {
+        const target = getFixture();
+        const { model, env } = await createSpreadsheetFromGraphView();
+        const sheetId = model.getters.getActiveSheetId();
+        const chartId = model.getters.getChartIds(sheetId)[0];
+
+        // opening from a chart
+        model.dispatch("SELECT_FIGURE", { id: chartId });
+        env.openSidePanel("ChartPanel");
+        await nextTick();
+
+        const sections = $(target).find(".o-section");
+        assert.equal(sections.length, 6, "it should have 6 sections");
+        const [, , pivotModel, domain, , measures] = sections;
+
+        assert.equal(pivotModel.children[0].innerText, "Model");
+        assert.equal(pivotModel.children[1].innerText, "Partner (partner)");
+
+        assert.equal(domain.children[0].innerText, "Domain");
+        assert.equal(domain.children[1].innerText, "Match all records\nInclude archived");
+
+        assert.ok(measures.children[0].innerText.startsWith("Last updated at"));
+        assert.equal(measures.children[1].innerText, "Refresh values");
+    });
+
+    QUnit.test("Update the chart domain from the side panel", async function (assert) {
+        const { model, env } = await createSpreadsheetFromGraphView({
+            mockRPC(route) {
+                if (route === "/web/domain/validate") {
+                    return true;
+                }
+            },
+        });
+        const sheetId = model.getters.getActiveSheetId();
+        const chartId = model.getters.getChartIds(sheetId)[0];
+        model.dispatch("SELECT_FIGURE", { id: chartId });
+        env.openSidePanel("ChartPanel");
+        await nextTick();
+        const fixture = getFixture();
+        await click(fixture.querySelector(".o_edit_domain"));
+        await click(fixture.querySelector(".o_domain_tree a[role=button]"));
+        await click(fixture.querySelector(".modal-footer .btn-primary"));
+        assert.deepEqual(model.getters.getChartDefinition(chartId).searchParams.domain, [
+            ["id", "=", 1],
+        ]);
+        assert.equal(fixture.querySelector(".o_domain_selector_row").innerText, "ID\n= 1");
     });
 });

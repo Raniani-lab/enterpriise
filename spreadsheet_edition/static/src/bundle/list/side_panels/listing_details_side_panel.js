@@ -5,7 +5,6 @@ import { DomainSelector } from "@web/core/domain_selector/domain_selector";
 import { DomainSelectorDialog } from "@web/core/domain_selector_dialog/domain_selector_dialog";
 import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
-import { time_to_str } from "@web/legacy/js/core/time";
 
 import EditableName from "../../o_spreadsheet/editable_name/editable_name";
 
@@ -47,7 +46,7 @@ export class ListingDetailsSidePanel extends Component {
     getLastUpdate() {
         const lastUpdate = this.dataSource.lastUpdate;
         if (lastUpdate) {
-            return time_to_str(new Date(lastUpdate));
+            return new Date(lastUpdate).toLocaleTimeString();
         }
         return _t("never");
     }

@@ -1,6 +1,9 @@
 <odoo>
-    <t t-name="spreadsheet_edition.OdooLineChartConfigPanel">
-        <div>
+    <t t-name="spreadsheet_edition.OdooLineChartConfigPanel"
+        t-inherit="spreadsheet_edition.CommonOdooChartConfigPanel"
+        t-inherit-mode="primary"
+    >
+        <xpath expr="//div[hasclass('o-section')][1]" position="before">
             <div class="o-section pt-0">
                 <label>
                     <div class="o_checkbox">
@@ -15,7 +18,6 @@
                     </div>
                 </label>
             </div>
-            <t t-call="spreadsheet_edition.OdooMenuChartPanelSection"/>
-        </div>
+        </xpath>
     </t>
 </odoo>

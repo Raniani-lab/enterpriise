@@ -1453,7 +1453,12 @@ class AccountReport(models.Model):
     # OPTIONS: REPORT_ID
     ####################################################
     def _init_options_report_id(self, options, previous_options=None):
-        options['report_id'] = options.get('selected_section_id') or options.get('selected_variant_id') or self.id
+        if (previous_options or {}).get('no_report_reroute'):
+            # Used for exports
+            options['report_id'] = self.id
+        else:
+            options['report_id'] = options.get('selected_section_id') or options.get('selected_variant_id') or self.id
+
 
     ####################################################
     # OPTIONS: PRINT MODE
@@ -1491,8 +1496,7 @@ class AccountReport(models.Model):
                 break
 
         # Stop the computation to check for reroute once we have computed the necessary information
-        no_reroute = (previous_options or {}).get('no_report_reroute')
-        if not no_reroute and (not self.root_report_id or (self.use_sections and self.section_report_ids)) and options['report_id'] != self.id:
+        if (not self.root_report_id or (self.use_sections and self.section_report_ids)) and options['report_id'] != self.id:
             # Load the variant/section instead of the root report
             variant_options = {**(previous_options or {})}
             for reroute_opt_key in ('selected_variant_id', 'selected_section_id', 'variants_source_id', 'sections_source_id'):
@@ -1864,12 +1868,21 @@ class AccountReport(models.Model):
         """
         return self.custom_handler_model_name or self.root_report_id.custom_handler_model_name or None
 
-    def dispatch_report_action(self, options, action, action_param=None):
+    def dispatch_report_action(self, options, action, action_param=None, on_sections_source=False):
         """ Dispatches calls made by the client to either the report itself, or its custom handler if it exists.
             The action should be a public method, by definition, but a check is made to make sure
             it is not trying to call a private method.
         """
         self.ensure_one()
+
+        if options['report_id'] != self.id:
+            if on_sections_source:
+                report_to_call = self.env['account.report'].browse(options['sections_source_id'])
+                options = report_to_call.get_options(previous_options={**options, 'no_report_reroute': True})
+                return report_to_call.dispatch_report_action(options, action, action_param=action_param, on_sections_source=on_sections_source)
+
+            raise UserError(_("Trying to dispatch an action on a report not compatible with the provided options."))
+
         check_method_name(action)
         args = [options, action_param] if action_param is not None else [options]
         custom_handler_model = self._get_custom_handler_model()

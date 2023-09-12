@@ -684,10 +684,11 @@ export class AccountReportController {
             "account.report",
             "dispatch_report_action",
             [
-                callOnSectionsSource ? this.options['sections_source_id'] : this.options['report_id'],
+                this.options['report_id'],
                 actionOptions,
                 action,
                 actionParam,
+                callOnSectionsSource,
             ],
         );
 

@@ -3148,6 +3148,15 @@ msgstr ""
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid ""
+"Trying to dispatch an action on a report not compatible with the provided "
+"options."
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid ""

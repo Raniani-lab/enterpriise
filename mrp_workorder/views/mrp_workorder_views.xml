@@ -96,6 +96,19 @@
         </field>
     </record>
 
+    <record id="workcenter_line_gantt_production_dependencies" model="ir.ui.view">
+        <field name="name">mrp.production.work.order.gantt.production.dependencies</field>
+        <field name="model">mrp.workorder</field>
+        <field name="inherit_id" ref="mrp.workcenter_line_gantt_production"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//gantt" position="attributes">
+                <attribute name="dependency_field">blocked_by_workorder_ids</attribute>
+                <attribute name="dependency_inverted_field">needed_by_workorder_ids</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <record id="mrp_workorder_view_gantt_dependencies" model="ir.ui.view">
         <field name="name">mrp.workorder.view.gantt.dependencies</field>
         <field name="model">mrp.workorder</field>
@@ -114,9 +127,16 @@
         <field name="model_id" ref="model_mrp_workorder"/>
         <field name="state">code</field>
         <field name="code">
-action = env.ref('mrp.action_mrp_workorder_workcenter').sudo().read()[0]
-if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
-    action['views'] = [(env.ref('mrp_workorder.mrp_workorder_view_gantt_dependencies').id, 'gantt')] + [(id, kind) for id, kind in action['views'] if kind != 'gantt']
+            action = model.action_mrp_workorder_dependencies('workcenter')
+        </field>
+    </record>
+
+    <record id="action_mrp_workorder_dependencies_production" model="ir.actions.server">
+        <field name="name">Work Orders Planning</field>
+        <field name="model_id" ref="model_mrp_workorder"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.action_mrp_workorder_dependencies('production')
         </field>
     </record>
 

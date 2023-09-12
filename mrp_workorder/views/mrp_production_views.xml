@@ -71,7 +71,7 @@
     <menuitem id="menu_mrp_workorder_production"
         name="Planning by Production"
         sequence="1"
-        action="mrp.action_mrp_workorder_production"
+        action="action_mrp_workorder_dependencies_production"
         parent="mrp_workorder_menu_planning"/>
     <menuitem id="menu_mrp_workorder_workcenter"
         name="Planning by Workcenter"

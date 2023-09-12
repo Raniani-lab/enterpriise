@@ -849,3 +849,11 @@ class MrpProductionWorkcenterLine(models.Model):
     def end_all(self):
         self.employee_ids = [Command.clear()]
         return super().end_all()
+
+    def action_mrp_workorder_dependencies(self, action_name):
+        action = self.env['ir.actions.act_window']._for_xml_id('mrp.action_mrp_workorder_%s' % action_name)
+        ref = 'mrp_workorder.workcenter_line_gantt_production_dependencies' if action_name == 'production' else 'mrp_workorder.mrp_workorder_view_gantt_dependencies'
+
+        if self.env.user.has_group('mrp.group_mrp_workorder_dependencies'):
+            action['views'] = [(self.env.ref(ref).id, 'gantt')] + [(id, kind) for id, kind in action['views'] if kind != 'gantt']
+        return action

@@ -4614,17 +4614,6 @@ class AccountReport(models.Model):
     def export_to_pdf(self, options):
         self.ensure_one()
 
-        # As the assets are generated during the same transaction as the rendering of the
-        # templates calling them, there is a scenario where the assets are unreachable: when
-        # you make a request to read the assets while the transaction creating them is not done.
-        # Indeed, when you make an asset request, the controller has to read the `ir.attachment`
-        # table.
-        # This scenario happens when you want to print a PDF report for the first time, as the
-        # assets are not in cache and must be generated. To workaround this issue, we manually
-        # commit the writes in the `ir.attachment` table. It is done thanks to a key in the context.
-        if not config['test_enable']:
-            self = self.with_context(commit_assetsbundle=True)
-
         base_url = self.env['ir.config_parameter'].sudo().get_param('report.url') or self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         rcontext = {
             'mode': 'print',

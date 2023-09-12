@@ -47,16 +47,17 @@
                 position: 'bottom',
             }, {
                 trigger: 'button[name="apply"]',
-                content: _t('Great! Let’s continue.'),
+                content: markup(_t('Great! Let’s continue.<br/><br/><i>Tip: If you choose to upload your bill, don’t forget to attach it.</i>')),
                 position: 'top',
             }, {
                 trigger: '.o_data_cell',
                 extra_trigger: 'tr:not(.o_sample_data_disabled)>td:has(div[name="state"])',
                 content: _t('Let’s see how a bill looks like in form view.'),
                 position: 'bottom',
+                skip_trigger: 'button.btn-primary[name="action_post"]',
             }, {
                 trigger: 'button.btn-primary[name="action_post"]',
-                content: _t('Check & validate the bill. If no vendor has been found, add one before validating.'),
+                content: _t('After the data extraction, check and validate the bill. If no vendor has been found, add one before validating.'),
                 position: 'bottom',
             }, {
                 trigger: '.dropdown-item[data-menu-xmlid="account.menu_board_journal_1"]',
@@ -70,19 +71,11 @@
                 run: function () {
                     // Close the modal
                     // We can't test bank sync in the tour
-                    registry.category("web_tour.tours").get("account_accountant_tour").current_step += 3
-                    $('.js_cancel').click();
+                    $('button[name="action_open_reconcile"]').click();
                 }
             }, {
-                trigger: 'button[name="action_open_reconcile"]',
-                content: _t('Let’s reconcile the fetched bank transactions.'),
-            }, {
-                trigger: 'button:contains("Validate")',
-                content: _t('Process this transaction.'),
-            }, {
-                trigger: '.breadcrumb-item:not(.active):first',
-                content: _t('Get back to the dashboard using your previous path…'),
-                position: 'bottom',
+                trigger: '.o_bank_rec_st_line:not(.o_bank_rec_selected_st_line)',
+                content: _t('Click on a fetched bank transaction to start the reconciliation process.'),
             }
         ]
     });

@@ -10,7 +10,7 @@ from datetime import timedelta
 from typing import Dict, Any, List, Optional
 
 from odoo import _, fields, models, api
-from odoo.exceptions import AccessError
+from odoo.exceptions import AccessError, UserError
 from odoo.tools import mute_logger
 _logger = logging.getLogger(__name__)
 
@@ -362,6 +362,11 @@ class SpreadsheetMixin(models.AbstractModel):
                 'next': new_spreadsheet.action_edit(),
             }
         }
+
+    def _dispatch_command(self, command):
+        is_accepted = self.dispatch_spreadsheet_message(self._build_new_revision_data(command))
+        if not is_accepted:
+            raise UserError(_("The operation could not be applied because of a concurrent update. Please try again."))
 
     def _build_new_revision_data(self, command):
         return {

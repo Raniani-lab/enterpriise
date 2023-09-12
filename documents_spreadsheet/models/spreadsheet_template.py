@@ -42,6 +42,12 @@ class SpreadsheetTemplate(models.Model):
         spreadsheet.spreadsheet_snapshot = self.spreadsheet_snapshot
         self._copy_revisions_to(spreadsheet)
 
+        update_locale_command = {
+            "type": "UPDATE_LOCALE",
+            "locale": self.env["res.lang"]._get_user_spreadsheet_locale(),
+        }
+        spreadsheet._dispatch_command(update_locale_command)
+
         return {
             "type": "ir.actions.client",
             "tag": "action_open_spreadsheet",

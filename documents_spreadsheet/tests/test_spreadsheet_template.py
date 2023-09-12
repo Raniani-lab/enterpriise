@@ -68,7 +68,11 @@ class SpreadsheetTemplate(SpreadsheetTestCommon):
         self.assertEqual(document.mimetype, "application/o-spreadsheet")
         self.assertEqual(document.name, "Template name")
         self.assertEqual(document.spreadsheet_data, TEST_CONTENT)
-        self.assertEqual(len(document.spreadsheet_revision_ids), 1)
+        self.assertEqual(
+            len(document.spreadsheet_revision_ids),
+            2,
+            "it should have copied the revision and added the user locale revision"
+        )
         self.assertEqual(action["type"], "ir.actions.client")
         self.assertEqual(action["tag"], "action_open_spreadsheet")
         self.assertTrue(action["params"]["convert_from_template"])
@@ -87,7 +91,42 @@ class SpreadsheetTemplate(SpreadsheetTestCommon):
         spreadsheet_id = action["params"]["spreadsheet_id"]
         document = self.env["documents.document"].browse(spreadsheet_id)
         self.assertTrue(document.exists())
-        self.assertEqual(len(document.spreadsheet_revision_ids), 1)
+        self.assertEqual(
+            len(document.spreadsheet_revision_ids),
+            2,
+            "it should have copied the revision and added the user locale revision"
+        )
+
+    def test_action_create_spreadsheet_with_user_locale(self):
+        self.env.ref("base.lang_fr").active = True
+        user = self.spreadsheet_user
+        user.lang = "fr_FR"
+        template = self.env["spreadsheet.template"].create({
+            "name": "Template name",
+        })
+        action = template.with_user(user).action_create_spreadsheet()
+        spreadsheet_id = action["params"]["spreadsheet_id"]
+        document = self.env["documents.document"].browse(spreadsheet_id)
+        revision = document.join_spreadsheet_session()["revisions"]
+        self.assertEqual(len(revision), 1)
+        self.assertEqual(revision[0]["commands"][0]["type"], "UPDATE_LOCALE")
+        self.assertEqual(revision[0]["commands"][0]["locale"]["code"], "fr_FR")
+
+    def test_action_create_spreadsheet_with_existing_revision_with_user_locale(self):
+        self.env.ref("base.lang_fr").active = True
+        user = self.spreadsheet_user
+        user.lang = "fr_FR"
+        template = self.env["spreadsheet.template"].create({
+            "name": "Template name",
+        })
+        template.dispatch_spreadsheet_message(self.new_revision_data(template))
+        action = template.with_user(user).action_create_spreadsheet()
+        spreadsheet_id = action["params"]["spreadsheet_id"]
+        document = self.env["documents.document"].browse(spreadsheet_id)
+        revision = document.join_spreadsheet_session()["revisions"]
+        self.assertEqual(len(revision), 2)
+        self.assertEqual(revision[-1]["commands"][0]["type"], "UPDATE_LOCALE")
+        self.assertEqual(revision[-1]["commands"][0]["locale"]["code"], "fr_FR")
 
     def test_action_create_spreadsheet_in_folder(self):
         template = self.env["spreadsheet.template"].create({

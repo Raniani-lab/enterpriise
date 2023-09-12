@@ -104,7 +104,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div t-if="message" t-att-class="'alert ' + message_class" role="alert">
+                            <div t-if="message and message_class" t-att-class="'alert ' + message_class" role="alert">
                                 <p t-esc="message"/>
                             </div>
 

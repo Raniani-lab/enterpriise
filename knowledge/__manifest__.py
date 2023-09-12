@@ -67,7 +67,7 @@
             'knowledge/static/src/xml/knowledge_article_templates.xml',
             'knowledge/static/src/js/knowledge_clipboard_whitelist.js',
         ],
-        "web.dark_mode_assets_backend": [
+        "web.assets_web_dark": [
             'knowledge/static/src/scss/knowledge_views.dark.scss',
         ],
         'web.assets_frontend': [

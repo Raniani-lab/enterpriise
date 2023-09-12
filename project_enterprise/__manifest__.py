@@ -33,7 +33,7 @@ Bridge module for project and enterprise
             # Don't include dark mode files in light mode
             ('remove', 'project_enterprise/static/src/components/**/*.dark.scss'),
         ],
-        "web.dark_mode_assets_backend": [
+        "web.assets_web_dark": [
             'project_enterprise/static/src/components/**/*.dark.scss',
         ],
         'web.qunit_suite_tests': [

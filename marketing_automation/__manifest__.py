@@ -42,7 +42,7 @@
             # Don't include dark mode files in light mode
             ('remove', 'marketing_automation/static/src/scss/*.dark.scss'),
         ],
-        "web.dark_mode_assets_backend": [
+        "web.assets_web_dark": [
             'marketing_automation/static/src/scss/*.dark.scss',
         ],
         'web.qunit_suite_tests': [

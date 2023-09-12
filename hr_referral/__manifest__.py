@@ -44,7 +44,7 @@
             'hr_referral/static/src/scss/progress_bar.scss',
             'hr_referral/static/src/**/*.xml',
         ],
-        "web.dark_mode_assets_backend": [
+        "web.assets_web_dark": [
             'hr_referral/static/src/scss/hr_referral.dark.scss',
         ],
 

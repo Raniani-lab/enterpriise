@@ -32,7 +32,7 @@
             ('after', 'social/static/src/js/social_post_formatter_mixin.js', 'social_twitter/static/src/js/social_post_formatter_mixin.js'),
             'social_twitter/static/src/xml/**/*',
         ],
-        'web.dark_mode_assets_backend': [
+        'web.assets_web_dark': [
             'social_twitter/static/src/scss/social_twitter.dark.scss',
         ],
         'web.assets_tests': [

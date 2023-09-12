@@ -46,7 +46,7 @@ This module modifies the web addon to provide Enterprise design and responsivene
             # Don't include dark mode files in light mode
             ('remove', 'web_enterprise/static/src/**/*.dark.scss'),
         ],
-        'web.assets_backend_prod_only': [
+        'web.assets_web': [
             ('replace', 'web/static/src/main.js', 'web_enterprise/static/src/main.js'),
         ],
         # ========= Dark Mode =========
@@ -57,7 +57,7 @@ This module modifies the web addon to provide Enterprise design and responsivene
             # web._assets_secondary_variables
             ('before', 'web_enterprise/static/src/scss/secondary_variables.scss', 'web_enterprise/static/src/scss/secondary_variables.dark.scss'),
         ],
-        "web.dark_mode_assets_backend": [
+        "web.assets_web_dark": [
             ('include', 'web.dark_mode_variables'),
             # web._assets_backend_helpers
             ('before', 'web_enterprise/static/src/scss/bootstrap_overridden.scss', 'web_enterprise/static/src/scss/bootstrap_overridden.dark.scss'),

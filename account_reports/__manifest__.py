@@ -60,7 +60,7 @@ Accounting Reports
             'account_reports/static/src/components/**/*',
             'account_reports/static/src/js/**/*',
         ],
-        'web.dark_mode_assets_backend': [
+        'web.assets_web_dark': [
             'account_reports/static/src/scss/*.dark.scss',
         ],
         'web.qunit_suite_tests': [

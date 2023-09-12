@@ -52,15 +52,13 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/src/studio_service.js',
             'web_studio/static/src/utils.js',
 
+            'web_studio/static/src/client_action/studio_action_loader.js',
+            'web_studio/static/src/client_action/app_creator/app_creator_shortcut.js',
             'web_studio/static/src/home_menu/**/*.js',
             'web_studio/static/src/views/**/*.js',
             ('remove', 'web_studio/static/src/views/kanban_report/**/*'),
             'web_studio/static/src/approval/**/*',
             'web_studio/static/src/**/*.xml',
-        ],
-        'web.assets_backend_prod_only': [
-            'web_studio/static/src/client_action/studio_action_loader.js',
-            'web_studio/static/src/client_action/app_creator/app_creator_shortcut.js',
         ],
         # This bundle is lazy loaded: it is loaded when studio is opened for the first time
         'web_studio.studio_assets': [

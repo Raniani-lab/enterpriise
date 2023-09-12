@@ -33,7 +33,7 @@ Odoo Web Gantt chart view.
         "web.dark_mode_variables": [
             ('before', 'web_enterprise/static/src/**/*.variables.scss', 'web_gantt/static/src/**/*.variables.dark.scss'),
         ],
-        "web.dark_mode_assets_backend": [
+        "web.assets_web_dark": [
             'web_gantt/static/src/**/*.dark.scss',
         ],
     },

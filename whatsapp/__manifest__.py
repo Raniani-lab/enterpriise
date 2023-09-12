@@ -35,7 +35,7 @@
             # Don't include dark mode files in light mode
             ('remove', 'whatsapp/static/src/**/*.dark.scss'),
         ],
-        "web.dark_mode_assets_backend": [
+        "web.assets_web_dark": [
             'whatsapp/static/src/**/*.dark.scss',
         ],
         'web.tests_assets': [

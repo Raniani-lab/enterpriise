@@ -61,7 +61,7 @@
                 </t>
             </ControlPanel>
 
-            <div class="o_content px-3">
+            <div class="o_content">
                 <!-- Sections -->
                 <t t-if="controller.options.sections.length">
                     <div id="section_selector" class="section_selector">

@@ -99,14 +99,13 @@ class ProductTemplate(models.Model):
         if current_unit != pricing.recurrence_id.unit:
             ratio *= PERIOD_RATIO[current_unit] / PERIOD_RATIO[pricing.recurrence_id.unit]
 
-        company_id = False
+        company_id = website.company_id if website else self.env.company
+        partner = self.env.user.partner_id
+        fpos = self.env['account.fiscal.position'].sudo()._get_fiscal_position(partner)
+
         if website:
             #compute taxes
             product = (product or self)
-            partner = self.env.user.partner_id
-            company_id = website.company_id
-
-            fpos = self.env['account.fiscal.position'].sudo()._get_fiscal_position(partner)
             product_taxes = product.sudo().taxes_id.filtered(lambda t: t.company_id == company_id)
             taxes = fpos.map_tax(product_taxes)
             current_price = self._price_with_tax_computed(
@@ -123,13 +122,21 @@ class ProductTemplate(models.Model):
                 best_pricings[p.recurrence_id] = p
         suitable_pricings = best_pricings.values()
         currency = pricelist and pricelist.currency_id or self.env.company.currency_id
+        product_taxes = product.sudo().taxes_id.filtered(lambda t: t.company_id == company_id)
+        taxes = fpos.map_tax(product_taxes)
+
         def _pricing_price(pricing):
-            if pricing.currency_id == currency:
+            if not website:
                 return pricing.price
+            price = self._price_with_tax_computed(
+                pricing.price, product_taxes, taxes, company_id, pricelist, product, partner
+            )
+            if pricing.currency_id == currency:
+                return price
             return pricing.currency_id._convert(
-                pricing.price,
+                price,
                 currency,
-                company_id or self.env.company,
+                company_id,
                 fields.Date.context_today(self),
             )
         pricing_table = [(p.name, format_amount(self.env, _pricing_price(p), currency))

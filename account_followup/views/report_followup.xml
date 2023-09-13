@@ -91,11 +91,11 @@
 
             <t t-foreach="lines" t-as="line">
                 <t t-set="trclass" t-value="'o_account_reports_default_style'"/>
-                <t t-set="domainClass" t-value="'o_account_reports_domain_line_2 account_report_line_name'"/>
+                <t t-set="domainClass" t-value="'o_account_reports_domain_line_2 acc_rep_line_name'"/>
                 <t t-if="line.get('level') != None">
                     <t t-set="trclass" t-value="'o_account_searchable_line o_account_reports_level'+str(line['level'])"/>
                     <t t-if="line.get('caret_options')">
-                        <t t-set="domainClass" t-value="'o_account_reports_domain_line_' + str(line['level']) + ' account_report_line_name'"/>
+                        <t t-set="domainClass" t-value="'o_account_reports_domain_line_' + str(line['level']) + ' acc_rep_line_name'"/>
                     </t>
                 </t>
 
@@ -122,7 +122,7 @@
                         t-att-colspan="line.get('colspan', '1')"
                     >
                         <t t-if="not line.get('caret_options')">
-                            <span class="account_report_line_name" t-att-title="line.get('title_hover')"
+                            <span class="acc_rep_line_name" t-att-title="line.get('title_hover')"
                                 t-att-data-search-key="line.get('search_key')">
                                 <a t-if="line.get('action_id')" t-att-data-id="line['id']" t-att-data-action-id="line['action_id']" t-att-action="line.get('action', 'execute_action')">
                                     <t t-out="line.get('name')"/>

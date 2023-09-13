@@ -1812,7 +1812,10 @@ class BankRecWidget(models.Model):
             exchange_amounts = params['exchange_diff'].get(index)
             if exchange_amounts:
                 exch_diff_related_aml = line_aml if exchange_amounts['amount_residual'] * line_aml.amount_residual > 0 else counterpart_aml
-                exchange_vals = exch_diff_related_aml._prepare_exchange_difference_move_vals([exchange_amounts])
+                exchange_vals = exch_diff_related_aml._prepare_exchange_difference_move_vals(
+                    [exchange_amounts],
+                    exchange_date=max(line_aml.date, counterpart_aml.date)
+                )
                 exchange_diff_move = self.env['account.move.line']._create_exchange_difference_move(exchange_vals)
             rec_res = (line_aml + counterpart_aml).with_context(no_exchange_difference=True).reconcile()
             rec_res['partials'].exchange_move_id = exchange_diff_move

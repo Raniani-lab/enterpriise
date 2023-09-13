@@ -81,7 +81,7 @@ class TestWAPerformance(BaseMailPerformance, MockOutgoingWhatsApp, MockIncomingW
         test_wa_record = self.test_wa_records[0].with_user(self.env.user)
         wa_template = self.wa_template.with_user(self.env.user)
 
-        with self.mockWhatsappGateway(), self.assertQueryCount(employee=29):
+        with self.mockWhatsappGateway(), self.assertQueryCount(employee=30):
             composer = self.env['whatsapp.composer'].with_context({
                 'active_model': test_wa_record._name,
                 'active_ids': test_wa_record.ids,

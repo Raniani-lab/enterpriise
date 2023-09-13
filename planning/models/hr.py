@@ -5,7 +5,6 @@ import uuid
 
 from datetime import datetime, time, timedelta
 from odoo import fields, models, _, api
-from psycopg2.extras import execute_values
 
 _logger = logging.getLogger(__name__)
 
@@ -53,7 +52,7 @@ class Employee(models.Model):
                 FROM (VALUES %s) AS vals(id, token)
                 WHERE {table}.id = vals.id
             """.format(table=self._table)
-            execute_values(self.env.cr._obj, query, values_args)
+            self.env.cr.execute_values(query, values_args)
         else:
             super(Employee, self)._init_column(column_name)
 

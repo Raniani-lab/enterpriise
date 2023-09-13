@@ -2118,4 +2118,31 @@ QUnit.module("Views", (hooks) => {
         );
         assert.containsNone(target, "button[name='action_test_invisible']");
     });
+
+    QUnit.test("date should be grouped by month in year range", async function (assert) {
+        assert.expect(1);
+
+        await makeView({
+            type: "grid",
+            resModel: "analytic.line",
+            serverData,
+            arch: `
+                <grid display_empty="1">
+                    <field name="project_id" type="row"/>
+                    <field name="task_id" type="row"/>
+                    <field name="date" type="col">
+                        <range name="year" string="Year" span="year" step="month"/>
+                    </field>
+                    <field name="unit_amount" type="measure"/>
+                </grid>
+            `,
+            async mockRPC(route, args) {
+                if (args.method === "grid_unavailability") {
+                    return {};
+                } else if (args.method === "web_read_group") {
+                    assert.deepEqual(args.kwargs.groupby, ["date:month", "project_id", "task_id"]);
+                }
+            },
+        });
+    });
 });

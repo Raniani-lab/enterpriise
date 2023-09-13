@@ -438,7 +438,9 @@ export class GridDataPoint {
     }
 
     get columnGroupByFieldName() {
-        return this.columnFieldIsDate ? `${this.columnFieldName}:day` : this.columnFieldName;
+        return this.columnFieldIsDate
+            ? this.navigationInfo.range.name === 'year' ? `${this.columnFieldName}:month` : `${this.columnFieldName}:day`
+            : this.columnFieldName;
     }
 
     get readonlyField() {

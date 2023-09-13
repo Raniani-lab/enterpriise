@@ -175,7 +175,7 @@ export class TimesheetTimerRendererHook {
         if (propsList instanceof DynamicRecordList) {
             const timesheet =
                 propsList.records.find((record) => record.resId === this.timerState.timesheetId) ||
-                (await propsList.addExistingRecord(this.timerState.timersheetId, true));
+                (await propsList.addExistingRecord(this.timerState.timesheetId, true));
             if (this.propsList.editedRecord) {
                 this.propsList.leaveEditMode();
             }

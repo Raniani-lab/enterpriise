@@ -89,6 +89,13 @@ class WebStudioController(http.Controller):
             """),
         }
 
+    def _get_studio_action_automation_webhooks(self, model, **kwargs):
+        action = self._get_studio_action_automations(model, **kwargs)
+        action["display_name"] = _("Webhook Automations")
+        action["domain"] = "[('trigger', '=', 'on_webhook')]"
+        action["context"]["default_trigger"] = "on_webhook"
+        return action
+
     def _get_studio_action_automations(self, model, **kwargs):
         action = request.env['ir.actions.act_window']._for_xml_id('base_automation.base_automation_act')
         action['context'] = {

@@ -133,5 +133,6 @@ editorTabRegistry
     .add("views", { name: _t("Views"), action: "web_studio.action_editor" })
     .add("reports", { name: _t("Reports") })
     .add("automations", { name: _t("Automations") })
+    .add("automation_webhooks", { name: _t("Webhooks") })
     .add("acl", { name: _t("Access Control") })
     .add("filters", { name: _t("Filter Rules") });

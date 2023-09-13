@@ -81,11 +81,12 @@
                             </li>
                         </ul>
                     </li>
-                    <li t-if="object.videocall_location">
+                    <li t-if="object.videocall_redirection">
                         How to Join:
-                        <t t-if="object.get_base_url() in object.videocall_location"> Join with Odoo Discuss</t>
+                        <t t-if="object.videocall_source == 'discuss'"> Join with Odoo Discuss</t>
                         <t t-else=""> Join at</t><br/>
-                        <a t-attf-href="{{ object.videocall_location }}" target="_blank" t-out="object.videocall_location or ''">www.mycompany.com/calendar/join_videocall/xyz</a>
+                        <a t-attf-href="{{ object.videocall_redirection }}" target="_blank"
+                            t-out="object.videocall_redirection or ''">www.mycompany.com/calendar/join_videocall/xyz</a>
                     </li>
                 </ul>
                 <t t-if="not is_html_empty(object.description)">

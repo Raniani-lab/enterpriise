@@ -1,11 +1,15 @@
 /* @odoo-module */
 
-import { click, contains, start, startServer } from "@mail/../tests/helpers/test_utils";
+import { startServer } from "@bus/../tests/helpers/mock_python_environment";
+
+import { start } from "@mail/../tests/helpers/test_utils";
+
+import { click, contains } from "@web/../tests/utils";
 
 QUnit.module("Views", {}, function () {
     QUnit.module("AccountOnlineSynchronizationAccountRadio");
 
-    QUnit.test("can be rendered", async (assert) => {
+    QUnit.test("can be rendered", async () => {
         const pyEnv = await startServer();
         const onlineLink = pyEnv["account.online.link"].create([
             {

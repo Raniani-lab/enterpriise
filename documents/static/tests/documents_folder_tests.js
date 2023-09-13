@@ -1,17 +1,11 @@
-/** @odoo-module **/
+/* @odoo-module */
 
-import { createFolderView as originalCreateFolderView} from './documents_test_utils';
+import { startServer } from "@bus/../tests/helpers/mock_python_environment";
+
+import { createFolderView as originalCreateFolderView } from "./documents_test_utils";
 import { setupViewRegistries } from "@web/../tests/views/helpers";
 
-import {
-    startServer,
-} from '@mail/../tests/helpers/test_utils';
-
-import {
-    getFixture,
-    triggerEvent,
-    patchWithCleanup,
-} from '@web/../tests/helpers/utils';
+import { getFixture, triggerEvent, patchWithCleanup } from "@web/../tests/helpers/utils";
 
 import { toggleActionMenu, toggleMenuItem } from "@web/../tests/search/helpers";
 

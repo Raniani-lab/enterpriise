@@ -135,7 +135,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.containsOnce(fixture, ".o_kanban_view");
             await click(fixture.querySelector(".o_kanban_record"));
             assert.verifySteps(["/web/dataset/call_kw/partner/web_read"]);
-            await click(fixture, '.o_field_widget[name="m2o"] .o_external_button', true);
+            await click(fixture, '.o_field_widget[name="m2o"] .o_external_button');
             assert.verifySteps([
                 "/web/dataset/call_kw/partner/get_formview_action",
                 "/web/dataset/call_kw/partner/get_views",
@@ -166,7 +166,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 assert.containsOnce(fixture, ".o_kanban_view");
                 await click(fixture.querySelector(".o_kanban_record"));
                 assert.verifySteps(["/web/dataset/call_kw/partner/web_read"]);
-                await click(fixture, '.o_field_widget[name="m2o"] .o_external_button', true);
+                await click(fixture, '.o_field_widget[name="m2o"] .o_external_button');
                 assert.verifySteps([
                     "/web/dataset/call_kw/partner/get_formview_action",
                     "/web/dataset/call_kw/partner/get_views",
@@ -195,7 +195,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.containsOnce(fixture, ".o_kanban_view");
             await click(fixture.querySelector(".o_kanban_record"));
             assert.verifySteps(["/web/dataset/call_kw/partner/web_read"]);
-            await click(fixture, '.o_field_widget[name="m2o"] .o_external_button', true);
+            await click(fixture, '.o_field_widget[name="m2o"] .o_external_button');
             assert.verifySteps([
                 "/web/dataset/call_kw/partner/get_formview_action",
                 "/web/dataset/call_kw/partner/get_views",

@@ -1,11 +1,15 @@
 /* @odoo-module */
 
+import { startServer } from "@bus/../tests/helpers/mock_python_environment";
+
 import { Command } from "@mail/../tests/helpers/command";
-import { click, contains, start, startServer } from "@mail/../tests/helpers/test_utils";
+import { start } from "@mail/../tests/helpers/test_utils";
+
+import { click, contains } from "@web/../tests/utils";
 
 QUnit.module("messaging menu (patch)");
 
-QUnit.test("WhatsApp Channel notification items should have thread icon", async (assert) => {
+QUnit.test("WhatsApp Channel notification items should have thread icon", async () => {
     const pyEnv = await startServer();
     pyEnv["discuss.channel"].create({
         name: "WhatsApp 1",
@@ -16,7 +20,7 @@ QUnit.test("WhatsApp Channel notification items should have thread icon", async 
     await contains(".o-mail-NotificationItem .o-mail-ThreadIcon");
 });
 
-QUnit.test("Notification items should have unread counter for unread messages", async (assert) => {
+QUnit.test("Notification items should have unread counter for unread messages", async () => {
     const pyEnv = await startServer();
     pyEnv["discuss.channel"].create({
         name: "WhatsApp 1",
@@ -27,5 +31,5 @@ QUnit.test("Notification items should have unread counter for unread messages", 
     });
     await start();
     await click(".o_menu_systray i[aria-label='Messages']");
-    assert.strictEqual($(".o-mail-MessagingMenu-counter").text(), "1");
+    await contains(".o-mail-MessagingMenu-counter", { text: "1" });
 });

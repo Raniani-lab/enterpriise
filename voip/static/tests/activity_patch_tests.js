@@ -1,10 +1,13 @@
 /* @odoo-module */
 
-import { click, contains, start, startServer } from "@mail/../tests/helpers/test_utils";
+import { startServer } from "@bus/../tests/helpers/mock_python_environment";
+
+import { start } from "@mail/../tests/helpers/test_utils";
 
 import { EventBus } from "@odoo/owl";
 
 import { makeDeferred } from "@web/../tests/helpers/utils";
+import { click, contains } from "@web/../tests/utils";
 
 function makeFakeVoipService(onCall) {
     return {

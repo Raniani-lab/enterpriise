@@ -4,14 +4,10 @@ import { registry } from "@web/core/registry";
 import { ormService } from "@web/core/orm_service";
 import { userService } from "@web/core/user_service";
 import { serializeDateTime } from "@web/core/l10n/dates";
-import {
-    click,
-    editInput,
-    getFixture,
-    nextTick,
-} from "@web/../tests/helpers/utils";
+import { click, editInput, getFixture, nextTick } from "@web/../tests/helpers/utils";
 
 import { getPyEnv } from "@bus/../tests/helpers/mock_python_environment";
+
 import { start } from "@mail/../tests/helpers/test_utils";
 
 import { setupTestEnv } from "@hr_timesheet/../tests/hr_timesheet_common_tests";
@@ -103,8 +99,11 @@ QUnit.module("Views", (hooks) => {
         });
         await nextTick();
         assert.containsNone(target, 'div[name="task_id"]');
-        await editInput(target, "div[name='helpdesk_ticket_id'] .o_field_many2one_selection input", "fdfdfdf");
+        await editInput(
+            target,
+            "div[name='helpdesk_ticket_id'] .o_field_many2one_selection input",
+            "fdfdfdf"
+        );
         await click(target, ".btn_stop_timer");
     });
-
 });

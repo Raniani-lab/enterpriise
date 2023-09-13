@@ -1,11 +1,13 @@
-/** @odoo-module **/
+/* @odoo-module */
+
+import { startServer } from "@bus/../tests/helpers/mock_python_environment";
 
 import { getOrigin } from "@web/core/utils/urls";
-    import testUtils from "@web/../tests/legacy/helpers/test_utils";
+import testUtils from "@web/../tests/legacy/helpers/test_utils";
 
-    import { start, startServer } from "@mail/../tests/helpers/test_utils";
-    import { patchUiSize, SIZES } from "@mail/../tests/helpers/patch_ui_size";
-    import { ROUTES_TO_IGNORE as MAIL_ROUTES_TO_IGNORE } from "@mail/../tests/helpers/webclient_setup";
+import { start } from "@mail/../tests/helpers/test_utils";
+import { patchUiSize, SIZES } from "@mail/../tests/helpers/patch_ui_size";
+import { ROUTES_TO_IGNORE as MAIL_ROUTES_TO_IGNORE } from "@mail/../tests/helpers/webclient_setup";
 
     const ROUTES_TO_IGNORE = [
         '/bus/im_status',

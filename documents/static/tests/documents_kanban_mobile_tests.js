@@ -1,4 +1,6 @@
-/** @odoo-module **/
+/* @odoo-module */
+
+import { startServer } from "@bus/../tests/helpers/mock_python_environment";
 
 import { createDocumentsViewWithMessaging } from "./documents_test_utils";
 import { documentService } from "@documents/core/document_service";
@@ -8,8 +10,6 @@ import { voiceMessageService } from "@mail/discuss/voice_message/common/voice_me
 import { multiTabService } from "@bus/multi_tab_service";
 import { busParametersService } from "@bus/bus_parameters_service";
 import { busService } from "@bus/services/bus_service";
-
-import { startServer } from "@mail/../tests/helpers/test_utils";
 
 import { registry } from "@web/core/registry";
 import { click, getFixture, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
@@ -72,11 +72,11 @@ QUnit.module("documents", {}, function () {
                     pyEnv["documents.document"].create([
                         {
                             folder_id: documentsFolderId1,
-                            name: 'gnap',
+                            name: "gnap",
                         },
                         {
                             folder_id: documentsFolderId1,
-                            name: 'yop',
+                            name: "yop",
                         },
                     ]);
                     const views = {
@@ -319,11 +319,11 @@ QUnit.module("documents", {}, function () {
                     pyEnv["documents.document"].create([
                         {
                             folder_id: documentsFolderId1,
-                            name: 'gnap',
+                            name: "gnap",
                         },
                         {
                             folder_id: documentsFolderId1,
-                            name: 'yop',
+                            name: "yop",
                         },
                     ]);
                     const views = {

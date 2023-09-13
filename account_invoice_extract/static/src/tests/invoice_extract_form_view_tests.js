@@ -1,12 +1,14 @@
-/** @odoo-module **/
+/* @odoo-module */
+
+import { startServer } from "@bus/../tests/helpers/mock_python_environment";
 
 import { patchUiSize, SIZES } from "@mail/../tests/helpers/patch_ui_size";
-import { start, startServer } from "@mail/../tests/helpers/test_utils";
+import { start } from "@mail/../tests/helpers/test_utils";
 
 import { click, triggerEvent } from "@web/../tests/helpers/utils";
 
 import invoiceExtractTestUtils from "@account_invoice_extract/tests/helpers/invoice_extract_test_utils";
-import { accountMove } from '@account/components/account_move_service/account_move_service';
+import { accountMove } from "@account/components/account_move_service/account_move_service";
 
 QUnit.module(
     "invoice_extract_form_view_tests.js",
@@ -86,7 +88,7 @@ QUnit.module(
             const { openFormView } = await start({
                 serverData: { views },
                 services: {
-                    'account_move': accountMove,
+                    account_move: accountMove,
                 },
                 mockRPC(route, args) {
                     if (args.method === "get_boxes") {
@@ -213,9 +215,7 @@ QUnit.module(
             );
 
             // Click on the VAT number box with ID 1
-            await click(attachmentPreview, '.o_invoice_extract_box[data-id="1"]', {
-                skipVisibilityCheck: true,
-            });
+            await click(attachmentPreview, '.o_invoice_extract_box[data-id="1"]');
             assert.strictEqual(
                 document.querySelector(".o_field_widget[name=partner_id] input").value,
                 "Odoo",
@@ -233,9 +233,7 @@ QUnit.module(
             );
 
             // Click on the VAT number box with ID 2
-            await click(attachmentPreview, '.o_invoice_extract_box[data-id="2"]', {
-                skipVisibilityCheck: true,
-            });
+            await click(attachmentPreview, '.o_invoice_extract_box[data-id="2"]');
             // Check that a modal opened to create a res.partner with the VAT number pre-filled
             assert.strictEqual(
                 document.querySelector(".o_dialog input#vat_0").value,
@@ -248,9 +246,7 @@ QUnit.module(
             await triggerEvent(document, ".o_field_widget[name=partner_id] input", "focusin");
 
             // Click on the supplier box with ID 7
-            await click(attachmentPreview, '.o_invoice_extract_box[data-id="7"]', {
-                skipVisibilityCheck: true,
-            });
+            await click(attachmentPreview, '.o_invoice_extract_box[data-id="7"]');
             // Check that a modal opened to create a res.partner with the name pre-filled
             assert.strictEqual(
                 document.querySelector(".o_dialog input#name_0").value,
@@ -263,9 +259,7 @@ QUnit.module(
             await triggerEvent(document, ".o_field_widget[name=partner_id] input", "focusin");
 
             // Click on the VAT number box with ID 8
-            await click(attachmentPreview, '.o_invoice_extract_box[data-id="8"]', {
-                skipVisibilityCheck: true,
-            });
+            await click(attachmentPreview, '.o_invoice_extract_box[data-id="8"]');
             assert.strictEqual(
                 document.querySelector(".o_field_widget[name=partner_id] input").value,
                 "Odoo",
@@ -292,9 +286,7 @@ QUnit.module(
             );
 
             // Click on the invoice ID box with ID 4
-            await click(attachmentPreview, '.o_invoice_extract_box[data-id="4"]', {
-                skipVisibilityCheck: true,
-            });
+            await click(attachmentPreview, '.o_invoice_extract_box[data-id="4"]');
             assert.strictEqual(
                 document.querySelector(".o_field_widget[name=ref] input").value,
                 "some invoice_id",
@@ -324,9 +316,7 @@ QUnit.module(
             );
 
             // Click on the total box with ID 10
-            await click(attachmentPreview, '.o_invoice_extract_box[data-id="10"]', {
-                skipVisibilityCheck: true,
-            });
+            await click(attachmentPreview, '.o_invoice_extract_box[data-id="10"]');
             assert.strictEqual(
                 document.querySelector(".o_field_widget[name=quick_edit_total_amount] input").value,
                 "123.00",
@@ -352,9 +342,7 @@ QUnit.module(
             );
 
             // Click on the date box with ID 12
-            await click(attachmentPreview, '.o_invoice_extract_box[data-id="12"]', {
-                skipVisibilityCheck: true,
-            });
+            await click(attachmentPreview, '.o_invoice_extract_box[data-id="12"]');
             assert.strictEqual(
                 document.querySelector(".o_field_widget[name=invoice_date] input").value,
                 "01/01/2022",
@@ -381,9 +369,7 @@ QUnit.module(
             );
 
             // Click on the due date box with ID 14
-            await click(attachmentPreview, '.o_invoice_extract_box[data-id="14"]', {
-                skipVisibilityCheck: true,
-            });
+            await click(attachmentPreview, '.o_invoice_extract_box[data-id="14"]');
             assert.strictEqual(
                 document.querySelector(".o_field_widget[name=invoice_date_due] input").value,
                 "01/15/2022",
@@ -410,9 +396,7 @@ QUnit.module(
             );
 
             // Click on the currency box with ID 16
-            await click(attachmentPreview, '.o_invoice_extract_box[data-id="16"]', {
-                skipVisibilityCheck: true,
-            });
+            await click(attachmentPreview, '.o_invoice_extract_box[data-id="16"]');
             assert.strictEqual(
                 document.querySelector(".o_field_widget[name=currency_id] input").value,
                 "EUR",

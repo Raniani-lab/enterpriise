@@ -1,6 +1,6 @@
 /* @odoo-module */
 
-import { contains } from "@bus/../tests/helpers/test_utils";
+import { contains } from "@web/../tests/utils";
 
 import {
     click,

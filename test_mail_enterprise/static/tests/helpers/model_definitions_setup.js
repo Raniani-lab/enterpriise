@@ -1,5 +1,5 @@
-/** @odoo-module **/
+/* @odoo-module */
 
-import { addModelNamesToFetch } from '@bus/../tests/helpers/model_definitions_helpers';
+import { addModelNamesToFetch } from "@bus/../tests/helpers/model_definitions_helpers";
 
-addModelNamesToFetch(['mail.test.simple.main.attachment']);
+addModelNamesToFetch(["mail.test.simple.main.attachment"]);

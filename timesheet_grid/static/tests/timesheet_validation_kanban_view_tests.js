@@ -1,10 +1,9 @@
 /* @odoo-module */
 
-import { contains } from "@mail/../tests/helpers/test_utils";
-
-import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { click, getFixture } from "@web/../tests/helpers/utils";
 import { getVisibleButtons } from "@web/../tests/search/helpers";
+import { contains } from "@web/../tests/utils";
+import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 
 QUnit.module("timesheet_grid", (hooks) => {
     let target;

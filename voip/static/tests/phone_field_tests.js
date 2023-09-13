@@ -1,12 +1,14 @@
 /* @odoo-module */
 
+import { startServer } from "@bus/../tests/helpers/mock_python_environment";
 import { addFakeModel } from "@bus/../tests/helpers/model_definitions_helpers";
 
-import { click, contains, start, startServer } from "@mail/../tests/helpers/test_utils";
+import { start } from "@mail/../tests/helpers/test_utils";
 
 import { EventBus } from "@odoo/owl";
 
 import { makeDeferred, nextTick } from "@web/../tests/helpers/utils";
+import { click, contains } from "@web/../tests/utils";
 
 function makeFakeVoipService(onCall = () => {}) {
     return {
@@ -58,7 +60,7 @@ QUnit.test("Click on PhoneField link triggers a call", async (assert) => {
         },
     });
     await openFormView("fake", fakeId);
-    await click(".o_field_phone a:eq(0)");
+    await click(".o_field_phone a[href='tel:+3655369678']");
     await def;
     assert.verifySteps(["call placed"]);
 });
@@ -73,7 +75,7 @@ QUnit.test(
             services: { voip: makeFakeVoipService() },
         });
         await openFormView("fake", fakeId);
-        await click(".o_field_phone a:eq(0)");
+        await click(".o_field_phone a[href='tel:+689312172']");
         await nextTick();
         await contains(".o_form_readonly");
     }

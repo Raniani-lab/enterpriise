@@ -1,8 +1,9 @@
-/** @odoo-module */
+/* @odoo-module */
 
+import { startServer } from "@bus/../tests/helpers/mock_python_environment";
 import { getFixture } from "@web/../tests/helpers/utils";
-import { makeView,setupViewRegistries } from "@web/../tests/views/helpers";
-import { start, startServer } from "@mail/../tests/helpers/test_utils";
+import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
+import { start } from "@mail/../tests/helpers/test_utils";
 import { checkLabels, checkLegend, selectMode } from "@web/../tests/views/graph_view_tests";
 import { fakeCookieService } from "@web/../tests/helpers/mock_services";
 import { registry } from "@web/core/registry";

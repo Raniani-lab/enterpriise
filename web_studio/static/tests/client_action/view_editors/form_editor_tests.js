@@ -1,4 +1,6 @@
-/** @odoo-module */
+/* @odoo-module */
+
+import { startServer } from "@bus/../tests/helpers/mock_python_environment";
 
 import { browser } from "@web/core/browser/browser";
 import {
@@ -25,7 +27,7 @@ import { doAction } from "@web/../tests/webclient/helpers";
 import { openStudio, registerStudioDependencies } from "../../helpers";
 import { registry } from "@web/core/registry";
 import { makeArchChanger } from "./view_editor_tests_utils";
-import { start, startServer } from "@mail/../tests/helpers/test_utils";
+import { start } from "@mail/../tests/helpers/test_utils";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { RPCError } from "@web/core/network/rpc_service";
 import { setupManager } from "@mail/../tests/helpers/webclient_setup";
@@ -267,7 +269,7 @@ QUnit.module("View Editors", (hooks) => {
             resModel: "coucou",
         });
 
-        await click(target, ".o_web_studio_view_renderer .o_field_char", true);
+        await click(target, ".o_web_studio_view_renderer .o_field_char");
         assert.containsNone(
             target,
             ".o_web_studio_sidebar_optional_select",
@@ -425,7 +427,9 @@ QUnit.module("View Editors", (hooks) => {
         );
 
         // edit the image
-        await click(target, ".o_web_studio_form_view_editor .o_field_image", true);
+        await click(target, ".o_web_studio_form_view_editor .o_field_image", {
+            skipVisibilityCheck: true,
+        });
 
         assert.containsOnce(
             target,

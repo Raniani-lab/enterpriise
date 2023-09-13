@@ -1,8 +1,11 @@
 /* @odoo-module */
 
+import { startServer } from "@bus/../tests/helpers/mock_python_environment";
 import { addModelNamesToFetch } from "@bus/../tests/helpers/model_definitions_helpers";
 
-import { click, contains, insertText, start, startServer } from "@mail/../tests/helpers/test_utils";
+import { start } from "@mail/../tests/helpers/test_utils";
+
+import { click, contains, insertText } from "@web/../tests/utils";
 
 addModelNamesToFetch(["helpdesk.ticket"]);
 

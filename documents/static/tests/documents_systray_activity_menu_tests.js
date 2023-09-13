@@ -1,8 +1,9 @@
 /* @odoo-module */
 
-import { click, contains, start } from "@mail/../tests/helpers/test_utils";
+import { start } from "@mail/../tests/helpers/test_utils";
 
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
+import { click, contains } from "@web/../tests/utils";
 
 QUnit.module("documents", {}, function () {
     QUnit.module("documents_systray_activity_menu_tests.js");

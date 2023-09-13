@@ -1,5 +1,7 @@
 /* @odoo-module */
 
+import { startServer } from "@bus/../tests/helpers/mock_python_environment";
+
 import { fileUploadService } from "@web/core/file_upload/file_upload_service";
 import { multiTabService } from "@bus/multi_tab_service";
 import { busParametersService } from "@bus/bus_parameters_service";
@@ -18,13 +20,6 @@ import { setupViewRegistries } from "@web/../tests/views/helpers";
 import { fakeCookieService, makeFakeUserService } from "@web/../tests/helpers/mock_services";
 
 import {
-    click as mailClick,
-    contains,
-    insertText,
-    startServer,
-} from "@mail/../tests/helpers/test_utils";
-
-import {
     toggleMenuItem,
     toggleSearchBarMenu,
     pagerNext,
@@ -33,13 +28,13 @@ import {
 
 import testUtils from "@web/../tests/legacy/helpers/test_utils";
 import {
+    click as legacyClick,
     editInput,
     clickOpenedDropdownItem,
     clickOpenM2ODropdown,
     dragAndDrop,
     getFixture,
     nextTick,
-    click,
     patchWithCleanup,
     triggerEvent,
 } from "@web/../tests/helpers/utils";
@@ -47,6 +42,7 @@ import { str_to_datetime } from "@web/legacy/js/core/time";
 import { session } from "@web/session";
 import { browser, makeRAMLocalStorage } from "@web/core/browser/browser";
 import { serializeDate } from "@web/core/l10n/dates";
+import { click, contains, insertText } from "@web/../tests/utils";
 
 const { DateTime } = luxon;
 const serviceRegistry = registry.category("services");
@@ -317,7 +313,7 @@ QUnit.module("documents", {}, function () {
                     "Should only have a single all selector"
                 );
 
-                await click(target, ".o_search_panel_category_value:nth-of-type(1) header");
+                await legacyClick(target, ".o_search_panel_category_value:nth-of-type(1) header");
 
                 assert.containsOnce(
                     target.querySelector(".o_cp_buttons"),
@@ -334,7 +330,7 @@ QUnit.module("documents", {}, function () {
                     "the request button should be disabled on global view"
                 );
 
-                await click(target, ".o_kanban_record:nth-of-type(1) .o_record_selector");
+                await legacyClick(target, ".o_kanban_record:nth-of-type(1) .o_record_selector");
                 assert.ok(
                     target.querySelector(".o_documents_kanban_share_domain").disabled === false,
                     "the share button should be enabled on global view when documents are selected"
@@ -352,7 +348,7 @@ QUnit.module("documents", {}, function () {
                     "should not display the tag navigation because no workspace is selected by default"
                 );
 
-                await click(target, ".o_search_panel_category_value:nth-of-type(2) header");
+                await legacyClick(target, ".o_search_panel_category_value:nth-of-type(2) header");
 
                 // check view layout
                 assert.containsN(target, ".o_content > div", 3, "should have 3 columns");
@@ -463,7 +459,7 @@ QUnit.module("documents", {}, function () {
                         "o_record_selected",
                         "first record should not be selected"
                     );
-                    await click(firstRecord, ".o_record_selector");
+                    await legacyClick(firstRecord, ".o_record_selector");
                     assert.hasClass(
                         firstRecord,
                         "o_record_selected",
@@ -476,14 +472,14 @@ QUnit.module("documents", {}, function () {
                         "o_record_selected",
                         "third record should not be selected"
                     );
-                    await click(thirdRecord, ".o_record_selector");
+                    await legacyClick(thirdRecord, ".o_record_selector");
                     assert.hasClass(
                         thirdRecord,
                         "o_record_selected",
                         "third record should be selected"
                     );
 
-                    await click(firstRecord, ".o_record_selector");
+                    await legacyClick(firstRecord, ".o_record_selector");
                     assert.doesNotHaveClass(
                         firstRecord,
                         "o_record_selected",
@@ -517,7 +513,7 @@ QUnit.module("documents", {}, function () {
                 );
 
                 const firstRecord = target.querySelector(".o_kanban_record");
-                await click(firstRecord);
+                await legacyClick(firstRecord);
                 assert.containsOnce(
                     target,
                     ".o_kanban_record.o_record_selected",
@@ -530,7 +526,7 @@ QUnit.module("documents", {}, function () {
                 );
 
                 const thirdRecord = target.querySelectorAll(".o_kanban_record")[2];
-                await click(thirdRecord);
+                await legacyClick(thirdRecord);
                 assert.containsOnce(
                     target,
                     ".o_kanban_record.o_record_selected",
@@ -555,9 +551,9 @@ QUnit.module("documents", {}, function () {
                 });
                 await contains(".o_kanban_record", { count: 11 });
                 await contains(".o_kanban_record.o_record_selected", { count: 0 });
-                await mailClick(".o_kanban_record:eq(0)");
+                await click(":nth-child(1 of .o_kanban_record)");
                 await contains(".o_kanban_record.o_record_selected");
-                await mailClick(".o_kanban_record:eq(0)");
+                await click(":nth-child(1 of .o_kanban_record)");
                 await contains(".o_kanban_record.o_record_selected", { count: 0 });
             });
 
@@ -702,10 +698,10 @@ QUnit.module("documents", {}, function () {
                     target,
                     ".o_field_widget[name=is_editable_attachment] input:checked"
                 );
-                await click(target.querySelectorAll(".o_record_selector")[3]);
-                await click(target.querySelectorAll(".o_record_selector")[4]);
+                await legacyClick(target.querySelectorAll(".o_record_selector")[3]);
+                await legacyClick(target.querySelectorAll(".o_record_selector")[4]);
                 assert.containsN(target, ".o_record_selected", 2);
-                await click(
+                await legacyClick(
                     target.querySelectorAll(".o_field_widget[name=is_editable_attachment] input")[4]
                 );
                 assert.containsN(
@@ -831,7 +827,7 @@ QUnit.module("documents", {}, function () {
                         "should show 3 document previews in the DocumentsInspector"
                     );
 
-                    await click(
+                    await legacyClick(
                         Array.from(target.querySelectorAll(".o_kanban_record button")).find(
                             (el) => el.parentElement.textContent.trim() === "yop"
                         )
@@ -904,9 +900,11 @@ QUnit.module("documents", {}, function () {
                         return oldDoAction.call(this, action);
                     },
                 });
-                await click(target.querySelectorAll(".o_search_panel_category_value header")[1]);
+                await legacyClick(
+                    target.querySelectorAll(".o_search_panel_category_value header")[1]
+                );
                 // filter on 'task' in the DocumentsSelector
-                await click($(target).find(".o_search_panel_label_title:contains(Task)")[0]);
+                await legacyClick($(target).find(".o_search_panel_label_title:contains(Task)")[0]);
 
                 assert.containsN(
                     target,
@@ -915,8 +913,8 @@ QUnit.module("documents", {}, function () {
                     "should have 2 records in the renderer"
                 );
 
-                await click($(".o_cp_buttons .dropdown-toggle-split:visible").get(0));
-                await click($(".o_documents_kanban_share_domain:visible").get(0));
+                await legacyClick($(".o_cp_buttons .dropdown-toggle-split:visible").get(0));
+                await legacyClick($(".o_documents_kanban_share_domain:visible").get(0));
             });
 
             QUnit.test("can upload from URL", async function (assert) {
@@ -942,11 +940,11 @@ QUnit.module("documents", {}, function () {
                     },
                 });
 
-                await click(
+                await legacyClick(
                     target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                 );
-                await click($(".o_cp_buttons .dropdown-toggle-split:visible").get(0));
-                await click($(".o_documents_kanban_url:visible").get(0));
+                await legacyClick($(".o_cp_buttons .dropdown-toggle-split:visible").get(0));
+                await legacyClick($(".o_documents_kanban_url:visible").get(0));
             });
 
             QUnit.test("can Request a file", async function (assert) {
@@ -972,11 +970,11 @@ QUnit.module("documents", {}, function () {
                     },
                 });
 
-                await click(
+                await legacyClick(
                     target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                 );
-                await click($(".o_cp_buttons .dropdown-toggle-split:visible").get(0));
-                await click($(".o_documents_kanban_request:visible").get(0));
+                await legacyClick($(".o_cp_buttons .dropdown-toggle-split:visible").get(0));
+                await legacyClick($(".o_documents_kanban_request:visible").get(0));
             });
 
             QUnit.test("can navigate with arrows", async function (assert) {
@@ -991,7 +989,7 @@ QUnit.module("documents", {}, function () {
                     </div>
                 </t></templates></kanban>`,
                 });
-                await click(
+                await legacyClick(
                     target.querySelector(".o_search_panel_category_value:nth-of-type(1) header")
                 );
                 // Force specific sizes for the test.
@@ -1085,7 +1083,7 @@ QUnit.module("documents", {}, function () {
                 </t></templates></kanban>`,
                 });
 
-                await click(
+                await legacyClick(
                     target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                 );
                 assert.strictEqual(
@@ -1122,7 +1120,7 @@ QUnit.module("documents", {}, function () {
                 });
 
                 // select a first document
-                await click(
+                await legacyClick(
                     target.querySelector(".o_kanban_record:nth-of-type(1) .o_record_selector")
                 );
 
@@ -1143,7 +1141,7 @@ QUnit.module("documents", {}, function () {
                 );
 
                 // select a second document
-                await click(
+                await legacyClick(
                     target.querySelector(".o_kanban_record:nth-of-type(2) .o_record_selector")
                 );
 
@@ -1270,11 +1268,11 @@ QUnit.module("documents", {}, function () {
                     views: [[false, "kanban"]],
                 });
 
-                await click($(target).find(".o_kanban_record:contains(yop)")[0]);
+                await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
 
                 assert.containsNone(target, ".o_document_preview img");
 
-                await click($(target).find(".o_kanban_record:contains(burp)")[0]);
+                await legacyClick($(target).find(".o_kanban_record:contains(burp)")[0]);
 
                 assert.containsNone(target, ".o-FileViewer", "should not have a document preview");
                 assert.containsOnce(
@@ -1283,16 +1281,16 @@ QUnit.module("documents", {}, function () {
                     "should have a clickable image"
                 );
 
-                await click(target, ".o_document_preview img");
+                await legacyClick(target, ".o_document_preview img");
 
                 assert.containsOnce(target, ".o-FileViewer");
                 assert.containsOnce(target, ".o-FileViewer div[aria-label='Close']");
 
-                await click(target, ".o-FileViewer div[aria-label='Close']");
+                await legacyClick(target, ".o-FileViewer div[aria-label='Close']");
 
-                await click($(target).find(".o_kanban_record:contains(blip)")[0]);
+                await legacyClick($(target).find(".o_kanban_record:contains(blip)")[0]);
 
-                await click(target, ".o_preview_available");
+                await legacyClick(target, ".o_preview_available");
 
                 assert.containsOnce(target, ".o-FileViewer div[title='Split PDF']");
                 assert.containsOnce(
@@ -1303,7 +1301,7 @@ QUnit.module("documents", {}, function () {
                     "should have an iframe with the correct pdfviewer src"
                 );
 
-                await click(target, ".o-FileViewer div[aria-label='Close']");
+                await legacyClick(target, ".o-FileViewer div[aria-label='Close']");
 
                 assert.containsNone(target, ".o-FileViewer");
             });
@@ -1333,20 +1331,20 @@ QUnit.module("documents", {}, function () {
                         views: [[false, "kanban"]],
                     });
 
-                    await click($(target).find(".o_kanban_record:contains(burp)")[0]);
+                    await legacyClick($(target).find(".o_kanban_record:contains(burp)")[0]);
 
                     await editInput(target, "div[name=name] input", "foo");
 
-                    await click(target, ".o_document_preview img");
+                    await legacyClick(target, ".o_document_preview img");
                     await nextTick();
                     assert.containsNone(target, ".o-FileViewer");
 
                     def.resolve();
                     await nextTick();
-                    await click(target, ".o_document_preview img");
+                    await legacyClick(target, ".o_document_preview img");
                     await nextTick();
                     assert.containsOnce(target, ".o-FileViewer");
-                    await click(target, ".o-FileViewer div[aria-label='Close']");
+                    await legacyClick(target, ".o-FileViewer div[aria-label='Close']");
                 }
             );
 
@@ -1379,8 +1377,10 @@ QUnit.module("documents", {}, function () {
                     },
                 });
 
-                await click($(target).find(".o_kanban_record:contains(wip) .o_record_selector")[0]);
-                await click(
+                await legacyClick(
+                    $(target).find(".o_kanban_record:contains(wip) .o_record_selector")[0]
+                );
+                await legacyClick(
                     $(target).find(".o_kanban_record:contains(zorro) .o_record_selector")[0]
                 );
 
@@ -1392,7 +1392,7 @@ QUnit.module("documents", {}, function () {
                     "should show 2 document previews in the DocumentsInspector"
                 );
 
-                await click(
+                await legacyClick(
                     target.querySelector(".o_documents_inspector_info .o_inspector_delete")
                 );
                 // await nextTick();
@@ -1419,8 +1419,10 @@ QUnit.module("documents", {}, function () {
                 </t></templates></kanban>`,
                 });
 
-                await click($(target).find(".o_kanban_record:contains(yop) .o_record_selector")[0]);
-                await click(
+                await legacyClick(
+                    $(target).find(".o_kanban_record:contains(yop) .o_record_selector")[0]
+                );
+                await legacyClick(
                     $(target).find(".o_kanban_record:contains(burp) .o_record_selector")[0]
                 );
 
@@ -1432,7 +1434,7 @@ QUnit.module("documents", {}, function () {
                     "should show 2 document previews in the DocumentsInspector"
                 );
 
-                await click(
+                await legacyClick(
                     target.querySelector(".o_documents_inspector_info .o_inspector_archive")
                 );
 
@@ -1478,17 +1480,21 @@ QUnit.module("documents", {}, function () {
                     },
                 });
 
-                await click(
+                await legacyClick(
                     target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                 );
-                await click($(target).find(".o_kanban_record:contains(yop) .o_record_selector")[0]);
-                await click(
+                await legacyClick(
+                    $(target).find(".o_kanban_record:contains(yop) .o_record_selector")[0]
+                );
+                await legacyClick(
                     $(target).find(".o_kanban_record:contains(blip) .o_record_selector")[0]
                 );
 
                 assert.containsN(target, ".o_record_selected", 2, "should have 2 selected records");
 
-                await click(target.querySelector(".o_documents_inspector_info .o_inspector_share"));
+                await legacyClick(
+                    target.querySelector(".o_documents_inspector_info .o_inspector_share")
+                );
                 assert.containsN(target, ".o_notification_body", 1, "should have a notification");
             });
 
@@ -1508,7 +1514,7 @@ QUnit.module("documents", {}, function () {
                 });
 
                 // select a record that is locked by ourself
-                await click($(target).find(".o_kanban_record:contains(zip)")[0]);
+                await legacyClick($(target).find(".o_kanban_record:contains(zip)")[0]);
 
                 assert.hasClass(
                     target.querySelector(".o_inspector_lock"),
@@ -1525,7 +1531,7 @@ QUnit.module("documents", {}, function () {
                 );
 
                 // select a record that is locked by someone else
-                await click($(target).find(".o_kanban_record:contains(gnap)")[0]);
+                await legacyClick($(target).find(".o_kanban_record:contains(gnap)")[0]);
 
                 assert.hasClass(
                     target.querySelector(".o_inspector_lock"),
@@ -1580,7 +1586,7 @@ QUnit.module("documents", {}, function () {
                     },
                 });
 
-                await click($(target).find(".o_kanban_record:contains(yop)")[0]);
+                await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
 
                 assert.doesNotHaveClass(
                     target.querySelector(".o_inspector_lock"),
@@ -1589,7 +1595,7 @@ QUnit.module("documents", {}, function () {
                 );
 
                 // lock the record
-                await click(target.querySelector(".o_inspector_lock"));
+                await legacyClick(target.querySelector(".o_inspector_lock"));
 
                 assert.hasClass(
                     target.querySelector(".o_inspector_lock"),
@@ -1598,7 +1604,7 @@ QUnit.module("documents", {}, function () {
                 );
 
                 // unlock the record
-                await click(target.querySelector(".o_inspector_lock"));
+                await legacyClick(target.querySelector(".o_inspector_lock"));
 
                 assert.doesNotHaveClass(
                     target.querySelector(".o_inspector_lock"),
@@ -1622,7 +1628,7 @@ QUnit.module("documents", {}, function () {
                 </t></templates></kanban>`,
                     });
 
-                    await click($(target).find(".o_kanban_record:contains(yop)")[0]);
+                    await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
 
                     assert.strictEqual(
                         target.querySelector(".o_field_widget[name=name] input").value,
@@ -1705,7 +1711,7 @@ QUnit.module("documents", {}, function () {
                         "should display the correct owner"
                     );
 
-                    await click(firstRecord);
+                    await legacyClick(firstRecord);
 
                     assert.hasClass(firstRecord, "o_record_selected");
 
@@ -1753,8 +1759,8 @@ QUnit.module("documents", {}, function () {
                     // select two records with same m2o value
                     const blip = $(target).find(".o_kanban_record:contains(blip)")[0];
                     const gnap = $(target).find(".o_kanban_record:contains(gnap)")[0];
-                    await click(blip);
-                    await click(gnap, ".o_record_selector");
+                    await legacyClick(blip);
+                    await legacyClick(gnap, ".o_record_selector");
 
                     assert.hasClass(blip, "o_record_selected", "blip record should be selected");
                     assert.hasClass(gnap, "o_record_selected", "gnap record should be selected");
@@ -1772,7 +1778,7 @@ QUnit.module("documents", {}, function () {
 
                     // select a third record with another m2o value
                     const yop = $(target).find(".o_kanban_record:contains(yop)")[0];
-                    await click(yop, ".o_record_selector");
+                    await legacyClick(yop, ".o_record_selector");
                     assert.hasClass(yop, "o_record_selected", "yop record should be selected");
 
                     assert.strictEqual(
@@ -1830,8 +1836,8 @@ QUnit.module("documents", {}, function () {
                         "should display the correct owner (record 2)"
                     );
 
-                    await click(firstRecord);
-                    await click(secondRecord, ".o_record_selector");
+                    await legacyClick(firstRecord);
+                    await legacyClick(secondRecord, ".o_record_selector");
 
                     assert.hasClass(
                         firstRecord,
@@ -1916,7 +1922,7 @@ QUnit.module("documents", {}, function () {
                         "yop",
                         "should display the correct filename"
                     );
-                    await click(target.querySelector(".o_kanban_record"));
+                    await legacyClick(target.querySelector(".o_kanban_record"));
 
                     // change filename value of selected record (but block RPC)
                     value = "temp name";
@@ -1975,9 +1981,9 @@ QUnit.module("documents", {}, function () {
                     },
                 });
 
-                await click(target.querySelector(".o_kanban_record"));
+                await legacyClick(target.querySelector(".o_kanban_record"));
 
-                await click(
+                await legacyClick(
                     target.querySelector(".o_documents_inspector .o_inspector_object_name")
                 );
             });
@@ -1998,10 +2004,10 @@ QUnit.module("documents", {}, function () {
                 </t></templates></kanban>`,
                     });
 
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                     );
-                    await click(target.querySelector(".o_kanban_record"));
+                    await legacyClick(target.querySelector(".o_kanban_record"));
 
                     assert.containsN(
                         target,
@@ -2010,7 +2016,7 @@ QUnit.module("documents", {}, function () {
                         "should display the tags of the selected document"
                     );
 
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_kanban_record:nth-of-type(2) .o_record_selector")
                     );
 
@@ -2048,10 +2054,10 @@ QUnit.module("documents", {}, function () {
                 </t></templates></kanban>`,
                     });
 
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                     );
-                    await click($(target).find(".o_kanban_record:contains(gnap)")[0]);
+                    await legacyClick($(target).find(".o_kanban_record:contains(gnap)")[0]);
 
                     assert.containsN(target, ".o_inspector_tag", 3, "should have 3 tags");
                     assert.containsNone(
@@ -2095,17 +2101,17 @@ QUnit.module("documents", {}, function () {
                     },
                 });
 
-                await click(
+                await legacyClick(
                     target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                 );
-                await click(target.querySelector(".o_kanban_record"));
-                await click(
+                await legacyClick(target.querySelector(".o_kanban_record"));
+                await legacyClick(
                     target.querySelector(".o_kanban_record:nth-of-type(5) .o_record_selector")
                 );
 
                 assert.containsN(target, ".o_inspector_tag", 2, "should display two tags");
 
-                await click(
+                await legacyClick(
                     target.querySelector(".o_inspector_tag:nth-of-type(2) .o_inspector_tag_remove")
                 );
 
@@ -2145,11 +2151,11 @@ QUnit.module("documents", {}, function () {
                     },
                 });
 
-                await click(
+                await legacyClick(
                     target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                 );
-                await click(target.querySelector(".o_kanban_record"));
-                await click(
+                await legacyClick(target.querySelector(".o_kanban_record"));
+                await legacyClick(
                     target.querySelector(".o_kanban_record:nth-of-type(2) .o_record_selector")
                 );
 
@@ -2160,14 +2166,14 @@ QUnit.module("documents", {}, function () {
                     "the tag input should not be focused"
                 );
 
-                click(input);
+                legacyClick(input);
                 await contains(".o_inspector_tags ul li", { count: 2 });
                 assert.containsOnce(target, ".o_inspector_tag");
 
                 editInput(input, null, "stress");
                 await contains(".o_inspector_tags ul:not(:contains(Status))");
 
-                click(target.querySelector(".o_inspector_tags ul li"));
+                legacyClick(target.querySelector(".o_inspector_tags ul li"));
                 await contains(".o_inspector_tag", { count: 2 });
 
                 assert.strictEqual(
@@ -2192,14 +2198,14 @@ QUnit.module("documents", {}, function () {
                 </t></templates></kanban>`,
                     });
 
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                     );
-                    await click(target.querySelector(".o_kanban_record"));
+                    await legacyClick(target.querySelector(".o_kanban_record"));
 
                     await contains(".o_inspector_tag", { count: 2 });
 
-                    await click(target.querySelector(".o_inspector_tags input"));
+                    await legacyClick(target.querySelector(".o_inspector_tags input"));
                     editInput(target.querySelector(".o_inspector_tags input"), null, "new");
                     await contains(".o_inspector_tags ul", { count: 0 });
                 }
@@ -2220,12 +2226,12 @@ QUnit.module("documents", {}, function () {
                 </t></templates></kanban>`,
                     });
 
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                     );
-                    await click(target.querySelector(".o_kanban_record"));
+                    await legacyClick(target.querySelector(".o_kanban_record"));
 
-                    click(target.querySelector(".o_inspector_tags input"));
+                    legacyClick(target.querySelector(".o_inspector_tags input"));
                     await contains(".o_inspector_tags ul li");
                 }
             );
@@ -2248,10 +2254,10 @@ QUnit.module("documents", {}, function () {
                 </t></templates></kanban>`,
                 });
 
-                await click(
+                await legacyClick(
                     target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                 );
-                await click(target.querySelector(".o_kanban_record"));
+                await legacyClick(target.querySelector(".o_kanban_record"));
 
                 assert.containsN(
                     target,
@@ -2277,10 +2283,10 @@ QUnit.module("documents", {}, function () {
                 </t></templates></kanban>`,
                     });
 
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                     );
-                    await click(target.querySelector(".o_kanban_record"));
+                    await legacyClick(target.querySelector(".o_kanban_record"));
 
                     assert.containsN(
                         target,
@@ -2289,7 +2295,7 @@ QUnit.module("documents", {}, function () {
                         "should display the rules of the selected document"
                     );
 
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_kanban_record:nth-of-type(2)"),
                         ".o_record_selector"
                     );
@@ -2343,10 +2349,10 @@ QUnit.module("documents", {}, function () {
                 </t></templates></kanban>`,
                     });
 
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                     );
-                    await click(target.querySelector(".o_kanban_record"));
+                    await legacyClick(target.querySelector(".o_kanban_record"));
 
                     assert.containsN(
                         target,
@@ -2355,7 +2361,7 @@ QUnit.module("documents", {}, function () {
                         "should display the rules of the selected document (2 multi record, 1 single record)"
                     );
 
-                    await click(
+                    await legacyClick(
                         target.querySelectorAll(".o_kanban_record")[4],
                         ".o_record_selector"
                     );
@@ -2392,10 +2398,10 @@ QUnit.module("documents", {}, function () {
                 </t></templates></kanban>`,
                 });
 
-                await click(
+                await legacyClick(
                     target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                 );
-                await click($(target).find(".o_kanban_record:contains(lockedByAnother)")[0]);
+                await legacyClick($(target).find(".o_kanban_record:contains(lockedByAnother)")[0]);
 
                 assert.containsNone(target, ".o_inspector_rule", "should not display any rule");
 
@@ -2446,10 +2452,10 @@ QUnit.module("documents", {}, function () {
                         },
                     });
 
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                     );
-                    await click($(target).find(".o_kanban_record:contains(yop)")[0]);
+                    await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
 
                     assert.containsN(
                         target,
@@ -2476,8 +2482,8 @@ QUnit.module("documents", {}, function () {
                         "should display the right rule"
                     );
 
-                    // click on the button to reload the record
-                    await click($(target).find(".o_kanban_record:contains(yop) button")[0]);
+                    // legacyClick on the button to reload the record
+                    await legacyClick($(target).find(".o_kanban_record:contains(yop) button")[0]);
 
                     assert.strictEqual(
                         $(target).find(".o_record_selected:contains(yop changed)").length,
@@ -2539,11 +2545,11 @@ QUnit.module("documents", {}, function () {
                         },
                     });
 
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                     );
-                    await click(target.querySelector(".o_kanban_record"));
-                    await click(
+                    await legacyClick(target.querySelector(".o_kanban_record"));
+                    await legacyClick(
                         target.querySelector(".o_kanban_record:nth-of-type(2) .o_record_selector")
                     );
 
@@ -2552,7 +2558,7 @@ QUnit.module("documents", {}, function () {
                         ".o_inspector_rule",
                         "should display the common rules between the two selected documents"
                     );
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_inspector_rule .o_inspector_trigger_rule")
                     );
                 }
@@ -2598,10 +2604,10 @@ QUnit.module("documents", {}, function () {
                     });
 
                     // Document with an editable link.
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                     );
-                    await click(target.querySelector(".o_kanban_record"));
+                    await legacyClick(target.querySelector(".o_kanban_record"));
 
                     assert.containsOnce(
                         target,
@@ -2615,8 +2621,8 @@ QUnit.module("documents", {}, function () {
                     );
 
                     // Delete the link
-                    await click(target.querySelector(".o_inspector_model_delete"));
-                    await click(target.querySelector(".modal-footer .btn-primary"));
+                    await legacyClick(target.querySelector(".o_inspector_model_delete"));
+                    await legacyClick(target.querySelector(".modal-footer .btn-primary"));
                     assert.containsNone(
                         target,
                         "o_inspector_custom_field .o_model_container",
@@ -2624,8 +2630,8 @@ QUnit.module("documents", {}, function () {
                     );
 
                     // Document with a non-editable link
-                    await click(target.querySelector(".o_kanban_record"));
-                    await click(
+                    await legacyClick(target.querySelector(".o_kanban_record"));
+                    await legacyClick(
                         target.querySelector(".o_kanban_record:nth-of-type(2) .o_record_selector")
                     );
 
@@ -2662,7 +2668,7 @@ QUnit.module("documents", {}, function () {
                     </div>
                 </t></templates></kanban>`,
                     });
-                    await click(target.querySelector(".o_kanban_record"));
+                    await legacyClick(target.querySelector(".o_kanban_record"));
                     const input = await clickOpenM2ODropdown(target, "partner_id");
                     await editInput(input, null, "Dupont");
                     assert.strictEqual(
@@ -2708,16 +2714,19 @@ QUnit.module("documents", {}, function () {
 
                 assert.containsN(target, ".o_kanban_record:not(.o_kanban_ghost)", 5);
                 assert.containsNone(target, ".o_record_selected");
-                await click(target.querySelector(".o_record_selector"));
-                await click(target.querySelectorAll(".o_record_selector")[1]);
+                await legacyClick(target.querySelector(".o_record_selector"));
+                await legacyClick(target.querySelectorAll(".o_record_selector")[1]);
                 assert.containsN(target, ".o_record_selected", 2);
-                await click(target, ".o_documents_inspector .o_field_widget[name=folder_id] input");
+                await legacyClick(
+                    target,
+                    ".o_documents_inspector .o_field_widget[name=folder_id] input"
+                );
                 assert.containsN(
                     target,
                     ".o_documents_inspector .o_field_widget[name=folder_id] .o-autocomplete li",
                     5
                 );
-                await click(
+                await legacyClick(
                     target.querySelectorAll(
                         ".o_documents_inspector .o_field_widget[name=folder_id] .o-autocomplete li"
                     )[2]
@@ -2750,7 +2759,7 @@ QUnit.module("documents", {}, function () {
                         </t></templates></kanban>`,
                     });
 
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_kanban_record:nth-of-type(6) .o_record_selector")
                     );
                     assert.ok(
@@ -2758,7 +2767,7 @@ QUnit.module("documents", {}, function () {
                         "the download button should be disabled when a requested document is selected"
                     );
 
-                    await click(target.querySelector(".o_kanban_record .o_record_selector"));
+                    await legacyClick(target.querySelector(".o_kanban_record .o_record_selector"));
                     assert.ok(
                         target.querySelector(".o_inspector_download").disabled === false,
                         "the download button should be enabled when selecting requested document with another document"
@@ -2790,12 +2799,12 @@ QUnit.module("documents", {}, function () {
                 assert.containsNone(target, ".o-mail-Chatter");
 
                 // select a record
-                await click($(target).find(".o_kanban_record:contains(yop)")[0]);
+                await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
 
                 assert.containsNone(target, ".o-mail-Chatter");
 
                 // open the chatter
-                await click(
+                await legacyClick(
                     target.querySelector(".o_documents_inspector .o_inspector_open_chatter")
                 );
 
@@ -2805,7 +2814,7 @@ QUnit.module("documents", {}, function () {
                 assert.containsOnce(target, ".o_documents_inspector:visible");
 
                 // close the chatter
-                await click(target.querySelector(".o-mail-Chatter-close"));
+                await legacyClick(target.querySelector(".o-mail-Chatter-close"));
                 assert.containsNone(target, ".o_document_chatter_container .o-mail-Chatter");
             });
 
@@ -2845,8 +2854,8 @@ QUnit.module("documents", {}, function () {
                         res_model: "documents.document",
                         views: [[false, "kanban"]],
                     });
-                    await click($(target).find(".o_kanban_record:contains(yop)")[0]);
-                    await mailClick(".o_documents_inspector .o_inspector_open_chatter");
+                    await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
+                    await click(".o_documents_inspector .o_inspector_open_chatter");
                     await contains(".o_document_chatter_container .o-mail-Chatter");
                     assert.containsN(
                         target,
@@ -2895,9 +2904,9 @@ QUnit.module("documents", {}, function () {
                     views: [[false, "kanban"]],
                 });
 
-                await click($(target).find(".o_kanban_record:contains(yop)")[0]);
+                await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
 
-                await click(
+                await legacyClick(
                     target.querySelector(".o_documents_inspector .o_inspector_open_chatter")
                 );
 
@@ -2948,9 +2957,9 @@ QUnit.module("documents", {}, function () {
                     },
                 });
 
-                await click($(target).find(".o_kanban_record:contains(yop)")[0]);
+                await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
 
-                await click(
+                await legacyClick(
                     target.querySelector(".o_documents_inspector .o_inspector_open_chatter")
                 );
 
@@ -2960,7 +2969,7 @@ QUnit.module("documents", {}, function () {
                     ".o_document_chatter_container button:contains(Activities)"
                 );
                 assert.strictEqual($activityButtons.length, 1);
-                await click($activityButtons[0]);
+                await legacyClick($activityButtons[0]);
             });
 
             QUnit.test("document chatter: render the activity button 2", async function (assert) {
@@ -2995,9 +3004,9 @@ QUnit.module("documents", {}, function () {
                     views: [[false, "kanban"]],
                 });
 
-                await click($(target).find(".o_kanban_record:contains(yop)")[0]);
+                await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
 
-                await click(
+                await legacyClick(
                     target.querySelector(".o_documents_inspector .o_inspector_open_chatter")
                 );
 
@@ -3009,7 +3018,7 @@ QUnit.module("documents", {}, function () {
                 assert.containsOnce(target, ".btn:contains('Edit')");
                 assert.containsOnce(target, ".o-mail-Activity span:contains(Cancel)");
 
-                await click($(target).find(".o_kanban_record:contains(blip)")[0]);
+                await legacyClick($(target).find(".o_kanban_record:contains(blip)")[0]);
 
                 assert.containsOnce(target, ".o_document_chatter_container .o-mail-Chatter");
                 assert.containsNone(target, ".o-mail-Activity");
@@ -3055,9 +3064,9 @@ QUnit.module("documents", {}, function () {
                         views: [[false, "kanban"]],
                     });
 
-                    await click($(target).find(".o_kanban_record:contains(yop)")[0]);
+                    await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
 
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_documents_inspector .o_inspector_open_chatter")
                     );
 
@@ -3065,7 +3074,7 @@ QUnit.module("documents", {}, function () {
                     assert.containsNone(target, ".o_document_chatter_container .o-mail-Composer");
 
                     // open the composer
-                    await click(
+                    await legacyClick(
                         target.querySelector(
                             ".o_document_chatter_container .o-mail-Chatter-sendMessage"
                         )
@@ -3075,7 +3084,7 @@ QUnit.module("documents", {}, function () {
 
                     // write and send a message (need to wait the Send button to be enabled)
                     await insertText(".o-mail-Composer-input", "Some message");
-                    await mailClick(".o-mail-Composer-send:not(:disabled)");
+                    await click(".o-mail-Composer-send:not(:disabled)");
                     await contains(".o-mail-Message");
                     assert.strictEqual(
                         target.querySelector(".o-mail-Message-body").textContent,
@@ -3123,9 +3132,9 @@ QUnit.module("documents", {}, function () {
                         views: [[false, "kanban"]],
                     });
 
-                    await click($(target).find(".o_kanban_record:contains(yop)")[0]);
+                    await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
 
-                    await mailClick(".o_documents_inspector .o_inspector_open_chatter");
+                    await click(".o_documents_inspector .o_inspector_open_chatter");
                     await contains(".o_document_chatter_container .o-mail-Chatter");
                     await contains(".o_document_chatter_container .o-mail-Message");
                     assert.strictEqual(
@@ -3134,7 +3143,7 @@ QUnit.module("documents", {}, function () {
                     );
 
                     // select another record
-                    await click($(target).find(".o_kanban_record:contains(blip)")[0]);
+                    await legacyClick($(target).find(".o_kanban_record:contains(blip)")[0]);
 
                     assert.containsOnce(target, ".o_document_chatter_container .o-mail-Chatter");
                     assert.containsOnce(target, ".o_document_chatter_container .o-mail-Message");
@@ -3171,9 +3180,9 @@ QUnit.module("documents", {}, function () {
                         views: [[false, "kanban"]],
                     });
 
-                    await click($(target).find(".o_kanban_record:contains(yop)")[0]);
+                    await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
 
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_documents_inspector .o_inspector_open_chatter")
                     );
 
@@ -3211,15 +3220,15 @@ QUnit.module("documents", {}, function () {
                         views: [[false, "kanban"]],
                     });
 
-                    await click($(target).find(".o_kanban_record:contains(yop)")[0]);
+                    await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
 
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_documents_inspector .o_inspector_open_chatter")
                     );
 
                     assert.containsOnce(target, ".o_document_chatter_container .o-mail-Chatter");
 
-                    await click(
+                    await legacyClick(
                         $(target).find(".o_kanban_record:contains(blip) .o_record_selector")[0]
                     );
 
@@ -3253,9 +3262,9 @@ QUnit.module("documents", {}, function () {
                         views: [[false, "kanban"]],
                     });
 
-                    await click($(target).find(".o_kanban_record:contains(yop)")[0]);
+                    await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
 
-                    await click(
+                    await legacyClick(
                         document.querySelector(".o_documents_inspector .o_inspector_open_chatter")
                     );
 
@@ -3306,7 +3315,7 @@ QUnit.module("documents", {}, function () {
                     3,
                     "three of them should be visible"
                 );
-                await click(
+                await legacyClick(
                     target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                 );
                 assert.strictEqual(
@@ -3459,7 +3468,7 @@ QUnit.module("documents", {}, function () {
                     },
                 });
 
-                await click(
+                await legacyClick(
                     target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                 );
                 assert.containsNone(
@@ -3493,7 +3502,7 @@ QUnit.module("documents", {}, function () {
                     ".o_search_panel .o_documents_selector_tags .o_search_panel_section_header",
                     "shouldn't have a 'tags' section"
                 );
-                await click(
+                await legacyClick(
                     target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                 );
                 assert.strictEqual(
@@ -3532,7 +3541,7 @@ QUnit.module("documents", {}, function () {
                 </t></templates></kanban>`,
                 });
 
-                await click(
+                await legacyClick(
                     target.querySelector(".o_search_panel_category_value:nth-of-type(1) header")
                 );
 
@@ -3550,7 +3559,7 @@ QUnit.module("documents", {}, function () {
                 );
 
                 // filter on 'Task'
-                await click($(target).find(".o_search_panel_label_title:contains(Task)")[0]);
+                await legacyClick($(target).find(".o_search_panel_label_title:contains(Task)")[0]);
                 assert.containsN(
                     target,
                     ".o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)",
@@ -3565,7 +3574,9 @@ QUnit.module("documents", {}, function () {
                 );
 
                 // filter on 'Attachment' (should be a disjunction)
-                await click($(target).find(".o_search_panel_label_title:contains(Attachment)")[0]);
+                await legacyClick(
+                    $(target).find(".o_search_panel_label_title:contains(Attachment)")[0]
+                );
 
                 assert.containsN(
                     target,
@@ -3581,8 +3592,10 @@ QUnit.module("documents", {}, function () {
                 );
 
                 // remove both filters
-                await click($(target).find(".o_search_panel_label_title:contains(Attachment)")[0]);
-                await click($(target).find(".o_search_panel_label_title:contains(Task)")[0]);
+                await legacyClick(
+                    $(target).find(".o_search_panel_label_title:contains(Attachment)")[0]
+                );
+                await legacyClick($(target).find(".o_search_panel_label_title:contains(Task)")[0]);
 
                 assert.containsN(
                     target,
@@ -3613,7 +3626,7 @@ QUnit.module("documents", {}, function () {
                 </t></templates></kanban>`,
                     });
 
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_search_panel_category_value:nth-of-type(1) header")
                     );
 
@@ -3631,7 +3644,7 @@ QUnit.module("documents", {}, function () {
                     );
 
                     // filter on 'Not a file'
-                    await click(
+                    await legacyClick(
                         $(target).find(".o_search_panel_label_title:contains(Not a file)")[0]
                     );
 
@@ -3648,7 +3661,9 @@ QUnit.module("documents", {}, function () {
                     );
 
                     // filter on 'Task'
-                    await click($(target).find(".o_search_panel_label_title:contains(Task)")[0]);
+                    await legacyClick(
+                        $(target).find(".o_search_panel_label_title:contains(Task)")[0]
+                    );
                     assert.containsN(
                         target,
                         ".o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)",
@@ -3663,10 +3678,12 @@ QUnit.module("documents", {}, function () {
                     );
 
                     // remove both filters
-                    await click(
+                    await legacyClick(
                         $(target).find(".o_search_panel_label_title:contains(Not a file)")[0]
                     );
-                    await click($(target).find(".o_search_panel_label_title:contains(Task)")[0]);
+                    await legacyClick(
+                        $(target).find(".o_search_panel_label_title:contains(Task)")[0]
+                    );
 
                     assert.containsN(
                         target,
@@ -3702,7 +3719,7 @@ QUnit.module("documents", {}, function () {
                     </search>`,
                     });
 
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_search_panel_category_value:nth-of-type(1) header")
                     );
 
@@ -3719,7 +3736,9 @@ QUnit.module("documents", {}, function () {
                     );
 
                     // filter on 'Task'
-                    await click($(target).find(".o_search_panel_label_title:contains(Task)")[0]);
+                    await legacyClick(
+                        $(target).find(".o_search_panel_label_title:contains(Task)")[0]
+                    );
                     assert.strictEqual(
                         target.querySelectorAll(
                             ".o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)"
@@ -3750,7 +3769,7 @@ QUnit.module("documents", {}, function () {
                     );
 
                     // filter on 'Attachment'
-                    await click(
+                    await legacyClick(
                         $(target).find(".o_search_panel_label_title:contains(Attachment)")[0]
                     );
 
@@ -3813,12 +3832,12 @@ QUnit.module("documents", {}, function () {
                     const input = $(target).find(
                         ".o_search_panel_filter_value:contains(Draft) input"
                     )[0];
-                    await click(input);
+                    await legacyClick(input);
 
                     assert.ok(input.checked, "tag selector should be checked");
 
                     // switch to Workspace2
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_search_panel_category_value:nth-of-type(3) header")
                     );
                     assert.ok(input.checked, "tag selector should not be checked anymore");
@@ -3847,12 +3866,12 @@ QUnit.module("documents", {}, function () {
                 </t></templates></kanban>`,
                     });
 
-                    await click(
+                    await legacyClick(
                         target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                     );
 
                     // filter on records having tag Draft
-                    await click(
+                    await legacyClick(
                         $(target).find(".o_search_panel_filter_value:contains(Draft) input")[0]
                     );
 
@@ -3870,14 +3889,16 @@ QUnit.module("documents", {}, function () {
                         "should have records in the renderer"
                     );
 
-                    await click(target.querySelector(".o_kanban_record"), ".o_record_selector");
+                    await legacyClick(
+                        target.querySelector(".o_kanban_record"),
+                        ".o_record_selector"
+                    );
 
                     const input = target.querySelector(".o_inspector_tags input");
 
                     editInput(input, null, "stress");
-                    const autocompleteValues = await contains(".o_inspector_tags ul li");
-
-                    await click(autocompleteValues[0], "a");
+                    await contains(".o_inspector_tags ul li a");
+                    await legacyClick(target, ".o_inspector_tags ul li a");
                     assert.ok(
                         $(target).find(".o_search_panel_filter_value:contains(Draft) input")[0]
                             .checked,
@@ -4006,11 +4027,11 @@ QUnit.module("documents", {}, function () {
                         ".o_kanban_record:contains(yop) .o_record_selector"
                     )[0];
                     // selects three records
-                    await click(yopRecord);
-                    await click(
+                    await legacyClick(yopRecord);
+                    await legacyClick(
                         $(target).find(".o_kanban_record:contains(burp) .o_record_selector")[0]
                     );
-                    await click(
+                    await legacyClick(
                         $(target).find(".o_kanban_record:contains(blip) .o_record_selector")[0]
                     );
 
@@ -4065,7 +4086,7 @@ QUnit.module("documents", {}, function () {
                         ".o_search_panel_category_value:nth-of-type(1)"
                     );
                     // selects one record
-                    await click(yopRecord);
+                    await legacyClick(yopRecord);
 
                     // starts the drag on a selected record
                     const startEvent = new Event("dragstart", { bubbles: true });
@@ -4217,10 +4238,10 @@ QUnit.module("documents", {}, function () {
 
                 // Test dragging a folder into another one
                 const sourceFolder = target.querySelector(
-                    ".o_search_panel_category_value:nth-of-type(3)",
+                    ".o_search_panel_category_value:nth-of-type(3)"
                 );
                 const targetFolder = target.querySelector(
-                    ".o_search_panel_category_value:nth-of-type(2)",
+                    ".o_search_panel_category_value:nth-of-type(2)"
                 );
                 const sourceRect = sourceFolder.getBoundingClientRect();
                 await dragAndDrop(sourceFolder, sourceFolder, {
@@ -4477,7 +4498,7 @@ QUnit.module("documents", {}, function () {
                 </t></templates></kanban>`,
                 });
 
-                await click(target.querySelector(".o_documents_attachment"));
+                await legacyClick(target.querySelector(".o_documents_attachment"));
 
                 const fileInput = target.querySelector(".o_inspector_replace_input");
                 const dataTransfer = new DataTransfer();
@@ -4672,7 +4693,7 @@ QUnit.module("documents", {}, function () {
                 </t></templates></kanban>`,
                 });
 
-                await click(
+                await legacyClick(
                     $(target).find(".o_kanban_record:contains(youtubeVideo) .o_record_selector")[0]
                 );
 
@@ -4701,7 +4722,7 @@ QUnit.module("documents", {}, function () {
                 </tree>`,
                 });
 
-                await click(target.querySelector(".o_data_row:nth-of-type(2)"));
+                await legacyClick(target.querySelector(".o_data_row:nth-of-type(2)"));
                 assert.ok(
                     target.querySelector(".o_data_row:nth-of-type(2) input").checked,
                     "the record should be selected"
@@ -4718,7 +4739,7 @@ QUnit.module("documents", {}, function () {
                     "there should be 4 selected records"
                 );
 
-                await click(target.querySelector("thead .o_list_record_selector input"));
+                await legacyClick(target.querySelector("thead .o_list_record_selector input"));
                 assert.containsN(
                     target,
                     ".o_list_record_selector input:checked",
@@ -4726,7 +4747,7 @@ QUnit.module("documents", {}, function () {
                     "All (6) records should be selected"
                 );
 
-                await click(target.querySelector("thead .o_list_record_selector input"));
+                await legacyClick(target.querySelector("thead .o_list_record_selector input"));
                 assert.containsNone(
                     target,
                     ".o_list_record_selector input:checked",
@@ -4871,7 +4892,7 @@ QUnit.module("documents", {}, function () {
                     },
                 });
 
-                await click(target.querySelector(".o_kanban_record:nth-of-type(6)"));
+                await legacyClick(target.querySelector(".o_kanban_record:nth-of-type(6)"));
 
                 assert.strictEqual(
                     target.querySelector(".o_inspector_history_name").textContent,
@@ -4905,9 +4926,9 @@ QUnit.module("documents", {}, function () {
                     "There should be one delete button"
                 );
 
-                await click(target.querySelector(".o_inspector_history_item_restore"));
+                await legacyClick(target.querySelector(".o_inspector_history_item_restore"));
                 assert.verifySteps(["attachmentRestored"]);
-                await click(target.querySelector(".o_inspector_history_item_delete"));
+                await legacyClick(target.querySelector(".o_inspector_history_item_delete"));
                 assert.verifySteps(["attachmentUnlinked"]);
             });
 
@@ -4951,8 +4972,7 @@ QUnit.module("documents", {}, function () {
                 </kanban>`,
                     async mockRPC(route, args) {
                         if (
-                            route ===
-                                "/web/dataset/call_kw/documents.document/web_search_read" &&
+                            route === "/web/dataset/call_kw/documents.document/web_search_read" &&
                             args.model === "documents.document"
                         ) {
                             assert.deepEqual(args.kwargs.domain, [
@@ -4969,7 +4989,7 @@ QUnit.module("documents", {}, function () {
                 );
 
                 expectedActiveId = 2;
-                await click(target, ".o_search_panel_category_value:nth-of-type(3) header");
+                await legacyClick(target, ".o_search_panel_category_value:nth-of-type(3) header");
 
                 assert.verifySteps([
                     "storage set 3", // Manual set for initial value
@@ -5010,8 +5030,7 @@ QUnit.module("documents", {}, function () {
                 </kanban>`,
                     async mockRPC(route, args) {
                         if (
-                            route ===
-                                "/web/dataset/call_kw/documents.document/web_search_read" &&
+                            route === "/web/dataset/call_kw/documents.document/web_search_read" &&
                             args.model === "documents.document"
                         ) {
                             assert.deepEqual(args.kwargs.domain, [["folder_id", "child_of", 1]]);
@@ -5051,7 +5070,7 @@ QUnit.module("documents", {}, function () {
                         shiftKey: true,
                     });
                     assert.containsN(target, ".o_record_selected", 2);
-                    await click(target, ".o_kanban_renderer");
+                    await legacyClick(target, ".o_kanban_renderer");
                     assert.containsN(target, ".o_record_selected", 0);
                 }
             );
@@ -5084,7 +5103,7 @@ QUnit.module("documents", {}, function () {
                         shiftKey: true,
                     });
                     assert.containsN(target, ".o_data_row_selected", 2);
-                    await click(target, ".o_list_renderer");
+                    await legacyClick(target, ".o_list_renderer");
                     assert.containsN(target, ".o_data_row_selected", 0);
                 }
             );
@@ -5111,7 +5130,10 @@ QUnit.module("documents", {}, function () {
                         </t></templates></kanban>`,
                     });
 
-                    await click(target, ".o_search_panel_category_value:nth-of-type(4) header");
+                    await legacyClick(
+                        target,
+                        ".o_search_panel_category_value:nth-of-type(4) header"
+                    );
                     await nextTick();
                     assert.strictEqual(
                         target
@@ -5226,9 +5248,9 @@ QUnit.module("documents", {}, function () {
                         </tree>`,
                     });
                     // select 3 requested documents
-                    await click(target, ".o_list_record_selector.o_list_controller");
+                    await legacyClick(target, ".o_list_record_selector.o_list_controller");
                     const fileInput = target.querySelector(".o_inspector_replace_input");
-                    // click on the 2nd document to upload
+                    // legacyClick on the 2nd document to upload
                     fileInput.setAttribute("data-index", 1);
                     testUtils.file.inputFiles(fileInput, [file]);
                     assert.verifySteps(["xhrSend"]);

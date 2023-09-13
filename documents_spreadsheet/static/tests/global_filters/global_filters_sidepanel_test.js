@@ -1,7 +1,5 @@
 /* @odoo-module */
 
-import { contains } from "@mail/../tests/helpers/test_utils";
-
 import testUtils from "@web/../tests/legacy/helpers/test_utils";
 
 import {
@@ -29,6 +27,7 @@ import { getCellValue } from "@spreadsheet/../tests/utils/getters";
 import { createSpreadsheetFromListView } from "../utils/list_helpers";
 import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
 import { fieldService } from "@web/core/field_service";
+import { contains } from "@web/../tests/utils";
 
 let target;
 

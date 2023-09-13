@@ -1,7 +1,5 @@
 /* @odoo-module */
 
-import { contains } from "@mail/../tests/helpers/test_utils";
-
 import { Domain } from "@web/core/domain";
 import {
     click,
@@ -11,8 +9,10 @@ import {
     patchDate,
     patchTimeZone,
 } from "@web/../tests/helpers/utils";
-import { editPill, getGridContent, hoverGridCell, SELECTORS } from "@web_gantt/../tests/helpers";
+import { contains } from "@web/../tests/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
+
+import { editPill, getGridContent, hoverGridCell, SELECTORS } from "@web_gantt/../tests/helpers";
 
 async function ganttResourceWorkIntervalRPC(_, args) {
     if (args.method === "gantt_resource_work_interval") {

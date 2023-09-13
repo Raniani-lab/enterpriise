@@ -1,16 +1,17 @@
-/** @odoo-module */
+/* @odoo-module */
+
+import { startServer } from "@bus/../tests/helpers/mock_python_environment";
 
 import { getFixture, patchDate } from "@web/../tests/helpers/utils";
 import { setupViewRegistries } from "@web/../tests/views/helpers";
-import { start, startServer } from "@mail/../tests/helpers/test_utils";
-
+import { start } from "@mail/../tests/helpers/test_utils";
 
 let target;
 
 QUnit.module("Project", (hooks) => {
     hooks.beforeEach(async () => {
         const pyEnv = await startServer();
-        pyEnv.mockServer.models['project.task'] = {
+        pyEnv.mockServer.models["project.task"] = {
             fields: {
                 id: { string: "Id", type: "integer" },
                 display_name: { string: "Name", type: "char" },
@@ -27,14 +28,16 @@ QUnit.module("Project", (hooks) => {
                     relation: "res.partner",
                 },
             },
-            records: [{
-                id: 1,
-                display_name: "My task",
-                project_id: false,
-                start: "2021-02-01",
-                stop: "2021-02-02",
-                partner_id: false,
-            }],
+            records: [
+                {
+                    id: 1,
+                    display_name: "My task",
+                    project_id: false,
+                    start: "2021-02-01",
+                    stop: "2021-02-02",
+                    partner_id: false,
+                },
+            ],
         };
         patchDate(2021, 1, 1, 12, 0, 0);
         target = getFixture();
@@ -45,8 +48,7 @@ QUnit.module("Project", (hooks) => {
         assert.expect(1);
 
         const views = {
-            "project.task,false,gantt":
-                `<gantt
+            "project.task,false,gantt": `<gantt
                     js_class="task_gantt"
                     date_start="start"
                     date_stop="stop"
@@ -73,8 +75,7 @@ QUnit.module("Project", (hooks) => {
         assert.expect(1);
 
         const views = {
-            "project.task,false,map":
-                `<map js_class="project_task_map" res_partner="partner_id"/>`,
+            "project.task,false,map": `<map js_class="project_task_map" res_partner="partner_id"/>`,
         };
         const { openView } = await start({
             serverData: { views },
@@ -85,6 +86,9 @@ QUnit.module("Project", (hooks) => {
             context: { group_by: ["project_id"] },
         });
 
-        assert.strictEqual(target.querySelector(".o-map-renderer--pin-list-group-header").innerText, "Private");
+        assert.strictEqual(
+            target.querySelector(".o-map-renderer--pin-list-group-header").innerText,
+            "Private"
+        );
     });
 });

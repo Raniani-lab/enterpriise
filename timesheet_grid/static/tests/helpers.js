@@ -1,8 +1,8 @@
-/** @odoo-module */
+/* @odoo-module */
+
+import { startServer } from "@bus/../tests/helpers/mock_python_environment";
 
 import { patchDate } from "@web/../tests/helpers/utils";
-
-import { startServer } from "@mail/../tests/helpers/test_utils";
 
 function get_planned_and_worked_hours(resIds) {
     const result = {};

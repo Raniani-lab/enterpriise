@@ -1,13 +1,24 @@
-/** @odoo-module */
+/* @odoo-module */
 
-import { x2ManyCommands } from "@web/core/orm_service";
+import { startServer } from "@bus/../tests/helpers/mock_python_environment";
 
 import { documentService } from "@documents/core/document_service";
+import { DocumentsSearchPanel } from "@documents/views/search/documents_search_panel";
 import { getEnrichedSearchArch } from "@documents/../tests/documents_test_utils";
 
+import { XLSX_MIME_TYPE } from "@documents_spreadsheet/helpers";
 import { mockActionService } from "@documents_spreadsheet/../tests/spreadsheet_test_utils";
 
-import { contains, start, startServer } from "@mail/../tests/helpers/test_utils";
+import { start } from "@mail/../tests/helpers/test_utils";
+
+import { Model } from "@odoo/o-spreadsheet";
+
+import { loadBundle } from "@web/core/assets";
+import { browser } from "@web/core/browser/browser";
+import { fileUploadService } from "@web/core/file_upload/file_upload_service";
+import { x2ManyCommands } from "@web/core/orm_service";
+import { registry } from "@web/core/registry";
+import { SearchPanel } from "@web/search/search_panel/search_panel";
 import {
     click,
     getFixture,
@@ -16,14 +27,7 @@ import {
     patchWithCleanup,
 } from "@web/../tests/helpers/utils";
 import { setupViewRegistries } from "@web/../tests/views/helpers";
-import { loadBundle } from "@web/core/assets";
-import { registry } from "@web/core/registry";
-import { fileUploadService } from "@web/core/file_upload/file_upload_service";
-import { browser } from "@web/core/browser/browser";
-import { DocumentsSearchPanel } from "@documents/views/search/documents_search_panel";
-import { SearchPanel } from "@web/search/search_panel/search_panel";
-import { XLSX_MIME_TYPE } from "@documents_spreadsheet/helpers";
-import { Model } from "@odoo/o-spreadsheet";
+import { contains } from "@web/../tests/utils";
 
 const serviceRegistry = registry.category("services");
 

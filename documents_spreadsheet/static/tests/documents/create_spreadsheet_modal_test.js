@@ -1,11 +1,19 @@
-/** @odoo-module */
+/* @odoo-module */
+
+import { startServer } from "@bus/../tests/helpers/mock_python_environment";
 
 import { documentService } from "@documents/core/document_service";
 import { getEnrichedSearchArch } from "@documents/../tests/documents_test_utils";
 
-import { start, startServer } from "@mail/../tests/helpers/test_utils";
+import { start } from "@mail/../tests/helpers/test_utils";
 
-import { editInput, triggerEvent, getFixture, click, patchWithCleanup } from "@web/../tests/helpers/utils";
+import {
+    editInput,
+    triggerEvent,
+    getFixture,
+    click,
+    patchWithCleanup,
+} from "@web/../tests/helpers/utils";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";
 
 import { mockActionService } from "@documents_spreadsheet/../tests/spreadsheet_test_utils";

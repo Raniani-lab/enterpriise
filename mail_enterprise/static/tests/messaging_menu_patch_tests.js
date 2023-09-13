@@ -1,15 +1,16 @@
 /* @odoo-module */
 
 import { patchUiSize, SIZES } from "@mail/../tests/helpers/patch_ui_size";
-import { click, contains, start } from "@mail/../tests/helpers/test_utils";
+import { start } from "@mail/../tests/helpers/test_utils";
 
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
+import { click, contains } from "@web/../tests/utils";
 
 import { methods } from "@web_mobile/js/services/core";
 
 QUnit.module("messaging_menu (patch)");
 
-QUnit.test("'backbutton' event should close messaging menu", async (assert) => {
+QUnit.test("'backbutton' event should close messaging menu", async () => {
     // simulate the feature is available on the current device
     // component must and will be destroyed before the overrideBackButton is unpatched
     patchWithCleanup(methods, {

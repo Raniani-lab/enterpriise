@@ -1,10 +1,13 @@
-/** @odoo-module **/
+/* @odoo-module */
 
-import { click, contains, start, startServer } from "@mail/../tests/helpers/test_utils";
+import { startServer } from "@bus/../tests/helpers/mock_python_environment";
 
-import { patchWithCleanup } from "@web/../tests/helpers/utils";
-import { ListController } from "@web/views/list/list_controller";
+import { start } from "@mail/../tests/helpers/test_utils";
+
 import { serializeDate } from "@web/core/l10n/dates";
+import { ListController } from "@web/views/list/list_controller";
+import { patchWithCleanup } from "@web/../tests/helpers/utils";
+import { click, contains } from "@web/../tests/utils";
 const { DateTime } = luxon;
 
 QUnit.module("activity (patch)");

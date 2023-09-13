@@ -209,8 +209,8 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(inv_line.move_id, [{'payment_state': 'paid'}])
         self.assertRecordValues(inv_line.matched_credit_ids.exchange_move_id.line_ids, [
             # pylint: disable=C0326
-            {'account_id': inv_line.account_id.id,                      'amount_currency': 0.0,         'currency_id': self.currency_data_2['currency'].id, 'balance': 200.0,   'reconciled': True},
-            {'account_id': income_exchange_account.id,                  'amount_currency': 0.0,         'currency_id': self.currency_data_2['currency'].id, 'balance': -200.0,  'reconciled': False},
+            {'account_id': inv_line.account_id.id,                      'amount_currency': 0.0,         'currency_id': self.currency_data_2['currency'].id, 'balance': 200.0,   'reconciled': True,  'date': fields.Date.from_string('2017-01-01')},
+            {'account_id': income_exchange_account.id,                  'amount_currency': 0.0,         'currency_id': self.currency_data_2['currency'].id, 'balance': -200.0,  'reconciled': False, 'date': fields.Date.from_string('2017-01-01')},
         ])
 
         # Reset the wizard.
@@ -289,8 +289,8 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         }])
         self.assertRecordValues(inv_line.matched_credit_ids.exchange_move_id.line_ids, [
             # pylint: disable=C0326
-            {'account_id': inv_line.account_id.id,                      'amount_currency': 0.0,         'currency_id': self.currency_data_2['currency'].id, 'balance': 200.0,   'reconciled': True},
-            {'account_id': income_exchange_account.id,                  'amount_currency': 0.0,         'currency_id': self.currency_data_2['currency'].id, 'balance': -200.0,  'reconciled': False},
+            {'account_id': inv_line.account_id.id,                      'amount_currency': 0.0,         'currency_id': self.currency_data_2['currency'].id, 'balance': 200.0,   'reconciled': True,  'date': fields.Date.from_string('2017-01-01')},
+            {'account_id': income_exchange_account.id,                  'amount_currency': 0.0,         'currency_id': self.currency_data_2['currency'].id, 'balance': -200.0,  'reconciled': False, 'date': fields.Date.from_string('2017-01-01')},
         ])
 
     def test_validation_expense_exchange_difference(self):
@@ -335,8 +335,8 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(inv_line.move_id, [{'payment_state': 'paid'}])
         self.assertRecordValues(inv_line.matched_credit_ids.exchange_move_id.line_ids, [
             # pylint: disable=C0326
-            {'account_id': inv_line.account_id.id,                 'amount_currency': -3000.0,        'currency_id': self.company_data['currency'].id, 'balance': -3000.0,  'reconciled': True},
-            {'account_id': expense_exchange_account.id,            'amount_currency': 3000.0,         'currency_id': self.company_data['currency'].id, 'balance': 3000.0,   'reconciled': False},
+            {'account_id': inv_line.account_id.id,                 'amount_currency': -3000.0,        'currency_id': self.company_data['currency'].id, 'balance': -3000.0,  'reconciled': True,  'date': fields.Date.from_string('2017-01-01')},
+            {'account_id': expense_exchange_account.id,            'amount_currency': 3000.0,         'currency_id': self.company_data['currency'].id, 'balance': 3000.0,   'reconciled': False, 'date': fields.Date.from_string('2017-01-01')},
         ])
         # Checks that the wizard still display the 3 initial lines
         self.assertRecordValues(wizard.line_ids, [
@@ -388,8 +388,8 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(inv_line.move_id, [{'payment_state': 'paid'}])
         self.assertRecordValues(inv_line.matched_credit_ids.exchange_move_id.line_ids, [
             # pylint: disable=C0326
-            {'account_id': inv_line.account_id.id,                 'amount_currency': 750.0,        'currency_id': self.company_data['currency'].id, 'balance': 750.0,   'reconciled': True},
-            {'account_id': income_exchange_account.id,             'amount_currency': -750.0,       'currency_id': self.company_data['currency'].id, 'balance': -750.0,  'reconciled': False},
+            {'account_id': inv_line.account_id.id,                 'amount_currency': 750.0,        'currency_id': self.company_data['currency'].id, 'balance': 750.0,   'reconciled': True,  'date': fields.Date.from_string('2017-01-01')},
+            {'account_id': income_exchange_account.id,             'amount_currency': -750.0,       'currency_id': self.company_data['currency'].id, 'balance': -750.0,  'reconciled': False, 'date': fields.Date.from_string('2017-01-01')},
         ])
         # Checks that the wizard still display the 3 initial lines
         self.assertRecordValues(wizard.line_ids, [
@@ -513,8 +513,8 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(inv_line.move_id, [{'payment_state': 'paid'}])
         self.assertRecordValues(inv_line.matched_credit_ids.exchange_move_id.line_ids, [
             # pylint: disable=C0326
-            {'account_id': inv_line.account_id.id,                      'amount_currency': 400.0,          'currency_id': self.company_data['currency'].id, 'balance': 400.0,   'reconciled': True},
-            {'account_id': income_exchange_account.id,                  'amount_currency': -400.0,         'currency_id': self.company_data['currency'].id, 'balance': -400.0,  'reconciled': False},
+            {'account_id': inv_line.account_id.id,                      'amount_currency': 400.0,          'currency_id': self.company_data['currency'].id, 'balance': 400.0,   'reconciled': True,  'date': fields.Date.from_string('2017-01-01')},
+            {'account_id': income_exchange_account.id,                  'amount_currency': -400.0,         'currency_id': self.company_data['currency'].id, 'balance': -400.0,  'reconciled': False, 'date': fields.Date.from_string('2017-01-01')},
         ])
 
         # Checks that the wizard still display the 3 initial lines
@@ -600,8 +600,8 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         }])
         self.assertRecordValues(inv_line.matched_credit_ids.exchange_move_id.line_ids, [
             # pylint: disable=C0326
-            {'account_id': inv_line.account_id.id,                      'amount_currency': 400.0,          'currency_id': self.company_data['currency'].id, 'balance': 400.0,   'reconciled': True},
-            {'account_id': income_exchange_account.id,                  'amount_currency': -400.0,         'currency_id': self.company_data['currency'].id, 'balance': -400.0,  'reconciled': False},
+            {'account_id': inv_line.account_id.id,                      'amount_currency': 400.0,          'currency_id': self.company_data['currency'].id, 'balance': 400.0,   'reconciled': True,  'date': fields.Date.from_string('2017-01-01')},
+            {'account_id': income_exchange_account.id,                  'amount_currency': -400.0,         'currency_id': self.company_data['currency'].id, 'balance': -400.0,  'reconciled': False, 'date': fields.Date.from_string('2017-01-01')},
         ])
 
     def test_validation_new_aml_one_foreign_currency_on_inv_line(self):
@@ -654,8 +654,8 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(inv_line.move_id, [{'payment_state': 'paid'}])
         self.assertRecordValues(inv_line.matched_credit_ids.exchange_move_id.line_ids, [
             # pylint: disable=C0326
-            {'account_id': inv_line.account_id.id,                      'amount_currency': 0.0,         'currency_id': self.currency_data_2['currency'].id, 'balance': 400.0,   'reconciled': True},
-            {'account_id': income_exchange_account.id,                  'amount_currency': 0.0,         'currency_id': self.currency_data_2['currency'].id, 'balance': -400.0,  'reconciled': False},
+            {'account_id': inv_line.account_id.id,                      'amount_currency': 0.0,         'currency_id': self.currency_data_2['currency'].id, 'balance': 400.0,   'reconciled': True,  'date': fields.Date.from_string('2017-01-01')},
+            {'account_id': income_exchange_account.id,                  'amount_currency': 0.0,         'currency_id': self.currency_data_2['currency'].id, 'balance': -400.0,  'reconciled': False, 'date': fields.Date.from_string('2017-01-01')},
         ])
 
         # Reset the wizard.
@@ -734,8 +734,8 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         }])
         self.assertRecordValues(inv_line.matched_credit_ids.exchange_move_id.line_ids, [
             # pylint: disable=C0326
-            {'account_id': inv_line.account_id.id,                      'amount_currency': 0.0,         'currency_id': self.currency_data_2['currency'].id, 'balance': 400.0,   'reconciled': True},
-            {'account_id': income_exchange_account.id,                  'amount_currency': 0.0,         'currency_id': self.currency_data_2['currency'].id, 'balance': -400.0,  'reconciled': False},
+            {'account_id': inv_line.account_id.id,                      'amount_currency': 0.0,         'currency_id': self.currency_data_2['currency'].id, 'balance': 400.0,   'reconciled': True,  'date': fields.Date.from_string('2017-01-01')},
+            {'account_id': income_exchange_account.id,                  'amount_currency': 0.0,         'currency_id': self.currency_data_2['currency'].id, 'balance': -400.0,  'reconciled': False, 'date': fields.Date.from_string('2017-01-01')},
         ])
 
     def test_validation_new_aml_multi_currencies(self):

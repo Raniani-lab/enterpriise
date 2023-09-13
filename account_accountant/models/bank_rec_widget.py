@@ -1257,7 +1257,10 @@ class BankRecWidget(models.Model):
                 exchange_diff_amounts = aml_to_exchange_diff_vals.get(line.sequence)
                 if exchange_diff_amounts:
                     related_exchange_diff_amls = line if exchange_diff_amounts['amount_residual'] * line.amount_residual > 0 else counterpart
-                    exchange_diff_vals_list.append(related_exchange_diff_amls._prepare_exchange_difference_move_vals([exchange_diff_amounts]))
+                    exchange_diff_vals_list.append(related_exchange_diff_amls._prepare_exchange_difference_move_vals(
+                        [exchange_diff_amounts],
+                        exchange_date=max(line.date, counterpart.date)
+                    ))
                     lines_with_exch_diff += line
             exchange_diff_moves = AccountMoveLine._create_exchange_difference_moves(exchange_diff_vals_list)
 

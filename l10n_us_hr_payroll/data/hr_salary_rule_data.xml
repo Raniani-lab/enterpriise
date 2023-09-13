@@ -450,7 +450,7 @@ result_rate = - 0.9
     <record id="l10n_us_employee_salary_ca_state_income_tax" model="hr.salary.rule">
         <field name="category_id" ref="l10n_us_hr_payroll.hr_payroll_taxes"/>
         <field name="name">CA State Income Tax</field>
-        <field name="code">STATEINCOMETAX</field>
+        <field name="code">CAINCOMETAX</field>
         <field name="sequence">162</field>
         <field name="condition_select">python</field>
         <field name="condition_python">result = contract.employee_id.address_id.state_id.code == 'CA'</field>

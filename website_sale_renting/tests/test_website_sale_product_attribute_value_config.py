@@ -3,7 +3,7 @@
 
 from dateutil.relativedelta import relativedelta
 
-from odoo import fields
+from odoo import Command, fields
 from odoo.tests import tagged
 from odoo.addons.sale.tests.test_sale_product_attribute_value_config import TestSaleProductAttributeValueCommon
 from odoo.addons.website.tools import MockRequest
@@ -11,6 +11,61 @@ from odoo.addons.website.tools import MockRequest
 
 @tagged('post_install', '-at_install', 'product_attribute')
 class TestWebsiteSaleRentingProductAttributeValueConfig(TestSaleProductAttributeValueCommon):
+
+    def test_product_tax_included_get_combination_info(self):
+        config = self.env['res.config.settings'].create({})
+        config.show_line_subtotals_tax_selection = 'tax_included'
+        config.execute()
+
+        recurrence_3_hour, recurrence_week = self.env['sale.temporal.recurrence'].sudo().create([
+            {
+                'duration': 3,
+                'unit': 'hour',
+            },
+            {
+                'duration': 1,
+                'unit': 'week',
+            },
+        ])
+
+        self.env['product.pricing'].create([
+            {
+                'recurrence_id': recurrence_3_hour.id,
+                'price': 5.0,
+                'product_template_id': self.computer.id,
+            }, {
+                'recurrence_id': recurrence_week.id,
+                'price': 25.0,
+                'product_template_id': self.computer.id,
+            },
+        ])
+
+        tax_15_incl = self.env['account.tax'].create({
+            'name': 'VAT 5 perc Incl',
+            'amount_type': 'percent',
+            'amount': 15.0,
+            'price_include': False,
+        })
+
+        self.computer.write({
+            'rent_ok': True,
+            'taxes_id': [Command.set([tax_15_incl.id])],
+        })
+        current_website = self.env['website'].get_current_website()
+        with MockRequest(self.env, website=current_website):
+            computer = self.computer.with_context(website_id=current_website.id)
+            combination_info = computer._get_combination_info()
+            self.assertEqual(combination_info['price'], 5.75)
+            self.assertEqual(combination_info['list_price'], 5.75)
+            self.assertEqual(combination_info['price_extra'], 255.3)
+            self.assertEqual(combination_info['has_discounted_price'], False)
+            self.assertEqual(combination_info['current_rental_price'], 5.75)
+            self.assertEqual(combination_info['current_rental_duration'], 3)
+            self.assertEqual(str(combination_info['current_rental_unit']), 'Hours')
+            self.assertEqual(
+                combination_info['pricing_table'],
+                [('3 Hours', '$\xa05.75'), ('1 Week', '$\xa028.75')],
+            )
 
     def test_product_attribute_value_config_get_combination_info(self):
         current_website = self.env['website'].get_current_website()

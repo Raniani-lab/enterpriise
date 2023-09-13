@@ -107,10 +107,16 @@ class ProductTemplate(models.Model):
 
         suitable_pricings = best_pricings.values()
         def _pricing_price(pricing):
+            if product_taxes:
+                price = self.env['product.template']._apply_taxes_to_price(
+                    pricing.price, currency, product_taxes, res['taxes'], product_or_template
+                )
+            else:
+                price = pricing.price
             if pricing.currency_id == currency:
-                return pricing.price
+                return price
             return pricing.currency_id._convert(
-                from_amount=pricing.price,
+                from_amount=price,
                 to_currency=currency,
                 company=self.env.company,
                 date=date,

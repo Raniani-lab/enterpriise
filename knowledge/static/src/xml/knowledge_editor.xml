@@ -7,6 +7,10 @@
         <a t-att-href="href" t-att-data-behavior-props="data" target="_blank"
            class="btn btn-sm o_knowledge_behavior_anchor o_knowledge_behavior_type_article" data-oe-protected="true"/>
     </t>
+    <t t-name="knowledge.wysiwyg_video">
+        <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_video"
+            t-att-data-behavior-props="behaviorProps" data-oe-protected="true"/>
+    </t>
     <t t-name="knowledge.articles_structure_wrapper">
         <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_articles_structure" data-oe-protected="true"/>
     </t>

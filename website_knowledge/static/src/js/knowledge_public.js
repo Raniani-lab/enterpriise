@@ -1,5 +1,6 @@
 /** @odoo-module */
 
+import { decodeDataBehaviorProps, getVideoUrl } from "@knowledge/js/knowledge_utils";
 import { fetchValidHeadings } from '@knowledge/js/tools/knowledge_tools';
 import publicWidget from '@web/legacy/js/public/public_widget';
 import { renderToElement } from "@web/core/utils/render";
@@ -40,6 +41,18 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
             const $container = $('.o_knowledge_behavior_type_embedded_view');
             $container.empty();
             $container.append(placeholder);
+
+            // Load the video iframes:
+            for (const anchor of this.el.querySelectorAll(".o_knowledge_behavior_type_video")) {
+                const props = decodeDataBehaviorProps(anchor.dataset.behaviorProps);
+                const url = getVideoUrl(props.platform, props.videoId, props.params);
+                const iframe = document.createElement("iframe");
+                iframe.src = url.toString();
+                iframe.frameborder = "0";
+                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+                anchor.replaceChildren();
+                anchor.append(iframe);
+            }
         });
     },
 

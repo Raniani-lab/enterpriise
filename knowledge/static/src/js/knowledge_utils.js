@@ -48,3 +48,35 @@ export function decodeDataBehaviorProps(dataBehaviorPropsAttribute) {
 export function encodeDataBehaviorProps(dataBehaviorPropsObject) {
     return encodeURIComponent(JSON.stringify(dataBehaviorPropsObject));
 }
+
+/**
+ * @param {string} platform
+ * @param {string} videoId
+ * @param {Object} params
+ * @throws {Error} if the given video config is not recognized
+ * @returns {URL}
+ */
+export function getVideoUrl (platform, videoId, params) {
+    let url;
+    switch (platform) {
+        case "youtube":
+            url = new URL(`https://www.youtube.com/embed/${videoId}`);
+            break;
+        case "vimeo":
+            url = new URL(`https://player.vimeo.com/video/${videoId}`);
+            break;
+        case "dailymotion":
+            url = new URL(`https://www.dailymotion.com/embed/video/${videoId}`);
+            break;
+        case "instagram":
+            url = new URL(`https://www.instagram.com/p/${videoId}/embed`);
+            break;
+        case "youku":
+            url = new URL(`https://player.youku.com/embed/${videoId}`);
+            break;
+        default:
+            throw new Error();
+    };
+    url.search = new URLSearchParams(params);
+    return url;
+}

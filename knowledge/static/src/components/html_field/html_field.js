@@ -16,6 +16,7 @@ import { FileBehavior } from "@knowledge/components/behaviors/file_behavior/file
 import { EmbeddedViewBehavior } from "@knowledge/components/behaviors/embedded_view_behavior/embedded_view_behavior";
 import { TemplateBehavior } from "@knowledge/components/behaviors/template_behavior/template_behavior";
 import { TableOfContentBehavior } from "@knowledge/components/behaviors/table_of_content_behavior/table_of_content_behavior";
+import { VideoBehavior } from "@knowledge/components/behaviors/video_behavior/video_behavior";
 import { ViewLinkBehavior } from "@knowledge/components/behaviors/view_link_behavior/view_link_behavior";
 import {
     App,
@@ -53,6 +54,9 @@ const HtmlFieldPatch = {
             },
             o_knowledge_behavior_type_view_link: {
                 Behavior: ViewLinkBehavior
+            },
+            o_knowledge_behavior_type_video: {
+                Behavior: VideoBehavior,
             },
         };
         this.uiService = useService('ui');

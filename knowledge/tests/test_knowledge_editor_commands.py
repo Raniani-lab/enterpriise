@@ -113,3 +113,7 @@ class TestKnowledgeEditorCommands(HttpCase):
                 'is_article_item': True,
             }])
         self.start_tour('/web', 'knowledge_embedded_view_filters_tour', login='admin')
+
+    def test_knowledge_video_command_tour(self):
+        """Test the /video command in the editor."""
+        self.start_tour('/web', 'knowledge_video_command_tour', login='admin')

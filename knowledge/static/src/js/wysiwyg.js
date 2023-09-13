@@ -8,6 +8,7 @@ import {
     preserveCursor,
     setCursorEnd,
 } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
+import { VideoSelectorDialog } from '@knowledge/components/video_selector_dialog/video_selector_dialog';
 import { ArticleSelectionBehaviorDialog } from '@knowledge/components/behaviors/article_behavior_dialog/article_behavior_dialog';
 import {
     encodeDataBehaviorProps,
@@ -182,6 +183,18 @@ patch(Wysiwyg.prototype, {
                 callback: () => {
                     this._insertArticlesStructure(false);
                 }
+            }, {
+                category: _t('Media'),
+                name: _t('Video'),
+                priority: 70,
+                description: _t('Insert a Video'),
+                fontawesome: 'fa-play',
+                callback: () => {
+                    const restoreSelection = preserveCursor(this.odooEditor.document);
+                    this._openVideoSelectorDialog(media => {
+                        this._insertVideo(media, restoreSelection);
+                    });
+                }
             });
         }
         return {...options, commands, categories};
@@ -306,6 +319,21 @@ patch(Wysiwyg.prototype, {
         this._notifyNewBehavior(embeddedViewBlock, restoreSelection);
     },
     /**
+     * Inserts a video in the editor
+     * @param {Object} media
+     * @param {function} restoreSelection
+     */
+    _insertVideo: function (media, restoreSelection) {
+        const videoBlock = renderToElement('knowledge.wysiwyg_video', {
+            behaviorProps: encodeDataBehaviorProps({
+                videoId: media.videoId,
+                platform: media.platform,
+                params: media.params || {}
+            })
+        });
+        this._notifyNewBehavior(videoBlock, restoreSelection);
+    },
+    /**
      * Insert a behaviorBlueprint programatically. If the wysiwyg is a part of a
      * collaborative peer to peer connection, ensure that the behaviorBlueprint
      * is properly appended even when the content is reset by the collaboration.
@@ -405,5 +433,13 @@ patch(Wysiwyg.prototype, {
                 });
             }
         });
+    },
+
+    /**
+     * Inserts a dialog allowing the user to insert a video
+     * @param {function} save
+     */
+    _openVideoSelectorDialog: function (save) {
+        Component.env.services.dialog.add(VideoSelectorDialog, { save });
     }
 });

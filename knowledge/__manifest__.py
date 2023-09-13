@@ -74,6 +74,7 @@
             'knowledge/static/src/scss/knowledge_common.scss',
             'knowledge/static/src/scss/knowledge_blocks.scss',
             'knowledge/static/src/js/tools/**/*',
+            'knowledge/static/src/js/knowledge_utils.js',
         ],
         'web.assets_tests': [
             'knowledge/static/tests/tours/**/*',

@@ -46,16 +46,6 @@ export class PreparationDisplay extends Component {
     toggleCategoryFilter() {
         this.preparationDisplay.showCategoryFilter = !this.preparationDisplay.showCategoryFilter;
     }
-    getFilters() {
-        const productFilters = Object.values(this.preparationDisplay.products).filter((product) =>
-            this.preparationDisplay.selectedProducts.has(product.id)
-        );
-        const categoryFilters = Object.values(this.preparationDisplay.categories).filter(
-            (category) => this.preparationDisplay.selectedCategories.has(category.id)
-        );
-
-        return { categoryFilters, productFilters };
-    }
     createNewProducts() {
         window.open("/web#action=point_of_sale.action_client_product_menu", "_self");
     }

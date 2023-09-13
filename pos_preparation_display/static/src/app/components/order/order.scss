@@ -1,6 +1,5 @@
 $o-pdis-card-min-width: 290px;
 $o-pdis-animation-duration: 11s;
-$o-pdis-action-bar-height: 59px;
 $border-size: 3px;
 $border-style: solid;
 
@@ -35,23 +34,14 @@ $colors: (
 }
 
 .o_pdis_no_products {
-    background-color: #f9f9f9;
-
-    color: black;
-    
-    &.o_pdis_action_bar {
-        height: calc(100% - #{$o-pdis-action-bar-height});
-    }
+    background-color: $o-gray-100;
+    color: $black;
 }
 
 .o_pdis_orders {
     background-color: $o-gray-500;
     grid-template-columns: repeat(auto-fill, minmax(#{$o-pdis-card-min-width}, 1fr));
     grid-auto-rows: max-content;
-    
-    &.o_pdis_action_bar {
-        height: calc(100% - #{$o-pdis-action-bar-height});
-    }
 }
 
 .o_pdis_order_card {

@@ -22,11 +22,28 @@
                     </button>
                 </div>
                 <Stages stages="this.preparationDisplay.stages" />
-                <div class="d-flex align-items-center h-100 justify-content-end border-bottom">
-                    <button class="btn rounded-0 border-start px-4 h-100 shadow-none" t-on-click="() => this.preparationDisplay.exit()">
-                        <span class="o_pdis_close d-none d-lg-inline-block px-2">Close</span>
-                        <i class="fa fa-sign-out oi-large" role="img"/>
-                    </button>
+                <t t-set="isLastStage" t-value="this.preparationDisplay.selectedStageId === this.preparationDisplay.lastStage.id"/>
+                <t t-set="hasOrders" t-value="this.preparationDisplay.lastStage.orderCount and !this.env.debug"/>
+                <t t-set="isDebug" t-value="this.env.debug"/>
+                 <div class="d-flex">
+                    <div t-if="(isLastStage and hasOrders) or isDebug" class="d-flex align-items-center justify-content-end h-100 border-start border-bottom ">
+                        <button t-if="(isLastStage and hasOrders)" class="btn btn-light btn-lg h-100 px-4 rounded-0"
+                            t-on-click="() => this.archiveAllVisibleOrders()">
+                            <i class="fa fa-archive pe-0 pe-lg-2" aria-hidden="true"></i> 
+                            <span class="d-none d-lg-inline-block">Archive All</span>
+                        </button>
+                        <button t-if="isDebug" class="btn btn-danger btn-lg h-100 px-4 rounded-0"
+                            t-on-click="() => this.preparationDisplay.resetOrders()">
+                            <i class="fa fa-archive pe-0 pe-lg-2" aria-hidden="true"></i>
+                            <span class="d-none d-lg-inline-block">Archive All</span>
+                        </button>
+                    </div>
+                    <div class="d-flex align-items-center h-100 justify-content-end border-bottom">
+                        <button class="btn btn-lg rounded-0 border-start h-100 px-4 shadow-none" t-on-click="() => this.preparationDisplay.exit()">
+                            <span class="o_pdis_close d-none d-lg-inline-block px-2">Close</span>
+                            <i class="fa fa-sign-out oi-large" role="img"/>
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="o_pdis_content d-flex w-100">
@@ -45,53 +62,18 @@
                 </div>
 
                 <div class="o_pdis_main_area w-100 h-100 overflow-hidden">
-                    <t t-set="isLastStage" t-value="this.preparationDisplay.selectedStageId === this.preparationDisplay.lastStage.id"/>
-                    <t t-set="hasOrders" t-value="this.preparationDisplay.lastStage.orderCount and !this.env.debug"/>
-                    <t t-set="isDebug" t-value="this.env.debug"/>
-                    <div t-attf-class="o_pdis_actions  {{ (this.filterSelected and this.showSidebar) or (isLastStage and hasOrders) or isDebug ? 'd-flex' : 'd-none'}} align-items-center border-start">
-                        <div
-                            t-if="this.filterSelected and this.showSidebar"
-                            t-attf-class="{{ (this.filterSelected and this.showSidebar) or isLastStage or isDebug ? 'd-flex' : 'd-none'}} align-items-center flex-grow-1 overflow-hidden">
-                            <t t-set="filters" t-value="this.getFilters()"/>
-                            <div class="tags d-flex flex-nowrap ps-3 pe-2 overflow-auto">
-                                <t t-foreach="filters.categoryFilters" t-as="category"  t-key="category.id">
-                                    <div class="btn btn-info me-1 flex-shrink-0" t-on-click="() => this.preparationDisplay.toggleCategory(category)">
-                                        <t t-esc="category.name"/>
-                                        <i class="oi oi-close ps-2" aria-hidden="true"/>
-                                    </div>
-                                </t>
-                                <t t-foreach="filters.productFilters" t-as="product" t-key="product.id">
-                                    <div class="btn btn-info me-1 flex-shrink-0" t-on-click="() => this.preparationDisplay.toggleProduct(product)">
-                                        <t t-esc="product.name"/>
-                                        <i class="oi oi-close ps-2" aria-hidden="true"/>
-                                    </div>
-                                </t>
-                            </div>
-                            <div class="btn btn-link text-info fw-bold rounded flex-shrink-0" t-on-click="() => this.resetFilter()">
-                                Clear All Filters
-                            </div>
-                        </div>
-                        <div t-if="isLastStage and hasOrders" class="o_pdis_orders_actions--archive px-3 d-flex align-items-center flex-shrink-0">
-                            <div class="btn btn-dark flex-shrink-0"
-                                t-on-click="() => this.archiveAllVisibleOrders()">
-                                <i class="fa fa-archive pe-2" aria-hidden="true"></i> Archive all
-                            </div>
-                        </div>
-                        <div t-if="isDebug" class="o_pdis_orders_actions--archive px-3 d-flex align-items-center flex-shrink-0">
-                            <div class="btn btn-dark flex-shrink-0"
-                                t-on-click="() => this.preparationDisplay.resetOrders()">
-                                <i class="fa fa-archive" aria-hidden="true"></i> Archive all
-                            </div>
+                    <div t-if="!preparationDisplay.posHasProducts and !this.preparationDisplay.loadingProducts" class="o_pdis_no_products h-100 text-center pt-5">
+                        <h2 class="mb-3"> No products available.</h2>
+                        <div class="d-flex flex-column flex-md-row align-items-center justify-content-center gap-2">
+                            <a role="button" class="btn btn-lg btn-secondary" t-on-click="() => this.preparationDisplay.loadDemoDataProducts()">Explore demo data</a>
+                                <span class="text-muted">or</span>
+                            <a role="button" class="btn btn-lg btn-secondary" t-on-click="createNewProducts">create your own</a>.
                         </div>
                     </div>
-                    <div t-if="!preparationDisplay.posHasProducts" t-attf-class="o_pdis_no_products position-relative text-center d-flex justify-content-center align-items-start flex-grow-1 gap-3 text-reset p-3 overflow-auto {{ this.filterSelected and this.showSidebar or isLastStage and hasOrders  ? 'o_pdis_action_bar' : 'h-100'}}">
-                        <div t-if="!this.preparationDisplay.loadingProducts" class="mt-5">
-                            <p class="text-larger">No products available. Explore <a role="button" class="button-no-demo fw-bold" t-on-click="() => this.preparationDisplay.loadDemoDataProducts()">demo data</a> or <a role="button" class="button-no-demo fw-bold" t-on-click="createNewProducts">create your own</a>.</p>
-                        </div>
-                    </div>
-                    <div t-else="" t-attf-class="o_pdis_orders position-relative d-grid flex-grow-1 gap-3 text-reset p-3 overflow-auto {{ this.filterSelected and this.showSidebar or isLastStage and hasOrders  ? 'o_pdis_action_bar' : 'h-100'}}">
+
+                    <div t-if="preparationDisplay.posHasProducts" class="o_pdis_orders position-relative d-grid flex-grow-1 h-100 gap-3 text-reset p-3 overflow-auto">
                         <t t-foreach="this.preparationDisplay.filteredOrders" t-as="order" t-key="order.id">
-                            <Order order="order" />
+                        <Order order="order" />
                         </t>
                     </div>
                 </div>

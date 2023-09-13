@@ -1,7 +1,6 @@
-$o-pdis-sidebar-width: 320px;
+$o-pdis-sidebar-width: 16rem;
 $o-pdis-navbar-height: 74px;
 $o-pdis-logo-size: 45px;
-$o-pdis-actions-height: 59px;
 
 .o_pdis_logo > img {
     height: $o-pdis-logo-size;
@@ -13,10 +12,6 @@ $o-pdis-actions-height: 59px;
 
 .o_pdis_content {
     height: calc(100vh - #{$o-pdis-navbar-height});
-}
-
-.o_pdis_actions {
-    height: $o-pdis-actions-height;
 }
 
 .o_pdis_sidebar {

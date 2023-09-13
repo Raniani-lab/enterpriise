@@ -29,6 +29,7 @@
 
             'web/static/src/scss/pre_variables.scss',
             'web/static/lib/bootstrap/scss/_variables.scss',
+            'web/static/src/webclient/webclient.scss',
 
             # Import Bootstrap
             ('include', 'web._assets_bootstrap_backend'),

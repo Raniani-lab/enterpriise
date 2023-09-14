@@ -6,6 +6,9 @@ import { patch } from "@web/core/utils/patch";
 patch(PartnerDetailsEdit.prototype, {
     setup() {
         super.setup(...arguments);
+        if (!this.pos.isChileanCompany()) {
+               return;
+        }
         this.intFields.push("l10n_latam_identification_type_id");
         this.changes.l10n_cl_sii_taxpayer_type =
             this.props.partner.l10n_cl_sii_taxpayer_type || "1";

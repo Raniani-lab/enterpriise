@@ -87,18 +87,16 @@
                     <group>
                         <field name="name" invisible="1"/>
                         <field name="user_id" groups="base.group_no_one" class="oe_inline"/>
-                        <label for="unique_field_id" string="Target"/>
+                        <label for="model_id" string="Target"/>
                         <div name="mailing_container">
                             <div class="row">
                                 <div class="col-xs-12 col-md-3">
                                     <field name="model_id"
-                                        string="Target"
                                         attrs="{'readonly': [('state', '!=', 'draft')]}"
                                         options="{'no_create': True, 'no_open': True}"
                                         context="{'tree_view_ref': 'marketing_automation.ir_model_view_tree_marketing'}"/>
                                 </div>
                                 <div class="col-xs-12 col-md-9 o_td_label">
-                                    <label for="mailing_filter_id" string="Filter" class="me-4"/>
                                     <field name="mailing_filter_id"
                                         widget="mailing_filter"
                                         options="{'no_create': '1', 'no_open': '1', 'domain_field': 'domain', 'model_field': 'model_id'}"

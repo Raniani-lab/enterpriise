@@ -53,6 +53,8 @@ class AppointmentType(models.Model):
     location = fields.Char(
         'Location formatted', compute='_compute_location', compute_sudo=True,
         help='Location formatted for one line uses')
+    event_videocall_source = fields.Selection([('discuss', 'Odoo Discuss')], string="Videoconference Link", default="discuss",
+        help="Defines the type of video call link that will be used for the generated events. Keep it empty to prevent generating meeting url.")
 
     # Assign Configuration
     assign_method = fields.Selection([

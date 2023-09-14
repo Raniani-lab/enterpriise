@@ -91,6 +91,16 @@ class CalendarEvent(models.Model):
             event.resource_total_capacity_reserved = data.get('total_capacity_reserved', 0) if data else 0
             event.resource_total_capacity_used = data.get('total_capacity_used', 0) if data else 0
 
+    @api.depends('appointment_type_id.event_videocall_source')
+    def _compute_videocall_source(self):
+        events_no_appointment = self.env['calendar.event']
+        for event in self:
+            if not event.appointment_type_id or event.videocall_location and not self.DISCUSS_ROUTE in event.videocall_location:
+                events_no_appointment |= event
+                continue
+            event.videocall_source = event.appointment_type_id.event_videocall_source
+        super(CalendarEvent, events_no_appointment)._compute_videocall_source()
+
     def _compute_is_highlighted(self):
         super(CalendarEvent, self)._compute_is_highlighted()
         if self.env.context.get('active_model') == 'appointment.type':

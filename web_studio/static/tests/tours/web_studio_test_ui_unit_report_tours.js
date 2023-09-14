@@ -18,6 +18,7 @@ function insertText(element, text, offset = 0) {
         element.dispatchEvent(
             new KeyboardEvent("keydown", {
                 key: char,
+                bubbles: true,
             })
         );
         const textNode = doc.createTextNode(char);
@@ -36,6 +37,7 @@ function insertText(element, text, offset = 0) {
         element.dispatchEvent(
             new KeyboardEvent("keyup", {
                 key: char,
+                bubbles: true,
             })
         );
     }
@@ -446,6 +448,89 @@ registry.category("web_tour.tours").add("web_studio.test_field_placeholder", {
             run() {
                 insertText(this.$anchor[0], "edited with odooEditor");
             },
+        },
+        {
+            trigger: ".o-web-studio-save-report.btn-primary",
+        },
+        {
+            trigger: ".o-web-studio-save-report:not(.btn-primary)",
+            isCheck: true,
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("web_studio.test_add_field_blank_report", {
+    test: true,
+    sequence: 260,
+    steps: () => [
+        {
+            // edit reports
+            trigger: ".o_web_studio_menu li a:contains(Reports)",
+        },
+        {
+            // create a new report
+            trigger: ".o_control_panel .o-kanban-button-new",
+        },
+        {
+            // select basic layout
+            trigger: '.o_web_studio_report_layout_dialog div[data-layout="web.basic_layout"]',
+        },
+        {
+            trigger: "iframe .page",
+            async run(helpers) {
+                const el = this.$anchor[0];
+                openEditorPowerBox(el);
+            },
+        },
+        {
+            trigger:
+                ".oe-powerbox-wrapper .oe-powerbox-commandDescription:contains(Insert a field)",
+        },
+        {
+            extra_trigger: ".o-web-studio-field-dynamic-placeholder",
+            trigger: ".o-web-studio-report-editor-wysiwyg div:has(> .o-web-studio-report-container)",
+            async run() {
+                const placeholderBox = getBoundingClientRect.call(document.querySelector(".o-web-studio-field-dynamic-placeholder"));
+                assertEqual(this.$anchor[0].scrollTop, 0);
+                this.$anchor[0].scrollTop = 9999;
+                await new Promise(requestAnimationFrame);
+                const newPlaceholderbox = getBoundingClientRect.call(document.querySelector(".o-web-studio-field-dynamic-placeholder"));
+                // The field placeholder should have followed its anchor, and it happens that the anchor's container
+                // has been scrolled, so the anchor has moved upwards (and is actually outside of the viewPort, to the top)
+                assertEqual(placeholderBox.top > newPlaceholderbox.top, true);
+            }
+        },
+        {
+            trigger:
+                ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover_search input",
+            run: "text Job Position",
+        },
+        {
+            trigger:
+                ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover_item_name:contains(Job Position)",
+        },
+        {
+            trigger:
+                ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_default_value_input input",
+            run: "text some default value",
+        },
+        {
+            trigger: ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover",
+            run() {
+                this.$anchor[0].dispatchEvent(
+                    new KeyboardEvent("keydown", { key: "Enter", bubbles: true })
+                );
+            },
+        },
+        {
+            // check that field was added successfully
+            trigger: "iframe .page > span:contains(some default value)"
+        },
+        {
+            trigger: "iframe .page",
+            run() {
+                insertText(this.$anchor[0], "Custo")
+            }
         },
         {
             trigger: ".o-web-studio-save-report.btn-primary",

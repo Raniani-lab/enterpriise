@@ -224,6 +224,9 @@ def _guess_qweb_variables(tree, report, qcontext):
             src = qweb_like_string_eval(src, qcontext) or placeholder
             node.set("src", src)
 
+        if node.get("id") == "wrapwrap":
+            apply_oe_context(node, qcontext, keys_info)
+
         for child in node:
             recursive(child, qcontext, keys_info)
 
@@ -376,12 +379,13 @@ class WebStudioReportController(main.WebStudioController):
                     continue
 
                 _vars = dict(variables)
-                has_children = len(node.xpath("./*[not(@t-set)]"))
-                if has_children:
-                    z = etree.Element("t", {'process_zero': "1"})
-                    for child in node:
+                z = etree.Element("t", {'process_zero': "1"})
+                for child in node:
+                    if not child.get("t-set"):
                         z.append(child)
+                if len(z) > 0:
                     _vars["__zero__"] = etree.tostring(z)
+
                 sub_element = load_arch(tcall, _vars)
                 node.append(sub_element)
 

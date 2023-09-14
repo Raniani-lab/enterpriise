@@ -492,6 +492,16 @@ class TestReportEditorUIUnit(HttpCase):
              </t>
         """)
 
+    def test_add_field_blank_report(self):
+        studio_views = self.env["ir.ui.view"].search([("key", "=ilike", "studio_customization.%")])
+        self.start_tour(self.tour_url, "web_studio.test_add_field_blank_report", login="admin")
+        new_view = self.env["ir.ui.view"].search([("key", "=ilike", "studio_customization.%"), ("id", "not in", studio_views.ids), ("name", "like", "document")])
+        self.assertXMLEqual(new_view.arch, """
+            <t t-name="studio_report_document" class="">
+                <div class="page"><span t-field="doc.function">some default value</span><br/>Custo</div>
+            </t>
+        """)
+
     def test_edition_without_lang(self):
         self.env["res.lang"]._activate_lang("fr_FR")
         self.env["res.users"].browse(2).lang = "fr_FR"

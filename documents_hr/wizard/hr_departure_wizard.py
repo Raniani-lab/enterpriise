@@ -16,7 +16,7 @@ class HrDepartureWizard(models.TransientModel):
         default=_get_default_send_hr_documents_access_link,
         help="Send a share link to the private email of the employee with all the HR files he owns in Documents app")
 
-    private_email = fields.Char(related="employee_id.private_email")
+    private_email = fields.Char(related="employee_id.private_email", readonly=False)
 
     def action_register_departure(self):
         super().action_register_departure()

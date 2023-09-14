@@ -147,7 +147,7 @@ class AppointmentCalendarController(CalendarController):
             reset_params = {'state': 'cancel'}
             if appointment_type.schedule_based_on == 'resources':
                 reset_params.update({
-                    'resource_id': '',
+                    'resource_selected_id': '',
                     'available_resource_ids': '',
                 })
             redirect_url = f'/appointment/{appointment_type.id}?{keep_query("*", **reset_params)}'

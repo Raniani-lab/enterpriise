@@ -150,24 +150,34 @@ class HrContract(models.Model):
             return description
         if car_option == "new":
             vehicle = self.env['fleet.vehicle.model'].with_company(self.company_id).sudo().browse(vehicle_id)
-            co2 = vehicle.default_co2
-            fuel_type = vehicle.default_fuel_type
-            transmission = vehicle.transmission
-            door_number = odometer = immatriculation = trailer_hook = False
-            bik_display = "%s €" % round(vehicle.default_atn, 2)
-            monthly_cost_display = _("%s € (CO2 Fee) + %s € (Rent)") % (round(vehicle.co2_fee, 2), round(vehicle.default_total_depreciated_cost - vehicle.co2_fee, 2))
 
         else:
             vehicle = self.env['fleet.vehicle'].with_company(self.company_id).sudo().browse(vehicle_id)
-            co2 = vehicle.co2
-            fuel_type = vehicle.fuel_type
-            door_number = vehicle.doors
-            odometer = vehicle.odometer
-            immatriculation = vehicle.acquisition_date
-            transmission = vehicle.transmission
-            trailer_hook = "Yes" if vehicle.trailer_hook else "No"
-            bik_display = "%s €" % round(vehicle.atn, 2)
-            monthly_cost_display = _("%s € (CO2 Fee) + %s € (Rent)") % (round(vehicle.co2_fee, 2), round(vehicle.total_depreciated_cost - vehicle.co2_fee, 2))
+
+        is_new = bool(car_option == "new")
+
+        car_elements = self._get_company_car_description_values(vehicle, is_new)
+        description += Markup('<ul>%s</ul>') % Markup().join([Markup('<li>%s: %s</li>') % (key, value) for key, value in car_elements.items() if value])
+        return description
+
+    def _get_company_car_description_values(self, vehicle_id, is_new):
+        if is_new:
+            co2 = vehicle_id.default_co2
+            fuel_type = vehicle_id.default_fuel_type
+            transmission = vehicle_id.transmission
+            door_number = odometer = immatriculation = trailer_hook = False
+            bik_display = "%s €" % round(vehicle_id.default_atn, 2)
+            monthly_cost_display = _("%s € (CO2 Fee) + %s € (Rent)") % (round(vehicle_id.co2_fee, 2), round(vehicle_id.default_total_depreciated_cost - vehicle_id.co2_fee, 2))
+        else:
+            co2 = vehicle_id.co2
+            fuel_type = vehicle_id.fuel_type
+            door_number = vehicle_id.doors
+            odometer = vehicle_id.odometer
+            immatriculation = vehicle_id.acquisition_date
+            transmission = vehicle_id.transmission
+            trailer_hook = "Yes" if vehicle_id.trailer_hook else "No"
+            bik_display = "%s €" % round(vehicle_id.atn, 2)
+            monthly_cost_display = _("%s € (CO2 Fee) + %s € (Rent)") % (round(vehicle_id.co2_fee, 2), round(vehicle_id.total_depreciated_cost - vehicle_id.co2_fee, 2))
 
         car_elements = {
             'CO2 Emission': co2,
@@ -180,8 +190,7 @@ class HrContract(models.Model):
             'Odometer': odometer,
             'Immatriculation Date': immatriculation
         }
-        description += Markup('<ul>%s</ul>') % Markup().join([Markup('<li>%s: %s</li>') % (key, value) for key, value in car_elements.items() if value])
-        return description
+        return car_elements
 
     def _get_description_commission_on_target(self, new_value=None):
         self.ensure_one()

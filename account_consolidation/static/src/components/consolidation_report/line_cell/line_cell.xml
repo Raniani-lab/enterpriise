@@ -11,6 +11,7 @@
                     <a t-on-click="() => this.audit()">
                         <t t-component="env.component('AccountReportEllipsis')" t-props="{
                             name: props.cell.name?.toString(),
+                            no_format: props.cell.no_format,
                             type: props.cell.figure_type,
                             maxCharacters: 32,
                         }"/>
@@ -19,6 +20,7 @@
                 <t t-else="">
                     <t t-component="env.component('AccountReportEllipsis')" t-props="{
                         name: props.cell.name?.toString(),
+                        no_format: props.cell.no_format,
                         type: props.cell.figure_type,
                         maxCharacters: 32,
                     }"/>

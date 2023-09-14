@@ -7,7 +7,7 @@
     <t t-name="account_reports.AccountReportEllipsisCustomizable">
         <t t-if="props.type === 'boolean'">
             <div class="name">
-                <t t-out="(props.name) ? 'Yes' : 'No'"/>
+                <t t-out="(props.no_format) ? 'Yes' : 'No'"/>
             </div>
         </t>
         <t t-elif="props.type === 'string'">

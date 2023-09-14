@@ -27,7 +27,7 @@ export class AccountReportEditPopover extends Component {
         const editPopupData = JSON.parse(this.props.cell.edit_popup_data);
 
         if (this.props.cell.figure_type === 'boolean')
-            editValue = this.booleanTrue.el.checked && !this.booleanFalse.el.checked;
+            editValue = Number(this.booleanTrue.el.checked && !this.booleanFalse.el.checked);
         else
             editValue = this.input.el.value;
 

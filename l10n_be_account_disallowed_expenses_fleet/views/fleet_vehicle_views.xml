@@ -22,8 +22,8 @@
         <field name="arch" type="xml">
             <tree create="false" edit="false">
                 <field name="date_from"/>
-                <field name="tax_deduction" widget="percentage"/>
-                <field name="rate" string="D.E.A." widget="percentage"/>
+                <field name="tax_deduction"/>
+                <field name="rate" string="D.E.A. %"/>
             </tree>
         </field>
     </record>

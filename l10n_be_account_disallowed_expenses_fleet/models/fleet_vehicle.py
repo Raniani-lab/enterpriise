@@ -16,7 +16,7 @@ class FleetVehicle(models.Model):
             if vehicle._from_be():
                 new_rates.append({
                     'vehicle_id': vehicle.id,
-                    'rate': 1 - vehicle.tax_deduction,
+                    'rate': 100 - vehicle.tax_deduction*100,
                     'date_from': today
                 })
         if new_rates:
@@ -34,7 +34,7 @@ class FleetVehicle(models.Model):
                     rate = vehicle.rate_ids.filtered(lambda r: (r.date_from == today))
                     new_rate = {
                         'vehicle_id': vehicle.id,
-                        'rate': 1 - vehicle.tax_deduction,
+                        'rate': 100 - vehicle.tax_deduction*100,
                         'date_from': today
                     }
                     if rate:
@@ -63,9 +63,9 @@ class FleetDisallowedExpensesRate(models.Model):
     _order = 'date_from desc'
     _inherit = 'fleet.disallowed.expenses.rate'
 
-    tax_deduction = fields.Float(string='Tax Deduction', compute='_compute_tax_deduction')
+    tax_deduction = fields.Float(string='Tax Deduction %', compute='_compute_tax_deduction')
 
     @api.depends('rate')
     def _compute_tax_deduction(self):
         for rate in self:
-            rate.tax_deduction = 1 - rate.rate
+            rate.tax_deduction = 100 - rate.rate

@@ -71,7 +71,7 @@ class AccountFollowupReport(models.AbstractModel):
                 invoice_date = {
                     'name': format_date(self.env, aml.move_id.invoice_date or aml.date, lang_code=lang_code),
                     'class': 'date',
-                    'style': 'white-space:nowrap;text-align:center;',
+                    'style': 'white-space:nowrap;text-align:left;',
                     'template': 'account_followup.cell_template_followup_report',
                 }
                 date_due = format_date(self.env, aml.date_maturity or aml.move_id.invoice_date or aml.date, lang_code=lang_code)
@@ -82,7 +82,7 @@ class AccountFollowupReport(models.AbstractModel):
                     total_issued += not aml.blocked and amount or 0
                 date_due = {
                     'name': date_due, 'class': 'date',
-                    'style': 'white-space:nowrap;text-align:center;',
+                    'style': 'white-space:nowrap;text-align:left;',
                     'template': 'account_followup.cell_template_followup_report',
                 }
                 if is_overdue:
@@ -91,7 +91,7 @@ class AccountFollowupReport(models.AbstractModel):
                     date_due = ''
                 move_line_name = {
                     'name': self._followup_report_format_aml_name(aml.name, aml.move_id.ref),
-                    'style': 'text-align:right; white-space:normal;',
+                    'style': 'text-align:left; white-space:normal;',
                     'template': 'account_followup.cell_template_followup_report',
                 }
                 amount = {
@@ -134,7 +134,7 @@ class AccountFollowupReport(models.AbstractModel):
                 } for v in [''] * 3] + \
                 [{
                     'name': v,
-                    'style': 'text-align:right; white-space:normal;',
+                    'style': 'text-align:right; white-space:normal; font-weight: bold;',
                     'template': 'account_followup.cell_template_followup_report',
                 } for v in [total >= 0 and _('Total Due') or '', total_due]]
 
@@ -158,7 +158,7 @@ class AccountFollowupReport(models.AbstractModel):
                     } for v in [''] * 3] + \
                     [{
                         'name': v,
-                        'style': 'text-align:right; white-space:normal;',
+                        'style': 'text-align:right; white-space:normal; font-weight: bold;',
                         'template': 'account_followup.cell_template_followup_report',
                     } for v in [_('Total Overdue'), total_issued]]
 
@@ -330,8 +330,8 @@ Best Regards,
             {'name': _('Date'), 'class': 'date', 'style': 'text-align:center; white-space:nowrap;'},
             {'name': _('Due Date'), 'class': 'date', 'style': 'text-align:center; white-space:nowrap;'},
             {'name': _('Origin'), 'style': 'text-align:center; white-space:nowrap;'},
-            {'name': _('Communication'), 'style': 'text-align:right; white-space:nowrap;'},
-            {'name': _('Total Due'), 'class': 'number o_price_total', 'style': 'text-align:right; white-space:nowrap;'},
+            {'name': _('Communication'), 'style': 'text-align:center; white-space:nowrap;'},
+            {'name': _('Total Due'), 'class': 'number o_price_total', 'style': 'text-align:center; white-space:nowrap;'},
         ]
 
     ####################################################

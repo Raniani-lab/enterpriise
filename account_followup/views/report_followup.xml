@@ -112,7 +112,7 @@
                     t-att-style="line.get('style', '')">
                     <td
                         t-att-data-id="line['id']"
-                        t-att-class="'o_account_report_name_ellipsis o_account_report_line o_account_report_line_indent ' + (line.get('unfoldable') and 'js_account_report_foldable o_foldable_total' or '') + ' ' + line.get('name_class', '')"
+                        t-att-class="'o_account_report_name_ellipsis o_account_report_line o_account_report_line_indent ' + (line.get('unfoldable') and 'js_account_report_foldable o_foldable_total' or '') + ' ps-2 pe-2' + line.get('name_class', '')"
                         t-att-data-unfolded="line.get('unfolded', False)"
                         t-att-data-groupby="line.get('groupby')"
                         t-att-data-expand-function="line.get('expand_function')"
@@ -146,7 +146,7 @@
                         <t t-set="cell_classes" t-value="(cell.get('class', '') + (line.get('unfoldable') and ' o_foldable_total' or ''))"/>
 
                         <td>
-                            <div class="o_account_report_column_value">
+                            <div t-att-style="cell.get('style', '')" t-att-class="cell_classes + ' o_account_report_column_value ps-2 pe-2'">
                                 <span class="o_account_report_column_value" t-out="cell.get('name')"/>
                             </div>
                         </td>

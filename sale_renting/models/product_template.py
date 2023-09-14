@@ -30,12 +30,6 @@ class ProductTemplate(models.Model):
         super()._compute_is_temporal()
         self.filtered('rent_ok').is_temporal = True
 
-    def _compute_visible_qty_configurator(self):
-        super(ProductTemplate, self)._compute_visible_qty_configurator()
-        for product_template in self:
-            if len(product_template.product_variant_ids) > 1 and product_template.rent_ok:
-                product_template.visible_qty_configurator = False
-
     def _get_qty_in_rent(self):
         rentable = self.filtered('rent_ok')
         not_rentable = self - rentable
@@ -84,7 +78,3 @@ class ProductTemplate(models.Model):
         return pricelist._get_product_price(
             product or self, quantity, uom=uom, date=date, start_date=start_date, end_date=end_date
         )
-
-    def _can_be_added_to_cart(self):
-        """Override to allow rental products to be used in a sale order"""
-        return super()._can_be_added_to_cart() or self.rent_ok

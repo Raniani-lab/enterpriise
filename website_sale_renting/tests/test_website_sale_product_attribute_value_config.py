@@ -14,7 +14,7 @@ class TestWebsiteSaleRentingProductAttributeValueConfig(TestSaleProductAttribute
 
     def test_product_attribute_value_config_get_combination_info(self):
         current_website = self.env['website'].get_current_website()
-        pricelist = current_website.get_current_pricelist()
+        pricelist = current_website.pricelist_id
 
         self.computer = self.computer.with_context(website_id=current_website.id)
         self.computer.rent_ok = True

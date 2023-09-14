@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import http
+from odoo.http import route
 
 from odoo.addons.website_sale.controllers import main as website_sale_portal
 from odoo.addons.website_sale.controllers.variant import WebsiteSaleVariantController
@@ -9,9 +9,9 @@ from odoo.addons.website_sale.controllers.variant import WebsiteSaleVariantContr
 
 class WebsiteSaleRentingVariantController(WebsiteSaleVariantController):
 
-    @http.route()
+    @route()
     def get_combination_info_website(self, *args, **kwargs):
-        res = super(WebsiteSaleRentingVariantController, self).get_combination_info_website(*args, **kwargs)
+        res = super().get_combination_info_website(*args, **kwargs)
         res['is_combination_possible'] = res.get('is_combination_possible', True) and res.get('is_recurrence_possible', True)
         return res
 

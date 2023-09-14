@@ -17,7 +17,7 @@ class SaleOrder(models.Model):
         order_line = super()._cart_update_order_line(product_id, quantity, order_line, **kwargs)
 
         def get_default_recurrence_id(p):
-            pricelist = self.env['website'].get_current_website().get_current_pricelist()
+            pricelist = self.pricelist_id
             pricing = self.env['product.pricing']._get_first_suitable_pricing(p, pricelist)
             return pricing.recurrence_id
 

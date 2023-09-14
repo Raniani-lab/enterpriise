@@ -50,13 +50,13 @@ class PolishTaxReportCustomHandler(models.AbstractModel):
                 _('Please configure the tax office in the Accounting Settings.'),
             )
 
-        new_wizard = self.env['l10n_pl_reports_jpk.periodic.vat.xml.export'].create({})
-        view_id = self.env.ref('l10n_pl_reports_jpk.view_account_financial_report_export').id
+        new_wizard = self.env['l10n_pl_reports.periodic.vat.xml.export'].create({})
+        view_id = self.env.ref('l10n_pl_reports.view_account_financial_report_export').id
         return {
             'name': 'XML Export Options',
             'view_mode': 'form',
             'views': [[view_id, 'form']],
-            'res_model': 'l10n_pl_reports_jpk.periodic.vat.xml.export',
+            'res_model': 'l10n_pl_reports.periodic.vat.xml.export',
             'type': 'ir.actions.act_window',
             'res_id': new_wizard.id,
             'target': 'new',
@@ -153,7 +153,7 @@ class PolishTaxReportCustomHandler(models.AbstractModel):
                    NULLIF(
                           LEAST(
                                 min(partial_reconcile_date.date), 
-                                "account_move_line__move_id".l10n_pl_delivery_date, 
+                                "account_move_line__move_id".delivery_date, 
                                 COALESCE("account_move_line__move_id".invoice_date, "account_move_line__move_id".date)
                                 ), 
                           COALESCE("account_move_line__move_id".invoice_date, "account_move_line__move_id".date)
@@ -393,7 +393,7 @@ class PolishTaxReportCustomHandler(models.AbstractModel):
             values.update({
                 'xmlns':  "http://crd.gov.pl/wzor/2021/12/27/11149/"
             })
-            audit_content = self.env['ir.qweb']._render('l10n_pl_reports_jpk.jpk_export_quarterly_template', values)
+            audit_content = self.env['ir.qweb']._render('l10n_pl_reports.jpk_export_quarterly_template', values)
             return {
                 'file_name': f'jpk_vat_k_{values["date_month"]}_{values["date_year"]}.xml',
                 'file_content': audit_content,
@@ -403,7 +403,7 @@ class PolishTaxReportCustomHandler(models.AbstractModel):
             values.update({
                 'xmlns':  "http://crd.gov.pl/wzor/2021/12/27/11148/"
             })
-            audit_content = self.env['ir.qweb']._render('l10n_pl_reports_jpk.jpk_export_monthly_template', values)
+            audit_content = self.env['ir.qweb']._render('l10n_pl_reports.jpk_export_monthly_template', values)
             return {
                 'file_name': f'jpk_vat_m_{values["date_month"]}_{values["date_year"]}.xml',
                 'file_content': audit_content,

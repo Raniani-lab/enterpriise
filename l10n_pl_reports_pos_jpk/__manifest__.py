@@ -8,7 +8,7 @@
     """,
     'category': 'Accounting/Localizations/Reporting',
     'depends': [
-        'l10n_pl_reports_jpk', 'point_of_sale',
+        'l10n_pl_reports', 'point_of_sale',
     ],
     'auto_install': True,
     'installable': True,

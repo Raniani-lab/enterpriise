@@ -229,7 +229,7 @@
 
     <!-- Due to the xpaths, the indent in the file generated does not follow exactly the logic here.
             Thus, the indent here is not perfect on purpose, so the file generated has the right indent -->
-    <template id="jpk_export_quarterly_template" inherit_id="l10n_pl_reports_jpk.jpk_export_monthly_template" primary="True">
+    <template id="jpk_export_quarterly_template" inherit_id="l10n_pl_reports.jpk_export_monthly_template" primary="True">
         <!-- This template is used when returning quarterly the jpk -->
 
                 <xpath expr="//*[local-name()='JPK']/*[local-name()='Naglowek']/*[local-name()='KodFormularza']" position="replace">

@@ -21,7 +21,7 @@ class TestJpkExport(TestAccountReportsCommon):
             'zip': '01-857',
             'vat': 'PL1234567883',
             'email': 'test@mail.com',
-            'l10n_pl_reports_tax_office_id': cls.env.ref('l10n_pl_jpk.pl_tax_office_0206'),
+            'l10n_pl_reports_tax_office_id': cls.env.ref('l10n_pl.pl_tax_office_0206'),
             'country_id': cls.env.ref('base.pl').id,
         })
 
@@ -108,7 +108,7 @@ class TestJpkExport(TestAccountReportsCommon):
         report = self.env.ref('l10n_pl.tax_report')
         options = self._generate_options(report, fields.Date.from_string('2023-01-01'), fields.Date.from_string('2023-01-31'))
         wizard_action = self.env[report.custom_handler_model_name].print_tax_report_to_xml(options)
-        wizard = self.env['l10n_pl_reports_jpk.periodic.vat.xml.export'].with_context(wizard_action.get('context')).browse(wizard_action.get('res_id'))
+        wizard = self.env['l10n_pl_reports.periodic.vat.xml.export'].with_context(wizard_action.get('context')).browse(wizard_action.get('res_id'))
 
         wizard.l10n_pl_paid_before_deadline = True  # To test the options passing to the export (in P_67 here)
 
@@ -116,7 +116,7 @@ class TestJpkExport(TestAccountReportsCommon):
         result_print = report.dispatch_report_action(json.loads(report_action.get('data', {}).get('options')), report_action.get('data', {}).get('file_generator'))
 
         stringified_xml = result_print['file_content']
-        with tools.file_open('l10n_pl_reports_jpk/tests/expected_xmls/jpk_monthly.xml', 'rb') as expected_xml_file:
+        with tools.file_open('l10n_pl_reports/tests/expected_xmls/jpk_monthly.xml', 'rb') as expected_xml_file:
             self.assertXmlTreeEqual(
                 self.get_xml_tree_from_string(stringified_xml),
                 self.get_xml_tree_from_string(expected_xml_file.read()),
@@ -129,7 +129,7 @@ class TestJpkExport(TestAccountReportsCommon):
         report = self.env.ref('l10n_pl.tax_report')
         options = self._generate_options(report, fields.Date.from_string('2023-01-01'), fields.Date.from_string('2023-01-31'))
         wizard_action = self.env[report.custom_handler_model_name].print_tax_report_to_xml(options)
-        wizard = self.env['l10n_pl_reports_jpk.periodic.vat.xml.export'].with_context(wizard_action.get('context')).browse(wizard_action.get('res_id'))
+        wizard = self.env['l10n_pl_reports.periodic.vat.xml.export'].with_context(wizard_action.get('context')).browse(wizard_action.get('res_id'))
 
         self.company_data['company'].account_tax_periodicity = 'trimester'
         wizard.l10n_pl_paid_before_deadline = True  # To test the options passing to the export (in P_67 here)
@@ -138,7 +138,7 @@ class TestJpkExport(TestAccountReportsCommon):
         result_print = report.dispatch_report_action(json.loads(report_action.get('data', {}).get('options')), report_action.get('data', {}).get('file_generator'))
 
         stringified_xml = result_print['file_content']
-        with tools.file_open('l10n_pl_reports_jpk/tests/expected_xmls/jpk_quarterly_first_month.xml', 'rb') as expected_xml_file:
+        with tools.file_open('l10n_pl_reports/tests/expected_xmls/jpk_quarterly_first_month.xml', 'rb') as expected_xml_file:
             self.assertXmlTreeEqual(
                 self.get_xml_tree_from_string(stringified_xml),
                 self.get_xml_tree_from_string(expected_xml_file.read()),
@@ -151,7 +151,7 @@ class TestJpkExport(TestAccountReportsCommon):
         report = self.env.ref('l10n_pl.tax_report')
         options = self._generate_options(report, fields.Date.from_string('2023-03-01'), fields.Date.from_string('2023-03-31'))
         wizard_action = self.env[report.custom_handler_model_name].print_tax_report_to_xml(options)
-        wizard = self.env['l10n_pl_reports_jpk.periodic.vat.xml.export'].with_context(wizard_action.get('context')).browse(wizard_action.get('res_id'))
+        wizard = self.env['l10n_pl_reports.periodic.vat.xml.export'].with_context(wizard_action.get('context')).browse(wizard_action.get('res_id'))
 
         self.company_data['company'].account_tax_periodicity = 'trimester'
         wizard.l10n_pl_paid_before_deadline = True  # To test the options passing to the export (in P_67 here)
@@ -160,7 +160,7 @@ class TestJpkExport(TestAccountReportsCommon):
         result_print = report.dispatch_report_action(json.loads(report_action.get('data', {}).get('options')), report_action.get('data', {}).get('file_generator'))
 
         stringified_xml = result_print['file_content']
-        with tools.file_open('l10n_pl_reports_jpk/tests/expected_xmls/jpk_quarterly_last_month.xml', 'rb') as expected_xml_file:
+        with tools.file_open('l10n_pl_reports/tests/expected_xmls/jpk_quarterly_last_month.xml', 'rb') as expected_xml_file:
             self.assertXmlTreeEqual(
                 self.get_xml_tree_from_string(stringified_xml),
                 self.get_xml_tree_from_string(expected_xml_file.read()),

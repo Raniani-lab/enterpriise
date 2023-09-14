@@ -4,7 +4,7 @@ import json
 
 
 class PolishVATXMLReportExport(models.TransientModel):
-    _name = "l10n_pl_reports_jpk.periodic.vat.xml.export"
+    _name = "l10n_pl_reports.periodic.vat.xml.export"
     _description = "Polish Periodic VAT Report Export Wizard"
 
     l10n_pl_birthdate = fields.Date(

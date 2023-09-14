@@ -43,7 +43,7 @@ class TestAllReportsGeneration(AccountTestInvoicingCommon):
 
     def test_generate_all_export_files(self):
         # Test values for the fields that become mandatory when doing exports on the reports, depending on the country
-        l10n_pl_reports_tax_office = self.env.ref('l10n_pl_jpk.pl_tax_office_0215', raise_if_not_found=False)
+        l10n_pl_reports_tax_office = self.env.ref('l10n_pl.pl_tax_office_0215', raise_if_not_found=False)
         company_test_values = {
             'LU': {'ecdf_prefix': '1234AB', 'matr_number': '1111111111111', 'vat': 'LU12345613'},
             'BR': {'vat': '01234567891251'},

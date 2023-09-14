@@ -661,8 +661,9 @@ export class AccountReportController {
     // Server calls
     //------------------------------------------------------------------------------------------------------------------
     async reportAction(ev, action, actionParam = null, callOnSectionsSource = false) {
-        ev.preventDefault();
-        ev.stopPropagation();
+        // 'ev' might be 'undefined' if event is not triggered from a button/anchor
+        ev?.preventDefault();
+        ev?.stopPropagation();
 
         let actionOptions = this.options;
         if (callOnSectionsSource) {

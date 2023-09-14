@@ -173,7 +173,7 @@ var accountReportsWidget = AbstractAction.extend({
         this.actionManager = parent;
         this.odoo_context = action.context;
         this.report_options = action.params && action.params.options;
-        this.root_account_report_id = action.context.report_id || this.report_options.report_id;
+        this.root_account_report_id = (action.context && action.context.report_id) || (this.report_options && this.report_options.report_id) || (action.params.action == "account_report" && action.params.active_id);
         this.ignore_session = action.params && action.params.ignore_session;
         if ((this.ignore_session === 'read' || this.ignore_session === 'both') !== true) {
             var persist_key = this.get_persist_options_key()

@@ -3,7 +3,7 @@
 
 {
     'name': 'Test US Payroll',
-    'countries': ['be'],
+    'countries': ['us'],
     'category': 'Human Resources',
     'summary': 'Test US Payroll',
     'depends': [

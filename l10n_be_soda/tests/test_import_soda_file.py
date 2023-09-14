@@ -84,11 +84,17 @@ class TestSodaFile(AccountTestInvoicingCommon):
             }).ids)
             self.assertEqual(wizard_action['res_model'], 'soda.import.wizard')
             wizard = self.env['soda.import.wizard'].search([('id', '=', wizard_action['res_id'])])
+            missing_name_line = wizard.soda_account_mapping_ids.filtered(lambda sam: not sam.name)
+            missing_name_line.name = "Label for Withholding Taxes line"
+            missing_name_line.account_id = self.env['account.account'].create({
+                'name': 'Withholding Taxes',
+                'code': missing_name_line.code,
+            })
             result = wizard.action_save_and_import()
             result_move = self.env['account.move'].search([('id', '=', result['res_id'])])
             self.assertEqual(len(result_move.line_ids), 3)
             self.assertRecordValues(result_move.line_ids, [
-                {'debit': 0, 'credit': 4000.00, 'name': 'Withholding Taxes'},
+                {'debit': 0, 'credit': 4000.00, 'name': 'Label for Withholding Taxes line'},
                 {'debit': 0, 'credit': 11655.10, 'name': 'Special remuneration'},
                 {'debit': 15655.10, 'credit': 0, 'name': 'Remuneration'},
             ])

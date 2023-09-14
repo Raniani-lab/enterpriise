@@ -15,7 +15,7 @@
         <SocialPeriod>202110</SocialPeriod>
         <Accounting>
           <Account>12345</Account>
-          <Label>Withholding Taxes</Label>
+          <Label/>
           <Amount>
             <Debit>0.00</Debit>
             <Credit>4000.00</Credit>

@@ -13,7 +13,7 @@
                 <field name="soda_account_mapping_ids" nolabel="1" options="{'link': false, 'unlink': false}">
                     <tree editable="bottom">
                         <field name="code" readonly="1"/>
-                        <field name="name" readonly="1"/>
+                        <field name="name" readonly="0"/>
                         <field name="account_id" required="1"/>
                         <field name="company_id" column_invisible="True"/>
                     </tree>

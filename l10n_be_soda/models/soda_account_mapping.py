@@ -54,7 +54,7 @@ class SodaAccountMapping(models.Model):
                 soda_account_mapping_codes.add(code)
                 new_soda_account_mappings.append({
                     'code': code,
-                    'name': name,
+                    'name': name or "",
                     'company_id': company_id.id,
                 })
         soda_account_mappings |= self.create(new_soda_account_mappings)

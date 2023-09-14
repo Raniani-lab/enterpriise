@@ -72,7 +72,7 @@ class SodaImportWizard(models.TransientModel):
 
         soda_account_mapping = {}
         for mapping in self.soda_account_mapping_ids:
-            soda_account_mapping[mapping.code] = mapping.account_id.id
+            soda_account_mapping[mapping.code] = {'account_id': mapping.account_id.id, 'name': mapping.name}
 
         moves = self.env['account.move']
         for ref, soda_file in self.soda_files.items():
@@ -82,8 +82,8 @@ class SodaImportWizard(models.TransientModel):
                 'journal_id': self.journal_id.id,
                 'ref': ref,
                 'line_ids': [Command.create({
-                    'name': entry['name'],
-                    'account_id': soda_account_mapping[entry['code']],
+                    'name': entry['name'] or soda_account_mapping[entry['code']]['name'],
+                    'account_id': soda_account_mapping[entry['code']]['account_id'],
                     'debit': entry['debit'],
                     'credit': entry['credit'],
                 }) for entry in soda_file['entries']],

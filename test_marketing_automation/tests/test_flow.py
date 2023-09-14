@@ -31,30 +31,34 @@ class TestMarketAutoFlow(TestMACommon, CronMixinCase):
         #   ACT2.2       -> not opened within 1 day-> update description through server action
         # --------------------------------------------------
 
-        cls.campaign = cls.env['marketing.campaign'].with_user(cls.user_markauto).create({
+        cls.campaign = cls.env['marketing.campaign'].with_user(cls.user_marketing_automation).create({
             'name': 'Test Campaign',
             'model_id': cls.env['ir.model']._get('marketing.test.sms').id,
             'domain': '%s' % ([('name', '!=', 'Invalid')]),
         })
         # first activity: send a mailing
         cls.act1_mailing = cls._create_mailing(
-            model='marketing.test.sms', email_from=cls.user_markauto.email_formatted,
-            keep_archives=True).with_user(cls.user_markauto)
+            'marketing.test.sms',
+            email_from=cls.user_marketing_automation.email_formatted,
+            keep_archives=True
+        ).with_user(cls.user_marketing_automation)
         cls.act1 = cls._create_activity(
             cls.campaign, mailing=cls.act1_mailing,
             trigger_type='begin', interval_number=0
-        ).with_user(cls.user_markauto)
+        ).with_user(cls.user_marketing_automation)
 
         # second activity: send an SMS 1 hour after a reply
         cls.act2_1_mailing = cls._create_mailing(
-            model='marketing.test.sms', mailing_type='sms',
+            'marketing.test.sms',
+            mailing_type='sms',
             body_plaintext='SMS for {{ object.name }}: mega promo on https://test.example.com',
-            sms_allow_unsubscribe=True).with_user(cls.user_markauto)
+            sms_allow_unsubscribe=True
+        ).with_user(cls.user_marketing_automation)
         cls.act2_1 = cls._create_activity(
             cls.campaign,
             mailing=cls.act2_1_mailing, parent_id=cls.act1.id,
             trigger_type='mail_reply', interval_number=1, interval_type='hours'
-        ).with_user(cls.user_markauto)
+        ).with_user(cls.user_marketing_automation)
         # other activity: update description if not opened after 1 day
         # created by admin, should probably not give rights to marketing
         cls.act2_2_sact = cls.env['ir.actions.server'].create({
@@ -69,15 +73,20 @@ for record in records:
             action=cls.act2_2_sact, parent_id=cls.act1.id,
             trigger_type='mail_not_open', interval_number=1, interval_type='days',
             activity_domain='%s' % [('email_from', '!=', False)]
-        ).with_user(cls.user_markauto)
+        ).with_user(cls.user_marketing_automation)
 
         cls.act3_1_mailing = cls._create_mailing(
-            model='marketing.test.sms', mailing_type='sms',
-            body_plaintext='Confirmation for {{ object.name }}', sms_allow_unsubscribe=False).with_user(cls.user_markauto)
+            'marketing.test.sms',
+            mailing_type='sms',
+            body_plaintext='Confirmation for {{ object.name }}',
+            sms_allow_unsubscribe=False
+        ).with_user(cls.user_marketing_automation)
         cls.act3_1 = cls._create_activity(
             cls.campaign, mailing=cls.act3_1_mailing, parent_id=cls.act2_1.id,
             trigger_type='sms_click', interval_number=0
-        ).with_user(cls.user_markauto)
+        ).with_user(cls.user_marketing_automation)
+
+        cls.env.flush_all()
 
     @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.mail.models.mail_mail')
     def test_domain_with_translated_terms(self):
@@ -91,7 +100,7 @@ for record in records:
         test_records.write({'text_trans': 'Test EN'})
         test_records.with_context(lang="fr_FR").write({'text_trans': 'Test FR'})
 
-        campaign = self.campaign.with_user(self.user_markauto)
+        campaign = self.campaign.with_user(self.user_marketing_automation)
         campaign.user_id.write({'lang': 'en_US'})
         campaign.write({
             'domain': str([('name', '!=', 'Test_00'), ('text_trans', '=', 'Test FR')]),
@@ -125,7 +134,7 @@ for record in records:
         self.assertEqual(set(self.act1.trace_ids.mapped('state')), {'canceled', 'processed'})
 
     @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.mail.models.mail_mail')
-    @users('user_markauto')
+    @users('user_marketing_automation')
     def test_simple_flow(self):
         """ Test a maketing automation flow """
         # init test variables to ease code reading

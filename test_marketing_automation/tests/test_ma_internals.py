@@ -12,7 +12,7 @@ from odoo.fields import Datetime
 @tagged('marketing_automation')
 class MarketingCampaignTest(TestMACommon):
 
-    @users('user_markauto')
+    @users('user_marketing_automation')
     @mute_logger('odoo.addons.base.ir.ir_model', 'odoo.models')
     def test_campaign_duplicate(self):
         """ The copy/duplicate of a campaign :
@@ -26,7 +26,7 @@ class MarketingCampaignTest(TestMACommon):
             'model_id': self.env['ir.model']._get('marketing.test.sms').id,
             'domain': '%s' % [('id', 'in', self.test_records.ids)],
         })
-        mailing = self._create_mailing()
+        mailing = self._create_mailing('marketing.test.sms')
         activity = self._create_activity(campaign, mailing=mailing, name="ShouldDuplicate")
         activity2 = self._create_activity(campaign, mailing=mailing, name="ShouldDuplicate2", parent_id=activity.id, trigger_type="mail_open")
 
@@ -64,7 +64,7 @@ class MarketingCampaignTest(TestMACommon):
         self.assertEqual(activity2.parent_id, activity)
         self.assertEqual(activity2_dup.parent_id, activity_dup)
 
-    @users('user_markauto')
+    @users('user_marketing_automation')
     @mute_logger('odoo.addons.base.ir.ir_model', 'odoo.models')
     def test_internals_unique_field(self):
         # initial data: 0-1-2 have unique partners, 3-4 are void, 4 will receive same partner as 0 to test uniqueness
@@ -83,7 +83,7 @@ class MarketingCampaignTest(TestMACommon):
             'domain': '%s' % [('id', 'in', test_records.ids)],
             'unique_field_id': name_field.id,
         })
-        mailing = self._create_mailing()
+        mailing = self._create_mailing('marketing.test.sms')
         activity = self._create_activity(campaign, mailing=mailing)
 
         campaign.action_start_campaign()
@@ -98,7 +98,7 @@ class MarketingCampaignTest(TestMACommon):
         self.assertEqual(campaign.running_participant_count, 5)
         self.assertEqual(campaign.participant_ids.mapped('res_id'), test_records.ids)
 
-    @users('user_markauto')
+    @users('user_marketing_automation')
     @mute_logger('odoo.addons.base.ir.ir_model', 'odoo.models')
     def test_internals_unique_field_many2one(self):
         # initial data: 0-1-2 have unique partners, 3-4 are void, 4 will receive same partner as 0 to test uniqueness
@@ -119,7 +119,7 @@ class MarketingCampaignTest(TestMACommon):
             'domain': '%s' % [('id', 'in', test_records.ids)],
             'unique_field_id': partner_field.id,
         })
-        mailing = self._create_mailing()
+        mailing = self._create_mailing('marketing.test.sms')
         activity = self._create_activity(campaign, mailing=mailing)
 
         campaign.action_start_campaign()
@@ -135,7 +135,7 @@ class MarketingCampaignTest(TestMACommon):
         self.assertEqual(campaign.running_participant_count, 4)
         self.assertEqual(campaign.participant_ids.mapped('res_id'), (test_records[0:3] | test_records[-1]).ids)
 
-    @users('user_markauto')
+    @users('user_marketing_automation')
     @mute_logger('odoo.addons.base.ir.ir_model', 'odoo.models')
     def test_archive_ma_campaign(self):
         """
@@ -147,7 +147,7 @@ class MarketingCampaignTest(TestMACommon):
             'domain': '%s' % [('id', 'in', self.test_records[0].ids)],
         })
 
-        mailing = self._create_mailing()
+        mailing = self._create_mailing('marketing.test.sms')
         self._create_activity(campaign, mailing=mailing, interval_number=0)
 
         campaign.action_start_campaign()
@@ -163,8 +163,8 @@ class MarketingCampaignTest(TestMACommon):
             'model_id': self.env['ir.model']._get('marketing.test.sms').id,
             'domain': '%s' % [('id', 'in', self.test_records.ids)],
         })
-        mailing = self._create_mailing()
-        mailing2 = self._create_mailing()
+        mailing = self._create_mailing('marketing.test.sms')
+        mailing2 = self._create_mailing('marketing.test.sms')
         parent_activity = self._create_activity(
             marketing_campaign,
             mailing=mailing,

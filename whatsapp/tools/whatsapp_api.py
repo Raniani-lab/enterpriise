@@ -72,6 +72,7 @@ class WhatsAppApi:
         if self.is_shared_account:
             raise WhatsAppError(failure_type='account')
 
+        _logger.info("Sync templates for account %s [%s]", self.wa_account_id.name, self.wa_account_id.id)
         response = self.__api_requests("GET", f"/{self.wa_account_id.account_uid}/message_templates",
                                        auth_type="bearer")
         return response.json()
@@ -85,6 +86,7 @@ class WhatsAppApi:
         if self.is_shared_account:
             raise WhatsAppError(failure_type='account')
 
+        _logger.info("Get template details for template uid %s using account %s [%s]", wa_template_uid, self.wa_account_id.name, self.wa_account_id.id)
         response = self.__api_requests("GET", f"/{wa_template_uid}", auth_type="bearer")
         return response.json()
 
@@ -105,12 +107,14 @@ class WhatsAppApi:
             'file_type': attachment.mimetype,
             'access_token': self.token,
         }
+        _logger.info("Open template sample document upload session with file size %s Bites of mimetype %s on account %s [%s]", attachment.file_size, attachment.mimetype, self.wa_account_id.name, self.wa_account_id.id)
         uploads_session_response = self.__api_requests("POST", f"/{app_uid}/uploads", params=params)
         uploads_session_response_json = uploads_session_response.json()
         upload_session_id = uploads_session_response_json.get('id')
         if not upload_session_id:
             raise WhatsAppError(_("Document upload session open failed, please retry after sometime."))
         # Upload file
+        _logger.info("Upload sample document on the opened session using account %s [%s]", self.wa_account_id.name, self.wa_account_id.id)
         upload_file_response = self.__api_requests("POST", f"/{upload_session_id}", params=params, auth_type="oauth", headers={'file_offset': '0'}, data=attachment.datas)
         upload_file_response_json = upload_file_response.json()
         file_handle = upload_file_response_json.get('h')
@@ -127,6 +131,7 @@ class WhatsAppApi:
         """
         if self.is_shared_account:
             raise WhatsAppError(failure_type='account')
+        _logger.info("Submit new template for account %s [%s]", self.wa_account_id.name, self.wa_account_id.id)
         response = self.__api_requests("POST", f"/{self.wa_account_id.account_uid}/message_templates",
                                        auth_type="bearer", headers={'Content-Type': 'application/json'}, data=json_data)
         response_json = response.json()
@@ -138,6 +143,7 @@ class WhatsAppApi:
     def _submit_template_update(self, json_data, wa_template_uid):
         if self.is_shared_account:
             raise WhatsAppError(failure_type='account')
+        _logger.info("Update template : %s for account %s [%s]", wa_template_uid, self.wa_account_id.name, self.wa_account_id.id)
         response = self.__api_requests("POST", f"/{wa_template_uid}",
                                        auth_type="bearer", headers={'Content-Type': 'application/json'}, data=json_data)
         response_json = response.json()
@@ -170,6 +176,7 @@ class WhatsAppApi:
                 message_type: send_vals
             })
         json_data = json.dumps(data)
+        _logger.info("Send %s message from account %s [%s]", message_type, self.wa_account_id.name, self.wa_account_id.id)
         response = self.__api_requests(
             "POST",
             f"/{self.phone_uid}/messages",
@@ -189,9 +196,11 @@ class WhatsAppApi:
 
             API Documentation: https://developers.facebook.com/docs/whatsapp/cloud-api/reference/media
         """
+        _logger.info("Get document url for document uid %s from account %s [%s]", document_id, self.wa_account_id.name, self.wa_account_id.id)
         response = self.__api_requests("GET", f"/{document_id}", auth_type="bearer")
         response_json = response.json()
         file_url = response_json.get('url')
+        _logger.info("Get document from url for account %s [%s]", self.wa_account_id.name, self.wa_account_id.id)
         file_response = self.__api_requests("GET", file_url, auth_type="bearer", endpoint_include=True)
         return file_response.content
 
@@ -203,6 +212,7 @@ class WhatsAppApi:
         """
         payload = {'messaging_product': 'whatsapp'}
         files = [('file', (attachment.name, attachment.raw, attachment.mimetype))]
+        _logger.info("Upload document of mimetype %s for phone uid %s", attachment.mimetype, self.phone_uid)
         response = self.__api_requests("POST", f"/{self.phone_uid}/media", auth_type='bearer', data=payload, files=files)
         response_json = response.json()
         if response_json.get('id'):
@@ -211,11 +221,13 @@ class WhatsAppApi:
 
     def _test_connection(self):
         """ This method is used to test connection of WhatsApp Business Account"""
+        _logger.info("Test connection: Verify set phone uid is available in account %s [%s]", self.wa_account_id.name, self.wa_account_id.id)
         response = self.__api_requests("GET", f"/{self.wa_account_id.account_uid}/phone_numbers", auth_type='bearer')
         data = response.json().get('data', [])
         phone_values = [phone['id'] for phone in data if 'id' in phone]
         if self.wa_account_id.phone_uid not in phone_values:
             raise WhatsAppError(_("Phone number Id is wrong."), 'account')
+        _logger.info("Test connection: check app uid and token set in account %s [%s]", self.wa_account_id.name, self.wa_account_id.id)
         uploads_session_response = self.__api_requests("POST", f"/{self.wa_account_id.app_uid}/uploads", params={'access_token': self.token})
         upload_session_id = uploads_session_response.json().get('id')
         if not upload_session_id:

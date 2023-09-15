@@ -25,7 +25,7 @@ TimesheetTimerListRenderer.components = {
     TimesheetTimerHeader: TimesheetTimerHeader,
 };
 
-TimesheetTimerListRenderer.props = {
+TimesheetTimerListRenderer.props = [
     ...ListRenderer.props,
-    timerState: Object,
-};
+    "timerState",
+];

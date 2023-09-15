@@ -1,7 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from psycopg2 import sql
+
 from odoo import models, fields, api, osv
 from odoo.addons.web.controllers.utils import clean_action
-from psycopg2 import sql
+from odoo.tools import SQL
 
 
 class AccountReport(models.AbstractModel):
@@ -264,5 +266,5 @@ class AccountMoveLine(models.Model):
         query = super()._where_calc(domain, active_test)
         if self.env.context.get('account_report_analytic_groupby'):
             self.env['account.report']._prepare_lines_for_analytic_groupby()
-            query._tables['account_move_line'] = 'analytic_temp_account_move_line'
+            query._tables['account_move_line'] = SQL.identifier('analytic_temp_account_move_line')
         return query

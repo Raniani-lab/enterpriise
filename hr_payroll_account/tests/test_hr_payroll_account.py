@@ -73,7 +73,7 @@ class TestHrPayrollAccountCommon(TestPayslipContractBase):
                     'name': 'Meal Voucher',
                     'amount_select': 'fix',
                     'amount_fix': 10,
-                    'quantity': 'worked_days.WORK100 and worked_days.WORK100.number_of_days',
+                    'quantity': "'WORK100' in worked_days and worked_days['WORK100'].number_of_days",
                     'code': 'MA',
                     'category_id': cls.env.ref('hr_payroll.ALW').id,
                     'sequence': 16,

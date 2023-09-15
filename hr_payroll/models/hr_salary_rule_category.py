@@ -25,5 +25,5 @@ class HrSalaryRuleCategory(models.Model):
         self.ensure_one()
         if self.parent_id:
             localdict = self.parent_id._sum_salary_rule_category(localdict, amount)
-        localdict['categories'].dict[self.code] = localdict['categories'].dict.get(self.code, 0) + amount
+        localdict['categories'][self.code] = localdict['categories'][self.code] + amount
         return localdict

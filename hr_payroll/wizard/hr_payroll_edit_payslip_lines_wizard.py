@@ -2,8 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
-from odoo.addons.hr_payroll.models.browsable_object import BrowsableObject, InputLine, WorkedDays, Payslips
 
 
 class HrPayrollEditPayslipLinesWizard(models.TransientModel):
@@ -28,8 +26,8 @@ class HrPayrollEditPayslipLinesWizard(models.TransientModel):
         if not wizard_line.salary_rule_id:
             return reload_wizard
         localdict = self.payslip_id._get_localdict()
-        rules_dict = localdict['rules'].dict
-        result_rules_dict = localdict['result_rules'].dict
+        rules_dict = localdict['rules']
+        result_rules_dict = localdict['result_rules']
         remove_lines = False
         lines_to_remove = []
         blacklisted_rule_ids = []

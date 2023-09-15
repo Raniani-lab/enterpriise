@@ -12,7 +12,6 @@ from dateutil.relativedelta import relativedelta
 from markupsafe import escape
 
 from odoo import api, Command, fields, models, _
-from odoo.addons.hr_payroll.models.browsable_object import BrowsableObject, InputLine, WorkedDays, Payslips, ResultRules
 from odoo.exceptions import UserError, ValidationError
 from odoo.osv.expression import AND
 from odoo.tools import float_round, date_utils, convert_file, format_amount
@@ -660,6 +659,81 @@ class HrPayslip(models.Model):
                 })
         return res
 
+    @property
+    def paid_amount(self):
+        self.ensure_one()
+        return self._get_paid_amount()
+
+    @property
+    def is_outside_contract(self):
+        self.ensure_one()
+        return self._is_outside_contract_dates()
+
+    def _rule_parameter(self, code):
+        self.ensure_one()
+        return self.env['hr.rule.parameter']._get_parameter_from_code(code, self.date_to)
+
+    def _sum(self, code, from_date, to_date=None):
+        if to_date is None:
+            to_date = fields.Date.today()
+        self.env.cr.execute("""
+            SELECT sum(pl.total)
+            FROM hr_payslip as hp, hr_payslip_line as pl
+            WHERE hp.employee_id = %s
+            AND hp.state in ('done', 'paid')
+            AND hp.date_from >= %s
+            AND hp.date_to <= %s
+            AND hp.id = pl.slip_id
+            AND pl.code = %s""", (self.employee_id.id, from_date, to_date, code))
+        res = self.env.cr.fetchone()
+        return res and res[0] or 0.0
+
+    def _sum_category(self, code, from_date, to_date=None):
+        self.ensure_one()
+        if to_date is None:
+            to_date = fields.Date.today()
+
+        self.env['hr.payslip'].flush_model(['employee_id', 'state', 'date_from', 'date_to'])
+        self.env['hr.payslip.line'].flush_model(['total', 'slip_id', 'category_id'])
+        self.env['hr.salary.rule.category'].flush_model(['code'])
+
+        self.env.cr.execute("""
+            SELECT sum(pl.total)
+            FROM hr_payslip as hp, hr_payslip_line as pl, hr_salary_rule_category as rc
+            WHERE hp.employee_id = %s
+            AND hp.state in ('done', 'paid')
+            AND hp.date_from >= %s
+            AND hp.date_to <= %s
+            AND hp.id = pl.slip_id
+            AND rc.id = pl.category_id
+            AND rc.code = %s""", (self.employee_id.id, from_date, to_date, code))
+        res = self.env.cr.fetchone()
+        return res and res[0] or 0.0
+
+    def _sum_worked_days(self, code, from_date, to_date=None):
+        self.ensure_one()
+        if to_date is None:
+            to_date = fields.Date.today()
+
+        query = """
+            SELECT sum(hwd.amount)
+            FROM hr_payslip hp, hr_payslip_worked_days hwd, hr_work_entry_type hwet
+            WHERE hp.state in ('done', 'paid')
+            AND hp.id = hwd.payslip_id
+            AND hwet.id = hwd.work_entry_type_id
+            AND hp.employee_id = %(employee)s
+            AND hp.date_to <= %(stop)s
+            AND hwet.code = %(code)s
+            AND hp.date_from >= %(start)s"""
+
+        self.env.cr.execute(query, {
+            'employee': self.employee_id.id,
+            'code': code,
+            'start': from_date,
+            'stop': to_date})
+        res = self.env.cr.fetchone()
+        return res[0] if res else 0.0
+
     def _get_base_local_dict(self):
         return {
             'float_round': float_round,
@@ -672,7 +746,6 @@ class HrPayslip(models.Model):
 
     def _get_localdict(self):
         self.ensure_one()
-        worked_days_dict = {line.code: line for line in self.worked_days_line_ids if line.code}
         # Check for multiple inputs of the same type and keep a copy of
         # them because otherwise they are lost when building the dict
         input_list = [line.code for line in self.input_line_ids if line.code]
@@ -680,22 +753,18 @@ class HrPayslip(models.Model):
         multi_input_lines = [k for k, v in cnt.items() if v > 1]
         same_type_input_lines = {line_code: [line for line in self.input_line_ids if line.code == line_code] for line_code in multi_input_lines}
 
-        inputs_dict = {line.code: line for line in self.input_line_ids if line.code}
-        employee = self.employee_id
-        contract = self.contract_id
-
         localdict = {
             **self._get_base_local_dict(),
             **{
-                'categories': BrowsableObject(employee.id, {}, self.env),
-                'rules': BrowsableObject(employee.id, {}, self.env),
-                'payslip': Payslips(employee.id, self, self.env),
-                'worked_days': WorkedDays(employee.id, worked_days_dict, self.env),
-                'inputs': InputLine(employee.id, inputs_dict, self.env),
-                'employee': employee,
-                'contract': contract,
-                'result_rules': ResultRules(employee.id, {}, self.env),
-                'same_type_input_lines': same_type_input_lines
+                'categories': defaultdict(lambda: 0),
+                'rules': defaultdict(lambda: dict(total=0, amount=0, quantity=0)),
+                'payslip': self,
+                'worked_days': {line.code: line for line in self.worked_days_line_ids if line.code},
+                'inputs': {line.code: line for line in self.input_line_ids if line.code},
+                'employee': self.employee_id,
+                'contract': self.contract_id,
+                'result_rules': defaultdict(lambda: dict(total=0, amount=0, quantity=0, rate=0)),
+                'same_type_input_lines': same_type_input_lines,
             }
         }
         return localdict
@@ -734,8 +803,8 @@ class HrPayslip(models.Model):
             if localdict is None:
                 localdict = payslip._get_localdict()
 
-            rules_dict = localdict['rules'].dict
-            result_rules_dict = localdict['result_rules'].dict
+            rules_dict = localdict['rules']
+            result_rules_dict = localdict['result_rules']
 
             blacklisted_rule_ids = self.env.context.get('prevent_payslip_computation_line_ids', [])
 

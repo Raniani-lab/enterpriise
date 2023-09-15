@@ -68,7 +68,7 @@ result = payslip.paid_amount
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-result = categories.BASIC + categories.ALW
+result = categories['BASIC'] + categories['ALW']
             </field>
             <field name="struct_id" ref="hr_payroll.default_structure"/>
         </record>
@@ -79,11 +79,11 @@ result = categories.BASIC + categories.ALW
             <field name="sequence">198</field>
             <field name="code">DEDUCTION</field>
             <field name="condition_select">python</field>
-            <field name="condition_python">result = inputs.DEDUCTION</field>
+            <field name="condition_python">result = 'DEDUCTION' in inputs</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-result = -inputs.DEDUCTION.amount
-result_name = inputs.DEDUCTION.name
+result = -inputs['DEDUCTION'].amount
+result_name = inputs['DEDUCTION'].name
             </field>
             <field name="struct_id" ref="hr_payroll.default_structure"/>
         </record>
@@ -94,11 +94,11 @@ result_name = inputs.DEDUCTION.name
             <field name="sequence">174</field>
             <field name="code">ATTACH_SALARY</field>
             <field name="condition_select">python</field>
-            <field name="condition_python">result = inputs.ATTACH_SALARY</field>
+            <field name="condition_python">result = 'ATTACH_SALARY' in inputs</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-result = -inputs.ATTACH_SALARY.amount
-result_name = inputs.ATTACH_SALARY.name
+result = -inputs['ATTACH_SALARY'].amount
+result_name = inputs['ATTACH_SALARY'].name
             </field>
             <field name="struct_id" ref="hr_payroll.default_structure"/>
         </record>
@@ -109,11 +109,11 @@ result_name = inputs.ATTACH_SALARY.name
             <field name="sequence">174</field>
             <field name="code">ASSIG_SALARY</field>
             <field name="condition_select">python</field>
-            <field name="condition_python">result = inputs.ASSIG_SALARY</field>
+            <field name="condition_python">result = 'ASSIG_SALARY' in inputs</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-result = -inputs.ASSIG_SALARY.amount
-result_name = inputs.ASSIG_SALARY.name
+result = -inputs['ASSIG_SALARY'].amount
+result_name = inputs['ASSIG_SALARY'].name
             </field>
             <field name="struct_id" ref="hr_payroll.default_structure"/>
         </record>
@@ -125,10 +125,10 @@ result_name = inputs.ASSIG_SALARY.name
             <field name="amount_select">code</field>
             <field name="sequence">174</field>
             <field name="condition_select">python</field>
-            <field name="condition_python">result = inputs.CHILD_SUPPORT</field>
+            <field name="condition_python">result = 'CHILD_SUPPORT' in inputs</field>
             <field name="amount_python_compute">
-result = -inputs.CHILD_SUPPORT.amount
-result_name = inputs.CHILD_SUPPORT.name
+result = -inputs['CHILD_SUPPORT'].amount
+result_name = inputs['CHILD_SUPPORT'].name
             </field>
             <field name="struct_id" ref="hr_payroll.default_structure"/>
         </record>
@@ -139,11 +139,11 @@ result_name = inputs.CHILD_SUPPORT.name
             <field name="sequence">199</field>
             <field name="code">REIMBURSEMENT</field>
             <field name="condition_select">python</field>
-            <field name="condition_python">result = inputs.REIMBURSEMENT</field>
+            <field name="condition_python">result = 'REIMBURSEMENT' in inputs</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-result = inputs.REIMBURSEMENT.amount
-result_name = inputs.REIMBURSEMENT.name
+result = inputs['REIMBURSEMENT'].amount
+result_name = inputs['REIMBURSEMENT'].name
             </field>
             <field name="struct_id" ref="hr_payroll.default_structure"/>
         </record>
@@ -157,7 +157,7 @@ result_name = inputs.REIMBURSEMENT.name
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-result = categories.BASIC + categories.ALW + categories.DED
+result = categories['BASIC'] + categories['ALW'] + categories['DED']
             </field>
             <field name="struct_id" ref="hr_payroll.default_structure"/>
         </record>

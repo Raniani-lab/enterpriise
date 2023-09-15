@@ -80,14 +80,14 @@
             <field name="category_id" ref="hr_payroll.ALW"/>
             <field name="name">Sum of Allowance category</field>
             <field name="sequence" eval="99"/>
-            <field name="amount_python_compute">result = payslip.sum_category('ALW', payslip.date_from, to_date=payslip.date_to)</field>
+            <field name="amount_python_compute">result = payslip._sum_category('ALW', payslip.date_from, to_date=payslip.date_to)</field>
             <field name="struct_id" ref="structure_002"/>
          </record>
 
         <record id="hr_salary_rule_meal_voucher" model="hr.salary.rule">
             <field name="amount_select">fix</field>
             <field eval="10" name="amount_fix"/>
-            <field name="quantity">worked_days.WORK100 and worked_days.WORK100.number_of_days</field>
+            <field name="quantity">'WORK100' in worked_days and worked_days['WORK100'].number_of_days</field>
             <field name="code">MA</field>
             <field name="category_id" ref="hr_payroll.ALW"/>
             <field name="partner_id" ref="hr_meal_voucher_register"/>

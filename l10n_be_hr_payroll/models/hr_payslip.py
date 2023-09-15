@@ -750,17 +750,17 @@ def compute_termination_withholding_rate(payslip, categories, worked_days, input
             if low <= x <= high:
                 return rate
 
-    if not inputs.ANNUAL_TAXABLE:
+    if 'ANNUAL_TAXABLE' not in inputs:
         return 0
-    annual_taxable = inputs.ANNUAL_TAXABLE.amount
+    annual_taxable = inputs['ANNUAL_TAXABLE'].amount
 
     # Note: Exoneration for children in charge is managed on the salary.rule for the amount
-    rates = payslip.rule_parameter('holiday_pay_pp_rates')
+    rates = payslip._rule_parameter('holiday_pay_pp_rates')
     pp_rate = find_rates(annual_taxable, rates)
 
     # Rate Reduction for children in charge
-    children = payslip.dict.employee_id.dependent_children
-    children_reduction = payslip.rule_parameter('holiday_pay_pp_rate_reduction')
+    children = payslip.employee_id.dependent_children
+    children_reduction = payslip._rule_parameter('holiday_pay_pp_rate_reduction')
     if children and annual_taxable <= children_reduction.get(children, children_reduction[5])[1]:
         pp_rate *= (1 - children_reduction.get(children, children_reduction[5])[0] / 100.0)
     return pp_rate
@@ -768,7 +768,7 @@ def compute_termination_withholding_rate(payslip, categories, worked_days, input
 def compute_withholding_taxes(payslip, categories, worked_days, inputs):
 
     def compute_basic_bareme(value):
-        rates = payslip.rule_parameter('basic_bareme_rates')
+        rates = payslip._rule_parameter('basic_bareme_rates')
         rates = [(limit or float('inf'), rate) for limit, rate in rates]  # float('inf') because limit equals None for last level
         rates = sorted(rates)
 
@@ -783,12 +783,10 @@ def compute_withholding_taxes(payslip, categories, worked_days, inputs):
         return float_round(value / 12.0, precision_rounding=0.01, rounding_method='DOWN')
 
     employee = payslip.contract_id.employee_id
-    contract = payslip.contract_id
-    date_from = payslip.dict.date_from
     # PART 1: Withholding tax amount computation
     withholding_tax_amount = 0.0
 
-    taxable_amount = categories.GROSS  # Base imposable
+    taxable_amount = categories['GROSS']  # Base imposable
 
     if payslip.date_from.year < 2023:
         lower_bound = taxable_amount - taxable_amount % 15
@@ -799,10 +797,10 @@ def compute_withholding_taxes(payslip, categories, worked_days, inputs):
     yearly_gross_revenue = lower_bound * 12.0
 
     # yearly_net_taxable_amount = Revenu Annuel Net Imposable
-    if yearly_gross_revenue <= payslip.rule_parameter('yearly_gross_revenue_bound_expense'):
+    if yearly_gross_revenue <= payslip._rule_parameter('yearly_gross_revenue_bound_expense'):
         yearly_net_taxable_revenue = yearly_gross_revenue * (1.0 - 0.3)
     else:
-        yearly_net_taxable_revenue = yearly_gross_revenue - payslip.rule_parameter('expense_deduction')
+        yearly_net_taxable_revenue = yearly_gross_revenue - payslip._rule_parameter('expense_deduction')
 
     # BAREME III: Non resident
     if employee.is_non_resident:
@@ -811,55 +809,55 @@ def compute_withholding_taxes(payslip, categories, worked_days, inputs):
     else:
         # BAREME I: Isolated or spouse with income
         if employee.marital in ['divorced', 'single', 'widower'] or (employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status != 'without_income'):
-            basic_bareme = max(compute_basic_bareme(yearly_net_taxable_revenue) - payslip.rule_parameter('deduct_single_with_income'), 0.0)
+            basic_bareme = max(compute_basic_bareme(yearly_net_taxable_revenue) - payslip._rule_parameter('deduct_single_with_income'), 0.0)
             withholding_tax_amount = convert_to_month(basic_bareme)
 
         # BAREME II: spouse without income
         if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without_income':
-            yearly_net_taxable_revenue_for_spouse = min(yearly_net_taxable_revenue * 0.3, payslip.rule_parameter('max_spouse_income'))
+            yearly_net_taxable_revenue_for_spouse = min(yearly_net_taxable_revenue * 0.3, payslip._rule_parameter('max_spouse_income'))
             basic_bareme_1 = compute_basic_bareme(yearly_net_taxable_revenue_for_spouse)
             basic_bareme_2 = compute_basic_bareme(yearly_net_taxable_revenue - yearly_net_taxable_revenue_for_spouse)
-            withholding_tax_amount = convert_to_month(max(basic_bareme_1 + basic_bareme_2 - 2 * payslip.rule_parameter('deduct_single_with_income'), 0))
+            withholding_tax_amount = convert_to_month(max(basic_bareme_1 + basic_bareme_2 - 2 * payslip._rule_parameter('deduct_single_with_income'), 0))
 
     # Reduction for other family charges
     if (employee.children and employee.dependent_children) or (employee.other_dependent_people and (employee.dependent_seniors or employee.dependent_juniors)):
         if employee.marital in ['divorced', 'single', 'widower'] or (employee.spouse_fiscal_status != 'without_income'):
 
             # if employee.marital in ['divorced', 'single', 'widower']:
-            #     withholding_tax_amount -= payslip.rule_parameter('isolated_deduction')
+            #     withholding_tax_amount -= payslip._rule_parameter('isolated_deduction')
             if employee.marital in ['divorced', 'single', 'widower'] and employee.dependent_children:
-                withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
+                withholding_tax_amount -= payslip._rule_parameter('disabled_dependent_deduction')
             if employee.disabled:
-                withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
+                withholding_tax_amount -= payslip._rule_parameter('disabled_dependent_deduction')
             if employee.other_dependent_people and employee.dependent_seniors:
-                withholding_tax_amount -= payslip.rule_parameter('dependent_senior_deduction') * employee.dependent_seniors
+                withholding_tax_amount -= payslip._rule_parameter('dependent_senior_deduction') * employee.dependent_seniors
             if employee.other_dependent_people and employee.dependent_juniors:
-                withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction') * employee.dependent_juniors
+                withholding_tax_amount -= payslip._rule_parameter('disabled_dependent_deduction') * employee.dependent_juniors
             if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'low_income':
-                withholding_tax_amount -= payslip.rule_parameter('spouse_low_income_deduction')
+                withholding_tax_amount -= payslip._rule_parameter('spouse_low_income_deduction')
             if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'low_pension':
-                withholding_tax_amount -= payslip.rule_parameter('spouse_other_income_deduction')
+                withholding_tax_amount -= payslip._rule_parameter('spouse_other_income_deduction')
         if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without_income':
             if employee.disabled:
-                withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
+                withholding_tax_amount -= payslip._rule_parameter('disabled_dependent_deduction')
             if employee.disabled_spouse_bool:
-                withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
+                withholding_tax_amount -= payslip._rule_parameter('disabled_dependent_deduction')
             if employee.other_dependent_people and employee.dependent_seniors:
-                withholding_tax_amount -= payslip.rule_parameter('dependent_senior_deduction') * employee.dependent_seniors
+                withholding_tax_amount -= payslip._rule_parameter('dependent_senior_deduction') * employee.dependent_seniors
             if employee.other_dependent_people and employee.dependent_juniors:
-                withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction') * employee.dependent_juniors
+                withholding_tax_amount -= payslip._rule_parameter('disabled_dependent_deduction') * employee.dependent_juniors
 
     # Child Allowances
     n_children = employee.dependent_children
     if n_children > 0:
-        children_deduction = payslip.rule_parameter('dependent_basic_children_deduction')
+        children_deduction = payslip._rule_parameter('dependent_basic_children_deduction')
         if n_children <= 8:
             withholding_tax_amount -= children_deduction.get(n_children, 0.0)
         if n_children > 8:
-            withholding_tax_amount -= children_deduction.get(8, 0.0) + (n_children - 8) * payslip.rule_parameter('dependent_children_deduction')
+            withholding_tax_amount -= children_deduction.get(8, 0.0) + (n_children - 8) * payslip._rule_parameter('dependent_children_deduction')
 
     if payslip.contract_id.fiscal_voluntarism:
-        voluntary_amount = categories.GROSS * payslip.contract_id.fiscal_voluntary_rate / 100
+        voluntary_amount = categories['GROSS'] * payslip.contract_id.fiscal_voluntary_rate / 100
         if voluntary_amount > withholding_tax_amount:
             withholding_tax_amount = voluntary_amount
 
@@ -873,12 +871,12 @@ def compute_special_social_cotisations(payslip, categories, worked_days, inputs)
         return 0, 0, 0, 0, 0, 0
 
     employee = payslip.contract_id.employee_id
-    wage = categories.BASIC
+    wage = categories['BASIC']
     if not wage or employee.is_non_resident:
         return 0.0
 
     if employee.marital in ['divorced', 'single', 'widower'] or (employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without_income'):
-        rates = payslip.rule_parameter('cp200_monss_isolated')
+        rates = payslip._rule_parameter('cp200_monss_isolated')
         if not rates:
             rates = [
                 (0.00, 1945.38, 0.00, 0.00, 0.00, 0.00),
@@ -890,7 +888,7 @@ def compute_special_social_cotisations(payslip, categories, worked_days, inputs)
         return -min(max(basis + (wage - low + 0.01) * rate, min_amount), max_amount)
 
     if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status != 'without_income':
-        rates = payslip.rule_parameter('cp200_monss_couple')
+        rates = payslip._rule_parameter('cp200_monss_couple')
         if not rates:
             rates = [
                 (0.00, 1095.09, 0.00, 0.00, 0.00, 0.00),
@@ -914,15 +912,15 @@ def compute_ip(payslip, categories, worked_days, inputs):
     contract = payslip.contract_id
     if not contract.ip:
         return 0.0
-    return payslip.dict._get_paid_amount() * contract.ip_wage_rate / 100.0
+    return payslip._get_paid_amount() * contract.ip_wage_rate / 100.0
 
 def compute_ip_deduction(payslip, categories, worked_days, inputs):
     tax_rate = 0.15
     ip_amount = compute_ip(payslip, categories, worked_days, inputs)
     if not ip_amount:
         return 0.0
-    ip_deduction_bracket_1 = payslip.rule_parameter('ip_deduction_bracket_1')
-    ip_deduction_bracket_2 = payslip.rule_parameter('ip_deduction_bracket_2')
+    ip_deduction_bracket_1 = payslip._rule_parameter('ip_deduction_bracket_1')
+    ip_deduction_bracket_2 = payslip._rule_parameter('ip_deduction_bracket_2')
     if 0.0 <= ip_amount <= ip_deduction_bracket_1:
         tax_rate = tax_rate / 2.0
     elif ip_deduction_bracket_1 < ip_amount <= ip_deduction_bracket_2:
@@ -931,9 +929,9 @@ def compute_ip_deduction(payslip, categories, worked_days, inputs):
 
 # ref: https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/deductions/workers_reductions/workbonus.html
 def compute_employment_bonus_employees(payslip, categories, worked_days, inputs):
-    bonus_basic_amount = payslip.rule_parameter('work_bonus_basic_amount')
-    wage_lower_bound = payslip.rule_parameter('work_bonus_reference_wage_low')
-    if not payslip.dict.worked_days_line_ids and not payslip.env.context.get('salary_simulation'):
+    bonus_basic_amount = payslip._rule_parameter('work_bonus_basic_amount')
+    wage_lower_bound = payslip._rule_parameter('work_bonus_reference_wage_low')
+    if not payslip.worked_days_line_ids and not payslip.env.context.get('salary_simulation'):
         return 0
 
     # S = (W / H) * U
@@ -944,30 +942,30 @@ def compute_employment_bonus_employees(payslip, categories, worked_days, inputs)
         paid_hours = 1
         total_hours = 1
     else:
-        worked_days = payslip.dict.worked_days_line_ids.filtered(lambda wd: wd.code not in ['LEAVE300', 'LEAVE301'])
+        worked_days = payslip.worked_days_line_ids.filtered(lambda wd: wd.code not in ['LEAVE300', 'LEAVE301'])
         paid_hours = sum(worked_days.filtered(lambda wd: wd.amount).mapped('number_of_hours'))  # H
         total_hours = sum(worked_days.mapped('number_of_hours'))  # U
 
     # 1. - Détermination du salaire mensuel de référence (S)
-    salary = categories.BRUT * total_hours / paid_hours  # S = (W/H) x U
+    salary = categories['BRUT'] * total_hours / paid_hours  # S = (W/H) x U
 
     # 2. - Détermination du montant de base de la réduction (R)
     if payslip.date_from < date(2023, 7, 1):
         if salary <= wage_lower_bound:
             result = bonus_basic_amount
-        elif salary <= payslip.rule_parameter('work_bonus_reference_wage_high'):
-            coeff = payslip.rule_parameter('work_bonus_coeff')
+        elif salary <= payslip._rule_parameter('work_bonus_reference_wage_high'):
+            coeff = payslip._rule_parameter('work_bonus_coeff')
             result = bonus_basic_amount - (coeff * (salary - wage_lower_bound))
         else:
             result = 0
     else:
         if salary <= wage_lower_bound:
             result = bonus_basic_amount
-        elif salary <= payslip.rule_parameter('l10n_be_work_bonus_reference_wage_middle'):
-            coeff = payslip.rule_parameter('l10n_be_work_bonus_coeff_low')
+        elif salary <= payslip._rule_parameter('l10n_be_work_bonus_reference_wage_middle'):
+            coeff = payslip._rule_parameter('l10n_be_work_bonus_coeff_low')
             result = bonus_basic_amount - (coeff * (salary - wage_lower_bound))
-        elif salary <= payslip.rule_parameter('work_bonus_reference_wage_high'):
-            coeff = payslip.rule_parameter('work_bonus_coeff')
+        elif salary <= payslip._rule_parameter('work_bonus_reference_wage_high'):
+            coeff = payslip._rule_parameter('work_bonus_coeff')
             result = bonus_basic_amount - (coeff * (salary - wage_lower_bound))
         else:
             result = 0
@@ -975,7 +973,7 @@ def compute_employment_bonus_employees(payslip, categories, worked_days, inputs)
     # 3. - Détermination du montant de la réduction (P)
     result = result * paid_hours / total_hours  # P = (H/U) x R
 
-    return min(result, -categories.ONSS)
+    return min(result, -categories['ONSS'])
 
 def compute_double_holiday_withholding_taxes(payslip, categories, worked_days, inputs):
     # See: https://www.securex.eu/lex-go.nsf/vwReferencesByCategory_fr/52DA120D5DCDAE78C12584E000721081?OpenDocument
@@ -984,18 +982,18 @@ def compute_double_holiday_withholding_taxes(payslip, categories, worked_days, i
             if low <= x <= high:
                 return rate / 100.0
 
-    rates = payslip.rule_parameter('holiday_pay_pp_rates')
-    children_exoneration = payslip.rule_parameter('holiday_pay_pp_exoneration')
-    children_reduction = payslip.rule_parameter('holiday_pay_pp_rate_reduction')
+    rates = payslip._rule_parameter('holiday_pay_pp_rates')
+    children_exoneration = payslip._rule_parameter('holiday_pay_pp_exoneration')
+    children_reduction = payslip._rule_parameter('holiday_pay_pp_rate_reduction')
 
     employee = payslip.contract_id.employee_id
 
     if payslip.struct_id.code == "CP200DOUBLE":
-        gross = categories.GROSS
+        gross = categories['GROSS']
     elif payslip.struct_id.code == "CP200MONTHLY":
-        gross = categories.DDPG
+        gross = categories['DDPG']
 
-    contract = payslip.dict.contract_id
+    contract = payslip.contract_id
     monthly_revenue = contract._get_contract_wage()
     # Count ANT in yearly remuneration
     if contract.internet:
@@ -1010,8 +1008,8 @@ def compute_double_holiday_withholding_taxes(payslip, categories, worked_days, i
     yearly_revenue = monthly_revenue * (1 - 0.1307) * 12.0
 
     if contract.transport_mode_car:
-        if 'vehicle_id' in payslip.dict:
-            yearly_revenue += payslip.dict.vehicle_id._get_car_atn(date=payslip.dict.date_from) * 12.0
+        if 'vehicle_id' in payslip:
+            yearly_revenue += payslip.vehicle_id._get_car_atn(date=payslip.date_from) * 12.0
         else:
             yearly_revenue += contract.car_atn * 12.0
 
@@ -1034,15 +1032,15 @@ def compute_thirteen_month_withholding_taxes(payslip, categories, worked_days, i
             if low <= x <= high:
                 return rate / 100.0
 
-    rates = payslip.rule_parameter('exceptional_allowances_pp_rates')
-    children_exoneration = payslip.rule_parameter('holiday_pay_pp_exoneration')
-    children_reduction = payslip.rule_parameter('holiday_pay_pp_rate_reduction')
+    rates = payslip._rule_parameter('exceptional_allowances_pp_rates')
+    children_exoneration = payslip._rule_parameter('holiday_pay_pp_exoneration')
+    children_reduction = payslip._rule_parameter('holiday_pay_pp_rate_reduction')
 
     employee = payslip.contract_id.employee_id
 
-    gross = categories.GROSS
+    gross = categories['GROSS']
 
-    contract = payslip.dict.contract_id
+    contract = payslip.contract_id
     monthly_revenue = contract._get_contract_wage()
     # Count ANT in yearly remuneration
     if contract.internet:
@@ -1057,8 +1055,8 @@ def compute_thirteen_month_withholding_taxes(payslip, categories, worked_days, i
     yearly_revenue = monthly_revenue * (1 - 0.1307) * 12.0
 
     if contract.transport_mode_car:
-        if 'vehicle_id' in payslip.dict:
-            yearly_revenue += payslip.dict.vehicle_id._get_car_atn(date=payslip.dict.date_from) * 12.0
+        if 'vehicle_id' in payslip:
+            yearly_revenue += payslip.vehicle_id._get_car_atn(date=payslip.date_from) * 12.0
         else:
             yearly_revenue += contract.car_atn * 12.0
 
@@ -1075,18 +1073,18 @@ def compute_thirteen_month_withholding_taxes(payslip, categories, worked_days, i
     return - withholding_tax_amount
 
 def compute_withholding_reduction(payslip, categories, worked_days, inputs):
-    if categories.EmpBonus:
-        return min(abs(categories.PP), categories.EmpBonus * 0.3314)
+    if categories['EmpBonus']:
+        return min(abs(categories['PP']), categories['EmpBonus'] * 0.3314)
     return 0.0
 
 def compute_impulsion_plan_amount(payslip, categories, worked_days, inputs):
-    start = payslip.dict.employee_id.first_contract_date
-    end = payslip.dict.date_to
+    start = payslip.employee_id.first_contract_date
+    end = payslip.date_to
     number_of_months = (end.year - start.year) * 12 + (end.month - start.month)
-    numerator = sum(wd.number_of_hours for wd in payslip.dict.worked_days_line_ids if wd.amount > 0)
-    denominator = 4 * payslip.dict.contract_id.resource_calendar_id.hours_per_week
+    numerator = sum(wd.number_of_hours for wd in payslip.worked_days_line_ids if wd.amount > 0)
+    denominator = 4 * payslip.contract_id.resource_calendar_id.hours_per_week
     coefficient = numerator / denominator
-    if payslip.dict.contract_id.l10n_be_impulsion_plan == '25yo':
+    if payslip.contract_id.l10n_be_impulsion_plan == '25yo':
         if 0 <= number_of_months <= 23:
             theorical_amount = 500.0
         elif 24 <= number_of_months <= 29:
@@ -1096,7 +1094,7 @@ def compute_impulsion_plan_amount(payslip, categories, worked_days, inputs):
         else:
             theorical_amount = 0
         return min(theorical_amount, theorical_amount * coefficient)
-    elif payslip.dict.contract_id.l10n_be_impulsion_plan == '12mo':
+    elif payslip.contract_id.l10n_be_impulsion_plan == '12mo':
         if 0 <= number_of_months <= 11:
             theorical_amount = 500.0
         elif 12 <= number_of_months <= 17:
@@ -1165,27 +1163,27 @@ def compute_onss_restructuring(payslip, categories, worked_days, inputs):
     if not payslip.worked_days_line_ids:
         return 0
 
-    employee = payslip.dict.contract_id.employee_id
+    employee = payslip.contract_id.employee_id
     first_contract_date = employee.first_contract_date
     birthdate = employee.birthday
     age = relativedelta(first_contract_date, birthdate).years
     if age < 30:
-        threshold = payslip.rule_parameter('onss_restructuring_before_30')
+        threshold = payslip._rule_parameter('onss_restructuring_before_30')
     else:
-        threshold = payslip.rule_parameter('onss_restructuring_after_30')
+        threshold = payslip._rule_parameter('onss_restructuring_after_30')
 
     salary = payslip.paid_amount
     if salary > threshold:
         return 0
 
-    amount = payslip.rule_parameter('onss_restructuring_amount')
+    amount = payslip._rule_parameter('onss_restructuring_amount')
 
     paid_hours = sum(payslip.worked_days_line_ids.filtered(lambda wd: wd.amount).mapped('number_of_hours'))
     total_hours = sum(payslip.worked_days_line_ids.mapped('number_of_hours'))
     ratio = paid_hours / total_hours if total_hours else 0
 
     start = first_contract_date
-    end = payslip.dict.date_to
+    end = payslip.date_to
     number_of_months = (end.year - start.year) * 12 + (end.month - start.month)
     if 0 <= number_of_months <= 6:
         return amount * ratio
@@ -1196,15 +1194,15 @@ def compute_representation_fees_threshold(payslip, categories, worked_days, inpu
     result = 0
     if contract.job_id.l10n_be_custom_representation_fees:
         for fee in ['homeworking', 'phone', 'internet', 'car_management']:
-            result += payslip.rule_parameter('cp200_representation_fees_%s' % fee) if contract.job_id['l10n_be_custom_representation_fees_%s' % fee] else 0
+            result += payslip._rule_parameter('cp200_representation_fees_%s' % fee) if contract.job_id['l10n_be_custom_representation_fees_%s' % fee] else 0
     else:
-        result = payslip.rule_parameter('cp200_representation_fees_threshold')
+        result = payslip._rule_parameter('cp200_representation_fees_threshold')
 
     return result
 
 def compute_representation_fees(payslip, categories, worked_days, inputs):
     contract = payslip.contract_id
-    if not categories.BASIC:
+    if not categories['BASIC']:
         result = 0
     else:
         calendar = contract.resource_calendar_id
@@ -1218,7 +1216,7 @@ def compute_representation_fees(payslip, categories, worked_days, inputs):
         else:
             work_time_rate = contract.resource_calendar_id.work_time_rate
 
-        threshold = 0 if (worked_days.OUT and worked_days.OUT.number_of_hours) else compute_representation_fees_threshold(payslip, categories, worked_days, inputs)
+        threshold = 0 if ('OUT' in worked_days and worked_days['OUT'].number_of_hours) else compute_representation_fees_threshold(payslip, categories, worked_days, inputs)
         if days_per_week and contract.representation_fees > threshold:
             # Only part of the representation costs are pro-rated because certain costs are fully
             # covered for the company (teleworking costs, mobile phone, internet, etc., namely (for 2021):
@@ -1292,7 +1290,7 @@ def compute_holiday_pay_recovery_n(payslip, categories, worked_days, inputs):
                 - The examples included in the ONSS instructions will be adapted in the next publication.
     """
 
-    employee = payslip.dict.employee_id
+    employee = payslip.employee_id
     number_of_days = employee.l10n_be_holiday_pay_number_of_days_n
     if payslip.wage_type == 'hourly':
         employee_hourly_cost = payslip.contract_id.hourly_wage
@@ -1302,15 +1300,15 @@ def compute_holiday_pay_recovery_n(payslip, categories, worked_days, inputs):
         else:
             employee_hourly_cost = payslip.contract_id.contract_wage * 3 / 13 / payslip.contract_id.resource_calendar_id.hours_per_week
     max_amount_to_recover = min(employee.l10n_be_holiday_pay_to_recover_n, employee_hourly_cost * number_of_days * 7.6)
-    if not worked_days.LEAVE120 or not worked_days.LEAVE120.amount:
+    if 'LEAVE120' not in worked_days or not worked_days['LEAVE120'].amount:
         return 0
-    leave120_amount = payslip.dict._get_worked_days_line_amount('LEAVE120')
-    holiday_amount = min(leave120_amount, employee_hourly_cost * payslip.dict._get_worked_days_line_number_of_hours('LEAVE120'))
+    leave120_amount = payslip._get_worked_days_line_amount('LEAVE120')
+    holiday_amount = min(leave120_amount, employee_hourly_cost * payslip._get_worked_days_line_number_of_hours('LEAVE120'))
     remaining_amount = max(0, max_amount_to_recover - employee.l10n_be_holiday_pay_recovered_n)
     return - min(remaining_amount, holiday_amount)
 
 def compute_holiday_pay_recovery_n1(payslip, categories, worked_days, inputs):
-    employee = payslip.dict.employee_id
+    employee = payslip.employee_id
     number_of_days = employee.l10n_be_holiday_pay_number_of_days_n1
     if payslip.wage_type == 'hourly':
         employee_hourly_cost = payslip.contract_id.hourly_wage
@@ -1320,23 +1318,23 @@ def compute_holiday_pay_recovery_n1(payslip, categories, worked_days, inputs):
         else:
             employee_hourly_cost = payslip.contract_id.contract_wage * 3 / 13 / payslip.contract_id.resource_calendar_id.hours_per_week
     max_amount_to_recover = min(employee.l10n_be_holiday_pay_to_recover_n1, employee_hourly_cost * number_of_days * 7.6)
-    if not worked_days.LEAVE120 or not worked_days.LEAVE120.amount:
+    if 'LEAVE120' not in worked_days or not worked_days['LEAVE120'].amount:
         return 0
-    leave120_amount = payslip.dict._get_worked_days_line_amount('LEAVE120')
-    holiday_amount = min(leave120_amount, employee_hourly_cost * payslip.dict._get_worked_days_line_number_of_hours('LEAVE120'))
+    leave120_amount = payslip._get_worked_days_line_amount('LEAVE120')
+    holiday_amount = min(leave120_amount, employee_hourly_cost * payslip._get_worked_days_line_number_of_hours('LEAVE120'))
     remaining_amount = max(max_amount_to_recover - employee.l10n_be_holiday_pay_recovered_n1, 0)
     return - min(remaining_amount, holiday_amount)
 
 def compute_termination_n_basic_double(payslip, categories, worked_days, inputs):
     result_qty = 1
     result_rate = 6.8
-    result = inputs.GROSS_REF.amount if inputs.GROSS_REF else 0
-    date_from = payslip.dict.date_from
+    result = inputs['GROSS_REF'].amount if 'GROSS_REF' in inputs else 0
+    date_from = payslip.date_from
     if payslip.struct_id.code == "CP200HOLN1":
-        existing_double_pay = payslip.dict.env['hr.payslip'].search([
-            ('employee_id', '=', payslip.employee_id),
+        existing_double_pay = payslip.env['hr.payslip'].search([
+            ('employee_id', '=', payslip.employee_id.id),
             ('state', 'in', ['done', 'paid']),
-            ('struct_id', '=', payslip.dict.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id),
+            ('struct_id', '=', payslip.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id),
             ('date_from', '>=', date(date_from.year, 1, 1)),
             ('date_to', '<=', date(date_from.year, 12, 31)),
         ])

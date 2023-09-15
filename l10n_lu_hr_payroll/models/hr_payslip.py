@@ -51,16 +51,16 @@ def compute_lux_tax(payslip, categories, worked_days, inputs):
                 return rate, adjustment
         return 0, 0
 
-    employee = payslip.dict.employee_id
-    taxable_amount = categories.TAXABLE
+    employee = payslip.employee_id
+    taxable_amount = categories['TAXABLE']
     # Round to the lower 5 euros multiple
     taxable_amount -= taxable_amount % 5
 
     tax_amount = 0.0
 
     if employee.l10n_lu_tax_classification:
-        rates = payslip.rule_parameter('l10n_lu_withholding_taxes_%s' % (employee.l10n_lu_tax_classification))
-        threshold, threshold_adjustment = payslip.rule_parameter('l10n_lu_withholding_taxes_threshhold_%s'  % (employee.l10n_lu_tax_classification))
+        rates = payslip._rule_parameter('l10n_lu_withholding_taxes_%s' % (employee.l10n_lu_tax_classification))
+        threshold, threshold_adjustment = payslip._rule_parameter('l10n_lu_withholding_taxes_threshhold_%s'  % (employee.l10n_lu_tax_classification))
     else:
         return 0.0
 

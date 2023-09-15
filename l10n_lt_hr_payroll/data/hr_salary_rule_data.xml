@@ -29,7 +29,7 @@ result = contract.l10n_lt_benefits_in_kind
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = get_l10n_lt_taxable_amount(payslip, categories, worked_days, inputs)
+result = payslip._get_l10n_lt_taxable_amount(localdict)
 result_rate = -payslip._rule_parameter('l10n_lt_pit_rate_low')
         </field>
         <field name="appears_on_payroll_report" eval="True"/>
@@ -44,7 +44,7 @@ result_rate = -payslip._rule_parameter('l10n_lt_pit_rate_low')
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = get_l10n_lt_taxable_amount(payslip, categories, worked_days, inputs, sick=True)
+result = payslip._get_l10n_lt_taxable_amount(localdict, sick=True)
 result_rate = -payslip._rule_parameter('l10n_lt_pit_rate_sick')
         </field>
         <field name="appears_on_payroll_report" eval="True"/>
@@ -75,7 +75,7 @@ result_rate = -payslip._rule_parameter('l10n_lt_pit_rate_high')
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = get_l10n_lt_taxable_amount(payslip, categories, worked_days, inputs)
+result = payslip._get_l10n_lt_taxable_amount(localdict)
 if contract.l10n_lt_pension:
     result_rate = -payslip._rule_parameter('l10n_lt_ssc_rate_high')
 else:
@@ -94,7 +94,7 @@ else:
         <field name="condition_python">result = contract.l10n_lt_pension</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = get_l10n_lt_taxable_amount(payslip, categories, worked_days, inputs)
+result = payslip._get_l10n_lt_taxable_amount(localdict)
 result_rate = -payslip._rule_parameter('l10n_lt_pension_rate')
         </field>
         <field name="appears_on_payroll_report" eval="True"/>
@@ -109,7 +109,7 @@ result_rate = -payslip._rule_parameter('l10n_lt_pension_rate')
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = get_l10n_lt_taxable_amount(payslip, categories, worked_days, inputs)
+result = payslip._get_l10n_lt_taxable_amount(localdict)
 if contract.l10n_lt_time_limited:
     result_rate = payslip._rule_parameter('l10n_lt_sscemp_rate_high')
 else:

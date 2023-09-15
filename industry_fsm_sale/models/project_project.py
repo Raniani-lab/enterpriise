@@ -3,6 +3,7 @@
 
 from odoo import api, fields, models
 from odoo.osv import expression
+from odoo.tools import SQL
 
 
 class Project(models.Model):
@@ -148,12 +149,14 @@ class Project(models.Model):
         SaleOrder = self.env['sale.order']
         query = SaleOrder._where_calc(expression.AND([domain, [('task_id', '!=', False)]]))
         SaleOrder._apply_ir_rules(query, 'read')
-        query.join(
-            SaleOrder._table, 'task_id',
-            'project_task', 'id',
-            'task_id',
-            '{rhs}."project_id" in (%s)', (','.join(map(str, self.ids)),),
-        )
+        task_alias = query.make_alias(SaleOrder._table, 'task_id')
+        query.add_join("JOIN", task_alias, 'project_task', SQL(
+            "%s = %s AND %s IN %s",
+            SQL.identifier(SaleOrder._table, 'task_id'),
+            SQL.identifier(task_alias, 'id'),
+            SQL.identifier(task_alias, 'project_id'),
+            tuple(self.ids),
+        ))
         return query
 
     def _get_additional_quotations(self, domain=None):

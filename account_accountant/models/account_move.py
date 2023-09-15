@@ -9,6 +9,7 @@ from dateutil.relativedelta import relativedelta
 from odoo import fields, models, api, _, Command
 from odoo.exceptions import UserError
 from odoo.osv import expression
+from odoo.tools import SQL
 
 _logger = logging.getLogger(__name__)
 
@@ -585,9 +586,10 @@ class AccountMoveLine(models.Model):
             ('deprecated', '=', False),
             ('internal_group', '!=', excluded_group),
         ])
+        psql_lang = self._get_predict_postgres_dictionary()
         additional_queries = [self.env.cr.mogrify(*account_query.select(
             "account_account.id AS account_id",
-            "setweight(to_tsvector(%%(lang)s, name), 'B') AS document",
+            SQL("setweight(to_tsvector(%s, name), 'B') AS document", psql_lang),
         )).decode()]
         query = self._build_predictive_query([('account_id', 'in', account_query)])
         return self._predicted_field(field, query, additional_queries)

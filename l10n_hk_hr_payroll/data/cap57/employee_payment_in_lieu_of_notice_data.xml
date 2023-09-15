@@ -31,7 +31,7 @@ result = gross / avg_actual_work_rate / 12
         <field name="sequence">200</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = categories.ALW</field>
+        <field name="amount_python_compute">result = categories['ALW']</field>
         <field name="struct_id" ref="l10n_hk_hr_payroll.hr_payroll_structure_cap57_payment_in_lieu_of_notice"/>
         <field name="appears_on_employee_cost_dashboard" eval="True"/>
     </record>

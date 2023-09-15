@@ -351,7 +351,7 @@ class L10nMxEdiDocument(models.Model):
         # no show code and response message if cancel was success
         msg = None
         code = None
-        if code not in ('201', '202'):
+        if response_code not in ('201', '202'):
             code = response_code
             if response.resultados:
                 result = response.resultados[0]

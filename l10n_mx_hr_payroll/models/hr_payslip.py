@@ -19,13 +19,6 @@ class HrEmployee(models.Model):
                 'data/salary_rules/hr_salary_rule_regular_pay_data.xml',
             ])]
 
-    def _get_base_local_dict(self):
-        res = super()._get_base_local_dict()
-        res.update({
-
-        })
-        return res
-
     def _get_paid_amount(self):
         self.ensure_one()
         mx_payslip = self.struct_id.country_id.code == "MX"

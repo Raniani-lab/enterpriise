@@ -331,3 +331,16 @@ class TestCaseDocumentsBridgeProject(TestProjectCommon):
             active_id=missing_id, active_model='project.task',
             limit_folders_to_project=True).search_panel_select_range('folder_id')
         self.assertTrue(result)
+
+    def test_copy_project(self):
+        """
+        When duplicating a project, there should be exactly one copy of the folder linked to the project.
+        If there is the `no_create_folder` context key, then the folder should not be copied (note that in normal flows,
+        when this context key is used, it is expected that a folder will be copied/created manually, so that we don't
+        end up with a project having the documents feature enabled but no folder).
+        """
+        last_folder_id = self.env['documents.folder'].search([], order='id desc', limit=1).id
+        self.project_pigs.copy()
+        self.assertEqual(len(self.env['documents.folder'].search([('id', '>', last_folder_id)])), 1, "There should only be one new folder created.")
+        self.project_goats.with_context(no_create_folder=True).copy()
+        self.assertEqual(len(self.env['documents.folder'].search([('id', '>', last_folder_id + 1)])), 0, "There should be no new folder created.")

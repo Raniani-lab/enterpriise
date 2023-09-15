@@ -6,11 +6,11 @@
         <field name="code">COMMISSION</field>
         <field name="sequence">5</field>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = inputs.COMMISSION</field>
+        <field name="condition_python">result = 'COMMISSION' in inputs</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = inputs.COMMISSION.amount
-result_name = inputs.COMMISSION.name
+result = inputs['COMMISSION'].amount
+result_name = inputs['COMMISSION'].name
         </field>
         <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
     </record>
@@ -21,11 +21,11 @@ result_name = inputs.COMMISSION.name
         <field name="code">TIPS</field>
         <field name="sequence">5</field>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = inputs.TIPS</field>
+        <field name="condition_python">result = 'TIPS' in inputs</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = inputs.TIPS.amount
-result_name = inputs.TIPS.name
+result = inputs['TIPS'].amount
+result_name = inputs['TIPS'].name
         </field>
         <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
     </record>
@@ -53,7 +53,7 @@ year_payslips = contract.env['hr.payslip'].search([
     ('company_id', '=', contract.company_id.id),
 ])
 already_done = -year_payslips._get_line_values(['401K'], compute_sum=True)['401K']['sum']['total']
-cap = payslip.rule_parameter('l10n_us_401k_cap')
+cap = payslip._rule_parameter('l10n_us_401k_cap')
 if already_done &gt; cap:
     result = 0
 else:
@@ -82,7 +82,7 @@ year_payslips = contract.env['hr.payslip'].search([
     ('company_id', '=', contract.company_id.id),
 ])
 previous_amounts = year_payslips._get_line_values(['401K'], vals_list=['amount'], compute_sum=True)['401K']['sum']['amount']
-cap = payslip.rule_parameter('l10n_us_benefits_matching_cap')
+cap = payslip._rule_parameter('l10n_us_benefits_matching_cap')
 if previous_amounts &gt; cap:
     employee_contribution = 0
 else:
@@ -205,7 +205,7 @@ result = - contract.l10n_us_commuter_benefits
         <field name="sequence">150</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = GROSS + categories.PRETAX
+result = GROSS + categories['PRETAX']
         </field>
         <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
     </record>
@@ -225,7 +225,7 @@ employee = contract.employee_id
 
 # Step 1.   Adjust the employee's payment amount
 #   1a  Enter the employee's total taxable wages this payroll period
-line_1a = categories.TAXABLE
+line_1a = categories['TAXABLE']
 
 #   1b Enter the number of pay periods you have per year
 line_1b = {
@@ -262,9 +262,9 @@ if not employee.l10n_us_old_w4:
     if employee.l10n_us_w4_step_2:
         line_1g = 0
     elif employee.l10n_us_filing_status == 'jointly':
-        line_1g = payslip.rule_parameter('l10n_us_income_tax_1g_jointly')
+        line_1g = payslip._rule_parameter('l10n_us_income_tax_1g_jointly')
     else:
-        line_1g = payslip.rule_parameter('l10n_us_income_tax_1g_separately')
+        line_1g = payslip._rule_parameter('l10n_us_income_tax_1g_separately')
 
     #   1h Add lines 1f and 1g
     line_1h = line_1f + line_1g
@@ -284,7 +284,7 @@ else:
     line_1j = employee.l10n_us_w4_allowances_count
 
     #    1k Multiply line 1j by $4,300
-    line_1k = line_1j * payslip.rule_parameter('l10n_us_income_tax_1k_factor')
+    line_1k = line_1j * payslip._rule_parameter('l10n_us_income_tax_1k_factor')
 
     #    1l Subtract line 1k from line 1c. If zero or less, enter -0-.
     #       This is the Adjusted Annual Wage Amount
@@ -308,9 +308,9 @@ line_2a = adjusted_annual_wage
 #        less than the amount in column B, then enter here the amount from
 #        column A of that row
 if employee.l10n_us_old_w4 or not employee.l10n_us_w4_step_2:
-    withholding_rates = payslip.rule_parameter('l10n_us_income_tax_withholding_rates_1')
+    withholding_rates = payslip._rule_parameter('l10n_us_income_tax_withholding_rates_1')
 else:
-    withholding_rates = payslip.rule_parameter('l10n_us_income_tax_withholding_rates_2')
+    withholding_rates = payslip._rule_parameter('l10n_us_income_tax_withholding_rates_2')
 if employee.l10n_us_filing_status in ['jointly', 'survivor']:
     withholding_rates = withholding_rates['jointly']
 if employee.l10n_us_filing_status in ['single', 'separately']:
@@ -383,7 +383,7 @@ result = - line_4b
         <field name="sequence">161</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-taxable = categories.TAXABLE - result_rules['401K']['total']
+taxable = categories['TAXABLE'] - result_rules['401K']['total']
 year_payslips = contract.env['hr.payslip'].search([
     ('employee_id', '=', contract.employee_id.id),
     ('state', 'in', ['done', 'paid']),
@@ -393,12 +393,12 @@ year_payslips = contract.env['hr.payslip'].search([
 ])
 line_values = year_payslips._get_line_values(['TAXABLE', '401K'], vals_list=['amount'], compute_sum=True)
 previous_amounts = line_values['TAXABLE']['sum']['amount'] - line_values['401K']['sum']['amount']
-cap = payslip.rule_parameter('l10n_us_OASDI_cap')
+cap = payslip._rule_parameter('l10n_us_OASDI_cap')
 if previous_amounts &gt; cap:
     result = 0
 else:
     result = min(cap - previous_amounts, taxable)
-result_rate = - payslip.rule_parameter('l10n_us_OASDI_tax_rate')
+result_rate = - payslip._rule_parameter('l10n_us_OASDI_tax_rate')
         </field>
         <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
         <field name="partner_id" ref="res_partner_irs"/>
@@ -411,7 +411,7 @@ result_rate = - payslip.rule_parameter('l10n_us_OASDI_tax_rate')
         <field name="sequence">161</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = categories.TAXABLE - result_rules['401K']['total']
+result = categories['TAXABLE'] - result_rules['401K']['total']
 result_rate = - 1.45
         </field>
         <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
@@ -435,7 +435,7 @@ year_payslips = contract.env['hr.payslip'].search([
     ('company_id', '=', contract.company_id.id),
 ])
 line_values = year_payslips._get_line_values(['MEDICARE'], vals_list=['amount'], compute_sum=True)
-cap = payslip.rule_parameter('l10n_us_medicare_additional_cap')
+cap = payslip._rule_parameter('l10n_us_medicare_additional_cap')
 previous_amounts = line_values['MEDICARE']['sum']['amount']
 if previous_amounts &gt; cap:
     result = medicare_amount
@@ -459,7 +459,7 @@ result_rate = - 0.9
 # METHOD B - EXACT CALCULATION METHOD
 # https://edd.ca.gov/siteassets/files/pdf_pub_ctr/23methb.pdf
 
-gross = categories.TAXABLE
+gross = categories['TAXABLE']
 employee = contract.employee_id
 schedule_pay = contract.schedule_pay
 
@@ -467,7 +467,7 @@ schedule_pay = contract.schedule_pay
 #        or equal to, the amount shown in TABLE 1 - LOW
 #        INCOME EXEMPTION TABLE. If so, no income tax is required
 #        to be withheld.
-low_income_exemption_table = payslip.rule_parameter('l10n_us_ca_low_income_exemption_table')
+low_income_exemption_table = payslip._rule_parameter('l10n_us_ca_low_income_exemption_table')
 table_index = None
 if employee.l10n_us_state_filing_status == 'status_1':
     table_index = 0
@@ -487,7 +487,7 @@ if gross &lt;= exemption_amount:
 # Step 2 If the employee claims any additional withholding allowances
 #        for estimated deductions on a DE 4, subtract the amount shown in
 #        TABLE 2 - ESTIMATED DEDUCTION TABLE from the gross wages. 
-estimated_deduction_table = payslip.rule_parameter('l10n_us_ca_estimated_deduction_table')
+estimated_deduction_table = payslip._rule_parameter('l10n_us_ca_estimated_deduction_table')
 deduction_amounts = estimated_deduction_table[schedule_pay]
 allowance_count = employee.l10n_us_w4_withholding_deduction_allowances
 if allowance_count and allowance_count &lt;= 10:
@@ -497,7 +497,7 @@ elif allowance_count and allowance_count &gt; 10:
 
 # Step 3 Subtract the standard deduction amount shown in TABLE 3 - STANDARD
 #        DEDUCTION TABLE to arrive at the employee's taxable income.
-standard_deduction_table = payslip.rule_parameter('l10n_us_ca_standard_deduction_table')
+standard_deduction_table = payslip._rule_parameter('l10n_us_ca_standard_deduction_table')
 deduction_amount = standard_deduction_table[schedule_pay][table_index]
 taxable = max(0, gross - deduction_amount)
 
@@ -505,7 +505,7 @@ taxable = max(0, gross - deduction_amount)
 #        status to find the applicable line on which the taxable income
 #        is located. Perform the indicated calculations to arrive at the
 #        computed tax liability.
-tax_rate_tables = payslip.rule_parameter('l10n_us_ca_tax_rate_tables')
+tax_rate_tables = payslip._rule_parameter('l10n_us_ca_tax_rate_tables')
 if employee.l10n_us_state_filing_status == 'status_1':
     tax_table_key = 'separately'
 elif employee.l10n_us_state_filing_status == 'status_2':
@@ -523,7 +523,7 @@ tax_liability = fix + (taxable - threshold) * rate / 100
 
 # Step 5 Subtract the tax credit shown in TABLE 4 - EXEMPTION ALLOWANCE TABLE
 #        from the computed tax liability to arrive at the amount of tax to be withheld. 
-exemption_allowance_table = payslip.rule_parameter('l10n_us_ca_exemption_allowance_table')
+exemption_allowance_table = payslip._rule_parameter('l10n_us_ca_exemption_allowance_table')
 exemption_amounts = exemption_allowance_table[schedule_pay]
 allowance_count = employee.l10n_us_w4_allowances_count
 if allowance_count and allowance_count &lt;= 10:
@@ -549,7 +549,7 @@ result = - tax_to_be_withheld
         <field name="condition_python">result = contract.employee_id.address_id.state_id.code == 'CA'</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = categories.TAXABLE - result_rules['401K']['total']
+result = categories['TAXABLE'] - result_rules['401K']['total']
 result_rate = - 0.9
         </field>
         <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
@@ -579,7 +579,7 @@ year_payslips = contract.env['hr.payslip'].search([
     ('company_id', '=', contract.company_id.id),
 ])
 already_done = -year_payslips._get_line_values(['ROTH401K'], compute_sum=True)['ROTH401K']['sum']['total']
-cap = payslip.rule_parameter('l10n_us_401k_cap')
+cap = payslip._rule_parameter('l10n_us_401k_cap')
 if already_done &gt; cap:
     result = 0
 else:
@@ -629,7 +629,7 @@ result_rate = - result_rules['MEDICARE']['rate']
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-taxable = categories.TAXABLE - result_rules['401K']['total']
+taxable = categories['TAXABLE'] - result_rules['401K']['total']
 year_payslips = contract.env['hr.payslip'].search([
     ('employee_id', '=', contract.employee_id.id),
     ('state', 'in', ['done', 'paid']),
@@ -639,12 +639,12 @@ year_payslips = contract.env['hr.payslip'].search([
 ])
 line_values = year_payslips._get_line_values(['TAXABLE', '401K'], compute_sum=True)
 already_taxed = line_values['TAXABLE']['sum']['total'] - line_values['401K']['sum']['total']
-cap = payslip.rule_parameter('l10n_us_FUTA_cap')
+cap = payslip._rule_parameter('l10n_us_FUTA_cap')
 if already_taxed &gt; cap:
     result = 0
 else:
     result = min(cap - already_taxed, taxable)
-result_rate = payslip.rule_parameter('l10n_us_FUTA_tax_rate')
+result_rate = payslip._rule_parameter('l10n_us_FUTA_tax_rate')
         </field>
         <field name="appears_on_payslip" eval="False"/>
         <field name="partner_id" ref="res_partner_irs"/>
@@ -660,7 +660,7 @@ result_rate = payslip.rule_parameter('l10n_us_FUTA_tax_rate')
         <field name="condition_python">result = contract.employee_id.address_id.state_id.code</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-taxable = categories.TAXABLE - result_rules['401K']['total']
+taxable = categories['TAXABLE'] - result_rules['401K']['total']
 year_payslips = contract.env['hr.payslip'].search([
     ('employee_id', '=', contract.employee_id.id),
     ('state', 'in', ['done', 'paid']),
@@ -671,8 +671,8 @@ year_payslips = contract.env['hr.payslip'].search([
 line_values = year_payslips._get_line_values(['TAXABLE', '401K'], compute_sum=True)
 already_taxed = line_values['TAXABLE']['sum']['total'] - line_values['401K']['sum']['total']
 state_code = contract.employee_id.address_id.state_id.code.lower()
-result_rate = payslip.rule_parameter('l10n_us_%s_sui_rate' % (state_code))
-cap = payslip.rule_parameter('l10n_us_%s_sui_cap' % (state_code))
+result_rate = payslip._rule_parameter('l10n_us_%s_sui_rate' % (state_code))
+cap = payslip._rule_parameter('l10n_us_%s_sui_cap' % (state_code))
 if already_taxed &gt; cap:
     result = 0
 else:
@@ -694,7 +694,7 @@ else:
         <field name="amount_python_compute">
 # https://edd.ca.gov/en/payroll_taxes/What_Are_State_Payroll_Taxes
 if contract.company_id.l10n_us_ca_ett_tax:
-    taxable = categories.TAXABLE - result_rules['401K']['total']
+    taxable = categories['TAXABLE'] - result_rules['401K']['total']
     year_payslips = contract.env['hr.payslip'].search([
         ('employee_id', '=', contract.employee_id.id),
         ('state', 'in', ['done', 'paid']),
@@ -704,14 +704,14 @@ if contract.company_id.l10n_us_ca_ett_tax:
     ])
     line_values = year_payslips._get_line_values(['TAXABLE', '401K'], vals_list=['amount'], compute_sum=True)
     previous_amounts = line_values['TAXABLE']['sum']['amount'] - line_values['401K']['sum']['amount']
-    cap = payslip.rule_parameter('l10n_us_ca_ett_cap')
+    cap = payslip._rule_parameter('l10n_us_ca_ett_cap')
     if previous_amounts &gt; cap:
         result = 0
     else:
         result = min(cap - previous_amounts, taxable)
 else:
     result = 0
-result_rate = payslip.rule_parameter('l10n_us_ca_ett_rate')
+result_rate = payslip._rule_parameter('l10n_us_ca_ett_rate')
         </field>
         <field name="appears_on_payslip" eval="False"/>
         <field name="partner_id" ref="res_partner_edd_ca"/>
@@ -724,11 +724,11 @@ result_rate = payslip.rule_parameter('l10n_us_ca_ett_rate')
         <field name="code">ALLOCATEDTIPS</field>
         <field name="sequence">180</field>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = inputs.ALLOCATEDTIPS</field>
+        <field name="condition_python">result = 'ALLOCATEDTIPS' in inputs</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = inputs.ALLOCATEDTIPS.amount
-result_name = inputs.ALLOCATEDTIPS.name
+result = inputs['ALLOCATEDTIPS'].amount
+result_name = inputs['ALLOCATEDTIPS'].name
         </field>
         <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
     </record>

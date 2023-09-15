@@ -1,5 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import models, fields, api
+from odoo.tools import SQL
 
 
 class AccountReport(models.Model):
@@ -138,6 +139,6 @@ class AccountMoveLine(models.Model):
         query = super()._where_calc(domain, active_test)
         if self.env.context.get('account_report_cash_basis'):
             self.env['account.report']._prepare_lines_for_cash_basis()
-            query._tables['account_move_line'] = 'cash_basis_temp_account_move_line'
+            query._tables['account_move_line'] = SQL.identifier('cash_basis_temp_account_move_line')
 
         return query

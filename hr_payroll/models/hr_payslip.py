@@ -739,6 +739,8 @@ class HrPayslip(models.Model):
             'float_round': float_round,
             'float_compare': float_compare,
             "relativedelta": relativedelta,
+            "ceil": math.ceil,
+            "floor": math.floor,
             'UserError': UserError,
             'date': date,
             'datetime': datetime,

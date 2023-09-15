@@ -141,7 +141,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                           'account_move_line__move__partner__country.code AS country_code',
                           )
 
-        self.env.cr.execute(qu[0], qu[1])
+        self.env.cr.execute(qu)
         lines_data = self._cr.dictfetchall()
 
         data = []

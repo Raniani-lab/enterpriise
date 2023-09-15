@@ -469,20 +469,24 @@ export class AccountReportController {
     async unfoldLine(lineIndex) {
         const targetLine = this.lines[lineIndex];
 
-        if (this.isLoadedLine(lineIndex))
-            this.unfoldLoadedLine(lineIndex);
-        else
-            await this.unfoldNewLine(lineIndex);
+        if ( targetLine.expand_function ) {
+            if (this.isLoadedLine(lineIndex))
+                this.unfoldLoadedLine(lineIndex);
+            else
+                await this.unfoldNewLine(lineIndex);
 
-        targetLine.unfolded = true;
+            targetLine.unfolded = true;
 
-        this.refreshVisibleFootnotes();
+            this.refreshVisibleFootnotes();
 
-        // Update options
-        if (!this.options.unfolded_lines.includes(targetLine.id))
-            this.options.unfolded_lines.push(targetLine.id);
+            // Update options
+            if (!this.options.unfolded_lines.includes(targetLine.id))
+                this.options.unfolded_lines.push(targetLine.id)
 
-        this.saveSessionOptions(this.options);
+            this.saveSessionOptions();
+        } else {
+            targetLine.unfolded = true;
+        }
     }
 
     foldLine(lineIndex) {

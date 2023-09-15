@@ -5,6 +5,7 @@ from collections import OrderedDict
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
+from odoo.tools import SQL
 
 
 class Document(models.Model):
@@ -136,9 +137,14 @@ class Document(models.Model):
             ]
         elif operator in ("ilike", "not ilike", "=", "!=") and isinstance(value, str):
             query_task = self.env["project.task"]._search([(self.env["project.task"]._rec_name, operator, value)])
-            document_task_alias = query_task.join(
-                "project_task", "id", "documents_document", "res_id", "document", "{rhs}.res_model = 'project.task'"
-            )
+            document_task_alias = query_task.make_alias('project_task', 'document')
+            query_task.add_join("JOIN", document_task_alias, 'documents_document', SQL(
+                "%s = %s AND %s = %s",
+                SQL.identifier('project_task', 'id'),
+                SQL.identifier(document_task_alias, 'res_id'),
+                SQL.identifier(document_task_alias, 'res_model'),
+                'project.task',
+            ))
             return [
                 ("id", "inselect", query_task.select(f"{document_task_alias}.id")),
             ]

@@ -41,7 +41,8 @@
                 <xpath expr="//field[@name='ref']" position="after">
                     <field name="l10n_mx_edi_payment_method_id"
                            invisible="not l10n_mx_edi_is_cfdi_needed or l10n_mx_edi_payment_policy == 'PPD'"
-                           readonly="state != 'draft'"/>
+                           readonly="state != 'draft'"
+                           options="{'no_open': True}"/>
                     <field name="l10n_mx_edi_payment_policy"
                            invisible="not l10n_mx_edi_payment_policy"/>
                     <field name="l10n_mx_edi_usage"

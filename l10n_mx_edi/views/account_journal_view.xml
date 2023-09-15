@@ -10,7 +10,8 @@
                 <data>
                     <xpath expr="//field[@name='loss_account_id']" position="after">
                         <field name="l10n_mx_edi_payment_method_id"
-                               invisible="type not in ['bank', 'sale'] or country_code != 'MX'"/>
+                               invisible="type not in ['bank', 'sale'] or country_code != 'MX'"
+                               options="{'no_open': True}"/>
                     </xpath>
                 </data>
             </field>

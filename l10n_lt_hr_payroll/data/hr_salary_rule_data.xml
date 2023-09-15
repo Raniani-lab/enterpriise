@@ -30,7 +30,7 @@ result = contract.l10n_lt_benefits_in_kind
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 result = get_l10n_lt_taxable_amount(payslip, categories, worked_days, inputs)
-result_rate = -payslip.rule_parameter('l10n_lt_pit_rate_low')
+result_rate = -payslip._rule_parameter('l10n_lt_pit_rate_low')
         </field>
         <field name="appears_on_payroll_report" eval="True"/>
         <field name="struct_id" ref="l10n_lt_hr_payroll.hr_payroll_structure_lt_employee_salary"/>
@@ -45,7 +45,7 @@ result_rate = -payslip.rule_parameter('l10n_lt_pit_rate_low')
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 result = get_l10n_lt_taxable_amount(payslip, categories, worked_days, inputs, sick=True)
-result_rate = -payslip.rule_parameter('l10n_lt_pit_rate_sick')
+result_rate = -payslip._rule_parameter('l10n_lt_pit_rate_sick')
         </field>
         <field name="appears_on_payroll_report" eval="True"/>
         <field name="struct_id" ref="l10n_lt_hr_payroll.hr_payroll_structure_lt_employee_salary"/>
@@ -57,11 +57,11 @@ result_rate = -payslip.rule_parameter('l10n_lt_pit_rate_sick')
         <field name="code">PITLAST</field>
         <field name="sequence">112</field>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = inputs.PITLAST</field>
+        <field name="condition_python">result = 'PITLAST' in inputs</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = inputs.PITLAST.amount
-result_rate = -payslip.rule_parameter('l10n_lt_pit_rate_high')
+result = inputs['PITLAST'].amount
+result_rate = -payslip._rule_parameter('l10n_lt_pit_rate_high')
         </field>
         <field name="appears_on_payroll_report" eval="True"/>
         <field name="struct_id" ref="l10n_lt_hr_payroll.hr_payroll_structure_lt_employee_salary"/>
@@ -77,9 +77,9 @@ result_rate = -payslip.rule_parameter('l10n_lt_pit_rate_high')
         <field name="amount_python_compute">
 result = get_l10n_lt_taxable_amount(payslip, categories, worked_days, inputs)
 if contract.l10n_lt_pension:
-    result_rate = -payslip.rule_parameter('l10n_lt_ssc_rate_high')
+    result_rate = -payslip._rule_parameter('l10n_lt_ssc_rate_high')
 else:
-    result_rate = -payslip.rule_parameter('l10n_lt_ssc_rate')
+    result_rate = -payslip._rule_parameter('l10n_lt_ssc_rate')
         </field>
         <field name="appears_on_payroll_report" eval="True"/>
         <field name="struct_id" ref="l10n_lt_hr_payroll.hr_payroll_structure_lt_employee_salary"/>
@@ -95,7 +95,7 @@ else:
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 result = get_l10n_lt_taxable_amount(payslip, categories, worked_days, inputs)
-result_rate = -payslip.rule_parameter('l10n_lt_pension_rate')
+result_rate = -payslip._rule_parameter('l10n_lt_pension_rate')
         </field>
         <field name="appears_on_payroll_report" eval="True"/>
         <field name="struct_id" ref="l10n_lt_hr_payroll.hr_payroll_structure_lt_employee_salary"/>
@@ -111,9 +111,9 @@ result_rate = -payslip.rule_parameter('l10n_lt_pension_rate')
         <field name="amount_python_compute">
 result = get_l10n_lt_taxable_amount(payslip, categories, worked_days, inputs)
 if contract.l10n_lt_time_limited:
-    result_rate = payslip.rule_parameter('l10n_lt_sscemp_rate_high')
+    result_rate = payslip._rule_parameter('l10n_lt_sscemp_rate_high')
 else:
-    result_rate = payslip.rule_parameter('l10n_lt_sscemp_rate')
+    result_rate = payslip._rule_parameter('l10n_lt_sscemp_rate')
         </field>
         <field name="appears_on_employee_cost_dashboard" eval="True"/>
         <field name="appears_on_payroll_report" eval="True"/>

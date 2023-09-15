@@ -391,7 +391,7 @@ var accountReportsWidget = AbstractAction.extend({
                         self._rpc({
                             model: 'account.report.expression',
                             method: 'action_view_carryover_lines',
-                            args: [$(event.target).data('expression-id'), self.report_options],
+                            args: [$(event.target).data('expression-id'), self.report_options, $(event.target).data('column-group-key')],
                             context: self.odoo_context,
                         })
                         .then(function(result){

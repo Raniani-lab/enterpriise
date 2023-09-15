@@ -114,7 +114,7 @@
                 <tr t-if="allow_carryover_audit">
                     <td/>
                     <td>
-                        <button t-att-data-expression-id="expression_id" class="btn btn-sm btn-secondary js_view_carryover_lines">View Carryover Lines</button>
+                        <button t-att-data-expression-id="expression_id" t-att-data-column-group-key="column_group_key" class="btn btn-sm btn-secondary js_view_carryover_lines">View Carryover Lines</button>
                     </td>
                 </tr>
             </t>

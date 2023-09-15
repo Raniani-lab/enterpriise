@@ -9,7 +9,7 @@ from zeep.exceptions import Fault
 from odoo.exceptions import UserError
 from odoo.addons.delivery_fedex.models.fedex_request import remove_accents, FedexRequest, LogPlugin, STATECODE_REQUIRED_COUNTRIES
 from odoo.models import _
-from odoo.modules.module import get_resource_path
+from odoo.tools.misc import file_path
 
 
 class AllStringEncoder(json.JSONEncoder):
@@ -23,7 +23,7 @@ class FEDEXLocationsRequest(FedexRequest):
     def __init__(self, debug_logger, request_type="locs", prod_environment=False):
         super(FEDEXLocationsRequest, self).__init__(debug_logger, request_type, prod_environment)
         wsdl_folder = 'prod' if prod_environment else 'test'
-        wsdl_path = get_resource_path('website_sale_fedex', 'api', wsdl_folder, 'LocationsService_v12.wsdl')
+        wsdl_path = file_path(f'website_sale_fedex/api/{wsdl_folder}/LocationsService_v12.wsdl')
         self._start_locs_transaction(wsdl_path)
 
     def _start_locs_transaction(self, wsdl_path):

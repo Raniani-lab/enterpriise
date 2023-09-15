@@ -5,12 +5,13 @@ import logging
 import re
 
 from datetime import datetime, date
+from os.path import join as opj
 from zeep import Client, Plugin, Settings
 from zeep.exceptions import Fault
 from zeep.wsdl.utils import etree_to_string
 
-from odoo.modules.module import get_resource_path
 from odoo.tools import remove_accents, float_repr
+from odoo.tools.misc import file_path
 
 
 _logger = logging.getLogger(__name__)
@@ -48,10 +49,10 @@ class FedexRequest():
 
         wsdl_folder = 'prod' if prod_environment else 'test'
         if request_type == "shipping":
-            wsdl_path = get_resource_path('delivery_fedex', 'api', wsdl_folder, 'ShipService_v28.wsdl')
+            wsdl_path = opj('delivery_fedex', 'api', wsdl_folder, 'ShipService_v28.wsdl')
             self.start_shipping_transaction(wsdl_path)
         elif request_type == "rating":
-            wsdl_path = get_resource_path('delivery_fedex', 'api', wsdl_folder, 'RateService_v31.wsdl')
+            wsdl_path = opj('delivery_fedex', 'api', wsdl_folder, 'RateService_v31.wsdl')
             self.start_rating_transaction(wsdl_path)
 
     # Authentification stuff
@@ -207,7 +208,7 @@ class FedexRequest():
 
     def start_rating_transaction(self, wsdl_path):
         settings = Settings(strict=False)
-        self.client = Client(wsdl_path, plugins=[LogPlugin(self.debug_logger)], settings=settings)
+        self.client = Client(file_path(wsdl_path), plugins=[LogPlugin(self.debug_logger)], settings=settings)
         self.factory = self.client.type_factory('ns0')
         self.VersionId = self.factory.VersionId()
         self.VersionId.ServiceId = 'crs'
@@ -252,7 +253,7 @@ class FedexRequest():
     # Shipping stuff
 
     def start_shipping_transaction(self, wsdl_path):
-        self.client = Client(wsdl_path, plugins=[LogPlugin(self.debug_logger)])
+        self.client = Client(file_path(wsdl_path), plugins=[LogPlugin(self.debug_logger)])
         self.factory = self.client.type_factory("ns0")
         self.VersionId = self.factory.VersionId()
         self.VersionId.ServiceId = 'ship'

@@ -4,7 +4,6 @@ from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests import tagged
 from odoo.tools import file_open
 from odoo.exceptions import UserError
-from odoo.modules.module import get_module_resource
 from odoo.addons.account_bank_statement_import_camt.models.account_journal import _logger as camt_wizard_logger
 
 NORMAL_AMOUNTS = [100, 150, 250]

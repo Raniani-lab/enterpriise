@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-from odoo.modules.module import get_module_resource
+from odoo.tools.misc import file_open
 from datetime import datetime
 import base64
 import random
@@ -211,6 +211,6 @@ class ResCompany(models.Model):
         is using the same certificate in another database) """
         for rec in self:
             old = rec.l10n_ar_afip_ws_crt_fname
-            cert_file = get_module_resource('l10n_ar_edi', 'demo', 'cert%d.crt' % random.randint(1, 10))
-            rec.l10n_ar_afip_ws_crt = base64.b64encode(open(cert_file, 'rb').read())
+            cert_file = 'l10n_ar_edi/demo/cert%d.crt' % random.randint(1, 10)
+            rec.l10n_ar_afip_ws_crt = base64.b64encode(file_open(cert_file, 'rb').read())
             _logger.log(25, 'Setting demo certificate from %s to %s in %s company' % (old, rec.l10n_ar_afip_ws_crt_fname, rec.name))

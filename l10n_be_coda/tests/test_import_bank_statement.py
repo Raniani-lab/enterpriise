@@ -5,7 +5,6 @@
 import base64
 
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
-from odoo.modules.module import get_module_resource
 from odoo.tests import tagged
 from odoo.tools import file_open
 

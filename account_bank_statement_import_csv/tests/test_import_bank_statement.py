@@ -4,7 +4,6 @@ from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo import fields
 from odoo.tests import tagged
 from odoo.tools import file_open
-from odoo.modules.module import get_module_resource
 
 
 @tagged('post_install', '-at_install')

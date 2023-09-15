@@ -5,8 +5,8 @@ from lxml import etree
 
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.addons.account_sepa import sanitize_communication
-from odoo.modules.module import get_module_resource
 from odoo.tests import tagged
+from odoo.tools.misc import file_path
 
 
 @tagged('post_install', '-at_install')
@@ -63,8 +63,8 @@ class TestSEPACreditTransfer(AccountTestInvoicingCommon):
         })
 
         # Get a pain.001.001.03 schema validator
-        schema_file_path = get_module_resource('account_sepa', 'schemas', 'pain.001.001.03.xsd')
-        cls.xmlschema = etree.XMLSchema(etree.parse(open(schema_file_path)))
+        schema_file_path = file_path('account_sepa/schemas/pain.001.001.03.xsd')
+        cls.xmlschema = etree.XMLSchema(etree.parse(schema_file_path))
 
     @classmethod
     def createPayment(cls, partner, amount, ref=None):

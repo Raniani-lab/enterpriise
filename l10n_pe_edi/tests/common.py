@@ -41,9 +41,9 @@ class TestPeEdiCommon(AccountEdiTestCommon):
 
         # ==== Config ====
 
-        resource_path = modules.get_resource_path('l10n_pe_edi', 'demo/certificates', 'certificate.pfx')
         cls.certificate = cls.env['l10n_pe_edi.certificate'].create({
-            'content': base64.encodebytes(misc.file_open(resource_path, 'rb').read()),
+            'content': base64.encodebytes(
+                misc.file_open('l10n_pe_edi/demo/certificates/certificate.pfx', 'rb').read()),
             'password': '12345678a',
         })
         cls.certificate.write({

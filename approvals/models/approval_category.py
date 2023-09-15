@@ -5,7 +5,6 @@ import base64
 
 from odoo import api, fields, models, tools, _
 from odoo.exceptions import ValidationError
-from odoo.modules.module import get_module_resource
 
 
 CATEGORY_SELECTION = [
@@ -22,8 +21,8 @@ class ApprovalCategory(models.Model):
     _check_company_auto = True
 
     def _get_default_image(self):
-        default_image_path = get_module_resource('approvals', 'static/src/img', 'Folder.png')
-        return base64.b64encode(open(default_image_path, 'rb').read())
+        default_image_path = 'approvals/static/src/img/Folder.png'
+        return base64.b64encode(tools.misc.file_open(default_image_path, 'rb').read())
 
     name = fields.Char(string="Name", translate=True, required=True)
     company_id = fields.Many2one(

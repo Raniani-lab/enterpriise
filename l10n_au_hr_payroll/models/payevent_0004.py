@@ -6,7 +6,7 @@ from datetime import date
 from collections import defaultdict
 
 from odoo import api, fields, models, _
-from odoo.modules.module import get_resource_path
+from odoo.tools.misc import file_path
 
 
 class L10nAuPayEvent0004(models.Model):
@@ -68,8 +68,8 @@ class L10nAuPayEvent0004(models.Model):
 
     @api.depends("xml_file")
     def _compute_validation_state(self):
-        payevent_xsd_root = etree.parse(get_resource_path("l10n_au_hr_payroll", "data", "l10n_au_payevnt_0004.xsd"))
-        payeventemp_xsd_root = etree.parse(get_resource_path("l10n_au_hr_payroll", "data", "l10n_au_payevntemp_0004.xsd"))
+        payevent_xsd_root = etree.parse(file_path("l10n_au_hr_payroll/data/l10n_au_payevnt_0004.xsd"))
+        payeventemp_xsd_root = etree.parse(file_path("l10n_au_hr_payroll/data/l10n_au_payevntemp_0004.xsd"))
         payevent_schema = etree.XMLSchema(payevent_xsd_root)
         payeventemp_schema = etree.XMLSchema(payeventemp_xsd_root)
 

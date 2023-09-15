@@ -6,7 +6,6 @@ from collections import defaultdict
 from odoo import Command, http, _
 from odoo.http import request
 from odoo.exceptions import UserError
-from odoo.modules.module import get_resource_path
 from odoo.osv import expression
 from odoo.tools import pdf, split_every
 from odoo.tools.misc import file_open
@@ -172,8 +171,7 @@ class StockBarcodeController(http.Controller):
 
         # get fixed command barcodes
         if barcode_type == 'barcode_commands_and_operation_types':
-            file_path = get_resource_path('stock_barcode', 'static/img', 'barcodes_actions.pdf')
-            with file_open(file_path, "rb") as commands_file:
+            with file_open('stock_barcode/static/img/barcodes_actions.pdf', "rb") as commands_file:
                 barcode_pdfs.append(commands_file.read())
 
             # get picking types barcodes

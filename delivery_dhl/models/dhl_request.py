@@ -9,8 +9,8 @@ from zeep.wsdl.utils import etree_to_string
 from odoo import _
 from odoo import release
 from odoo.exceptions import UserError
-from odoo.modules.module import get_resource_path
 from odoo.tools import float_repr, float_round
+from odoo.tools.misc import file_path
 
 class DHLProvider():
 
@@ -31,7 +31,7 @@ class DHLProvider():
 
 
     def _set_client(self, wsdl_filename, api):
-        wsdl_path = get_resource_path('delivery_dhl', 'api', wsdl_filename)
+        wsdl_path = file_path(f'delivery_dhl/api/{wsdl_filename}')
         client = Client(wsdl_path)
         return client
 

@@ -5,7 +5,7 @@ import base64
 import datetime
 
 from odoo import fields, models, _
-from odoo.modules import get_module_resource
+from odoo.tools.misc import file_open
 
 
 class ExpenseSampleReceipt(models.Model):
@@ -57,8 +57,8 @@ class ExpenseSampleReceipt(models.Model):
         expense = self.env['hr.expense'].create(expense_line_values)
 
         # 6/ Link the attachment
-        image_path = get_module_resource('hr_expense_extract', 'static/img', 'sample_%s.jpeg' % sample_number)
-        image = base64.b64encode(open(image_path, 'rb').read())
+        image_path = 'hr_expense_extract/static/img/sample_%s.jpeg' % sample_number
+        image = base64.b64encode(file_open(image_path, 'rb').read())
         self.env['ir.attachment'].create({
             'name': 'sample_receipt.jpeg',
             'res_id': expense.id,

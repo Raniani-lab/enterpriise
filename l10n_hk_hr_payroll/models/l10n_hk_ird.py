@@ -7,7 +7,8 @@ from dateutil.relativedelta import relativedelta
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import format_date
-from odoo.modules.module import get_resource_path
+from odoo.tools.misc import file_path
+
 
 MONTH_SELECTION = [
     ('1', 'January'),
@@ -93,7 +94,7 @@ class L10nHkIrd(models.AbstractModel):
 
     @api.model
     def _get_xml_resource(self, file_name):
-        return get_resource_path('l10n_hk_hr_payroll', 'data', 'xml_schema', file_name)
+        return file_path(f'l10n_hk_hr_payroll/data/xml_schema/{file_name}')
 
     @api.model
     def _check_employees(self, employees):

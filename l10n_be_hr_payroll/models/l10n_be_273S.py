@@ -9,9 +9,9 @@ from lxml import etree
 
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
-from odoo.modules.module import get_resource_path
 from odoo.exceptions import UserError
 from odoo.tools import format_date
+from odoo.tools.misc import file_path
 
 
 class L10nBe273S(models.Model):
@@ -84,11 +84,7 @@ class L10nBe273S(models.Model):
 
     @api.depends('xml_file')
     def _compute_validation_state(self):
-        xsd_schema_file_path = get_resource_path(
-            'l10n_be_hr_payroll',
-            'data',
-            'withholdingTaxDeclarationOriginal_202012.xsd',
-        )
+        xsd_schema_file_path = file_path('l10n_be_hr_payroll/data/withholdingTaxDeclarationOriginal_202012.xsd')
         xsd_root = etree.parse(xsd_schema_file_path)
         schema = etree.XMLSchema(xsd_root)
 

@@ -11,7 +11,6 @@ from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.addons.iap_extract.tests.test_extract_mixin import TestExtractMixin
 from odoo.addons.mail.tests.common import MailCommon
 from odoo.tests import tagged
-from odoo.modules.module import get_module_resource
 from odoo.tools import file_open
 
 from ..models.account_invoice import OCR_VERSION
@@ -719,7 +718,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin, MailCommo
         self.assertFalse(invoice.extract_document_uuid)
 
         # attachment is pdf -> extract
-        with file_open(get_module_resource('base', 'tests', 'minimal.pdf'), 'rb') as file:
+        with file_open('base/tests/minimal.pdf', 'rb') as file:
             pdf_bytes = file.read()
         mail = self._get_email_for_journal_alias(
             attachment=pdf_bytes,

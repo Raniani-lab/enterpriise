@@ -5,9 +5,8 @@ from base64 import b64decode
 from lxml import etree
 
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
-from odoo.modules.module import get_module_resource
 from odoo.tests import tagged
-from odoo.tools import file_open
+from odoo.tools.misc import file_path
 
 
 @tagged('post_install', '-at_install')
@@ -54,8 +53,8 @@ class TestSEPACreditTransferUpdate(AccountTestInvoicingCommon):
         cls.sepa_ct = cls.env.ref('account_sepa.account_payment_method_sepa_ct')
 
         # Get a pain.001.001.09 schema validator
-        schema_file_path = get_module_resource('account_sepa_pain_001_001_09', 'schemas', 'pain.001.001.09.xsd')
-        cls.xmlschema = etree.XMLSchema(etree.parse(file_open(schema_file_path)))
+        schema_file_path = file_path('account_sepa_pain_001_001_09/schemas/pain.001.001.09.xsd')
+        cls.xmlschema = etree.XMLSchema(etree.parse(schema_file_path))
 
     def test_new_generic_sepa_version_001_001_09(self):
         payment = self.env['account.payment'].create({

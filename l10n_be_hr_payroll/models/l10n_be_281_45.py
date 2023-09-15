@@ -11,7 +11,8 @@ from lxml import etree
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
-from odoo.modules.module import get_resource_path
+from odoo.tools.misc import file_path
+
 
 _logger = logging.getLogger(__name__)
 
@@ -105,11 +106,7 @@ class L10nBe28145(models.Model):
 
     @api.depends('xml_file')
     def _compute_validation_state(self):
-        xsd_schema_file_path = get_resource_path(
-            'l10n_be_hr_payroll',
-            'data',
-            '161-xsd-2022-20221213.xsd',
-        )
+        xsd_schema_file_path = file_path('l10n_be_hr_payroll/data/161-xsd-2022-20221213.xsd')
         xsd_root = etree.parse(xsd_schema_file_path)
         schema = etree.XMLSchema(xsd_root)
 

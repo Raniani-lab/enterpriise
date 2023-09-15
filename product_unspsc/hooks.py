@@ -25,13 +25,12 @@ def _load_unspsc_codes(env):
     Even with the faster CSVs, it would take +30 seconds to load it with
     the regular ORM methods, while here, it is under 3 seconds
     """
-    csv_path = join(dirname(realpath(__file__)), 'data',
-                    'product.unspsc.code.csv')
-    csv_file = open(csv_path, 'rb')
-    csv_file.readline() # Read the header, so we avoid copying it to the db
-    env.cr.copy_expert(
-        """COPY product_unspsc_code (code, name, applies_to, active)
-           FROM STDIN WITH DELIMITER '|'""", csv_file)
+    csv_path = 'product_unspsc/data/product.unspsc.code.csv'
+    with tools.misc.file_open(csv_path, 'rb') as csv_file:
+        csv_file.readline() # Read the header, so we avoid copying it to the db
+        env.cr.copy_expert(
+            """COPY product_unspsc_code (code, name, applies_to, active)
+               FROM STDIN WITH DELIMITER '|'""", csv_file)
     # Create xml_id, to allow make reference to this data
     env.cr.execute(
         """INSERT INTO ir_model_data

@@ -4,10 +4,9 @@
 import base64
 from lxml import etree
 
-from odoo.modules.module import get_module_resource
 from odoo.addons.hr_payroll_account_sepa.tests.test_payroll_sepa import TestPayrollSEPACreditTransfer
 from odoo.tests import tagged
-from odoo.tools import file_open
+from odoo.tools.misc import file_path
 
 
 @tagged('post_install', '-at_install')
@@ -15,8 +14,8 @@ class TestPayrollSEPANewCreditTransfer(TestPayrollSEPACreditTransfer):
 
     def test_hr_payroll_account_sepa_09(self):
         self.bank_journal.sepa_pain_version = 'pain.001.001.09'
-        schema_file_path = get_module_resource('account_sepa_pain_001_001_09', 'schemas', 'pain.001.001.09.xsd')
-        xmlschema = etree.XMLSchema(etree.parse(file_open(schema_file_path)))
+        schema_file_path = file_path('account_sepa_pain_001_001_09/schemas/pain.001.001.09.xsd')
+        xmlschema = etree.XMLSchema(etree.parse(schema_file_path))
 
         payslip_employee = self.env['hr.payslip.employees'].create({
             'employee_ids': [(4, self.hr_employee_john.id)]

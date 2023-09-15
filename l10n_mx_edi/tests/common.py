@@ -2,7 +2,6 @@
 from odoo import fields, Command
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.exceptions import ValidationError
-from odoo.modules.module import get_module_resource
 from odoo.tools import misc
 
 import base64
@@ -304,8 +303,7 @@ class TestMxEdiCommon(AccountTestInvoicingCommon):
             ._create_payments()
 
     def _assert_document_cfdi(self, document, filename):
-        file_path = get_module_resource(self.test_module, 'tests/test_files', f'{filename}.xml')
-        assert file_path
+        file_path = f'{self.test_module}/tests/test_files/{filename}.xml'
         with misc.file_open(file_path, 'rb') as file:
             expected_cfdi = file.read()
         self.assertXmlTreeEqual(

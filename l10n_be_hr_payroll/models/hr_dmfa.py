@@ -13,8 +13,9 @@ from lxml import etree
 
 from odoo import api, fields, models, _
 from odoo.tools import date_utils
+from odoo.tools.misc import file_path
 from odoo.exceptions import ValidationError, UserError
-from odoo.modules.module import get_resource_path
+
 
 def format_amount(amount, width=11, hundredth=True):
     """
@@ -919,11 +920,7 @@ class HrDMFAReport(models.Model):
 
     @api.depends('dmfa_xml')
     def _compute_validation_state(self):
-        dmfa_schema_file_path = get_resource_path(
-            'l10n_be_hr_payroll',
-            'data',
-            'DmfAOriginal_20231.xsd',
-        )
+        dmfa_schema_file_path = file_path('l10n_be_hr_payroll/data/DmfAOriginal_20231.xsd')
         xsd_root = etree.parse(dmfa_schema_file_path)
         schema = etree.XMLSchema(xsd_root)
         for dmfa in self:

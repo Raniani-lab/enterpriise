@@ -11,9 +11,8 @@ from lxml import etree
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-from odoo.modules.module import get_resource_path
 from odoo.tools import format_date
-from odoo.tools.misc import xlsxwriter
+from odoo.tools.misc import file_path, xlsxwriter
 from odoo.osv import expression
 
 
@@ -100,11 +99,7 @@ class L10nBe274XX(models.Model):
 
     @api.depends('xml_file')
     def _compute_validation_state(self):
-        xsd_schema_file_path = get_resource_path(
-            'l10n_be_hr_payroll',
-            'data',
-            'finprof.xsd',
-        )
+        xsd_schema_file_path = file_path('l10n_be_hr_payroll/data/finprof.xsd')
         xsd_root = etree.parse(xsd_schema_file_path)
         schema = etree.XMLSchema(xsd_root)
         for sheet in self:

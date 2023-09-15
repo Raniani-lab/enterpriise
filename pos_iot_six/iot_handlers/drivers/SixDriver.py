@@ -9,7 +9,7 @@ from threading import Thread
 
 from odoo.addons.hw_drivers.driver import Driver
 from odoo.addons.hw_drivers.event_manager import event_manager
-from odoo.modules.module import get_resource_path
+from odoo.tools.misc import file_path
 
 
 _logger = getLogger(__name__)
@@ -22,7 +22,7 @@ else:
     lib_extension = '_l.so'
     import_library = ctypes.CDLL
 
-timApi_lib_path = f'{get_resource_path("hw_drivers", "iot_handlers", "lib", "tim")}/libsix_odoo{lib_extension}'
+timApi_lib_path = file_path(f"hw_drivers/iot_handlers/lib/tim/libsix_odoo{lib_extension}")
 
 try:
     # Load library

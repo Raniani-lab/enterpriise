@@ -3,6 +3,7 @@
 
 from os.path import join, dirname, realpath
 from odoo import tools
+from odoo.tools.misc import file_open
 import csv
 
 
@@ -45,7 +46,7 @@ def post_init_hook(env):
     if not env['l10n_mx_edi.res.locality'].search_count([]):
         csv_path = join(dirname(realpath(__file__)), 'data', 'l10n_mx_edi.res.locality.csv')
         tariff_fraction_vals_list = []
-        with open(csv_path, 'r') as csv_file:
+        with file_open(csv_path, 'r') as csv_file:
             for row in csv.DictReader(csv_file, delimiter='|', fieldnames=['code', 'name', 'state_xml_id']):
                 state = env.ref('base.%s' % row['state_xml_id'], raise_if_not_found=False)
                 tariff_fraction_vals_list.append({
@@ -76,7 +77,7 @@ def post_init_hook(env):
     if not env['l10n_mx_edi.tariff.fraction'].search_count([]):
         csv_path = join(dirname(realpath(__file__)), 'data', 'l10n_mx_edi.tariff.fraction.csv')
         tariff_fraction_vals_list = []
-        with open(csv_path, 'r') as csv_file:
+        with file_open(csv_path, 'r') as csv_file:
             for row in csv.DictReader(csv_file, delimiter='|', fieldnames=['code', 'name', 'uom_code']):
                 tariff_fraction_vals_list.append(row)
 

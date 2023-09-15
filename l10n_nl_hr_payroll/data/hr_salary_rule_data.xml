@@ -14,10 +14,10 @@
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-gross = categories.GROSS
+gross = categories['GROSS']
 if contract.employee_id.is_non_resident and contract.l10n_nl_30_percent:
     gross *= 0.70
-rates = payslip.rule_parameter('l10n_nl_social_security_rates_employee')['AOW']
+rates = payslip._rule_parameter('l10n_nl_social_security_rates_employee')['AOW']
 result_rate = -(rates[1] if contract.employee_id.is_non_resident else rates[0])
 cap = rates[2] / 12
 result = min(gross, cap)
@@ -33,10 +33,10 @@ result = min(gross, cap)
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-gross = categories.GROSS
+gross = categories['GROSS']
 if contract.employee_id.is_non_resident and contract.l10n_nl_30_percent:
     gross *= 0.70
-rates = payslip.rule_parameter('l10n_nl_social_security_rates_employee')['Anw']
+rates = payslip._rule_parameter('l10n_nl_social_security_rates_employee')['Anw']
 result_rate = -(rates[1] if contract.employee_id.is_non_resident else rates[0])
 cap = rates[2] / 12
 result = min(gross, cap)
@@ -52,10 +52,10 @@ result = min(gross, cap)
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-gross = categories.GROSS
+gross = categories['GROSS']
 if contract.employee_id.is_non_resident and contract.l10n_nl_30_percent:
     gross *= 0.70
-rates = payslip.rule_parameter('l10n_nl_social_security_rates_employee')['Wlz']
+rates = payslip._rule_parameter('l10n_nl_social_security_rates_employee')['Wlz']
 result_rate = -(rates[1] if contract.employee_id.is_non_resident else rates[0])
 cap = rates[2] / 12
 result = min(gross, cap)
@@ -71,10 +71,10 @@ result = min(gross, cap)
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-gross = categories.GROSS
+gross = categories['GROSS']
 if contract.employee_id.is_non_resident and contract.l10n_nl_30_percent:
     gross *= 0.70
-result = gross + categories.DED
+result = gross + categories['DED']
         </field>
         <field name="struct_id" ref="l10n_nl_hr_payroll.hr_payroll_structure_nl_employee_salary"/>
     </record>
@@ -88,11 +88,11 @@ result = gross + categories.DED
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 if contract.employee_id.is_non_resident:
-    rates = payslip.rule_parameter('l10n_nl_income_tax_rates_non_resident')
+    rates = payslip._rule_parameter('l10n_nl_income_tax_rates_non_resident')
 else:
-    rates = payslip.rule_parameter('l10n_nl_income_tax_rates_resident')
+    rates = payslip._rule_parameter('l10n_nl_income_tax_rates_resident')
 
-gross = categories.TAXABLE
+gross = categories['TAXABLE']
 result = 0
 
 for low, high, rate in rates:
@@ -113,10 +113,10 @@ for low, high, rate in rates:
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-gross = categories.GROSS
+gross = categories['GROSS']
 if contract.employee_id.is_non_resident and contract.l10n_nl_30_percent:
     gross *= 0.70
-rates = payslip.rule_parameter('l10n_nl_social_security_rates_employer')['Zvw']
+rates = payslip._rule_parameter('l10n_nl_social_security_rates_employer')['Zvw']
 result_rate = -(rates[1] if contract.employee_id.is_non_resident else rates[0])
 cap = rates[2] / 12
 result = min(gross, - cap * 100 / result_rate)
@@ -133,10 +133,10 @@ result = min(gross, - cap * 100 / result_rate)
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-gross = categories.GROSS
+gross = categories['GROSS']
 if contract.employee_id.is_non_resident and contract.l10n_nl_30_percent:
     gross *= 0.70
-rates = payslip.rule_parameter('l10n_nl_social_security_rates_employer')['WW']
+rates = payslip._rule_parameter('l10n_nl_social_security_rates_employer')['WW']
 result_rate = -(rates[1] if contract.employee_id.is_non_resident else rates[0])
 cap = rates[2] / 12
 result = min(gross, - cap * 100 / result_rate)
@@ -153,10 +153,10 @@ result = min(gross, - cap * 100 / result_rate)
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-gross = categories.GROSS
+gross = categories['GROSS']
 if contract.employee_id.is_non_resident and contract.l10n_nl_30_percent:
     gross *= 0.70
-rates = payslip.rule_parameter('l10n_nl_social_security_rates_employer')['WWFund']
+rates = payslip._rule_parameter('l10n_nl_social_security_rates_employer')['WWFund']
 result_rate = -(rates[1] if contract.employee_id.is_non_resident else rates[0])
 cap = rates[2] / 12
 result = min(gross, - cap * 100 / result_rate)
@@ -173,10 +173,10 @@ result = min(gross, - cap * 100 / result_rate)
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-gross = categories.GROSS
+gross = categories['GROSS']
 if contract.employee_id.is_non_resident and contract.l10n_nl_30_percent:
     gross *= 0.70
-rates = payslip.rule_parameter('l10n_nl_social_security_rates_employer')['WAO/WIA']
+rates = payslip._rule_parameter('l10n_nl_social_security_rates_employer')['WAO/WIA']
 result_rate = -(rates[1] if contract.employee_id.is_non_resident else rates[0])
 cap = rates[2] / 12
 result = min(gross, - cap * 100 / result_rate)
@@ -193,10 +193,10 @@ result = min(gross, - cap * 100 / result_rate)
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-gross = categories.GROSS
+gross = categories['GROSS']
 if contract.employee_id.is_non_resident and contract.l10n_nl_30_percent:
     gross *= 0.70
-rates = payslip.rule_parameter('l10n_nl_social_security_rates_employer')['Whk']
+rates = payslip._rule_parameter('l10n_nl_social_security_rates_employer')['Whk']
 result_rate = -(rates[1] if contract.employee_id.is_non_resident else rates[0])
 cap = rates[2] / 12
 result = min(gross, - cap * 100 / result_rate)

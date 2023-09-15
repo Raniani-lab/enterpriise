@@ -29,15 +29,15 @@
         <field name="name">Professional Tax</field>
         <field name="category_id" ref="hr_payroll.DED"/>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = categories.GROSS &gt;= 3000 </field>
+        <field name="condition_python">result = categories['GROSS'] &gt;= 3000 </field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-amounts = payslip.rule_parameter('l10n_in_professional_tax')
-if categories.GROSS &gt;= 12000:
+amounts = payslip._rule_parameter('l10n_in_professional_tax')
+if categories['GROSS'] &gt;= 12000:
     result = amounts[0]
-elif categories.GROSS &gt;= 9000 and categories &lt; 11999:
+elif categories['GROSS'] &gt;= 9000 and categories &lt; 11999:
     result = amounts[1]
-elif categories.GROSS &gt;= 6000 and categories.GROSS &lt;= 8999:
+elif categories['GROSS'] &gt;= 6000 and categories['GROSS'] &lt;= 8999:
     result = amounts[2]
 else:
     result = 0

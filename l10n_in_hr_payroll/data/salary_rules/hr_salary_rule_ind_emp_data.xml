@@ -4,7 +4,7 @@
         <field name="code">HRAMN</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and
-((contract.wage + categories.DA) * contract.l10n_in_house_rent_allowance_metro_nonmetro / 100)
+((contract.wage + categories['DA']) * contract.l10n_in_house_rent_allowance_metro_nonmetro / 100)
 or (contract.wage * contract.l10n_in_house_rent_allowance_metro_nonmetro / 100))</field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="name">House Rent Allowance</field>
@@ -60,7 +60,7 @@ or (contract.wage * contract.l10n_in_house_rent_allowance_metro_nonmetro / 100))
         <field name="condition_select">none</field>
         <field name="sequence" eval="21"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and ((contract.wage + categories.DA) * 0.10)
+        <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and ((contract.wage + categories['DA']) * 0.10)
 or (contract.wage * 0.10))</field>
         <field name="note">This allowance is paid to Employees who are posted in big cities. The purpose is to compensate the high cost of living in cities like Mumbai, Delhi, etc. However it is Fully Taxable.</field>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
@@ -93,7 +93,7 @@ or (contract.wage * 0.10))</field>
         <field name="name">Arrears</field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = inputs.ARS and inputs.ARS.amount</field>
+        <field name="amount_python_compute">result = 'ARS' in inputs and inputs['ARS'].amount</field>
         <field eval="0.0" name="amount_fix"/>
         <field name="sequence" eval="28"/>
         <field name="note">Generally arrears are fully taxable, but employee may claim exemption u/s 89(1).
@@ -107,7 +107,7 @@ Now difference of income tax between payment year and actual year would be allow
         <field name="name">Medical Reimbursement</field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = inputs.MR and inputs.MR.amount</field>
+        <field name="amount_python_compute">result = 'MR' in inputs and inputs['MR'].amount</field>
         <field name="sequence" eval="32"/>
         <field name="note">This component is on-taxable up to 15000 per year (or Rs 1500 per month) on producing medical bills.</field>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
@@ -116,7 +116,7 @@ Now difference of income tax between payment year and actual year would be allow
      <record id="hr_salary_rule_food_coupon" model="hr.salary.rule">
         <field name="amount_select">fix</field>
         <field eval="50" name="amount_fix"/>
-        <field name="quantity">worked_days.WORK100 and worked_days.WORK100.number_of_days</field>
+        <field name="quantity">'WORK100' in worked_days and worked_days['WORK100'].number_of_days</field>
         <field name="code">FC</field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="name">Food Allowance</field>
@@ -131,9 +131,9 @@ Now difference of income tax between payment year and actual year would be allow
         <field name="sequence" eval="168"/>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = categories.GROSS &lt;= 21000 </field>
+        <field name="condition_python">result = categories['GROSS'] &lt;= 21000 </field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = (categories.GROSS * 0.0325) if categories.GROSS &lt;= 21000 else 0</field>
+        <field name="amount_python_compute">result = (categories['GROSS'] * 0.0325) if categories['GROSS'] &lt;= 21000 else 0</field>
         <field name="sequence" eval="110"/>
         <field name="appears_on_payslip" eval="False"/>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
@@ -144,7 +144,7 @@ Now difference of income tax between payment year and actual year would be allow
         <field name="name">Employer's PF Contribution</field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = -(payslip.company_id.l10n_in_dearness_allowance and - ((contract.wage + categories.DA) * 0.12)
+        <field name="amount_python_compute">result = -(payslip.company_id.l10n_in_dearness_allowance and - ((contract.wage + categories['DA']) * 0.12)
 or - (contract.wage * 0.12))</field>
         <field name="sequence" eval="37"/>
         <field name="partner_id" ref="hr_register_provident_fund"/>
@@ -158,7 +158,7 @@ or - (contract.wage * 0.12))</field>
         <field name="name">Book and Periodicals Allowance (BNP)</field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = inputs.PJ and inputs.PJ.amount</field>
+        <field name="amount_python_compute">result = 'PJ' in inputs and inputs['PJ'].amount</field>
         <field name="sequence" eval="34"/>
         <field name="note">Some employers may provide component for buying magazines, journals and books as a part of knowledge enhancement for business growth.This part would become non taxable on providing original bills.</field>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
@@ -180,7 +180,7 @@ or - (contract.wage * 0.12))</field>
         <field name="name">Telephone Reimbursement</field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = inputs.TR and inputs.TR.amount</field>
+        <field name="amount_python_compute">result = 'TR' in inputs and inputs['TR'].amount</field>
         <field name="sequence" eval="36"/>
         <field name="note">In some of the cases, companies may provide a component for telephone bills.Employees may provide actual phone usage bills to reimburse this component and make it non-taxable.
         </field>
@@ -202,7 +202,7 @@ or - (contract.wage * 0.12))</field>
         <field name="name">Car Expenses Reimbursement</field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = inputs.CEI and inputs.CEI.amount</field>
+        <field name="amount_python_compute">result = 'CEI' in inputs and inputs['CEI'].amount</field>
         <field name="sequence" eval="38"/>
         <field name="note">In case company provides component for this and employee use self owned car for official and personal purposes, Rs 1800 per month would be non-taxable on showing bills for fuel or can maintenance. This amount would be Rs 2400 in case car is more capacity than 1600cc.</field>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
@@ -213,7 +213,7 @@ or - (contract.wage * 0.12))</field>
         <field name="name">Mobile and Internet Expense</field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = inputs.IE and inputs.IE.amount</field>
+        <field name="amount_python_compute">result = 'IE' in inputs and inputs['IE'].amount</field>
         <field name="sequence" eval="39"/>
         <field name="note">Employer may also provide reimbursement of  Mobile and Internet Expense and thus this would become non taxable.</field>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
@@ -254,7 +254,7 @@ or - (contract.wage * 0.12))</field>
         <field name="name">Employee's PF Contribution</field>
         <field name="category_id" ref="hr_payroll.DED"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and - ((contract.wage + categories.DA) * 0.12)
+        <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and - ((contract.wage + categories['DA']) * 0.12)
 or - (contract.wage * 0.12))</field>
         <field name= "note">Employer contribution does not become part of employee’s income and hence income tax is not payable on this part.</field>
         <field name="partner_id" ref="hr_register_provident_fund"/>
@@ -267,7 +267,7 @@ or - (contract.wage * 0.12))</field>
         <field name="name">Employee's NPS Contribution</field>
         <field name="category_id" ref="hr_payroll.DED"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and - ((contract.wage + categories.DA) * 0.10)
+        <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and - ((contract.wage + categories['DA']) * 0.10)
 or - (contract.wage * 0.10))</field>
         <field name="sequence" eval="155"/>
         <field name="partner_id" ref="hr_nps_contribution_register"/>
@@ -283,7 +283,7 @@ or - (contract.wage * 0.10))</field>
         <field name="condition_python">result = bool(contract.l10n_in_voluntary_provident_fund)</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and
-- ((contract.wage + categories.DA) * contract.l10n_in_voluntary_provident_fund / 100)
+- ((contract.wage + categories['DA']) * contract.l10n_in_voluntary_provident_fund / 100)
 or - (contract.wage * contract.l10n_in_voluntary_provident_fund / 100))</field>
         <field name="sequence" eval="160"/>
         <field name="partner_id" ref="hr_vpf_contribution_register"/>
@@ -307,7 +307,7 @@ or - (contract.wage * contract.l10n_in_voluntary_provident_fund / 100))</field>
      <record id="hr_salary_rule_food_coupon_ded" model="hr.salary.rule">
         <field name="amount_select">fix</field>
         <field eval="-50" name="amount_fix"/>
-        <field name="quantity">worked_days.WORK100 and worked_days.WORK100.number_of_days</field>
+        <field name="quantity">'WORK100' in worked_days and worked_days['WORK100'].number_of_days</field>
         <field name="code">FD</field>
         <field name="category_id" ref="hr_payroll.DED"/>
         <field name="name">Deduction Towards Food Coupons</field>
@@ -358,7 +358,7 @@ or - (contract.wage * contract.l10n_in_voluntary_provident_fund / 100))</field>
         <field name="category_id" ref="hr_payroll.DED"/>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = inputs.LAI and - (inputs.LAI.amount)</field>
+        <field name="amount_python_compute">result = 'LAI' in inputs and - (inputs['LAI'].amount)</field>
         <field name="partner_id" ref="hr_leave_availed_register"/>
         <field name="sequence" eval="180"/>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
@@ -394,7 +394,7 @@ or - (contract.wage * contract.l10n_in_voluntary_provident_fund / 100))</field>
         <field name="name">Employer's NPS Contribution</field>
         <field name="category_id" ref="hr_payroll.DED"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and - ((contract.wage + categories.DA) * 0.10)
+        <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and - ((contract.wage + categories['DA']) * 0.10)
 or - (contract.wage * 0.10))</field>
         <field name="sequence" eval="190"/>
         <field name="partner_id" ref="hr_nps_contribution_register"/>
@@ -407,7 +407,7 @@ or - (contract.wage * 0.10))</field>
         <field name="name">Employer's PF Contribution</field>
         <field name="category_id" ref="hr_payroll.DED"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and - ((contract.wage + categories.DA) * 0.12)
+        <field name="amount_python_compute">result = (payslip.company_id.l10n_in_dearness_allowance and - ((contract.wage + categories['DA']) * 0.12)
 or - (contract.wage * 0.12))</field>
         <field name="sequence" eval="195"/>
         <field name="partner_id" ref="hr_register_provident_fund"/>
@@ -434,11 +434,11 @@ or - (contract.wage * 0.12))</field>
         <field name="name">Refund Expenses</field>
         <field name="category_id" ref="hr_payroll.ALW"/>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = inputs.EXPENSES</field>
+        <field name="condition_python">result = 'EXPENSES' in inputs</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = inputs.EXPENSES.amount
-result_name = inputs.EXPENSES.name
+result = inputs['EXPENSES'].amount
+result_name = inputs['EXPENSES'].name
         </field>
         <field name="struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
     </record>

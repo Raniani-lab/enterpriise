@@ -17,14 +17,14 @@ def find_rates(x, rates):
 worked_days = (payslip.date_to - contract.employee_id.first_contract_date).days
 
 monthly_salary = contract._get_contract_wage()
-isr_tables = payslip.rule_parameter('l10n_mx_isr_tables')
+isr_tables = payslip._rule_parameter('l10n_mx_isr_tables')
 isr_monthly_table = isr_tables['monthly']
 
 # Method 1 - Working for more than 1 year
-gross = categories.GROSS
+gross = categories['GROSS']
 if gross and worked_days &gt;= 365:
     month_income = monthly_salary + gross
-    exceeding_bonus = payslip.rule_parameter('l10n_mx_uma') * 30
+    exceeding_bonus = payslip._rule_parameter('l10n_mx_uma') * 30
     taxable_amount = month_income - exceeding_bonus
     low, high, fix, rate = find_rates(taxable_amount, isr_monthly_table)
     isr_taxed_income = (taxable_amount - low) * rate / 100 + fix
@@ -37,7 +37,7 @@ if gross and worked_days &gt;= 365:
 elif gross and worked_days &lt; 365:
     days_amount = contract.l10n_mx_christmas_bonus
     taxed_bonus = (days_amount * monthly_salary / 30) * worked_days / 365
-    exceeding_bonus = payslip.rule_parameter('l10n_mx_uma') * 30
+    exceeding_bonus = payslip._rule_parameter('l10n_mx_uma') * 30
     fraction_I = ((taxed_bonus - exceeding_bonus) / 365) * 30.4
 
     fraction_II = monthly_salary + fraction_I

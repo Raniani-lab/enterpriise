@@ -14,13 +14,13 @@ def find_rates(x, rates):
         if low &lt;= x &lt;= high:
             return low, high, fix, rate
 
-gross = categories.GROSS
+gross = categories['GROSS']
 if gross:
-    isr_tables = payslip.rule_parameter('l10n_mx_isr_tables')
+    isr_tables = payslip._rule_parameter('l10n_mx_isr_tables')
     isr_table = isr_tables[contract.l10n_mx_schedule_pay]
     low, high, fix, rate = find_rates(gross, isr_table)
 
-    result = -((categories.GROSS - low) * (rate / 100) + fix)
+    result = -((categories['GROSS'] - low) * (rate / 100) + fix)
 else:
     result = 0
         </field>
@@ -50,9 +50,9 @@ def find_rates(x, rates):
         if low &lt;= x &lt;= high:
             return low, high, fix
 
-gross = categories.GROSS
+gross = categories['GROSS']
 if gross:
-    subsidy_tables = payslip.rule_parameter('l10n_mx_subsidy_tables')
+    subsidy_tables = payslip._rule_parameter('l10n_mx_subsidy_tables')
     subsidy_table = subsidy_tables[contract.l10n_mx_schedule_pay]
     low, high, fix = find_rates(gross, subsidy_table)
     result = fix
@@ -120,7 +120,7 @@ coefficients = {
     'monthly': 30,
     'yearly': 365,
 }
-result = payslip.rule_parameter('l10n_mx_uma') * coefficients[contract.l10n_mx_schedule_pay]
+result = payslip._rule_parameter('l10n_mx_uma') * coefficients[contract.l10n_mx_schedule_pay]
 result_rate = 20.4
         </field>
         <field name="appears_on_payslip" eval="False"/>
@@ -137,7 +137,7 @@ result_rate = 20.4
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 integrated_daily_wage = result_rules['INTDAYWAGE']['total']
-result = (integrated_daily_wage - 3 * payslip.rule_parameter('l10n_mx_uma')) * coefficients[contract.l10n_mx_schedule_pay]
+result = (integrated_daily_wage - 3 * payslip._rule_parameter('l10n_mx_uma')) * coefficients[contract.l10n_mx_schedule_pay]
 result_rate = 1.10
         </field>
         <field name="appears_on_payslip" eval="False"/>
@@ -154,7 +154,7 @@ result_rate = 1.10
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 integrated_daily_wage = result_rules['INTDAYWAGE']['total']
-result = (integrated_daily_wage - 3 * payslip.rule_parameter('l10n_mx_uma')) * coefficients[contract.l10n_mx_schedule_pay]
+result = (integrated_daily_wage - 3 * payslip._rule_parameter('l10n_mx_uma')) * coefficients[contract.l10n_mx_schedule_pay]
 result_rate = -0.4
         </field>
         <field name="appears_on_payslip" eval="True"/>
@@ -348,7 +348,7 @@ result_rate = 5
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = -categories.IMSSEMPLOYEE
+result = -categories['IMSSEMPLOYEE']
         </field>
         <field name="appears_on_payslip" eval="True"/>
         <field name="struct_id" ref="l10n_mx_hr_payroll.hr_payroll_structure_mx_employee_salary"/>
@@ -362,7 +362,7 @@ result = -categories.IMSSEMPLOYEE
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = categories.IMSSEMPLOYER
+result = categories['IMSSEMPLOYER']
         </field>
         <field name="appears_on_payslip" eval="False"/>
         <field name="struct_id" ref="l10n_mx_hr_payroll.hr_payroll_structure_mx_employee_salary"/>

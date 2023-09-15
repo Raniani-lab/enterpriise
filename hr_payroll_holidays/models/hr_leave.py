@@ -18,7 +18,7 @@ class HrLeave(models.Model):
         ('normal', 'To compute in next payslip'),
         ('done', 'Computed in current payslip'),
         ('blocked', 'To defer to next payslip')], string='Payslip State',
-        copy=False, default='normal', required=True)
+        copy=False, default='normal', required=True, tracking=True)
 
     @api.constrains('date_from', 'date_to', 'employee_id')
     def _check_payslip_generated(self):

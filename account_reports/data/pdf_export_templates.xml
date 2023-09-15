@@ -251,7 +251,7 @@
 
                 <t t-foreach="line.get('columns')" t-as="cell">
                     <td>
-                        <div t-att-class="cell.get('class', '') + ' acc_rep_column_value'">
+                        <div class="acc_rep_column_value">
                             <t t-call="{{custom_templates.get('pdf_export_cell', 'account_reports.pdf_export_cell')}}">
                                 <t t-set="style" t-value="cell.get('style')"/>
                                 <t t-set="title" t-value="cell.get('title')"/>

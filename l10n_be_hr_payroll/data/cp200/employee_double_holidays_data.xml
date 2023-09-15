@@ -81,7 +81,7 @@ result = max(0, result / 0.92 * 0.85)
         <field name="sequence">102</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = compute_double_holiday_withholding_taxes(payslip, categories, worked_days, inputs)</field>
+        <field name="amount_python_compute">result = payslip._get_be_double_holiday_withholding_taxes(localdict)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
     </record>
 

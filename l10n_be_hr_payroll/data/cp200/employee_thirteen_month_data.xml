@@ -35,7 +35,7 @@ result = categories['BASIC']
         <field name="sequence">102</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = compute_thirteen_month_withholding_taxes(payslip, categories, worked_days, inputs)</field>
+        <field name="amount_python_compute">result = payslip._get_thirteen_month_withholding_taxes(localdict)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_thirteen_month"/>
     </record>
 
@@ -63,7 +63,7 @@ result = -categories['PP']
         <field name="sequence">165</field>
         <field name="appears_on_payslip" eval="True"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = compute_special_social_cotisations(payslip, categories, worked_days, inputs)</field>
+        <field name="amount_python_compute">result = payslip._get_be_special_social_cotisations(localdict)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_thirteen_month"/>
         <!-- TODO master: Remove this rule -->
         <field name="active" eval="False"/>

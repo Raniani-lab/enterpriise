@@ -18,7 +18,7 @@ holidays = 'LEAVE120' in worked_days and worked_days['LEAVE120'].amount
 
 result = is_next_year and to_recover and not already_done and hours_per_week and holidays</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = compute_holiday_pay_recovery_n(payslip, categories, worked_days, inputs)</field>
+        <field name="amount_python_compute">result = payslip._get_holiday_pay_recovery_n(localdict)</field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
     </record>
 
@@ -40,7 +40,7 @@ holidays = 'LEAVE120' in worked_days and worked_days['LEAVE120'].amount
 
 result = is_next_year and to_recover and not already_done and hours_per_week and holidays</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = compute_holiday_pay_recovery_n1(payslip, categories, worked_days, inputs)</field>
+        <field name="amount_python_compute">result = payslip._get_holiday_pay_recovery_n1(localdict)</field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
     </record>
 
@@ -247,7 +247,7 @@ if 'SIMPLEDECEMBER' in inputs:
         <field name="condition_python">result=contract.l10n_be_onss_restructuring</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = compute_onss_restructuring(payslip, categories, worked_days, inputs)
+result = payslip._get_onss_restructuring(localdict)
 result = min(abs(result_rules['ONSS']['total']), result)
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
@@ -265,7 +265,7 @@ result = categories['BASIC'] and wage &lt;= payslip._rule_parameter('work_bonus_
         </field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = compute_employment_bonus_employees(payslip, categories, worked_days, inputs)
+result = payslip._get_employment_bonus_employees(localdict)
 onss = result_rules['ONSS']['total'] + result_rules['ONSSRESTRUCTURING']['total']
 result = min(abs(onss), result)
         </field>
@@ -326,7 +326,7 @@ if not salary_simulation:
         <field name="condition_select">python</field>
         <field name="condition_python">result = bool(contract.ip)</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = - compute_ip(payslip, categories, worked_days, inputs)</field>
+        <field name="amount_python_compute">result = - payslip._get_be_ip(localdict)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
     </record>
 
@@ -339,7 +339,7 @@ if not salary_simulation:
         <field name="condition_python">result=not contract.no_withholding_taxes</field>
         <field name="appears_on_payslip" eval="True"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = compute_withholding_taxes(payslip, categories, worked_days, inputs)
+        <field name="amount_python_compute">result = payslip._get_be_withholding_taxes(localdict)
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
     </record>
@@ -352,7 +352,7 @@ if not salary_simulation:
         <field name="sequence">130</field>
         <field name="condition_select">python</field>
         <field name="condition_python">result = bool(categories['EmpBonus'])</field>
-        <field name="amount_python_compute">result = compute_withholding_reduction(payslip, categories, worked_days, inputs)</field>
+        <field name="amount_python_compute">result = payslip._get_withholding_reduction(localdict)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
     </record>
 
@@ -425,7 +425,7 @@ result = -result_rules['ATN.LAP']['amount']
         <field name="sequence">165</field>
         <field name="appears_on_payslip" eval="True"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = compute_special_social_cotisations(payslip, categories, worked_days, inputs)</field>
+        <field name="amount_python_compute">result = payslip._get_be_special_social_cotisations(localdict)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
     </record>
 
@@ -470,7 +470,7 @@ if contract.mobile:
         <field name="condition_select">python</field>
         <field name="condition_python">result = bool(contract.l10n_be_impulsion_plan) and contract.l10n_be_impulsion_plan == '25yo'</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = - compute_impulsion_plan_amount(payslip, categories, worked_days, inputs)
+        <field name="amount_python_compute">result = - payslip._get_impulsion_plan_amount(localdict)
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
     </record>
@@ -483,7 +483,7 @@ if contract.mobile:
         <field name="condition_select">python</field>
         <field name="condition_python">result = bool(contract.l10n_be_impulsion_plan) and contract.l10n_be_impulsion_plan == '12mo'</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = - compute_impulsion_plan_amount(payslip, categories, worked_days, inputs)
+        <field name="amount_python_compute">result = - payslip._get_impulsion_plan_amount(localdict)
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
     </record>
@@ -570,7 +570,7 @@ result = min(amount_max, amount_per_km * contract.employee_id.km_home_work * 2)
         <field name="sequence">171</field>
         <field name="condition_select">python</field>
         <field name="condition_python">result = bool(contract.representation_fees)</field>
-        <field name="amount_python_compute">result = compute_serious_representation_fees(payslip, categories, worked_days, inputs)</field>
+        <field name="amount_python_compute">result = payslip._get_serious_representation_fees(localdict)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         <field name="appears_on_payroll_report" eval="True"/>
     </record>
@@ -582,9 +582,9 @@ result = min(amount_max, amount_per_km * contract.employee_id.km_home_work * 2)
         <field name="amount_select">code</field>
         <field name="sequence">171</field>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = contract.representation_fees and compute_representation_fees(payslip, categories, worked_days, inputs) &gt; compute_representation_fees_threshold(payslip, categories, worked_days, inputs)</field>
+        <field name="condition_python">result = contract.representation_fees and payslip._get_representation_fees(localdict) &gt; payslip._get_representation_fees_threshold(localdict)</field>
         <field name="amount_python_compute">
-result = compute_volatile_representation_fees(payslip, categories, worked_days, inputs)
+result = payslip._get_volatile_representation_fees(localdict)
 if 'REPFEESREGUL' in inputs:
     result = max(0, result - inputs['REPFEESREGUL'].amount)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
@@ -599,7 +599,7 @@ if 'REPFEESREGUL' in inputs:
         <field name="sequence">172</field>
         <field name="condition_select">python</field>
         <field name="condition_python">result = bool(contract.ip)</field>
-        <field name="amount_python_compute">result = compute_ip(payslip, categories, worked_days, inputs)</field>
+        <field name="amount_python_compute">result = payslip._get_be_ip(localdict)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         <field name="appears_on_payroll_report" eval="True"/>
     </record>
@@ -612,7 +612,7 @@ if 'REPFEESREGUL' in inputs:
         <field name="sequence">173</field>
         <field name="condition_select">python</field>
         <field name="condition_python">result = bool(contract.ip)</field>
-        <field name="amount_python_compute">result = compute_ip_deduction(payslip, categories, worked_days, inputs)</field>
+        <field name="amount_python_compute">result = payslip._get_be_ip_deduction(localdict)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         <field name="appears_on_payroll_report" eval="True"/>
         <field name="appears_on_employee_cost_dashboard" eval="True"/>
@@ -701,7 +701,7 @@ result = result_rules['DOUBLE.DECEMBER.BASIC']['total'] + result_rules['DOUBLE.D
         <field name="condition_select">python</field>
         <field name="condition_python">result = 'DOUBLEDECEMBER' in inputs and inputs['DOUBLEDECEMBER'].amount</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = compute_double_holiday_withholding_taxes(payslip, categories, worked_days, inputs)</field>
+        <field name="amount_python_compute">result = payslip._get_be_double_holiday_withholding_taxes(localdict)</field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
     </record>
 

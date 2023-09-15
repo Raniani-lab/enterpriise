@@ -109,6 +109,7 @@ result = contract.wage * 0.10''')
         :rtype: (float, float, float)
         """
         self.ensure_one()
+        localdict['localdict'] = localdict
         if self.amount_select == 'fix':
             try:
                 return self.amount_fix or 0.0, float(safe_eval(self.quantity, localdict)), 100.0
@@ -130,6 +131,7 @@ result = contract.wage * 0.10''')
 
     def _satisfy_condition(self, localdict):
         self.ensure_one()
+        localdict['localdict'] = localdict
         if self.condition_select == 'none':
             return True
         if self.condition_select == 'range':

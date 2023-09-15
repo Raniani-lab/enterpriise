@@ -9,7 +9,7 @@
         <field name="sequence">11</field>
         <field name="condition_select">python</field>
         <field name="condition_python">
-result = 0 &lt; contract.l10n_ke_food_allowance &lt;= payslip.rule_parameter('l10n_ke_food_alw_max')
+result = 0 &lt; contract.l10n_ke_food_allowance &lt;= payslip._rule_parameter('l10n_ke_food_alw_max')
         </field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
@@ -25,7 +25,7 @@ result = contract.l10n_ke_food_allowance
         <field name="sequence">13</field>
         <field name="condition_select">python</field>
         <field name="condition_python">
-result = 0 &lt; contract.l10n_ke_airtime_allowance &lt;= payslip.rule_parameter('l10n_ke_airtime_alw_max')
+result = 0 &lt; contract.l10n_ke_airtime_allowance &lt;= payslip._rule_parameter('l10n_ke_airtime_alw_max')
         </field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
@@ -41,7 +41,7 @@ result = contract.l10n_ke_airtime_allowance
         <field name="sequence">14</field>
         <field name="condition_select">python</field>
         <field name="condition_python">
-result = 0 &lt; contract.l10n_ke_pension_allowance &lt;= payslip.rule_parameter('l10n_ke_pension_alw_max')
+result = 0 &lt; contract.l10n_ke_pension_allowance &lt;= payslip._rule_parameter('l10n_ke_pension_alw_max')
         </field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
@@ -56,9 +56,9 @@ result = contract.l10n_ke_pension_allowance
         <field name="code">UNTAXED_ALLOWANCE</field>
         <field name="sequence">20</field>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = categories.KE_UT_ALW</field>
+        <field name="condition_python">result = categories['KE_UT_ALW']</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = categories.KE_UT_ALW</field>
+        <field name="amount_python_compute">result = categories['KE_UT_ALW']</field>
         <field name="struct_id" ref="l10n_ke_hr_payroll.hr_payroll_structure_ken_employee_salary"/>
         <field name="appears_on_payroll_report" eval="True"/>
     </record>
@@ -70,7 +70,7 @@ result = contract.l10n_ke_pension_allowance
         <field name="sequence">21</field>
         <field name="condition_select">python</field>
         <field name="condition_python">
-result = contract.l10n_ke_food_allowance &gt; payslip.rule_parameter('l10n_ke_food_alw_max')
+result = contract.l10n_ke_food_allowance &gt; payslip._rule_parameter('l10n_ke_food_alw_max')
         </field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
@@ -86,7 +86,7 @@ result = contract.l10n_ke_food_allowance
         <field name="sequence">23</field>
         <field name="condition_select">python</field>
         <field name="condition_python">
-result = contract.l10n_ke_airtime_allowance &gt; payslip.rule_parameter('l10n_ke_airtime_alw_max')
+result = contract.l10n_ke_airtime_allowance &gt; payslip._rule_parameter('l10n_ke_airtime_alw_max')
         </field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
@@ -102,7 +102,7 @@ result = contract.l10n_ke_airtime_allowance
         <field name="sequence">24</field>
         <field name="condition_select">python</field>
         <field name="condition_python">
-result = contract.l10n_ke_pension_allowance &gt;= payslip.rule_parameter('l10n_ke_pension_alw_max')
+result = contract.l10n_ke_pension_allowance &gt;= payslip._rule_parameter('l10n_ke_pension_alw_max')
         </field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
@@ -117,9 +117,9 @@ result = contract.l10n_ke_pension_allowance
         <field name="code">TAXED_ALLOWANCE</field>
         <field name="sequence">30</field>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = categories.KE_T_ALW</field>
+        <field name="condition_python">result = categories['KE_T_ALW']</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = categories.KE_T_ALW</field>
+        <field name="amount_python_compute">result = categories['KE_T_ALW']</field>
         <field name="struct_id" ref="l10n_ke_hr_payroll.hr_payroll_structure_ken_employee_salary"/>
         <field name="appears_on_payroll_report" eval="True"/>
     </record>
@@ -130,11 +130,11 @@ result = contract.l10n_ke_pension_allowance
         <field name="code">COMMISSION</field>
         <field name="sequence">31</field>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = inputs.COMMISSION</field>
+        <field name="condition_python">result = 'COMMISSION' in inputs</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = inputs.COMMISSION.amount
-result_name = inputs.COMMISSION.name
+result = inputs['COMMISSION'].amount
+result_name = inputs['COMMISSION'].name
         </field>
         <field name="struct_id" ref="l10n_ke_hr_payroll.hr_payroll_structure_ken_employee_salary"/>
     </record>
@@ -146,7 +146,7 @@ result_name = inputs.COMMISSION.name
             ('struct_id', '=', ref('l10n_ke_hr_payroll.hr_payroll_structure_ken_employee_salary')),
             ('code', '=', 'GROSS')]"/>
         <value eval="{
-            'amount_python_compute': 'result = categories.BASIC + categories.ALW',
+            'amount_python_compute': &quot;result = categories['BASIC'] + categories['ALW']&quot;,
             'sequence': 32}"/>
     </function>
 
@@ -173,7 +173,7 @@ result = employee.l10n_ke_mortgage
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = result_rules['GROSS']['total'] - categories.KE_UT_ALW - categories.RELIEF - employee.l10n_ke_mortgage
+result = result_rules['GROSS']['total'] - categories['KE_UT_ALW'] - categories['RELIEF'] - employee.l10n_ke_mortgage
         </field>
         <field name="struct_id" ref="l10n_ke_hr_payroll.hr_payroll_structure_ken_employee_salary"/>
         <field name="appears_on_payroll_report" eval="True"/>
@@ -189,8 +189,8 @@ result = result_rules['GROSS']['total'] - categories.KE_UT_ALW - categories.RELI
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-lower_limit = payslip.rule_parameter('l10n_ke_nssf_lower_limit')
-pensionable = categories.BASIC + categories.COMMISSIONS
+lower_limit = payslip._rule_parameter('l10n_ke_nssf_lower_limit')
+pensionable = categories['BASIC'] + categories['COMMISSIONS']
 if pensionable > lower_limit:
     result = lower_limit *0.06
 else:
@@ -210,9 +210,9 @@ result = result
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-lower_limit = payslip.rule_parameter('l10n_ke_nssf_lower_limit')
-upper_limit = payslip.rule_parameter('l10n_ke_nssf_upper_limit')
-pensionable = categories.BASIC + categories.COMMISSION
+lower_limit = payslip._rule_parameter('l10n_ke_nssf_lower_limit')
+upper_limit = payslip._rule_parameter('l10n_ke_nssf_upper_limit')
+pensionable = categories['BASIC'] + categories['COMMISSION']
 result = 0
 
 if upper_limit &lt; pensionable:
@@ -235,7 +235,7 @@ result = result
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 remaining_gross = result_rules['GROSS_TAXABLE']['total'] - result_rules['NSSF_EMPLOYEE_TIER_1']['total'] - result_rules['NSSF_EMPLOYEE_TIER_2']['total']
-income_tax_breakdown = payslip.rule_parameter('l10n_ke_income_tax_breakdown')
+income_tax_breakdown = payslip._rule_parameter('l10n_ke_income_tax_breakdown')
 income_tax = 0
 for amount, coefficient in income_tax_breakdown:
     deduced_fraction = min(amount, remaining_gross)
@@ -261,7 +261,7 @@ result = income_tax
         <field name="amount_python_compute">
 gross = result_rules['GROSS_TAXABLE']['total']
 result = 0
-for low, high, rate in payslip.rule_parameter('l10n_ke_nhif'):
+for low, high, rate in payslip._rule_parameter('l10n_ke_nhif'):
     if low &lt;= gross &lt; high:
         result = rate
         break
@@ -337,12 +337,12 @@ result = - 0.15 * contract.l10n_ke_education
         <field name="code">INSURANCE_RELIEF</field>
         <field name="sequence">48</field>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = categories.INS_RELIEF</field>
+        <field name="condition_python">result = categories['INS_RELIEF']</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 result = - min(
-    payslip.rule_parameter('l10n_ke_insurance_relief_max'),
-    -categories.INS_RELIEF
+    payslip._rule_parameter('l10n_ke_insurance_relief_max'),
+    -categories['INS_RELIEF']
 )
         </field>
         <field name="struct_id" ref="l10n_ke_hr_payroll.hr_payroll_structure_ken_employee_salary"/>
@@ -355,10 +355,10 @@ result = - min(
         <field name="code">PERS_RELIEF</field>
         <field name="sequence">49</field>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = payslip.rule_parameter('l10n_ke_personal_relief')</field>
+        <field name="condition_python">result = payslip._rule_parameter('l10n_ke_personal_relief')</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = - payslip.rule_parameter('l10n_ke_personal_relief')
+result = - payslip._rule_parameter('l10n_ke_personal_relief')
         </field>
         <field name="struct_id" ref="l10n_ke_hr_payroll.hr_payroll_structure_ken_employee_salary"/>
         <field name="appears_on_payroll_report" eval="True"/>
@@ -375,7 +375,7 @@ result = - payslip.rule_parameter('l10n_ke_personal_relief')
         <field name="condition_python">result = result_rules['GROSS_TAXABLE']['total'] &gt;= 24000</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = result_rules['INCOME_TAX']['total'] + categories.RELIEF
+result = result_rules['INCOME_TAX']['total'] + categories['RELIEF']
         </field>
         <field name="struct_id" ref="l10n_ke_hr_payroll.hr_payroll_structure_ken_employee_salary"/>
         <field name="appears_on_payroll_report" eval="True"/>
@@ -414,10 +414,10 @@ result = result_rules['NHIF_AMOUNT_HIDDEN']['total']
         <field name="code">STATUTORY_DED</field>
         <field name="sequence">60</field>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = categories.STATUTORY_DED</field>
+        <field name="condition_python">result = categories['STATUTORY_DED']</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = categories.STATUTORY_DED
+result = categories['STATUTORY_DED']
         </field>
         <field name="struct_id" ref="l10n_ke_hr_payroll.hr_payroll_structure_ken_employee_salary"/>
         <field name="appears_on_payroll_report" eval="True"/>
@@ -429,11 +429,11 @@ result = categories.STATUTORY_DED
         <field name="code">HELB</field>
         <field name="sequence">61</field>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = inputs.HELB</field>
+        <field name="condition_python">result = 'HELB' in inputs</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = inputs.HELB.amount
-result_name = inputs.HELB.name
+result = inputs['HELB'].amount
+result_name = inputs['HELB'].name
         </field>
         <field name="struct_id" ref="l10n_ke_hr_payroll.hr_payroll_structure_ken_employee_salary"/>
         <field name="appears_on_payroll_report" eval="True"/>
@@ -490,10 +490,10 @@ result = contract.l10n_ke_education
         <field name="code">OTHER_DED</field>
         <field name="sequence">70</field>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = categories.OTHER_DED</field>
+        <field name="condition_python">result = categories['OTHER_DED']</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = categories.OTHER_DED
+result = categories['OTHER_DED']
         </field>
         <field name="struct_id" ref="l10n_ke_hr_payroll.hr_payroll_structure_ken_employee_salary"/>
         <field name="appears_on_payroll_report" eval="True"/>
@@ -519,10 +519,10 @@ result = categories.OTHER_DED
         <field name="code">TOTAL_DED</field>
         <field name="sequence">80</field>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = categories.TOTAL_DED</field>
+        <field name="condition_python">result = categories['TOTAL_DED']</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = categories.TOTAL_DED
+result = categories['TOTAL_DED']
         </field>
         <field name="struct_id" ref="l10n_ke_hr_payroll.hr_payroll_structure_ken_employee_salary"/>
         <field name="appears_on_payroll_report" eval="True"/>
@@ -534,6 +534,6 @@ result = categories.TOTAL_DED
             ('struct_id', '=', ref('l10n_ke_hr_payroll.hr_payroll_structure_ken_employee_salary')),
             ('code', '=', 'NET')]"/>
         <value eval="{
-            'amount_python_compute': &quot;result = result_rules['GROSS']['total'] - result_rules['TOTAL_DED']['total'] + categories.EXEMPTION&quot;}"/>
+            'amount_python_compute': &quot;result = result_rules['GROSS']['total'] - result_rules['TOTAL_DED']['total'] + categories['EXEMPTION']&quot;}"/>
     </function>
 </odoo>

@@ -56,12 +56,12 @@ msgstr "イベント登録"
 #: code:addons/website_event_social/static/src/js/push_notification_widget.js:0
 #, python-format
 msgid "Get the best experience!"
-msgstr ""
+msgstr "最高の経験をしましょう！"
 
 #. module: website_event_social
 #: model_terms:ir.ui.view,arch_db:website_event_social.event_event_view_form
 msgid "Send Push"
-msgstr ""
+msgstr "プッシュ通知を送信"
 
 #. module: website_event_social
 #. odoo-python
@@ -69,4 +69,4 @@ msgstr ""
 #: code:addons/website_event_social/models/event.py:0
 #, python-format
 msgid "You do not have access to this action."
-msgstr ""
+msgstr "このアクションへアクセスできません。"

@@ -487,7 +487,7 @@ msgstr "Extra nabidky"
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_report_project_task_user_fsm
 msgid "FSM Tasks Analysis"
-msgstr ""
+msgstr "Analýza úkolů v terénu"
 
 #. module: industry_fsm
 #. odoo-python
@@ -718,7 +718,7 @@ msgstr "Menu"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__milestone_id
 msgid "Milestone"
-msgstr ""
+msgstr "Milník"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__milestone_deadline
@@ -728,7 +728,7 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_milestones
 msgid "Milestones"
-msgstr ""
+msgstr "Milníky"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -1132,17 +1132,17 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_report_industry_fsm_worksheet_custom
 msgid "Task Worksheet Custom Report"
-msgstr ""
+msgstr "Vlastní návrh pracovního listu k úkolu"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_project_task_stop_timers_wizard
 msgid "Task stop running timers confirmation wizard"
-msgstr ""
+msgstr "Průvodce zastavením běžících časovačů na úkolu"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_project_task_stop_timers_wizard_line
 msgid "Task stop running timers confirmation wizard line"
-msgstr ""
+msgstr "Položka průvodce zastavením běžících časovačů na úkolu"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.project_tasks_action_fsm

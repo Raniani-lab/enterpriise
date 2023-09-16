@@ -181,6 +181,11 @@ msgid ""
 "be claimed within 8 weeks starting from the date on which your account was "
 "debited."
 msgstr ""
+"Hai diritto ad un rimborso da parte della banca secondo i termini e le "
+"condizioni stabiliti nell'accordo siglato con la banca stessa. I tuoi "
+"diritti sono spiegati in una dichiarazione che puoi ottenere dalla banca. Un"
+" rimborso deve essere richiesto in 8 settimane a partire dalla data nella "
+"quale l'importo è stato addebitato sul tuo conto."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__message_attachment_count
@@ -238,7 +243,7 @@ msgstr "Chiuso"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 msgid "Collections"
-msgstr ""
+msgstr "Riscossioni"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_res_company
@@ -647,7 +652,7 @@ msgstr "Numero di errori"
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__paid_invoices_nber
 msgid "Number of invoices paid with this mandate."
-msgstr ""
+msgstr "Numero di fatture pagate con questo ordine di pagamento."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__message_needaction_counter
@@ -668,6 +673,11 @@ msgid ""
 "                    then only have to generate a SEPA Direct Debit (SDD) XML file containing this operation\n"
 "                    and send it to your bank to effectively get paid."
 msgstr ""
+"Una volta creata una fattura\n"
+"                    in Odoo per un cliente avente un ordine di pagamento attivo alla data della fattura,\n"
+"                    la convalida ne autorizzerà il pagamento automatico e dovrai\n"
+"                    solo creare un file XML per l'addebito diretto SEPA contenente l'operazione\n"
+"                    e invialo alla tua banca per ricevere il denaro."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_account_bank_statement_line__sdd_mandate_id
@@ -864,7 +874,7 @@ msgstr "Lo schema SDD è impostato sul mandato del cliente."
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "SEPA Business-to-Business Direct Debit Mandate"
-msgstr ""
+msgstr "Ordine di pagamento debito diretto tra aziende SEPA"
 
 #. module: account_sepa_direct_debit
 #: model:account.payment.method,name:account_sepa_direct_debit.payment_method_sdd
@@ -1074,6 +1084,11 @@ msgid ""
 "debited, but you are entitled to request your bank not to debit your account"
 " up until the day on which the payment is due."
 msgstr ""
+"Questo ordine di pagamento è rivolto esclusivamente alle transazioni fra "
+"aziende. Non hai diritto ad un rimborso una volta che l'importo è stato "
+"addebitato sul tuo conto ma hai il diritto di chiedere alla tua banca di non"
+" effettuare ulteriori addebiti fino al giorno in cui bisogna saldare il "
+"pagamento."
 
 #. module: account_sepa_direct_debit
 #. odoo-python

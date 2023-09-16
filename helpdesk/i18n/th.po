@@ -763,7 +763,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_avg
 #, python-format
 msgid "Average Rating"
-msgstr ""
+msgstr "คะแนนเฉลี่ย"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_avg_percentage
@@ -2651,7 +2651,7 @@ msgstr "การให้คะแนน (/5)"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_avg_text
 msgid "Rating Avg Text"
-msgstr ""
+msgstr "ข้อความเฉลี่ยการให้คะแนน"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_last_feedback
@@ -2677,7 +2677,7 @@ msgstr "การให้คะแนนความพึงพอใจ"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_last_text
 msgid "Rating Text"
-msgstr ""
+msgstr "ข้อความการให้คะแนน"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_count

@@ -1626,7 +1626,7 @@ msgstr "Fáze technické podpory"
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_stage_delete_wizard
 msgid "Helpdesk Stage Delete Wizard"
-msgstr ""
+msgstr "Průvodce smazáním helpdesk fáze"
 
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_tag

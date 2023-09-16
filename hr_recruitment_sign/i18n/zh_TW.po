@@ -214,19 +214,19 @@ msgstr ""
 #. module: hr_recruitment_sign
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_sign.hr_recruitment_sign_view
 msgid "Signature Request"
-msgstr "Signature Request"
+msgstr "簽名請求"
 
 #. module: hr_recruitment_sign
 #: code:addons/hr_recruitment_sign/wizard/hr_recruitment_sign_document_wizard.py:0
 #, python-format
 msgid "Signature Request - %s"
-msgstr "Signature Request - %s"
+msgstr "簽名請求 － %s"
 
 #. module: hr_recruitment_sign
 #: code:addons/hr_recruitment_sign/models/hr_applicant.py:0
 #, python-format
 msgid "Signature Requests"
-msgstr "Signature Requests"
+msgstr "簽名請求"
 
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__subject

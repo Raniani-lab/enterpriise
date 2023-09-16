@@ -682,7 +682,7 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_video
 msgid "YouTube Video"
-msgstr ""
+msgstr "YouTube 影片"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_description

@@ -3843,7 +3843,7 @@ msgstr ""
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_payroll_work_entries_root
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 msgid "Work Entries"
-msgstr ""
+msgstr "Entri Kerja"
 
 #. module: hr_payroll
 #: model:ir.actions.act_window,name:hr_payroll.hr_work_entry_report_action

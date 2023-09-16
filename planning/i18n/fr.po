@@ -1985,8 +1985,8 @@ msgid ""
 "Schedule your human and material resources across roles, projects and sales "
 "orders."
 msgstr ""
-"Planifiez vos ressources humaines et matérielles à travers des rôles, "
-"projets et bons de commandes."
+"Planifiez vos ressources humaines et matérielles à travers des fonctions, "
+"projets et commandes."
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_hr_employee__employee_token

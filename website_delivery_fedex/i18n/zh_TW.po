@@ -26,6 +26,8 @@ msgid ""
 "<b class=\"o_fedex_order_location\"/>\n"
 "                    <span class=\"fa fa-trash-o ms-2 o_remove_fedex_order_location\" aria-label=\"Remove this location\" title=\"Remove this location\"/>"
 msgstr ""
+"<b class=\"o_fedex_order_location\"/>\n"
+"                    <span class=\"fa fa-trash-o ms-2 o_remove_fedex_order_location\" aria-label=\"移除此地點\" title=\"移除此地點\"/>"
 
 #. module: website_delivery_fedex
 #: model:ir.model.fields,help:website_delivery_fedex.field_delivery_carrier__fedex_use_locations
@@ -43,17 +45,17 @@ msgstr ""
 #: code:addons/website_delivery_fedex/models/fedex_locations_request.py:0
 #, python-format
 msgid "Fedex Server Not Found"
-msgstr ""
+msgstr "找不到 FedEx 伺服器"
 
 #. module: website_delivery_fedex
 #: model:ir.model.fields,field_description:website_delivery_fedex.field_delivery_carrier__fedex_locations_radius_unit
 msgid "Locations Distance Unit"
-msgstr ""
+msgstr "位置距離單位"
 
 #. module: website_delivery_fedex
 #: model:ir.model.fields,field_description:website_delivery_fedex.field_delivery_carrier__fedex_locations_radius_value
 msgid "Locations Radius"
-msgstr ""
+msgstr "位置半徑"
 
 #. module: website_delivery_fedex
 #: model:ir.model.fields,help:website_delivery_fedex.field_delivery_carrier__fedex_locations_radius_value
@@ -85,11 +87,13 @@ msgid ""
 "There was an error retrieving Fedex localisations:\n"
 "%s"
 msgstr ""
+"讀取 FedEx 本地化數據發生錯誤：\n"
+"%s"
 
 #. module: website_delivery_fedex
 #: model:ir.model.fields,field_description:website_delivery_fedex.field_delivery_carrier__fedex_use_locations
 msgid "Use Fedex Locations"
-msgstr ""
+msgstr "使用 FedEx 地點"
 
 #. module: website_delivery_fedex
 #: model:ir.model.fields.selection,name:website_delivery_fedex.selection__delivery_carrier__fedex_locations_radius_unit__km

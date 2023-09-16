@@ -241,7 +241,7 @@ msgstr "キャンペーン"
 msgid ""
 "Campaigns are used to centralize your marketing efforts and track their "
 "results."
-msgstr ""
+msgstr "キャンペーンは、マーケティング活動を一元化し、その結果を追跡するために使用されます。"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__can_link_accounts
@@ -1170,7 +1170,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_live_post__live_post_link
 #: model:ir.model.fields,field_description:social.field_social_stream_post__post_link
 msgid "Post Link"
-msgstr ""
+msgstr "投稿リンク"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_search
@@ -1427,7 +1427,7 @@ msgstr "ソーシャル・ポスト"
 #: model:ir.model,name:social.model_social_post_template
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
 msgid "Social Post Template"
-msgstr ""
+msgstr "ソーシャルポストテンプレート"
 
 #. module: social
 #: model:ir.actions.act_window,name:social.social_post_template_action
@@ -1596,7 +1596,7 @@ msgstr "同期"
 #: code:addons/social/models/social_post_template.py:0
 #, python-format
 msgid "The 'message' field is required for post ID %s"
-msgstr ""
+msgstr "'メッセージ'フィールドがポストIDに必要です %s"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__account_ids

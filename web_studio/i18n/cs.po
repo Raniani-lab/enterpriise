@@ -3752,18 +3752,18 @@ msgstr "Studio schvalovací záznamy"
 #: model:ir.model,name:web_studio.model_studio_approval_entry
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_form_view
 msgid "Studio Approval Entry"
-msgstr ""
+msgstr "Studio záznam schválení"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_request
 msgid "Studio Approval Request"
-msgstr ""
+msgstr "Studio schvalovací požadavek"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_rule
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_form_view
 msgid "Studio Approval Rule"
-msgstr ""
+msgstr "Studio schvalovací pravidlo"
 
 #. module: web_studio
 #: model:ir.actions.act_window,name:web_studio.studio_approval_rule_action
@@ -3788,7 +3788,7 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_mixin
 msgid "Studio Mixin"
-msgstr ""
+msgstr "Studio miin"
 
 #. module: web_studio
 #. odoo-javascript

@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
+# Chloe Wang, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
+"Last-Translator: Chloe Wang, 2023\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -589,7 +590,7 @@ msgstr "已超出用户访问尝试的最大次数。所以请稍后再试"
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "The name of the customer should be no more than 35 characters."
-msgstr ""
+msgstr "客户名称不应超过 35 个字符。"
 
 #. module: delivery_ups
 #. odoo-python

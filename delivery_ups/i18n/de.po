@@ -557,7 +557,7 @@ msgstr "Versandmethoden"
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_stock_package_type
 msgid "Stock package type"
-msgstr "Standardpakettyp"
+msgstr "Typ des Lagerpakets"
 
 #. module: delivery_ups
 #. odoo-python

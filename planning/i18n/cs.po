@@ -1532,7 +1532,7 @@ msgstr "Analýza plánování"
 #. module: planning
 #: model:ir.model,name:planning.model_planning_analysis_report
 msgid "Planning Analysis Report"
-msgstr ""
+msgstr "Analýza plánování"
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_recurrency

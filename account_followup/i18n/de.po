@@ -292,8 +292,8 @@ msgid ""
 "A follow-up action name must be unique. This name is already set to another "
 "action."
 msgstr ""
-"Der Name einer Mahnstufe muss eindeutig sein. Dieser Name ist bereits für "
-"eine andere Aktion festgelegt."
+"Der Name einer Mahnmaßnahme muss eindeutig sein. Dieser Name ist bereits für"
+" eine andere Aktion festgelegt."
 
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_chart_template

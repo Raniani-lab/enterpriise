@@ -117,7 +117,7 @@ msgstr "Kategorie nepovolených výdajů"
 #. module: account_disallowed_expenses
 #: model:ir.model,name:account_disallowed_expenses.model_account_disallowed_expenses_report_handler
 msgid "Disallowed Expenses Custom Handler"
-msgstr ""
+msgstr "Vlastní zpracování nepovolených výdajů"
 
 #. module: account_disallowed_expenses
 #: model:ir.model,name:account_disallowed_expenses.model_account_disallowed_expenses_rate

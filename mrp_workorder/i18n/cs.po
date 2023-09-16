@@ -114,7 +114,7 @@ msgstr "Přidat produkt"
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_mrp_workorder_additional_product
 msgid "Additional Product"
-msgstr ""
+msgstr "Dodatečný produkt"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__allow_producing_quantity_change
@@ -139,7 +139,7 @@ msgstr "Dostupnost"
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_report_mrp_report_bom_structure
 msgid "BOM Overview Report"
-msgstr ""
+msgstr "Přehled kusovníku"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder___barcode_scanned
@@ -760,7 +760,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_propose_change
 msgid "Propose a change in the production"
-msgstr ""
+msgstr "Návrh změny ve výrobě"
 
 #. module: mrp_workorder
 #. odoo-javascript
@@ -773,7 +773,7 @@ msgstr "Jakost"
 #: model:ir.model,name:mrp_workorder.model_quality_alert
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_alert_ids
 msgid "Quality Alert"
-msgstr ""
+msgstr "Upozornění na kvalitu"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_alert_count
@@ -803,7 +803,7 @@ msgstr "Quality Control Point"
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_quality_point_test_type
 msgid "Quality Control Test Type"
-msgstr ""
+msgstr "Typ testu kontroly kvality"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_routing_workcenter__quality_point_ids
@@ -978,7 +978,7 @@ msgstr "Pohyb zásob"
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__move_line_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__move_line_id
 msgid "Stock Move Line"
-msgstr ""
+msgstr "Pohyb produktu"
 
 #. module: mrp_workorder
 #: model:product.template,name:mrp_workorder.product_template_stool

@@ -1443,7 +1443,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Index"
-msgstr ""
+msgstr "Chỉ số"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__inherited_permission

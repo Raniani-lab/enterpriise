@@ -97,6 +97,29 @@ msgid ""
 "            </div>\n"
 "        "
 msgstr ""
+"<div style=\"background:#F0F0F0;color:#515166;padding:10px 0px;font-family:Arial,Helvetica,sans-serif;font-size:14px;\">\n"
+"                <table style=\"width:600px;margin:5px auto;\">\n"
+"                    <tbody>\n"
+"                        <tr><td>\n"
+"                            <a href=\"/\"><img src=\"/web/binary/company_logo\" style=\"vertical-align:baseline;max-width:100px;\"></a>\n"
+"                        </td><td style=\"text-align:right;vertical-align:middle;\">\n"
+"                                續訂服務計劃\n"
+"                        </td></tr>\n"
+"                    </tbody>\n"
+"                </table>\n"
+"                <table style=\"width:600px;margin:0px auto;background:white;border:1px solid #e1e1e1;\">\n"
+"                    <tbody>\n"
+"                        <tr><td style=\"padding:15px 20px 10px 20px;\">\n"
+"                            <p>你好 <t t-out=\"object.partner_id.name or ''\">Brandon Freeman</t>！</p>\n"
+"                            <p>你的服務計劃 <strong t-out=\"object.name or ''\">辦公室清潔服務</strong> 需要你跟進。</p>\n"
+"                            <p>我們邀請你點擊下列連結，以續訂並更新你的服務計劃。</p>\n"
+"                            <p>順祝  安康</p>\n"
+"                        </td></tr>\n"
+"                        <tr><td style=\"padding:15px 20px 10px 20px;\" t-out=\"object.user_id.signature or ''\">--<br>Mitchell Admin</td></tr>\n"
+"                    </tbody>\n"
+"                </table>\n"
+"            </div>\n"
+"        "
 
 #. module: sale_subscription
 #: model:mail.template,body_html:sale_subscription.mail_template_subscription_rating
@@ -2016,7 +2039,7 @@ msgstr ""
 #: model:sale.order.template.line,name:sale_subscription.montly_template_line
 #: model:sale.order.template.line,name:sale_subscription.yearly_template_line
 msgid "Office Cleaning Service (SUB)"
-msgstr ""
+msgstr "辦公室清潔服務（定期訂購）"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__on_change_field_ids
@@ -2165,7 +2188,7 @@ msgstr "定價"
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_product_pricing
 msgid "Pricing rule of temporal products"
-msgstr ""
+msgstr "臨時產品定價規則"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3049,7 +3072,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_line__temporal_type
 msgid "Temporal Type"
-msgstr ""
+msgstr "臨時價錢類型"
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.email_payment_close

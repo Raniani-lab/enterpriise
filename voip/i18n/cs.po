@@ -1100,22 +1100,22 @@ msgstr "Uživatelské nastavení"
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall
 msgid "VOIP Phonecall"
-msgstr ""
+msgstr "VOIP telefonát"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall_log_wizard
 msgid "VOIP Phonecall log Wizard"
-msgstr ""
+msgstr "Průvodce zaznamenáním VOIP telefonátu"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall_report
 msgid "VOIP Phonecalls by user report"
-msgstr ""
+msgstr "Výkaz VOIP telefonátů dle uživatele"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_queue_mixin
 msgid "VOIP Queue support"
-msgstr ""
+msgstr "VOIP podpora fronty"
 
 #. module: voip
 #. odoo-javascript

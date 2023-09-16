@@ -62,7 +62,7 @@ msgstr "Plánováno"
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_planning_analysis_report
 msgid "Planning Analysis Report"
-msgstr ""
+msgstr "Analýza plánování"
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_planning_slot
@@ -77,7 +77,7 @@ msgstr "Projekt"
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_project_update
 msgid "Project Update"
-msgstr ""
+msgstr "Projektový zápis"
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_sale_order_line

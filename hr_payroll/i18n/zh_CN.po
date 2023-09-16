@@ -283,6 +283,15 @@ msgid ""
 "</tbody></table>\n"
 "            "
 msgstr ""
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
+"    <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
+"        亲爱的<t t-esc=\"object.employee_id.name\"></t>，新的工资单已提供给您。<br><br>\n"
+"        请在您的员工门户网站上查找 PDF 文件。\n"
+"        祝好<br>\n"
+"        人力资源团队\n"
+"    </td></tr>\n"
+"</tbody></table>\n"
+"            "
 
 #. module: hr_payroll
 #: model:ir.model.constraint,message:hr_payroll.constraint_hr_work_entry_type_is_unforeseen_is_leave

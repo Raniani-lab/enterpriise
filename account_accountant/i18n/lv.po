@@ -1745,7 +1745,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Tax Included in Price"
-msgstr "Nodoklis Ir Iekļauts Cenā"
+msgstr "Nodoklis iekļauts cenā"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__tax_lock_date

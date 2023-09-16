@@ -2805,7 +2805,7 @@ msgstr "例: 提案内容説明"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "e.g. Finance"
-msgstr ""
+msgstr "例: 財務"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view

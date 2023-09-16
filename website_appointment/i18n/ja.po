@@ -6,6 +6,7 @@
 # Martin Trigaux, 2022
 # Ryoko Tsuda <ryoko@quartile.co>, 2023
 # Andy Yiu, 2023
+# Junko Augias, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Andy Yiu, 2023\n"
+"Last-Translator: Junko Augias, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +25,7 @@ msgstr ""
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_staff_users_description
 msgid "(+1 other)"
-msgstr ""
+msgstr "(+1 他)"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointments_cards
@@ -63,7 +64,7 @@ msgstr "<span>公開済</span>"
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_select_operator
 msgid "Add a function here..."
-msgstr ""
+msgstr "ここに機能を追加..."
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_select_operator
@@ -322,7 +323,7 @@ msgstr "サイトopengraph画像"
 #: code:addons/website_appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "contact us"
-msgstr ""
+msgstr "お問合せ"
 
 #. module: website_appointment
 #. odoo-javascript
@@ -341,7 +342,7 @@ msgstr "または"
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_staff_users_description
 msgid "others)"
-msgstr ""
+msgstr "他)"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_staff_users_description

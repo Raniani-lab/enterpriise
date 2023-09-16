@@ -109,7 +109,7 @@ msgid ""
 "orders."
 msgstr ""
 "Planifiez vos ressources humaines et matérielles à travers des fonctions, "
-"projets et bons de commandes."
+"projets et commandes."
 
 #. module: project_forecast
 #. odoo-python

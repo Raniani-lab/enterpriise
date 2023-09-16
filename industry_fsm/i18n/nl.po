@@ -986,7 +986,7 @@ msgid ""
 "Ready to <b>manage your onsite interventions</b>? <i>Click Field Service to "
 "start.</i>"
 msgstr ""
-"Klaar om <b>je interventies ter plaatse te beheren</b>? <i>Klik op "
+"Klaar om <b>je interventies op locatie te beheren</b>? <i>Klik op "
 "Buitendienst om te starten.</i>"
 
 #. module: industry_fsm

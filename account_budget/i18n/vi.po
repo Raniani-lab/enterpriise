@@ -642,4 +642,4 @@ msgstr ""
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "e.g. Budget 2023: Optimistic"
-msgstr ""
+msgstr "VD: Ngân sách 2023: Dự kiến lạc quan"

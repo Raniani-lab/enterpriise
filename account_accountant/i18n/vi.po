@@ -36,6 +36,14 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"\n"
+"                <p class=\"o_view_nocontent_smiling_face\">\n"
+"                    Không có gì để làm ở đây!\n"
+"                </p>\n"
+"                <p>\n"
+"                    Không tìm thấy giao dịch nào khớp với bộ lọc của bạn.\n"
+"                </p>\n"
+"            "
 
 #. module: account_accountant
 #. odoo-javascript
@@ -60,6 +68,8 @@ msgid ""
 "%(display_name_html)s with an open amount of %(open_amount)s will be fully "
 "reconciled by the transaction."
 msgstr ""
+"%(display_name_html)s với số tiền mở là %(open_amount)s sẽ được đối chiếu "
+"toàn bộ bởi giao dịch."
 
 #. module: account_accountant
 #. odoo-python
@@ -69,6 +79,8 @@ msgid ""
 "%(display_name_html)s with an open amount of %(open_amount)s will be reduced"
 " by %(amount)s."
 msgstr ""
+"%(display_name_html)s với số tiền mở là %(open_amount)s sẽ được giảm "
+"%(amount)s."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -98,6 +110,8 @@ msgid ""
 "<b class=\"tip_title\">Tip: Find an Accountant or register your Accounting "
 "Firm</b>"
 msgstr ""
+"<b class=\"tip_title\">Mẹo: Tìm Kế toán viên hoặc đăng ký Công ty Kế toán "
+"của bạn</b>"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -121,16 +135,18 @@ msgid ""
 "<i title=\"Run manually\" role=\"img\" aria-label=\"Run manually\" class=\"fa fa-refresh\"/>\n"
 "                            Run manually"
 msgstr ""
+"<i title=\"Chạy thủ công\" role=\"img\" aria-label=\"Chạy thủ công\" class=\"fa fa-refresh\"/>\n"
+"                            Chạy thủ công"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "<i>Lock all journal entries</i>"
-msgstr ""
+msgstr "<i>Khoá tất cả bút toán</i>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "<i>Lock specific journal entries</i>"
-msgstr ""
+msgstr "<i>Khoá các bút toán nhất định</i>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -176,12 +192,12 @@ msgstr "<span class=\"o_form_label\">Năm tài khoá</span>"
 #. module: account_accountant
 #: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_1
 msgid "<span class=\"tip_button_text\">Find an Accountant</span>"
-msgstr ""
+msgstr "<span class=\"tip_button_text\">Tìm kế toán viên</span>"
 
 #. module: account_accountant
 #: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_1
 msgid "<span class=\"tip_button_text\">Register your Accounting Firm</span>"
-msgstr ""
+msgstr "<span class=\"tip_button_text\">Đăng ký Công ty kế toán của bạn</span>"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -249,12 +265,12 @@ msgstr "Kế toán"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Accounting Period Closing"
-msgstr ""
+msgstr "Khoá sổ kỳ kế toán"
 
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_view_account_change_lock_date
 msgid "Accounting closing dates"
-msgstr ""
+msgstr "Ngày khoá sổ kế toán"
 
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_bank_statement_line_form_bank_rec_widget
@@ -272,7 +288,7 @@ msgstr "Thêm từ khóa mới"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "All Transactions"
-msgstr ""
+msgstr "Tất cả giao dịch"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
@@ -360,7 +376,7 @@ msgstr "Kế toán Anglo-Saxon"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "Back to"
-msgstr ""
+msgstr "Quay lại"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__balance
@@ -488,6 +504,8 @@ msgid ""
 "Click here to find an accountant or if you want to list out your accounting "
 "services on Odoo"
 msgstr ""
+"Nhấp vào đây để tìm kế toán viên hoặc nếu bạn muốn đăng ký các dịch vụ kế "
+"toán của mình trên Odoo"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -551,7 +569,7 @@ msgstr "Tạo một mô hình đối soát (đối tượng đối soát)"
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_bank_statement_form_bank_rec_widget
 msgid "Create Statement"
-msgstr ""
+msgstr "Tạo sao kê"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -608,7 +626,7 @@ msgstr "Số dư có"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_bank_statement_line__cron_last_check
 msgid "Cron Last Check"
-msgstr ""
+msgstr "Lần cuối cùng kiểm tra cron"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -655,7 +673,7 @@ msgstr "Xác định năm tài chính hoặc ít hơn một năm"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Deposits"
-msgstr ""
+msgstr "Tiền gửi"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_digest_digest
@@ -678,12 +696,12 @@ msgstr "Tên hiển thị"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__display_stroked_amount_currency
 msgid "Display Stroked Amount Currency"
-msgstr ""
+msgstr "Display Stroked Amount Currency"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__display_stroked_balance
 msgid "Display Stroked Balance"
-msgstr ""
+msgstr "Hiển thị số dư đã tìm kiếm"
 
 #. module: account_accountant
 #. odoo-python
@@ -730,7 +748,7 @@ msgstr ""
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Exchange Difference: %s"
-msgstr ""
+msgstr "Chênh lệch tỷ giá: %s"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -783,7 +801,7 @@ msgstr "Gắn cờ"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__force_price_included_taxes
 msgid "Force Price Included Taxes"
-msgstr ""
+msgstr "Buộc tuỳ chọn Giá đã bao gồm thuế"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_account_id
@@ -828,7 +846,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_index
 msgid "Form Index"
-msgstr ""
+msgstr "Chỉ số biểu mẫu"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_name
@@ -939,7 +957,7 @@ msgstr "Tuyệt! Hãy tiếp tục."
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__group_tax_id
 msgid "Group Tax"
-msgstr ""
+msgstr "Nhóm thuế"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__id
@@ -994,7 +1012,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__index
 msgid "Index"
-msgstr ""
+msgstr "Chỉ số"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__invalid
@@ -1004,7 +1022,7 @@ msgstr "Không hợp lệ"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Invalid statements"
-msgstr ""
+msgstr "Sao kê không hợp lệ"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_bank_rec_widget__state
@@ -1013,6 +1031,9 @@ msgid ""
 "Valid: The bank transaction can be validated.\n"
 "Reconciled: The bank transaction has already been processed. Nothing left to do."
 msgstr ""
+"Không hợp lệ: Không thể xác thực giao dịch ngân hàng vì tài khoản tạm thời vẫn còn liên quan\n"
+"Hợp lệ: Giao dịch ngân hàng có thể được xác thực.\n"
+"Đã đối chiếu: Giao dịch ngân hàng đã được xử lý. Không còn việc gì để làm."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1066,7 +1087,7 @@ msgstr "Tiền tệ bút toán"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__period_lock_date
 msgid "Journal Entries Lock Date"
-msgstr ""
+msgstr "Ngày khóa sổ bút toán"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_move
@@ -1232,7 +1253,7 @@ msgstr "Ngày khóa"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Management Closing"
-msgstr ""
+msgstr "Management Closing"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1269,7 +1290,7 @@ msgstr "Đối sánh với các bút toán không thuộc tài khoản phải th
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Matched"
-msgstr ""
+msgstr "Đã khớp"
 
 #. module: account_accountant
 #. odoo-python
@@ -1281,7 +1302,7 @@ msgstr "Giao dịch phù hợp"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__matching_rules_allow_auto_reconcile
 msgid "Matching Rules Allow Auto Reconcile"
-msgstr ""
+msgstr "Quy tắc khớp cho phép đối chiếu tự động"
 
 #. module: account_accountant
 #. odoo-python
@@ -1345,7 +1366,7 @@ msgstr "Không có file đình kèm."
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "No statement"
-msgstr ""
+msgstr "Không có sao kê"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__tax_lock_date
@@ -1368,7 +1389,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Not Matched"
-msgstr ""
+msgstr "Không khớp"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -1406,7 +1427,7 @@ msgstr "Số tiền mở"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 msgid "Open Amount in Currency"
-msgstr ""
+msgstr "Số tiền mở theo loại tiền tệ"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1420,7 +1441,7 @@ msgstr "Số dư đầu kỳ"
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Open balance: %s"
-msgstr ""
+msgstr "Số dư mở: %s"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
@@ -1462,7 +1483,7 @@ msgstr "Phải trả"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Payable:"
-msgstr ""
+msgstr "Phải trả:"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_payment_form_inherit_account_accountant
@@ -1497,7 +1518,7 @@ msgstr "Thanh toán không có khách hàng không được khớp"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Pick a date to lock"
-msgstr ""
+msgstr "Chọn một ngày để khoá"
 
 #. module: account_accountant
 #. odoo-python
@@ -1557,7 +1578,7 @@ msgstr "Xử lý giao dịch này."
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Receivable:"
-msgstr ""
+msgstr "Phải thu:"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__reco_models_widget
@@ -1580,7 +1601,7 @@ msgstr "Đối soát"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__reconcile_model_id
 msgid "Reconcile Model"
-msgstr ""
+msgstr "Mẫu đối chiếu"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__reconciled
@@ -1659,7 +1680,7 @@ msgstr "Chọn đối tác"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__selected_aml_ids
 msgid "Selected Aml"
-msgstr ""
+msgstr "Aml đã chọn"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -1690,42 +1711,42 @@ msgstr "Vài thông tin cần điền đang trống"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_id
 msgid "Source Aml"
-msgstr ""
+msgstr "Aml nguồn"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_move_id
 msgid "Source Aml Move"
-msgstr ""
+msgstr "Bút toán Aml gốc"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_move_name
 msgid "Source Aml Move Name"
-msgstr ""
+msgstr "Tên bút toán Aml gốc"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_amount_currency
 msgid "Source Amount Currency"
-msgstr ""
+msgstr "Tiền tệ số tiền gốc"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_balance
 msgid "Source Balance"
-msgstr ""
+msgstr "Số dư gốc"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_credit
 msgid "Source Credit"
-msgstr ""
+msgstr "Có gốc"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_debit
 msgid "Source Debit"
-msgstr ""
+msgstr "Nợ gốc"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__st_line_id
 msgid "St Line"
-msgstr ""
+msgstr "Dòng sao kê"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_fiscal_year__date_from
@@ -1767,7 +1788,7 @@ msgstr "Thuế"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_base_amount_currency
 msgid "Tax Base Amount Currency"
-msgstr ""
+msgstr "Tiền tệ số tiền cơ sở thuế"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1794,7 +1815,7 @@ msgstr "Ngày khóa tờ khai thuế"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_tag_ids
 msgid "Tax Tag"
-msgstr ""
+msgstr "Thẻ thuế"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1835,6 +1856,8 @@ msgid ""
 "The invoice %(display_name_html)s with an open amount of %(open_amount)s "
 "will be entirely paid by the transaction."
 msgstr ""
+"Hoá đơn %(display_name_html)s với số tiền mở là %(open_amount)s sẽ được "
+"thanh toán toàn bộ bởi giao dịch."
 
 #. module: account_accountant
 #. odoo-python
@@ -1844,6 +1867,8 @@ msgid ""
 "The invoice %(display_name_html)s with an open amount of %(open_amount)s "
 "will be reduced by %(amount)s."
 msgstr ""
+"Hóa đơn %(display_name_html)s với số tiền mở là %(open_amount)s sẽ được giảm"
+" %(amount)s."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1876,6 +1901,8 @@ msgid ""
 "This bank transaction has been automatically validated using the "
 "reconciliation model '%s'."
 msgstr ""
+"Giao dịch ngân hàng này đã được xác thực tự động bằng mô hình đối chiếu "
+"'%s'."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1899,7 +1926,7 @@ msgstr "Mẹo: Cập nhật chi tiết bút toán hàng loạt"
 #. module: account_accountant
 #: model:digest.tip,name:account_accountant.digest_tip_account_accountant_1
 msgid "Tip: Find an Accountant or register your Accounting Firm"
-msgstr ""
+msgstr "Mẹo: Tìm Kế toán viên hoặc đăng ký Công ty kế toán của bạn"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1914,7 +1941,7 @@ msgstr "Để kiểm tra"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 msgid "To check"
-msgstr ""
+msgstr "Cần kiểm tra"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1926,7 +1953,7 @@ msgstr "Để tăng tốc đối soát, quy định"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__todo_command
 msgid "Todo Command"
-msgstr ""
+msgstr "Lệnh việc phải làm"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -1936,7 +1963,7 @@ msgstr "Giao dịch"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__transaction_currency_id
 msgid "Transaction Currency"
-msgstr ""
+msgstr "Tiền tệ giao dịch"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -1954,14 +1981,14 @@ msgstr "Tài khoản chuyển"
 #: model:ir.actions.server,name:account_accountant.auto_reconcile_bank_statement_line_ir_actions_server
 #: model:ir.cron,cron_name:account_accountant.auto_reconcile_bank_statement_line
 msgid "Try to reconcile automatically your statement lines"
-msgstr ""
+msgstr "Cố gắng tự động đối chiếu các dòng sao kê của bạn"
 
 #. module: account_accountant
 #. odoo-python
 #: code:addons/account_accountant/models/res_company.py:0
 #, python-format
 msgid "Unreconciled statements lines"
-msgstr ""
+msgstr "Dòng sao kê chưa đối chiếu"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__valid
@@ -1997,7 +2024,7 @@ msgstr "Xem"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "View models"
-msgstr ""
+msgstr "Xem mẫu"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__wizard_id
@@ -2008,7 +2035,7 @@ msgstr "Hướng dẫn"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__company_currency_id
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__company_currency_id
 msgid "Wizard Company Currency"
-msgstr ""
+msgstr "Công cụ tiền tệ của công ty"
 
 #. module: account_accountant
 #. odoo-python
@@ -2078,7 +2105,7 @@ msgstr ""
 #: code:addons/account_accountant/wizard/account_change_lock_date.py:0
 #, python-format
 msgid "You cannot set a lock date in the future."
-msgstr ""
+msgstr "Bạn không thể đặt ngày khóa sổ trong tương lai."
 
 #. module: account_accountant
 #. odoo-python
@@ -2086,7 +2113,7 @@ msgstr ""
 #, python-format
 msgid ""
 "You might want to %(btn_start)sfully reconcile%(btn_end)s the document."
-msgstr ""
+msgstr "Bạn nên %(btn_start)s đối chiếu toàn bộ %(btn_end)s chứng từ."
 
 #. module: account_accountant
 #. odoo-python
@@ -2096,6 +2123,7 @@ msgid ""
 "You might want to make a %(btn_start)spartial reconciliation%(btn_end)s "
 "instead."
 msgstr ""
+"Thay vào đó, bạn nên tạo %(btn_start)s đối chiếu một phần %(btn_end)s."
 
 #. module: account_accountant
 #. odoo-python
@@ -2103,6 +2131,7 @@ msgstr ""
 #, python-format
 msgid "You might want to record a %(btn_start)spartial payment%(btn_end)s."
 msgstr ""
+"Bạn nên ghi nhận một %(btn_start)s khoản thanh toán một phần %(btn_end)s."
 
 #. module: account_accountant
 #. odoo-python
@@ -2111,6 +2140,7 @@ msgstr ""
 msgid ""
 "You might want to set the invoice as %(btn_start)sfully paid%(btn_end)s."
 msgstr ""
+"Bạn nên đặt hoá đơn thành %(btn_start)s đã thanh toán hết %(btn_end)s."
 
 #. module: account_accountant
 #. odoo-javascript

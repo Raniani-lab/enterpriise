@@ -555,14 +555,14 @@ msgstr "前期以降"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "to campaign"
-msgstr ""
+msgstr "キャンペーン"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "to close"
-msgstr ""
+msgstr "クローズ"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript

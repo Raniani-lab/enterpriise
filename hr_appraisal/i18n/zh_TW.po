@@ -1635,7 +1635,7 @@ msgstr "記錄的異常活動的類型。"
 #: code:addons/hr_appraisal/wizard/request_appraisal.py:0
 #, python-format
 msgid "Unable to post message, please configure the sender's email address."
-msgstr "無法發佈信件，請配置發件人的EMail地址。"
+msgstr "未能張貼訊息。請配置發件人電郵地址。"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__uncomplete_goals_count

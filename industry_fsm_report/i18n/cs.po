@@ -88,7 +88,7 @@ msgstr "Datum"
 #: model:ir.model,name:industry_fsm_report.x_project_task_worksheet_template_2_ir_model_1
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_project__worksheet_template_id
 msgid "Default Worksheet"
-msgstr ""
+msgstr "Výchozí pracovní list"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_task_worksheet_template_3
@@ -98,7 +98,7 @@ msgstr ""
 #. module: industry_fsm_report
 #: model:ir.model,name:industry_fsm_report.x_project_task_worksheet_template_3_ir_model_1
 msgid "Device Installation and Maintenance"
-msgstr ""
+msgstr "Instalace a údržba zařízení"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.view_worksheet_template_kanban
@@ -108,7 +108,7 @@ msgstr "Rozbalovací nabídka"
 #. module: industry_fsm_report
 #: model:ir.model,name:industry_fsm_report.model_report_project_task_user_fsm
 msgid "FSM Tasks Analysis"
-msgstr ""
+msgstr "Analýza úkolů v terénu"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_task_worksheet_template_3
@@ -180,7 +180,7 @@ msgstr "Opakování úkolu"
 #. module: industry_fsm_report
 #: model:ir.model,name:industry_fsm_report.model_report_industry_fsm_worksheet_custom
 msgid "Task Worksheet Custom Report"
-msgstr ""
+msgstr "Vlastní návrh pracovního listu k úkolu"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_task_worksheet_template_3

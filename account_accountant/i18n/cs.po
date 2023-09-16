@@ -430,7 +430,7 @@ msgstr "Bankovní výpis.pdf"
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "Widget párování s bankou pro jednu položku výpisu"
 
 #. module: account_accountant
 #. odoo-javascript

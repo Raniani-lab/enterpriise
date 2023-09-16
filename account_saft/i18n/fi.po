@@ -72,4 +72,4 @@ msgstr "SAFT on yhteensopiva vain yhden sarakkeen ryhmien kanssa."
 #: code:addons/account_saft/models/account_general_ledger.py:0
 #, python-format
 msgid "Please define one or more Contacts belonging to your company."
-msgstr ""
+msgstr "Määrittele yksi tai useampi yrityksellesi kuuluva yhteyshenkilö."

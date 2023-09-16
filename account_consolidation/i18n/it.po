@@ -93,7 +93,7 @@ msgstr "(Ri)calcola"
 #: code:addons/account_consolidation/static/src/components/move_line_list/move_line_list.xml:0
 #, python-format
 msgid ") and the consolidated company ("
-msgstr ""
+msgstr ") e l'azienda consolidata ("
 
 #. module: account_consolidation
 #. odoo-javascript
@@ -143,6 +143,8 @@ msgid ""
 "<span class=\"fa fa-bar-chart\"/>\n"
 "                Comparison"
 msgstr ""
+"<span class=\"fa fa-bar-chart\"/>\n"
+"                Confronto"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.search_template_consolidation_report_journals
@@ -150,6 +152,8 @@ msgid ""
 "<span class=\"fa fa-book\"/>\n"
 "                Journals:"
 msgstr ""
+"<span class=\"fa fa-book\"/>\n"
+"                Registri:"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_company_period_form
@@ -1027,7 +1031,7 @@ msgstr "In passato"
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__invert_sign
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_group__invert_sign
 msgid "Invert Balance Sign"
-msgstr ""
+msgstr "Inverti segno saldo"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_is_follower
@@ -1219,6 +1223,8 @@ msgstr "Numero di messaggi con errore di consegna"
 msgid ""
 "Only one entry by account should be created for a generated journal entry !"
 msgstr ""
+"Per una voce di giornale generata deve essere creata una sola voce per "
+"conto!"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
@@ -1450,14 +1456,14 @@ msgstr "Sottogruppi"
 #: code:addons/account_consolidation/static/src/components/move_line_list/move_line_list.xml:0
 #, python-format
 msgid "Take into account that the consolidation ("
-msgstr ""
+msgstr "Tieni in conto che il consolidamento ("
 
 #. module: account_consolidation
 #. odoo-javascript
 #: code:addons/account_consolidation/static/src/components/move_line_list/move_line_list.xml:0
 #, python-format
 msgid "Take into account that this company is consolidated at"
-msgstr ""
+msgstr "Tieni in conto che quest'azienda è consolidata al"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__currency_id
@@ -1522,7 +1528,7 @@ msgstr "Bilancio di verifica"
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_consolidation_trial_balance_report_handler
 msgid "Trial Balance Custom Handler"
-msgstr ""
+msgstr "Gestione personalizzata saldo di prova"
 
 #. module: account_consolidation
 #. odoo-python

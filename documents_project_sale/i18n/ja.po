@@ -58,7 +58,7 @@ msgstr ""
 #. module: documents_project_sale
 #: model:documents.folder,name:documents_project_sale.documents_folder_template_child_2
 msgid "Photos"
-msgstr ""
+msgstr "写真"
 
 #. module: documents_project_sale
 #: model:documents.folder,name:documents_project_sale.documents_folder_template_child_1

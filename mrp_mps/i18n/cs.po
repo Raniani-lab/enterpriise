@@ -290,7 +290,7 @@ msgstr "Externí ID"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_mrp_mps_forecast_details
 msgid "Forecast Demand Details"
-msgstr ""
+msgstr "Detaily predikce poptávky"
 
 #. module: mrp_mps
 #. odoo-javascript
@@ -455,7 +455,7 @@ msgstr "Kategorie výrobku"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_mrp_product_forecast
 msgid "Product Forecast at Date"
-msgstr ""
+msgstr "Predikce produktu na dané datum"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__product_tmpl_id
@@ -561,7 +561,7 @@ msgstr "Uložit"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_mrp_production_schedule
 msgid "Schedule the production of Product in a warehouse"
-msgstr ""
+msgstr "Plánování výroby produktu ve skladu"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_purchase_order__date_planned_mps

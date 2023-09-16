@@ -2192,7 +2192,7 @@ msgstr "Ceny"
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_product_pricing
 msgid "Pricing rule of temporal products"
-msgstr ""
+msgstr "Ceníkové pravidlo předplatných produktů"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2258,7 +2258,7 @@ msgstr "Šablona nabídky"
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_template_line
 msgid "Quotation Template Line"
-msgstr ""
+msgstr "Položka šablony nabídky"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_template_option
@@ -2496,7 +2496,7 @@ msgstr "Prodejní objednávka"
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_alert
 msgid "Sale Order Alert"
-msgstr ""
+msgstr "Upozornění prodejní objednávky"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.action_sale_order_lines
@@ -2506,7 +2506,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_log
 msgid "Sale Order Log"
-msgstr ""
+msgstr "Historie prodejní objednávky"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_stage
@@ -2825,7 +2825,7 @@ msgstr "Předplatné"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_subcription_report_graph
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_subcription_report_pivot
 msgid "Subscription Analysis"
-msgstr ""
+msgstr "Analýza předplatných"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__subscription_child_ids
@@ -2835,7 +2835,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_close_reason
 msgid "Subscription Close Reason"
-msgstr ""
+msgstr "Důvod ukončení předplatného"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_close_reason_wizard

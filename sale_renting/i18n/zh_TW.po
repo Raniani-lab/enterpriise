@@ -793,7 +793,7 @@ msgstr ""
 #: model:ir.model.constraint,message:sale_renting.constraint_rental_wizard_rental_period_coherence
 #: model:ir.model.constraint,message:sale_renting.constraint_sale_order_line_rental_period_coherence
 msgid "Please choose a return date that is after the pickup date."
-msgstr ""
+msgstr "交還日期必須在收取日期之後。請重新選擇。"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__pricing_explanation
@@ -969,7 +969,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_renting.rental_order_today_pickup_action
 #: model:ir.actions.act_window,name:sale_renting.rental_order_today_return_action
 msgid "Rental Orders"
-msgstr ""
+msgstr "租賃訂單"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_rental_schedule
@@ -1005,7 +1005,7 @@ msgstr ""
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search
 msgid "Rentals"
-msgstr ""
+msgstr "租賃安排"
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_rental_reporting
@@ -1066,7 +1066,7 @@ msgstr "退回"
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_temporal_recurrence
 msgid "Sale temporal Recurrence"
-msgstr ""
+msgstr "銷售臨時重複使用"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_report__state__done
@@ -1190,7 +1190,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__temporal_type
 msgid "Temporal Type"
-msgstr ""
+msgstr "臨時價錢類型"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__duration

@@ -235,7 +235,7 @@ msgstr "Fedex-Konfiguration"
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_droppoff_type
 msgid "Fedex Drop-Off Type"
-msgstr "Fedex-Lieferungs-Typ"
+msgstr "Fedex-Lieferungstyp"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_duty_payment
@@ -555,7 +555,7 @@ msgstr "Standard-Services"
 #. module: delivery_fedex
 #: model:ir.model,name:delivery_fedex.model_stock_package_type
 msgid "Stock package type"
-msgstr "Standardpakettyp"
+msgstr "Typ des Lagerpakets"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_extra_data_rate_request

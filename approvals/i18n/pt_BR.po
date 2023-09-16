@@ -9,6 +9,7 @@
 # Giulia Oliveira, 2023
 # Layna Nascimento, 2023
 # adrianojprado <adrianojprado@gmail.com>, 2023
+# Éder Brito <britoederr@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -16,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: adrianojprado <adrianojprado@gmail.com>, 2023\n"
+"Last-Translator: Éder Brito <britoederr@gmail.com>, 2023\n"
 "Language-Team: Portuguese (Brazil) (https://app.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -621,6 +622,8 @@ msgstr ""
 msgid ""
 "If checked, the approvers have to approve in sequence (one after the other)."
 msgstr ""
+"Se marcado, os aprovadores precisarão aprovar em sequência (um após o "
+"outro)."
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__image
@@ -869,7 +872,7 @@ msgstr "Número de solicitações a validar"
 #. module: approvals
 #: model:res.groups,name:approvals.group_approval_user
 msgid "Officer : Approve all requests"
-msgstr ""
+msgstr "Diretor: Aprovar todas as solicitações"
 
 #. module: approvals
 #: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_amount__optional

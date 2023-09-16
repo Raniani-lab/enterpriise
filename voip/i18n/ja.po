@@ -30,21 +30,21 @@ msgstr "事例の数"
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "%(number of missed calls)s missed calls"
-msgstr ""
+msgstr "%(不在着信数) の不在着信"
 
 #. module: voip
 #. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "1 missed call"
-msgstr ""
+msgstr "不在着信1"
 
 #. module: voip
 #. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "2 missed calls"
-msgstr ""
+msgstr "不在着信2"
 
 #. module: voip
 #. odoo-javascript
@@ -53,7 +53,7 @@ msgstr ""
 msgid ""
 "A hardware error occured while trying to access audio recording device. "
 "Please make sure your drivers are up to date and try again."
-msgstr ""
+msgstr "オーディオ録音デバイスへのアクセス中にハードウェアエラーが発生しました。ドライバが最新であることを確認し、再度お試し下さい。"
 
 #. module: voip
 #. odoo-javascript
@@ -90,7 +90,7 @@ msgstr "通話キューに追加"
 msgid ""
 "An error occured involving the audio recording device "
 "(%(errorName)s):</br>%(errorMessage)s"
-msgstr ""
+msgstr "音声録音デバイスでエラーが発生しました (%(errorName)s):</br>%(errorMessage)s"
 
 #. module: voip
 #. odoo-javascript
@@ -99,7 +99,7 @@ msgstr ""
 msgid ""
 "An error occurred during the instantiation of the User Agent:</br></br> "
 "%(error message)s"
-msgstr ""
+msgstr "ユーザエージェントのインスタンス生成中にエラーが発生しました:</br></br> %(エラーメッセージ)"
 
 #. module: voip
 #. odoo-javascript
@@ -160,7 +160,7 @@ msgstr "通話名"
 #: code:addons/voip/models/voip_phonecall.py:0
 #, python-format
 msgid "Call duration: %(min)smin %(sec)ssec"
-msgstr ""
+msgstr "通話時間: %(min)s分 %(sec)s秒"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__should_call_from_another_device
@@ -173,7 +173,7 @@ msgstr "他のデバイスから電話する"
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "Call rejected (reason: \"%(reasonPhrase)s\")"
-msgstr ""
+msgstr "着信拒否 (理由: \"%(reasonPhrase)s\")"
 
 #. module: voip
 #. odoo-python
@@ -228,6 +228,7 @@ msgid ""
 " runs over HTTPS and that your browser is not set to deny access to media "
 "devices."
 msgstr ""
+"音声録音デバイスにアクセスできません。マイクへのアクセスを拒否している場合は、許可してからもう一度お試しください。そうでない場合は、このウェブサイトがHTTPSで実行され、ブラウザがメディアデバイスへのアクセスを拒否するよう設定されていないことを確認して下さい。"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__how_to_call_on_mobile
@@ -324,7 +325,7 @@ msgstr "デモ"
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_users_settings__how_to_call_on_mobile__phone
 msgid "Device's phone"
-msgstr ""
+msgstr "デバイスの電話"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__direction
@@ -419,6 +420,7 @@ msgid ""
 "wrong. Please have an administrator verify the websocket server URL in the "
 "General Settings."
 msgstr ""
+"ユーザエージェントの起動に失敗しました。ウェブソケットサーバのURLが間違っている可能性があります。管理者が一般設定よりウェブソケットサーバのURLを確認して下さい。"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__sequence
@@ -479,7 +481,7 @@ msgstr ""
 msgid ""
 "If the \"Call from another device\" option is enabled, calls placed in Odoo "
 "will be transfered to this phone number."
-msgstr ""
+msgstr "\"別のデバイスから電話をかける\" オプションが有効な場合、Odooでかけた電話はこの電話番号に転送されます。"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__7d
@@ -615,7 +617,7 @@ msgstr "記録された電話"
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "Make a call using:"
-msgstr ""
+msgstr "以下を使用して電話をかける:"
 
 #. module: voip
 #. odoo-javascript
@@ -674,7 +676,7 @@ msgstr "私の電話"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Next activities"
-msgstr ""
+msgstr "次の活動"
 
 #. module: voip
 #. odoo-javascript
@@ -683,7 +685,7 @@ msgstr ""
 msgid ""
 "No audio recording device available. The application requires a microphone "
 "in order to be used."
-msgstr ""
+msgstr "音声録音デバイスがありません。このアプリケーションを使用するにはマイクが必要です。"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__pending
@@ -786,7 +788,7 @@ msgstr "マイクの使用を承諾してください。"
 msgid ""
 "Please try again later. If the problem persists, you may want to ask an "
 "administrator to check the configuration."
-msgstr ""
+msgstr "後でもう一度試してください。問題が解決しない場合は、管理者に設定を確認してもらいましょう。"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_config_settings__mode__prod
@@ -813,7 +815,7 @@ msgstr "パネルを更新する"
 #: code:addons/voip/static/src/models/registerer.js:0
 #, python-format
 msgid "Registration rejected: %(statusCode)s %(reasonPhrase)s."
-msgstr ""
+msgstr "登録が拒否されました: %(statusCode)s %(reasonPhrase)s."
 
 #. module: voip
 #. odoo-javascript
@@ -939,7 +941,7 @@ msgstr "付番"
 msgid ""
 "Some documents cannot be added to the call queue as they do not have a phone"
 " number set: %(record_names)s"
-msgstr ""
+msgstr "電話番号が設定されていないため、コールキューに追加できないドキュメントがあります。: %(record_names)s"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__reschedule_date
@@ -973,7 +975,7 @@ msgstr "電話をかける"
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__pbx_ip
 msgid "The IP address of your PBX Server"
-msgstr ""
+msgstr "PBXサーバのIPアドレス"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__wsServer
@@ -985,7 +987,7 @@ msgstr "ウェブソケットのURL"
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "The connection cannot be made.</br> Please check your configuration."
-msgstr ""
+msgstr "接続できません。</br>設定を確認してください。"
 
 #. module: voip
 #. odoo-javascript
@@ -996,6 +998,7 @@ msgid ""
 "verify the websocket server URL in the General Settings. If the problem "
 "persists, this is probably an issue with the server."
 msgstr ""
+"このエラーはトランスポート層から発生している可能性があります。管理者は一般設定でウェブソケットサーバーのURLを確認して下さい。問題が解決しない場合は、サーバーの問題である可能性があります。"
 
 #. module: voip
 #. odoo-javascript
@@ -1005,7 +1008,7 @@ msgid ""
 "The number is incorrect, the user credentials could be wrong or the "
 "connection cannot be made. Please check your configuration.</br> (Reason "
 "received: %(reasonPhrase)s)"
-msgstr ""
+msgstr "番号が正しくないか、ユーザー認証が間違っているか、接続できない可能性があります。設定を確認して下さい: %(reasonPhrase)s)"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__voip_secret
@@ -1018,7 +1021,7 @@ msgstr "PBXサーバーでの登録に使用するパスワードです。"
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "The person you try to contact is currently unavailable."
-msgstr ""
+msgstr "連絡しようとした相手は現在不在です。"
 
 #. module: voip
 #. odoo-javascript
@@ -1036,6 +1039,7 @@ msgid ""
 "that you are reaching the right server (PBX server IP in the General "
 "Settings) and that the credentials in your user preferences are correct."
 msgstr ""
+"サーバの認証に失敗しました。正しいサーバ(一般設定のPBXサーバーIP)に到達していること、およびユーザ設定の認証情報が正しいことを管理者に確認してもらって下さい。"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__state

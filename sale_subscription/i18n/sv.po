@@ -2397,7 +2397,7 @@ msgstr "Namn"
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__health__normal
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_report__health__normal
 msgid "Neutral"
-msgstr ""
+msgstr "Neutral"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban

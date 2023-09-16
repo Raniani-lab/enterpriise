@@ -709,7 +709,7 @@ msgstr ""
 #: model:ir.model,name:timesheet_grid.model_hr_timesheet_merge_wizard
 #, python-format
 msgid "Merge Timesheets"
-msgstr ""
+msgstr "Sloučení časových výkazů"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__timesheet_min_duration
@@ -1184,7 +1184,7 @@ msgstr "Schvalovatel pracovního výkazu"
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_timesheet_grid_mixin
 msgid "Timesheet Grid mixin"
-msgstr ""
+msgstr "Mixin mřížkového zobrazení časových výkazů"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__duration_unit_amount
@@ -1236,7 +1236,7 @@ msgstr "Pracovní výkazy"
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_timesheets_analysis_report
 msgid "Timesheets Analysis Report"
-msgstr ""
+msgstr "Analýza časových výkazů"
 
 #. module: timesheet_grid
 #. odoo-python

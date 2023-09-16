@@ -234,7 +234,7 @@ msgstr "Intrastat výkaz"
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_intrastat_report_handler
 msgid "Intrastat Report Custom Handler"
-msgstr ""
+msgstr "Vlastní zpracování intrastat výkazu"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_bank_statement_line__intrastat_transport_mode_id

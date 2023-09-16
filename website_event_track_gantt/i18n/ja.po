@@ -23,19 +23,19 @@ msgstr ""
 #. module: website_event_track_gantt
 #: model_terms:ir.ui.view,arch_db:website_event_track_gantt.event_track_view_gantt
 msgid "<strong>Proposed By — </strong>"
-msgstr ""
+msgstr "<strong>以下によって提案された— </strong>"
 
 #. module: website_event_track_gantt
 #: model_terms:ir.ui.view,arch_db:website_event_track_gantt.event_track_view_gantt
 msgid "<strong>Start — </strong>"
-msgstr ""
+msgstr "<strong>開始— </strong>"
 
 #. module: website_event_track_gantt
 #. odoo-javascript
 #: code:addons/website_event_track_gantt/static/src/event_track_form_view.js:0
 #, python-format
 msgid "Are you sure you want to delete this track?"
-msgstr ""
+msgstr "このトラックを本当に削除しますか？"
 
 #. module: website_event_track_gantt
 #: model_terms:ir.ui.view,arch_db:website_event_track_gantt.event_track_view_form_in_gantt
@@ -65,12 +65,12 @@ msgstr "保存"
 #. module: website_event_track_gantt
 #: model:ir.model.fields,field_description:website_event_track_gantt.field_event_event__track_gantt_initial_date
 msgid "Track Gantt Initial Date"
-msgstr ""
+msgstr "トラック・ガント初回日付"
 
 #. module: website_event_track_gantt
 #: model:ir.model.fields,field_description:website_event_track_gantt.field_event_event__track_gantt_scale
 msgid "Track Gantt Scale"
-msgstr ""
+msgstr "ガント範囲を追跡"
 
 #. module: website_event_track_gantt
 #: model_terms:ir.ui.view,arch_db:website_event_track_gantt.event_event_view_form

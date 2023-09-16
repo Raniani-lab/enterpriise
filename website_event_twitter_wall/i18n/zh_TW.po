@@ -23,7 +23,7 @@ msgstr ""
 #. module: website_event_twitter_wall
 #: model_terms:website.twitter.wall,description:website_event_twitter_wall.openwood_twitter_wall
 msgid "#wood"
-msgstr ""
+msgstr "#wood"
 
 #. module: website_event_twitter_wall
 #: model:ir.model,name:website_event_twitter_wall.model_event_event
@@ -43,7 +43,7 @@ msgstr "選單類型"
 #. module: website_event_twitter_wall
 #: model:website.twitter.wall,name:website_event_twitter_wall.openwood_twitter_wall
 msgid "OpenWood Wall"
-msgstr ""
+msgstr "OpenWood Wall"
 
 #. module: website_event_twitter_wall
 #: model:ir.model.fields,field_description:website_event_twitter_wall.field_event_event__social_menu
@@ -65,7 +65,7 @@ msgstr "社交選單"
 #. module: website_event_twitter_wall
 #: model:ir.model.fields,field_description:website_event_twitter_wall.field_event_event__twitter_wall_id
 msgid "Twitter Wall"
-msgstr "推特牆"
+msgstr "Twitter 訊息牆"
 
 #. module: website_event_twitter_wall
 #: model:ir.model.fields,field_description:website_event_twitter_wall.field_event_type__social_menu

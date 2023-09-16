@@ -89,7 +89,7 @@ msgstr "Adicionar Sub-produto"
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_mrp_workorder_additional_product_wizard
 #, python-format
 msgid "Add Component"
-msgstr ""
+msgstr "Adicionar componente"
 
 #. module: mrp_workorder
 #. odoo-javascript

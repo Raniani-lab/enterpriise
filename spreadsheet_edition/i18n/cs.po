@@ -111,7 +111,7 @@ msgstr ""
 #. module: spreadsheet_edition
 #: model:ir.model,name:spreadsheet_edition.model_spreadsheet_revision
 msgid "Collaborative spreadsheet revision"
-msgstr ""
+msgstr "Revize kolaborativní tabulky"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__commands
@@ -870,4 +870,4 @@ msgstr ""
 #. module: spreadsheet_edition
 #: model:ir.model,name:spreadsheet_edition.model_ir_websocket
 msgid "websocket message handling"
-msgstr ""
+msgstr "zpráva zpracování websocketu"

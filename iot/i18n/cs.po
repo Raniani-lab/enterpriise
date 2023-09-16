@@ -60,7 +60,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model,name:iot.model_add_iot_box
 msgid "Add IoT Box wizard"
-msgstr ""
+msgstr "Průvodce přidáním IoT boxu"
 
 #. module: iot
 #. odoo-javascript
@@ -551,7 +551,7 @@ msgstr "Hlášení z tiskárny"
 #. module: iot
 #: model:ir.model,name:iot.model_publisher_warranty_contract
 msgid "Publisher Warranty Contract For IoT Box"
-msgstr ""
+msgstr "Smlouva o záruce vydavatele pro IoT Box"
 
 #. module: iot
 #: model:ir.model,name:iot.model_ir_actions_report

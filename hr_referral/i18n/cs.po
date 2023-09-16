@@ -1058,7 +1058,7 @@ msgstr "Doporučení"
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_referral_alert_mail_wizard
 msgid "Referral Alert Mail Wizard"
-msgstr ""
+msgstr "Průvodce upozorňovacím emailem na doporučení"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_res_company__hr_referral_background

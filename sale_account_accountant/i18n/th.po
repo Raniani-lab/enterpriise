@@ -29,7 +29,7 @@ msgstr "วิดเจ็ตการกระทบยอดธนาคาร
 #. module: sale_account_accountant
 #: model:ir.model.fields,field_description:sale_account_accountant.field_bank_rec_widget__matched_sale_order_ids
 msgid "Matched Sale Order"
-msgstr ""
+msgstr "จับคู่คำสั่งขาย"
 
 #. module: sale_account_accountant
 #: model:ir.model,name:sale_account_accountant.model_account_reconcile_model
@@ -53,7 +53,7 @@ msgstr "มี"
 #. module: sale_account_accountant
 #: model_terms:ir.ui.view,arch_db:sale_account_accountant.view_bank_rec_widget_form_inherit_sale_order
 msgid "matching the communication of the bank statement line."
-msgstr ""
+msgstr "จับคู่การสื่อสารของรายการเดินบัญชีจากธนาคาร"
 
 #. module: sale_account_accountant
 #: model_terms:ir.ui.view,arch_db:sale_account_accountant.view_bank_rec_widget_form_inherit_sale_order

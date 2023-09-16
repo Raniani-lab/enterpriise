@@ -118,18 +118,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__cleaning_model_id
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_rule__cleaning_model_id
 msgid "Cleaning Model"
-msgstr ""
+msgstr "Čistící model"
 
 #. module: data_cleaning
 #: model:ir.model,name:data_cleaning.model_data_cleaning_record
 msgid "Cleaning Record"
-msgstr ""
+msgstr "Čistící pravidlo"
 
 #. module: data_cleaning
 #: model:ir.model,name:data_cleaning.model_data_cleaning_rule
 #: model_terms:ir.ui.view,arch_db:data_cleaning.view_data_cleaning_record_list
 msgid "Cleaning Rule"
-msgstr ""
+msgstr "Čistící pravidlo"
 
 #. module: data_cleaning
 #: model_terms:ir.ui.view,arch_db:data_cleaning.view_data_cleaning_record_search

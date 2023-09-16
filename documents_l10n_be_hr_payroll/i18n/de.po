@@ -153,7 +153,7 @@ msgstr "HR-Einzelkontobericht nach Mitarbeiterzeile"
 #. module: documents_l10n_be_hr_payroll
 #: model:ir.model,name:documents_l10n_be_hr_payroll.model_l10n_be_281_10_line
 msgid "HR Payroll 281.10 Line Wizard"
-msgstr ""
+msgstr "HR-Personalabrechnung 281.10 Zeilenassistent"
 
 #. module: documents_l10n_be_hr_payroll
 #: model:ir.model,name:documents_l10n_be_hr_payroll.model_l10n_be_281_10
@@ -163,7 +163,7 @@ msgstr "HR-Lohnabrechnung 281.10 Assistent"
 #. module: documents_l10n_be_hr_payroll
 #: model:ir.model,name:documents_l10n_be_hr_payroll.model_l10n_be_281_45_line
 msgid "HR Payroll 281.45 Line Wizard"
-msgstr ""
+msgstr "HR-Personalabrechnung 281.45 Zeilenassistent"
 
 #. module: documents_l10n_be_hr_payroll
 #: model:ir.model,name:documents_l10n_be_hr_payroll.model_l10n_be_281_45
@@ -195,7 +195,7 @@ msgstr "Lohnbuchhaltung: Individuelles Konto"
 #: model:ir.model.fields,field_description:documents_l10n_be_hr_payroll.field_l10n_be_281_45_line__pdf_to_post
 #: model:ir.model.fields,field_description:documents_l10n_be_hr_payroll.field_l10n_be_individual_account_line__pdf_to_post
 msgid "Pdf To Post"
-msgstr ""
+msgstr "Zu buchendes PDF"
 
 #. module: documents_l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:documents_l10n_be_hr_payroll.l10n_be_281_10_form_wizard

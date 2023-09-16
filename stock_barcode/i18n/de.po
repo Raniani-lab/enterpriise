@@ -1314,7 +1314,7 @@ msgstr "Quellpaket"
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_package_type
 msgid "Stock package type"
-msgstr "Standardpakettyp"
+msgstr "Typ des Lagerpakets"
 
 #. module: stock_barcode
 #. odoo-javascript

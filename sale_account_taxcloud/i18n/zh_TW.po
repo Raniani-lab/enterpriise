@@ -65,7 +65,7 @@ msgstr "無法從 TaxCloud 檢索稅款："
 #. module: sale_account_taxcloud
 #: model_terms:ir.ui.view,arch_db:sale_account_taxcloud.view_order_form_inherit
 msgid "Update taxes"
-msgstr ""
+msgstr "更新稅項"
 
 #. module: sale_account_taxcloud
 #: model:ir.model.fields,field_description:sale_account_taxcloud.field_sale_order__is_taxcloud

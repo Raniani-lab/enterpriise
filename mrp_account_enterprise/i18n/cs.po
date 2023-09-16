@@ -267,7 +267,7 @@ msgstr "Naposled změněno"
 #. module: mrp_account_enterprise
 #: model:ir.model,name:mrp_account_enterprise.model_report_mrp_account_enterprise_mrp_cost_structure
 msgid "MRP Cost Structure Report"
-msgstr ""
+msgstr "Výkaz struktury výrobních nákladů"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__production_id
@@ -278,7 +278,7 @@ msgstr "Výrobní příkaz"
 #. module: mrp_account_enterprise
 #: model:ir.model,name:mrp_account_enterprise.model_mrp_report
 msgid "Manufacturing Report"
-msgstr ""
+msgstr "Výkaz výroby"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.actions.act_window,help:mrp_account_enterprise.mrp_report_dashboard_action
@@ -311,7 +311,7 @@ msgstr "Produkt"
 #. module: mrp_account_enterprise
 #: model:ir.model,name:mrp_account_enterprise.model_report_mrp_account_enterprise_product_template_cost_structure
 msgid "Product Template Cost Structure Report"
-msgstr ""
+msgstr "Výkaz výrobních nákladů produktové šablony"
 
 #. module: mrp_account_enterprise
 #: model:ir.model,name:mrp_account_enterprise.model_product_product

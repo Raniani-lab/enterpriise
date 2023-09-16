@@ -227,7 +227,7 @@ msgstr "Model deduplikace"
 #. module: data_merge
 #: model:ir.model,name:data_merge.model_data_merge_record
 msgid "Deduplication Record"
-msgstr ""
+msgstr "Deduplikační záznam"
 
 #. module: data_merge
 #: model:ir.model,name:data_merge.model_data_merge_rule

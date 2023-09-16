@@ -412,7 +412,7 @@ msgstr "กำลังโหลด..."
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
 msgid "MRR Growth"
-msgstr ""
+msgstr "การเติบโตของ MRR"
 
 #. module: sale_subscription_dashboard
 #. odoo-python
@@ -487,7 +487,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
 msgid "New MRR"
-msgstr ""
+msgstr "MRR ใหม่"
 
 #. module: sale_subscription_dashboard
 #. odoo-python

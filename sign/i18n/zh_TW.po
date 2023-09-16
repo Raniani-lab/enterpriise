@@ -6,8 +6,8 @@
 # 敬雲 林 <chingyun@yuanchih-consult.com>, 2022
 # Benson <Benson.Dr@Gmail.com>, 2023
 # Martin Trigaux, 2023
-# Tony Ng, 2023
 # Wil Odoo, 2023
+# Tony Ng, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Tony Ng, 2023\n"
 "Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -82,8 +82,8 @@ msgid ""
 ")\n"
 "        has requested your signature on the document"
 msgstr ""
-")\n"
-"        has requested your signature on the document"
+"）\n"
+"        請求你為文件簽名"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
@@ -255,7 +255,7 @@ msgstr "<span class=\"o_stat_text\">Activity Logs</span>"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_partner_view_form
 msgid "<span class=\"o_stat_text\">Signature Requested</span>"
-msgstr "<span class=\"o_stat_text\">Signature Requested</span>"
+msgstr "<span class=\"o_stat_text\">請求簽名</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
@@ -910,7 +910,7 @@ msgstr "建立"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 msgid "Current status of the signature request"
-msgstr "Current status of the signature request"
+msgstr "簽名請求目前狀態"
 
 #. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_customer
@@ -1618,7 +1618,7 @@ msgstr "在這裡插入您的條款和條件..."
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__integrity
 msgid "Integrity of the Sign request"
-msgstr "Integrity of the Sign request"
+msgstr "簽名請求完整性"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_is_follower
@@ -1748,14 +1748,14 @@ msgstr "Log Date"
 #: code:addons/sign/models/sign_log.py:0
 #, python-format
 msgid "Log history of sign requests cannot be deleted !"
-msgstr "Log history of sign requests cannot be deleted !"
+msgstr "簽名請求的日誌記錄不可刪除！"
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_log.py:0
 #, python-format
 msgid "Log history of sign requests cannot be modified !"
-msgstr "Log history of sign requests cannot be modified !"
+msgstr "簽名請求的日誌記錄不可修改！"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
@@ -1859,7 +1859,7 @@ msgstr "多行文本"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_share_view_form
 msgid "Multiple Signature Requests"
-msgstr "Multiple Signature Requests"
+msgstr "多個簽名請求"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__my_activity_date_deadline
@@ -2127,7 +2127,7 @@ msgstr "哎呀"
 #: model:sign.template,redirect_url_text:sign.template_sign_5
 #: model:sign.template,redirect_url_text:sign.template_sign_tour
 msgid "Open Link"
-msgstr "Open Link"
+msgstr "開啟連結"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_option__value
@@ -2353,7 +2353,7 @@ msgstr "要求簽名"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__nb_total
 msgid "Requested Signatures"
-msgstr "Requested Signatures"
+msgstr "請求的簽名"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__required
@@ -2622,7 +2622,7 @@ msgstr "顯示在今天之前的下一個行動日期的所有記錄"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 msgid "Show standard terms &amp; conditions on signature requests"
-msgstr "Show standard terms &amp; conditions on signature requests"
+msgstr "在簽名請求顯示標準條款及條件"
 
 #. module: sign
 #. odoo-javascript
@@ -2656,7 +2656,7 @@ msgstr "Sign Default Terms and Conditions as a Web page"
 #: code:addons/sign/static/src/js/backend/sign_request.js:0
 #, python-format
 msgid "Sign Document"
-msgstr "Sign Document"
+msgstr "簽署文件"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_duplicate_template_pdf
@@ -2689,17 +2689,17 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__sign_request_id
 msgid "Sign Request"
-msgstr "Sign Request"
+msgstr "簽名請求"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__sign_request_item_id
 msgid "Sign Request Item"
-msgstr "Sign Request Item"
+msgstr "簽名請求項目"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__sign_send_request_id
 msgid "Sign Send Request"
-msgstr "Sign Send Request"
+msgstr "簽署傳送請求"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
@@ -2737,29 +2737,29 @@ msgstr "Sign all"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
 msgid "Sign document"
-msgstr "Sign document"
+msgstr "簽署文件"
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_template.py:0
 #, python-format
 msgid "Sign requests"
-msgstr "Sign requests"
+msgstr "簽名請求"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_log
 msgid "Sign requests access history"
-msgstr "Sign requests access history"
+msgstr "簽名請求存取記錄"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_send_request
 msgid "Sign send request"
-msgstr "Sign send request"
+msgstr "簽署傳送請求"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_send_request_signer
 msgid "Sign send request signer"
-msgstr "Sign send request signer"
+msgstr "簽署傳送請求簽署人"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
@@ -2847,41 +2847,41 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #, python-format
 msgid "Signature Request"
-msgstr "Signature Request"
+msgstr "簽名請求"
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/wizard/sign_send_request.py:0
 #, python-format
 msgid "Signature Request - %(file_name)s"
-msgstr "Signature Request - %(file_name)s"
+msgstr "簽名請求 － %(file_name)s"
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/wizard/sign_send_request.py:0
 #, python-format
 msgid "Signature Request - %s"
-msgstr "Signature Request - %s"
+msgstr "簽名請求 － %s"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_request_item
 msgid "Signature Request Item"
-msgstr "Signature Request Item"
+msgstr "簽名請求項目"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_request_item_action
 msgid "Signature Request Items"
-msgstr "Signature Request Items"
+msgstr "簽名請求項目"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item_value__sign_request_item_id
 msgid "Signature Request item"
-msgstr "Signature Request item"
+msgstr "簽名請求項目"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__sign_request_ids
 msgid "Signature Requests"
-msgstr "Signature Requests"
+msgstr "簽名請求"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__start_sign
@@ -2909,8 +2909,8 @@ msgid ""
 "Signature requested for template: %s\n"
 "Signatories: %s"
 msgstr ""
-"Signature requested for template: %s\n"
-"Signatories: %s"
+"請求為範本簽名：%s\n"
+"簽署人：%s"
 
 #. module: sign
 #. odoo-python
@@ -3224,10 +3224,6 @@ msgid ""
 "        Terms as Web Page - A link will be pasted at the bottom of every signature request email, leading to your content.\n"
 "        "
 msgstr ""
-"Terms in Email - The text will be displayed at the bottom of every signature request email.\n"
-"\n"
-"        Terms as Web Page - A link will be pasted at the bottom of every signature request email, leading to your content.\n"
-"        "
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__text
@@ -3330,8 +3326,7 @@ msgstr ""
 #, python-format
 msgid ""
 "The following roles must be set to create the signature request: %(roles)s"
-msgstr ""
-"The following roles must be set to create the signature request: %(roles)s"
+msgstr "必須設置以下角色才可建立簽名請求： %(roles)s"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
@@ -3427,7 +3422,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 msgid "There are no signatures request."
-msgstr "There are no signatures request."
+msgstr "沒有簽名請求。"
 
 #. module: sign
 #. odoo-python
@@ -3862,9 +3857,7 @@ msgstr ""
 msgid ""
 "You can't delete a template for which signature requests exist but you can "
 "archive it instead."
-msgstr ""
-"You can't delete a template for which signature requests exist but you can "
-"archive it instead."
+msgstr "不可刪除有簽名請求的範本，但可以封存。"
 
 #. module: sign
 #. odoo-python

@@ -3134,7 +3134,7 @@ msgstr "本會計期間或之前，尚有"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
 msgid "There are some"
-msgstr ""
+msgstr "有一些"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter

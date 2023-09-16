@@ -102,4 +102,4 @@ msgstr "km"
 #. module: website_delivery_fedex
 #: model:ir.model.fields.selection,name:website_delivery_fedex.selection__delivery_carrier__fedex_locations_radius_unit__mi
 msgid "mi"
-msgstr ""
+msgstr "mi"

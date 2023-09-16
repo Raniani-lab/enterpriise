@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Wichanon Jamwutthipreecha, 2022
+# Rasareeyar Lappiam, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Wichanon Jamwutthipreecha, 2022\n"
+"Last-Translator: Rasareeyar Lappiam, 2023\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,6 +28,9 @@ msgid ""
 "                        as\n"
 "                    </span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('planning_enabled', '=', False)]}\" class=\"oe_inline me-2\">\n"
+"                        เช่น\n"
+"                    </span>"
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.view_order_form_inherit_sale_planning
@@ -51,7 +55,7 @@ msgstr "<strong>รายการคำสั่งขาย — </strong>"
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__allocated_hours
 msgid "Allocated Time"
-msgstr ""
+msgstr "เวลาที่ถูกจัดสรร"
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
@@ -77,7 +81,7 @@ msgstr "วันที่สิ้นสุด"
 #. module: sale_planning
 #: model:planning.role,name:sale_planning.planning_role_tester
 msgid "Functional Tester"
-msgstr ""
+msgstr "เครื่องทดสอบฟังก์ชั่น"
 
 #. module: sale_planning
 #: model:product.template,name:sale_planning.technical_maintainance_product_product_template
@@ -98,12 +102,15 @@ msgid ""
 "when confirming the Sales Order. Only employees with this role will "
 "automatically be assigned shifts for Sales Orders containing this service."
 msgstr ""
+"หากเปิดใช้งาน "
+"กะงานจะถูกสร้างขึ้นโดยอัตโนมัติสำหรับบทบาทที่เลือกเมื่อยืนยันใบสั่งขาย "
+"เฉพาะพนักงานที่มีบทบาทนี้เท่านั้นที่จะได้รับมอบหมายกะงานสำหรับใบสั่งขายที่มีบริการนี้โดยอัตโนมัติ"
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_slot_view_search_inherit_sale_planning
 msgid "My Sales Orders"
-msgstr ""
+msgstr "คำสั่งขายของฉัน"
 
 #. module: sale_planning
 #: model_terms:ir.actions.act_window,help:sale_planning.sale_planning_action_schedule_by_sale_order
@@ -172,7 +179,7 @@ msgstr "บริการที่วางแผนได้ควรใช้
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_planning_analysis_report
 msgid "Planning Analysis Report"
-msgstr ""
+msgstr "รายงานการวิเคราะห์การวางแผน"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_first_sale_line_id
@@ -221,7 +228,7 @@ msgstr "สินค้า"
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_analysis_report__role_product_ids
 msgid "Role Product"
-msgstr ""
+msgstr "สินค้าหน้าที่"
 
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_sale_order
@@ -255,6 +262,9 @@ msgid ""
 "are automatically planned, the remaining hours of the sales order item, as "
 "well as the role defined on the service, are taken into account."
 msgstr ""
+"รายการในใบสั่งขายที่จะดำเนินการกะงานนี้ "
+"เมื่อมีการวางแผนใบสั่งขายโดยอัตโนมัติ ชั่วโมงที่เหลือของรายการในใบสั่งขาย "
+"รวมถึงหน้าที่ที่ถูกกำหนดไว้ในบริการจะถูกนำมาพิจารณาด้วย"
 
 #. module: sale_planning
 #: model:ir.actions.act_window,name:sale_planning.sale_planning_action_schedule_by_sale_order
@@ -266,7 +276,7 @@ msgstr "กำหนดเวลาโดยคำสั่งขาย"
 msgid ""
 "Schedule your human and material resources across roles, projects and sales "
 "orders."
-msgstr ""
+msgstr "กำหนดเวลาทรัพยากรบุคคลและวัสดุของคุณตามหน้าที่ โปรเจกต์ และใบสั่งขาย"
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
@@ -321,6 +331,7 @@ msgid ""
 "This Sale Order Item doesn't have a target value of planned hours. Planned "
 "hours :"
 msgstr ""
+"รายการสั่งขายนี้ไม่มีค่าเป้าหมายของชั่วโมงที่วางแผนไว้ ชั่วโมงที่วางแผนไว้:"
 
 #. module: sale_planning
 #. odoo-javascript
@@ -340,7 +351,7 @@ msgstr "ยังไม่กำหนดเวลา"
 #: code:addons/sale_planning/models/sale_order.py:0
 #, python-format
 msgid "View Planning"
-msgstr ""
+msgstr "ดูการวางแผน"
 
 #. module: sale_planning
 #. odoo-javascript
@@ -352,12 +363,12 @@ msgstr ""
 #. module: sale_planning
 #: model:planning.role,name:sale_planning.planning_role_planner
 msgid "Work Planner"
-msgstr ""
+msgstr "ผู้วางแผนการทำงาน"
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.product_template_form_view_invoice_policy_inherit_sale_planning
 msgid "e.g. Consultant"
-msgstr ""
+msgstr "เช่น ที่ปรึกษา"
 
 #. module: sale_planning
 #. odoo-python

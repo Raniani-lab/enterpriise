@@ -250,7 +250,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_campaign__is_auto_campaign
 msgid "Allows us to filter relevant Campaigns"
-msgstr ""
+msgstr "関連するキャンペーンをフィルタリングできます。"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__domain
@@ -309,7 +309,7 @@ msgstr "キャンペーン"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__name
 msgid "Campaign Identifier"
-msgstr ""
+msgstr "キャンペーン識別子"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__title

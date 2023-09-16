@@ -8,7 +8,6 @@
 # Tommi Rintala <tommi.rintala@gmail.com>, 2022
 # Miku Laitinen <miku.laitinen@gmail.com>, 2022
 # Joakim Weckman, 2022
-# Eino Mäkitalo <eino.makitalo@netitbe.fi>, 2022
 # Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2022
 # Tuomas Lyyra <tuomas.lyyra@legenda.fi>, 2022
 # Martin Trigaux, 2022
@@ -35,7 +34,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "(Net sales - Total expenses) / Net sales"
-msgstr ""
+msgstr "(Liikevaihto - Kokonaiskustannukset) / Liikevaihto"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -99,14 +98,14 @@ msgstr "< 3 %: ei ole tehokas liiketoiminnan luomisessa"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 45: company gets paid for sales quickly"
-msgstr ""
+msgstr "< 45: yritys saa nopeasti maksun myynnistä"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 45: company liquidates debts to suppliers quickly"
-msgstr ""
+msgstr "< 45: yritys maksaa velat toimittajille nopeasti"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -176,14 +175,14 @@ msgstr "> 5: yritys omistaa paljon velkaa eikä paljon omaa rahaa"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 60: company might not get paid for sales quickly enough"
-msgstr ""
+msgstr "> 60: yritys ei ehkä saa maksua myynnistä riittävän nopeasti"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 70: company might be slow to pay suppliers"
-msgstr ""
+msgstr "> 70: yritys saattaa olla hidas maksamaan tavarantoimittajille"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -236,7 +235,7 @@ msgstr "Omien saatavien laskujen maksamisen keskimääräinen aika (päivää)"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Average payable days"
-msgstr ""
+msgstr "Keskimääräiset maksettavat päivät"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -251,7 +250,7 @@ msgstr "Tase"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Bank and Cash"
-msgstr "käteisvarat (pankki, käteinen)"
+msgstr "Käteisvarat (pankki, käteinen)"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -435,7 +434,7 @@ msgstr "Velka suhteessa omaan pääomaan"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Depreciation"
-msgstr "poistot"
+msgstr "Poistot"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -449,7 +448,7 @@ msgstr "EBIT / liikevaihto"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Equity"
-msgstr "oma pääoma"
+msgstr "Oma pääoma"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -473,7 +472,7 @@ msgstr "Taloudellinen riippumattomuus"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Fixed Assets"
-msgstr "käyttöomaisuus"
+msgstr "Käyttöomaisuus"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -600,14 +599,14 @@ msgstr "Liikevaihto"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Non-current Assets"
-msgstr "pysyvät vastaavat"
+msgstr "Pysyvät vastaavat"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Non-current Liabilities"
-msgstr "pitkäaikaiset velat"
+msgstr "Pitkäaikaiset velat"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -685,7 +684,7 @@ msgstr "Marginaali"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Other Income"
-msgstr "muut tulot"
+msgstr "Muut tulot"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -699,7 +698,7 @@ msgstr "Muut muuttujat"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Payable"
-msgstr "ostovelat"
+msgstr "Ostovelat"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -717,7 +716,7 @@ msgstr "Ostovelat"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Payables / Expenses * 30"
-msgstr ""
+msgstr "Velat / Kulut * 30"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -740,7 +739,7 @@ msgstr "Asema"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Prepayments"
-msgstr "ennakot"
+msgstr "Pnnakot"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -812,7 +811,7 @@ msgstr "Saatavat"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Receivables / Income * 30"
-msgstr ""
+msgstr "Saamiset / tulot * 30"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -856,14 +855,14 @@ msgstr "Tekninen nimi"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Total Current assets"
-msgstr ""
+msgstr "Lyhytaikaiset varat yhteensä"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Total Current liabilities"
-msgstr ""
+msgstr "Lyhytaikaiset velat yhteensä"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1015,7 +1014,7 @@ msgstr "ostovelat"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "payable + credit card + current liabilities"
-msgstr ""
+msgstr "velat + luottokortti + lyhytaikaiset velat"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1114,13 +1113,14 @@ msgstr ""
 #, python-format
 msgid "receivable + bank and cash + current assets + prepayments"
 msgstr ""
+"saamiset + pankki- ja käteisvarat + lyhytaikaiset saamiset + ennakkomaksut"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "receivable + bank and cash + prepayments"
-msgstr ""
+msgstr "saamiset + pankki- ja kassavarat + ennakkomaksut"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

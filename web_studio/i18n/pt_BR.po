@@ -6,10 +6,10 @@
 # douglas custodio <douglascstd@yahoo.com>, 2022
 # Hildeberto Abreu Magalhães <hildeberto@gmail.com>, 2022
 # Martin Trigaux, 2022
-# Éder Brito <britoederr@gmail.com>, 2023
 # Layna Nascimento, 2023
 # adrianojprado <adrianojprado@gmail.com>, 2023
 # Kevilyn Rosa, 2023
+# Éder Brito <britoederr@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -17,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Kevilyn Rosa, 2023\n"
+"Last-Translator: Éder Brito <britoederr@gmail.com>, 2023\n"
 "Language-Team: Portuguese (Brazil) (https://app.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1362,7 +1362,7 @@ msgstr "Valores Padrão"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Default value"
-msgstr ""
+msgstr "Valor padão"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3235,7 +3235,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/sidebar_common.xml:0
 #, python-format
 msgid "Remove from View"
-msgstr "Remover da View"
+msgstr "Remover da Visualização"
 
 #. module: web_studio
 #. odoo-javascript

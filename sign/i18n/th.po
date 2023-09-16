@@ -1595,7 +1595,7 @@ msgstr "ข้อมูล"
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__initial
 msgid "Initial"
-msgstr ""
+msgstr "อักษรย่อ"
 
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_initial

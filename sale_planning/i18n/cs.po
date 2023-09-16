@@ -173,7 +173,7 @@ msgstr ""
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_planning_analysis_report
 msgid "Planning Analysis Report"
-msgstr ""
+msgstr "Analýza plánování"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_first_sale_line_id

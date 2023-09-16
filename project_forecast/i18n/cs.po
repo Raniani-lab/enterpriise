@@ -75,7 +75,7 @@ msgstr "Plánování"
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_planning_analysis_report
 msgid "Planning Analysis Report"
-msgstr ""
+msgstr "Analýza plánování"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_planning_slot

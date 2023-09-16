@@ -1109,7 +1109,7 @@ msgstr "哎呀"
 #. module: hr_contract_salary
 #: model:sign.template,redirect_url_text:hr_contract_salary.sign_template_cdi_developer
 msgid "Open Link"
-msgstr "Open Link"
+msgstr "開啟連結"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__origin_contract_id
@@ -1423,7 +1423,7 @@ msgstr ""
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #, python-format
 msgid "Signature Request - %s"
-msgstr "Signature Request - %s"
+msgstr "簽名請求 － %s"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__slider

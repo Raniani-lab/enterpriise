@@ -90,7 +90,7 @@ msgstr "Quality Control Point"
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.x_quality_check_worksheet_template_1_ir_model_1
 msgid "Quality Issues"
-msgstr ""
+msgstr "Problémy s kvalitou"
 
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check__worksheet_template_id
@@ -101,7 +101,7 @@ msgstr ""
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_report_quality_control_quality_worksheet
 msgid "Quality Worksheet Report"
-msgstr ""
+msgstr "Dokument formuláře kontroly kvality"
 
 #. module: quality_control_worksheet
 #: model:ir.actions.act_window,name:quality_control_worksheet.quality_control_worksheet_template_action_settings
@@ -127,7 +127,7 @@ msgstr "Předloha"
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_quality_check_wizard
 msgid "Wizard for Quality Check Pop Up"
-msgstr ""
+msgstr "Průvodce vyskakovacím oknem kontroly kvality"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1

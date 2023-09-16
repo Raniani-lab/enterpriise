@@ -317,7 +317,7 @@ msgstr ""
 msgid ""
 "This Sale Order Item doesn't have a target value of planned hours. Planned "
 "hours :"
-msgstr ""
+msgstr "此銷售訂單項目沒有預算工時的目標值。 預算工時："
 
 #. module: sale_planning
 #. odoo-javascript

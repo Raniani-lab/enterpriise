@@ -1009,7 +1009,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_remaining_value
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_remaining_value
 msgid "Depreciable Value"
-msgstr ""
+msgstr "Amortizirajuća vrijednost"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -2023,7 +2023,7 @@ msgstr "Ukupno"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__total_depreciable_value
 msgid "Total Depreciable Value"
-msgstr ""
+msgstr "Ukupna amortizirajuća vrijednost"
 
 #. module: account_asset
 #. odoo-python

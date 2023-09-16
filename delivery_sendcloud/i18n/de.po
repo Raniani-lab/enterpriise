@@ -456,7 +456,7 @@ msgstr "Etwas ist schiefgelaufen. Bitte versuchen Sie es später erneut!"
 #. module: delivery_sendcloud
 #: model:ir.model,name:delivery_sendcloud.model_stock_package_type
 msgid "Stock package type"
-msgstr "Standardpakettyp"
+msgstr "Typ des Lagerpakets"
 
 #. module: delivery_sendcloud
 #. odoo-python

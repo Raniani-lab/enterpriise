@@ -9,14 +9,15 @@
 # Nuno Silva <nuno.silva@arxi.pt>, 2022
 # Martin Trigaux, 2022
 # Manuela Silva <mmsrs@sky.com>, 2023
+# Carlos Teles, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 06:16+0000\n"
+"POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Manuela Silva <mmsrs@sky.com>, 2023\n"
+"Last-Translator: Carlos Teles, 2023\n"
 "Language-Team: Portuguese (https://app.transifex.com/odoo/teams/41243/pt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,7 +40,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:survey.survey,title:hr_appraisal_survey.appraisal_360_feedback_template
 msgid "360 Feedback"
-msgstr ""
+msgstr "Avaliação 360"
 
 #. module: hr_appraisal_survey
 #: model:mail.template,body_html:hr_appraisal_survey.mail_template_appraisal_ask_feedback
@@ -47,13 +48,13 @@ msgid ""
 "<div style=\"margin: 0px; padding: 0px;\">\n"
 "                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
 "                        Dear <t t-out=\"object.partner_id.name or ''\">Brandon Freeman</t>,\n"
-"                        <br/><br/>\n"
+"                        <br><br>\n"
 "                        An appraisal feedback was requested about <t t-out=\"object.appraisal_id.employee_id.name or 'this'\">this</t>.\n"
-"                        <br/>\n"
+"                        <br>\n"
 "                        Please take time to fill the survey.\n"
-"                        <br/><br/>\n"
+"                        <br><br>\n"
 "                        Thank you!\n"
-"                        <br/><br/>\n"
+"                        <br><br>\n"
 "                        <t t-if=\"ctx.get('recipient_users')\">\n"
 "                            <p style=\"margin: 16px 0px 16px 0px;\">\n"
 "                                <a t-att-href=\"ctx.get('url')\" style=\"background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;\">\n"

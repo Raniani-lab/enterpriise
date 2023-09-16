@@ -139,7 +139,7 @@ msgstr "<span class=\"ms-2\"> Stunden/Woche</span>"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Payroll Rules</span>"
-msgstr "<span class=\"o_form_label\">Regeln für die Lohnbuchhaltung</span>"
+msgstr "<span class=\"o_form_label\">Personalabrechnungsregeln</span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_form

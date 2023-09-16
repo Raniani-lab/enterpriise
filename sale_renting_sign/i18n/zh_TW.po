@@ -23,12 +23,12 @@ msgstr ""
 #. module: sale_renting_sign
 #: model:ir.model.fields,field_description:sale_renting_sign.field_sale_order__sign_request_count
 msgid "# of Signature Requests"
-msgstr ""
+msgstr "簽名請求數目"
 
 #. module: sale_renting_sign
 #: model_terms:ir.ui.view,arch_db:sale_renting_sign.message_signature_link
 msgid "A document has been signed and a copy attached to this order:"
-msgstr ""
+msgstr "文件已簽署，副本在此訂單附上："
 
 #. module: sale_renting_sign
 #: model_terms:ir.ui.view,arch_db:sale_renting_sign.rental_sign_wizard_view_form
@@ -58,12 +58,12 @@ msgstr "建立於"
 #. module: sale_renting_sign
 #: model:ir.model.fields,field_description:sale_renting_sign.field_res_config_settings__rental_sign_tmpl_id
 msgid "Default Document"
-msgstr ""
+msgstr "預設文件"
 
 #. module: sale_renting_sign
 #: model:ir.model.fields,field_description:sale_renting_sign.field_res_company__rental_sign_tmpl_id
 msgid "Default Document Template for Rentals"
-msgstr ""
+msgstr "租賃預設文件範本"
 
 #. module: sale_renting_sign
 #: model:ir.model.fields,field_description:sale_renting_sign.field_rental_sign_wizard__display_name
@@ -78,7 +78,7 @@ msgstr "文件模板"
 #. module: sale_renting_sign
 #: model_terms:ir.ui.view,arch_db:sale_renting_sign.rental_order_inherit_rental_sign
 msgid "Document(s) Signed"
-msgstr ""
+msgstr "已簽署文件"
 
 #. module: sale_renting_sign
 #: model:ir.model.fields,field_description:sale_renting_sign.field_rental_sign_wizard__id
@@ -103,7 +103,7 @@ msgstr "最後更新於"
 #. module: sale_renting_sign
 #: model:sign.template,redirect_url_text:sale_renting_sign.template_rental_sign
 msgid "Open Link"
-msgstr "Open Link"
+msgstr "開啟連結"
 
 #. module: sale_renting_sign
 #: model:ir.model,name:sale_renting_sign.model_sale_order
@@ -121,14 +121,14 @@ msgstr ""
 #. module: sale_renting_sign
 #: model_terms:ir.ui.view,arch_db:sale_renting_sign.rental_sign_wizard_view_form
 msgid "Sign Document"
-msgstr "Sign Document"
+msgstr "簽署文件"
 
 #. module: sale_renting_sign
 #: model:ir.actions.act_window,name:sale_renting_sign.rental_sign_documents
 #: model_terms:ir.ui.view,arch_db:sale_renting_sign.rental_order_inherit_rental_sign
 #: model_terms:ir.ui.view,arch_db:sale_renting_sign.rental_sign_wizard_view_form
 msgid "Sign Documents"
-msgstr ""
+msgstr "簽署多份文件"
 
 #. module: sale_renting_sign
 #: model:ir.model,name:sale_renting_sign.model_rental_sign_wizard
@@ -138,17 +138,17 @@ msgstr ""
 #. module: sale_renting_sign
 #: model:ir.model,name:sale_renting_sign.model_sign_send_request
 msgid "Sign send request"
-msgstr "Sign send request"
+msgstr "簽署傳送請求"
 
 #. module: sale_renting_sign
 #: model:ir.model,name:sale_renting_sign.model_sign_request
 msgid "Signature Request"
-msgstr "Signature Request"
+msgstr "簽名請求"
 
 #. module: sale_renting_sign
 #: model:ir.model.fields,field_description:sale_renting_sign.field_sale_order__sign_request_ids
 msgid "Signature Requests"
-msgstr "Signature Requests"
+msgstr "簽名請求"
 
 #. module: sale_renting_sign
 #: model:ir.model.fields,help:sale_renting_sign.field_res_company__rental_sign_tmpl_id

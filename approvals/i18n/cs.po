@@ -155,7 +155,7 @@ msgstr "Typ schválení"
 #. module: approvals
 #: model:ir.model,name:approvals.model_approval_category_approver
 msgid "Approval Type Approver"
-msgstr ""
+msgstr "Schvalovatel typu schválení"
 
 #. module: approvals
 #: model:ir.ui.menu,name:approvals.approvals_menu_root

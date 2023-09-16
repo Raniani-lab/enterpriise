@@ -2806,7 +2806,7 @@ msgstr "Regole"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
 msgid "Running Balance"
-msgstr ""
+msgstr "Saldo aperto"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -3303,7 +3303,7 @@ msgstr "Bilancio di verifica"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_trial_balance_report_handler
 msgid "Trial Balance Custom Handler"
-msgstr ""
+msgstr "Gestione personalizzata saldo di prova"
 
 #. module: account_reports
 #. odoo-python

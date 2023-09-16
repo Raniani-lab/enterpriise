@@ -7,7 +7,6 @@
 # Vasiliy Korobatov <korobatov@gmail.com>, 2022
 # Ekaterina <nawsikaya@bk.ru>, 2022
 # ILMIR <karamov@it-projects.info>, 2022
-# Сергей Шебанин <sergey@shebanin.ru>, 2022
 # sergeiruzkiicode <sergei.ruzki@icode.by>, 2022
 # Ivan Kropotkin <yelizariev@itpp.dev>, 2022
 # Gennady Marchenko <gennadym@gmail.com>, 2022
@@ -15,6 +14,7 @@
 # Martin Trigaux, 2023
 # Sergey Vernyayev, 2023
 # alenafairy, 2023
+# Сергей Шебанин <sergey@shebanin.ru>, 2023
 # 
 msgid ""
 msgstr ""
@@ -22,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: alenafairy, 2023\n"
+"Last-Translator: Сергей Шебанин <sergey@shebanin.ru>, 2023\n"
 "Language-Team: Russian (https://app.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1079,7 +1079,7 @@ msgstr "Единица измерения"
 #. module: mrp_workorder
 #: model:ir.actions.server,name:mrp_workorder.production_order_unplan_server_action
 msgid "Unplan orders"
-msgstr ""
+msgstr "Убрать из плана"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_uom_id
@@ -1117,6 +1117,9 @@ msgid ""
 "            The tablet provides worksheets for your workers and allow them to scrap products, track time,\n"
 "            launch a maintenance request, perform quality tests, etc."
 msgstr ""
+"Используйте панель управления производственного центра для работы с задачами в цехе.\n"
+"Планшет предоставляет рабочие листы для ваших работников и позволяет им утилизировать продукцию, отслеживать время и т. д.\n"
+"отправьте запрос на техническое обслуживание, запустите прверку качества и т.д."
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_check_view_form_tablet
@@ -1181,6 +1184,8 @@ msgid ""
 "Work orders are operations to do as part of a manufacturing order.\n"
 "            Operations are defined in the bill of materials or added in the manufacturing order directly."
 msgstr ""
+"Заказы на выполнение работ - это операции, выполняемые в рамках производственного заказа.\n"
+"Операции определяются в спецификации или добавляются непосредственно в производственный заказ."
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__working_state

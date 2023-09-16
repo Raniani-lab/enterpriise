@@ -45,7 +45,7 @@ msgstr "Metodo per cassa"
 #. module: account_reports_cash_basis
 #: model:ir.model.fields,help:account_reports_cash_basis.field_account_report__filter_cash_basis
 msgid "Display the option to switch to cash basis mode."
-msgstr ""
+msgstr "Visualizza l'opzione per il passaggio alla modalità per cassa."
 
 #. module: account_reports_cash_basis
 #: model:ir.model,name:account_reports_cash_basis.model_account_move_line

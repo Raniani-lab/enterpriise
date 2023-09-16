@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Benson <Benson.Dr@Gmail.com>, 2023
-# Tony Ng, 2023
 # Martin Trigaux, 2023
+# Tony Ng, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-28 12:54+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Tony Ng, 2023\n"
 "Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -109,6 +109,35 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px;\">\n"
+"                        <t t-if=\"object.id != object.commercial_partner_id.id\"><t t-out=\"object.name or ''\"></t> (<t t-out=\"object.commercial_partner_id.name or ''\"></t>) 你好！</t>\n"
+"                        <t t-else=\"\"><t t-out=\"object.name or ''\"></t> 你好！</t>\n"
+"                        <br>\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        若非我們出錯，記錄顯示閣下有 <t t-out=\"format_amount(object.total_overdue, object.currency_id) or ''\"></t>\n"
+"                        款項仍未付清。敬請閣下立即採取適當行動，確保能在未來 8 天內完成繳款。\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        若在收到本郵件前，閣下已完成繳付上述款項，請不用理會本郵件。\n"
+"                        如有疑問，請聯絡 Odoo 會計部門。謝謝！\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        敬祝  安康\n"
+"                        <t t-if=\"not is_html_empty(object._get_followup_responsible().signature)\">\n"
+"                            <br>\n"
+"                            <t t-out=\"object._get_followup_responsible().signature\"></t>\n"
+"                        </t>\n"
+"                        <t t-else=\"\">\n"
+"                            <br>\n"
+"                            --\n"
+"                            <br>\n"
+"                            <t t-out=\"object._get_followup_responsible().name\"></t>\n"
+"                        </t>\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
 
 #. module: account_followup
 #: model:mail.template,body_html:account_followup.demo_followup_email_template_4

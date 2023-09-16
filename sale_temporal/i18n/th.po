@@ -56,7 +56,7 @@ msgstr "บริษัทเดียว"
 #: model_terms:ir.actions.act_window,help:sale_temporal.product_pricing_action
 #: model_terms:ir.actions.act_window,help:sale_temporal.sale_temporal_recurrence_action
 msgid "Create a new recurrence"
-msgstr ""
+msgstr "สร้างการเกิดซ้ำใหม่"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__create_uid
@@ -243,7 +243,7 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_product_pricing
 msgid "Pricing rule of temporal products"
-msgstr ""
+msgstr "กฎการกำหนดราคาของสินค้าชั่วคราว"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_product_template
@@ -288,7 +288,7 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_temporal_recurrence
 msgid "Sale temporal Recurrence"
-msgstr ""
+msgstr "การขายที่เกิดซ้ำชั่วคราว"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_order
@@ -320,7 +320,7 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_order_line__temporal_type
 msgid "Temporal Type"
-msgstr ""
+msgstr "ประเภทชั่วคราว"
 
 #. module: sale_temporal
 #: model:ir.model.constraint,message:sale_temporal.constraint_sale_temporal_recurrence_temporal_recurrence_duration

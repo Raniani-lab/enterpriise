@@ -59,6 +59,8 @@ msgstr "Myyntitilausrivi"
 msgid ""
 "This product pricing is not compatible with the product(s) in your cart."
 msgstr ""
+"Tämä tuotteen hinnoittelu ei ole yhteensopiva ostoskorissasi olevan tuotteen"
+" kanssa."
 
 #. module: website_sale_subscription
 #. odoo-python

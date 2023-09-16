@@ -65,7 +65,7 @@ msgstr "Hromadné přesuny"
 #. module: stock_barcode_picking_batch
 #: model:ir.model,name:stock_barcode_picking_batch.model_stock_barcode_cancel_operation
 msgid "Cancel Operation"
-msgstr ""
+msgstr "Zrušení přesunu"
 
 #. module: stock_barcode_picking_batch
 #. odoo-python

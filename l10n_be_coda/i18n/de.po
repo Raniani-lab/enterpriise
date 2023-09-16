@@ -2889,7 +2889,7 @@ msgstr ""
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "terminal number"
-msgstr ""
+msgstr "Terminalnummer"
 
 #. module: l10n_be_coda
 #. odoo-python
@@ -2912,7 +2912,7 @@ msgstr "nicht definiert"
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "unit price"
-msgstr ""
+msgstr "Einzelpreis"
 
 #. module: l10n_be_coda
 #. odoo-python

@@ -522,7 +522,7 @@ msgstr "จัดสรรชั่วโมง"
 #: model:ir.model.fields,field_description:planning.field_planning_slot__allocated_hours
 #: model_terms:ir.ui.view,arch_db:planning.resource_planning
 msgid "Allocated Time"
-msgstr ""
+msgstr "เวลาที่ถูกจัดสรร"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__allocated_percentage
@@ -1506,7 +1506,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model,name:planning.model_planning_analysis_report
 msgid "Planning Analysis Report"
-msgstr ""
+msgstr "รายงานการวิเคราะห์การวางแผน"
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_recurrency
@@ -1779,7 +1779,7 @@ msgstr ""
 msgid ""
 "Schedule your human and material resources across roles, projects and sales "
 "orders."
-msgstr ""
+msgstr "กำหนดเวลาทรัพยากรบุคคลและวัสดุของคุณตามหน้าที่ โปรเจกต์ และใบสั่งขาย"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_hr_employee__employee_token
@@ -2218,7 +2218,7 @@ msgstr "ผู้ใช้"
 #: model:ir.actions.server,name:planning.model_hr_employee_public_action_planning_view
 #, python-format
 msgid "View Planning"
-msgstr ""
+msgstr "ดูการวางแผน"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles

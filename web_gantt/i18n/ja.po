@@ -6,6 +6,7 @@
 # Ryoko Tsuda <ryoko@quartile.co>, 2022
 # Noma Yuki, 2022
 # Martin Trigaux, 2023
+# Junko Augias, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Junko Augias, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -114,6 +115,7 @@ msgid ""
 "Gantt must have a 'dependency_inverted_field' attribute once the "
 "'dependency_field' is specified"
 msgstr ""
+"'dependency_field' が指定されたら、ガントは 'dependency_inverted_field' を持つ必要があります。"
 
 #. module: web_gantt
 #. odoo-python
@@ -141,7 +143,7 @@ msgstr "ガントビューのフィールドが不十分です!"
 #: code:addons/web_gantt/models/ir_ui_view.py:0
 #, python-format
 msgid "Invalid attributes (%s) in gantt view. Attributes must be in (%s)"
-msgstr ""
+msgstr "ガントビューの属性 (%s)が無効です。属性は(%s)である必要があります。"
 
 #. module: web_gantt
 #. odoo-python
@@ -213,7 +215,7 @@ msgstr "前"
 msgid ""
 "Records that are in the past cannot be automatically rescheduled. They "
 "should be manually rescheduled instead."
-msgstr ""
+msgstr "過去の記録は自動的に再スケジュールできません。代わりに手動で再スケジュールする必要があります。"
 
 #. module: web_gantt
 #. odoo-javascript
@@ -267,7 +269,7 @@ msgstr "年"
 #: code:addons/web_gantt/models/models.py:0
 #, python-format
 msgid "You cannot reschedule %s towards %s."
-msgstr ""
+msgstr "%sを %sへ再スケジュールできません。"
 
 #. module: web_gantt
 #. odoo-python
@@ -276,4 +278,4 @@ msgstr ""
 msgid ""
 "You cannot reschedule tasks that do not follow a direct dependency path. "
 "Only the first task has been automatically rescheduled."
-msgstr ""
+msgstr "直接の依存パスに従わないタスクのスケジュールは変更できません。最初のタスクだけが自動的に再スケジュールされました。"

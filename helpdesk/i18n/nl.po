@@ -40,7 +40,7 @@ msgstr "# Beoordelingen"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__sla_policy_count
 msgid "# SLA Policy"
-msgstr "# SLA-aspraak"
+msgstr "# SLA afspraken"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__urgent_ticket
@@ -847,7 +847,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__auto_assignment
 msgid "Automatic Assignment"
-msgstr "Automatisch toewijzen"
+msgstr "Automatische toewijzing"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__auto_close_ticket
@@ -2700,7 +2700,7 @@ msgstr "Telefoon"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Plan onsite interventions"
-msgstr "Plan interventies ter plaatse"
+msgstr "Plan interventies op locatie"
 
 #. module: helpdesk
 #. odoo-javascript
@@ -2861,7 +2861,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_tree
 msgid "Reach Stage"
-msgstr "Behaal fase"
+msgstr "Bereikfase"
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_sla_status__status__reached
@@ -3415,7 +3415,7 @@ msgstr "Succesratio-analyse"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__sla_success
 msgid "Success SLA Policy"
-msgstr "SLA-afspraak voor succes"
+msgstr "Gehaalde SLA afspraak"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tag_view_tree

@@ -975,22 +975,22 @@ msgstr "Montant"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__ask_payment
 msgid "Ask Payment"
-msgstr "Demander le paiement"
+msgstr "Demande de formules de paiement"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__ask_restitution
 msgid "Ask Restitution"
-msgstr "Demander la restitution"
+msgstr "Demande de restitution"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.filter_info_template
 msgid "Ask payment:"
-msgstr "Demander le paiement :"
+msgstr "Demande de formules de paiement :"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.filter_info_template
 msgid "Ask restitution:"
-msgstr "Demander la restitution :"
+msgstr "Demande de restitution :"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_attachment_count
@@ -1089,12 +1089,12 @@ msgstr "Ville du partenaire quand la fiche a été créée"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__client_nihil
 msgid "Client Nihil"
-msgstr "Client nihil"
+msgstr "Listing annuel clients néant"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.filter_info_template
 msgid "Client nihil:"
-msgstr "Client nihil :"
+msgstr "Listing annuel clients néant :"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_wizard_view_form

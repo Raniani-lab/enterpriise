@@ -196,14 +196,14 @@ msgstr "アクセスグループ"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Access records from cell"
-msgstr ""
+msgstr "セルからのレコードへのアクセス"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Access records from graph"
-msgstr ""
+msgstr "グラフからのレコードへのアクセス"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_mail_activity_type__category
@@ -354,7 +354,7 @@ msgstr "アバターを追加する"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Add details to your records with an embedded list view"
-msgstr ""
+msgstr "埋め込みリストビューでレコードに詳細を追加"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1896,7 +1896,7 @@ msgstr "最初のステータス"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "First dimension"
-msgstr ""
+msgstr "最初の次元"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2748,7 +2748,7 @@ msgstr "新しいフィルター"
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "New Lines"
-msgstr ""
+msgstr "新しい行"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3051,7 +3051,7 @@ msgstr "フィールドを指定してください。"
 #: code:addons/web_studio/static/src/client_action/view_editors/kanban/kanban_editor_record.xml:0
 #, python-format
 msgid "Preview is not available"
-msgstr ""
+msgstr "プレビューは利用できません"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3127,7 +3127,7 @@ msgstr "クイック作成"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Quick Create Field"
-msgstr ""
+msgstr "クイック作成フィールド"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_qweb
@@ -3371,14 +3371,14 @@ msgstr "取り消す"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Row grouping - First level"
-msgstr ""
+msgstr "列のグループ分け - 第1レベル"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Row grouping - Second level"
-msgstr ""
+msgstr "列のグループ分け - 第2レベル"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_rule
@@ -3437,7 +3437,7 @@ msgstr "2番目のステータス"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Second dimension"
-msgstr ""
+msgstr "第2次元"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3932,7 +3932,7 @@ msgstr "次の承認がありません。"
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "The following fields are currently not in the view."
-msgstr ""
+msgstr "以下のフィールドは現在のビューにありません。"
 
 #. module: web_studio
 #. odoo-python
@@ -4253,7 +4253,7 @@ msgstr "ユーザーアバタープレースホルダー"
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "User is not a member of the selected group."
-msgstr ""
+msgstr "ユーザは選択されたグループのメンバではありません。"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4361,7 +4361,7 @@ msgstr "ルールを現在のユーザーが承認できるかどうか"
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_model__abstract
 msgid "Whether this model is abstract"
-msgstr ""
+msgstr "このモデルが抽象的かどうか"
 
 #. module: web_studio
 #. odoo-javascript

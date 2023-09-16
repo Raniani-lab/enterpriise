@@ -290,7 +290,7 @@ msgstr "Zrušit"
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_barcode_cancel_operation
 msgid "Cancel Operation"
-msgstr ""
+msgstr "Zrušení přesunu"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_cancel_operation_view
@@ -1277,7 +1277,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_package_type
 msgid "Stock package type"
-msgstr ""
+msgstr "Typ balení"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1540,7 +1540,7 @@ msgstr "typ operace"
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "package"
-msgstr ""
+msgstr "balení"
 
 #. module: stock_barcode
 #. odoo-javascript

@@ -1033,7 +1033,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_action
 msgid "Document Workflow Tag Action"
-msgstr ""
+msgstr "Akce nad štítkem dokumentu"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__type__ids
@@ -1069,12 +1069,12 @@ msgstr "Dokumenty"
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder_deletion_wizard
 msgid "Documents Folder Deletion Wizard"
-msgstr ""
+msgstr "Průvodce smazáním složky"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_link_to_record_wizard
 msgid "Documents Link to Record"
-msgstr ""
+msgstr "Napojení dokumentů na záznam"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_share
@@ -1084,12 +1084,12 @@ msgstr "Sdílení dokumentů"
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder
 msgid "Documents Workspace"
-msgstr ""
+msgstr "Složka dokumentů"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_mixin
 msgid "Documents creation mixin"
-msgstr ""
+msgstr "Mixin vytváření dokumentů"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
@@ -1235,7 +1235,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model,name:documents.model_ir_binary
 msgid "File streaming helper model for controllers"
-msgstr ""
+msgstr "Model podpory streamování souborů pro kontrolery"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form

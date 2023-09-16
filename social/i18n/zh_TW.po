@@ -751,7 +751,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Like"
-msgstr ""
+msgstr "讚好"
 
 #. module: social
 #. odoo-javascript

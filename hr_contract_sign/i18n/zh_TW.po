@@ -215,7 +215,7 @@ msgstr ""
 #. module: hr_contract_sign
 #: model:sign.template,redirect_url_text:hr_contract_sign.template_sign_termination
 msgid "Open Link"
-msgstr "Open Link"
+msgstr "開啟連結"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
@@ -242,7 +242,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_history__sign_request_ids
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_employee__sign_request_ids
 msgid "Requested Signatures"
-msgstr "Requested Signatures"
+msgstr "請求的簽名"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__responsible_id
@@ -291,14 +291,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 #, python-format
 msgid "Signature Request"
-msgstr "Signature Request"
+msgstr "簽名請求"
 
 #. module: hr_contract_sign
 #. odoo-python
 #: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
 #, python-format
 msgid "Signature Request - %s"
-msgstr "Signature Request - %s"
+msgstr "簽名請求 － %s"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__subject

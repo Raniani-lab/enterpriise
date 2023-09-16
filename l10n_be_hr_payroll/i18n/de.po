@@ -701,27 +701,27 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "275"
-msgstr ""
+msgstr "275"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "276"
-msgstr ""
+msgstr "276"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "277"
-msgstr ""
+msgstr "277"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "278"
-msgstr ""
+msgstr "278"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "279"
-msgstr ""
+msgstr "279"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -771,32 +771,32 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "283"
-msgstr ""
+msgstr "283"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "284"
-msgstr ""
+msgstr "284"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "285"
-msgstr ""
+msgstr "285"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "286"
-msgstr ""
+msgstr "286"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "287"
-msgstr ""
+msgstr "287"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "290"
-msgstr ""
+msgstr "290"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
@@ -838,131 +838,131 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "305"
-msgstr ""
+msgstr "305"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "306"
-msgstr ""
+msgstr "306"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "307"
-msgstr ""
+msgstr "307"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "308"
-msgstr ""
+msgstr "308"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "310"
-msgstr ""
+msgstr "310"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "311"
-msgstr ""
+msgstr "311"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "312"
-msgstr ""
+msgstr "312"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "313"
-msgstr ""
+msgstr "313"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "317"
-msgstr ""
+msgstr "317"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_274_10
 msgid "32"
-msgstr ""
+msgstr "32"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_274_10
 msgid "33"
-msgstr ""
+msgstr "33"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "335"
-msgstr ""
+msgstr "335"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "336"
-msgstr ""
+msgstr "336"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "337"
-msgstr ""
+msgstr "337"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "338"
-msgstr ""
+msgstr "338"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_274_10
 msgid "34"
-msgstr ""
+msgstr "34"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "340"
-msgstr ""
+msgstr "340"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "341"
-msgstr ""
+msgstr "341"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "342"
-msgstr ""
+msgstr "342"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "343"
-msgstr ""
+msgstr "343"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "387"
-msgstr ""
+msgstr "387"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "395"
-msgstr ""
+msgstr "395"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "396"
-msgstr ""
+msgstr "396"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "397"
-msgstr ""
+msgstr "397"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "398"
-msgstr ""
+msgstr "398"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_dmfa__quarter__3
@@ -1012,122 +1012,122 @@ msgstr "57.75 %"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "5801"
-msgstr ""
+msgstr "5801"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "5802"
-msgstr ""
+msgstr "5802"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "5803"
-msgstr ""
+msgstr "5803"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "58031"
-msgstr ""
+msgstr "58031"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "58032"
-msgstr ""
+msgstr "58032"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "58033"
-msgstr ""
+msgstr "58033"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "5811"
-msgstr ""
+msgstr "5811"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "5812"
-msgstr ""
+msgstr "5812"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "5813"
-msgstr ""
+msgstr "5813"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "58131"
-msgstr ""
+msgstr "58131"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "58132"
-msgstr ""
+msgstr "58132"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "58133"
-msgstr ""
+msgstr "58133"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "5821"
-msgstr ""
+msgstr "5821"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "5822"
-msgstr ""
+msgstr "5822"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "5823"
-msgstr ""
+msgstr "5823"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "5831"
-msgstr ""
+msgstr "5831"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "5832"
-msgstr ""
+msgstr "5832"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "5833"
-msgstr ""
+msgstr "5833"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "5841"
-msgstr ""
+msgstr "5841"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "5842"
-msgstr ""
+msgstr "5842"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "5843"
-msgstr ""
+msgstr "5843"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "5851"
-msgstr ""
+msgstr "5851"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "5852"
-msgstr ""
+msgstr "5852"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "5853"
-msgstr ""
+msgstr "5853"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_termination_holidays_n
@@ -1169,7 +1169,7 @@ msgstr "865"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_xml_report
 msgid "870"
-msgstr ""
+msgstr "870"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_res_company__onss_registration_number
@@ -1180,7 +1180,7 @@ msgstr "9-stelliger Code von ONSS"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.finprof_xml_report_single_declaration
 msgid "9998"
-msgstr ""
+msgstr "9998"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__hr_contract__l10n_be_impulsion_plan__25yo
@@ -1306,6 +1306,8 @@ msgid ""
 "<span class=\"o_form_label\">SDWorx</span>\n"
 "                            <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"o_form_label\">SDWorx</span>\n"
+"                            <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_group_insurance_wizard_view_form
@@ -1687,7 +1689,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "<strong>1. Nr.</strong>"
-msgstr ""
+msgstr "<strong>1. Nr.</strong>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
@@ -1754,7 +1756,7 @@ msgstr "<strong>Grundgehalt</strong>"
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_274_10
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "<strong>Code</strong>"
-msgstr ""
+msgstr "<strong>Code</strong>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_individual_account
@@ -1791,7 +1793,7 @@ msgstr "<strong>Stellenbezeichnung</strong>"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_274_10
 msgid "<strong>Du:</strong>"
-msgstr ""
+msgstr "<strong>Du:</strong>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_belgium_payslip
@@ -1906,7 +1908,7 @@ msgstr "<strong>Gehaltsberechnung</strong>"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_274_10
 msgid "<strong>Société:</strong> <br/>"
-msgstr ""
+msgstr "<strong>Société:</strong> <br/>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_termination_fees
@@ -2369,7 +2371,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_274_XX_view_form
 msgid "Bachelors"
-msgstr ""
+msgstr "Bachelor"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_termination_n1_pay_double_complementary_basic
@@ -3160,7 +3162,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_273S
 msgid "DATE D’ATTRIBUTION OU DE MISE EN PAIEMENT DES REVENUS :"
-msgstr ""
+msgstr "DATE D’ATTRIBUTION OU DE MISE EN PAIEMENT DES REVENUS :"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_individual_account
@@ -3170,7 +3172,7 @@ msgstr "Dec"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_273S
 msgid "DECLARATION AU PRECOMPTE MOBILIER (Pr.M)"
-msgstr ""
+msgstr "DECLARATION AU PRECOMPTE MOBILIER (Pr.M)"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.actions.act_window,name:l10n_be_hr_payroll.hr_payslip_report_action_dmfa
@@ -3235,7 +3237,7 @@ msgstr "Datum bis"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_273S
 msgid "Date de réception de la déclaration :"
-msgstr ""
+msgstr "Date de réception de la déclaration :"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_work_entry_daily_benefit_report__day
@@ -4000,7 +4002,7 @@ msgstr "FEB"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.finprof_xml_report
 msgid "FINPROF"
-msgstr ""
+msgstr "FINPROF"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_273s__month__2
@@ -4022,7 +4024,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_274_10
 msgid "Fiche 274.10: Précompte professionnel versé."
-msgstr ""
+msgstr "Fiche 274.10: Précompte professionnel versé."
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_274_10
@@ -4030,16 +4032,18 @@ msgid ""
 "Fiche 274.32: Dispense de précompte professionnel pour doctorants/ingénieurs"
 " civils."
 msgstr ""
+"Fiche 274.32: Dispense de précompte professionnel pour doctorants/ingénieurs"
+" civils."
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_274_10
 msgid "Fiche 274.33: Dispense de précompte professionnel pour master."
-msgstr ""
+msgstr "Fiche 274.33: Dispense de précompte professionnel pour master."
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_274_10
 msgid "Fiche 274.34: Dispense de précompte professionnel pour bacheliers."
-msgstr ""
+msgstr "Fiche 274.34: Dispense de précompte professionnel pour bacheliers."
 
 #. module: l10n_be_hr_payroll
 #. odoo-python
@@ -4392,7 +4396,7 @@ msgstr "HR-Einzelkontobericht nach Mitarbeiterzeile"
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_281_10_line
 msgid "HR Payroll 281.10 Line Wizard"
-msgstr ""
+msgstr "HR-Personalabrechnung 281.10 Zeilenassistent"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_281_10
@@ -4402,7 +4406,7 @@ msgstr "HR-Lohnabrechnung 281.10 Assistent"
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_281_45_line
 msgid "HR Payroll 281.45 Line Wizard"
-msgstr ""
+msgstr "HR-Personalabrechnung 281.45 Zeilenassistent"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_281_45

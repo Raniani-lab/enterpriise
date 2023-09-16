@@ -251,7 +251,7 @@ msgstr "Versandmethoden"
 #. module: delivery_bpost
 #: model:ir.model,name:delivery_bpost.model_stock_package_type
 msgid "Stock package type"
-msgstr "Standardpakettyp"
+msgstr "Typ des Lagerpakets"
 
 #. module: delivery_bpost
 #. odoo-python

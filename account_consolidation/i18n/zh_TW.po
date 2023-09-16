@@ -40,7 +40,7 @@ msgstr "# Journals"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__period_ids_count
 msgid "# Periods"
-msgstr "# Periods"
+msgstr "期間數目"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
@@ -339,7 +339,7 @@ msgstr "Analysis Period Using This"
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__period_ids
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_tree
 msgid "Analysis Periods"
-msgstr "Analysis Periods"
+msgstr "分析期間"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.create_period_step
@@ -1221,17 +1221,17 @@ msgstr ""
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "Only the periods containing today"
-msgstr "Only the periods containing today"
+msgstr "只限包括今天的期間"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "Only the periods in the future"
-msgstr "Only the periods in the future"
+msgstr "只限將來期間"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "Only the periods in the past"
-msgstr "Only the periods in the past"
+msgstr "只限過往期間"
 
 #. module: account_consolidation
 #: model:ir.ui.menu,name:account_consolidation.menu_consolidation_operations
@@ -1430,12 +1430,12 @@ msgstr "Sub-consolidations"
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 msgid "Sub-consolidations Periods"
-msgstr "Sub-consolidations Periods"
+msgstr "次級合併期間"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 msgid "Sub-consolidations periods"
-msgstr "Sub-consolidations periods"
+msgstr "次級合併期間"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_group_form

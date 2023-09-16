@@ -10,9 +10,9 @@
 # JanisJanis <jbojars@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Arnis Putniņš <arnis@allegro.lv>, 2022
-# Armīns Jeltajevs <armins.jeltajevs@gmail.com>, 2023
 # Will Sensors, 2023
 # ievaputnina <ievai.putninai@gmail.com>, 2023
+# Armīns Jeltajevs <armins.jeltajevs@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -20,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:36+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: ievaputnina <ievai.putninai@gmail.com>, 2023\n"
+"Last-Translator: Armīns Jeltajevs <armins.jeltajevs@gmail.com>, 2023\n"
 "Language-Team: Latvian (https://app.transifex.com/odoo/teams/41243/lv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1704,6 +1704,13 @@ msgstr ""
 
 #. module: account_reports
 #. odoo-python
+#: code:addons/account_reports/models/account_journal_report.py:0
+#, python-format
+msgid "Go to report configuration"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "Goods"
@@ -1936,6 +1943,28 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "Intra-community taxes are applied on"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Invalid domain formula in expression %r of line %r: %s"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Invalid method %r"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Invalid subformula in expression %r of line %r: %s"
 msgstr ""
 
 #. module: account_reports
@@ -2888,7 +2917,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_general_ledger.py:0
 #, python-format
 msgid "Tax Declaration"
-msgstr "Nodokļa Deklarācija"
+msgstr "Nodokļu deklarācija"
 
 #. module: account_reports
 #. odoo-python
@@ -2900,7 +2929,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_tax_unit__vat
 msgid "Tax ID"
-msgstr "Tax ID"
+msgstr "PVN maksātāja numurs"
 
 #. module: account_reports
 #. odoo-python
@@ -2994,6 +3023,15 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_report_footnote__text
 msgid "Text"
 msgstr "Teksts"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_journal_report.py:0
+#, python-format
+msgid ""
+"The 'load more limit' setting of this report is too low to display all the "
+"lines of the entry you're trying to show."
+msgstr ""
 
 #. module: account_reports
 #. odoo-python
@@ -3419,6 +3457,13 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_main_template
 msgid "You are using custom exchange rates."
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_move.py:0
+#, python-format
+msgid "You can't open a tax report from a move without a VAT closing date."
 msgstr ""
 
 #. module: account_reports

@@ -49,7 +49,7 @@ msgstr "Hodnocení"
 #: model:ir.actions.act_window,name:hr_appraisal_skills.hr_appraisal_skill_report_action
 #: model:ir.model,name:hr_appraisal_skills.model_hr_appraisal_skill_report
 msgid "Appraisal Skills Report"
-msgstr ""
+msgstr "Výkaz hodnocení dovedností"
 
 #. module: hr_appraisal_skills
 #: model_terms:ir.actions.act_window,help:hr_appraisal_skills.hr_appraisal_skill_report_action
@@ -122,7 +122,7 @@ msgstr ""
 #. module: hr_appraisal_skills
 #: model:ir.model,name:hr_appraisal_skills.model_hr_appraisal_skill
 msgid "Employee Skills"
-msgstr ""
+msgstr "Dovednosti zaměstnance"
 
 #. module: hr_appraisal_skills
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill_report__evolution

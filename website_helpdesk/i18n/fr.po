@@ -169,7 +169,7 @@ msgstr "Service Clientèle"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Date Filter"
-msgstr "Filtre de date"
+msgstr "Filtre date"
 
 #. module: website_helpdesk
 #. odoo-javascript
@@ -273,7 +273,7 @@ msgstr "Soumettre un ticket"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Tags Filter"
-msgstr "Filtre des étiquettes"
+msgstr "Filtre étiquettes"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submited

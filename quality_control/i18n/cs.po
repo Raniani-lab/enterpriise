@@ -787,7 +787,7 @@ msgstr "Kvalita"
 #: model_terms:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
 #, python-format
 msgid "Quality Alert"
-msgstr ""
+msgstr "Upozornění na kvalitu"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_graph
@@ -956,12 +956,12 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_report_quality_control_quality_worksheet_internal
 msgid "Quality Worksheet Internal Report"
-msgstr ""
+msgstr "Interní dokument formuláře kontroly kvality"
 
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_report_quality_control_quality_worksheet
 msgid "Quality Worksheet Report"
-msgstr ""
+msgstr "Dokument formuláře kontroly kvality"
 
 #. module: quality_control
 #: model_terms:ir.actions.act_window,help:quality_control.quality_point_action
@@ -1062,7 +1062,7 @@ msgstr "Pohyb zásob"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__move_line_id
 msgid "Stock Move Line"
-msgstr ""
+msgstr "Pohyb produktu"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_tag_view_search
@@ -1161,7 +1161,7 @@ msgstr "Týdny"
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_quality_check_wizard
 msgid "Wizard for Quality Check Pop Up"
-msgstr ""
+msgstr "Průvodce vyskakovacím oknem kontroly kvality"
 
 #. module: quality_control
 #: model:ir.actions.report,name:quality_control.quality_check_report

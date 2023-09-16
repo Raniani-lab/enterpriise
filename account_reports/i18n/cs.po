@@ -14,9 +14,9 @@
 # Jiří Podhorecký, 2023
 # Marek Záda, 2023
 # Tomáš Píšek, 2023
-# Jakub Smolka, 2023
 # Aleš Fiala <f.ales1@seznam.cz>, 2023
 # Ivana Bartonkova, 2023
+# Jakub Smolka, 2023
 # 
 msgid ""
 msgstr ""
@@ -24,7 +24,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:36+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Ivana Bartonkova, 2023\n"
+"Last-Translator: Jakub Smolka, 2023\n"
 "Language-Team: Czech (https://app.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -487,7 +487,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_custom_handler
 msgid "Account Report Custom Handler"
-msgstr ""
+msgstr "Vlastní zpracování účetního výkazu"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_footnote
@@ -623,7 +623,7 @@ msgstr "Pokročilý"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_aged_partner_balance_report_handler
 msgid "Aged Partner Balance Custom Handler"
-msgstr ""
+msgstr "Vlastní zpracování saldokonta"
 
 #. module: account_reports
 #: model:account.report,name:account_reports.aged_payable_report
@@ -636,7 +636,7 @@ msgstr "Závazky po splatnosti"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_aged_payable_report_handler
 msgid "Aged Payable Custom Handler"
-msgstr ""
+msgstr "Vlastní zpracování závazků po splatnosti"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
@@ -654,7 +654,7 @@ msgstr "Pohledávky po splatnosti"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_aged_receivable_report_handler
 msgid "Aged Receivable Custom Handler"
-msgstr ""
+msgstr "Vlastní zpracování pohledávek po splatnosti"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
@@ -890,7 +890,7 @@ msgstr "Bankovní a hotovostní účty"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "Widget párování s bankou pro jednu položku výpisu"
 
 #. module: account_reports
 #. odoo-python
@@ -968,7 +968,7 @@ msgstr "Hotovost"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_cash_flow_report_handler
 msgid "Cash Flow Report Custom Handler"
-msgstr ""
+msgstr "Vlastní zpracování výkazu peněžních toků"
 
 #. module: account_reports
 #: model:account.report,name:account_reports.cash_flow_report
@@ -1299,12 +1299,12 @@ msgstr "Vlastní"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__custom_handler_model_id
 msgid "Custom Handler Model"
-msgstr ""
+msgstr "Model vlastního zpracování"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__custom_handler_model_name
 msgid "Custom Handler Model Name"
-msgstr ""
+msgstr "Název modelu vlastního zpracování"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.bank_reconciliation_report_date
@@ -1408,7 +1408,7 @@ msgstr "Seznam prodejů ES"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_ec_sales_report_handler
 msgid "EC Sales Report Custom Handler"
-msgstr ""
+msgstr "Vlastní zpracování výkazu prodejů ES"
 
 #. module: account_reports
 #. odoo-python
@@ -1713,7 +1713,7 @@ msgstr "Hlavní účetní kniha"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_general_ledger_report_handler
 msgid "General Ledger Custom Handler"
-msgstr ""
+msgstr "Vlastní zpracování hlavní účetní knihy"
 
 #. module: account_reports
 #. odoo-python
@@ -1730,17 +1730,17 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler
 msgid "Generic Tax Report Custom Handler"
-msgstr ""
+msgstr "Vlastní zpracování generických daňových výkazů"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler_account_tax
 msgid "Generic Tax Report Custom Handler (Account -> Tax)"
-msgstr ""
+msgstr "Vlastní zpracování generických daňových výkazů (Účet -> Daň)"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler_tax_account
 msgid "Generic Tax Report Custom Handler (Tax -> Account)"
-msgstr ""
+msgstr "Vlastní zpracování generických daňových výkazů (Daň -> Účet)"
 
 #. module: account_reports
 #. odoo-python
@@ -1831,12 +1831,12 @@ msgstr "Horizontální skupiny"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_horizontal_group
 msgid "Horizontal group for reports"
-msgstr ""
+msgstr "Horizontální skupina pro výkazy"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_horizontal_group_rule
 msgid "Horizontal group rule for reports"
-msgstr ""
+msgstr "Pravidlo horizontální skupiny pro výkazy"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -2074,7 +2074,7 @@ msgstr "Výkaz účetních deníků"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_journal_report_handler
 msgid "Journal Report Custom Handler"
-msgstr ""
+msgstr "Vlastní zpracování výkazu účetních deníků"
 
 #. module: account_reports
 #. odoo-python
@@ -2276,7 +2276,7 @@ msgstr "Model"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_multicurrency_revaluation_report_handler
 msgid "Multicurrency Revaluation Report Custom Handler"
-msgstr ""
+msgstr "Vlastní zpracování výkazu přecenění cizích měn"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_multicurrency_revaluation_wizard
@@ -2514,7 +2514,7 @@ msgstr "Saldokonto"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_partner_ledger_report_handler
 msgid "Partner Ledger Custom Handler"
-msgstr ""
+msgstr "Vlastní zpracování saldokonta"
 
 #. module: account_reports
 #: model:ir.ui.menu,name:account_reports.account_reports_partners_reports_menu
@@ -3010,7 +3010,7 @@ msgstr "Daňové přiznání"
 #: model:ir.model,name:account_reports.model_account_tax_unit
 #: model_terms:ir.ui.view,arch_db:account_reports.view_tax_unit_form
 msgid "Tax Unit"
-msgstr ""
+msgstr "Daňová entita"
 
 #. module: account_reports
 #: model:ir.actions.act_window,name:account_reports.action_view_tax_units

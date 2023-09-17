@@ -58,7 +58,7 @@
                                 <t t-else="">
                                     <div class="float-end" >
                                         <span t-if="record.referral_state.raw_value == 'closed'" class="rounded-pill text-bg-danger small"><field name="referral_state"/></span>
-                                        <span t-else="" class="rounded-pill text-bg-primary small"><field name="referral_state"/></span>
+                                        <span t-else="" class="rounded-pill text-bg-primary px-2 py-1 small"><field name="referral_state"/></span>
                                     </div>
                                 </t>
                                 <div t-if="record.partner_name.value" class="o_kanban_card_header_title">

@@ -221,7 +221,6 @@ export default class AbstractFilterEditorSidePanel extends Component {
             additionalPayload[type][id] = toRaw(fm.fieldMatch);
         });
         const result = this.env.model.dispatch(cmd, {
-            id: filter.id,
             filter,
             ...additionalPayload,
         });

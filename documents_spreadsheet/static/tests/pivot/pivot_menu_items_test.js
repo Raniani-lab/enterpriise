@@ -186,11 +186,9 @@ QUnit.module(
             await addGlobalFilter(
                 model,
                 {
-                    filter: {
-                        id: "42",
-                        type: "relation",
-                        label: "Filter",
-                    },
+                    id: "42",
+                    type: "relation",
+                    label: "Filter",
                 },
                 {
                     pivot: {

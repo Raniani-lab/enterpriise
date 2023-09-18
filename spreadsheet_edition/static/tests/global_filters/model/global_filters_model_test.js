@@ -23,11 +23,9 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
         await addGlobalFilter(
             model,
             {
-                filter: {
-                    id: "42",
-                    type: "relation",
-                    defaultValue: [41],
-                },
+                id: "42",
+                type: "relation",
+                defaultValue: [41],
             },
             {
                 pivot: { 1: { chain: "product_id", type: "many2one" } },
@@ -64,11 +62,9 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
             await addGlobalFilter(
                 model,
                 {
-                    filter: {
-                        id: "42",
-                        type: "relation",
-                        defaultValue: [],
-                    },
+                    id: "42",
+                    type: "relation",
+                    defaultValue: [],
                 },
                 { pivot: { 1: { chain: "product_id", type: "many2one" } } }
             );
@@ -92,11 +88,9 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
         await addGlobalFilter(
             model,
             {
-                filter: {
-                    id: "42",
-                    type: "relation",
-                    defaultValue: [],
-                },
+                id: "42",
+                type: "relation",
+                defaultValue: [],
             },
             { pivot: { 1: { chain: "product_id", type: "many2one" } } }
         );
@@ -119,11 +113,9 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
         await addGlobalFilter(
             model,
             {
-                filter: {
-                    id: "42",
-                    type: "relation",
-                    defaultValue: [],
-                },
+                id: "42",
+                type: "relation",
+                defaultValue: [],
             },
             { pivot: { 1: { chain: "product_id", type: "many2one" } } }
         );
@@ -145,11 +137,9 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
                 </pivot>`,
             });
             await addGlobalFilter(model, {
-                filter: {
-                    id: "42",
-                    type: "relation",
-                    defaultValue: [],
-                },
+                id: "42",
+                type: "relation",
+                defaultValue: [],
             });
             selectCell(model, "B3");
             const root = cellMenuRegistry
@@ -179,11 +169,9 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
             await addGlobalFilter(
                 model,
                 {
-                    filter: {
-                        id: "42",
-                        type: "relation",
-                        defaultValue: [41],
-                    },
+                    id: "42",
+                    type: "relation",
+                    defaultValue: [41],
                 },
                 {
                     pivot: { 1: { chain: "product_id", type: "many2one" } },
@@ -205,13 +193,9 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
             type: "relation",
             defaultValue: [2],
         };
-        await addGlobalFilter(
-            model,
-            { filter },
-            {
-                pivot: { 1: { chain: "product_id", type: "many2one" } },
-            }
-        );
+        await addGlobalFilter(model, filter, {
+            pivot: { 1: { chain: "product_id", type: "many2one" } },
+        });
         model.dispatch("REQUEST_UNDO");
         assert.equal(model.getters.getGlobalFilters().length, 0);
         model.dispatch("REQUEST_REDO");
@@ -228,13 +212,9 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
                 type: "relation",
                 defaultValue: [2],
             };
-            await addGlobalFilter(
-                model,
-                { filter },
-                {
-                    pivot: { 1: { chain: "product_id", type: "many2one" } },
-                }
-            );
+            await addGlobalFilter(model, filter, {
+                pivot: { 1: { chain: "product_id", type: "many2one" } },
+            });
             assert.strictEqual(getCellValue(model, "B4"), "");
             model.dispatch("REQUEST_UNDO");
             assert.equal(model.getters.getGlobalFilters().length, 0);

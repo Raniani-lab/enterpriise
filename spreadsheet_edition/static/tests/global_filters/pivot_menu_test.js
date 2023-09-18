@@ -25,12 +25,10 @@ QUnit.module("spreadsheet_edition > menu", {}, () => {
                 </pivot>`,
             });
             await addGlobalFilter(model, {
-                filter: {
-                    id: "41",
-                    type: "relation",
-                    label: "41",
-                    defaultValue: [41],
-                },
+                id: "41",
+                type: "relation",
+                label: "41",
+                defaultValue: [41],
             });
             selectCell(model, "A6");
             const reinsertPivotPath = [

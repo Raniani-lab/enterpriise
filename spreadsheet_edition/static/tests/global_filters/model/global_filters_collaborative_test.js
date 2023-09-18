@@ -42,11 +42,9 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             (user) => getCellValue(user, "D4"),
             10
         );
-        await addGlobalFilter(
-            alice,
-            { filter },
-            { pivot: { 1: { chain: "product_id", type: "many2one" } } }
-        );
+        await addGlobalFilter(alice, filter, {
+            pivot: { 1: { chain: "product_id", type: "many2one" } },
+        });
         await waitForDataSourcesLoaded(alice);
         await waitForDataSourcesLoaded(bob);
         await waitForDataSourcesLoaded(charlie);
@@ -82,11 +80,9 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             (user) => getCellValue(user, "B4"),
             11
         );
-        await addGlobalFilter(
-            alice,
-            { filter },
-            { pivot: { 1: { chain: "product_id", type: "many2one" } } }
-        );
+        await addGlobalFilter(alice, filter, {
+            pivot: { 1: { chain: "product_id", type: "many2one" } },
+        });
         await waitForDataSourcesLoaded(alice);
         await waitForDataSourcesLoaded(bob);
         await waitForDataSourcesLoaded(charlie);
@@ -95,10 +91,7 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             (user) => getCellValue(user, "B4"),
             11
         );
-        await editGlobalFilter(alice, {
-            id: "41",
-            filter: { ...filter, defaultValue: [37] },
-        });
+        await editGlobalFilter(alice, { ...filter, defaultValue: [37] });
         await waitForDataSourcesLoaded(alice);
         await waitForDataSourcesLoaded(bob);
         await waitForDataSourcesLoaded(charlie);
@@ -120,13 +113,10 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             modelName: undefined,
             rangeType: undefined,
         };
-        await addGlobalFilter(alice, { filter });
+        await addGlobalFilter(alice, filter);
         await nextTick();
         await network.concurrent(() => {
-            charlie.dispatch("EDIT_GLOBAL_FILTER", {
-                id: "41",
-                filter: { ...filter, defaultValue: [37] },
-            });
+            editGlobalFilter(charlie, { ...filter, defaultValue: [37] });
             bob.dispatch("REMOVE_GLOBAL_FILTER", { id: "41" });
         });
         assert.spreadsheetIsSynchronized(
@@ -147,14 +137,11 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             modelName: undefined,
             rangeType: undefined,
         };
-        await addGlobalFilter(alice, { filter });
+        await addGlobalFilter(alice, filter);
         await nextTick();
         await network.concurrent(() => {
             bob.dispatch("REMOVE_GLOBAL_FILTER", { id: "41" });
-            charlie.dispatch("EDIT_GLOBAL_FILTER", {
-                id: "41",
-                filter: { ...filter, defaultValue: [37] },
-            });
+            editGlobalFilter(charlie, { ...filter, defaultValue: [37] });
         });
         assert.spreadsheetIsSynchronized(
             [alice, bob, charlie],
@@ -183,15 +170,12 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             modelName: undefined,
             rangeType: undefined,
         };
-        await addGlobalFilter(alice, { filter: filter1 });
-        await addGlobalFilter(alice, { filter: filter2 });
+        await addGlobalFilter(alice, filter1);
+        await addGlobalFilter(alice, filter2);
         await nextTick();
         await network.concurrent(() => {
             bob.dispatch("REMOVE_GLOBAL_FILTER", { id: "41" });
-            charlie.dispatch("EDIT_GLOBAL_FILTER", {
-                id: "37",
-                filter: { ...filter2, defaultValue: [74] },
-            });
+            editGlobalFilter(charlie, { ...filter2, defaultValue: [74] });
         });
         assert.spreadsheetIsSynchronized(
             [alice, bob, charlie],
@@ -208,7 +192,7 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             type: "relation",
             label: "a relational filter",
         };
-        await addGlobalFilter(alice, { filter });
+        await addGlobalFilter(alice, filter);
         await setGlobalFilterValue(bob, {
             id: filter.id,
             value: [1],

@@ -186,3 +186,9 @@ class SaleOrderLine(models.Model):
             price_computing_kwargs['start_date'] = start_date
             price_computing_kwargs['end_date'] = return_date
         return price_computing_kwargs
+
+    def _get_action_add_from_catalog_extra_context(self, order):
+        """ Override to add rental dates in the context for product availabilities. """
+        extra_context = super()._get_action_add_from_catalog_extra_context(order)
+        extra_context.update(start_date=order.rental_start_date, end_date=order.rental_return_date)
+        return extra_context

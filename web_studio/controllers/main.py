@@ -90,7 +90,7 @@ class WebStudioController(http.Controller):
         }
 
     def _get_studio_action_automations(self, model, **kwargs):
-        action = self.env['ir.actions.act_window']._for_xml_id('base_automation.base_automation_act')
+        action = request.env['ir.actions.act_window']._for_xml_id('base_automation.base_automation_act')
         action['context'] = {
             'default_model_id': model.id,
             'search_default_model_id': model.id,

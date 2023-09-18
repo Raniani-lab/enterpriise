@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models
+from odoo import models, _
 from odoo.tools.misc import get_lang
 
 
@@ -20,8 +20,8 @@ class DisallowedExpensesFleetCustomHandler(models.AbstractModel):
     def _custom_options_initializer(self, report, options, previous_options=None):
         super()._custom_options_initializer(report, options, previous_options=previous_options)
 
-        # Initialize vehicle_split filter
-        options['vehicle_split'] = previous_options.get('vehicle_split', False)
+        # Initialize vehicle_split filter by default
+        options['vehicle_split'] = previous_options.get('vehicle_split', True)
 
         # Check if there are multiple rates
         period_domain = [('date_from', '>=', options['date']['date_from']), ('date_from', '<=', options['date']['date_to'])]
@@ -32,6 +32,27 @@ class DisallowedExpensesFleetCustomHandler(models.AbstractModel):
             limit=1,
         )
         options['multi_rate_in_period'] = options.get('multi_rate_in_period') or bool(rg)
+
+    def _custom_line_postprocessor(self, report, options, lines, warnings=None):
+        if warnings is not None:
+            # Check for expense accounts without disallowed expense category
+            accounts = self.env['account.move.line']._read_group(
+                [
+                    ('date', '<=', options['date']['date_to']),
+                    ('date', '>=', options['date']['date_from']),
+                    ('parent_state', '=', 'posted'),
+                    ('account_type', '=', 'expense'),
+                    ('vehicle_id', '!=', None),
+                    ('account_id.disallowed_expenses_category_id', '=', None),
+                ],
+                ['account_id'],
+            )
+            if accounts:
+                warnings['account_disallowed_expenses_fleet.warning_missing_disallowed_category'] = {
+                    'alert_type': 'warning',
+                    'args': [account[0].id for account in accounts],
+                }
+        return lines
 
     def _get_query(self, options, line_dict_id=None):
         # EXTENDS account_disallowed_expenses.
@@ -262,3 +283,12 @@ class DisallowedExpensesFleetCustomHandler(models.AbstractModel):
 
     def _filter_current(self, current, fields):
         return {key: val for key, val in current.items() if key in fields}
+
+    def action_open_accounts(self, options, params):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _("Accounts missing a disallowed expense category"),
+            'res_model': 'account.account',
+            'views': [(False, 'list'), (False, 'form')],
+            'domain': [('id', 'in', params['args'])],
+        }

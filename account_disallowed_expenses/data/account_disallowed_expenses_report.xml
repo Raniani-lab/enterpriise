@@ -5,6 +5,7 @@
         <field name="filter_multi_company">selector</field>
         <field name="filter_journals" eval="True"/>
         <field name="filter_unfold_all" eval="True"/>
+        <field name="default_opening_date_filter">last_year</field>
         <field name="search_bar" eval="True"/>
         <field name="custom_handler_model_id" ref="model_account_disallowed_expenses_report_handler"/>
         <field name="column_ids">

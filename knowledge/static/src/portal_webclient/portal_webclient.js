@@ -31,7 +31,7 @@ export class KnowledgePortalWebClient extends Component {
         const { knowledge_article_id } = session;
 
         this.actionService.doAction('knowledge.ir_actions_server_knowledge_home_page', {
-            additionalContext: knowledge_article_id ? { knowledge_article_id } : {},
+            additionalContext: knowledge_article_id ? { res_id: knowledge_article_id } : {},
             stackPosition: 'replaceCurrentAction',
         });
     }

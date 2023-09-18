@@ -71,7 +71,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         const staffUserName = this.$("#slots_form select[name='staff_user_id'] :selected").text();
         $month.find('table').addClass('d-none');
         $month.append(renderToElement('Appointment.appointment_info_no_slot_month', {
-            firstAvailabilityDate: DateTime.fromJSDate(firstAvailabilityDate).toFormat("cccc dd MMMM yyyy"),
+            firstAvailabilityDate: DateTime.fromISO(firstAvailabilityDate).toFormat("cccc dd MMMM yyyy"),
             staffUserName: staffUserName,
         }));
         $month.find('#next_available_slot').on('click', () => this.selectFirstAvailableMonth());

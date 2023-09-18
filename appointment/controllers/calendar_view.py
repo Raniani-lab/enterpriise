@@ -49,9 +49,9 @@ class AppointmentCalendarView(http.Controller):
         if context:
             request.update_context(**context)
         AppointmentType = request.env['appointment.type']
-        appointment_type = AppointmentType.with_context(
+        appointment_type = AppointmentType.sudo().with_context(
             AppointmentType._get_clean_appointment_context()
-        ).sudo().create({
+        ).create({
             'category': 'custom',
             'slot_ids': [(0, 0, {
                 'start_datetime': fields.Datetime.from_string(slot.get('start')),

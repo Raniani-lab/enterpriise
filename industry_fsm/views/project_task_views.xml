@@ -83,7 +83,7 @@
                     name="action_preview_worksheet"
                     icon="fa-globe" type="object"
                     groups="project.group_project_user"
-                    attrs="{'invisible': [('worksheet_signature', '=', False)]}">
+                    attrs="{'invisible': ['|', '|', ('allow_worksheets', '=', False), ('is_fsm', '=', False), ('worksheet_signature', '=', False)]}">
                 </button>
             </xpath>
             <field name="is_fsm" string="is FSM ?" invisible="1"/>

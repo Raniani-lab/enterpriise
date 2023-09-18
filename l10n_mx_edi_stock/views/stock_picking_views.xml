@@ -41,7 +41,7 @@
 
             <!-- Documents tab -->
             <xpath expr="//notebook" position="inside">
-                 <page string="🇲🇽 Delivery Guide"
+                 <page string="Delivery Guide"
                        name="mx_edi"
                        invisible="not l10n_mx_edi_is_cfdi_needed">
                     <group>
@@ -82,7 +82,7 @@
                 </page>
 
                 <page id="edi_documents"
-                      string="🇲🇽 CFDI"
+                      string="CFDI"
                       invisible="not l10n_mx_edi_document_ids">
                     <field name="l10n_mx_edi_document_ids">
                         <tree create="false" delete="false" edit="false" no_open="1">

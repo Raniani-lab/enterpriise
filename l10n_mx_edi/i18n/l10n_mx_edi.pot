@@ -1664,10 +1664,10 @@ msgstr ""
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.account_move_form_inherit_l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.account_payment_form_inherit_l10n_mx_edi
-msgid "🇲🇽 CFDI"
+msgid "CFDI"
 msgstr ""
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.res_config_settings_view_form
-msgid "🇲🇽 Electronic invoicing"
+msgid "MX Electronic invoicing"
 msgstr ""

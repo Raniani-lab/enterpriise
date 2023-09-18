@@ -7,11 +7,12 @@ class PaymentLinkWizardExternalTax(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        res_id = self._context['active_id']
-        res_model = self._context['active_model']
+        res_id = self._context.get('active_id')
+        res_model = self._context.get('active_model')
 
         # This ensures that taxes are up-to-date and the required information is set so the customer clicking
         # the payment link won't see an error.
-        self.env[res_model].browse(res_id)._get_and_set_external_taxes_on_eligible_records()
+        if res_id and res_model:
+            self.env[res_model].browse(res_id)._get_and_set_external_taxes_on_eligible_records()
 
         return super().default_get(fields)

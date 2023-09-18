@@ -5,7 +5,7 @@ import logging
 import markupsafe
 from markupsafe import Markup
 
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from odoo import models, fields, api, _, Command
 from odoo.addons.phone_validation.tools import phone_validation
@@ -188,8 +188,7 @@ class WhatsAppMessage(models.Model):
         ], limit=500)
         records._send_message(with_commit=True)
         if len(records) == 500:  # assumes there are more whenever search hits limit
-            time = datetime.now() + timedelta(minutes=10)
-            self.env.ref('whatsapp.ir_cron_send_whatsapp_queue')._trigger(time)
+            self.env.ref('whatsapp.ir_cron_send_whatsapp_queue')._trigger()
 
     def _send(self, force_send_by_cron=False):
         if len(self) <= 1 and not force_send_by_cron:

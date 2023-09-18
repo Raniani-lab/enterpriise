@@ -111,6 +111,13 @@ class WhatsAppTemplate(models.Model):
         ('unique_name_account_template', 'unique(template_name, lang_code, wa_account_id)', "Duplicate template is not allowed for one Meta account.")
     ]
 
+    @api.constrains('header_text')
+    def _check_header_text(self):
+        for tmpl in self.filtered(lambda l: l.header_type == 'text'):
+            header_variables = list(re.findall(r'{{[1-9][0-9]*}}', tmpl.header_text))
+            if len(header_variables) > 1 or (header_variables and header_variables[0] != '{{1}}'):
+                raise ValidationError(_("Header text can only contain a single {{variable}}."))
+
     @api.constrains('phone_field')
     def _check_phone_field(self):
         for tmpl in self.filtered('phone_field'):
@@ -203,7 +210,7 @@ class WhatsAppTemplate(models.Model):
         for tmpl in self:
             to_delete = []
             to_create = []
-            header_variables = set(re.findall(r'{{[1-9][0-9]*}}', tmpl.header_text or ''))
+            header_variables = list(re.findall(r'{{[1-9][0-9]*}}', tmpl.header_text or ''))
             body_variables = set(re.findall(r'{{[1-9][0-9]*}}', tmpl.body or ''))
 
             # if there is header text

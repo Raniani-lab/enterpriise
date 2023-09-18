@@ -1,5 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo import exceptions
 from odoo.addons.whatsapp.tests.common import WhatsAppCommon
 from odoo.tests import tagged, users
 
@@ -37,6 +38,44 @@ class WhatsAppTemplate(WhatsAppCommon):
         })
         for expected_var in ['Nishant', 'Jigar']:
             self.assertIn(expected_var, template_preview.preview_whatsapp)
+
+    @users('user_wa_admin')
+    def test_template_type_dynamic_header(self):
+        """ Test dynamic text header """
+        template = self.env['whatsapp.template'].create({
+            'header_type': 'text',
+            'name': 'Header Text',
+            'header_text': 'Header {{1}}',
+            'wa_account_id': self.whatsapp_account.id,
+        })
+        self.assertTemplateVariables(
+            template,
+            [('{{1}}', 'header', 'free_text', {'demo_value': 'Sample Value'})]
+        )
+
+        template = self.env['whatsapp.template'].create({
+            'header_type': 'text',
+            'name': 'Header Text 2',
+            'header_text': 'Header {{1}}',
+            'variable_ids': [
+                    (0, 0, {'name': '{{1}}', 'line_type': 'header', 'field_type': 'free_text', 'demo_value': 'Dynamic'}),
+                ],
+            'wa_account_id': self.whatsapp_account.id,
+        })
+        self.assertTemplateVariables(
+            template,
+            [('{{1}}', 'header', 'free_text', {'demo_value': 'Dynamic'})]
+        )
+
+        for header_text in ['Hello {{1}} and {{2}}', 'hello {{2}}']:
+            with self.assertRaises(exceptions.ValidationError):
+                self.env['whatsapp.template'].create({
+                    'header_type': 'text',
+                    'header_text': header_text,
+                    'name': 'Header Text 3',
+                    'body': 'Body',
+                    'wa_account_id': self.whatsapp_account.id,
+                })
 
     @users('user_wa_admin')
     def test_template_type_location(self):

@@ -44,9 +44,6 @@ class WhatsAppTestNoThread(models.Model):
         for record in self.filtered(lambda rec: not rec.phone):
             record.phone = record.customer_id.phone
 
-    def _mail_get_partners(self):
-        return {rec.id: rec.customer_id for rec in self}
-
 
 class WhatsAppTestResponsible(models.Model):
     """ Same as base test model but with responsible fields """

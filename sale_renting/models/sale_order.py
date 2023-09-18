@@ -32,7 +32,7 @@ class SaleOrder(models.Model):
     is_rental_order = fields.Boolean(
         string="Created In App Rental",
         compute='_compute_is_rental_order',
-        store=True, precompute=True,
+        store=True, precompute=True, readonly=False,
         # By default, all orders created in rental app are Rental Orders
         default=lambda self: self.env.context.get('in_rental_app'))
     has_rented_products = fields.Boolean(compute="_compute_has_rented_products")

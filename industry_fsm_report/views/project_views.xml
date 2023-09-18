@@ -184,7 +184,7 @@
                     name="action_preview_worksheet"
                     icon="fa-globe" type="object"
                     groups="project.group_project_user"
-                    invisible="not worksheet_signature">
+                    invisible="not worksheet_signature or not allow_worksheets">
                 </button>
             </xpath>
             <xpath expr="//field[@widget='project']" position="after">

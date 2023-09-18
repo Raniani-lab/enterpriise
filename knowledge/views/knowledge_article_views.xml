@@ -127,6 +127,9 @@
         <field name="arch" type="xml">
             <tree default_order="is_user_favorite desc, favorite_count desc"
                   js_class="knowledge_article_view_tree">
+                <header>
+                    <button string="Send to Trash" icon="fa-trash" type="object" context="{'in_tree_view': True}" name="action_send_to_trash" class="btn"/>
+                </header>
                 <field name="display_name" string="Name"/>
                 <field name="is_user_favorite" column_invisible="True"/>
                 <button name="action_toggle_favorite" string=" " type="object"
@@ -154,6 +157,9 @@
         <field name="arch" type="xml">
             <tree create="0" default_order="write_date desc"
                   js_class="knowledge_article_view_tree">
+                <header>
+                    <button string="Restore" icon="oi-unarchive" type="object" name="action_unarchive" class="btn"/>
+                </header>
                 <field name="display_name" string="Name"/>
                 <field name="is_user_favorite" column_invisible="True"/>
                 <button name="action_toggle_favorite" string=" " type="object"
@@ -368,7 +374,7 @@
                     domain="[('category', '=', 'private'), ('user_has_write_access', '=', True)]"/>
                 <separator/>
                 <filter name="filter_trashed" string="Trashed"
-                    domain="[('active', '=', False), ('to_delete', '=', True)]"/>
+                    domain="[('active', '=', False)]"/>
                 <group expand="0" string="Group By">
                     <filter name="group_by_category" domain="[]" context="{'group_by': 'category'}"/>
                     <filter name="group_by_menu_article" context="{'group_by': 'root_article_id'}"/>

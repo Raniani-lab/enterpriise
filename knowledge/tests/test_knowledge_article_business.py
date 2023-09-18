@@ -923,6 +923,26 @@ class TestKnowledgeArticleCopy(KnowledgeCommonBusinessCase):
 class TestKnowledgeArticleRemoval(KnowledgeCommonBusinessCase):
     """ Test unlink / archive management of articles """
 
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+
+        cls.shared_article_multi_company = cls.env['knowledge.article'].create({
+            'name': "Multi-Company Article",
+            'article_member_ids': [
+                (0, 0, {'partner_id': cls.partner_employee_c2.id, 'permission': 'read'}),
+                (0, 0, {'partner_id': cls.partner_employee.id, 'permission': 'write'}),
+                (0, 0, {'partner_id': cls.partner_admin.id, 'permission': 'write'})
+            ],
+            'internal_permission': 'none'
+        })
+
+    @users('employee')
+    def test_send_to_trash_multi_company(self):
+        article_to_trash = self.shared_article_multi_company
+        article_to_trash.action_send_to_trash()
+        self.assertFalse(article_to_trash.active)
+        self.assertTrue(article_to_trash.to_delete)
 
     @mute_logger('odoo.addons.base.models.ir_rule')
     @users('employee')

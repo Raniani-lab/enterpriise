@@ -130,7 +130,7 @@
                                     t-if="props.record.data.user_can_write and props.record.data.is_locked and props.record.data.active">
                                     <i class="me-2 fa fa-fw fa-lg fa-unlock"/> Unlock
                                 </button>
-                                <button class="ps-0 dropdown-item" t-on-click="unarchiveArticle"
+                                <button class="dropdown-item" t-on-click="unarchiveArticle"
                                     t-if="props.record.data.to_delete and props.record.data.user_can_write
                                           and (isInternalUser or props.record.data.category == 'private')">
                                     <i class="me-2 fa fa-fw fa-lg fa-trash-o"/> Restore from Trash
@@ -159,7 +159,7 @@
                                 <button class="dropdown-item" t-on-click="deleteArticle"
                                     t-if="props.record.data.user_can_write and props.record.data.active
                                           and (isInternalUser or props.record.data.category == 'private')">
-                                    <i class="me-2 fa fa-fw fa-lg fa-trash"/> Delete
+                                    <i class="me-2 fa fa-fw fa-lg fa-trash"/> Send to Trash
                                 </button>
                                 <div class="dropdown-divider" t-if="props.record.data.user_can_write and props.record.data.active"/>
                                 <div class="dropdown-item user-select-none d-inline-flex align-items-start" t-if="props.record.data.user_can_write and props.record.data.active"

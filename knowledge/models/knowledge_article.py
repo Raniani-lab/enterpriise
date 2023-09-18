@@ -1198,8 +1198,11 @@ class Article(models.Model):
         return self.env["knowledge.article"].action_home_page()
 
     def action_send_to_trash(self):
-        return self._action_archive_articles(send_to_trash=True)
-
+        action_home_page = self._action_archive_articles(send_to_trash=True)
+        # no need to reload when inside the tree view
+        if self.env.context.get('in_tree_view'):
+            return False
+        return action_home_page
     def _action_archive_articles(self, send_to_trash=False):
         """ When archiving
                   * archive the current article and all its writable descendants;
@@ -2308,7 +2311,7 @@ class Article(models.Model):
             lambda member: member.permission in ['read', 'write']
         ).partner_id
 
-        KnowledgeArticle = self.env["knowledge.article"].with_context(active_test=False)
+        KnowledgeArticle = self.env["knowledge.article"].with_context(active_test=False, allowed_company_ids=[])
         sent_messages = self.env['mail.message']
         for partner in partners_to_notify.filtered(lambda p: not p.partner_share):
             # if only one article, all the partner_to_notify have access to the article.

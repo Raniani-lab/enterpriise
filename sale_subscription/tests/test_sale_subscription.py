@@ -371,6 +371,40 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(self.subscription.subscription_state, '5_renewed')
             self.assertEqual(self.subscription.close_reason_id.id, renew_close_reason_id)
 
+    def test_upsell_no_start_date(self):
+        self.sub_product_tmpl.product_pricing_ids = [(5, 0, 0)]
+        self.subscription_tmpl.sale_order_template_option_ids = [Command.create({
+            'name': "Option 1",
+            'product_id': self.product5.id,
+            'quantity': 1,
+            'uom_id': self.product5.uom_id.id,
+        })]
+        self.subscription.write({
+                'partner_id': self.partner.id,
+                'recurrence_id': self.recurrence_month.id,
+                'order_line': [Command.create({'product_id': self.product.id,
+                                               'name': "Monthly cheap",
+                                               'price_unit': 42,
+                                               'product_uom_qty': 2,
+                                               }),
+                               Command.create({'product_id': self.product2.id,
+                                               'name': "Monthly expensive",
+                                               'price_unit': 420,
+                                               'product_uom_qty': 3,
+                                               }),
+                               ]
+            })
+        self.subscription.action_confirm()
+        self.env['sale.order']._cron_recurring_create_invoice()
+        self.subscription.invoice_ids.filtered(lambda am: am.state == 'draft')._post()
+        action = self.subscription.prepare_upsell_order()
+        upsell_so = self.env['sale.order'].browse(action['res_id'])
+        upsell_so.order_line.filtered(lambda l: not l.display_type).product_uom_qty = 6
+        upsell_so.start_date = False
+        upsell_so.action_confirm()
+        upsell_so._create_invoices()
+        self.assertEqual(self.subscription.order_line.sorted('id').mapped('product_uom_qty'), [1.0, 1.0, 14.0, 15.0], "Quantities should be equal to 1.0, 1.0, 14.0, 15.0")
+
     def test_upsell_via_so(self):
         # Test the upsell flow using an intermediary upsell quote.
         self.sub_product_tmpl.product_pricing_ids = [(5, 0, 0)]

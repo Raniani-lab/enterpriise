@@ -231,7 +231,7 @@ class SaleOrderLine(models.Model):
             lang_code = self.order_id.partner_id.lang
             if self.order_id.subscription_state == '7_upsell':
                 # We start at the beginning of the upsell as it's a part of recurrence
-                new_period_start = max(self.order_id.start_date or fields.Datetime.today(), self.order_id.first_contract_date)
+                new_period_start = max(self.order_id.start_date or fields.Date.today(), self.order_id.first_contract_date)
             else:
                 # We need to invoice the next period: last_invoice_date will be today once this invoice is created. We use get_timedelta to avoid gaps
                 # We always use next_invoice_date as the recurrence are synchronized with the invoicing periods.

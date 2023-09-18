@@ -7209,7 +7209,7 @@ QUnit.module('ViewEditorManager', {
                 if (args.view_id !== 1) {
                     return result;
                 }
-                assert.equal(args.operations[0].new_attrs.attrs, '{"column_invisible": [["parent.id","=",False]]}',
+                assert.equal(args.operations[0].new_attrs.attrs, '{"column_invisible": "[["parent.id","=",False]]"}',
                     'we should send "column_invisible" in attrs.attrs');
 
                 assert.equal(args.operations[0].new_attrs.readonly, '1',

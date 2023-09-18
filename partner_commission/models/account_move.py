@@ -164,6 +164,14 @@ class AccountMove(models.Model):
         self.filtered(lambda move: move.move_type == 'out_invoice')._make_commission()
         return res
 
+    def button_draft(self):
+        res = super(AccountMove, self).button_draft()
+        for move in self:
+            cpo = self.env['purchase.order'].sudo().search(move._get_commission_purchase_order_domain(), limit=1)
+            if cpo and move.move_type == 'out_refund' and cpo.state == 'draft':
+                message_body = _("The commission partner order %s must be checked manually (especially refund lines which can be duplicated).", cpo._get_html_link())
+                move.message_post(body=message_body)
+        return res
 
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'

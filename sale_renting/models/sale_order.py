@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta
 from math import ceil
 
 from odoo import _, api, fields, models
+from odoo.osv import expression
 from odoo.tools import float_compare
 
 RENTAL_STATUS = [
@@ -218,6 +219,19 @@ class SaleOrder(models.Model):
             return self.env.ref('sale_renting.rental_order_action')
         else:
             return super()._get_portal_return_action()
+
+    def _get_product_catalog_domain(self):
+        """ Override of `_get_product_catalog_domain` to extend the domain to rental-only products.
+
+        :returns: A list of tuples that represents a domain.
+        :rtype: list
+        """
+        domain = super()._get_product_catalog_domain()
+        if self.is_rental_order:
+            return expression.OR([
+                domain, [('rent_ok', '=', True), ('company_id', 'in', [self.company_id.id, False])]
+            ])
+        return domain
 
     #=== TOOLING ===#
 

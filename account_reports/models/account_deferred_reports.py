@@ -47,7 +47,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
         options['columns'] = total_column + before_column + options['columns'] + later_column
         options['column_headers'] = []
         if self.env.company.generate_deferred_entries_method == 'manual':
-            options['buttons'].append({'name': _('Generate entry'), 'action': 'action_generate_entry', 'sequence': 80})
+            options['buttons'].append({'name': _('Generate entry'), 'action': 'action_generate_entry', 'sequence': 80, 'always_show': True})
 
     def _generate_deferral_entry(self, options):
         journal = self.env.company.deferred_journal_id

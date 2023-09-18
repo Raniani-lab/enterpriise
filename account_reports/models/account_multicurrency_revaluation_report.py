@@ -62,7 +62,7 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
         )
 
         options['multi_currency'] = True
-        options['buttons'].append({'name': _('Adjustment Entry'), 'sequence': 30, 'action': 'action_multi_currency_revaluation_open_revaluation_wizard'})
+        options['buttons'].append({'name': _('Adjustment Entry'), 'sequence': 30, 'action': 'action_multi_currency_revaluation_open_revaluation_wizard', 'always_show': True})
 
     def _custom_line_postprocessor(self, report, options, lines, warnings=None):
         line_to_adjust_id = self.env.ref('account_reports.multicurrency_revaluation_to_adjust').id

@@ -18,7 +18,7 @@ class AccountTaxReportHandler(models.AbstractModel):
     # With this, custom tax reports don't need to inherit from the generic tax report
 
     def _custom_options_initializer(self, report, options, previous_options=None):
-        options['buttons'].append({'name': _('Closing Entry'), 'action': 'action_periodic_vat_entries', 'sequence': 110})
+        options['buttons'].append({'name': _('Closing Entry'), 'action': 'action_periodic_vat_entries', 'sequence': 110, 'always_show': True})
 
         if not previous_options or not previous_options.get('disable_archived_tag_test'):
             tables, where_clause, where_params = report._query_get(options, 'strict_range')

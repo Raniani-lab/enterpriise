@@ -2,13 +2,12 @@
 
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { ControlPanel } from "@web/search/control_panel/control_panel";
 
 import { Component, onWillStart, useState, useSubEnv } from "@odoo/owl";
 
 import { AccountReportController } from "@account_reports/components/account_report/controller";
+import { AccountReportButtonsBar } from "@account_reports/components/account_report/buttons_bar/buttons_bar";
 import { AccountReportEllipsis } from "@account_reports/components/account_report/ellipsis/ellipsis";
 import { AccountReportFilters } from "@account_reports/components/account_report/filters/filters";
 import { AccountReportHeader } from "@account_reports/components/account_report/header/header";
@@ -27,8 +26,7 @@ export class AccountReport extends Component {
     };
     static components = {
         ControlPanel,
-        Dropdown,
-        DropdownItem,
+        AccountReportButtonsBar,
         AccountReportSearchBar,
     };
 

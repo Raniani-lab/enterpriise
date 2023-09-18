@@ -7,46 +7,9 @@
     <t t-name="account_reports.AccountReportCustomizable">
         <div class="o_action account_report" t-att-class="cssCustomClass">
             <ControlPanel>
-                <!-- Export buttons -->
+                <!-- Buttons bar -->
                 <t t-set-slot="control-panel-create-button">
-                    <t t-if="controller.buttons.length == 1">
-                        <t t-set="button" t-value="controller.buttons[0]"/>
-                        <button
-                            class="btn btn-primary"
-                            t-on-click="(ev) => controller.reportAction(ev, button.action, button.action_param, true)"
-                        >
-                            <t t-out="button.name"/>
-                        </button>
-                    </t>
-
-                    <t t-if="controller.buttons.length > 1">
-                        <div class="btn-group">
-                            <t t-set="button" t-value="controller.buttons[0]"/>
-                            <button
-                                class="btn btn-primary"
-                                t-on-click="(ev) => controller.reportAction(ev, button.action, button.action_param, true)"
-                            >
-                                <t t-out="button.name"/>
-                            </button>
-
-                            <t t-if="button_index != 0">
-                                <Dropdown togglerClass="'btn btn-primary'" showCaret="true" class="'btn-group'">
-                                    <t t-foreach="controller.buttons" t-as="button" t-key="button_index">
-                                        <t t-if="button_index != 0">
-                                            <DropdownItem>
-                                                <button
-                                                    class="btn btn-link"
-                                                    t-on-click="(ev) => controller.reportAction(ev, button.action, button.action_param, true)"
-                                                >
-                                                    <t t-out="button.name"/>
-                                                </button>
-                                            </DropdownItem>
-                                        </t>
-                                    </t>
-                                </Dropdown>
-                            </t>
-                        </div>
-                    </t>
+                    <AccountReportButtonsBar/>
                 </t>
 
                 <!-- Search bar (if configured for report) and filters -->

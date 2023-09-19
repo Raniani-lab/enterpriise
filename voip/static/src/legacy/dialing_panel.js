@@ -42,6 +42,7 @@ export const DialingPanel = Widget.extend({
         this.env = env;
         this.voip = this.env.services.voip;
         this.voip.legacyDialingPanelWidget = this;
+        this._hasIncomingCall = false;
         this._isBlockOverlay = false;
         this._isFolded = false;
         this._isFoldedBeforeCall = false;
@@ -267,7 +268,11 @@ export const DialingPanel = Widget.extend({
             this.$(".o_dial_incoming_buttons").hide();
         } else {
             this.$el.removeClass("folded");
-            this.$(".o_dial_main_buttons").show();
+            if (this._hasIncomingCall) {
+                this._activeTab._phoneCallDetails.receivingCall();
+            } else {
+                this.$(".o_dial_main_buttons").show();
+            }
         }
     },
     /**
@@ -528,7 +533,7 @@ export const DialingPanel = Widget.extend({
      */
     async _toggleFold({ isFolded } = {}) {
         if (!uiUtils.isSmall()) {
-            if (this._isFolded) {
+            if (this._isFolded && !this._hasIncomingCall) {
                 await this._refreshPhoneCallsStatus();
             }
             this._isFolded = typeof isFolded === "boolean" ? isFolded : !this._isFolded;
@@ -799,6 +804,7 @@ export const DialingPanel = Widget.extend({
         await this._activeTab.onIncomingCall(detail);
         this._$mainButtons.hide();
         this._$incomingCallButtons.show();
+        this._hasIncomingCall = true;
     },
     /**
      * @private
@@ -874,6 +880,7 @@ export const DialingPanel = Widget.extend({
      * @return {Promise}
      */
     _onSipCancelIncoming({ detail }) {
+        this._hasIncomingCall = false;
         this._isInCall = false;
         this._isPostpone = false;
         this._missedCounter = this._missedCounter + 1;
@@ -962,6 +969,7 @@ export const DialingPanel = Widget.extend({
      * @return {Promise}
      */
     _onSipRejected({ detail }) {
+        this._hasIncomingCall = false;
         this._cancelCall();
         return this._activeTab.onRejectedCall(detail);
     },

@@ -238,6 +238,7 @@ export const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin
      * @private
      */
     _answerCall() {
+        this.voip.legacyDialingPanelWidget._hasIncomingCall = false;
         const inviteSession = this._currentInviteSession;
 
         if (this.voip.mode === "demo") {

@@ -2,12 +2,17 @@
 
 import { FilterValue } from "@spreadsheet/global_filters/components/filter_value/filter_value";
 import { _t } from "@web/core/l10n/translation";
-import { Component } from "@odoo/owl";
+import { Component, useRef } from "@odoo/owl";
+import { hooks } from "@odoo/o-spreadsheet";
+
 /**
  * This is the side panel to define/edit a global filter.
  * It can be of 3 different type: text, date and relation.
  */
 export default class GlobalFiltersSidePanel extends Component {
+    dnd = hooks.useDragAndDropListItems();
+    filtersListRef = useRef("filtersList");
+
     setup() {
         this.getters = this.env.model.getters;
     }
@@ -62,6 +67,47 @@ export default class GlobalFiltersSidePanel extends Component {
             case "relation":
                 this.env.openSidePanel("RELATION_FILTER_SIDE_PANEL", { id });
                 break;
+        }
+    }
+
+    startDragAndDrop(filter, event) {
+        if (event.button !== 0) {
+            return;
+        }
+
+        const rects = this.getFiltersElementsRects();
+        const filtersItems = this.filters.map((filter, index) => ({
+            id: filter.id,
+            size: rects[index].height,
+            position: rects[index].y,
+        }));
+        this.dnd.start("vertical", {
+            draggedItemId: filter.id,
+            initialMousePosition: event.clientY,
+            items: filtersItems,
+            containerEl: this.filtersListRef.el,
+            onDragEnd: (filterId, finalIndex) => this.onDragEnd(filterId, finalIndex),
+        });
+    }
+
+    getFiltersElementsRects() {
+        return Array.from(this.filtersListRef.el.children).map((filterEl) =>
+            filterEl.getBoundingClientRect()
+        );
+    }
+
+    getFilterItemStyle(filter) {
+        return this.dnd.itemsStyle[filter.id] || "";
+    }
+
+    onDragEnd(filterId, finalIndex) {
+        const originalIndex = this.filters.findIndex((filter) => filter.id === filterId);
+        const delta = finalIndex - originalIndex;
+        if (filterId && delta !== 0) {
+            this.env.model.dispatch("MOVE_GLOBAL_FILTER", {
+                id: filterId,
+                delta,
+            });
         }
     }
 }

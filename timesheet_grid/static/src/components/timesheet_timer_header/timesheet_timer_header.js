@@ -86,6 +86,10 @@ export class TimesheetTimerHeader extends Component {
         return this.env.isSmall;
     }
 
+    get viewType() {
+        return this.env.config.viewType;
+    }
+
     //--------------------------------------------------------------------------
     // Business Methods
     //--------------------------------------------------------------------------

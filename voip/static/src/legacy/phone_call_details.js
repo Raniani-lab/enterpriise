@@ -5,6 +5,7 @@ import { SelectInputDeviceDialog } from "@voip/legacy/audio_input_device";
 import core from "@web/legacy/js/services/core";
 import { renderToElement } from "@web/core/utils/render";
 import { isMobileOS } from "@web/core/browser/feature_detection";
+import { escapeHTML, escapeRegExp } from "@web/core/utils/strings";
 import { debounce } from "@web/core/utils/timing";
 import { session } from "@web/session";
 import Widget from "@web/legacy/js/core/widget";
@@ -504,10 +505,13 @@ export const PhoneCallDetails = Widget.extend({
      * @private
      */
     async _onInputNumber() {
-        const self = this;
-        const value = $("#input_transfer").val().toLowerCase();
-        const number = cleanNumber(value);
+        const searchTerms = $("#input_transfer").val().toLowerCase();
+        if (searchTerms.trim() === "") {
+            $("#table_contact").empty();
+            return;
+        }
         let domain;
+        const number = cleanNumber(searchTerms);
         if (number) {
             domain = [
                 "&",
@@ -518,7 +522,7 @@ export const PhoneCallDetails = Widget.extend({
                 "|",
                 ["phone", "ilike", number],
                 ["mobile", "ilike", number],
-                ["name", "ilike", value],
+                ["name", "ilike", searchTerms],
             ];
         } else {
             domain = [
@@ -526,7 +530,7 @@ export const PhoneCallDetails = Widget.extend({
                 "|",
                 ["phone", "!=", ""],
                 ["mobile", "!=", ""],
-                ["name", "ilike", value],
+                ["name", "ilike", searchTerms],
             ];
         }
         const contacts = await this.env.services.orm.call("res.partner", "search_read", [], {
@@ -535,40 +539,31 @@ export const PhoneCallDetails = Widget.extend({
             limit: 8,
         });
         let lines = "";
-        for (let i = 0; i < contacts.length; i++) {
-            const name = contacts[i].display_name;
-            const phone = contacts[i].phone;
-            const mobile = contacts[i].mobile;
-            let default_phone = phone;
-            const indexOf = name.toLowerCase().indexOf(value);
-            let nameBolt = "";
-            if (indexOf >= 0) {
-                // We matched the name, we made the following line to keep the upper cases
-                nameBolt =
-                    name.slice(0, indexOf) +
-                    "<b>" +
-                    name.slice(indexOf, indexOf + value.length) +
-                    "</b>" +
-                    name.slice(indexOf + value.length);
-            } else if (phone && phone.includes(number)) {
-                nameBolt = name + " (" + phone.replace(number, "<b>" + number + "</b>") + ")";
-            } else if (mobile && mobile.includes(number)) {
-                nameBolt = name + " (" + mobile.replace(number, "<b>" + number + "</b>") + ")";
-                default_phone = mobile;
+        const regex = new RegExp(`(^.*)(${escapeRegExp(searchTerms)})(.*$)`, "i");
+        for (const contact of contacts) {
+            for (const key of ["display_name", "phone", "mobile"]) {
+                const value = contact[key];
+                if (!value) {
+                    continue;
+                }
+                const [, start, match, end] = (value.match(regex) || []).map(escapeHTML);
+                if (match) {
+                    let searchResult = `${start}<b>${match}</b>${end}`;
+                    let phoneNumber = contact.mobile || contact.phone;
+                    if (key === "phone" || key === "mobile") {
+                        searchResult = `${escapeHTML(contact.display_name)} (${searchResult})`;
+                        phoneNumber = contact[key];
+                    }
+                    lines += `<tr class="transfer_contact_line cursor-pointer" data-number="${escapeHTML(
+                        phoneNumber
+                    )}"><td>${searchResult}</td></tr>`;
+                    break;
+                }
             }
-            lines +=
-                '<tr class="transfer_contact_line cursor-pointer" data-number="' +
-                default_phone +
-                '"><td>' +
-                nameBolt +
-                "</td></tr>";
         }
         $("#table_contact").empty().append(lines);
-        $("#table_contact tr").on("click", async function (event) {
-            self._onClickContactLine(event);
-        });
+        $("#table_contact tr").on("click", (ev) => this._onClickContactLine(ev));
         $("#input_transfer").removeClass("is-invalid");
-
         $(".o_dial_transfer_button").popover("update");
     },
 });

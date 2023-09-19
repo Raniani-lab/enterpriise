@@ -612,7 +612,8 @@ QUnit.module(
                     },
                     position: "attributes",
                     new_attrs: {
-                        column_invisible: "",
+                        column_invisible: "False",
+                        invisible: "False",
                     },
                 },
             ];
@@ -1684,13 +1685,10 @@ QUnit.module(
                             false,
                             "The lang in context should be false explicitly"
                         );
-                        assert.ok(
-                            !("invisible" in args.operations[0].new_attrs),
-                            'we shouldn\'t send "invisible"'
-                        );
+                        assert.strictEqual(args.operations[0].new_attrs.invisible, "False");
                         assert.strictEqual(
                             args.operations[0].new_attrs.column_invisible,
-                            "",
+                            "False",
                             "Should remove column_invisible attribute"
                         );
                         changeArch(args.view_id, archReturn);
@@ -1732,7 +1730,7 @@ QUnit.module(
                         );
                         assert.equal(
                             args.operations[0].new_attrs.column_invisible,
-                            1,
+                            "True",
                             'we should send "column_invisible"'
                         );
 

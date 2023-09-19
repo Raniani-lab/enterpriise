@@ -14,7 +14,6 @@ export class Property extends Component {
         class: "",
     };
     static props = {
-        isConditional: { type: Boolean, optional: true },
         name: { type: String },
         type: { type: String },
         value: { optional: true },
@@ -36,28 +35,6 @@ export class Property extends Component {
     get className() {
         const propsClass = this.props.class ? this.props.class : "";
         return `o_web_studio_property_${this.props.name} ${propsClass}`;
-    }
-
-    getCheckboxClassname(value) {
-        if (this.props.isConditional && !!value && !(typeof value === "boolean")) {
-            return "o_web_studio_checkbox_indeterminate";
-        }
-    }
-
-    onConditionalButtonClicked() {
-        const valueType = typeof this.props.value;
-        let value = valueType === "boolean" || valueType === "undefined" ? [] : this.props.value;
-
-        if (typeof value !== "string") {
-            value = JSON.stringify(value);
-        }
-
-        this.dialog.add(DomainSelectorDialog, {
-            resModel: this.env.viewEditorModel.resModel,
-            domain: value,
-            isDebugMode: !!this.env.debug,
-            onConfirm: (domain) => this.props.onChange(domain, this.props.name),
-        });
     }
 
     onDomainClicked() {

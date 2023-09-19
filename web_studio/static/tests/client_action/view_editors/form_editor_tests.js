@@ -221,7 +221,7 @@ QUnit.module("View Editors", (hooks) => {
                             indice: 1,
                         },
                     ]);
-                    assert.deepEqual(args.operations[0].new_attrs, { invisible: "1" });
+                    assert.deepEqual(args.operations[0].new_attrs, { invisible: "True" });
                     assert.step("edit view");
                 }
             },
@@ -832,7 +832,7 @@ QUnit.module("View Editors", (hooks) => {
                 "/web_studio/edit_view": (route, args) => {
                     assert.equal(
                         args.operations[0].new_attrs.invisible,
-                        1,
+                        "True",
                         'we should send "invisible"'
                     );
                     return createMockViewResult(serverData, "form", arch, "coucou");
@@ -1391,7 +1391,7 @@ QUnit.module("View Editors", (hooks) => {
                 if (route === "/web_studio/edit_view") {
                     assert.equal(
                         args.operations[0].new_attrs.invisible,
-                        1,
+                        "True",
                         'we should send "invisible"'
                     );
                     return createMockViewResult(serverData, "form", arch, "coucou");
@@ -3007,12 +3007,12 @@ QUnit.module("View Editors", (hooks) => {
                         const operation = args.operations[clickCount];
                         if (clickCount === 0) {
                             clickCount++;
-                            assert.strictEqual(operation.new_attrs.readonly, "1");
-                            assert.strictEqual(operation.new_attrs.force_save, "True");
+                            assert.strictEqual(operation.new_attrs.readonly, "True");
+                            assert.strictEqual(operation.new_attrs.force_save, "1");
                             changeArch(args.view_id, readonlyArch);
                         } else if (clickCount === 1) {
-                            assert.strictEqual(operation.new_attrs.readonly, "");
-                            assert.strictEqual(operation.new_attrs.force_save, "False");
+                            assert.strictEqual(operation.new_attrs.readonly, "False");
+                            assert.strictEqual(operation.new_attrs.force_save, "0");
                             changeArch(args.view_id, arch);
                         }
                     }
@@ -3862,7 +3862,7 @@ QUnit.module("View Editors", (hooks) => {
             const mockRPC = function (route, args) {
                 if (route === "/web_studio/edit_view") {
                     // Make sure attrs are overridden by empty object to remove the domain
-                    assert.deepEqual(args.operations[0].new_attrs, { invisible: "" });
+                    assert.deepEqual(args.operations[0].new_attrs, { invisible: "False" });
                     assert.step("edit view");
                 }
             };
@@ -4034,7 +4034,7 @@ QUnit.module("View Editors", (hooks) => {
                 assert.step("edit_view");
                 assert.deepEqual(
                     args.operations[0].new_attrs,
-                    { readonly: "1" },
+                    { readonly: "True" },
                     'we should send "column_invisible" in attrs'
                 );
             }

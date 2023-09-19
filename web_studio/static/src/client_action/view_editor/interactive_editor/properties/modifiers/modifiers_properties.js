@@ -1,15 +1,21 @@
 /** @odoo-module */
 
 import { Component } from "@odoo/owl";
-import { Property } from "@web_studio/client_action/view_editor/property/property";
+import { CheckBox } from "@web/core/checkbox/checkbox";
+import { useOwnedDialogs } from "@web/core/utils/hooks";
+import { ExpressionEditorDialog } from "@web/core/expression_editor_dialog/expression_editor_dialog";
 
 export class ModifiersProperties extends Component {
     static template = "web_studio.ViewEditor.InteractiveEditorProperties.Modifiers";
-    static components = { Property };
+    static components = { CheckBox };
     static props = {
         node: { type: Object },
         availableOptions: { type: Array },
     };
+
+    setup() {
+        this.addDialog = useOwnedDialogs();
+    }
 
     /**
      * @param {string} name of the attribute
@@ -20,25 +26,36 @@ export class ModifiersProperties extends Component {
     }
 
     // <tag invisible="EXPRESSION"  />
-    onChangeModifier(value, name) {
-        const isBoolean = typeof value === "boolean";
+    onChangeModifier(name, value) {
+        const isTypeBoolean = typeof value === "boolean";
+        const encodesBoolean = isTypeBoolean || this.isBooleanExpression(value);
+        const isTruthy = encodesBoolean ? this.isBoolTrue(value) : !!value;
         const newAttrs = {};
+        const oldAttrs = { ...this.props.node.attrs };
 
         const changingInvisible = name === "invisible";
         const isInList = this.env.viewEditorModel.viewType === "list";
 
-        if (!isBoolean) {
-            newAttrs[name] = value;
-        } else {
+        if (encodesBoolean) {
             if (changingInvisible && isInList) {
-                name = "column_invisible";
-                delete newAttrs.invisible;
+                if (isTruthy) {
+                    newAttrs["column_invisible"] = "True";
+                } else {
+                    newAttrs["column_invisible"] = "False";
+                    newAttrs["invisible"] = "False";
+                }
+            } else {
+                newAttrs[name] = isTruthy ? "True" : "False";
             }
-            newAttrs[name] = value ? "1" : "";
+        } else {
+            newAttrs[name] = value;
+            if (changingInvisible && isInList && "column_invisible" in oldAttrs) {
+                newAttrs["column_invisible"] = "False";
+            }
         }
 
         if (this.env.viewEditorModel.viewType === "form" && name === "readonly") {
-            newAttrs.force_save = value ? "True" : "False";
+            newAttrs.force_save = isTruthy ? "1" : "0";
         }
 
         const operation = {
@@ -50,5 +67,45 @@ export class ModifiersProperties extends Component {
             ),
         };
         this.env.viewEditorModel.doOperation(operation);
+    }
+
+    getCheckboxClassName(value) {
+        if (value && !this.isBooleanExpression(value)) {
+            return "o_web_studio_checkbox_indeterminate";
+        }
+    }
+
+    isBooleanExpression(expression) {
+        return ["1", "0", "True", "true", "False", "false"].includes(expression);
+    }
+
+    isBoolTrue(value) {
+        if (typeof value === "boolean") {
+            return value;
+        }
+        return ["1", "True", "true"].includes(value);
+    }
+
+    valueAsBoolean(expression) {
+        if (!expression) {
+            return false;
+        }
+        if (this.isBooleanExpression(expression)) {
+            return this.isBoolTrue(expression);
+        }
+        return true;
+    }
+
+    onConditionalButtonClicked(name, value) {
+        if (typeof value !== "string" || value === "") {
+            value = "False"; // See py.js:evaluateBooleanExpr default value is False
+        }
+        const { fields, resModel, fieldsInArch } = this.env.viewEditorModel;
+        this.addDialog(ExpressionEditorDialog, {
+            resModel,
+            fields: Object.fromEntries(["id", ...fieldsInArch].map((name) => [name, fields[name]])),
+            expression: value,
+            onConfirm: (expression) => this.onChangeModifier(name, expression),
+        });
     }
 }

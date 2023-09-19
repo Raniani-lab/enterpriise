@@ -22,7 +22,6 @@
         <t t-elif="props.type === 'boolean'">
             <div class="o_web_studio_property clearfix o_web_studio_sidebar_checkbox d-flex" t-att-class="props.class">
                 <CheckBox
-                    className="getCheckboxClassname(props.value)"
                     id="props.name"
                     name="props.name"
                     value="!!props.value"
@@ -32,9 +31,6 @@
                     <t t-slot="default" />
                     <sup t-if="props.tooltip" class="text-info p-1" t-att-data-tooltip="props.tooltip" t-esc="'?'"/>
                 </CheckBox>
-                <a t-if="props.isConditional" t-on-click.prevent.stop="onConditionalButtonClicked" role="button" href="#" data-type="invisible" class="btn btn-link o_web_studio_attrs ms-auto">
-                    Conditional
-                </a>
             </div>
         </t>
         <div t-elif="props.type === 'domain'" class="o_web_studio_property o_web_studio_sidebar_text my-2 d-flex flex-column" t-att-class="props.class">

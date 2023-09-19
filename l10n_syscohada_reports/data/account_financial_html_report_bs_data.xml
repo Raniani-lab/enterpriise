@@ -2,7 +2,7 @@
 <odoo>
     <menuitem id="l10n_syscohada.account_reports_syscohada_statements_menu" name="Syscohada" parent="account.menu_finance_reports" sequence="0" groups="account.group_account_readonly"/>
     <record id="account_financial_report_syscohada_bilan" model="account.report">
-        <field name="name">Balance Sheet</field>
+        <field name="name">Balance Sheet (SYSCOHADA)</field>
         <field name="root_report_id" ref="account_reports.balance_sheet"/>
         <field name="filter_unfold_all" eval="True"/>
         <field name="filter_date_range" eval="False"/>
@@ -627,7 +627,7 @@
                         </field>
                         <field name="children_ids">
                             <record id="account_financial_report_line_03_3_1_syscohada_bilan_passif" model="account.report.line">
-                                <field name="name">DH | Dettes circulantes O.A.S.</field>
+                                <field name="name">DH | Circulating liabilities OOA</field>
                                 <field name="code">SYSCOHADA_DH</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>

@@ -14,6 +14,7 @@ from markupsafe import Markup
 from requests.exceptions import RequestException, Timeout, ConnectionError
 from odoo import api, fields, models, modules, tools, _
 from odoo.exceptions import UserError, CacheMiss, MissingError, ValidationError, RedirectWarning
+from odoo.http import request
 from odoo.addons.account_online_synchronization.models.odoofin_auth import OdooFinAuth
 from odoo.tools.misc import format_amount, format_date, get_lang
 
@@ -452,6 +453,8 @@ class AccountOnlineLink(models.Model):
             data = {}
         if self.state == 'disconnected' and not ignore_status:
             raise UserError(_('Please reconnect your online account.'))
+        if not url.startswith('/'):
+            raise UserError(_('Invalid URL'))
 
         timeout = int(self.env['ir.config_parameter'].sudo().get_param('account_online_synchronization.request_timeout')) or 60
         proxy_mode = self.env['ir.config_parameter'].sudo().get_param('account_online_synchronization.proxy_mode') or 'production'
@@ -460,13 +463,21 @@ class AccountOnlineLink(models.Model):
         endpoint_url = 'https://%s.odoofin.com%s' % (proxy_mode, url)
         if runbot_pattern.match(proxy_mode):
             endpoint_url = '%s%s' % (proxy_mode, url)
+        cron = self.env.context.get('cron', False)
         data['utils'] = {
             'request_timeout': timeout,
             'lang': get_lang(self.env).code,
             'server_version': odoo.release.serie,
             'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
-            'cron': self.env.context.get('cron', False)
+            'cron': cron,
         }
+        if request:
+            # many banking institutions require the end-user IP/user_agent for traceability
+            # of client-initiated actions. It won't be stored on odoofin side.
+            data['utils']['psu_info'] = {
+                'ip': request.httprequest.remote_addr,
+                'user_agent': request.httprequest.user_agent.string,
+            }
 
         try:
             # We have to use sudo to pass record as some fields are protected from read for common users.

@@ -50,6 +50,8 @@ class SendCloud:
         # split the weight into packages instead of returning no price / offer
         packages_no = 0
         total_weight = float(carrier.sendcloud_convert_weight(total_weight))
+        if total_weight < carrier.sendcloud_shipping_id.min_weight and order:
+            raise UserError(_('Order below minimum weight of carrier'))
         if total_weight > carrier.sendcloud_shipping_id.max_weight and order:
             packages_no = math.ceil(total_weight / carrier.sendcloud_shipping_id.max_weight)
             # max weight from sendcloud is 1 gram extra (eg. if max allowed weight = 3kg, sendcloud_shipping_id.max_weight = 3.001 kg)

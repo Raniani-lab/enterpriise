@@ -256,7 +256,7 @@
                     <record id="account_financial_html_report_line_bs_lt_d" model="account.report.line">
                         <field name="name">EQUITY </field>
                         <field name="code">BS_D_</field>
-                        <field name="aggregation_formula">BS_D_1_.balance + BS_D_2_.balance + BS_D_3_.balance + BS_D_4_.balance + BS_D_5_.balance</field>
+                        <field name="aggregation_formula">BS_D_1_.balance + BS_D_2_.balance + BS_D_3_.balance + BS_D_4_.balance + BS_D_5_.balance + BS_D_6_.balance</field>
                         <field name="children_ids">
                             <record id="account_financial_html_report_line_bs_lt_d_1" model="account.report.line">
                                 <field name="name">CAPITAL</field>
@@ -384,7 +384,7 @@
                                                 <field name="label">bs_ppl_balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">-6 - 5</field>
-                                                <field name="date_scope">to_beginning_of_period</field>
+                                                <field name="date_scope">to_beginning_of_fiscalyear</field>
                                             </record>
                                         </field>
                                     </record>

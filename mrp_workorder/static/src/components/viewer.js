@@ -1,14 +1,16 @@
 /** @odoo-module **/
 
-import { PdfViewerField } from '@web/views/fields/pdf_viewer/pdf_viewer_field';
-import { ImageField, fileTypeMagicWordMap } from '@web/views/fields/image/image_field';
-import { SlidesViewer } from "@mrp/views/fields/google_slides_viewer";
-
+import { getGoogleSlideUrl } from "@mrp/views/fields/google_slides_viewer";
+import { _t } from "@web/core/l10n/translation";
+import { useService } from "@web/core/utils/hooks";
+import { url } from "@web/core/utils/urls";
+import { fileTypeMagicWordMap } from "@web/views/fields/image/image_field";
 const { Component, useEffect, useRef } = owl;
 
 class DocumentViewer extends Component {
 
     setup() {
+        this.notification = useService("notification");
         this.magicNumbers = {
             'JVBER': 'pdf',
             ...fileTypeMagicWordMap,
@@ -21,10 +23,6 @@ class DocumentViewer extends Component {
     }
 
     updatePdf() {
-        if (this.slideIFrame.el) {
-            // Hide the slide url
-            this.slideIFrame.el.firstElementChild.classList.add("d-none");
-        }
         if (this.pdfIFrame.el) {
             const iframe = this.pdfIFrame.el.firstElementChild;
             iframe.removeAttribute('style');
@@ -37,6 +35,13 @@ class DocumentViewer extends Component {
                 });
         }
     }
+
+    onLoadFailed() {
+        this.notification.add(_t("Could not display the selected %s", this.type), {
+            type: "danger",
+        });
+    }
+
     get type() {
         if (!this.props || !this.props.value) {
             return false;
@@ -52,32 +57,32 @@ class DocumentViewer extends Component {
         return false;
     }
 
-    get viewerProps() {
-        let viewerProps = {
-            record: {
-                resModel: this.props.resModel,
-                resId: this.props.resId,
-                data: {},
-            },
-            name: this.props.resField,
-            readonly: true,
-        };
-        viewerProps['record']['data'][this.props.resField] = this.props.resField;
-        viewerProps['record']['data'][`${this.props.resField}_page`] = this.props.page || 1;
-        viewerProps["record"].isInvalid = () => false;
-        if (this.type === 'pdf') {
-            viewerProps['fileNameField'] = this.props.resField;
-        }
-        return viewerProps;
+    get urlPdf() {
+        const page = this.props.page || 1;
+        const file = encodeURIComponent(
+            url("/web/content", {
+                model: this.props.resModel,
+                field: this.props.resField,
+                id: this.props.resId,
+            })
+        );
+        return `/web/static/lib/pdfjs/web/viewer.html?file=${file}#page=${page}`;
+    }
+
+    get urlSlide() {
+        return getGoogleSlideUrl(this.props.value, this.props.page);
+    }
+
+    get urlImage() {
+        return url("/web/image", {
+            model: this.props.resModel,
+            id: this.props.resId,
+            field: this.props.resField,
+        });
     }
 }
 
-DocumentViewer.template = 'mrp_workorder.DocumentViewer';
+DocumentViewer.template = "mrp_workorder.DocumentViewer";
 DocumentViewer.props = ["resField", "resModel", "resId", "value", "page"];
-DocumentViewer.components = {
-    PdfViewerField,
-    ImageField,
-    SlidesViewer,
-};
 
 export default DocumentViewer;

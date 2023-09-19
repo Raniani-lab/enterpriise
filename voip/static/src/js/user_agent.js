@@ -204,6 +204,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @private
      */
     _answerCall() {
+        this.getParent()._hasIncomingCall = false;
         const inviteSession = this._currentInviteSession;
 
         if (this.voip.mode === 'demo') {

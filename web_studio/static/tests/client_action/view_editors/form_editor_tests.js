@@ -3867,7 +3867,7 @@ QUnit.module("View Editors", (hooks) => {
             assert.containsOnce(target, ".modal");
             assert.strictEqual(
                 target.querySelector(".modal .modal-body").textContent,
-                "Match records with all of the following rules:Display Name=!=containsdoes not containis inis not inis setis not setparent.display_nameNew Rule"
+                "Match all of the following rules:Display Name=!=containsdoes not containis inis not inis setis not setparent.display_nameNew Rule"
             );
 
             // Close the modal and remove the domain on invisible attr

@@ -64,7 +64,7 @@ QUnit.module(
             assert.equal(pivotModel.children[1].innerText, "Partner (partner)");
 
             assert.equal(domain.children[0].innerText, "Domain");
-            assert.equal(domain.children[1].innerText, "Match all records");
+            assert.equal(domain.children[1].innerText, "Match all records\nInclude archived");
 
             assert.equal(measures.children[0].innerText, "Measures");
             assert.equal(measures.children[1].innerText, "Count");
@@ -292,7 +292,7 @@ QUnit.module(
             await nextTick();
             const fixture = getFixture();
             await click(fixture.querySelector(".o_edit_domain"));
-            await click(fixture.querySelector(".o_domain_add_first_node_button"));
+            await click(fixture.querySelector(".o_domain_tree a[role=button]"));
             await click(fixture.querySelector(".modal-footer .btn-primary"));
             assert.deepEqual(model.getters.getPivotDefinition(pivotId).domain, [["id", "=", 1]]);
             assert.equal(fixture.querySelector(".o_domain_selector_row").innerText, "ID\n= 1");

@@ -137,7 +137,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         assert.equal(pivotModel.children[1].innerText, "Partner (partner)");
 
         assert.equal(domain.children[0].innerText, "Domain");
-        assert.equal(domain.children[1].innerText, "Match all records");
+        assert.equal(domain.children[1].innerText, "Match all records\nInclude archived");
 
         // opening from a non pivot cell
         model.dispatch("SELECT_ODOO_LIST", {});
@@ -401,7 +401,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         await nextTick();
         const fixture = getFixture();
         await click(fixture.querySelector(".o_edit_domain"));
-        await click(fixture.querySelector(".o_domain_add_first_node_button"));
+        await click(fixture.querySelector(".o_domain_tree a[role=button]"));
         await click(fixture.querySelector(".modal-footer .btn-primary"));
         assert.deepEqual(model.getters.getListDefinition(listId).domain, [["id", "=", 1]]);
         assert.equal(fixture.querySelector(".o_domain_selector_row").innerText, "ID\n= 1");

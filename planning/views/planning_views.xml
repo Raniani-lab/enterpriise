@@ -63,7 +63,6 @@
                 <field name="template_reset" invisible="1" />
                 <field name="employee_id" invisible="1"/>
                 <field name="user_id" invisible="1"/>
-                <field name="resource_id" invisible="1"/>
                 <field name="resource_type" invisible="1"/>
                 <field name="is_users_role" invisible="1"/>
                 <field name="request_to_switch" invisible="1"/>

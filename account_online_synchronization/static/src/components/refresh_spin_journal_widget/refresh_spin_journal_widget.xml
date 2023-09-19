@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <t t-name="account_online_synchronization.RefreshSpin">
+        <div t-on-mouseenter="onMouseEnter" t-on-mouseleave="onMouseLeave">
+            <t t-if="this.state.isHovered">
+                <a class="oe_inline oe_kanban_action oe_kanban_action_a" href="#" t-on-click="refresh">Refresh</a>
+            </t>
+            <t t-else="">
+                <span>Fetching... <i class='fa fa-spinner fa-spin'/></span>
+            </t>
+        </div>
+    </t>
+</templates>

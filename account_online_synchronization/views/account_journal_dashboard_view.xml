@@ -12,6 +12,7 @@
                     <field name="next_link_synchronization"/>
                     <field name="account_online_account_id"/>
                     <field name="account_online_link_state"/>
+                    <field name="online_sync_fetching_status"/>
                 </field>
 
                 <xpath expr="//div[@name='bank_journal_transactions']" position="attributes">
@@ -20,13 +21,16 @@
 
                 <xpath expr='//div[@name="bank_journal_cta"]' position='inside'>
                     <t t-if="dashboard.bank_statements_source === 'online_sync'">
-                        <t t-if="record.account_online_link_state.raw_value === 'connected'">
+                        <t t-if="record.account_online_link_state.raw_value === 'connected' &amp;&amp; ['done', false].includes(record.online_sync_fetching_status.raw_value)">
                             <a invisible="not account_online_account_id" type="object"
                                 name="manual_sync" class="oe_inline" groups="account.group_account_manager">Fetch Transactions</a>
                             <br invisible="not expiring_synchronization_date"/>
                             <span groups="account.group_account_manager" invisible="not expiring_synchronization_date">
                                 <widget name="connected_until_widget"/>
                             </span>
+                        </t>
+                        <t t-elif="record.account_online_link_state.raw_value === 'connected'">
+                            <widget name="refresh_spin_widget"/>
                         </t>
                         <t t-elif="record.account_online_link_state.raw_value == 'error' || (record.expiring_synchronization_date.raw_value &amp;&amp; record.expiring_synchronization_due_day.value &lt;= 0)">
                             <button groups="account.group_account_user" type="object" name="manual_sync" class="btn btn-danger">Reconnect Bank</button>

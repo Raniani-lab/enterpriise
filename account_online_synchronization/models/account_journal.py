@@ -32,6 +32,7 @@ class AccountJournal(models.Model):
         help='Comma separated list of email addresses to send consent renewal notifications 15, 3 and 1 days before expiry',
         default=lambda self: self.env.user.email,
     )
+    online_sync_fetching_status = fields.Selection(related="account_online_account_id.fetching_status", readonly=True)
 
     def write(self, vals):
         # When changing the bank_statement_source, unlink the connection if there is any
@@ -61,16 +62,14 @@ class AccountJournal(models.Model):
     @api.model
     def _cron_fetch_online_transactions(self):
         for journal in self.search([('account_online_account_id', '!=', False)]):
-            if journal.account_online_link_id.auto_sync:
-                try:
-                    journal.with_context(cron=True).manual_sync()
-                    # for cron jobs it is usually recommended committing after each iteration,
-                    # so that a later error or job timeout doesn't discard previous work
-                    self.env.cr.commit()
-                except (UserError, RedirectWarning):
-                    # We need to rollback here otherwise the next iteration will still have the error when trying to commit
-                    self.env.cr.rollback()
-                    pass
+            try:
+                journal.with_context(cron=True).manual_sync()
+                # for cron jobs it is usually recommended committing after each iteration,
+                # so that a later error or job timeout doesn't discard previous work
+                self.env.cr.commit()
+            except (UserError, RedirectWarning):
+                # We need to rollback here otherwise the next iteration will still have the error when trying to commit
+                self.env.cr.rollback()
 
     @api.model
     def _cron_send_reminder_email(self):
@@ -82,7 +81,7 @@ class AccountJournal(models.Model):
         self.ensure_one()
         if self.account_online_link_id:
             account = self.account_online_account_id
-            return self.account_online_link_id.with_context(dont_show_transactions=True)._fetch_transactions(accounts=account)
+            return self.account_online_link_id._fetch_transactions(accounts=account)
 
     def unlink(self):
         """

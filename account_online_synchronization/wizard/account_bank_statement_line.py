@@ -60,6 +60,5 @@ class AccountBankStatementLineTransient(models.TransientModel):
             'online_account_id',
         ]
         transactions_to_import = self.read(fields=fields_to_read, load=None)
-        default_journal_id = self.journal_id.id if len(self.journal_id) == 1 else None
-        statement_line_ids = self.env['account.bank.statement.line']._online_sync_bank_statement(transactions_to_import, self.online_account_id)
-        return self.online_account_id.account_online_link_id.with_context(search_default_journal_id=default_journal_id)._show_fetched_transactions_action(statement_line_ids)
+        self.env['account.bank.statement.line']._online_sync_bank_statement(transactions_to_import, self.online_account_id)
+        return self.env["ir.actions.act_window"]._for_xml_id('account.open_account_journal_dashboard_kanban')

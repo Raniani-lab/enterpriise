@@ -5,6 +5,8 @@ import time
 from odoo import api, fields, models, SUPERUSER_ID, tools, _
 from odoo.tools import date_utils
 
+STATEMENT_LINE_CREATION_BATCH_SIZE = 500  # When importing transactions, batch the process to commit after importing batch_size
+
 
 class AccountBankStatementLine(models.Model):
     _inherit = 'account.bank.statement.line'
@@ -59,15 +61,16 @@ class AccountBankStatementLine(models.Model):
 
             filtered_transactions = online_account._get_filtered_transactions(sorted_transactions)
 
+            do_commit = not (hasattr(threading.current_thread(), 'testing') and threading.current_thread().testing)
             if filtered_transactions:
-                lines_to_reconcile += self.with_user(SUPERUSER_ID).with_context(skip_statement_line_cron_trigger=True).create(filtered_transactions)
+                # split transactions import in batch and commit after each batch except in testing mode
+                for index in range(0, len(filtered_transactions), STATEMENT_LINE_CREATION_BATCH_SIZE):
+                    lines_to_reconcile += self.with_user(SUPERUSER_ID).with_context(skip_statement_line_cron_trigger=True).create(filtered_transactions[index:index+STATEMENT_LINE_CREATION_BATCH_SIZE])
+                    if do_commit:
+                        self.env.cr.commit()
                 # Set last sync date as the last transaction date
                 journal.account_online_account_id.sudo().write({'last_sync': filtered_transactions[-1]['date']})
 
-            # Commit except in testing mode
-            do_commit = not (hasattr(threading.current_thread(), 'testing') and threading.current_thread().testing)
-            if do_commit:
-                self.env.cr.commit()  # if something occurs during auto reconciliation we don't want to rollback everything
             if lines_to_reconcile:
                 cron_limit_time = tools.config['limit_time_real_cron']  # default is -1
                 limit_time = (cron_limit_time if cron_limit_time > 0 else 180) - (time.time() - start_time)

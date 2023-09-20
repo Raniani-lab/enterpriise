@@ -378,6 +378,12 @@
                 <field name="recurring_monthly" widget="monetary"/>
                 <field name="recurrence_id"/>
             </field>
+            <xpath expr="//calendar" position="attributes">
+                <attribute name="color">subscription_state</attribute>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="replace">
+                <field name="subscription_state" filters="1" invisible="1"/>
+            </xpath>
         </field>
     </record>
 

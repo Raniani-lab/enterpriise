@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_order_tracking_display.OrderStatusDisplay">
+        <div class="d-flex flex-column w-100 h-100 bg-dark text-white">
+            <OdooLogo class="'position-absolute top-0 end-0'" style="'width: 180px'" monochrome="true" />
+            <Orders categoryName="'Its ready'" class="'pt-5 h-50'" orders="orders.done or []" />
+            <Orders class="'border-top border-dark border-5 h-50'" categoryName="'Almost there'" orders="orders.notDone or []" />
+        </div>
+    </t>
+</templates>

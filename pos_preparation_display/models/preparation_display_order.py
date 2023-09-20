@@ -64,16 +64,12 @@ class PosPreparationDisplayOrder(models.Model):
                 p_dis_categories = p_dis._get_pos_category_ids()
 
                 if len(set(p_dis_categories.ids).intersection(product_categories)) > 0:
-                    self.env['bus.bus']._sendone(f'preparation_display-{p_dis.access_token}', 'load_orders', {
-                        'preparation_display_id': p_dis.id,
-                    })
+                    p_dis._send_load_orders_message()
 
     @api.model
     def _send_orders_to_preparation_display(self, preparation_display_id):
         preparation_display = self.env['pos_preparation_display.display'].browse(preparation_display_id)
-        self.env['bus.bus']._sendone(f'preparation_display-{preparation_display.access_token}', 'load_orders', {
-            'preparation_display_id': preparation_display.id,
-        })
+        preparation_display._send_load_orders_message()
 
     def _get_preparation_order_values(self, order):
         return {
@@ -125,9 +121,7 @@ class PosPreparationDisplayOrder(models.Model):
             if current_order_stage:
                 current_order_stage.done = True
 
-        self.env['bus.bus']._sendone(f'preparation_display-{preparation_display.access_token}', 'load_orders', {
-            'preparation_display_id': preparation_display.id,
-        })
+        preparation_display._send_load_orders_message()
 
     def get_preparation_display_order(self, preparation_display_id):
         preparation_display = self.env['pos_preparation_display.display'].browse(preparation_display_id)

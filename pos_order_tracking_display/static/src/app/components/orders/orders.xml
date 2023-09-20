@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_order_tracking_display.Orders">
+        <div t-attf-class="{{ props.class }} mx-5">
+            <h1 class="ps-5 text-white" t-esc="props.categoryName" />
+            <div style="display:grid; grid-template-columns: repeat(4, 1fr); justify-items: center;">
+                <h2 class="p-5 text-white" t-foreach="props.orders" t-as="order" t-key="order" t-esc="order" />
+            </div>
+        </div>
+    </t>
+</templates>

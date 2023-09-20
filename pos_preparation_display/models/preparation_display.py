@@ -99,10 +99,13 @@ class PosPreparationDisplay(models.Model):
                     })
                 else:
                     current_order_stage.done = True
+            preparation_display._send_load_orders_message()
 
-            preparation_display.env['bus.bus']._sendone(f'preparation_display-{preparation_display.access_token}', 'load_orders', {
-                'preparation_display_id': preparation_display.id,
-            })
+    def _send_load_orders_message(self):
+        self.ensure_one()
+        self.env['bus.bus']._sendone(f'preparation_display-{self.access_token}', 'load_orders', {
+            'preparation_display_id': self.id,
+        })
 
     @api.depends('stage_ids', 'pos_config_ids', 'category_ids')
     def _compute_order_count(self):

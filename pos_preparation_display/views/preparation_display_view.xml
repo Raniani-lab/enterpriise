@@ -131,9 +131,9 @@
                             </div>
                             <div class="container o_kanban_card_content">
                                 <div class="row">
-                                    <div class="col-6 o_kanban_primary_left">
+                                    <div class="col-6 o_kanban_primary_left d-flex flex-column">
                                         <button class="btn btn-primary" name="open_ui" type="object">
-                                            Open Display
+                                            Open Preparation Display
                                         </button>
                                     </div>
                                     <div class="col-6 o_kanban_primary_right">

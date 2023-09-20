@@ -6,7 +6,7 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.project_task_view_tree_base"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='company_id']" position="after">
+            <xpath expr="//field[@name='name']" position="after">
                 <!-- XBO: required modifiers contains a falsy domain to be able to display the daterange without button -->
                 <field
                     name="planned_date_begin"

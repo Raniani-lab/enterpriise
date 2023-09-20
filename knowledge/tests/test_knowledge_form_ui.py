@@ -37,6 +37,10 @@ class TestKnowledgeUICommon(HttpCase, MailCommon):
 @tagged('post_install', '-at_install', 'knowledge', 'knowledge_tour')
 class TestKnowledgeUI(TestKnowledgeUICommon):
 
+    def test_knowledge_history(self):
+        """This tour will check that the history works properly."""
+        self.start_tour('/web', 'knowledge_history_tour', login='demo', step_delay=100)
+
     def test_knowledge_load_template(self):
         """This tour will check that the user can create a new article by using
            the template gallery."""

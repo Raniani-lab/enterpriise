@@ -21,7 +21,7 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
         a descendants checks which might be costly.
 
         Done as admin as only admin has access to Duplicate button currently."""
-        with self.assertQueryCount(admin=54):
+        with self.assertQueryCount(admin=56):
             workspace_children = self.workspace_children.with_env(self.env)
             shared = self.article_shared.with_env(self.env)
             _duplicates = (workspace_children + shared).copy_batch()

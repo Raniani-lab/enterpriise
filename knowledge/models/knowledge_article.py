@@ -19,10 +19,13 @@ ARTICLE_PERMISSION_LEVEL = {'none': 0, 'read': 1, 'write': 2}
 class Article(models.Model):
     _name = "knowledge.article"
     _description = "Knowledge Article"
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin', 'html.field.history.mixin']
     _order = "favorite_count desc, write_date desc, id desc"
     _mail_post_access = 'read'
     _parent_store = True
+
+    def _get_versioned_fields(self):
+        return [Article.body.name]
 
     DEFAULT_ARTICLE_TRASH_LIMIT_DAYS = 30
 

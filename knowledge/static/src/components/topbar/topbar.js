@@ -15,6 +15,7 @@ import { getRandomIcon } from '@knowledge/js/knowledge_utils';
 import KnowledgeIcon from '@knowledge/components/knowledge_icon/knowledge_icon';
 import MoveArticleDialog from '@knowledge/components/move_article_dialog/move_article_dialog';
 import PermissionPanel from '@knowledge/components/permission_panel/permission_panel';
+import HistoryDialog from '@web_editor/components/history_dialog/history_dialog';
 
 
 class KnowledgeTopbar extends Component {
@@ -34,6 +35,7 @@ class KnowledgeTopbar extends Component {
 
         this.state = useState({
             displayChatter: false,
+            displayHistory: false,
             displayPropertyPanel: !this.articlePropertiesIsEmpty,
             addingProperty: false,
             displaySharePanel: false,
@@ -215,6 +217,37 @@ class KnowledgeTopbar extends Component {
             this.env.bus.trigger('KNOWLEDGE:TOGGLE_CHATTER', {displayChatter: this.state.displayChatter});
         }
     }
+    /**
+     * Open the history dialog.
+     */
+    async openHistory() {
+        if (this.props.record.resId) {
+            this.state.displayHistory = true;
+            await this.env.model.root.save();
+
+            const versionedFieldName = 'body';
+            const historyMetadata = this.props.record.data["html_field_history_metadata"]?.[versionedFieldName];
+            if (historyMetadata) {
+                this.dialog.add(
+                    HistoryDialog,
+                    {
+                        recordId: this.props.record.resId,
+                        recordModel: this.props.record.resModel,
+                        versionedFieldName: versionedFieldName,
+                        historyMetadata: historyMetadata,
+                        restoreRequested: (html) => {
+                            const restoredData = {};
+                            restoredData[versionedFieldName] = html;
+                            this.props.record.update(restoredData);
+                        }
+                    },
+                    {
+                        onClose: () => this.state.displayHistory = false
+                    }
+                );
+            }
+        }
+    }
 
     async unarchiveArticle() {
         this.actionService.doAction(
@@ -285,6 +318,7 @@ export const knowledgeTopbar = {
     fieldDependencies: [
         { name: "create_uid", type: "many2one", relation: "res.users" },
         { name: "last_edition_uid", type: "many2one", relation: "res.users" },
+        { name: "html_field_history_metadata", type: "jsonb" },
     ]
 };
 

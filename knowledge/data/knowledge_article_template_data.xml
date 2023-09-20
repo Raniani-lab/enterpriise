@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
     <!-- Templates -->
     <record id="knowledge_article_template_personal_organizer" model="knowledge.article.template">

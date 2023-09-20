@@ -671,7 +671,7 @@ class MrpProductionSchedule(models.Model):
         based on rules lead times + produce delay or supplier info delay.
         """
         rules = self.product_id._get_rules_from_location(self.warehouse_id.lot_stock_id)
-        return rules._get_lead_days(self.product_id, bom=self.bom_id)[0]
+        return rules._get_lead_days(self.product_id, bom=self.bom_id)[0]['total_delay']
 
     def _get_replenish_qty(self, after_forecast_qty):
         """ Modify the quantity to replenish depending the min/max and targeted
@@ -881,7 +881,8 @@ class MrpProductionSchedule(models.Model):
         groupby_delay = defaultdict(list)
         for schedule in self:
             rules = schedule.product_id._get_rules_from_location(schedule.warehouse_id.lot_stock_id)
-            delay, dummy = rules.filtered(lambda r: r.action not in ['buy', 'manufacture'])._get_lead_days(schedule.product_id)
+            lead_days, dummy = rules.filtered(lambda r: r.action not in ['buy', 'manufacture'])._get_lead_days(schedule.product_id)
+            delay = lead_days['total_delay']
             groupby_delay[delay].append((schedule.product_id, schedule.warehouse_id))
         for delay in groupby_delay:
             products, warehouses = zip(*groupby_delay[delay])
@@ -969,7 +970,8 @@ class MrpProductionSchedule(models.Model):
         groupby_delay = defaultdict(list)
         for schedule in self:
             rules = schedule.product_id._get_rules_from_location(schedule.warehouse_id.lot_stock_id)
-            delay, dummy = rules._get_lead_days(schedule.product_id)
+            lead_days, dummy = rules._get_lead_days(schedule.product_id)
+            delay = lead_days['total_delay']
             groupby_delay[delay].append((schedule.product_id, schedule.warehouse_id))
 
         for delay in groupby_delay:

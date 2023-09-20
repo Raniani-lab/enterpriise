@@ -49,7 +49,7 @@ patch(PosStore.prototype, {
     async push_order_to_blackbox(order) {
         const fdm = this.hardwareProxy.deviceControllers.fiscal_data_module;
         const data = {
-            date: deserializeDateTime(order.creation_date).toFormat("yyyyMMddHHmm"),
+            date: deserializeDateTime(order.date_order).toFormat("yyyyMMddHHmm"),
             receipt_id: order.sequence_number.toString(),
             pos_id: order.pos.config.id.toString(),
             organisation_number: this.company.company_registry.replace(/\D/g, ""),

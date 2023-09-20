@@ -620,7 +620,7 @@ class pos_order_pro_forma(models.Model):
             'lines': [self.env['pos.order_line_pro_forma']._order_line_fields(l) for l in ui_order['lines']] if
             ui_order['lines'] else False,
             'partner_id': ui_order['partner_id'] or False,
-            'date_order': parser.parse(ui_order['creation_date']).strftime("%Y-%m-%d %H:%M:%S"),
+            'date_order': parser.parse(ui_order['date_order']).strftime("%Y-%m-%d %H:%M:%S"),
             'fiscal_position_id': ui_order['fiscal_position_id'],
             'blackbox_date': ui_order.get('blackbox_date'),
             'blackbox_time': ui_order.get('blackbox_time'),

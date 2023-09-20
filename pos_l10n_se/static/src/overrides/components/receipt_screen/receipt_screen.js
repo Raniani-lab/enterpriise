@@ -19,7 +19,7 @@ patch(ReceiptScreen.prototype, {
             receiptData.receipt.blackboxSignature = receiptData.order.blackbox_signature;
 
             receipt_render_env.receipt.originalOrderDate = deserializeDateTime(
-                receipt_render_env.order.creation_date
+                receipt_render_env.order.date_order
             ).toFormat("HH:mm dd/MM/yyyy");
 
             receiptData.productLines = receiptData.receipt.orderlines.filter((orderline) => {

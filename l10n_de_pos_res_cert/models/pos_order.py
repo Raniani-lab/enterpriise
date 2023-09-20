@@ -26,7 +26,7 @@ class PosOrder(models.Model):
     def _order_fields(self, ui_order):
         fields = super()._order_fields(ui_order)
         if self._check_config_germany_floor(session_id=ui_order['pos_session_id']) and 'l10n_de_fiskaly_time_start' not in fields:
-            fields['l10n_de_fiskaly_time_start'] = ui_order['creation_date'].replace('T', ' ')[:19]
+            fields['l10n_de_fiskaly_time_start'] = ui_order['date_order'].replace('T', ' ')[:19]
         return fields
 
     @api.model

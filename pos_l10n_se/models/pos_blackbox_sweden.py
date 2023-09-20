@@ -197,7 +197,7 @@ class PosOrderProforma(models.Model):
             'table_id': ui_order.get('table_id'),
             'blackbox_unit_id': ui_order.get('blackbox_unit_id'),
             'blackbox_signature': ui_order.get('blackbox_signature'),
-            'date_order': parser.parse(ui_order['creation_date']).strftime("%Y-%m-%d %H:%M:%S"),
+            'date_order': parser.parse(ui_order['date_order']).strftime("%Y-%m-%d %H:%M:%S"),
             'blackbox_tax_category_a': ui_order.get('blackbox_tax_category_a'),
             'blackbox_tax_category_b': ui_order.get('blackbox_tax_category_b'),
             'blackbox_tax_category_c': ui_order.get('blackbox_tax_category_c'),

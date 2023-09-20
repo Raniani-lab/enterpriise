@@ -7,6 +7,7 @@ import { standardWidgetProps } from '@web/views/widgets/standard_widget_props';
 import { useService } from '@web/core/utils/hooks';
 import { useOpenChat } from "@mail/core/web/open_chat_hook";
 import { utils as uiUtils } from "@web/core/ui/ui_service";
+import { _t } from "@web/core/l10n/translation";
 
 import { Component, onWillStart, useEffect, useRef, useState } from '@odoo/owl';
 
@@ -88,6 +89,14 @@ class KnowledgeTopbar extends Component {
                 );
             }
         }, () => [this.buttonSharePanel.el]);
+    }
+
+    get addFavoriteLabel(){
+        return _t("Add to favorites");
+    }
+
+    get removeFavoriteLabel(){
+        return _t("Remove from favorites");
     }
 
     /**

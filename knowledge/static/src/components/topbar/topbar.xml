@@ -88,7 +88,7 @@
                             <PermissionPanel t-if="state.displaySharePanel and props.record.resId and props.record.data.active" record="props.record"/>
                         </div>
                     </div>
-                    <a role="button" class="btn btn-light o_knowledge_toggle_favorite" t-on-click="env.toggleFavorite" t-if="props.record.resId" data-hotkey="t" t-att-title="props.record.data.is_user_favorite ? 'Remove from favorites' : 'Add to favorites'">
+                    <a role="button" class="btn btn-light o_knowledge_toggle_favorite" t-on-click="env.toggleFavorite" t-if="props.record.resId" data-hotkey="t" t-att-title="props.record.data.is_user_favorite ? removeFavoriteLabel : addFavoriteLabel">
                         <i class="fa fa-fw fs-6 fa-star" t-if="props.record.data.is_user_favorite"/>
                         <i class="fa fa-fw fs-6 fa-star-o" t-if="!props.record.data.is_user_favorite"/>
                     </a>

@@ -42,7 +42,16 @@
                 <td><span t-field="o.employee_id.contract_id.contract_type_id"/></td>
             </tr>
             <tr id="employee_info_line_5">
+                <td><strong>Work Email</strong></td>
+                <td><strong>KRA PIN</strong></td>
+                <td><strong>NSSF Number</strong></td>
+                <td><strong>NHIF Number</strong></td>
+            </tr>
+            <tr id="employee_info_line_6">
                 <td><span t-field="o.employee_id.work_email"/></td>
+                <td><span t-field="o.employee_id.l10n_ke_kra_pin"/></td>
+                <td><span t-field="o.employee_id.l10n_ke_nssf_number"/></td>
+                <td><span t-field="o.employee_id.l10n_ke_nhif_number"/></td>
             </tr>
         </table>
     </table>

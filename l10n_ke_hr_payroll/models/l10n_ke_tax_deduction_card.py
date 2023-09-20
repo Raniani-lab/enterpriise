@@ -1,13 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import base64
 import datetime
 
 from odoo import api, fields, models, _
 from odoo.tools import format_date
 from odoo.fields import Datetime
-from odoo.exceptions import UserError
 
 
 class L10nKeTaxDeductionCard(models.Model):
@@ -43,7 +40,7 @@ class L10nKeTaxDeductionCard(models.Model):
                 }) for employee in all_employees]
             })
 
-    def _get_rendering_data(self, employees):  # TODO BEDO
+    def _get_rendering_data(self, employees):
         self.ensure_one()
 
         payslips = self.env['hr.payslip'].search([
@@ -59,7 +56,7 @@ class L10nKeTaxDeductionCard(models.Model):
         result = {
             employee: {
                 'p9_lines': [{
-                    'month': '',
+                    'month': format_date(self.env, Datetime.now().replace(day=1, month=i + 1, year=int(self.year)), date_format='MMMM') if i < 12 else _('TOTAL'),
                     'basic_salary': 0,
                     'benefits_non_cash': 0,
                     'value_of_quarter': 0,

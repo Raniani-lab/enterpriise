@@ -13,6 +13,8 @@ class HrEmployee(models.Model):
     l10n_ke_nssf_number = fields.Char(string="NSSF Number", help="NSSF Number provided by the NSSF", groups="hr.group_hr_user")
     l10n_ke_nhif_number = fields.Char("NHIF Number", groups="hr.group_hr_user")
     l10n_ke_pin = fields.Char(string="Employee's PIN", groups="hr.group_hr_user")
+    l10n_ke_disabled = fields.Boolean(string="Disability", help="If the employee is declared disabled by law", groups="hr.group_hr_user")
+    l10n_ke_helb_number = fields.Char(string="HELB Number", groups="hr.group_hr_user")
 
     @api.constrains('l10n_ke_mortgage')
     def _check_l10n_ke_mortgage(self):

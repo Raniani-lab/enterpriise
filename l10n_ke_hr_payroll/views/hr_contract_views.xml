@@ -31,9 +31,9 @@
                     </div>
                 </group>
                 <group string="Insurance" class="o_form_fw_labels">
-                    <label for="l10n_ke_volontary_medical_insurance" invisible="country_code != 'KE'"/>
+                    <label for="l10n_ke_voluntary_medical_insurance" invisible="country_code != 'KE'"/>
                     <div class="o_row" invisible="country_code != 'KE'">
-                        <field name="l10n_ke_volontary_medical_insurance" class="o_hr_narrow_field" nolabel="1"/>
+                        <field name="l10n_ke_voluntary_medical_insurance" class="o_hr_narrow_field" nolabel="1"/>
                         <span>/ month</span>
                     </div>
                     <label for="l10n_ke_life_insurance" invisible="country_code != 'KE'"/>

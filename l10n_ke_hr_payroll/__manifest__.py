@@ -1,4 +1,3 @@
-# -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
@@ -37,7 +36,7 @@ Kenyan Payroll Rules.
         'views/l10n_ke_tax_deduction_card_views.xml',
         'views/report_payslip_templates.xml',
         'views/res_company_views.xml',
-        'views/l10n_ke_hr_payroll_menus.xml'
+        'views/l10n_ke_hr_payroll_menus.xml',
         'report/l10n_ke_tax_reduction_card_templates.xml',
     ],
     'assets': {

@@ -27,7 +27,7 @@ export class ExistingFields extends Component {
         }
         const search = this.state.searchValue.toLowerCase();
         let matches = field.string.toLowerCase().includes(search);
-        if (!matches && this.env.debug) {
+        if (!matches && this.env.debug && field.name) {
             matches = field.name.toLowerCase().includes(search);
         }
         return matches;

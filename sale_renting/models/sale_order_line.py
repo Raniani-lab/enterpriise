@@ -97,6 +97,12 @@ class SaleOrderLine(models.Model):
             "\n%(from_date)s to %(to_date)s", from_date=start_date_part, to_date=return_date_part
         )
 
+    def _use_template_name(self):
+        """ Avoid the template line description in order to add the rental period on the SOL. """
+        if self.is_rental:
+            return False
+        return super()._use_template_name()
+
     def _generate_delay_line(self, qty_returned):
         """Generate a sale order line representing the delay cost due to the late return.
 
@@ -186,6 +192,11 @@ class SaleOrderLine(models.Model):
             price_computing_kwargs['start_date'] = start_date
             price_computing_kwargs['end_date'] = return_date
         return price_computing_kwargs
+
+    def _lines_without_price_recomputation(self):
+        """ Override to filter out rental lines and allow the recomputation for these SOL. """
+        res = super()._lines_without_price_recomputation()
+        return res.filtered(lambda l: not l.is_rental)
 
     def _get_action_add_from_catalog_extra_context(self, order):
         """ Override to add rental dates in the context for product availabilities. """

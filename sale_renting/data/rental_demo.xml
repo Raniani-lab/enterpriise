@@ -184,4 +184,19 @@
     <!-- Confirm rental order -->
     <function model="sale.order" name="action_confirm" eval="[[ref('rental_order_2'), ref('rental_order_3')]]" context="{'action_no_send_mail': True}"/>
 
+    <!-- Add a rental quotation template -->
+    <record id="rental_order_template_1" model="sale.order.template">
+        <field name="name">Meeting Room</field>
+        <field name="number_of_days">45</field>
+    </record>
+
+    <record id="rental_order_template_line_1" model="sale.order.template.line">
+        <field name="sale_order_template_id" ref="rental_order_template_1"/>
+        <field name="product_id" ref="rental_product_2"/>
+    </record>
+
+    <record id="rental_order_template_option_1" model="sale.order.template.option">
+        <field name="sale_order_template_id" ref="rental_order_template_1"/>
+        <field name="product_id" ref="rental_product_1"/>
+    </record>
 </odoo>

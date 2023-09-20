@@ -328,6 +328,9 @@ export class PermissionPanel extends Component {
             'set_is_article_visible_by_everyone',
             [articleId, $input.val() === 'everyone']
         );
+        if (await this.props.record.isDirty()) {
+            await this.props.record.save();
+        }
         await this.props.record.load();
     }
 }

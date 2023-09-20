@@ -495,6 +495,7 @@ class JournalReportCustomHandler(models.AbstractModel):
                 else:
                     balance = False if column_group_options.get('show_payment_lines') and is_unreconciled_payment else values.get('cumulated_balance')
                     columns += self._get_move_line_additional_col(column_group_options, balance, values, is_unreconciled_payment)
+                    break
 
         return {
             'id': line_key,
@@ -541,6 +542,7 @@ class JournalReportCustomHandler(models.AbstractModel):
                 else:
                     balance = False if column_group_options.get('show_payment_lines') and is_unreconciled_payment else values.get('cumulated_balance')
                     columns += self._get_move_line_additional_col(column_group_options, balance, values, is_unreconciled_payment)
+                    break
 
         return {
             'id': report._get_generic_line_id('account.move.line', values['move_line_id'], parent_line_id=parent_key),

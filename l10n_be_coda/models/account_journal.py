@@ -568,7 +568,8 @@ class AccountJournal(models.Model):
                         statement['acc_number'] = rmspaces(line[5:21])
                         statement['currency'] = rmspaces(line[39:42])
                     elif line[1] == '3':    # foreign bank account IBAN structure
-                        raise UserError(_('Error') + ' R1002: ' + _('Foreign bank accounts with IBAN structure are not supported '))
+                        statement['acc_number'] = rmspaces(line[5:39])
+                        statement['currency'] = rmspaces(line[39:42])
                     else:  # Something else, not supported
                         raise UserError(_('Error') + ' R1003: ' + _('Unsupported bank account structure '))
                 statement['description'] = rmspaces(line[90:125])

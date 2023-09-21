@@ -2,13 +2,12 @@
 
 import { _t } from "@web/core/l10n/translation";
 import * as BarcodeScanner from '@web/webclient/barcode/barcode_scanner';
-import { bus } from "@web/legacy/js/services/core";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
+import { useBus, useService } from "@web/core/utils/hooks";
 import { session } from "@web/session";
 import { date_to_str } from "@web/legacy/js/core/time";
-import { Component, onMounted, onWillUnmount, onWillStart, useState } from "@odoo/owl";
+import { Component, onWillStart, useState } from "@odoo/owl";
 
 export class MainMenu extends Component {
     setup() {
@@ -20,6 +19,8 @@ export class MainMenu extends Component {
         this.notificationService = useService("notification");
         this.rpc = useService('rpc');
         this.state = useState({ displayDemoMessage });
+        this.barcodeService = useService('barcode');
+        useBus(this.barcodeService.bus, "barcode_scanned", (ev) => this._onBarcodeScanned(ev.detail.barcode));
         const orm = useService('orm');
 
         this.mobileScanner = BarcodeScanner.isBarcodeScannerSupported();
@@ -33,12 +34,6 @@ export class MainMenu extends Component {
                 ["inventory_date", "<=", date_to_str(new Date())],
             ]
             this.quantCount = await orm.searchCount("stock.quant", args);
-        });
-        onMounted(() => {
-            bus.on('barcode_scanned', this, this._onBarcodeScanned);
-        });
-        onWillUnmount(() => {
-            bus.off('barcode_scanned', this, this._onBarcodeScanned);
         });
     }
 

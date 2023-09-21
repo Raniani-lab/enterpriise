@@ -69,6 +69,8 @@ class MainComponent extends Component {
             view: "barcodeLines", // Could be also 'printMenu' or 'editFormView'.
             displayNote: false,
         });
+        this.barcodeService = useService('barcode');
+        useBus(this.barcodeService.bus, "barcode_scanned", (ev) => this.onBarcodeScanned(ev.detail.barcode));
 
         useBus(this.env.model, 'flash', this.flashScreen.bind(this));
         useBus(this.env.model, 'error', this.playErrorSound.bind(this));
@@ -97,13 +99,11 @@ class MainComponent extends Component {
         });
 
         onMounted(() => {
-            bus.on('barcode_scanned', this, this._onBarcodeScanned);
             bus.on('refresh', this, this._onRefreshState);
             bus.on('warning', this, this._onWarning);
         });
 
         onWillUnmount(() => {
-            bus.off('barcode_scanned', this, this._onBarcodeScanned);
             bus.off('refresh', this, this._onRefreshState);
             bus.off('warning', this, this._onWarning);
         });

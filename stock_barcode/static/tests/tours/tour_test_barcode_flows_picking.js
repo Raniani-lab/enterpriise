@@ -3145,7 +3145,7 @@ registry.category("web_tour.tours").add('test_receipt_delete_button', {test: tru
         run: 'scan O-BTN.validate',
     }, {
         content: "wait to be back on the barcode lines",
-        trigger: '.o_add_line',
+        trigger: '.o_picking_already_done',
         auto: true,
         run() {},
     },

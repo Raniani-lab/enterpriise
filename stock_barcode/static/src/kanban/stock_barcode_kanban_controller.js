@@ -51,7 +51,7 @@ export class StockBarcodeKanbanController extends KanbanController {
             this.actionService.doAction(res.action);
         } else if (res.warning) {
             const params = { title: res.warning.title, type: 'danger' };
-            this.model.notificationService.add(res.warning.message, params);
+            this.model.notification.add(res.warning.message, params);
         }
     }
 }

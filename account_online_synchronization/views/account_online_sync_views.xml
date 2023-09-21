@@ -30,6 +30,7 @@
                                 <field name="last_refresh" string="Last refresh" readonly="1" invisible="not provider_data"/>
                                 <field name="next_refresh" readonly="1" invisible="not provider_data or not auto_sync"/>
                                 <field name="expiring_synchronization_date" readonly="1" invisible="not provider_data"/>
+                                <field name="company_id" readonly="1" groups="base.group_multi_company"/>
                             </group>
                         </group>
                         <group>
@@ -94,6 +95,7 @@
                     <field name="provider_type" readonly="1"/>
                     <field name="last_refresh" readonly="1"/>
                     <field name="next_refresh" readonly="1" optional="hide"/>
+                    <field name="company_id" groups="base.group_multi_company" readonly="1" optional="hide"/>
                 </tree>
             </field>
         </record>

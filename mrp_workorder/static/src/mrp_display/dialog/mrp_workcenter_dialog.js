@@ -59,7 +59,7 @@ export class MrpWorkcenterDialog extends ConfirmationDialog {
 
     confirm() {
         this.props.confirm(
-            this.workcenters.filter((w) => this.state.activeWorkcenters.includes(w.id))
+            this.state.activeWorkcenters.map((id) => this.workcenters.find((wc) => wc.id === id))
         );
         this.props.close();
     }

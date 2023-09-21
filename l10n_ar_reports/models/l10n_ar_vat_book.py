@@ -138,10 +138,16 @@ class ArgentinianReportCustomHandler(models.AbstractModel):
             expression_label = column['expression_label']
             value = move_vals.get(column['column_group_key'], {}).get(expression_label)
 
+            class_value = ''
+            if expression_label in number_values:
+                class_value = 'number'
+            elif expression_label == 'partner_name':
+                class_value = 'o_account_report_line_ellipsis'
+
             columns.append({
                 'name': report.format_value(value, figure_type=column['figure_type']) if value is not None else None,
                 'no_format': value,
-                'class': 'number' if expression_label in number_values else '',
+                'class': class_value,
             })
 
         return {

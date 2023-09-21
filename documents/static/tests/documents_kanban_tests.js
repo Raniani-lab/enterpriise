@@ -42,7 +42,15 @@ import { str_to_datetime } from "@web/legacy/js/core/time";
 import { session } from "@web/session";
 import { browser, makeRAMLocalStorage } from "@web/core/browser/browser";
 import { serializeDate } from "@web/core/l10n/dates";
-import { click, contains, insertText } from "@web/../tests/utils";
+import {
+    click,
+    contains,
+    createFile,
+    dragoverFiles,
+    dropFiles,
+    inputFiles,
+    insertText,
+} from "@web/../tests/utils";
 
 const { DateTime } = luxon;
 const serviceRegistry = registry.category("services");
@@ -1395,8 +1403,6 @@ QUnit.module("documents", {}, function () {
                 await legacyClick(
                     target.querySelector(".o_documents_inspector_info .o_inspector_delete")
                 );
-                // await nextTick();
-
                 assert.containsNone(target, ".o_record_selected", "should have no selected record");
                 assert.containsNone(
                     target,
@@ -4289,7 +4295,7 @@ QUnit.module("documents", {}, function () {
             QUnit.module("Upload");
 
             QUnit.test("documents: upload with default tags", async function (assert) {
-                const file = await testUtils.file.createFile({
+                const file = await createFile({
                     name: "text.txt",
                     content: "hello, world",
                     contentType: "text/plain",
@@ -4314,21 +4320,13 @@ QUnit.module("documents", {}, function () {
                         default_tag_ids: [1, 2],
                     },
                 });
-
-                testUtils.file.dragoverFile($(target.querySelector(".o_kanban_renderer")), file);
-                await nextTick();
-                testUtils.file.dropFile(
-                    $(target.querySelector(".o_documents_drop_over_zone")),
-                    file
-                );
-                await nextTick();
+                await dragoverFiles(".o_kanban_renderer", [file]);
+                await dropFiles(".o_documents_drop_over_zone", [file]);
                 assert.verifySteps(["xhrSend"]);
             });
 
             QUnit.test("documents: upload with context", async function (assert) {
-                assert.expect(4);
-
-                const file = await testUtils.file.createFile({
+                const file = await createFile({
                     name: "text.txt",
                     content: "hello, world",
                     contentType: "text/plain",
@@ -4355,21 +4353,13 @@ QUnit.module("documents", {}, function () {
                         default_res_id: 1,
                     },
                 });
-
-                testUtils.file.dragoverFile($(target.querySelector(".o_kanban_renderer")), file);
-                await nextTick();
-                testUtils.file.dropFile(
-                    $(target.querySelector(".o_documents_drop_over_zone")),
-                    file
-                );
-                await nextTick();
+                await dragoverFiles(".o_kanban_renderer", [file]);
+                await dropFiles(".o_documents_drop_over_zone", [file]);
                 assert.verifySteps(["xhrSend"]);
             });
 
             QUnit.test("documents: upload progress bars", async function (assert) {
-                assert.expect(5);
-
-                const file = await testUtils.file.createFile({
+                const file = await createFile({
                     name: "text.txt",
                     content: "hello, world",
                     contentType: "text/plain",
@@ -4389,13 +4379,8 @@ QUnit.module("documents", {}, function () {
             </t></templates></kanban>`,
                 });
 
-                testUtils.file.dragoverFile($(target.querySelector(".o_kanban_renderer")), file);
-                await nextTick();
-                testUtils.file.dropFile(
-                    $(target.querySelector(".o_documents_drop_over_zone")),
-                    file
-                );
-                await nextTick();
+                await dragoverFiles(".o_kanban_renderer", [file]);
+                await dropFiles(".o_documents_drop_over_zone", [file]);
                 assert.verifySteps(["xhrSend"]);
 
                 const progressEvent = new Event("progress", { bubbles: true });
@@ -4427,9 +4412,7 @@ QUnit.module("documents", {}, function () {
             });
 
             QUnit.test("documents: max upload limit", async function (assert) {
-                assert.expect(2);
-
-                const file = await testUtils.file.createFile({
+                const file = await createFile({
                     name: "text.txt",
                     content: "hello, world",
                     contentType: "text/plain",
@@ -4460,13 +4443,8 @@ QUnit.module("documents", {}, function () {
                     67000001,
                     "Upload file size is greater than upload limit"
                 );
-                testUtils.file.dragoverFile($(target.querySelector(".o_kanban_renderer")), file);
-                await nextTick();
-                testUtils.file.dropFile(
-                    $(target.querySelector(".o_documents_drop_over_zone")),
-                    file
-                );
-                await nextTick();
+                await dragoverFiles(".o_kanban_renderer", [file]);
+                await dropFiles(".o_documents_drop_over_zone", [file]);
             });
 
             QUnit.test("documents: upload replace bars", async function (assert) {
@@ -4479,7 +4457,7 @@ QUnit.module("documents", {}, function () {
                     type: "empty",
                 });
 
-                const file = await testUtils.file.createFile({
+                const file = await createFile({
                     name: "text.txt",
                     content: "hello, world",
                     contentType: "text/plain",
@@ -4522,19 +4500,17 @@ QUnit.module("documents", {}, function () {
             });
 
             QUnit.test("documents: upload multiple progress bars", async function (assert) {
-                assert.expect(8);
-
-                const file1 = await testUtils.file.createFile({
+                const file1 = await createFile({
                     name: "text1.txt",
                     content: "hello, world",
                     contentType: "text/plain",
                 });
-                const file2 = await testUtils.file.createFile({
+                const file2 = await createFile({
                     name: "text2.txt",
                     content: "hello, world",
                     contentType: "text/plain",
                 });
-                const file3 = await testUtils.file.createFile({
+                const file3 = await createFile({
                     name: "text3.txt",
                     content: "hello, world",
                     contentType: "text/plain",
@@ -4554,48 +4530,18 @@ QUnit.module("documents", {}, function () {
             </t></templates></kanban>`,
                 });
 
-                testUtils.file.dragoverFile($(target.querySelector(".o_kanban_renderer")), file1);
-                await nextTick();
-                testUtils.file.dropFile(
-                    $(target.querySelector(".o_documents_drop_over_zone")),
-                    file1
-                );
-                await nextTick();
-
-                // awaiting next tick as the file drop is not synchronous
-                await nextTick();
-
+                await dragoverFiles(".o_kanban_renderer", [file1]);
+                await dropFiles(".o_documents_drop_over_zone", [file1]);
                 assert.verifySteps(["xhrSend"]);
-                assert.strictEqual(
-                    target.querySelector(
-                        ".o_kanban_record:nth-of-type(1) .o_kanban_record_title span"
-                    ).textContent,
-                    "text1.txt",
-                    "The first kanban card should be named after the file"
-                );
-
-                testUtils.file.dragoverFile($(target.querySelector(".o_kanban_renderer")), [
-                    file2,
-                    file3,
-                ]);
-                await nextTick();
-                testUtils.file.dropFiles($(target.querySelector(".o_documents_drop_over_zone")), [
-                    file2,
-                    file3,
-                ]);
-                await nextTick();
-
-                // awaiting next tick as the file drop is not synchronous
-                await nextTick();
-
+                await contains(".o_kanban_record:nth-of-type(1) .o_kanban_record_title span", {
+                    text: "text1.txt", // The first kanban card should be named after the file
+                });
+                await dragoverFiles(".o_kanban_renderer", [file2, file3]);
+                await dropFiles(".o_documents_drop_over_zone", [file2, file3]);
                 assert.verifySteps(["xhrSend"]);
-                assert.strictEqual(
-                    target.querySelector(
-                        ".o_kanban_record:nth-of-type(2) .o_kanban_record_title span"
-                    ).textContent,
-                    "2 Files",
-                    "The new kanban card should be named after the amount of files"
-                );
+                await contains(".o_kanban_record:nth-of-type(2) .o_kanban_record_title span", {
+                    text: "2 Files", // The new kanban card should be named after the amount of files
+                });
                 assert.containsN(target, ".o_kanban_progress_card", 2, "There should be 2 cards");
 
                 // simulates 1st upload successful completion
@@ -4615,9 +4561,7 @@ QUnit.module("documents", {}, function () {
             });
 
             QUnit.test("documents: notifies server side errors", async function (assert) {
-                assert.expect(2);
-
-                const file = await testUtils.file.createFile({
+                const file = await createFile({
                     name: "text.txt",
                     content: "hello, world",
                     contentType: "text/plain",
@@ -4647,15 +4591,8 @@ QUnit.module("documents", {}, function () {
                     },
                 });
 
-                testUtils.file.dragoverFile($(target.querySelector(".o_kanban_renderer")), file);
-                await nextTick();
-                testUtils.file.dropFile(
-                    $(target.querySelector(".o_documents_drop_over_zone")),
-                    file
-                );
-                await nextTick();
-                await nextTick();
-
+                await dragoverFiles(".o_kanban_renderer", [file]);
+                await dropFiles(".o_documents_drop_over_zone", [file]);
                 // simulates 1st upload server side error completion
                 mockedXHRs[0].response = JSON.stringify({
                     error: "One or more file(s) failed to upload",
@@ -5206,7 +5143,6 @@ QUnit.module("documents", {}, function () {
             QUnit.test(
                 "documents list : uploding the requested documents with multiple selection",
                 async function (assert) {
-                    assert.expect(4);
                     pyEnv["documents.document"].unlink(pyEnv["documents.document"].search([]));
                     const documentIds = pyEnv["documents.document"].create([
                         {
@@ -5232,13 +5168,8 @@ QUnit.module("documents", {}, function () {
                             documentIds[1],
                             "The selected requsted document should be uploaded"
                         );
-                        assert.strictEqual(datas.ufile.name, file.name);
+                        assert.strictEqual(datas.ufile.name, "text.txt");
                         assert.step("xhrSend");
-                    });
-                    const file = await testUtils.file.createFile({
-                        name: "text.txt",
-                        content: "hello, world",
-                        contentType: "text/plain",
                     });
                     await createDocumentsView({
                         type: "list",
@@ -5252,7 +5183,13 @@ QUnit.module("documents", {}, function () {
                     const fileInput = target.querySelector(".o_inspector_replace_input");
                     // legacyClick on the 2nd document to upload
                     fileInput.setAttribute("data-index", 1);
-                    testUtils.file.inputFiles(fileInput, [file]);
+                    await inputFiles(".o_inspector_replace_input", [
+                        await createFile({
+                            name: "text.txt",
+                            content: "hello, world",
+                            contentType: "text/plain",
+                        }),
+                    ]);
                     assert.verifySteps(["xhrSend"]);
                 }
             );

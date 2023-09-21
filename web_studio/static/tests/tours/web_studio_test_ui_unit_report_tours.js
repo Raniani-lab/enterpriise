@@ -53,7 +53,9 @@ function openEditorPowerBox(element, offset = 0) {
 // to be sure we leave the tour when the save is done.
 function patchReportEditorModelForSilentSave() {
     const saveProms = [];
-    const { ReportEditorModel } = odoo.loader.modules.get("@web_studio/client_action/report_editor/report_editor_model");
+    const { ReportEditorModel } = odoo.loader.modules.get(
+        "@web_studio/client_action/report_editor/report_editor_model"
+    );
     const _unpatch = patch(ReportEditorModel.prototype, {
         saveReport() {
             const prom = super.saveReport(...arguments);
@@ -296,7 +298,7 @@ registry.category("web_tour.tours").add("web_studio.test_report_reset_archs", {
 });
 
 let downloadProm;
-let steps = [];
+const steps = [];
 registry.category("web_tour.tours").add("web_studio.test_print_preview", {
     test: true,
     sequence: 260,
@@ -304,28 +306,28 @@ registry.category("web_tour.tours").add("web_studio.test_print_preview", {
         {
             trigger: ".o_web_studio_sidebar button[name='report_print_preview']",
             run(helpers) {
-                downloadProm = new Promise(resolve => {
+                downloadProm = new Promise((resolve) => {
                     const unpatch = patch(download, {
                         _download(options) {
-                            steps.push("download report")
+                            steps.push("download report");
                             const context = JSON.parse(options.data.context);
                             assertEqual(context["report_pdf_no_attachment"], true);
                             assertEqual(context["discard_logo_check"], true);
                             assertEqual(context["active_ids"].length, 1);
                             unpatch();
                             resolve();
-                        }
-                    })
-                })
+                        },
+                    });
+                });
                 return helpers.click(this.$anchor);
-            }
+            },
         },
         {
             trigger: ".o-web-studio-report-editor-wysiwyg",
             async run() {
                 await downloadProm;
-                assertEqual(steps.length, 1)
-                assertEqual(steps[0], "download report")
+                assertEqual(steps.length, 1);
+                assertEqual(steps[0], "download report");
             },
         },
     ],
@@ -400,17 +402,22 @@ registry.category("web_tour.tours").add("web_studio.test_field_placeholder", {
         },
         {
             extra_trigger: ".o-web-studio-field-dynamic-placeholder",
-            trigger: ".o-web-studio-report-editor-wysiwyg div:has(> .o-web-studio-report-container)",
+            trigger:
+                ".o-web-studio-report-editor-wysiwyg div:has(> .o-web-studio-report-container)",
             async run() {
-                const placeholderBox = getBoundingClientRect.call(document.querySelector(".o-web-studio-field-dynamic-placeholder"));
+                const placeholderBox = getBoundingClientRect.call(
+                    document.querySelector(".o-web-studio-field-dynamic-placeholder")
+                );
                 assertEqual(this.$anchor[0].scrollTop, 0);
                 this.$anchor[0].scrollTop = 9999;
                 await new Promise(requestAnimationFrame);
-                const newPlaceholderbox = getBoundingClientRect.call(document.querySelector(".o-web-studio-field-dynamic-placeholder"));
+                const newPlaceholderbox = getBoundingClientRect.call(
+                    document.querySelector(".o-web-studio-field-dynamic-placeholder")
+                );
                 // The field placeholder should have followed its anchor, and it happens that the anchor's container
                 // has been scrolled, so the anchor has moved upwards (and is actually outside of the viewPort, to the top)
                 assertEqual(placeholderBox.top > newPlaceholderbox.top, true);
-            }
+            },
         },
         {
             trigger:
@@ -489,7 +496,7 @@ registry.category("web_tour.tours").add("web_studio.test_edition_without_lang", 
         {
             trigger: ".o_web_studio_editor",
             isCheck: true,
-        }
+        },
     ],
 });
 
@@ -562,10 +569,10 @@ registry.category("web_tour.tours").add("web_studio.test_render_multicompany", {
         {
             trigger: ".o-web-studio-report-container iframe img",
             run() {
-                const currentUrl = new URL(window.location)
-                const cids = new URLSearchParams(currentUrl.hash.slice(1)).get("cids").split(",");
-                assertEqual(this.$anchor[0].getAttribute("src"), `/logo.png?company=${cids[0]}`)
-            }
+                const currentUrl = new URL(window.location);
+                const cids = new URLSearchParams(currentUrl.hash.slice(1)).get("cids").split("-");
+                assertEqual(this.$anchor[0].getAttribute("src"), `/logo.png?company=${cids[0]}`);
+            },
         },
     ],
 });

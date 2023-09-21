@@ -418,6 +418,7 @@ export class MrpDisplayRecord extends Component {
             // If there is a wizard while trying to mark as done the production, confirming the
             // wizard will straight mark the MO as done without the confirmation delay.
             if (action && typeof action === "object") {
+                action.context.skip_redirection = true;
                 return this._doAction(action);
             }
         }
@@ -449,6 +450,7 @@ export class MrpDisplayRecord extends Component {
         }
         const action = await this.model.orm.call(resModel, "button_mark_done", [resId], kwargs);
         if (action && typeof action === "object") {
+            action.context.skip_redirection = true;
             return this._doAction(action);
         } else if (this.props.record.resModel === "mrp.production") {
             await this.props.removeFromValidationStack(this.props.record);
@@ -563,6 +565,7 @@ export class MrpDisplayRecord extends Component {
         // If there is a wizard while trying to mark as done the production, confirming the
         // wizard will straight mark the MO as done without the confirmation delay.
         if (action && typeof action === "object") {
+            action.context.skip_redirection = true;
             return this._doAction(action);
         }
         await this.productionValidation();

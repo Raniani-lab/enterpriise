@@ -135,6 +135,10 @@ export class MrpDisplayRecord extends Component {
         return this._workorderDisplayDoneButton();
     }
 
+    get displayCloseProductionButton() {
+        return this.displayDoneButton && this.state.underValidation && this.record.is_last_unfinished_wo;
+    }
+
     get byProducts() {
         if (this.resModel === "mrp.workorder") {
             return [];
@@ -401,25 +405,6 @@ export class MrpDisplayRecord extends Component {
             await this.props.record.save();
             await this.model.orm.call(resModel, "end_all", [resId]);
             await this.props.updateEmployees();
-            if (this._shouldValidateProduction()) {
-                const params = {};
-                let methodName = "pre_button_mark_done";
-                if (this.trackingMode === "mass_produce") {
-                    methodName = "action_serial_mass_produce_wizard";
-                    params.mark_as_done = true;
-                }
-                const action = await this.model.orm.call(
-                    "mrp.production",
-                    methodName,
-                    [this.props.production.resId],
-                    params
-                );
-                // If there is a wizard while trying to mark as done the production, confirming the
-                // wizard will straight mark the MO as done without the confirmation delay.
-                if (action && typeof action === "object") {
-                    return this._doAction(action);
-                }
-            }
         }
         if (resModel === "mrp.production") {
             const args = [this.props.production.resId];
@@ -472,19 +457,13 @@ export class MrpDisplayRecord extends Component {
         }
     }
 
-    _shouldValidateProduction(){
-        return this.record.is_last_unfinished_wo;
-    }
-
-    async workorderValidation() {
+    async workorderValidation(skipRemoveFromStack = false) {
         const { resId, resModel } = this.props.record;
-        if (this._shouldValidateProduction()) {
-            await this.productionValidation();
-        } else {
-            const context = { no_start_next: true };
-            await this.model.orm.call(resModel, "do_finish", [resId], { context });
+        const context = { no_start_next: true };
+        await this.model.orm.call(resModel, "do_finish", [resId], { context });
+        if (!skipRemoveFromStack){
+            await this.props.removeFromValidationStack(this.props.record);
         }
-        await this.props.removeFromValidationStack(this.props.record);
         this.state.validated = true;
         await this.props.updateEmployees();
     }
@@ -559,5 +538,34 @@ export class MrpDisplayRecord extends Component {
         if (ev.animationName === "fadeout" && this.state.underValidation) {
             this.realValidation();
         }
+    }
+
+    async onClickCloseProduction() {
+        /*
+            When using the Close Production button we fast-forward the delay in validating the WO.
+            To avoid a race condition where the timer validates a WO while we are validating from
+            the Close Production button, we pop the WO of the stack manually before validating.
+         */
+        await this.props.removeFromValidationStack(this.props.record);
+        await this.workorderValidation(true);
+        const params = {};
+        let methodName = "pre_button_mark_done";
+        if (this.trackingMode === "mass_produce") {
+            methodName = "action_serial_mass_produce_wizard";
+            params.mark_as_done = true;
+        }
+        const action = await this.model.orm.call(
+            "mrp.production",
+            methodName,
+            [this.props.production.resId],
+            params
+        );
+        // If there is a wizard while trying to mark as done the production, confirming the
+        // wizard will straight mark the MO as done without the confirmation delay.
+        if (action && typeof action === "object") {
+            return this._doAction(action);
+        }
+        await this.productionValidation();
+        this.env.reload();
     }
 }

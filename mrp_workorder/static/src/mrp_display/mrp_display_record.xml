@@ -68,8 +68,8 @@
                     <StockMove t-props="subRecordProps(byproductMove)" label="getByproductLabel(byproductMove)"/>
                 </t>
             </ul>
-            <div class="card-footer d-flex justify-content-between align-items-center pe-0 test bg-white my-1"
-                t-att-class="{'py-0': !state.underValidation}">
+            <div class="card-footer d-flex justify-content-between align-items-center test bg-white my-1"
+                t-att-class="{'py-0': !state.underValidation, 'pe-0': !displayCloseProductionButton}">
                 <t t-if="props.record.resModel=='mrp.production'" t-call="mrp_workorder.MrpDisplayProductionFooter"/>
                 <t t-if="props.record.resModel=='mrp.workorder'" t-call="mrp_workorder.MrpDisplayWorkorderFooter"/>
                 <button t-if="!state.underValidation" class="btn btn-light py-3 px-4 ms-auto rounded-0 fa fa-ellipsis-v" t-on-click="onClickOpenMenu"/>
@@ -112,8 +112,11 @@
         <button t-if="displayDoneButton" t-attf-class="btn #{_btn_type}"
                 t-on-click="onClickValidateButton" barcode_trigger="cloWO">
             <t t-if="state.underValidation">Undo</t>
-            <t t-elif="record.is_last_unfinished_wo">Close Production</t>
             <t t-else="">Mark as Done</t>
+        </button>
+        <button t-if="displayCloseProductionButton" class="btn btn-primary flex-grow-1 ms-5"
+                barcode_trigger="cloMO" t-on-click="onClickCloseProduction">
+            Close Production
         </button>
     </t>
 </templates>

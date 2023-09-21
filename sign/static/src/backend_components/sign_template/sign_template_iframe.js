@@ -169,8 +169,8 @@ export class SignTemplateIframe extends EditablePDFIframeMixin(PDFIframe) {
      * @param {SignItem} signItem
      */
     deleteSignItem(signItem) {
-        super.deleteSignItem(signItem);
         this.deletedSignItemIds.push(signItem.data.id);
+        super.deleteSignItem(signItem);
     }
 
     /**

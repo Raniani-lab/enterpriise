@@ -17,7 +17,7 @@ class MrpWorkcenter(models.Model):
     employee_costs_hour = fields.Monetary(string='Employee Hourly Cost', currency_field='currency_id', default=0.0)
 
     def action_work_order(self):
-        if not self.env.context.get('desktop_list_view', False):
+        if self.user_has_groups('mrp_workorder.group_mrp_wo_shop_floor') and not self.env.context.get('desktop_list_view', False):
             action = self.env["ir.actions.actions"]._for_xml_id("mrp_workorder.action_mrp_display")
         else:
             action = super().action_work_order()

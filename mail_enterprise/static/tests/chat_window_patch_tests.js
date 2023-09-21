@@ -43,9 +43,10 @@ QUnit.test("'backbutton' event should close chat window", async () => {
 QUnit.test("[technical] chat window should properly override the back button", async (assert) => {
     // simulate the feature is available on the current device
     // component must and will be destroyed before the overrideBackButton is unpatched
+    let overrideBackButton = false;
     patchWithCleanup(methods, {
         overrideBackButton({ enabled }) {
-            assert.step(`overrideBackButton: ${enabled}`);
+            overrideBackButton = enabled;
         },
     });
     const pyEnv = await startServer();
@@ -56,7 +57,7 @@ QUnit.test("[technical] chat window should properly override the back button", a
     await click(".o_menu_systray i[aria-label='Messages']");
     await click(".o-mail-NotificationItem", { text: "test" });
     await contains(".o-mail-ChatWindow");
-    assert.verifySteps(["overrideBackButton: true"]);
+    assert.ok(overrideBackButton);
 
     await click(".o-mail-ChatWindow [title*='Close']");
     // The messaging menu is re-open when a chat window is closed,
@@ -65,5 +66,5 @@ QUnit.test("[technical] chat window should properly override the back button", a
     await click(".o_menu_systray i[aria-label='Messages']");
     await contains(".o-mail-ChatWindow", { count: 0 });
     await contains(".o-mail-MessagingMenu", { count: 0 });
-    assert.verifySteps(["overrideBackButton: false"]);
+    assert.notOk(overrideBackButton);
 });

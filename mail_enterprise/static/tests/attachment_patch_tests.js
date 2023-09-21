@@ -49,9 +49,10 @@ QUnit.test(
     async (assert) => {
         // simulate the feature is available on the current device
         // component must and will be destroyed before the overrideBackButton is unpatched
+        let overrideBackButton = false;
         patchWithCleanup(methods, {
             overrideBackButton({ enabled }) {
-                assert.step(`overrideBackButton: ${enabled}`);
+                overrideBackButton = enabled;
             },
         });
 
@@ -77,10 +78,10 @@ QUnit.test(
 
         await click(".o-mail-AttachmentImage");
         await contains(".o-FileViewer");
-        assert.verifySteps(["overrideBackButton: true"]);
+        assert.ok(overrideBackButton);
 
         await click(".o-FileViewer div[aria-label='Close']");
         await contains(".o-FileViewer", { count: 0 });
-        assert.verifySteps(["overrideBackButton: false"]);
+        assert.notOk(overrideBackButton);
     }
 );

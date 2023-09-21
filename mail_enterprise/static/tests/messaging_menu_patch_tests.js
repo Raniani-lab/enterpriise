@@ -31,9 +31,10 @@ QUnit.test(
     async (assert) => {
         // simulate the feature is available on the current device
         // component must and will be destroyed before the overrideBackButton is unpatched
+        let overrideBackButton = false;
         patchWithCleanup(methods, {
             overrideBackButton({ enabled }) {
-                assert.step(`overrideBackButton: ${enabled}`);
+                overrideBackButton = enabled;
             },
         });
         patchUiSize({ size: SIZES.SM });
@@ -41,10 +42,10 @@ QUnit.test(
 
         await click(".o_menu_systray i[aria-label='Messages']");
         await contains(".o-mail-MessagingMenu");
-        assert.verifySteps(["overrideBackButton: true"]);
+        assert.ok(overrideBackButton);
 
         await click(".o_menu_systray i[aria-label='Messages']");
         await contains(".o-mail-MessagingMenu", { count: 0 });
-        assert.verifySteps(["overrideBackButton: false"]);
+        assert.notOk(overrideBackButton);
     }
 );

@@ -1141,3 +1141,43 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
                 1: {'currency': self.currency_data['currency']},
             },
         )
+
+    def test_no_pl_account_present(self):
+        """
+            When putting a currency on a p&l account, the account should NOT be present in the report.
+            This test will check that the exclusion of the account_type present in a p&l are not displayed.
+        """
+
+        self.company_data['default_account_expense'].currency_id = self.currency_data['currency'].id
+        self.create_move_one_line(
+            partner_id=self.partner_a.id,
+            move_type='in_invoice',
+            journal_id=self.company_data['default_journal_purchase'].id,
+            date='2023-01-21',
+            invoice_date='2023-01-21',
+            currency_id=self.currency_data['currency'].id,
+            account_id=self.company_data['default_account_expense'].id,
+            quantity=1,
+            price_unit=1000.0
+        )
+
+        options = self._generate_options(self.report, '2023-01-01', '2023-01-26')
+        options['unfold_all'] = True
+        self.assertLinesValues(
+            # pylint: disable=C0326
+            self.report._get_lines(options),
+            #   Name                       Balance in foreign currency     Balance at op. rate     Balance at curr rate     Adjustment
+            [0,                                                     1,                       2,                       3,             4],
+            [
+                ('Accounts To Adjust',                             '',                      '',                      '',            ''),
+                ('Gol (1 USD = 2.0 Gol)',                     -1000.0,                 -1000.0,                  -500.0,         500.0),
+                ('211000 Account Payable',                    -1000.0,                 -1000.0,                  -500.0,         500.0),
+                ('BILL/2023/01/0001',                         -1000.0,                 -1000.0,                  -500.0,         500.0),
+                ('Total 211000 Account Payable',              -1000.0,                 -1000.0,                  -500.0,         500.0),
+                ('Total Gol',                                 -1000.0,                 -1000.0,                  -500.0,         500.0),
+            ],
+            options,
+            currency_map={
+                1: {'currency': self.currency_data['currency']},
+            },
+        )

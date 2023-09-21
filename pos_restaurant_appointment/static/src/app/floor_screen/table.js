@@ -6,8 +6,8 @@ import { deserializeDateTime } from "@web/core/l10n/dates";
 const { DateTime } = luxon;
 
 patch(Table.prototype, {
-    get futureAppointments() {
-        return Object.entries(this.props.table.appointment_ids || {})
+    _futureAppointments(table) {
+        return Object.entries(table.appointment_ids || {})
             .map(([_id, appointment]) => {
                 const dateTimeStart = deserializeDateTime(appointment.start);
                 const dateTimeStop = deserializeDateTime(appointment.stop);
@@ -28,7 +28,7 @@ patch(Table.prototype, {
             .sort((a, b) => a.start_ts - b.start_ts);
     },
     get firstAppointment() {
-        const firstAppointment = this.futureAppointments[0];
+        const firstAppointment = this._futureAppointments(this.props.table)[0];
         return firstAppointment;
     },
     get textStyle() {
@@ -42,6 +42,9 @@ patch(Table.prototype, {
             .split(",");
         const light = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255 > 0.5 ? false : true;
         const order = this.pos.orders.find((o) => o.tableId === this.props.table.id);
+        const minWidth = 120;
+        const nbrHorizontal = Math.floor(window.innerWidth / minWidth);
+        const widthTable = (window.innerWidth - nbrHorizontal * 10) / nbrHorizontal;
 
         if (!order && dateNow > dateStart) {
             style = `color: ${light ? "#FF6767" : "#850000"};`;
@@ -53,6 +56,28 @@ patch(Table.prototype, {
             style += `opacity: 0.7;`;
         }
 
+        style += `top: ${widthTable + 7}px;`;
         return style;
+    },
+    computePosition(index, nbrHorizontal, widthTable) {
+        const offsetPos = this.env.position;
+        const position = super.computePosition(index, nbrHorizontal, widthTable);
+        const lineIdx = Math.floor(index / nbrHorizontal);
+
+        if (offsetPos.offset === undefined) {
+            offsetPos.offset = 0;
+            offsetPos.offsetLine = {
+                0: 0,
+            };
+        }
+
+        if (this.firstAppointment) {
+            offsetPos.offsetLine[lineIdx + 1] = 50 + offsetPos.offsetLine[lineIdx];
+        } else if (!offsetPos.offsetLine[lineIdx + 1]) {
+            offsetPos.offsetLine[lineIdx + 1] = offsetPos.offsetLine[lineIdx];
+        }
+
+        position.position_v += offsetPos.offsetLine[lineIdx];
+        return position;
     },
 });

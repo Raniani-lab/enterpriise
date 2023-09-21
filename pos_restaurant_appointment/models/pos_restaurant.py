@@ -12,10 +12,11 @@ class RestaurantTable(models.Model):
     def _get_appointments(self):
         appointments_by_table_id = defaultdict(dict)
         now = fields.Datetime.now()
+        today = fields.Date.today()
         appointments = self.env['calendar.event'].search([
             ('booking_line_ids.appointment_resource_id', 'in', self.appointment_resource_id.ids),
             ('appointment_type_id', 'in', self.floor_id.pos_config_ids.appointment_type_ids.ids),
-            ('start', '>=', now), ('stop', '<=', now + timedelta(days=1)),
+            ('start', '>=', now), ('stop', '<=', today),
         ])
 
         fields_to_read = self.env['calendar.event']._fields_for_restaurant_table()

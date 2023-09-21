@@ -213,6 +213,7 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
                                 )
                            )
                        AND part.max_date <= %s
+                       AND account.account_type NOT IN ('income', 'income_other', 'expense', 'expense_depreciation', 'expense_direct_cost', 'off_balance')
                   GROUP BY aml_id,
                            curr.decimal_places
 
@@ -238,6 +239,7 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
                                 )
                            )
                        AND part.max_date <= %s
+                       AND account.account_type NOT IN ('income', 'income_other', 'expense', 'expense_depreciation', 'expense_direct_cost', 'off_balance')
                   GROUP BY aml_id,
                            curr.decimal_places
                  )
@@ -302,7 +304,8 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
                    AND {'NOT EXISTS' if line_code == 'to_adjust' else 'EXISTS'} (
                         SELECT * FROM account_account_exclude_res_currency_provision WHERE account_account_id = account_id AND res_currency_id = account_move_line.currency_id
                     )
-                    AND ara IS NULL
+                   AND account.account_type NOT IN ('income', 'income_other', 'expense', 'expense_depreciation', 'expense_direct_cost', 'off_balance')
+                   AND ara IS NULL
 
             ) subquery
 

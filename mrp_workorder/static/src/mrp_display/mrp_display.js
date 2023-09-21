@@ -340,7 +340,13 @@ export class MrpDisplay extends Component {
     get adminWorkorderIds() {
         const admin_id = this.useEmployee.employees.admin.id;
         const admin = this.useEmployee.employees.connected.find((emp) => emp.id === admin_id);
-        return admin ? admin.workorder.map((wo) => wo.id): [];
+        const workorderIds = admin ? new Set(admin.workorder.map((wo) => wo.id)) : new Set([]);
+        for (const workorder of this.workorders) {
+            if (workorder.data.employee_assigned_ids.resIds.includes(admin_id)) {
+                workorderIds.add(workorder.resId);
+            }
+        }
+        return [...workorderIds];
     }
 
     async selectWorkcenter(workcenterId) {

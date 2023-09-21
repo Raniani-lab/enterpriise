@@ -67,6 +67,7 @@ export class MrpDisplayAction extends Component {
                 "allowed_employees",
                 "all_employees_allowed",
                 "qty_remaining",
+                "employee_assigned_ids",
             ],
             "stock.move": [
                 "id",

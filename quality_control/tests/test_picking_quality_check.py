@@ -2,8 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from .test_common import TestQualityCommon
-from odoo.tests import Form
+from odoo.tests import Form, tagged
 
+
+@tagged('-at_install', 'post_install')
 class TestQualityCheck(TestQualityCommon):
 
     def test_00_picking_quality_check(self):
@@ -676,6 +678,11 @@ class TestQualityCheck(TestQualityCommon):
 
         ml.lot_name = '1458'
         self.assertEqual(ml.check_ids.lot_name, '1458')
+        # after validation check if lot_id is also propagated
+        ml.check_ids.do_pass()
+        receipt.button_validate()
+        self.assertEqual(ml.check_ids.lot_line_id, ml.lot_id)
+        self.assertEqual(ml.check_ids.lot_id, ml.lot_id)
 
     def test_update_sml_done_qty(self):
         """

@@ -60,6 +60,7 @@ class BankRecWidget(models.Model):
         comodel_name='bank.rec.widget.line',
         inverse_name='wizard_id',
         compute='_compute_line_ids',
+        compute_sudo=False,
         store=True,
         readonly=False,
     )

@@ -11,8 +11,8 @@ patch(Thread.prototype, {
     update(data) {
         if (this.type === "whatsapp") {
             assignDefined(this, data, ["whatsapp_channel_valid_until"]);
-            if (!this._store.discuss.whatsapp.threads.includes(this.localId)) {
-                this._store.discuss.whatsapp.threads.push(this.localId);
+            if (!this._store.discuss.whatsapp.threads.includes(this)) {
+                this._store.discuss.whatsapp.threads.push(this);
             }
         }
         super.update(data);

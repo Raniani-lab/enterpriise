@@ -2,7 +2,6 @@
 
 import { ThreadService } from "@mail/core/common/thread_service";
 import { patch } from "@web/core/utils/patch";
-import { removeFromArray } from "@mail/utils/common/arrays";
 
 patch(ThreadService.prototype, {
     canLeave(thread) {
@@ -52,18 +51,11 @@ patch(ThreadService.prototype, {
         this.open(thread);
     },
 
-    remove(thread) {
-        removeFromArray(this.store.discuss.whatsapp.threads, thread.localId);
-        super.remove(thread);
-    },
-
     sortChannels() {
         super.sortChannels();
         // WhatsApp Channels are sorted by most recent interest date time in the sidebar.
-        this.store.discuss.whatsapp.threads.sort((localId_1, localId_2) => {
-            const thread1 = this.store.Thread.records[localId_1];
-            const thread2 = this.store.Thread.records[localId_2];
-            return thread2.lastInterestDateTime.ts - thread1.lastInterestDateTime.ts;
-        });
+        this.store.discuss.whatsapp.threads.sort(
+            (t1, t2) => t2.lastInterestDateTime.ts - t1.lastInterestDateTime.ts
+        );
     },
 });

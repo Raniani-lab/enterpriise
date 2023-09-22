@@ -5,8 +5,7 @@ import { discussSidebarCategoriesRegistry } from "@mail/discuss/core/web/discuss
 discussSidebarCategoriesRegistry.add(
     "whatsapp",
     {
-        predicate: (store) =>
-            store.discuss.whatsapp.threads.some((localId) => store.Thread.records[localId]?.is_pinned),
+        predicate: (store) => store.discuss.whatsapp.threads.some((thread) => thread?.is_pinned),
         value: (store) => store.discuss.whatsapp,
     },
     { sequence: 20 }

@@ -128,3 +128,91 @@ class L10nKeHrPayrollNssfReportController(http.Controller):
                 ('Content-Disposition', f'attachment; filename={filename}.xlsx')],
         )
         return response
+
+    @http.route(['/export/nhif/<int:wizard_id>'], type='http', auth='user')
+    def export_nhif_report(self, wizard_id):
+        wizard = request.env['l10n.ke.hr.payroll.nhif.report.wizard'].browse(wizard_id)
+        if not wizard.exists() or not request.env.user.has_group('hr_payroll.group_hr_payroll_user'):
+            return request.render(
+                'http_routing.http_error',
+                {
+                    'status_code': 'Oops',
+                    'status_message': _('It seems that you either not have the rights to access the nhif reports '
+                                        'or that you try to access it outside normal circumstances. '
+                                        'If you think there is a problem, please contact an administrator.')
+                }
+            )
+
+        output = BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        worksheet = workbook.add_worksheet('nhif_report')
+        style_highlight = workbook.add_format({'bold': True, 'pattern': 1, 'bg_color': '#E0E0E0', 'align': 'center'})
+        style_normal = workbook.add_format({'align': 'center'})
+        column_width = 25
+        vertical_headers = [
+            'EMPLOYER CODE',
+            'EMPLOYER NAME',
+            'MONTH OF CONTRIBUTION',
+        ]
+
+        vertical_data = [
+            wizard.company_id.company_registry or '',
+            wizard.company_id.name,
+            '%s-%s' % (wizard.reference_year, wizard.reference_month),
+        ]
+        in_between_blank_lines = 1
+        horizontal_headers = [
+            'PAYROLL NO',
+            'LAST NAME',
+            'FIRST NAME',
+            'ID NO',
+            'NHIF NO',
+            'AMOUNT',
+        ]
+        total_column = len(horizontal_headers) - 2
+        total_str = 'TOTAL'
+        total = 0
+
+        horizontal_data = []
+        for line in wizard.line_ids:
+            sliced_name = line.employee_id.name.split(' ', maxsplit=1)
+            horizontal_data.append((
+                line.payslip_number or '',
+                sliced_name[0],
+                sliced_name[1] if len(sliced_name) > 1 else '',
+                line.employee_identification_id or '',
+                line.nhif_number or '',
+                line.nhif_amount,
+            ))
+            total += line.nhif_amount
+
+        row = 0
+        for (vertical_header, vertical_point) in zip(vertical_headers, vertical_data):
+            worksheet.write(row, 0, vertical_header, style_highlight)
+            worksheet.write(row, 1, vertical_point, style_normal)
+            row += 1
+
+        row += in_between_blank_lines
+        for col, horizontal_header in enumerate(horizontal_headers):
+            worksheet.write(row, col, horizontal_header, style_highlight)
+            worksheet.set_column(col, col, column_width)
+
+        for payroll_line in horizontal_data:
+            row += 1
+            for col, payroll_point in enumerate(payroll_line):
+                worksheet.write(row, col, payroll_point, style_normal)
+
+        row += 1
+        worksheet.write(row, total_column, total_str, style_highlight)
+        worksheet.write(row, total_column + 1, total, style_normal)
+
+        workbook.close()
+        xlsx_data = output.getvalue()
+        filename = _("nhif_report_%(year)s_%(month)s", year=wizard.reference_year, month=wizard.reference_month)
+        response = request.make_response(
+            xlsx_data,
+            headers=[
+                ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
+                ('Content-Disposition', f'attachment; filename={filename}.xlsx')],
+        )
+        return response

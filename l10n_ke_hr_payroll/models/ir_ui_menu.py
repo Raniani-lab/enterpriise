@@ -9,6 +9,7 @@ class IrUiMenu(models.Model):
         res = super()._load_menus_blacklist()
         user_kenya_companies = self.env.user.company_ids.filtered(lambda c: c.country_id.code == 'KE')
         if not user_kenya_companies:
+            res.append(self.env.ref('l10n_ke_hr_payroll.menu_l10n_ke_hr_payroll_nhif_report_wizard').id)
             res.append(self.env.ref('l10n_ke_hr_payroll.menu_l10n_ke_hr_payroll_nssf_report_wizard').id)
             res.append(self.env.ref('l10n_ke_hr_payroll.menu_reporting_l10n_ke').id)
         return res

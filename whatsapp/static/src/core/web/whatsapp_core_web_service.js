@@ -9,8 +9,6 @@ export class WhatsappCoreWeb {
         Object.assign(this, {
             busService: services.bus_service,
         });
-        /** @type {import("@mail/core/common/thread_service").ThreadService} */
-        this.threadService = services["mail.thread"];
         /** @type {import("@mail/core/common/messaging_service").Messaging} */
         this.messagingService = services["mail.messaging"];
         /** @type {import("@mail/core/common/store_service").Store} */
@@ -22,16 +20,19 @@ export class WhatsappCoreWeb {
             if (data.current_user_settings?.is_discuss_sidebar_category_whatsapp_open) {
                 this.store.discuss.whatsapp.isOpen = true;
             }
-            this.busService.subscribe("discuss.channel/whatsapp_channel_valid_until_changed", (payload) => {
-                const { id, whatsapp_channel_valid_until } = payload;
-                const channel = this.store.Thread.insert({
-                    model: "discuss.channel",
-                    id: id,
-                });
-                if (channel) {
-                    this.threadService.update(channel, { whatsapp_channel_valid_until });
+            this.busService.subscribe(
+                "discuss.channel/whatsapp_channel_valid_until_changed",
+                (payload) => {
+                    const { id, whatsapp_channel_valid_until } = payload;
+                    const channel = this.store.Thread.insert({
+                        model: "discuss.channel",
+                        id: id,
+                    });
+                    if (channel) {
+                        channel.update({ whatsapp_channel_valid_until });
+                    }
                 }
-            });
+            );
             this.busService.subscribe("mail.record/insert", (payload) => {
                 const { "res.users.settings": settings } = payload;
                 if (settings) {

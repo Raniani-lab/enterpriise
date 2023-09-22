@@ -3,7 +3,6 @@
 import { ThreadService } from "@mail/core/common/thread_service";
 import { patch } from "@web/core/utils/patch";
 import { removeFromArray } from "@mail/utils/common/arrays";
-import { assignDefined } from "@mail/utils/common/misc";
 
 patch(ThreadService.prototype, {
     canLeave(thread) {
@@ -24,23 +23,13 @@ patch(ThreadService.prototype, {
         return super.getCounter(thread);
     },
 
-    async getMessagePostParams({thread}) {
+    async getMessagePostParams({ thread }) {
         const params = await super.getMessagePostParams(...arguments);
 
         if (thread.type === "whatsapp") {
             params.post_data.message_type = "whatsapp_message";
         }
         return params;
-    },
-
-    update(thread, data) {
-        if (thread.type === "whatsapp") {
-            assignDefined(thread, data, ["whatsapp_channel_valid_until"]);
-            if (!this.store.discuss.whatsapp.threads.includes(thread.localId)) {
-                this.store.discuss.whatsapp.threads.push(thread.localId);
-            }
-        }
-        super.update(thread, data);
     },
 
     async openWhatsAppChannel(id, name) {
@@ -52,8 +41,10 @@ patch(ThreadService.prototype, {
             channel: { avatarCacheKey: "hello" },
         });
         if (!thread.hasSelfAsMember) {
-            const data = await this.orm.call("discuss.channel", "whatsapp_channel_join_and_pin", [[id]]);
-            this.update(thread, data);
+            const data = await this.orm.call("discuss.channel", "whatsapp_channel_join_and_pin", [
+                [id],
+            ]);
+            thread.update(data);
         } else if (!thread.is_pinned) {
             this.pin(thread);
         }

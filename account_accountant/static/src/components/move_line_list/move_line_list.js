@@ -14,8 +14,6 @@ import { SIZES } from '@web/core/ui/ui_service';
 export class AccountMoveLineListController extends ListController {
     setup() {
         super.setup();
-        /** @type {import("@mail/core/common/thread_service").ThreadService} */
-        this.threadService = useService("mail.thread");
         /** @type {import("@mail/core/common/store_service").Store} */
         this.store = useState(useService("mail.store"));
         this.ui = useService("ui");
@@ -56,9 +54,7 @@ export class AccountMoveLineListController extends ListController {
             model: accountMoveLineData.fields["move_id"].relation,
         });
         if (!thread.mainAttachment && thread.attachmentsInWebClientView.length > 0) {
-            this.threadService.update(thread, {
-                mainAttachment: thread.attachmentsInWebClientView[0],
-            });
+            thread.update({ mainAttachment: thread.attachmentsInWebClientView[0] });
         }
         this.attachmentPreviewState.thread = thread;
     }

@@ -229,7 +229,7 @@ class DiscussChannel(models.Model):
             new_member.channel_id.message_post(body=message_body, message_type="notification", subtype_xmlid="mail.mt_comment")
             self.env['bus.bus']._sendone(self, 'mail.record/insert', {
                 'Channel': {
-                    'channelMembers': [('insert', list(new_member._discuss_channel_member_format().values()))],
+                    'channelMembers': [('ADD', list(new_member._discuss_channel_member_format().values()))],
                     'id': self.id,
                     'memberCount': self.member_count,
                 }

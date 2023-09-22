@@ -35,13 +35,13 @@ class MailMessage(models.Model):
         group_domain = [('message_id', '=', self.id), ('content', '=', content)]
         count = self.env['mail.message.reaction'].search_count(group_domain)
         # remove old reaction and add new one if count > 0 from same partner
-        group_command = 'insert' if count > 0 else 'insert-and-unlink'
+        group_command = 'ADD' if count > 0 else 'DELETE'
         return (group_command, {
             'content': content,
             'count': count,
             'guests': [],
             'message': {'id': self.id},
-            'partners': [('insert-and-unlink' if unlink_reaction else 'insert', {'id': partner_id.id})],
+            'partners': [('DELETE' if unlink_reaction else 'ADD', {'id': partner_id.id})],
         })
 
     def message_format(self, *args, **kwargs):

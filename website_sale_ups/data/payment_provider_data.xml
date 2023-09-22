@@ -3,6 +3,7 @@
 
     <record id="payment_provider_ups_cod" model="payment.provider">
         <field name="name">Cash on Delivery</field>
+        <field name="image_128" type="base64" file="website_sale_ups/static/img/cod.png"/>
         <field name="module_id" ref="base.module_website_sale_ups"/>
         <field name="code">custom</field>
         <field name="custom_mode">cash_on_delivery</field>

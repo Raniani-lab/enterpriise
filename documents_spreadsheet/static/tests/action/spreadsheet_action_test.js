@@ -1,11 +1,13 @@
-/** @odoo-module */
+/* @odoo-module */
 
 import * as spreadsheet from "@odoo/o-spreadsheet";
-import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { downloadFile } from "@web/core/network/download";
+import { getFixture, nextTick, click, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { contains } from "@web/../tests/utils";
+import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
+
 import { getBasicData, getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { prepareWebClientForSpreadsheet } from "@spreadsheet_edition/../tests/utils/webclient_helpers";
-import { getFixture, nextTick, click, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { setCellContent, selectCell, setSelection } from "@spreadsheet/../tests/utils/commands";
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
@@ -180,23 +182,10 @@ QUnit.module(
             assert.equal(dialog, undefined, "Dialog should not normally be displayed ");
         });
 
-        QUnit.test("notify user window", async function (assert) {
+        QUnit.test("notify user window", async function () {
             const { env } = await createSpreadsheet();
             env.notifyUser({ text: "this is a notification", type: "warning", sticky: true });
-            await nextTick();
-            const dialog = document.querySelector(".o_dialog");
-            assert.ok(dialog !== undefined, "Dialog can be opened");
-            const notif = document.querySelector("div.o_notification");
-            assert.ok(notif !== undefined, "the notification exists");
-            assert.equal(
-                notif.querySelector("div.o_notification_content").textContent,
-                "this is a notification",
-                "Can set dialog content"
-            );
-            assert.ok(
-                notif.classList.contains("border-warning"),
-                "NotifyUser generates a warning notification"
-            );
+            await contains(".o_notification.border-warning", { text: "this is a notification" });
         });
 
         QUnit.test("raise error window", async function (assert) {

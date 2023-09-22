@@ -14,14 +14,15 @@ registry
         test: true,
         steps: () => [
             {
-                content: "Click on 'Open Actions Menu' in the chat window header to show expand button",
+                content:
+                    "Click on 'Open Actions Menu' in the chat window header to show expand button",
                 trigger:
-                    '.o-mail-ChatWindow:has(.o-mail-ChatWindow-name:contains("test-mail-channel-expand-tour")) [title="Open Actions Menu"]',
+                    '.o-mail-ChatWindow:contains("test-mail-channel-expand-tour") [title="Open Actions Menu"]',
             },
             {
                 content: "Click on expand button to open channel in Discuss",
                 trigger:
-                    '.o-mail-ChatWindow:has(.o-mail-ChatWindow-name:contains("test-mail-channel-expand-tour")) [title="Open in Discuss"]',
+                    '.o-mail-ChatWindow:contains("test-mail-channel-expand-tour") [title="Open in Discuss"]',
             },
             {
                 content:

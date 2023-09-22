@@ -499,16 +499,12 @@ QUnit.module(
                     res_model: "documents.document",
                     views: [[false, "kanban"]],
                 });
-
                 await click(target, ".o_kanban_record:nth-of-type(1) .o_record_selector");
                 await click(target, ".o_kanban_record:nth-of-type(2) .o_record_selector");
                 await click(target, "button.o_inspector_download");
-
-                assert.strictEqual(
-                    target.querySelector(".o_notification_manager .o_notification_content")
-                        .textContent,
-                    "Spreadsheets mass download not yet supported.\n Download spreadsheets individually instead."
-                );
+                await contains(".o_notification", {
+                    text: "Spreadsheets mass download not yet supported.\n Download spreadsheets individually instead.",
+                });
             }
         );
     }

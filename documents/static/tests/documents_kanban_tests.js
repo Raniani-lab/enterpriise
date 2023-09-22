@@ -3020,9 +3020,9 @@ QUnit.module("documents", {}, function () {
 
                 assert.containsOnce(target, ".o-mail-ActivityList");
                 assert.containsOnce(target, ".o-mail-Activity", "should display an activity");
-                assert.containsOnce(target, ".btn:contains(Mark Done)");
-                assert.containsOnce(target, ".btn:contains('Edit')");
-                assert.containsOnce(target, ".o-mail-Activity span:contains(Cancel)");
+                await contains(".o-mail-Activity .btn", { text: "Mark Done" });
+                await contains(".o-mail-Activity .btn", { text: "Edit" });
+                await contains(".o-mail-Activity .btn", { text: "Cancel" });
 
                 await legacyClick($(target).find(".o_kanban_record:contains(blip)")[0]);
 
@@ -3069,39 +3069,18 @@ QUnit.module("documents", {}, function () {
                         res_model: "documents.document",
                         views: [[false, "kanban"]],
                     });
-
-                    await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
-
-                    await legacyClick(
-                        target.querySelector(".o_documents_inspector .o_inspector_open_chatter")
-                    );
-
-                    assert.containsOnce(target, ".o_document_chatter_container .o-mail-Chatter");
-                    assert.containsNone(target, ".o_document_chatter_container .o-mail-Composer");
-
-                    // open the composer
-                    await legacyClick(
-                        target.querySelector(
-                            ".o_document_chatter_container .o-mail-Chatter-sendMessage"
-                        )
-                    );
-
-                    assert.containsOnce(target, ".o_document_chatter_container .o-mail-Composer");
-
-                    // write and send a message (need to wait the Send button to be enabled)
+                    await click(".o_kanban_record", { text: "yop" });
+                    await click(".o_inspector_open_chatter");
+                    await click(".o-mail-Chatter-sendMessage");
                     await insertText(".o-mail-Composer-input", "Some message");
-                    await click(".o-mail-Composer-send:not(:disabled)");
-                    await contains(".o-mail-Message");
-                    assert.strictEqual(
-                        target.querySelector(".o-mail-Message-body").textContent,
-                        "Some message"
-                    );
+                    await click(".o-mail-Composer-send:enabled");
+                    await contains(".o-mail-Message", { text: "Some message" });
                 }
             );
 
             QUnit.test(
                 "document chatter: keep chatter open when switching between records",
-                async function (assert) {
+                async function () {
                     const [documentsDocumentId1, documentsDocumentId2] = pyEnv[
                         "documents.document"
                     ].search([]);
@@ -3137,26 +3116,11 @@ QUnit.module("documents", {}, function () {
                         res_model: "documents.document",
                         views: [[false, "kanban"]],
                     });
-
-                    await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
-
-                    await click(".o_documents_inspector .o_inspector_open_chatter");
-                    await contains(".o_document_chatter_container .o-mail-Chatter");
-                    await contains(".o_document_chatter_container .o-mail-Message");
-                    assert.strictEqual(
-                        target.querySelector(".o-mail-Message-body").innerText.trim(),
-                        "Message on 'yop'"
-                    );
-
-                    // select another record
-                    await legacyClick($(target).find(".o_kanban_record:contains(blip)")[0]);
-
-                    assert.containsOnce(target, ".o_document_chatter_container .o-mail-Chatter");
-                    assert.containsOnce(target, ".o_document_chatter_container .o-mail-Message");
-                    assert.strictEqual(
-                        target.querySelector(".o-mail-Message-body").innerText.trim(),
-                        "Message on 'blip'"
-                    );
+                    await click(".o_kanban_record", { text: "yop" });
+                    await click(".o_inspector_open_chatter");
+                    await contains(".o-mail-Message", { text: "Message on 'yop'" });
+                    await click(".o_kanban_record", { text: "blip" });
+                    await contains(".o-mail-Message", { text: "Message on 'blip'" });
                 }
             );
 

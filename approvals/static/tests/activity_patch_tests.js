@@ -5,11 +5,11 @@ import { startServer } from "@bus/../tests/helpers/mock_python_environment";
 import { start } from "@mail/../tests/helpers/test_utils";
 
 import { makeDeferred } from "@web/../tests/helpers/utils";
-import { click } from "@web/../tests/utils";
+import { click, contains } from "@web/../tests/utils";
 
 QUnit.module("activity (patch)");
 
-QUnit.test("activity with approval to be made by logged user", async (assert) => {
+QUnit.test("activity with approval to be made by logged user", async () => {
     const pyEnv = await startServer();
     const requestId = pyEnv["approval.request"].create({});
     pyEnv["approval.approver"].create({
@@ -29,22 +29,21 @@ QUnit.test("activity with approval to be made by logged user", async (assert) =>
         res_id: requestId,
         views: [[false, "form"]],
     });
-    assert.containsOnce($, ".o-mail-Activity");
-    assert.containsOnce($, ".o-mail-Activity-sidebar");
-    assert.containsOnce($, ".o-mail-Activity-user");
-    assert.containsOnce($, ".o-mail-Activity-info");
-    assert.containsNone($, ".o-mail-Activity-note", "should not have activity note");
-    assert.containsNone($, ".o-mail-Activity-details");
-    assert.containsNone($, ".o-mail-Activity-mailTemplates");
-    assert.containsNone($, ".btn:contains('Edit')");
-    assert.containsNone($, ".o-mail-Activity span:contains(Cancel)");
-    assert.containsNone($, ".btn:contains('Mark Done')");
-    assert.containsNone($, ".o-mail-Activity-info:contains('Upload Document')");
-    assert.containsOnce($, ".o-mail-Activity button:contains('Approve')");
-    assert.containsOnce($, ".o-mail-Activity button:contains('Refuse')");
+    await contains(".o-mail-Activity");
+    await contains(".o-mail-Activity-sidebar");
+    await contains(".o-mail-Activity-user");
+    await contains(".o-mail-Activity-note", { count: 0 });
+    await contains(".o-mail-Activity-details", { count: 0 });
+    await contains(".o-mail-Activity-mailTemplates", { count: 0 });
+    await contains(".o-mail-Activity .btn", { count: 0, text: "Edit" });
+    await contains(".o-mail-Activity .btn", { count: 0, text: "Cancel" });
+    await contains(".o-mail-Activity .btn", { count: 0, text: "Mark Done" });
+    await contains(".o-mail-Activity .btn", { count: 0, text: "Upload Document" });
+    await contains(".o-mail-Activity button", { text: "Approve" });
+    await contains(".o-mail-Activity button", { text: "Refuse" });
 });
 
-QUnit.test("activity with approval to be made by another user", async (assert) => {
+QUnit.test("activity with approval to be made by another user", async () => {
     const pyEnv = await startServer();
     const requestId = pyEnv["approval.request"].create({});
     const userId = pyEnv["res.users"].create({});
@@ -65,20 +64,19 @@ QUnit.test("activity with approval to be made by another user", async (assert) =
         res_id: requestId,
         views: [[false, "form"]],
     });
-    assert.containsOnce($, ".o-mail-Activity");
-    assert.containsOnce($, ".o-mail-Activity-sidebar");
-    assert.containsOnce($, ".o-mail-Activity-user");
-    assert.containsOnce($, ".o-mail-Activity-info");
-    assert.containsNone($, ".o-mail-Activity-note");
-    assert.containsNone($, ".o-mail-Activity-details");
-    assert.containsNone($, ".o-mail-Activity-mailTemplates");
-    assert.containsNone($, ".btn:contains('Edit')");
-    assert.containsNone($, ".o-mail-Activity span:contains(Cancel)");
-    assert.containsNone($, ".btn:contains('Mark Done')");
-    assert.containsNone($, ".o-mail-Activity-info:contains('Upload Document')");
-    assert.containsNone($, ".o-mail-Activity button:contains('Approve')");
-    assert.containsNone($, ".o-mail-Activity button:contains('Refuse')");
-    assert.containsOnce($, ".o-mail-Activity span:contains('To Approve')");
+    await contains(".o-mail-Activity");
+    await contains(".o-mail-Activity-sidebar");
+    await contains(".o-mail-Activity-user");
+    await contains(".o-mail-Activity-note", { count: 0 });
+    await contains(".o-mail-Activity-details", { count: 0 });
+    await contains(".o-mail-Activity-mailTemplates", { count: 0 });
+    await contains(".o-mail-Activity .btn", { count: 0, text: "Edit" });
+    await contains(".o-mail-Activity .btn", { count: 0, text: "Cancel" });
+    await contains(".o-mail-Activity .btn", { count: 0, text: "Mark Done" });
+    await contains(".o-mail-Activity .btn", { count: 0, text: "Upload Document" });
+    await contains(".o-mail-Activity button", { count: 0, text: "Approve" });
+    await contains(".o-mail-Activity button", { count: 0, text: "Refuse" });
+    await contains(".o-mail-Activity span", { text: "To Approve" });
 });
 
 QUnit.test("approve approval", async (assert) => {
@@ -111,9 +109,6 @@ QUnit.test("approve approval", async (assert) => {
         res_id: requestId,
         views: [[false, "form"]],
     });
-    assert.containsOnce($, ".o-mail-Activity");
-    assert.containsOnce($, ".o-mail-Activity button:contains('Approve')");
-
     await click(".o-mail-Activity button", { text: "Approve" });
     await def;
     assert.verifySteps(["action_approve"]);
@@ -149,9 +144,6 @@ QUnit.test("refuse approval", async (assert) => {
         res_id: requestId,
         views: [[false, "form"]],
     });
-    assert.containsOnce($, ".o-mail-Activity");
-    assert.containsOnce($, ".o-mail-Activity button:contains('Refuse')");
-
     await click(".o-mail-Activity button", { text: "Refuse" });
     await def;
     assert.verifySteps(["action_refuse"]);

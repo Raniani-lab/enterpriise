@@ -1,14 +1,10 @@
 /* @odoo-module */
 
-import { click, getFixture } from "@web/../tests/helpers/utils";
-import { getVisibleButtons } from "@web/../tests/search/helpers";
-import { contains } from "@web/../tests/utils";
+import { click, contains } from "@web/../tests/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 
 QUnit.module("timesheet_grid", (hooks) => {
-    let target;
     hooks.beforeEach(async function () {
-        target = getFixture();
         setupViewRegistries();
     });
 
@@ -51,13 +47,8 @@ QUnit.module("timesheet_grid", (hooks) => {
                 }
             },
         });
-        const validateButton = getVisibleButtons(target).find(
-            (btn) => btn.innerText === "Validate"
-        );
-        await click(validateButton);
-        await contains(".o_notification.border-danger .o_notification_content", {
-            text: "dummy title",
-        });
+        await click(".o_control_panel_collapsed_create button", { text: "Validate" });
+        await contains(".o_notification.border-danger", { text: "dummy title" });
         assert.verifySteps(["action_validate_timesheet"]);
     });
 });

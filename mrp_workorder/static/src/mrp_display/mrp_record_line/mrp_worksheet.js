@@ -33,7 +33,7 @@ export class MrpWorksheet extends QualityCheck {
                 value: sheet[0].worksheet,
                 page: 1,
             };
-        } else if (this.record.worksheet_google_slide) {
+        } else if (this.props.record.data.worksheet_google_slide) {
             worksheetData = {
                 resModel: "mrp.workorder",
                 resId: this.props.record.resId,

@@ -543,13 +543,13 @@ export class MrpDisplayRecord extends Component {
     }
 
     get showWorksheetCheck() {
-        if (
-            this.props.record.resModel === "mrp.workorder" &&
-            (this.props.record.data.worksheet || this.props.record.data.worksheet_google_slide)
-        ) {
-            return !this.record.check_ids.count;
+        if (this.props.record.resModel !== "mrp.workorder") {
+            return false;
         }
-        return false;
+        const hasPDF = this.record.worksheet;
+        const hasSlide = this.record.worksheet_google_slide;
+        const hasNote = this.record.operation_note.length;
+        return !this.record.check_ids.count && (hasPDF || hasSlide || hasNote);
     }
 
     onAnimationEnd(ev) {

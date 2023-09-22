@@ -629,7 +629,8 @@ class AccountMoveLine(models.Model):
             field, method = groupby_spec.split(':')
             if field in self and method == 'abs_rounded':  # field in self avoids possible injections
                 # rounds with the used currency settings
-                return f'ROUND(ABS("account_move_line"."{field}"), "account_move_line__currency_id"."decimal_places")', [field]
+                currency_alias = query.left_join('account_move_line', 'currency_id', 'res_currency', 'id', 'currency_id')
+                return f'ROUND(ABS("account_move_line"."{field}"), "{currency_alias}"."decimal_places")', [field]
         return super()._read_group_groupby(groupby_spec, query)
 
     def _read_group_having(self, having_domain, query):

@@ -249,14 +249,13 @@ class WhatsAppTemplate(models.Model):
                 tmpl.has_action = False
 
     def _compute_messages_count(self):
-        messages_group = self.env['whatsapp.message'].read_group(
-            [('wa_template_id', '!=', False)],
-            fields=['wa_template_id'],
-            groupby=['wa_template_id']
-        )
-        messages_by_template = {m.get('wa_template_id')[0]: m.get('wa_template_id_count') for m in messages_group}
+        messages_by_template = dict(self.env['whatsapp.message']._read_group(
+            [('wa_template_id', 'in', self.ids)],
+            groupby=['wa_template_id'],
+            aggregates=['__count'],
+        ))
         for tmpl in self:
-            tmpl.messages_count = messages_by_template.get(tmpl.id, 0)
+            tmpl.messages_count = messages_by_template.get(tmpl, 0)
 
     @api.onchange('header_attachment_ids')
     def _onchange_header_attachment_ids(self):

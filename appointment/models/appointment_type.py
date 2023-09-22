@@ -465,12 +465,12 @@ class AppointmentType(models.Model):
         self.ensure_one()
         default_state = 'accepted'
         if self.resource_manual_confirmation:
-            bookings_data = self.env['appointment.booking.line'].sudo().read_group([
+            bookings_data = self.env['appointment.booking.line'].sudo()._read_group([
                 ('appointment_type_id', '=', self.id),
                 ('event_start', '<', datetime.combine(stop_dt, time.max)),
                 ('event_stop', '>', datetime.combine(start_dt, time.min))
-            ], ['capacity_used'], ['appointment_type_id'])
-            capacity_already_used = bookings_data[0]['capacity_used'] if bookings_data else 0
+            ], [], ['capacity_used:sum'])
+            capacity_already_used = bookings_data[0][0]
             resource_total_capacity_used = capacity_already_used + capacity_reserved
 
             if float_compare(resource_total_capacity_used / self.resource_total_capacity, self.resource_manual_confirmation_percentage, 2) >= 0:

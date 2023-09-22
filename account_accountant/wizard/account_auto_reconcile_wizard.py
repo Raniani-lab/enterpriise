@@ -67,16 +67,14 @@ class AccountAutoReconcileWizard(models.TransientModel):
         We will reconcile 2 amls together if their combined balance is zero.
         :return: a recordset of reconciled amls
         """
-        grouped_amls_data = self.env['account.move.line'].read_group(
+        grouped_amls_data = self.env['account.move.line']._read_group(
             self._get_amls_domain(),
-            ['id:recordset'],
             ['account_id', 'partner_id', 'currency_id', 'amount_residual_currency:abs_rounded'],
-            lazy=False,
+            ['id:recordset'],
         )
         all_reconciled_amls = self.env['account.move.line']
         amls_grouped_by_2 = []  # we need to group amls with right format for _reconcile_plan
-        for aml_data in grouped_amls_data:
-            grouped_aml_ids = aml_data['id']
+        for *__, grouped_aml_ids in grouped_amls_data:
             positive_amls = grouped_aml_ids.filtered(lambda aml: aml.amount_residual_currency >= 0).sorted('date')
             negative_amls = (grouped_aml_ids - positive_amls).sorted('date')
             min_len = min(len(positive_amls), len(negative_amls))

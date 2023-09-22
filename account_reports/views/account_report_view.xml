@@ -101,16 +101,19 @@
 
                         <notebook>
                             <page string="Lines" name="page_lines" invisible="use_sections">
-                                <field name="line_ids" no_label="1">
+                                <field class="w-100" name="line_ids" no_label="1" widget="account_report_lines_list_x2many">
                                     <tree limit="2000">
-                                        <field name="sequence" widget="handle"/>
+                                        <field name="id" column_invisible="1"/>
+                                        <field name="sequence" column_invisible="1"/>
+                                        <field name="parent_id" column_invisible="1"/>
+                                        <field name="hierarchy_level" column_invisible="1"/>
+
                                         <field name="name"/>
                                         <field name="code" optional="hide"/>
                                         <field name="print_on_new_page" optional="hide"/>
                                         <field name="hide_if_zero" optional="hide"/>
                                         <field name="user_groupby" optional="hide"/>
                                         <field name="foldable" optional="hide"/>
-                                        <field name="parent_id" optional="hide"/>
                                     </tree>
                                 </field>
                             </page>

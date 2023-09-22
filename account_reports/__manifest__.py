@@ -65,6 +65,7 @@ Accounting Reports
         'web.assets_backend': [
             'account_reports/static/src/components/**/*',
             'account_reports/static/src/js/**/*',
+            'account_reports/static/src/widgets/**/*',
         ],
         'web.assets_web_dark': [
             'account_reports/static/src/scss/*.dark.scss',

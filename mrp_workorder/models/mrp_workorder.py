@@ -270,7 +270,10 @@ class MrpProductionWorkcenterLine(models.Model):
 
     def button_start(self, bypass=False):
         skip_employee_check = bypass or (not request and not self.env.user.employee_id)
-        if not skip_employee_check:
+        main_employee = False
+        if not self.env.context.get('mrp_display'):
+            main_employee = self.env.user.employee_id.id
+        elif not skip_employee_check:
             connected_employees = self.env['hr.employee'].get_employees_connected()
             if len(connected_employees) == 0:
                 raise UserError(_("You need to log in to process this work order."))
@@ -288,7 +291,7 @@ class MrpProductionWorkcenterLine(models.Model):
                     if check.component_id:
                         check._update_component_quantity()
 
-            if not skip_employee_check:
+            if main_employee:
                 if len(wo.allowed_employees) == 0 or main_employee in [emp.id for emp in wo.allowed_employees]:
                     wo.start_employee(self.env['hr.employee'].browse(main_employee).id)
                     wo.employee_ids |= self.env['hr.employee'].browse(main_employee)

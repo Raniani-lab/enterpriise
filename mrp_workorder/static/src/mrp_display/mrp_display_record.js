@@ -510,7 +510,9 @@ export class MrpDisplayRecord extends Component {
             admin_id &&
             !this.props.record.data.employee_ids.records.some((emp) => emp.resId == admin_id)
         ) {
-            await this.model.orm.call(resModel, "button_start", [resId]);
+            await this.model.orm.call(resModel, "button_start", [resId], {
+                context: { mrp_display: true },
+            });
         } else if (shouldStop) {
             await this.model.orm.call(resModel, "stop_employee", [resId, [admin_id]]);
         }

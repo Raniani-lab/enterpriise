@@ -15,6 +15,11 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
         'click .o_knowledge_article_load_more': '_loadMoreArticles',
     },
 
+    init() {
+        this._super(...arguments);
+        this.rpc = this.bindService("rpc");
+    },
+
     /**
      * @override
      * @returns {Promise}
@@ -67,10 +72,7 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
             offset: ev.target.dataset['offset'] || 0,
         };
 
-        addedArticles = await this._rpc({
-            route: '/knowledge/public_sidebar/load_more',
-            params: rpcParams,
-        });
+        addedArticles = await this.rpc('/knowledge/public_sidebar/load_more', rpcParams);
 
         const listRoot = ev.target.closest('ul');
         // remove existing "Load more" link
@@ -99,12 +101,9 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
         // Renders articles based on search term in a flatenned tree (no sections nor child articles)
         const container = this.el.querySelector('.o_knowledge_tree');
         try {
-            const htmlTree = await this._rpc({
-                route: '/knowledge/public_sidebar/',
-                params: {
-                    search_term: searchTerm,
-                    active_article_id: this.$id,
-                }
+            const htmlTree = await this.rpc('/knowledge/public_sidebar/', {
+                search_term: searchTerm,
+                active_article_id: this.$id,
             });
             container.innerHTML = htmlTree;
         } catch {
@@ -156,12 +155,9 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
             this.unfoldedArticlesIds.push(this.$id);
         }
         try {
-            const htmlTree = await this._rpc({
-                route: '/knowledge/public_sidebar',
-                params: {
-                    active_article_id: this.$id,
-                    unfolded_articles_ids: this.unfoldedArticlesIds,
-                }
+            const htmlTree = await this.rpc('/knowledge/public_sidebar', {
+                active_article_id: this.$id,
+                unfolded_articles_ids: this.unfoldedArticlesIds,
             });
             container.innerHTML = htmlTree;
         } catch {
@@ -170,10 +166,7 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
     },
 
     _fetchChildrenArticles: function (parentId) {
-        return this._rpc({
-            route: '/knowledge/public_sidebar/children',
-            params: { parent_id: parentId },
-        });
+        return this.rpc('/knowledge/public_sidebar/children', { parent_id: parentId });
     },
 
     /**

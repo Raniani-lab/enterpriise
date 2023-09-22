@@ -5,6 +5,11 @@ import options from '@web_editor/js/editor/snippets.options';
 options.registry.OnlineAppointmentOptions = options.Class.extend({
     allAppointmentTypesById: {},
 
+    init() {
+        this._super(...arguments);
+        this.rpc = this.bindService("rpc");
+    },
+
     /**
      * Load available appointment types and update obsolete snippet data if necessary.
      *
@@ -12,7 +17,7 @@ options.registry.OnlineAppointmentOptions = options.Class.extend({
      */
     async willStart() {
         await this._super(...arguments);
-        this.allAppointmentTypesById = await this._rpc({ route: '/appointment/get_snippet_data' });
+        this.allAppointmentTypesById = await this.rpc('/appointment/get_snippet_data');
         // If no appointments are available as opposed to when the button was created.
         if (!Object.keys(this.allAppointmentTypesById).length) {
             this._setDatasetProperty('targetTypes', 'all');
@@ -208,19 +213,16 @@ options.registry.OnlineAppointmentOptions = options.Class.extend({
      */
     async _syncAppointmentTypesData(apptId) {
         if (apptId) {
-            const record = await this._rpc({
-                route: '/appointment/get_snippet_data',
-                params: {
-                    appointment_type_id: apptId,
-                }}
-            );
+            const record = await this.rpc('/appointment/get_snippet_data', {
+                appointment_type_id: apptId,
+            });
             if (Object.keys(record).length) {
                 this.allAppointmentTypesById[apptId] = record[apptId];
             } else {
                 this.allAppointmentTypesById.remove(apptId);
             }
         } else {
-            this.allAppointmentTypesById = await this._rpc({ route: '/appointment/get_snippet_data' });
+            this.allAppointmentTypesById = await this.rpc('/appointment/get_snippet_data');
         }
     },
 });

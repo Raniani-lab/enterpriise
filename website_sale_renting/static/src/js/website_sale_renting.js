@@ -21,10 +21,10 @@ WebsiteSale.include({
     }),
 
     async _check_new_dates_on_cart(){
-        const { start_date, end_date, values } = await this._rpc({
-            route: '/shop/cart/update_renting',
-            params: this._getSerializedRentingDates(),
-        });
+        const { start_date, end_date, values } = await this.rpc(
+            '/shop/cart/update_renting',
+            this._getSerializedRentingDates()
+        );
         $(".js_cart_lines").first().before(values['cart_lines']).end().remove();
         $(".js_cart_summary").replaceWith(values['short_cart_summary']);
         const format = this._isDurationWithHours() ? formatDateTime : formatDate;

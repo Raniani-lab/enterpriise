@@ -18,6 +18,7 @@ publicWidget.registry.appointmentTypeSelect = publicWidget.Widget.extend({
         // Check if we cannot replace this by a async handler once the related
         // task is merged in master
         this._onAppointmentTypeChange = debounce(this._onAppointmentTypeChange, 250);
+        this.rpc = this.bindService("rpc");
     },
 
     /**
@@ -51,14 +52,11 @@ publicWidget.registry.appointmentTypeSelect = publicWidget.Widget.extend({
         const inviteToken = this.$("input[name='invite_token']").val();
         self.$(".o_appointment_appointments_list_form").attr('action', `/appointment/${appointmentTypeID}${window.location.search}`);
 
-        this._rpc({
-            route: `/appointment/${appointmentTypeID}/get_message_intro`,
-            params: {
-                invite_token: inviteToken,
-                filter_appointment_type_ids: filterAppointmentTypeIds,
-                filter_staff_user_ids: filterUserIds,
-                filter_resource_ids: filterResourceIds,
-            },
+        this.rpc(`/appointment/${appointmentTypeID}/get_message_intro`, {
+            invite_token: inviteToken,
+            filter_appointment_type_ids: filterAppointmentTypeIds,
+            filter_staff_user_ids: filterUserIds,
+            filter_resource_ids: filterResourceIds,
         }).then(function (message_intro) {
             self.$('.o_appointment_intro').empty().append(message_intro);
         });

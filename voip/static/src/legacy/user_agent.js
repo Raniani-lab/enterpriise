@@ -5,7 +5,6 @@ import { browser } from "@web/core/browser/browser";
 import { _t } from "@web/core/l10n/translation";
 import { escape } from "@web/core/utils/strings";
 import mixins from "@web/legacy/js/core/mixins";
-import ServicesMixin from "@web/legacy/js/core/service_mixins";
 
 const CALL_STATE = {
     NO_CALL: 0,
@@ -15,7 +14,7 @@ const CALL_STATE = {
     REJECTING_CALL: 4,
 };
 
-export const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
+export const UserAgent = Class.extend(mixins.EventDispatcherMixin, {
     /**
      * @constructor
      */
@@ -23,6 +22,7 @@ export const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin
         this.env = parent.env;
         this.voip = parent.voip;
         this.userAgent = this.env.services["voip.user_agent"];
+        this.multiTab = this.env.services["multi_tab"];
         var self = this;
         mixins.EventDispatcherMixin.init.call(this);
         this.setParent(parent);
@@ -393,7 +393,7 @@ export const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin
             window.Notification.permission === "granted" &&
             // Only send notifications in master tab, so that the user doesn't
             // get a notification for every open tab.
-            this.call("multi_tab", "isOnMainTab")
+            this.multiTab.isOnMainTab()
         ) {
             return new window.Notification(title, {
                 body: content,
@@ -628,7 +628,7 @@ export const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin
         }
         this._isOutgoing = false;
         this._callState = CALL_STATE.RINGING_CALL;
-        if (this.call("multi_tab", "isOnMainTab")) {
+        if (this.multiTab.isOnMainTab()) {
             this.ringtoneService.incomingCallRingtone.play();
         }
         this._notification = this._sendNotification("Odoo", content);

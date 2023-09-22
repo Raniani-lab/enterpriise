@@ -31,6 +31,7 @@ var TweetWall = Widget.extend({
         }, this.timeout);
         var zoomLevel = 1 / (window.devicePixelRatio * 0.80);
         this._zoom(zoomLevel);
+        this.rpc = this.bindService("rpc");
     },
 
     //--------------------------------------------------------------------------
@@ -72,11 +73,8 @@ var TweetWall = Widget.extend({
     _getData: function () {
         var self = this;
         if (!this.fetchPromise) {
-            self.fetchPromise = this._rpc({
-                route: '/twitter_wall/get_tweet/' + self.wall_id,
-                params: {
-                    'last_tweet_id': self.last_tweet_id,
-                },
+            self.fetchPromise = this.rpc('/twitter_wall/get_tweet/' + self.wall_id, {
+                'last_tweet_id': self.last_tweet_id,
             }).then(function (res) {
                 self.fetchPromise = undefined;
                 if (res.length) {
@@ -140,6 +138,11 @@ publicWidget.registry.websiteTwitterWall = publicWidget.Widget.extend({
         'click .o-tw-live-btn': '_onLiveButton',
         'click .o-tw-option': '_onOption',
         'click .o-tw-zoom': '_onZoom',
+    },
+
+    init() {
+        this._super(...arguments);
+        this.orm = this.bindService("orm");
     },
 
     /**
@@ -263,11 +266,7 @@ publicWidget.registry.websiteTwitterWall = publicWidget.Widget.extend({
      */
     _onDeleteTweet: function (ev) {
         var tweet = $(ev.target).closest('.o-tw-tweet');
-        this._rpc({'model':
-            'website.twitter.tweet',
-            'method': 'unlink',
-            'args': [[tweet.data('tweet-id')]]
-        }).then(function (res) {
+        this.orm.unlink("website.twitter.tweet", [tweet.data('tweet-id')]).then(function (res) {
             if (res) {
                 tweet.slideUp(500);
             }

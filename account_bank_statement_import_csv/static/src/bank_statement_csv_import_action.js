@@ -11,7 +11,6 @@ export class BankStatementImportAction extends ImportAction {
     setup() {
         super.setup();
 
-        this.rpc = useService("rpc");
         this.action = useService("action");
 
         this.model = useBankStatementCSVImportModel({
@@ -34,11 +33,11 @@ export class BankStatementImportAction extends ImportAction {
 
     async exit() {
         if (this.model.statement_id) {
-            const res = await this.rpc({
-                model: "account.bank.statement",
-                method: "action_open_bank_reconcile_widget",
-                args: [this.model.statement_id]
-            });
+            const res = await this.orm.call(
+                "account.bank.statement",
+                "action_open_bank_reconcile_widget",
+                [this.model.statement_id]
+            );
             return this.action.doAction(res);
         }
         super.exit();

@@ -9,6 +9,11 @@ import NotificationRequestPopup from "@social_push_notifications/js/push_notific
 publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
     selector: '#wrapwrap',
 
+    init() {
+        this._super(...arguments);
+        this.rpc = this.bindService("rpc");
+    },
+
     /**
      * This will start listening to notifications if permission was already granted
      * by the user or ask for permission after a timeout (configurable) and then start listening.
@@ -192,9 +197,7 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
      * @private
      */
     _fetchPushConfiguration: function () {
-        return this._rpc({
-            route: '/social_push_notifications/fetch_push_configuration'
-        }).then(function (config) {
+        return this.rpc('/social_push_notifications/fetch_push_configuration').then(function (config) {
             if (!Object.keys(config).length) {
                 // this means firebase push notification is not enable on the current website
                 return config;
@@ -226,19 +229,13 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
 
         var pushConfiguration = this._getPushConfiguration();
         if (pushConfiguration && pushConfiguration.token !== token) {
-            this._rpc({
-                route: '/social_push_notifications/unregister',
-                params: {
-                    token: pushConfiguration.token
-                }
+            this.rpc('/social_push_notifications/unregister', {
+                token: pushConfiguration.token
             });
         }
 
-        this._rpc({
-            route: '/social_push_notifications/register',
-            params: {
-                token: token
-            }
+        this.rpc('/social_push_notifications/register', {
+            token: token
         }).then(function () {
             browser.localStorage.setItem('social_push_notifications.configuration', JSON.stringify({
                 'token': token,

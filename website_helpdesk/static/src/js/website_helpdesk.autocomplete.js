@@ -21,6 +21,8 @@ publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
 
         this._onInput = debounce(this._onInput, 400);
         this._onFocusOut = debounce(this._onFocusOut, 100);
+
+        this.rpc = this.bindService("rpc");
     },
 
 
@@ -40,14 +42,7 @@ publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
         if (!search || search.length < 3)
             return;
 
-        const res = await this._rpc({
-            route: this.$url,
-            params: {
-                'term': search,
-            },
-        });
-
-        return res;
+        return this.rpc(this.$url, { 'term': search });
     },
 
     /**

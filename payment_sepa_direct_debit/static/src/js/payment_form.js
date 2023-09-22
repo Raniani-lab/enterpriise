@@ -82,13 +82,10 @@ paymentForm.include({
 
         // Assign the SDD mandate corresponding to the IBAN to the transaction.
         const ibanInput = this._getIbanInput();
-        this._rpc({
-            route: '/payment/sepa_direct_debit/set_mandate',
-            params: {
-                'reference': processingValues.reference,
-                'iban': ibanInput.value,
-                'access_token': processingValues.access_token,
-            },
+        this.rpc('/payment/sepa_direct_debit/set_mandate', {
+            'reference': processingValues.reference,
+            'iban': ibanInput.value,
+            'access_token': processingValues.access_token,
         }).then(() => {
             window.location = '/payment/status';
         }).guardedCatch((error) => {

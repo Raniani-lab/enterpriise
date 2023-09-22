@@ -17,6 +17,11 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         'click button[name="submitSlotInfoSelected"]': '_onClickConfirmSlot',
     },
 
+    init() {
+        this._super(...arguments);
+        this.rpc = this.bindService("rpc");
+    },
+
     /**
      * @override
      */
@@ -245,9 +250,9 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
             this.$('.o_appointment_no_slot_overall_helper').empty();
             this.$slotsList.empty();
             this.$('#resourceSelection').empty();
-            const updatedAppointmentCalendarHtml = await this._rpc({
-                route: `/appointment/${appointmentTypeID}/update_available_slots`,
-                params: {
+            const updatedAppointmentCalendarHtml = await this.rpc(
+                `/appointment/${appointmentTypeID}/update_available_slots`,
+                {
                     asked_capacity: resourceCapacity,
                     invite_token: inviteToken,
                     filter_appointment_type_ids: filterAppointmentTypeIds,
@@ -257,8 +262,8 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
                     resource_selected_id: resourceID,
                     staff_user_id: staffUserID,
                     timezone: timezone,
-                },
-            });
+                }
+            );
             if (updatedAppointmentCalendarHtml) {
                 this.$("#slots_availabilities").replaceWith(updatedAppointmentCalendarHtml);
                 this.initSlots();

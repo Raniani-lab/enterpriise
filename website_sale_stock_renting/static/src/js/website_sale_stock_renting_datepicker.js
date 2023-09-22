@@ -50,13 +50,10 @@ WebsiteSaleDaterangePicker.include({
         if (!productId || this.rentingAvailabilities[productId]) {
             return;
         }
-        return this._rpc({
-            route: "/rental/product/availabilities",
-            params: {
-                product_id: productId,
-                min_date: serializeDateTime(luxon.DateTime.now()),
-                max_date: serializeDateTime(luxon.DateTime.now().plus({years: 3})),
-            }
+        return this.rpc("/rental/product/availabilities", {
+            product_id: productId,
+            min_date: serializeDateTime(luxon.DateTime.now()),
+            max_date: serializeDateTime(luxon.DateTime.now().plus({years: 3})),
         }).then((result) => {
             if (result.renting_availabilities) {
                 result.renting_availabilities = result.renting_availabilities.map(

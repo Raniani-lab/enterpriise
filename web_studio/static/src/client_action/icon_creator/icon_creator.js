@@ -111,16 +111,7 @@ export class IconCreator extends Component {
             // Happens when cancelling upload
             return;
         }
-        let res;
-        if (this.orm) {
-            res = await this.orm.read("ir.attachment", [file.id], ["datas"]);
-        } else {
-            res = await this.rpc({
-                model: "ir.attachment",
-                method: "read",
-                args: [[file.id], ["datas"]],
-            });
-        }
+        const res = await this.orm.read("ir.attachment", [file.id], ["datas"]);
 
         this.props.onIconChange({
             type: "base64",

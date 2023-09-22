@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-    import ajax from "@web/legacy/js/core/ajax";
+    import { jsonrpc } from "@web/core/network/rpc_service";
 
     $(document).ready(function () {
 
@@ -9,7 +9,7 @@
             var sale_id = $('#service_type input[name="sale_order_id"]').val();
             apply_button.prop("disabled", true);
 
-            ajax.jsonRpc('/shop/ups_check_service_type', 'call', {'sale_id': sale_id}).then(function (data) {
+            jsonrpc('/shop/ups_check_service_type', {'sale_id': sale_id}).then(function (data) {
                 var ups_service_error = $('#ups_service_error');
                 if(data.error){
                     ups_service_error.html('<strong>' +data.error+ '</strong>').removeClass('d-none');

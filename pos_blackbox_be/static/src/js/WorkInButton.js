@@ -1,6 +1,7 @@
 /** @odoo-module **/
 
 import { _t } from "@web/core/l10n/translation";
+import { useService } from "@web/core/utils/hooks";
     import PosComponent from "point_of_sale.PosComponent";
     import ProductScreen from "point_of_sale.ProductScreen";
     import Registries from "point_of_sale.Registries";
@@ -12,6 +13,7 @@ import { _t } from "@web/core/l10n/translation";
         setup() {
             super.setup();
             this.state = useState({ status: 0 });
+            this.orm = useService("orm");
             onWillStart(this.onWillStart);
         }
         async onWillStart() {
@@ -48,18 +50,18 @@ import { _t } from "@web/core/l10n/translation";
             }
         }
         async set_user_session_status(session, user, status) {
-            return await this.rpc({
-                model: 'pos.session',
-                method: 'set_user_session_work_status',
-                args: [session, user, status],
-            });
+            return await this.orm.call(
+                'pos.session',
+                'set_user_session_work_status',
+                [session, user, status],
+            );
         }
         async get_user_session_status(session, user) {
-            return await this.rpc({
-                model: 'pos.session',
-                method: 'get_user_session_work_status',
-                args: [session, user],
-            });
+            return await this.orm.call(
+                'pos.session',
+                'get_user_session_work_status',
+                [session, user],
+            );
         }
     }
     WorkInButton.template = 'WorkInButton';

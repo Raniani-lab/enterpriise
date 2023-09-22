@@ -9,6 +9,11 @@ const { DateTime } = luxon;
 publicWidget.registry.WebsiteSaleDaterangePicker = publicWidget.Widget.extend(RentingMixin, {
     selector: '.o_website_sale_daterange_picker',
 
+    init() {
+        this._super(...arguments);
+        this.rpc = this.bindService("rpc");
+    },
+
     /**
      * During start, load the renting constraints to validate renting pickup and return dates.
      *
@@ -58,9 +63,7 @@ publicWidget.registry.WebsiteSaleDaterangePicker = publicWidget.Widget.extend(Re
      * @private
      */
     async _loadRentingConstraints() {
-        return this._rpc({
-            route: "/rental/product/constraints",
-        }).then((constraints) => {
+        return this.rpc("/rental/product/constraints").then((constraints) => {
             this.rentingUnavailabilityDays = constraints.renting_unavailabity_days;
             this.rentingMinimalTime = constraints.renting_minimal_time;
             $('.oe_website_sale').trigger('renting_constraints_changed', {

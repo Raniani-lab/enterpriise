@@ -18,14 +18,6 @@ patch(Thread.prototype, {
         super.update(data);
     },
 
-    get allowReactions() {
-        return this.type === "whatsapp" ? false : super.allowReactions;
-    },
-
-    get allowSetLastSeenMessage() {
-        return this.type === "whatsapp" || super.allowSetLastSeenMessage;
-    },
-
     get imgUrl() {
         if (this.type !== "whatsapp") {
             return super.imgUrl;
@@ -35,10 +27,6 @@ patch(Thread.prototype, {
 
     get isChatChannel() {
         return this.type === "whatsapp" || super.isChatChannel;
-    },
-
-    get isChannel() {
-        return this.type === "whatsapp" || super.isChannel;
     },
 
     get whatsappChannelValidUntilDatetime() {

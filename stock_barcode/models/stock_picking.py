@@ -196,7 +196,7 @@ class StockPicking(models.Model):
 
     @api.model
     def filter_on_barcode(self, barcode):
-        """ Searches ready pickings for the scanned product/package.
+        """ Searches ready pickings for the scanned product/package/lot.
         """
         barcode_type = None
         nomenclature = self.env.company.nomenclature_id
@@ -205,7 +205,7 @@ class StockPicking(models.Model):
             if parsed_results:
                 # filter with the last feasible rule
                 for result in parsed_results[::-1]:
-                    if result['rule'].type in ('product', 'package'):
+                    if result['rule'].type in ('product', 'package', 'lot'):
                         barcode_type = result['rule'].type
                         break
 
@@ -229,6 +229,15 @@ class StockPicking(models.Model):
                 pack_domain = ['|', ('move_line_ids.package_id', '=', package.id), ('move_line_ids.result_package_id', '=', package.id)]
                 picking_nums = self.search_count(base_domain + pack_domain)
                 additional_context['search_default_move_line_ids'] = barcode
+        if self.env.user.has_group('stock.group_production_lot') and (barcode_type == 'lot' or (not barcode_type and not picking_nums)):
+            lot = self.env['stock.lot'].search([
+                ('name', '=', barcode),
+                ('company_id', '=', picking_type.company_id.id),
+            ], limit=1)
+            if lot:
+                lot_domain = [('move_line_ids.lot_id', '=', lot.id)]
+                picking_nums = self.search_count(base_domain + lot_domain)
+                additional_context['search_default_lot_id'] = lot.id
         if not barcode_type and not picking_nums:  # Nothing found yet, try to find picking by name.
             picking_nums = self.search_count(base_domain + [('name', '=', barcode)])
             additional_context['search_default_name'] = barcode
@@ -242,8 +251,8 @@ class StockPicking(models.Model):
                 }
             return {
                 'warning': {
-                    'title': _('No product or package found for barcode %s', barcode),
-                    'message': _('Scan a product or a package to filter the transfers.'),
+                    'title': _('No product, lot or package found for barcode %s', barcode),
+                    'message': _('Scan a product, a lot/serial number or a package to filter the transfers.'),
                 }
             }
 

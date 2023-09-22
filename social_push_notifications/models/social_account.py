@@ -67,7 +67,7 @@ class SocialAccountPushNotifications(models.Model):
             pass
 
     def _firebase_send_message(self, data, visitors):
-        visitors = visitors.filtered(lambda visitor: visitor.push_subscription_ids.push_token)
+        visitors = visitors.filtered(lambda visitor: visitor.push_subscription_ids)
         if self.firebase_use_own_account:
             self._firebase_send_message_from_configuration(data, visitors)
         else:

@@ -5,6 +5,8 @@ import * as spreadsheet from "@odoo/o-spreadsheet";
 import CommandResult from "@spreadsheet/o_spreadsheet/cancelled_reason";
 import { useService } from "@web/core/utils/hooks";
 import { globalFiltersFieldMatchers } from "@spreadsheet/global_filters/plugins/global_filters_core_plugin";
+import { SidePanelCollapsible } from "../side_panel_collapsible/side_panel_collapsible";
+import FilterEditorLabel from "./filter_editor_label";
 
 import { onWillStart, Component, useRef, useState, toRaw } from "@odoo/owl";
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
@@ -71,6 +73,10 @@ export default class AbstractFilterEditorSidePanel extends Component {
             type: this.type,
             label: this.genericState.label,
         };
+    }
+
+    get isNewFilter() {
+        return this.props.id === undefined;
     }
 
     /**
@@ -240,7 +246,10 @@ export default class AbstractFilterEditorSidePanel extends Component {
         this.env.openSidePanel("GLOBAL_FILTERS_SIDE_PANEL", {});
     }
 }
-
+AbstractFilterEditorSidePanel.components = {
+    FilterEditorLabel,
+    SidePanelCollapsible,
+};
 AbstractFilterEditorSidePanel.props = {
     id: { type: String, optional: true },
     onCloseSidePanel: { type: Function, optional: true },

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <t t-name="spreadsheet_edition.SidePanelCollapsible">
+        <div class="o_side_panel_collapsible_title d-flex align-items-center" t-on-click="toggle">
+            <i class="fa fa-angle-down" t-att-class="{'collapsed': state.collapsed}"/>
+            <span class="ps-2">
+                <t t-slot="title"/>
+            </span>
+        </div>
+        <div class="o_side_panel_collapsible overflow-hidden" t-ref="collapsible">
+            <t t-slot="content" />
+        </div>
+    </t>
+</templates>

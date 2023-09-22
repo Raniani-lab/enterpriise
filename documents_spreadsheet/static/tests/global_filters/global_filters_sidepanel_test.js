@@ -33,6 +33,7 @@ let target;
 
 const THIS_YEAR_FILTER = {
     filter: {
+        id: "42",
         type: "date",
         label: "This Year",
         rangeType: "year",
@@ -292,12 +293,46 @@ QUnit.module(
         );
 
         QUnit.test(
+            "Panel has collapsible section with field matching in new filters",
+            async function (assert) {
+                await createSpreadsheetFromPivotView();
+                await openGlobalFilterSidePanel();
+                await clickCreateFilter("date");
+                await nextTick();
+                const collapsible = target.querySelector(".o_side_panel_collapsible");
+                assert.ok(collapsible.querySelector(".o_spreadsheet_field_matching"));
+                assert.equal(parseInt(collapsible.style["max-height"]), collapsible.scrollHeight);
+
+                await click(target, ".o_side_panel_collapsible_title");
+                assert.equal(parseInt(collapsible.style["max-height"]), 0);
+
+                await click(target, ".o_side_panel_collapsible_title");
+                assert.equal(parseInt(collapsible.style["max-height"]), collapsible.scrollHeight);
+            }
+        );
+
+        QUnit.test(
+            "Collapsible section with field matching is collapsed for existing filter",
+            async function (assert) {
+                const { model } = await createSpreadsheetFromPivotView();
+                await openGlobalFilterSidePanel();
+                await addGlobalFilter(model, THIS_YEAR_FILTER, {
+                    pivot: { 1: { type: "date", chain: "date" } },
+                });
+
+                await click(target.querySelector(".o_side_panel_filter_icon.fa-cog"));
+                const collapsible = target.querySelector(".o_side_panel_collapsible");
+                assert.equal(parseInt(collapsible.style["max-height"]), 0);
+            }
+        );
+
+        QUnit.test(
             "Creating a date filter without a data source does not display Field Matching",
             async function (assert) {
                 await createSpreadsheet();
                 await openGlobalFilterSidePanel();
                 await clickCreateFilter("date");
-                assert.containsNone(target, ".o_field_matching_title");
+                assert.containsNone(target, ".o_side_panel_collapsible");
             }
         );
 

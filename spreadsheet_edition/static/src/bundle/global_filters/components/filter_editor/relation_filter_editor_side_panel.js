@@ -3,7 +3,6 @@
 import { RecordsSelector } from "@spreadsheet/global_filters/components/records_selector/records_selector";
 import { ModelSelector } from "@web/core/model_selector/model_selector";
 import AbstractFilterEditorSidePanel from "./filter_editor_side_panel";
-import FilterEditorLabel from "./filter_editor_label";
 import FilterEditorFieldMatching from "./filter_editor_field_matching";
 
 import { useState } from "@odoo/owl";
@@ -168,8 +167,8 @@ export default class RelationFilterEditorSidePanel extends AbstractFilterEditorS
 
 RelationFilterEditorSidePanel.template = "spreadsheet_edition.RelationFilterEditorSidePanel";
 RelationFilterEditorSidePanel.components = {
+    ...AbstractFilterEditorSidePanel.components,
     ModelSelector,
     RecordsSelector,
-    FilterEditorLabel,
     FilterEditorFieldMatching,
 };

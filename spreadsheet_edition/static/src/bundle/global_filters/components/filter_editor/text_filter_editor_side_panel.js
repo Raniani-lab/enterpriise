@@ -1,7 +1,6 @@
 /** @odoo-module */
 
 import AbstractFilterEditorSidePanel from "./filter_editor_side_panel";
-import FilterEditorLabel from "./filter_editor_label";
 import FilterEditorFieldMatching from "./filter_editor_field_matching";
 
 import { useState } from "@odoo/owl";
@@ -58,6 +57,6 @@ export default class TextFilterEditorSidePanel extends AbstractFilterEditorSideP
 
 TextFilterEditorSidePanel.template = "spreadsheet_edition.TextFilterEditorSidePanel";
 TextFilterEditorSidePanel.components = {
-    FilterEditorLabel,
+    ...AbstractFilterEditorSidePanel.components,
     FilterEditorFieldMatching,
 };

@@ -21,7 +21,6 @@
     </t>
 
     <t t-name="spreadsheet_edition.FilterEditorFieldMatching">
-        <div class="o_side_panel_title o_field_matching_title">Field matching</div>
         <div class="text-muted">
             Match this filter to a field for each data source
         </div>

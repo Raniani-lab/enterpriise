@@ -5,7 +5,6 @@ import { FilterFieldOffset } from "../filter_field_offset";
 import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
 import AbstractFilterEditorSidePanel from "./filter_editor_side_panel";
 import FilterEditorFieldMatching from "./filter_editor_field_matching";
-import FilterEditorLabel from "./filter_editor_label";
 
 import { useState } from "@odoo/owl";
 
@@ -136,6 +135,6 @@ export default class DateFilterEditorSidePanel extends AbstractFilterEditorSideP
 
 DateFilterEditorSidePanel.template = "spreadsheet_edition.DateFilterEditorSidePanel";
 DateFilterEditorSidePanel.components = {
+    ...AbstractFilterEditorSidePanel.components,
     DateFilterEditorFieldMatching,
-    FilterEditorLabel,
 };

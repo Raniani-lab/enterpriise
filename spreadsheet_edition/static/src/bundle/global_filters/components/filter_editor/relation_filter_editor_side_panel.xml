@@ -33,12 +33,17 @@
         </div>
         <t t-if="shouldDisplayFieldMatching()">
             <div class="o_side_panel_section">
-                <FilterEditorFieldMatching
-                    fieldMatchings="fieldMatchings"
-                    wrongFieldMatchings="wrongFieldMatchings"
-                    selectField.bind="onSelectedField"
-                    filterModelFieldSelectorField.bind="filterModelFieldSelectorField"
-                />
+                <SidePanelCollapsible collapsedAtInit="!isNewFilter">
+                    <t t-set-slot="title">Field matching</t>
+                    <t t-set-slot="content">
+                        <FilterEditorFieldMatching
+                            fieldMatchings="fieldMatchings"
+                            wrongFieldMatchings="wrongFieldMatchings"
+                            selectField.bind="onSelectedField"
+                            filterModelFieldSelectorField.bind="filterModelFieldSelectorField"
+                        />
+                    </t>
+                </SidePanelCollapsible>
             </div>
         </t>
         <div class="o_side_panel_section o-sidePanelButtons">

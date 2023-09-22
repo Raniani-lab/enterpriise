@@ -5,6 +5,7 @@ import pytz
 
 from babel.dates import format_datetime, format_date
 from datetime import datetime, timedelta
+from werkzeug.exceptions import Forbidden
 from werkzeug.urls import url_encode
 
 from odoo import fields, _
@@ -145,3 +146,16 @@ class AppointmentCalendarController(CalendarController):
             ('Content-Length', len(content)),
             ('Content-Disposition', 'attachment; filename=Appoinment.ics')
         ])
+
+    @route('/calendar/videocall/<string:access_token>', type='http', auth='public')
+    def calendar_videocall(self, access_token):
+        if not access_token:
+            raise Forbidden()
+        event = request.env['calendar.event'].sudo().search([('access_token', '=', access_token)], limit=1)
+        if not event or not event.videocall_location:
+            return request.not_found()
+
+        if event.videocall_source == 'discuss':
+            return self.calendar_join_videocall(access_token)
+        # custom / google_meet
+        return request.redirect(event.videocall_location, local=False)

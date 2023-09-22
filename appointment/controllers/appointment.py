@@ -757,13 +757,6 @@ class AppointmentController(http.Controller):
             'appointment_invite_id': appointment_invite.id,
             'booking_line_ids': booking_lines,
         }
-        if not appointment_type.location_id and appointment_type.schedule_based_on == 'users':
-            CalendarEvent = request.env['calendar.event']
-            access_token = uuid.uuid4().hex
-            calendar_event_values.update({
-                'access_token': access_token,
-                'videocall_location': f'{CalendarEvent.get_base_url()}/{CalendarEvent.DISCUSS_ROUTE}/{access_token}',
-            })
 
         return calendar_event_values
 

@@ -48,6 +48,7 @@ class CalendarEvent(models.Model):
     resource_total_capacity_reserved = fields.Integer('Total Capacity Reserved', compute="_compute_resource_total_capacity", inverse="_inverse_appointment_resource_id_or_capacity")
     resource_total_capacity_used = fields.Integer('Total Capacity Used', compute="_compute_resource_total_capacity")
     user_id = fields.Many2one('res.users', group_expand="_read_group_user_id")
+    videocall_redirection = fields.Char('Meeting redirection URL', compute='_compute_videocall_redirection')
     _sql_constraints = [
         ('check_resource_and_appointment_type',
          "CHECK(appointment_resource_id IS NULL OR (appointment_resource_id IS NOT NULL AND appointment_type_id IS NOT NULL))",
@@ -90,6 +91,26 @@ class CalendarEvent(models.Model):
             data = mapped_data.get(event.id)
             event.resource_total_capacity_reserved = data.get('total_capacity_reserved', 0) if data else 0
             event.resource_total_capacity_used = data.get('total_capacity_used', 0) if data else 0
+
+    @api.depends('videocall_location', 'access_token')
+    def _compute_videocall_redirection(self):
+        for event in self:
+            if not event.videocall_location:
+                event.videocall_redirection = False
+                continue
+            if not event.access_token:
+                event.access_token = uuid.uuid4().hex
+            event.videocall_redirection = f"{self.get_base_url()}/calendar/videocall/{self.access_token}"
+
+    @api.depends('appointment_type_id.event_videocall_source')
+    def _compute_videocall_source(self):
+        events_no_appointment = self.env['calendar.event']
+        for event in self:
+            if not event.appointment_type_id or event.videocall_location and not self.DISCUSS_ROUTE in event.videocall_location:
+                events_no_appointment |= event
+                continue
+            event.videocall_source = event.appointment_type_id.event_videocall_source
+        super(CalendarEvent, events_no_appointment)._compute_videocall_source()
 
     def _compute_is_highlighted(self):
         super(CalendarEvent, self)._compute_is_highlighted()

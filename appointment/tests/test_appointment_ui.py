@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
+import pytz
 
 from datetime import datetime, timedelta
 from freezegun import freeze_time
@@ -227,54 +228,69 @@ class AppointmentUITest(AppointmentUICommon):
 
     @users('apt_manager')
     def test_appointment_meeting_url(self):
-        """ Test if a meeting linked to an appointment having location set,
-        it should have a meeting URL (and visa versa).
-        """
+        """ Test if a meeting linked to an appointment has the right meeting URL no matter its location. """
         CalendarEvent = self.env['calendar.event']
         self.authenticate(self.env.user.login, self.env.user.login)
+        datetime_format = "%Y-%m-%d %H:%M:%S"
+        discuss_route = CalendarEvent.DISCUSS_ROUTE
 
-        online_demo = self.env['appointment.type'].create({
-            'name': 'Schedule a Demo (online - one hour)',
+        appointment_with_discuss_videocall_source = self.env['appointment.type'].create({
+            'name': 'Schedule a Demo with Odoo Discuss URL',
             'staff_user_ids': self.staff_user_bxls,
+            'event_videocall_source': 'discuss',
+        })
+        appointment_without_videocall_source = self.env['appointment.type'].create({
+            'name': 'Schedule a Demo without meeting URL',
+            'staff_user_ids': self.staff_user_bxls,
+            'event_videocall_source': False,
         })
 
-        # Case 1: without location
-        meeting_without_location_data = {
-            'datetime_str': '2022-07-04 12:30:00',
+        online_meeting = {
             'duration_str': '1.0',
+            'datetime_str': '2022-07-04 12:30:00',
             'staff_user_id': self.staff_user_bxls.id,
             'name': 'Online Meeting',
             'phone': '2025550999',
             'email': 'test1@test.example.com',
             'csrf_token': http.Request.csrf_token(self)
         }
-        url = f"/appointment/{online_demo.id}/submit"
-        res = self.url_open(url, data=meeting_without_location_data)
-        self.assertEqual(res.status_code, 200, "Response should = OK")
-        access_token = res.url.split('?')[0].split('/calendar/view/')[-1]
-        self.assertTrue(
-            CalendarEvent.search([('access_token', '=', access_token)]).videocall_location,
-            "Should have videocall_location set as the appointment type does not have a location"
-        )
-
-        # Case 2: with location
-        meeting_with_location_data = {
-            'datetime_str': '2022-07-04 10:30:00',
+        meeting_with_location = {
             'duration_str': '1.0',
+            'datetime_str': '2022-07-05 10:30:00',
             'staff_user_id': self.staff_user_bxls.id,
-            'name': 'Doctor Appointment',
+            'name': 'Meeting with location',
             'phone': '2025550888',
             'email': 'test2@test.example.com',
             'csrf_token': http.Request.csrf_token(self),
         }
-        url = f"{self.base_url()}/appointment/{self.apt_type_bxls_2days.id}/submit"
-        res = self.url_open(url, data=meeting_with_location_data)
-        self.assertEqual(res.status_code, 200, "Response should = OK")
-        access_token = res.url.split('?')[0].split('/calendar/view/')[-1]
-        self.assertFalse(
-            CalendarEvent.search([('access_token', '=', access_token)]).videocall_location,
-            "Should not have videocall_location set as the appointment type has a location"
-        )
+
+        cases = [
+            (appointment_with_discuss_videocall_source, online_meeting, True),
+            (appointment_without_videocall_source, online_meeting, False),
+            (appointment_with_discuss_videocall_source, meeting_with_location, True),
+            (appointment_without_videocall_source, meeting_with_location, False),
+        ]
+
+        for appointment, appointment_data, expect_discuss in cases:
+            # Prevent booking the same slot
+            appt_datetime = datetime.strptime(appointment_data.get('datetime_str'), datetime_format)
+            new_appt_datetime = pytz.timezone(appointment.appointment_tz).localize(appt_datetime) + timedelta(hours=1)
+            appointment_data.update({'datetime_str': new_appt_datetime.strftime(datetime_format)})
+
+            if appointment_data.get('name') == 'Meeting with location':
+                appointment.update({'location_id': self.staff_user_bxls.partner_id.id})
+            url = f"/appointment/{appointment.id}/submit"
+            res = self.url_open(url, data=appointment_data)
+            self.assertEqual(res.status_code, 200, "Response should = OK")
+            event = CalendarEvent.search([('appointment_type_id', '=', appointment.id), ('start', '=', new_appt_datetime.astimezone(pytz.utc))])
+            self.assertIn(event.access_token, res.url)
+            with self.subTest(expect_discuss=expect_discuss, access_token=event.access_token):
+                if expect_discuss:
+                    self.assertIn(discuss_route, event.videocall_location,
+                        "Should have discuss link as videocall_location as the appointment type videocall source is set to Odoo Discuss")
+                else:
+                    self.assertFalse(event.videocall_location,
+                        "Should not have a videocall_location as the appointment type doesn't have any videocall source")
 
 
 @tagged('appointment_ui', '-at_install', 'post_install')

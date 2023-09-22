@@ -215,7 +215,7 @@ export class MrpDisplay extends Component {
 
     get workorders() {
         let workorders = this.model.root.records.map((r) => r.data.workorder_ids.records).flat();
-        let state_list = ["ready", "progress"];
+        let state_list = ["ready", "progress", "done"];
         if (this.props.context.show_ready_workorders) {
             state_list = ["ready"];
         } else if (this.props.context.show_progress_workorders) {

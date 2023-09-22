@@ -129,10 +129,7 @@ export class MrpDisplayRecord extends Component {
     }
 
     get displayDoneButton() {
-        if (this.resModel === "mrp.production") {
-            return this._productionDisplayDoneButton();
-        }
-        return this._workorderDisplayDoneButton();
+        return this.resModel === "mrp.production" || this._workorderDisplayDoneButton();
     }
 
     get displayCloseProductionButton() {
@@ -366,7 +363,7 @@ export class MrpDisplayRecord extends Component {
     onClickOpenMenu(ev) {
         const params = {
             workcenters: this.props.workcenters,
-            checks: this.qualityChecks,
+            checks: this.checks,
         };
         this.dialog.add(MrpMenuDialog, {
             groups: this.props.groups,
@@ -475,10 +472,6 @@ export class MrpDisplayRecord extends Component {
             onClose: () => this.env.reload(),
         };
         return this.model.action.doAction(action, options);
-    }
-
-    _productionDisplayDoneButton() {
-        return true;
     }
 
     openFormView() {

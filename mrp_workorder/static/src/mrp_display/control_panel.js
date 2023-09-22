@@ -23,7 +23,7 @@ export class ControlPanelButtons extends Component {
         }
         for (const workorder of this.props.workorders) {
             const id = workorder.data.workcenter_id[0];
-            if (workcenterButtons[id]) {
+            if (workorder.data.state !== 'done' && workcenterButtons[id]) {
                 workcenterButtons[id].count++;
             }
         }

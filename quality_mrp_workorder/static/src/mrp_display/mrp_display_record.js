@@ -15,12 +15,6 @@ patch(MrpDisplayRecord.prototype, {
         return super.validate();
     },
 
-    _productionDisplayDoneButton() {
-        return this.record.check_ids.records.every((qc) =>
-            ["fail", "pass"].includes(qc.data.quality_state)
-        );
-    },
-
     get displayCloseProductionButton() {
         return super.displayCloseProductionButton && !this.props.production.data.quality_check_todo;
     },

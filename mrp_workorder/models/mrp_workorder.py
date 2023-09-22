@@ -826,6 +826,11 @@ class MrpProductionWorkcenterLine(models.Model):
                 now = fields.Datetime.now()
                 date_start = datetime.fromtimestamp(now.timestamp() - ((wo.duration_expected * 60) // 1))
                 date_end = now
+                if not self.env.context.get('mrp_display'):
+                    if wo.employee_assigned_ids:
+                        main_employee_connected = wo.employee_assigned_ids[0].id
+                    else:
+                        main_employee_connected = self.env.user.employee_id.id
                 productivity.append({
                     'workorder_id': wo.id,
                     'workcenter_id': wo.workcenter_id.id,

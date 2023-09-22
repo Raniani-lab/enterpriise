@@ -479,7 +479,7 @@ export class MrpDisplayRecord extends Component {
 
     async workorderValidation(skipRemoveFromStack = false) {
         const { resId, resModel } = this.props.record;
-        const context = { no_start_next: true };
+        const context = { no_start_next: true, mrp_display: true };
         await this.model.orm.call(resModel, "do_finish", [resId], { context });
         if (!skipRemoveFromStack){
             await this.props.removeFromValidationStack(this.props.record);

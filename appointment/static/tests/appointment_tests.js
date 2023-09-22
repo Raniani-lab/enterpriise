@@ -9,12 +9,31 @@ import testUtils from '@web/../tests/legacy/helpers/test_utils';
 
 const { DateTime } = luxon;
 const serviceRegistry = registry.category("services");
+const mockRegistry = registry.category("mock_server");
 
 let target;
 let serverData;
 const uid = 1;
+let appointmentMock;
 
 QUnit.module('appointment.appointment_link', {
+    before: function () {
+        appointmentMock = mockRegistry.get("/appointment/appointment_type/get_staff_user_appointment_types");
+        mockRegistry.add("/appointment/appointment_type/get_staff_user_appointment_types", function (route, args) {
+            if (route === "/appointment/appointment_type/get_staff_user_appointment_types") {
+                const domain = [
+                    ['staff_user_ids', 'in', [1]],
+                    ['category', '!=', 'custom'],
+                    ['website_published', '=', true],
+                ];
+                const appointment_types_info = this.mockSearchRead('appointment.type', [domain, ['category', 'name']], {});
+
+                return Promise.resolve({
+                    appointment_types_info: appointment_types_info
+                });
+            }
+        }, { force: true });
+    },
     beforeEach: function () {
         serverData = {
             models: {
@@ -171,6 +190,9 @@ QUnit.module('appointment.appointment_link', {
             { force: true }
         );
     },
+    after: function () {
+        mockRegistry.add("/appointment/appointment_type/get_staff_user_appointment_types", appointmentMock, { force: true });
+    }
 }, function () {
 
 QUnit.test('verify appointment links button are displayed', async function (assert) {

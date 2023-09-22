@@ -147,7 +147,19 @@ export class MrpDisplayRecord extends Component {
         if (this.resModel === "mrp.production") {
             return [];
         }
-        return this.props.record.data.check_ids.records;
+
+        const checks = this.props.record.data.check_ids.records;
+        const sortedChecks = [];
+        if (checks.length) {
+            let check = checks.find((qc) => !qc.data.previous_check_id);
+            sortedChecks.push(check);
+            while (check.data.next_check_id) {
+                check = checks.find((qc) => qc.resId === check.data.next_check_id[0]);
+                sortedChecks.push(check);
+            }
+        }
+
+        return sortedChecks;
     }
 
     get moves() {
@@ -306,8 +318,17 @@ export class MrpDisplayRecord extends Component {
 
     async qualityCheckDone(updateChecks = false, qualityState = "pass") {
         await this.env.reload();
-        if (updateChecks) {
-            await this.props.record.data.check_ids.load();
+        if (updateChecks){
+            /*
+                Continue consumption case:
+                As the props are not yet updated with the new checks, we need to use this hack
+                to get the updated next check from the env model.
+             */
+            const MOChecks = this.env.model.root.records.find(
+                (r) => r.resId === this.props.production.resId
+            ).data.check_ids.records;
+            const nextCheckId = MOChecks.find((r) => r.resId === this.lastOpenedQualityCheck.resId).data.next_check_id[0];
+            return this.displayInstruction(MOChecks.find((r) => r.resId === nextCheckId));
         }
         // Show the next Quality Check only if the previous one is passed.
         if (qualityState === "pass") {

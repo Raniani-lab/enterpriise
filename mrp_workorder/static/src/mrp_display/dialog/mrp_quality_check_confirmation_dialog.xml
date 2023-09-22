@@ -72,7 +72,7 @@
                             t-att-barcode_trigger="recordData.test_type == 'print_label' ? 'Print' : 'Next'"/>
                     <button t-if="['register_consumed_materials', 'register_byproducts'].includes(recordData.test_type)"
                             class="btn btn-secondary me-2" t-on-click="continueProduction"
-                            barcode_trigger="continue">Continue production</button>
+                            barcode_trigger="continue">Continue consumption</button>
             </t>
         </Dialog>
         </div>

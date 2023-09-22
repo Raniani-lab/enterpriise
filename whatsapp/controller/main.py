@@ -72,9 +72,11 @@ class Webhook(http.Controller):
             if challenge is matched then it will make response with challenge.
             once it is verified the webhook will be activated.
         """
-        token = kwargs['hub.verify_token']
-        mode = kwargs['hub.mode']
-        challenge = kwargs['hub.challenge']
+        token = kwargs.get('hub.verify_token')
+        mode = kwargs.get('hub.mode')
+        challenge = kwargs.get('hub.challenge')
+        if not (token and mode and challenge):
+            return Forbidden()
         wa_account = request.env['whatsapp.account'].sudo().search([('webhook_verify_token', '=', token)])
         if mode == 'subscribe' and wa_account:
             response = request.make_response(challenge)

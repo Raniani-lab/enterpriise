@@ -668,7 +668,7 @@ msgstr "Beheerder"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "After-Sales"
-msgstr "Na verkoop"
+msgstr "Dienst na verkoop"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_id
@@ -1113,7 +1113,7 @@ msgstr "Configuratie"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Configure a custom domain"
-msgstr "Configureer een gepersonaliseerd domein"
+msgstr "Configureer een aangepast domein"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_confirmation_wizard
@@ -1231,7 +1231,7 @@ msgstr "Huidige fase van het ticket"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_bounced_content
 msgid "Custom Bounced Message"
-msgstr "Aangepast teruggestuurd bericht"
+msgstr "Aangepast bouncebericht"
 
 #. module: helpdesk
 #. odoo-python
@@ -1412,7 +1412,7 @@ msgstr "Ontevreden"
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
 msgstr ""
-"Heeft geen toegang, sla deze gegevens over voor de digest e-mail van de "
+"Heeft geen toegang, sla deze gegevens over voor de samenvattingsmail van de "
 "gebruiker"
 
 #. module: helpdesk
@@ -1475,7 +1475,7 @@ msgid ""
 msgstr ""
 "E-mail automatisch verzonden naar de klant als het ticket deze fase bereikt.\n"
 "De e-mail zal standaard worden verzonden van het e-mailalias van het helpdesk team.\n"
-"Anders zal de e-mail worden verzonden van het e-mailadres van het bedrijf of van de catch-all (zoals ingesteld in de Systeeminstellingen)."
+"Anders zal de e-mail worden verzonden van het e-mailadres van het bedrijf of van de catch-all (zoals ingesteld in de Systeemparameters)."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__email_cc
@@ -4076,7 +4076,7 @@ msgstr "Website"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_website_helpdesk_form
 msgid "Website Form"
-msgstr "Website formulier"
+msgstr "Websiteformulier"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__website_message_ids

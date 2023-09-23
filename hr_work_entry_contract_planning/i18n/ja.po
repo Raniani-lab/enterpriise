@@ -53,7 +53,7 @@ msgstr "フレックスタイム"
 #. module: hr_work_entry_contract_planning
 #: model:ir.model,name:hr_work_entry_contract_planning.model_hr_work_entry
 msgid "HR Work Entry"
-msgstr ""
+msgstr "HR作業エントリ"
 
 #. module: hr_work_entry_contract_planning
 #: model:ir.model.fields.selection,name:hr_work_entry_contract_planning.selection__hr_contract__work_entry_source__planning

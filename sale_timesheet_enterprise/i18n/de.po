@@ -70,7 +70,7 @@ msgstr ""
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_progress
 msgid "Display progress of current task."
-msgstr "Fortschritte der aktuellen Aufgabe anzeigen."
+msgstr "Fortschritt der aktuellen Aufgabe anzeigen."
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_tree

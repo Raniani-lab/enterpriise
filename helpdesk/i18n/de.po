@@ -366,7 +366,7 @@ msgid ""
 "Servers</i> feature in the <i>General Settings</i> and indicate an <i>alias "
 "domain</i>"
 msgstr ""
-"<i class=\"fa fa-lightbulb-o\" role=\"img\"/>Aktivieren Sie die Rolle "
+"<i class=\"fa fa-lightbulb-o\" role=\"img\"/>Aktivieren Sie die Funktion "
 "<i>Benutzerdefinierte E-Mail-Server</i> in den <i>Allgemeinen "
 "Einstellungen</i> und geben Sie eine <i>Alias-Domain</i> an."
 
@@ -1441,7 +1441,7 @@ msgstr "Erledigt"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Dropdown menu"
-msgstr "Dropdownmenu"
+msgstr "Drop-down-Menü"
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__assign_method__balanced
@@ -1493,7 +1493,7 @@ msgstr "E-Mail-CC"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__email
 msgid "Email on Customer"
-msgstr "E-Mail zum Kunden senden"
+msgstr "E-Mail an Kunden senden"
 
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0

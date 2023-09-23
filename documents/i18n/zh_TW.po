@@ -569,6 +569,9 @@ msgid ""
 "launch user defined actions, request a signature, convert to vendor bills "
 "with AI, etc."
 msgstr ""
+"處理收到郵件的一個簡單方法，是將掃瞄器配置至將 PDF "
+"發送到你的工作區電郵。掃瞄的文件會自動在你的工作區出現。然後，你可使用分拆工具大批處理文件：例如啟動用戶定義的操作、要求簽名、利用 AI "
+"轉換為供應商賬單等。"
 
 #. module: documents
 #. odoo-javascript

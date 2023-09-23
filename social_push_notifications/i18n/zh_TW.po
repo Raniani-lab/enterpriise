@@ -484,7 +484,7 @@ msgstr "網站"
 #: model:ir.model,name:social_push_notifications.model_website_visitor
 #: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor_push_subscription__website_visitor_id
 msgid "Website Visitor"
-msgstr "網站訪問者"
+msgstr "網站訪客"
 
 #. module: social_push_notifications
 #. odoo-python

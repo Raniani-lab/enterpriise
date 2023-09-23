@@ -3517,6 +3517,13 @@ msgid ""
 msgstr "禁止期間中の税務レポートを影響する繰越値が削除されてしまうので、この決算仕訳を下書き状態にリセットできません。"
 
 #. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_multicurrency_revaluation_report.py:0
+#, python-format
+msgid "You need to activate more than one currency to access this report."
+msgstr ""
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "[Draft]"
 msgstr "[Draft]"

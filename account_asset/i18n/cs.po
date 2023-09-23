@@ -13,8 +13,8 @@
 # karolína schusterová <karolina.schusterova@vdp.sk>, 2022
 # Rastislav Brencic <rastislav.brencic@azet.sk>, 2023
 # Jakub Smolka, 2023
-# Tomáš Píšek, 2023
 # Aleš Fiala <f.ales1@seznam.cz>, 2023
+# Tomáš Píšek, 2023
 # 
 msgid ""
 msgstr ""
@@ -22,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-26 10:06+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Aleš Fiala <f.ales1@seznam.cz>, 2023\n"
+"Last-Translator: Tomáš Píšek, 2023\n"
 "Language-Team: Czech (https://app.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,7 +35,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid " (%s of %s)"
-msgstr ""
+msgstr " (%s z %s)"
 
 #. module: account_asset
 #. odoo-python
@@ -67,39 +67,41 @@ msgid ""
 "%s Future entries will be recomputed to depreciate the asset following the "
 "changes."
 msgstr ""
+"%s Budoucí položky budou přepočítány tak, aby odpisy majetku zahrnovaly "
+"provedené změny."
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "%s created from invoice: %s"
-msgstr ""
+msgstr "%s vytvořeno z faktury: %s"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "%s m"
-msgstr ""
+msgstr "%s m"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "%s y"
-msgstr ""
+msgstr "%s r"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "%s: Depreciation"
-msgstr ""
+msgstr "%s: Odpis"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "(incl."
-msgstr ""
+msgstr "(vč."
 
 #. module: account_asset
 #. odoo-python
@@ -120,7 +122,7 @@ msgstr "Pro tento tah byl vytvořen odložený výnos:"
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "A depreciation entry will be posted on and including the date %s."
-msgstr ""
+msgstr "Položka odpisu bude zaúčtována dne %s včetně."
 
 #. module: account_asset
 #. odoo-python
@@ -131,6 +133,8 @@ msgid ""
 "Future entries will be recomputed to depreciate the asset following the "
 "changes."
 msgstr ""
+"Položka odpisů bude zaúčtována dne %s včetně. <br/> %s Budoucí položky budou"
+" přepočítány tak, aby odpisy majetku zahrnovaly provedené změny."
 
 #. module: account_asset
 #. odoo-python
@@ -140,6 +144,8 @@ msgid ""
 "A depreciation entry will be posted on and including the date %s.<br/> A "
 "disposal entry will be posted on the %s account <b>%s</b>."
 msgstr ""
+"Položka odpisu bude zaúčtována dne %s včetně.<br/> Účetní doklad k vyřazení "
+"bude zaúčtován na dne %s na účet <b>%s</b>."
 
 #. module: account_asset
 #. odoo-python
@@ -150,27 +156,30 @@ msgid ""
 "second entry will neutralize the original income and post the  outcome of "
 "this sale on account <b>%s</b>."
 msgstr ""
+"Položka odpisu bude zaúčtována dne %s včetně.<br/> Další účetní zápis "
+"neutralizuje původní pořízení a zaúčtuje vyřazení prodejem na účet "
+"<b>%s</b>."
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A document linked to %s has been deleted: %s"
-msgstr ""
+msgstr "Dokument spojený s %s byl smazán: %s"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A document linked to this move has been deleted: %s"
-msgstr ""
+msgstr "Dokument spojený s tímto účetním pohybem byl smazán: %s"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "A gross increase has been created: %s"
-msgstr ""
+msgstr "Byla zvýšená hodnota majetku (technické zhodnocení): %s"
 
 #. module: account_asset
 #. odoo-python
@@ -178,6 +187,8 @@ msgstr ""
 #, python-format
 msgid "A non deductible tax value of %s was added to %s's initial value of %s"
 msgstr ""
+"Neodpočitatelná položka daně ve výši %s byla přidána k %s, resp. jeho "
+"původní hodnotě %s"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_account

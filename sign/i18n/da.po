@@ -3606,6 +3606,15 @@ msgid "Unable to send the SMS, please contact the sender of the document."
 msgstr "Kan ikke sende SMS'en, kontakt venligst afsender af dokumentet."
 
 #. module: sign
+#. odoo-python
+#: code:addons/sign/controllers/main.py:0
+#, python-format
+msgid ""
+"Unable to sign the document due to missing required data. Please contact an "
+"administrator."
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_role__auth_method__sms
 msgid "Unique Code via SMS"
 msgstr ""

@@ -324,7 +324,7 @@ msgstr "รูป Opengraph บนเว็บไซต์"
 #: code:addons/website_appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "contact us"
-msgstr ""
+msgstr "ติดต่อเรา"
 
 #. module: website_appointment
 #. odoo-javascript

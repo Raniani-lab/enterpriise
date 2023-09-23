@@ -153,6 +153,8 @@ msgid ""
 "Employee's related user and private email must be set to use \"Send Access Link\" function:\n"
 "%s"
 msgstr ""
+"L'utente relativo al dipendente e l'indirizzo e-mail privato deve essere configurato utilizzando la funzione \"Invia link di accesso\":\n"
+"%s"
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_employees

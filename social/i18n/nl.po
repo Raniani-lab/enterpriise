@@ -585,7 +585,7 @@ msgstr "Ga naar de"
 #: model_terms:ir.ui.view,arch_db:social.social_stream_post_view_search
 #: model_terms:ir.ui.view,arch_db:social.social_stream_view_search
 msgid "Group By"
-msgstr "Groepeer op"
+msgstr "Groeperen op"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__social_account_handle

@@ -56,7 +56,7 @@ msgstr "公司"
 #: model_terms:ir.actions.act_window,help:sale_temporal.product_pricing_action
 #: model_terms:ir.actions.act_window,help:sale_temporal.sale_temporal_recurrence_action
 msgid "Create a new recurrence"
-msgstr "新增重複使用期"
+msgstr "新增重複周期"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__create_uid
@@ -258,7 +258,7 @@ msgstr "產品範本"
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_product_product
 msgid "Product Variant"
-msgstr "產品變體"
+msgstr "產品款式"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__product_variant_ids
@@ -396,7 +396,7 @@ msgstr "非經常性或不可租賃產品，不可有基於時間規則。"
 msgid ""
 "You cannot have multiple pricing for the same variant, recurrence and "
 "pricelist"
-msgstr "同一款式、重複使用期或價目表，不可有多個定價"
+msgstr "同一款式、重複周期或價目表，不可有多個定價"
 
 #. module: sale_temporal
 #. odoo-python

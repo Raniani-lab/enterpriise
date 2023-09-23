@@ -736,7 +736,7 @@ msgstr "產品類別"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__product_id
 msgid "Product Variant"
-msgstr "產品變體"
+msgstr "產品款式"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__product_ids

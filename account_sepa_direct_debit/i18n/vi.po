@@ -166,7 +166,7 @@ msgstr "Biểu tượng kiểu hoạt động"
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
 #, python-format
 msgid "All the payments in the batch must have the same SDD scheme."
-msgstr ""
+msgstr "Tất cả khoản thanh toán trong loạt phải có cùng sơ đồ SDD."
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
@@ -177,6 +177,10 @@ msgid ""
 "be claimed within 8 weeks starting from the date on which your account was "
 "debited."
 msgstr ""
+"Bạn có quyền được ngân hàng hoàn lại tiền theo các điều khoản và điều kiện "
+"trong thỏa thuận giữa bạn với ngân hàng. Quyền này được nêu rõ trong một văn"
+" bản mà bạn có thể yêu cầu ngân hàng cung cấp. Yêu cầu hoàn tiền phải được "
+"gửi đi trong vòng 8 tuần kể từ ngày tài khoản của bạn bị trừ tiền."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__message_attachment_count
@@ -234,7 +238,7 @@ msgstr "Đã đóng"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 msgid "Collections"
-msgstr ""
+msgstr "Khoản nhờ thu"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_res_company
@@ -274,7 +278,7 @@ msgstr "Create a new direct debit customer mandate"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_account_payment_form
 msgid "Create it."
-msgstr ""
+msgstr "Tạo."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__create_uid
@@ -419,7 +423,7 @@ msgstr "Free reference identifying the debtor in your company."
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_account_payment_form
 msgid "Good news! A valid Sepa Mandate is available."
-msgstr ""
+msgstr "Tuyệt vời! Có sẵn Ủy nhiệm SEPA hợp lệ."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__has_message
@@ -637,7 +641,7 @@ msgstr "Số lỗi"
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__paid_invoices_nber
 msgid "Number of invoices paid with this mandate."
-msgstr ""
+msgstr "Số hóa đơn được thanh toán theo ủy nhiệm này."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__message_needaction_counter
@@ -658,6 +662,11 @@ msgid ""
 "                    then only have to generate a SEPA Direct Debit (SDD) XML file containing this operation\n"
 "                    and send it to your bank to effectively get paid."
 msgstr ""
+"Sau khi lập hoá đơn \n"
+"                    trong Odoo cho khách hàng có ủy nhiệm hoạt động vào ngày lập hóa đơn,\n"
+"                    việc xác thực hóa đơn sẽ kích hoạt thanh toán tự động, và khi đó bạn sẽ\n"
+"                    chỉ phải tạo tệp XML Ghi nợ trực tiếp SEPA (GNTT) chứa hoạt động này\n"
+"                     và gửi đến ngân hàng của bạn để nhận thanh toán."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_account_bank_statement_line__sdd_mandate_id
@@ -698,7 +707,7 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_account_payment_form
 msgid "Oops! No valid SEPA mandate for this customer."
-msgstr ""
+msgstr "Ui! Không có uỷ nhiệm SEPA nào hợp lệ cho khách hàng này."
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_res_partner_view
@@ -803,7 +812,7 @@ msgstr "Revoked SDD Mandate"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.view_account_payment_search
 msgid "SDD B2B"
-msgstr ""
+msgstr "SDD B2B"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_batch_payment__sdd_batch_booking
@@ -813,7 +822,7 @@ msgstr "SDD Batch Booking"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.view_account_payment_search
 msgid "SDD CORE"
-msgstr ""
+msgstr "SDD CORE"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_sdd_mandate
@@ -846,12 +855,12 @@ msgstr "SDD creditor identifier"
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
 #, python-format
 msgid "SDD scheme is set on the customer mandate."
-msgstr ""
+msgstr "Cơ chế SDD được thiết lập trên uỷ nhiệm của khách hàng."
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "SEPA Business-to-Business Direct Debit Mandate"
-msgstr ""
+msgstr "Uỷ nhiệm ghi nợ trực tiếp B2B SEPA"
 
 #. module: account_sepa_direct_debit
 #: model:account.payment.method,name:account_sepa_direct_debit.payment_method_sdd
@@ -1056,6 +1065,10 @@ msgid ""
 "debited, but you are entitled to request your bank not to debit your account"
 " up until the day on which the payment is due."
 msgstr ""
+"Uỷ nhiệm này chỉ dành cho các giao dịch giữa doanh nghiệp với doanh nghiệp. "
+"Bạn không có quyền yêu cầu ngân hàng hoàn tiền sau khi tài khoản của bạn bị "
+"trừ tiền, nhưng bạn có quyền yêu cầu ngân hàng không trừ tiền tài khoản của "
+"bạn cho tới ngày đến hạn thanh toán."
 
 #. module: account_sepa_direct_debit
 #. odoo-python

@@ -146,7 +146,7 @@ msgstr "Solicitações de Manutenção"
 #. module: mrp_maintenance
 #: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_request__production_id
 msgid "Manufacturing Order"
-msgstr "Pedido de fabricação"
+msgstr "Ordem de produção"
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp

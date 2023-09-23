@@ -206,4 +206,4 @@ msgstr ""
 #. module: marketing_automation_sms
 #: model:ir.model.fields,field_description:marketing_automation_sms.field_marketing_activity__trigger_type
 msgid "Trigger Type"
-msgstr ""
+msgstr "Tipe Pemicu"

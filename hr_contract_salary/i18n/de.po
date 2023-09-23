@@ -1559,9 +1559,9 @@ msgid ""
 "The benefit is created when the employee signs his contract at the end of "
 "the salary configurator or when the HR manager countersigns the contract."
 msgstr ""
-"Die Leistung entsteht, wenn der Arbeitnehmer seinen Vertrag am Ende des "
-"Gehaltskonfigurators unterzeichnet oder wenn der Personalleiter den Vertrag "
-"gegenzeichnet."
+"Die Leistung entsteht, wenn der Mitarbeiter einen Vertrag am Ende des "
+"Gehaltskonfigurators unterzeichnet oder wenn der Personalverantwortliche den"
+" Vertrag gegenzeichnet."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__origin_contract_id

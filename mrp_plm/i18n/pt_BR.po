@@ -1779,7 +1779,7 @@ msgstr "Atualizar"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_plm_production_form_view
 msgid "Update BoM"
-msgstr ""
+msgstr "Atualizar LM"
 
 #. module: mrp_plm
 #: model:res.groups,name:mrp_plm.group_plm_user

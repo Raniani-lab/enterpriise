@@ -477,7 +477,7 @@ msgstr "產品分類"
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_product_product
 msgid "Product Variant"
-msgstr "產品變體"
+msgstr "產品款式"
 
 #. module: account_avatax
 #: model:ir.model.fields.selection,name:account_avatax.selection__res_company__avalara_environment__production

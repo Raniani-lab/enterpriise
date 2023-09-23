@@ -73,14 +73,14 @@ msgstr "%s creato da fattura: %s"
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "%s m"
-msgstr ""
+msgstr "%s m"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "%s y"
-msgstr ""
+msgstr "%s a"
 
 #. module: account_asset
 #. odoo-python
@@ -171,6 +171,8 @@ msgstr "È stato creato un aumento lordo: %s"
 #, python-format
 msgid "A non deductible tax value of %s was added to %s's initial value of %s"
 msgstr ""
+"Un valore fiscale non deducibile di %s è stato aggiunto al valore iniziale "
+"di %s pari a %s"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_account
@@ -412,7 +414,7 @@ msgstr "Conto cespite"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset Cancelled"
-msgstr ""
+msgstr "Asset annullato"
 
 #. module: account_asset
 #. odoo-python
@@ -440,7 +442,7 @@ msgstr "Nome visualizzato ID cespite"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_lifetime_days
 msgid "Asset Lifetime Days"
-msgstr ""
+msgstr "Durata di vita dell'asset"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__asset_model
@@ -478,7 +480,7 @@ msgstr "Opzioni cespite"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_paused_days
 msgid "Asset Paused Days"
-msgstr ""
+msgstr "Giorni di pausa dell'asset"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset_report_handler
@@ -603,7 +605,7 @@ msgstr "Automazione"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__daily_computation
 msgid "Based on days per period"
-msgstr ""
+msgstr "Basato su giorni per periodo"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -631,7 +633,7 @@ msgstr "Annulla"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Cancel Asset"
-msgstr ""
+msgstr "Annulla accentramento"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__cancelled
@@ -658,6 +660,10 @@ msgid ""
 "  * Declining: Calculated on basis of: Residual Value * Declining Factor\n"
 "  * Declining then Straight Line: Like Declining but with a minimum depreciation value equal to the straight line value."
 msgstr ""
+"Scegli il metodo da utilizzare per calcolare l'importo delle righe di ammortamento.\n"
+"  *Linea retta, calcolato in base a: valore lordo/durata\n"
+"  *Decrescente, calcolato in base a: valore residuo *Fattore di declino\n"
+"  *Decrescente poi linea retta, come se fosse decrescente ma con un valore minimo di ammortamento pari al valore della linea retta."
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__close
@@ -704,7 +710,7 @@ msgstr "Conferma"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__constant_periods
 msgid "Constant Periods"
-msgstr ""
+msgstr "Periodi costanti"
 
 #. module: account_asset
 #: model:ir.actions.server,name:account_asset.action_account_aml_to_asset
@@ -726,22 +732,22 @@ msgstr "Crea in bozza"
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_asset_form
 msgid "Create new asset"
-msgstr ""
+msgstr "Crea un nuovo accentramento"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_asset_model_form
 msgid "Create new asset model"
-msgstr ""
+msgstr "Crea un nuovo modello di asset"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_expense_form
 msgid "Create new deferred expense"
-msgstr ""
+msgstr "Crea nuovi risconti attivi"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_expense_model_form
 msgid "Create new deferred expense model"
-msgstr ""
+msgstr "Crea nuovo modello di risconti attivi"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_revenue_form
@@ -1275,7 +1281,7 @@ msgstr "Valore incremento lordo"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.assets_search_template_extra_options
 msgid "Group By Account"
-msgstr ""
+msgstr "Raggruppa per conto"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
@@ -1581,13 +1587,13 @@ msgstr "N°"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__none
 msgid "No Prorata"
-msgstr ""
+msgstr "No prorata"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__non_deductible_tax_value
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__non_deductible_tax_value
 msgid "Non Deductible Tax Value"
-msgstr ""
+msgstr "Valore fiscale non deducibile"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__salvage_value
@@ -1700,7 +1706,7 @@ msgstr "Metti in pausa"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__paused_prorata_date
 msgid "Paused Prorata Date"
-msgstr ""
+msgstr "Data prorata in pausa"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
@@ -1724,7 +1730,7 @@ msgstr "Data pro rata"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Prorata Date can not be empty"
-msgstr ""
+msgstr "Il campo relativo alla data della prorata non può essere vuoto"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__purchase
@@ -1759,7 +1765,7 @@ msgstr "Spese correlate"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__related_purchase_value
 msgid "Related Purchase Value"
-msgstr ""
+msgstr "Valore acquisto correlato"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
@@ -1874,7 +1880,7 @@ msgstr "Vendite: rilevazione ricavi"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Save as Model"
-msgstr ""
+msgstr "Salva come modello"
 
 #. module: account_asset
 #. odoo-python
@@ -2041,7 +2047,7 @@ msgstr "Totale"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__total_depreciable_value
 msgid "Total Depreciable Value"
-msgstr ""
+msgstr "Valore ammortizzabile totale"
 
 #. module: account_asset
 #. odoo-python
@@ -2224,7 +2230,7 @@ msgstr ""
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_balance
 msgid "book_value"
-msgstr ""
+msgstr "book_value"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_date_from

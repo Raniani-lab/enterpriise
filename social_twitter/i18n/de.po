@@ -487,7 +487,7 @@ msgstr ""
 #: code:addons/social_twitter/controllers/main.py:0
 #, python-format
 msgid "This Tweet has been deleted."
-msgstr ""
+msgstr "Dieser Tweet wurde gelöscht."
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_follow

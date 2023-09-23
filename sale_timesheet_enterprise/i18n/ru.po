@@ -32,12 +32,12 @@ msgstr "<span class=\"o_form_label\">Политика актирования</sp
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_form_so_line_inherit
 msgid "<span class=\"o_stat_text\">Invoice</span>"
-msgstr ""
+msgstr "Счет"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_form_so_line_inherit
 msgid "<span class=\"o_stat_text\">Sales Order</span>"
-msgstr ""
+msgstr "Заказ на продажу"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields.selection,name:sale_timesheet_enterprise.selection__res_config_settings__invoiced_timesheet__all
@@ -52,7 +52,7 @@ msgstr "Аналитический счёт"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_account_analytic_line__has_so_access
 msgid "Check that user has a sales access right or not."
-msgstr ""
+msgstr "Проверьте, имеет ли пользователь доступ к продажам или нет."
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_res_config_settings
@@ -67,6 +67,7 @@ msgid ""
 "Difference between the number of %s ordered on the sales order item and the "
 "number of %s delivered."
 msgstr ""
+"Разница между количеством %s заказанных и количеством %s доставленных."
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_progress
@@ -81,7 +82,7 @@ msgstr "Эффективных часов"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_account_analytic_line__has_so_access
 msgid "Has So Access"
-msgstr ""
+msgstr "Имеет доступ"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_form
@@ -109,27 +110,27 @@ msgstr "Месяц"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_effective_hours
 msgid "Portal Effective Hours"
-msgstr ""
+msgstr "Эффективные часы портала"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_progress
 msgid "Portal Progress"
-msgstr ""
+msgstr "Прогресс на портале"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_remaining_hours
 msgid "Portal Remaining Hours"
-msgstr ""
+msgstr "Оставшиеся часы на портале"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_subtask_effective_hours
 msgid "Portal Subtask Effective Hours"
-msgstr ""
+msgstr "Эффективные часы подзадачи на портале"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_total_hours_spent
 msgid "Portal Total Hours Spent"
-msgstr ""
+msgstr "Всего затраченных часов на портале"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_form
@@ -180,16 +181,18 @@ msgstr ""
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_subtask_effective_hours
 msgid "Time spent on the sub-tasks (and their own sub-tasks) of this task."
 msgstr ""
+"Время, затраченное на подзадачи (и их собственные подзадачи) для этой "
+"задачи."
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_effective_hours
 msgid "Time spent on this task, excluding its sub-tasks."
-msgstr ""
+msgstr "Время, затраченное на эту задачу, исключая ее подзадачи."
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_total_hours_spent
 msgid "Time spent on this task, including its sub-tasks."
-msgstr ""
+msgstr "Время, затраченное на эту задачу, включая ее подзадачи."
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_grid_by_billing_rate
@@ -204,7 +207,7 @@ msgstr "Актирование табелей"
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
 msgid "Timesheets taken into account when invoicing your time"
-msgstr ""
+msgstr "Табели, которые учитываются при оплате труда"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_tree
@@ -223,7 +226,7 @@ msgstr ""
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields.selection,name:sale_timesheet_enterprise.selection__res_config_settings__invoiced_timesheet__approved
 msgid "Validated timesheets only"
-msgstr ""
+msgstr "Только подтвержденные табели"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_grid_by_billing_rate
@@ -236,3 +239,5 @@ msgid ""
 "With the 'all recorded timesheets' option, all timesheets will be invoiced without distinction, even if they haven't been validated. Additionally, all timesheets will be accessible in your customers' portal. \n"
 "When you choose the 'validated timesheets only' option, only the validated timesheets will be invoiced and appear in your customers' portal."
 msgstr ""
+"При использовании опции \"все записанные табели\" оплата будет производиться по всем табелям без исключения, даже если они не были подтверждены. Кроме того, все табели будут доступны на портале клиентов. \n"
+"При выборе опции \"только подтвержденные табели\" оплата будет производиться только по подтвержденным табелям и отображаться на портале клиентов."

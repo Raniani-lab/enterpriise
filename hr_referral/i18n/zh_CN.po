@@ -1277,7 +1277,7 @@ msgstr "跳过并开始"
 #: code:addons/hr_referral/models/hr_applicant.py:0
 #, python-format
 msgid "Sorry, your referral %s has been refused in the recruitment process."
-msgstr ""
+msgstr "对不起，您推荐的%s未通过招聘考核。"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_res_users__utm_source_id

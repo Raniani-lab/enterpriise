@@ -325,7 +325,7 @@ msgstr "產品國家/地區"
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_product_product
 msgid "Product Variant"
-msgstr "產品變體"
+msgstr "產品款式"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__type__region

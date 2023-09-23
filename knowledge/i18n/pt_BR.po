@@ -8,8 +8,8 @@
 # Martin Trigaux, 2023
 # Kevilyn Rosa, 2023
 # adrianojprado <adrianojprado@gmail.com>, 2023
-# Layna Nascimento, 2023
 # Éder Brito <britoederr@gmail.com>, 2023
+# Layna Nascimento, 2023
 # 
 msgid ""
 msgstr ""
@@ -17,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Éder Brito <britoederr@gmail.com>, 2023\n"
+"Last-Translator: Layna Nascimento, 2023\n"
 "Language-Team: Portuguese (Brazil) (https://app.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -768,7 +768,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Admin"
-msgstr ""
+msgstr "Admin"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1499,7 +1499,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.xml:0
 #, python-format
 msgid "Insert"
-msgstr ""
+msgstr "Inserir"
 
 #. module: knowledge
 #. odoo-javascript

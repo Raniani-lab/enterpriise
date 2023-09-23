@@ -3643,6 +3643,13 @@ msgstr ""
 "d'abord modifier la date de verrouillage de votre déclaration fiscale."
 
 #. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_multicurrency_revaluation_report.py:0
+#, python-format
+msgid "You need to activate more than one currency to access this report."
+msgstr ""
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "[Draft]"
 msgstr "[Brouillon]"

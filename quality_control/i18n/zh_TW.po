@@ -749,7 +749,7 @@ msgstr "產品測量單位"
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_product_product
 msgid "Product Variant"
-msgstr "產品變體"
+msgstr "產品款式"
 
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.quality_control_menu_product_variant

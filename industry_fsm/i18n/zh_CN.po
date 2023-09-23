@@ -115,6 +115,8 @@ msgid ""
 "<span class=\"o_stat_text\">Worksheet</span>\n"
 "                            <span class=\"o_stat_text\">Complete</span>"
 msgstr ""
+"<span class=\"o_stat_text\">工作表</span>\n"
+"                            <span class=\"o_stat_text\">完成</span>"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page

@@ -1114,7 +1114,7 @@ msgstr "開啟連結"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__origin_contract_id
 msgid "Origin Contract"
-msgstr ""
+msgstr "原始合約"
 
 #. module: hr_contract_salary
 #. odoo-python

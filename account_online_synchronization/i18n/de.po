@@ -474,8 +474,7 @@ msgstr "Journal"
 #, python-format
 msgid "Journals linked to a bank account must be of the bank type."
 msgstr ""
-"Journale, die mit einem Bankkonto verknüpft sind, müssen vom Typ der Bank "
-"sein."
+"Journale, die mit einem Bankkonto verknüpft sind, müssen vom Typ Bank sein."
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal____last_update

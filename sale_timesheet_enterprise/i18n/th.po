@@ -30,7 +30,7 @@ msgstr "<span class=\"o_form_label\">นโยบายการออกใบ�
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_form_so_line_inherit
 msgid "<span class=\"o_stat_text\">Invoice</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">ใบแจ้งหนี้</span>"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_form_so_line_inherit
@@ -107,27 +107,27 @@ msgstr "เดือน"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_effective_hours
 msgid "Portal Effective Hours"
-msgstr ""
+msgstr "ชั่วโมงที่มีผลบังคับใช้ของพอร์ทัล"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_progress
 msgid "Portal Progress"
-msgstr ""
+msgstr "ความคืบหน้าของพอร์ทัล"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_remaining_hours
 msgid "Portal Remaining Hours"
-msgstr ""
+msgstr "ชั่วโมงที่เหลือของพอร์ทัล"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_subtask_effective_hours
 msgid "Portal Subtask Effective Hours"
-msgstr ""
+msgstr "ชั่วโมงการทำงานย่อยที่บังคับใช้ของพอร์ทัล"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_total_hours_spent
 msgid "Portal Total Hours Spent"
-msgstr ""
+msgstr "ชั่วโมงที่ใช้ทั้งหมดของพอร์ทัล"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_form
@@ -218,7 +218,7 @@ msgstr "เวลาที่เหลือทั้งหมด สามา�
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields.selection,name:sale_timesheet_enterprise.selection__res_config_settings__invoiced_timesheet__approved
 msgid "Validated timesheets only"
-msgstr ""
+msgstr "ใบบันทึกเวลาที่ตรวจสอบแล้วเท่านั้น"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_grid_by_billing_rate
@@ -231,3 +231,5 @@ msgid ""
 "With the 'all recorded timesheets' option, all timesheets will be invoiced without distinction, even if they haven't been validated. Additionally, all timesheets will be accessible in your customers' portal. \n"
 "When you choose the 'validated timesheets only' option, only the validated timesheets will be invoiced and appear in your customers' portal."
 msgstr ""
+"ด้วยตัวเลือก 'ใบบันทึกเวลาทั้งหมด' ใบบันทึกเวลาทั้งหมดจะถูกออกใบแจ้งหนี้โดยไม่มีความแตกต่าง แม้ว่าจะยังไม่ได้รับการตรวจสอบความถูกต้องก็ตาม นอกจากนี้ ใบบันทึกเวลาทั้งหมดจะสามารถเข้าถึงได้ในพอร์ทัลของลูกค้าคุณ\n"
+"เมื่อคุณเลือก 'ใบบันทึกเวลาที่ตรวจสอบแล้วเท่านั้น' จะมีการออกใบแจ้งหนี้เฉพาะใบบันทึกเวลาที่ตรวจสอบแล้วและแสดงในพอร์ทัลของลูกค้าคุณ"

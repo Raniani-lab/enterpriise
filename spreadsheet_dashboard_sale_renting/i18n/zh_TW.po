@@ -73,7 +73,7 @@ msgstr "已訂購"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Ordered Qty"
-msgstr "訂購數量"
+msgstr "已預訂數量"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript

@@ -103,7 +103,7 @@ msgstr "Agrupar por"
 #: model:ir.model.fields.selection,name:hr_recruitment_reports.selection__hr_recruitment_report__state__is_hired
 #: model:ir.model.fields.selection,name:hr_recruitment_reports.selection__hr_recruitment_stage_report__state__is_hired
 msgid "Hired"
-msgstr ""
+msgstr "Contratado"
 
 #. module: hr_recruitment_reports
 #. odoo-python
@@ -157,7 +157,7 @@ msgstr "Meio"
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__process_duration
 msgid "Process Duration"
-msgstr ""
+msgstr "Duração do processo"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__user_id
@@ -167,6 +167,7 @@ msgstr "Recrutador"
 #. module: hr_recruitment_reports
 #: model:ir.actions.act_window,name:hr_recruitment_reports.recruitment_report_action
 #: model:ir.actions.act_window,name:hr_recruitment_reports.recruitment_report_job_action
+#: model:ir.ui.menu,name:hr_recruitment_reports.hr_applicant_report_menu
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_tree
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_view_graph
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_view_pivot
@@ -205,6 +206,7 @@ msgstr "Origem"
 #. module: hr_recruitment_reports
 #: model:ir.actions.act_window,name:hr_recruitment_reports.recruitment_report_source_action
 #: model:ir.actions.act_window,name:hr_recruitment_reports.recruitment_report_source_job_action
+#: model:ir.ui.menu,name:hr_recruitment_reports.hr_applicant_report_source_menu
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_source_view_graph
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_team_view_graph
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_view_source_pivot
@@ -234,6 +236,7 @@ msgstr "Estado"
 
 #. module: hr_recruitment_reports
 #: model:ir.actions.act_window,name:hr_recruitment_reports.recruitment_report_team_action
+#: model:ir.ui.menu,name:hr_recruitment_reports.hr_applicant_report_team_menu
 msgid "Team Performance"
 msgstr ""
 
@@ -264,6 +267,7 @@ msgstr ""
 #. module: hr_recruitment_reports
 #: model:ir.actions.act_window,name:hr_recruitment_reports.recruitment_stage_report_action
 #: model:ir.actions.act_window,name:hr_recruitment_reports.recruitment_stage_report_job_action
+#: model:ir.ui.menu,name:hr_recruitment_reports.hr_applicant_stage_report_menu
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_stage_report_view_graph
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_stage_report_view_pivot
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_stage_report_view_search

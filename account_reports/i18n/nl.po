@@ -318,7 +318,7 @@ msgid ""
 "            Group By:"
 msgstr ""
 "<span class=\"fa fa-filter\"/>\n"
-"            Groepeer op:"
+"            Groeperen op:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_horizontal_groups
@@ -1816,7 +1816,7 @@ msgstr "Bruto winst marge (bruto marge / operationele omzet)"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_report_search
 msgid "Group By"
-msgstr "Groepeer op"
+msgstr "Groeperen op"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
@@ -1831,12 +1831,12 @@ msgstr "Groepsnaam"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Group by months"
-msgstr "Groepeer op maand"
+msgstr "Groeperen op maand"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Groupby:"
-msgstr "Groepeer op:"
+msgstr "Groeperen op:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
@@ -3617,6 +3617,13 @@ msgstr ""
 "overdrachtswaarden zou verwijderen die van invloed zijn op de BTW-rapportage"
 " van een geblokeerde periode. Daarvoor moet je eerst de blokkeerdatum van je"
 " BTW-aangifte wijzigen."
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_multicurrency_revaluation_report.py:0
+#, python-format
+msgid "You need to activate more than one currency to access this report."
+msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template

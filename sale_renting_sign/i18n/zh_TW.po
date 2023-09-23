@@ -116,7 +116,7 @@ msgstr "銷售訂單"
 #. module: sale_renting_sign
 #: model:ir.model.fields,help:sale_renting_sign.field_res_config_settings__rental_sign_tmpl_id
 msgid "Set a default document template for all rentals in the current company"
-msgstr ""
+msgstr "為目前公司所有租賃安排設置預設文件範本"
 
 #. module: sale_renting_sign
 #: model_terms:ir.ui.view,arch_db:sale_renting_sign.rental_sign_wizard_view_form
@@ -133,7 +133,7 @@ msgstr "簽署多份文件"
 #. module: sale_renting_sign
 #: model:ir.model,name:sale_renting_sign.model_rental_sign_wizard
 msgid "Sign Documents from a SO"
-msgstr ""
+msgstr "從銷售訂單簽署文件"
 
 #. module: sale_renting_sign
 #: model:ir.model,name:sale_renting_sign.model_sign_send_request
@@ -156,7 +156,7 @@ msgid ""
 "This document template will be selected by default when signing documents "
 "from a rental order. You should select a template accessible to all Sign "
 "users."
-msgstr ""
+msgstr "從租賃訂單簽署文件時，會預設選擇此文件範本。你應該選用所有電子簽名用戶都可存取的範本。"
 
 #. module: sale_renting_sign
 #: model_terms:ir.ui.view,arch_db:sale_renting_sign.res_config_settings_view_form

@@ -33,12 +33,12 @@ msgstr ""
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
 msgid "<span>Total Cost</span>"
-msgstr ""
+msgstr "<span>Custo total</span>"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
 msgid "<span>Unit Cost</span>"
-msgstr ""
+msgstr "<span>Custo unitário</span>"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
@@ -63,7 +63,7 @@ msgstr ""
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model,name:mrp_subcontracting_account_enterprise.model_report_mrp_account_enterprise_mrp_cost_structure
 msgid "MRP Cost Structure Report"
-msgstr ""
+msgstr "Fabricação - Relatório de estrutura de custos"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model,name:mrp_subcontracting_account_enterprise.model_mrp_report
@@ -98,6 +98,8 @@ msgid ""
 "Total cost of manufacturing order (component + operation costs + "
 "subcontracting cost)"
 msgstr ""
+"Custo total da ordem de produção (componente + custos operacionais + custo "
+"de subcontratação)"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,help:mrp_subcontracting_account_enterprise.field_mrp_report__subcontracting_cost

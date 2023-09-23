@@ -803,7 +803,7 @@ msgstr "カレンダ"
 #. module: appointment
 #: model:ir.model,name:appointment.model_calendar_attendee
 msgid "Calendar Attendee Information"
-msgstr ""
+msgstr "カレンダ参加者情報"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_calendar_event

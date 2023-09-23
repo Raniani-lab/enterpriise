@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2023
-# Jolien De Paepe, 2023
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -745,21 +745,21 @@ msgid ""
 "    </span>"
 msgstr ""
 "<span style=\"font-size: 14px;\">\n"
-"        Wil je\n"
+"        Wil je gaan\n"
 "        <span style=\"font-style: italic;\">zelfs</span>\n"
-"        sneller gaan?\n"
+"        sneller? ️\n"
 "    </span>\n"
 "    <br/>\n"
 "    <span style=\"font-size: 14px;\">\n"
-"        Ga naar\n"
+"        Toegang\n"
 "        <span style=\"font-weight: bolder;\">\n"
 "            <font class=\"text-o-color-2\">Artikelen</font>\n"
 "        </span>\n"
 "        door het openen van de\n"
 "        <span style=\"font-weight: bolder;\">\n"
-"            <font class=\"text-o-color-2\">Commandopalet</font>\n"
+"            <font class=\"text-o-color-2\">Command palette</font>\n"
 "        </span>\n"
-"        (Ctrl + k/⌘ + k) en zoek vervolgens door artikelen door je zoekopdracht te beginnen met\n"
+"        (Ctrl + k/⌘ + k) zoek vervolgens door artikelen door je zoekopdracht te beginnen met\n"
 "        \"<span style=\"font-weight: bolder;\">?</span>\".\n"
 "    </span>"
 

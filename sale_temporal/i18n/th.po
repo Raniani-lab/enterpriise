@@ -35,7 +35,7 @@ msgstr "%(amount)s (คงที่)"
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "%s %s"
-msgstr ""
+msgstr "%s %s"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__active
@@ -79,7 +79,7 @@ msgstr "สกุลเงิน"
 #: model:ir.model.fields,field_description:sale_temporal.field_product_product__product_pricing_ids
 #: model:ir.model.fields,field_description:sale_temporal.field_product_template__product_pricing_ids
 msgid "Custom Pricings"
-msgstr ""
+msgstr "ราคาที่กำหนดเอง"
 
 #. module: sale_temporal
 #. odoo-python
@@ -113,13 +113,13 @@ msgstr "ระยะเวลา"
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__duration_display
 msgid "Duration Display"
-msgstr ""
+msgstr "การแสดงระยะเวลา"
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_product__display_price
 #: model:ir.model.fields,help:sale_temporal.field_product_template__display_price
 msgid "First leasing pricing of the product"
-msgstr ""
+msgstr "ราคาเช่าครั้งแรกของสินค้า"
 
 #. module: sale_temporal
 #. odoo-python
@@ -143,13 +143,13 @@ msgstr "บันทึกย่อภายใน"
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_subscription_order_view_form
 msgid "Internal notes"
-msgstr ""
+msgstr "บันทึกภายใน"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_product__is_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_template__is_temporal
 msgid "Is Temporal"
-msgstr ""
+msgstr "เป็นเวลาชั่วคราว"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing____last_update
@@ -173,7 +173,7 @@ msgstr "อัปเดตครั้งล่าสุดเมื่อ"
 #: model:ir.model.fields,field_description:sale_temporal.field_product_product__display_price
 #: model:ir.model.fields,field_description:sale_temporal.field_product_template__display_price
 msgid "Leasing price"
-msgstr ""
+msgstr "ราคาเช่า"
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_sale_temporal_recurrence__duration
@@ -181,6 +181,7 @@ msgid ""
 "Minimum duration before this rule is applied. If set to 0, it represents a "
 "fixed temporal price."
 msgstr ""
+"ระยะเวลาขั้นต่ำก่อนที่จะใช้กฎนี้ หากตั้งค่าเป็น 0 จะแสดงราคาชั่วคราวคงที่"
 
 #. module: sale_temporal
 #. odoo-python
@@ -238,7 +239,7 @@ msgstr "รายการราคา"
 #: model:ir.actions.act_window,name:sale_temporal.product_pricing_action
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_temporal_product_pricing_tree
 msgid "Prices"
-msgstr ""
+msgstr "ราคา"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_product_pricing
@@ -273,17 +274,17 @@ msgstr "สินค้า"
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__recurrence_id
 msgid "Recurrency"
-msgstr ""
+msgstr "การเกิดซ้ำ"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricelist__product_pricing_ids
 msgid "Recurring Price Rules"
-msgstr ""
+msgstr "กฎราคาที่เกิดซ้ำ"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Recurring Pricelist Rules"
-msgstr ""
+msgstr "กฎรายการราคาที่เกิดซ้ำ"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_temporal_recurrence
@@ -306,6 +307,8 @@ msgid ""
 "Select Variants of the Product for which this rule applies. Leave empty if "
 "this rule applies for any variant of this template."
 msgstr ""
+"เลือกตัวเลือกสินค้าของสินค้าที่กฎนี้ใช้ "
+"ให้เว้นว่างไว้หากกฎนี้ใช้กับรูปแบบต่างๆของเทมเพลตนี้"
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_pricing__product_template_id
@@ -332,17 +335,17 @@ msgstr "ระยะเวลาการกำหนดราคาต้อง
 #: code:addons/sale_temporal/models/product_template.py:0
 #, python-format
 msgid "The product (%s) has incompatible values: %s"
-msgstr ""
+msgstr "สินค้า (%s) มีค่าที่ไม่สามารถเข้ากันได้: %s"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
 msgid "Time-based pricing"
-msgstr ""
+msgstr "การกำหนดราคาตามเวลา"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Time-based rules"
-msgstr ""
+msgstr "กฎที่อิงตามเวลา"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__unit
@@ -387,7 +390,7 @@ msgstr "ปี"
 msgid ""
 "You can not have a time-based rule for products that are not recurring or "
 "rentable."
-msgstr ""
+msgstr "คุณไม่สามารถมีกฎที่อิงตามเวลาสำหรับสินค้าที่ไม่เกิดซ้ำหรือให้เช่าได้"
 
 #. module: sale_temporal
 #. odoo-python
@@ -397,6 +400,8 @@ msgid ""
 "You cannot have multiple pricing for the same variant, recurrence and "
 "pricelist"
 msgstr ""
+"คุณไม่สามารถกำหนดราคาหลายรายการสำหรับตัวแปร "
+"รายการที่เกิดซ้ำและรายการราคาเดียวกันได้"
 
 #. module: sale_temporal
 #. odoo-python
@@ -404,53 +409,53 @@ msgstr ""
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #, python-format
 msgid "all variants"
-msgstr ""
+msgstr "ตัวแปรทั้งหมด"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per %s months"
-msgstr ""
+msgstr "ต่อ %s เดือน"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per %s weeks"
-msgstr ""
+msgstr "ต่อ %s สัปดาห์"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per %s years"
-msgstr ""
+msgstr "ต่อ %s ปี"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per month"
-msgstr ""
+msgstr "ต่อเดือน"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per week"
-msgstr ""
+msgstr "ต่อสัปดาห์"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per year"
-msgstr ""
+msgstr "ต่อปี"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "This recurrence unit is not supported."
-msgstr ""
+msgstr "ไม่รองรับหน่วยการเกิดซ้ำนี้"

@@ -28,8 +28,8 @@ msgid ""
 "financial institutions use the local format.Therefore, it is frequent "
 "outside the US to have QIF date formatted day-first (dd/mm/yy)."
 msgstr ""
-"Ondanks dat het originele QIF datum formaat begint met maand (mm/dd/jj),  "
-"gebruiken veel banken een lokaal formaat. Hierdoor komt het vaak voor dat "
+"Ondanks dat de originele QIF datumnotatie begint met maand (mm/dd/jj),  "
+"gebruiken veel banken een lokale notatie. Hierdoor komt het vaak voor dat "
 "landen buiten de V.S. QIF gebruiken startend met dag (dd/mm/jj)."
 
 #. module: account_bank_statement_import_qif

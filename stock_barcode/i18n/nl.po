@@ -442,13 +442,13 @@ msgid ""
 "Does the picker have to put in a package the scanned products? If yes, at "
 "which rate?"
 msgstr ""
-"Moet de picker de gescande producten in de verpakking doen? Zo ja, tegen "
-"welk tarief?"
+"Moet de picker de gescande producten in de verpakking doen? Zo ja, in welke "
+"volgorde?"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_picking_type__restrict_scan_dest_location
 msgid "Does the picker have to scan the destination? If yes, at which rate?"
-msgstr "Moet de picker de bestemming scannen? Zo ja, tegen welk tarief?"
+msgstr "Moet de picker de bestemming scannen? Zo ja, in welke volgorde?"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_cancel_operation_view

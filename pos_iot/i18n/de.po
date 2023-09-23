@@ -23,12 +23,12 @@ msgstr ""
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
 msgid "Accept payments with a Worldline payment terminal"
-msgstr "Zahlungen mit einem Worldline-Zahlungsterminal annehmen"
+msgstr "Akzeptieren Sie Zahlungen mit einem Worldline-Zahlungsterminal"
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
 msgid "Accept payments with an Ingenico payment terminal"
-msgstr "Zahlungen mit einem Ingenico-Zahlungsterminal akzeptieren"
+msgstr "Akzeptieren Sie Zahlungen mit einem Ingenico-Zahlungsterminal"
 
 #. module: pos_iot
 #. odoo-javascript

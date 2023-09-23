@@ -589,7 +589,7 @@ msgstr "Zuletzt aktualisiert am"
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 msgid "Link with Amazon"
-msgstr "Verknüpfung mit Amazon"
+msgstr "Mit Amazon verknüpfen"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
@@ -702,7 +702,7 @@ msgstr "Region"
 #. module: sale_amazon
 #: model_terms:ir.actions.act_window,help:sale_amazon.list_amazon_account_action
 msgid "Register your Amazon account"
-msgstr "Registrieren Sie Ihren Amazon-Konto"
+msgstr "Ihr Amazon-Konto registrieren"
 
 #. module: sale_amazon
 #: model_terms:ir.actions.act_window,help:sale_amazon.list_amazon_account_action
@@ -771,7 +771,7 @@ msgstr "Verkäuferschlüssel"
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__base_marketplace_id
 msgid "Sign-up Marketplace"
-msgstr "Marketplace-Anmeldung"
+msgstr "Anmeldemarketplace"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__location_id
@@ -954,7 +954,7 @@ msgid ""
 "The original sign-up marketplace of this account. Used for authentication "
 "only."
 msgstr ""
-"Die ursprüngliche Marketplace-Anmeldung für dieses Konto. Wird nur zur "
+"Der ursprüngliche Anmeldemarketplace für dieses Konto. Wird nur zur "
 "Authentifizierung verwendet."
 
 #. module: sale_amazon

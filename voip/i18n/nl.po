@@ -446,7 +446,7 @@ msgstr ""
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Group By"
-msgstr "Groepeer op"
+msgstr "Groeperen op"
 
 #. module: voip
 #. odoo-javascript
@@ -625,7 +625,7 @@ msgstr "Gekoppeld chatter bericht"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity__voip_phonecall_id
 msgid "Linked Voip Phonecall"
-msgstr "Gekoppeld VOIP telefoongesprek"
+msgstr "Gekoppeld VoIP telefoongesprek"
 
 #. module: voip
 #: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
@@ -1152,17 +1152,17 @@ msgstr "Gebruikersinstellingen"
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall
 msgid "VOIP Phonecall"
-msgstr "VOIP telefoongesprek"
+msgstr "VoIP telefoongesprek"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall_log_wizard
 msgid "VOIP Phonecall log Wizard"
-msgstr "VOIP telefoongespreklog wizard"
+msgstr "VoIP telefoongespreklog wizard"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall_report
 msgid "VOIP Phonecalls by user report"
-msgstr "VOIP telefoongesprekken per gebruiker rapport"
+msgstr "VoIP telefoongesprekken per gebruiker rapport"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_queue_mixin
@@ -1206,7 +1206,7 @@ msgstr "VoIP-gebruikersnaam / Toestelnummer"
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "Voip"
-msgstr "VOIP"
+msgstr "VoIP"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__wsServer

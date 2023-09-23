@@ -740,7 +740,7 @@ msgstr "Google Play Store"
 #: code:addons/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_group_by_no_date_mixin.js:0
 #, python-format
 msgid "Grouping by date is not supported"
-msgstr "Groepeer op datum wordt niet ondersteund"
+msgstr "Groeperen op datum wordt niet ondersteund"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form

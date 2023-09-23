@@ -605,13 +605,13 @@ msgstr ""
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__allocated_hours
 msgid "Allocated Hours"
-msgstr ""
+msgstr "已分配時數"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__allocated_hours
 #: model_terms:ir.ui.view,arch_db:planning.resource_planning
 msgid "Allocated Time"
-msgstr ""
+msgstr "獲分配時間"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__allocated_percentage
@@ -1486,7 +1486,7 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:planning.planning_action_schedule_by_resource
 #: model_terms:ir.actions.act_window,help:planning.planning_action_schedule_by_role
 msgid "No shifts found. Let's create one!"
-msgstr ""
+msgstr "找不到班次。讓我們創建一個吧！"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__name
@@ -1595,7 +1595,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model,name:planning.model_planning_analysis_report
 msgid "Planning Analysis Report"
-msgstr ""
+msgstr "計劃分析報表"
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_recurrency
@@ -1606,7 +1606,7 @@ msgstr ""
 #: model:ir.model,name:planning.model_planning_role
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_form
 msgid "Planning Role"
-msgstr ""
+msgstr "計劃職能"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_tree
@@ -1868,7 +1868,7 @@ msgstr "按角色安排"
 msgid ""
 "Schedule your human and material resources across roles, projects and sales "
 "orders."
-msgstr ""
+msgstr "為不同職能、專案項目及銷售訂單，安排人力及物力資源。"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_hr_employee__employee_token

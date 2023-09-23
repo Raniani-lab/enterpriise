@@ -3086,12 +3086,12 @@ msgstr "Eine SMS-Textnachricht versenden"
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__action__sms
 msgid "Send an SMS Text Message to the customer"
-msgstr "Senden Sie eine SMS-Textnachricht an den Kunden"
+msgstr "Eine SMS an den Kunden senden"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__action__email
 msgid "Send an email to the customer"
-msgstr "Senden Sie eine E-Mail an den Kunden"
+msgstr "Eine E-Mail an den Kunden senden"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_stage__rating_template_id
@@ -3381,7 +3381,7 @@ msgstr "Abonnementphasen"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__template_id
 msgid "Subscription Template"
-msgstr "Vorlage für Abonnements"
+msgstr "Abonnementvorlage"
 
 #. module: sale_subscription
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_2
@@ -3588,7 +3588,7 @@ msgid ""
 "This allows comparison of invoice lines created by subscriptions with different temporalities.\n"
 "The computation assumes that 1 month is comprised of exactly 30 days, regardless  of the actual length of the month."
 msgstr ""
-"Der MRR wird berechnet, indem der unterzeichnete Betrag (in der Währung des Unternehmens) durch die Zeitspanne zwischen dem Anfangs- und dem Enddatum, umgerechnet in Monaten, geteilt wird.\n"
+"Die MRR werden berechnet, indem der unterzeichnete Betrag (in der Währung des Unternehmens) durch die Zeitspanne zwischen dem Anfangs- und dem Enddatum, umgerechnet in Monaten, geteilt wird.\n"
 "Dies ermöglicht den Vergleich von Rechnungsposten, die durch Abonnements mit unterschiedlichen Zeiträumen erstellt wurden.\n"
 "Bei der Berechnung wird davon ausgegangen, dass 1 Monat aus genau 30 Tagen besteht, unabhängig von der tatsächlichen Länge des Monats."
 
@@ -3840,7 +3840,7 @@ msgstr "Jetzt auslösen"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trigger_condition
 msgid "Trigger On"
-msgstr "Auslösen am"
+msgstr "Auslösen bei"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_alert_action

@@ -720,6 +720,9 @@ msgid ""
 "you need to schedule beyond this limit, please set the recurrence to repeat "
 "forever instead."
 msgstr ""
+"I turni ricorrenti non possono essere pianificati per più di 999 giorni nel "
+"futuro. Se hai bisogno di effettuare la pianificazione oltre questo limite, "
+"imposta la ricorrenza su ripeti per sempre."
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_report_action_analysis

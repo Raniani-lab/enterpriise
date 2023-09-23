@@ -27,7 +27,7 @@ msgstr ""
 #: code:addons/project_timesheet_forecast_sale/models/project.py:0
 #, python-format
 msgid "%(name)s's Timesheets and Planning Analysis"
-msgstr ""
+msgstr "%(name)s Анализ табелей и планирования"
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_account_analytic_line
@@ -37,7 +37,7 @@ msgstr "Аналитический счёт"
 #. module: project_timesheet_forecast_sale
 #: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_planning_analysis_report__billable_allocated_hours
 msgid "Billable Hours Allocated"
-msgstr ""
+msgstr "Выделенные оплачиваемые часы"
 
 #. module: project_timesheet_forecast_sale
 #: model:planning.role,name:project_timesheet_forecast_sale.planning_role_consultant
@@ -47,12 +47,12 @@ msgstr "Консультант"
 #. module: project_timesheet_forecast_sale
 #: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_project_project__display_planning_timesheet_analysis
 msgid "Display Planning Timesheet Analysis"
-msgstr ""
+msgstr "Показать анализ планирования табеля"
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_planning_analysis_report__non_billable_allocated_hours
 msgid "Non-billable Hours Allocated"
-msgstr ""
+msgstr "Выделенные неоплачиваемые часы"
 
 #. module: project_timesheet_forecast_sale
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.project_update_default_description
@@ -87,35 +87,35 @@ msgstr "Позиция заказа на продажу"
 #. module: project_timesheet_forecast_sale
 #: model:ir.model.fields,help:project_timesheet_forecast_sale.field_project_project__display_planning_timesheet_analysis
 msgid "Should we display the planning and timesheet analysis button?"
-msgstr ""
+msgstr "Нужно ли выводить на экран кнопку планирования и анализа табеля?"
 
 #. module: project_timesheet_forecast_sale
 #: model:planning.role,name:project_timesheet_forecast_sale.planning_role_junior_architect
 msgid "Software Junior Architect"
-msgstr ""
+msgstr "Младший архитектор ПО"
 
 #. module: project_timesheet_forecast_sale
 #: model:planning.role,name:project_timesheet_forecast_sale.planning_role_senior_architect
 msgid "Software Senior Architect"
-msgstr ""
+msgstr "Старший архитектор ПО"
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model.fields,help:project_timesheet_forecast_sale.field_planning_analysis_report__billable_allocated_hours
 msgid "Sum of hours allocated to shifts linked to a SOL."
-msgstr ""
+msgstr "Сумма часов, отведенных на смены, связанные с SOL."
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model.fields,help:project_timesheet_forecast_sale.field_planning_analysis_report__non_billable_allocated_hours
 msgid "Sum of hours allocated to shifts not linked to a SOL."
-msgstr ""
+msgstr "Сумма часов, отведенных на смены, не связанные с SOL."
 
 #. module: project_timesheet_forecast_sale
 #: code:addons/project_timesheet_forecast_sale/models/project.py:0
 #, python-format
 msgid "Timesheets and Planning"
-msgstr ""
+msgstr "Табели и планирование"
 
 #. module: project_timesheet_forecast_sale
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.project_timesheet_forecast_view_kanban_inherit_sale_timesheet
 msgid "Timesheets and Planning Analysis"
-msgstr ""
+msgstr "Анализ табелей и планирования"

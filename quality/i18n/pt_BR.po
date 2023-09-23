@@ -930,7 +930,7 @@ msgstr "Equipes"
 #: model:ir.model.fields,field_description:quality.field_quality_point__test_type
 #: model:ir.model.fields,field_description:quality.field_quality_point_test_type__technical_name
 msgid "Technical name"
-msgstr ""
+msgstr "Nome técnico"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__test_type_id

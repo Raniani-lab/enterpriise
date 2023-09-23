@@ -44,7 +44,7 @@ msgstr ""
 #. module: mrp_workorder_hr_account
 #: model:ir.model,name:mrp_workorder_hr_account.model_report_mrp_account_enterprise_mrp_cost_structure
 msgid "MRP Cost Structure Report"
-msgstr ""
+msgstr "Fabricação - Relatório de estrutura de custos"
 
 #. module: mrp_workorder_hr_account
 #: model:ir.model,name:mrp_workorder_hr_account.model_mrp_report

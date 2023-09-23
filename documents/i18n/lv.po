@@ -1766,7 +1766,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "No limit"
-msgstr ""
+msgstr "Bez ierobežojuma"
 
 #. module: documents
 #: model_terms:ir.actions.act_window,help:documents.share_action

@@ -1484,7 +1484,7 @@ msgid ""
 "To avoid polluting your database and performance issues, shifts are only created for the next 6 months. They are then gradually created as time passes by in order to always get shifts 6 months ahead. This value can be modified from the settings of Planning, in debug mode."
 msgstr ""
 "Wijzigingen in een dienst hebben alleen invloed op de huidige dienst en niet op de andere die deel uitmaken van de herhaling. Hetzelfde geldt voor het verwijderen van een herhalende dienst. Schakel deze optie uit om herhaling te stoppen.\n"
-"Om vervuiling van je database en prestatieproblemen te voorkomen, worden diensten alleen voor de volgende 6 maanden gemaakt. Ze worden dan geleidelijk aangemaakt naarmate de tijd verstrijkt, om de diensten altijd 6 maanden vooruit aan te maken. Deze waarde kan worden gewijzigd vanuit de instellingen van Planning, in debug-modus."
+"Om vervuiling van je database en prestatieproblemen te voorkomen, worden diensten alleen voor de volgende 6 maanden gemaakt. Ze worden dan geleidelijk aangemaakt naarmate de tijd verstrijkt, om de diensten altijd 6 maanden vooruit aan te maken. Deze waarde kan worden gewijzigd vanuit de instellingen van Planning, in debugmodus."
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__publication_warning

@@ -32,12 +32,12 @@ msgstr ""
 #. module: event_social
 #: model:ir.model,name:event_social.model_event_mail
 msgid "Event Automated Mailing"
-msgstr ""
+msgstr "Email Otomatis Acara"
 
 #. module: event_social
 #: model:ir.model,name:event_social.model_event_type_mail
 msgid "Mail Scheduling on Event Category"
-msgstr ""
+msgstr "Email Penjadwalan pada Kategori Acara"
 
 #. module: event_social
 #: model:ir.model.fields,field_description:event_social.field_event_mail__notification_type

@@ -104,7 +104,7 @@ msgstr "「預設加至最愛」的音軌可被列入黑名單，訪客不會收
 #. module: website_event_track_social
 #: model:ir.model,name:website_event_track_social.model_website_visitor
 msgid "Website Visitor"
-msgstr "網站訪問者"
+msgstr "網站訪客"
 
 #. module: website_event_track_social
 #: code:addons/website_event_track_social/models/event_track.py:0

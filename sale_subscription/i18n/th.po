@@ -3330,12 +3330,12 @@ msgstr "ขั้นตอนนี้ถูกพับในมุมมอง
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "This subscription is renewed in %s with a change of plan."
-msgstr ""
+msgstr "การสมัครสมาชิกนี้ต่ออายุใน %s โดยมีการเปลี่ยนแปลงแผนการสมัครสมาชิก"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "This subscription is the renewal of subscription"
-msgstr ""
+msgstr "การสมัครสมาชิกนี้เป็นการต่ออายุการสมัครสมาชิก"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
@@ -3450,6 +3450,15 @@ msgid ""
 "- 'Create Next Activity': create an activity (Discuss)\n"
 "- 'Send SMS Text Message': send SMS, log them on documents (SMS)"
 msgstr ""
+"ประเภทของการทำงานของเซิร์ฟเวอร์ ค่าต่อไปนี้มีอยู่:\n"
+"- 'การรันโค้ด Python': บล็อกของโค้ด Python ที่จะถูกดำเนินการ\n"
+"- 'สร้างบันทึกใหม่': สร้างบันทึกใหม่ด้วยค่าใหม่\n"
+"- 'อัปเดตบันทึก': อัปเดตค่าของบันทึก\n"
+"- 'ดำเนินการหลายการกระทำ': กำหนดการกระทำที่กระตุ้นให้เกิดการกระทำของเซิร์ฟเวอร์อื่น\n"
+"- 'ส่งอีเมล': โพสต์ข้อความ บันทึก หรือส่งอีเมล (แชท)\n"
+"- 'เพิ่มผู้ติดตาม': เพิ่มผู้ติดตามในบันทึก (แชท)\n"
+"- 'สร้างกิจกรรมถัดไป': สร้างกิจกรรม (แชท)\n"
+"- 'ส่งข้อความ SMS': ส่ง SMS บันทึกไว้ในเอกสาร (SMS)"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3479,11 +3488,13 @@ msgid ""
 "Unpaid subscription after the due date majored by this number of days will be automatically closed by the subscriptions expiration scheduled action. \n"
 "If the chosen payment method has failed to renew the subscription after this time, the subscription is automatically closed."
 msgstr ""
+"การสมัครสมาชิกที่ยังไม่ได้ชำระเงินหลังจากวันครบกำหนดหลักตามจำนวนวันนี้จะถูกปิดโดยอัตโนมัติ ตามการดำเนินการตามกำหนดเวลาการสมัครสมาชิกที่หมดอายุ\n"
+"หากวิธีการชำระเงินที่เลือกไม่สามารถต่ออายุการสมัครสมาชิกได้หลังจากเวลานี้ การสมัครสมาชิกจะถูกปิดโดยอัตโนมัติ"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "Untaxed Total:"
-msgstr ""
+msgstr "ยอดรวมที่ยังไม่ได้หักภาษี:"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3632,6 +3643,8 @@ msgid ""
 "When should the condition be triggered.\n"
 "                If present, will be checked by the scheduler. If empty, will be checked at creation and update."
 msgstr ""
+"เมื่อใดที่ควรทริกเกอร์เงื่อนไข\n"
+"ถ้ามีจะมีการตรวจสอบโดยผู้จัดตารางเวลา ถ้าหากว่างเปล่า จะถูกตรวจสอบเมื่อถูกสร้างและอัปเดต"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__active
@@ -3679,6 +3692,8 @@ msgid ""
 "You can not delete a confirmed subscription. You must first close and cancel"
 " it before you can delete it."
 msgstr ""
+"คุณไม่สามารถลบการสมัครสมาชิกที่ยืนยันแล้ว "
+"คุณต้องปิดและยกเลิกก่อนจึงจะสามารถลบได้"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3688,6 +3703,8 @@ msgid ""
 "You can't archive the partner as it is used in the following recurring "
 "orders: %s"
 msgstr ""
+"คุณไม่สามารถเก็บถาวรพาร์ทเนอร์ได้ "
+"เนื่องจากใช้ในคำสั่งซื้อที่เกิดซ้ำต่อไปนี้: %s"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3708,14 +3725,14 @@ msgstr ""
 #, python-format
 msgid ""
 "You cannot save a sale order with a recurrence and no recurring product."
-msgstr ""
+msgstr "คุณไม่สามารถบันทึกใบสั่งขายที่มีการเกิดซ้ำและไม่มีสินค้าที่เกิดซ้ำได้"
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "You cannot save a sale order with recurring product and no recurrence."
-msgstr ""
+msgstr "คุณไม่สามารถบันทึกใบสั่งขายด้วยสินค้าที่เกิดซ้ำและไม่มีการเกิดซ้ำได้"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3725,6 +3742,8 @@ msgid ""
 "You cannot set to draft a canceled quotation linked to invoiced "
 "subscriptions. Please create a new quotation."
 msgstr ""
+"คุณไม่สามารถตั้งค่าให้ร่างใบเสนอราคาที่ยกเลิกแล้วแต่ยังคงเชื่อมโยงกับการสมัครใช้งานใบแจ้งหนี้ได้"
+" กรุณาสร้างใบเสนอราคาใหม่"
 
 #. module: sale_subscription
 #: model:ir.model.constraint,message:sale_subscription.constraint_sale_order_sale_subscription_stage_coherence
@@ -3732,6 +3751,8 @@ msgid ""
 "You cannot set to draft a confirmed subscription. Please create a new "
 "quotation"
 msgstr ""
+"คุณไม่สามารถตั้งค่าให้ร่างการสมัครสมาชิกที่ยืนยันแล้วได้ "
+"กรุณาสร้างใบเสนอราคาใหม่"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3752,6 +3773,8 @@ msgid ""
 "You cannot validate a renewal quotation starting before the next invoice "
 "date of the parent contract. Please update the start date after the %s."
 msgstr ""
+"คุณไม่สามารถตรวจสอบใบเสนอราคาการต่ออายุโดยเริ่มก่อนวันที่ออกใบแจ้งหนี้ครั้งถัดไปของสัญญาหลักได้"
+" โปรดอัปเดตวันที่เริ่มต้นหลังจากวันที่ %s"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
@@ -3796,12 +3819,12 @@ msgstr "แผนของคุณ"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Your contract is recurrent"
-msgstr ""
+msgstr "สัญญาของคุณเกิดขึ้นซ้ำ"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.payment_checkout_inherit
 msgid "Your payment details will be saved for automatic renewals."
-msgstr ""
+msgstr "รายละเอียดการชำระเงินของคุณจะถูกบันทึกไว้สำหรับการต่ออายุอัตโนมัติ"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3818,7 +3841,7 @@ msgstr "การสมัครของคุณปิดแล้ว"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 msgid "archived product(s)"
-msgstr ""
+msgstr "สินค้าที่เก็บถาวร"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
@@ -3853,7 +3876,7 @@ msgstr "การชำระเงินขาดหายไป (จาก"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "prices"
-msgstr ""
+msgstr "ราคา"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3873,6 +3896,10 @@ msgid ""
 "your subscription failed. As your payment should have been made on {{ "
 "object.next_invoice_date }}, your subscription has been terminated."
 msgstr ""
+"{{ object.company_id.name }}: "
+"ความพยายามครั้งสุดท้ายของเราในการประมวลผลการชำระเงินสำหรับการสมัครสมาชิกของคุณได้ล้มเหลว"
+" ตามที่การชำระเงินของคุณ {{ object.next_invoice_date }} "
+"ทำให้การสมัครของคุณถูกยกเลิกแล้ว"
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_alert
@@ -3895,6 +3922,10 @@ msgid ""
 " suspended on {{ object.next_invoice_date }} unless the payment succeeds in "
 "the meantime."
 msgstr ""
+"{{ object.company_id.name }}: "
+"เราไม่สามารถประมวลผลการชำระเงินสำหรับการสมัครสมาชิกของคุณได้ การสมัครของคุณ "
+"{{ object.name }} การสมัครของคุณยังคงใช้ได้แต่จะถูกระงับในวันที่ {{ "
+"object.next_invoice_date }} เว้นแต่การชำระเงินจะสำเร็จในระหว่างนี้"
 
 #. module: sale_subscription
 #: model:sms.template,body:sale_subscription.sms_template_data_default_alert

@@ -301,7 +301,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Add a description..."
-msgstr ""
+msgstr "Pievienot aprakstu..."
 
 #. module: web_studio
 #. odoo-javascript
@@ -429,7 +429,7 @@ msgstr "Summa bez nodokļa"
 #: code:addons/web_studio/static/src/approval/approval_infos.xml:0
 #, python-format
 msgid "Approval"
-msgstr ""
+msgstr "Apstiprinājums"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
@@ -459,7 +459,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Approvals"
-msgstr ""
+msgstr "Apstiprinājumi"
 
 #. module: web_studio
 #. odoo-python
@@ -2027,7 +2027,7 @@ msgstr "HTTP maršrutēšana"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Half Day"
-msgstr ""
+msgstr "Puse dienas"
 
 #. module: web_studio
 #. odoo-javascript

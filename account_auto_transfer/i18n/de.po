@@ -160,7 +160,7 @@ msgstr "Unternehmen"
 #. module: account_auto_transfer
 #: model:ir.model.fields,help:account_auto_transfer.field_account_transfer_model__company_id
 msgid "Company related to this journal"
-msgstr "Unternehmen in Verbindung mit diesem Journal"
+msgstr "Unternehmen für dieses Journal"
 
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form

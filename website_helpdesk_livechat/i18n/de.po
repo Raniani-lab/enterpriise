@@ -28,7 +28,7 @@ msgstr ""
 msgid " This channel is private. People must be invited to join it."
 msgstr ""
 " Dieser Kanal ist privat. Teilnehmer müssen eingeladen werden, um "
-"biezutreten."
+"beizutreten."
 
 #. module: website_helpdesk_livechat
 #. odoo-python
@@ -260,8 +260,8 @@ msgstr "Kanäle ansehen"
 #, python-format
 msgid "We found some matched ticket(s) related to the search query: %s"
 msgstr ""
-"Wir haben (ein) passende(s) Ticket(s) in Verbindung mit der Suchanfrage "
-"gefunden: %s"
+"Wir haben ein/einige passende(s) Ticket(s) in Verbindung mit der Suchanfrage"
+" gefunden: %s"
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_administrative_issue

@@ -1486,7 +1486,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation
 msgid "You have processed less products than the initial demand:"
-msgstr ""
+msgstr "סרקת פחות מוצרים מהביקוש הראשוני."
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1561,7 +1561,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation
 msgid "products were partially processed."
-msgstr ""
+msgstr "מוצרים נסרקו חלקית"
 
 #. module: stock_barcode
 #. odoo-javascript

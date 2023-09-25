@@ -11,7 +11,7 @@ export class AccountReportEllipsis extends Component {
     static template = "account_reports.AccountReportEllipsis";
     static props = {
         name: { type: String, optional: true },
-        no_format: { type: Object, optional: true},
+        no_format: { optional: true },
         type: { type: String, optional: true },
         maxCharacters: Number,
     };

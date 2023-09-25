@@ -3,7 +3,7 @@
 import { getFixture, patchDate, click, nextTick } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
-import { hoverGridCell, SELECTORS } from "@web_gantt/../tests/helpers";
+import { clickCell, hoverGridCell, SELECTORS } from "@web_gantt/../tests/helpers";
 import { servicesToDefineInGantt } from "@project_enterprise/../tests/task_gantt_dependency_tests";
 
 const serviceRegistry = registry.category("services");
@@ -247,14 +247,12 @@ QUnit.test("open a dialog to schedule task", async (assert) => {
     ganttViewParams.serverData.views = {
         "task,false,list": '<tree><field name="name"/></tree>',
     };
-    ganttViewParams.serverData.models.task.records.push(
-        {
-            id: 51,
-            name: "Task 51",
-            project_id: 1,
-            user_ids: 100,
-        },
-    );
+    ganttViewParams.serverData.models.task.records.push({
+        id: 51,
+        name: "Task 51",
+        project_id: 1,
+        user_ids: 100,
+    });
     await makeView({
         arch: '<gantt date_start="start" date_stop="stop" js_class="task_gantt" />',
         resModel: "task",
@@ -267,12 +265,12 @@ QUnit.test("open a dialog to schedule task", async (assert) => {
                 assert.step("schedule_tasks");
                 const response = {
                     action: {
-                        name: 'Caution: some tasks have not been scheduled',
-                        type: 'ir.actions.act_window',
-                        res_model: 'task',
-                        views: [[false, 'list']],
-                        target: 'new',
-                    }
+                        name: "Caution: some tasks have not been scheduled",
+                        type: "ir.actions.act_window",
+                        res_model: "task",
+                        views: [[false, "list"]],
+                        target: "new",
+                    },
                 };
                 return response;
             }
@@ -280,22 +278,22 @@ QUnit.test("open a dialog to schedule task", async (assert) => {
     });
 
     await hoverGridCell(1, 1);
-    await click(target, SELECTORS.cellPlanButton);
+    await clickCell(1, 1);
 
     await click(target, ".modal .o_list_view tbody tr:nth-child(1) input");
     await nextTick();
-    assert.hasClass(target.querySelector('.modal .o_list_view .o_data_row'), 'o_data_row_selected');
+    assert.hasClass(target.querySelector(".modal .o_list_view .o_data_row"), "o_data_row_selected");
     await click(target, ".modal footer .o_select_button");
     assert.verifySteps(["schedule_tasks"]);
 });
 
 QUnit.test("Lines are displayed in alphabetic order, except for the first one", async (assert) => {
     for (const user of [
-        {id: 102, name: "Omega"},
-        {id: 103, name: "Theta"},
-        {id: 104, name: "Rho"},
-        {id: 105, name: "Zeta"},
-        {id: 106, name: "Kappa"},
+        { id: 102, name: "Omega" },
+        { id: 103, name: "Theta" },
+        { id: 104, name: "Rho" },
+        { id: 105, name: "Zeta" },
+        { id: 106, name: "Kappa" },
     ]) {
         ganttViewParams.serverData.models["res.users"].records.push(user);
         ganttViewParams.serverData.models.task.records.push({
@@ -306,7 +304,7 @@ QUnit.test("Lines are displayed in alphabetic order, except for the first one", 
             project_id: 1,
             user_ids: user.id,
         });
-    };
+    }
 
     await makeView({
         ...ganttViewParams,
@@ -317,16 +315,7 @@ QUnit.test("Lines are displayed in alphabetic order, except for the first one", 
         [...target.querySelectorAll(".o_gantt_row_headers .o_gantt_row_title")].map((el) =>
             el.innerText.trim()
         ),
-        [
-            "👤 Unassigned",
-            "Jane Doe",
-            "John Doe",
-            "Kappa",
-            "Omega",
-            "Rho",
-            "Theta",
-            "Zeta",
-        ],
+        ["👤 Unassigned", "Jane Doe", "John Doe", "Kappa", "Omega", "Rho", "Theta", "Zeta"],
         "The lines should be sorted by alphabetical order ('👤 Unassigned' is always first)"
     );
 });

@@ -179,7 +179,6 @@
         @include o-gantt-zindex(grid);
 
         &.o_drag_hover {
-            border: none;
             background-color: $gantt-highlight-cell-color !important;
             @include o-gantt-zindex(grid-interact);
         }

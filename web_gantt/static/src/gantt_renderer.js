@@ -27,7 +27,6 @@ import { formatFloatTime } from "@web/views/fields/formatters";
 import { useViewCompiler } from "@web/views/view_compiler";
 import { ViewScaleSelector } from "@web/views/view_components/view_scale_selector";
 import { SelectCreateDialog } from "@web/views/view_dialogs/select_create_dialog";
-import { GanttCellButtons } from "./gantt_cell_buttons";
 import { GanttCompiler } from "./gantt_compiler";
 import { GanttConnector } from "./gantt_connector";
 import {
@@ -56,13 +55,6 @@ const { DateTime } = luxon;
  * @typedef {"drag" | "locked" | "resize"} InteractionMode
  * @typedef {`__pill__${number}`} PillId
  * @typedef {import("./gantt_model").RowId} RowId
- *
- * @typedef CellButtonsProps
- * @property {{ cell: HTMLElement | null }} reactive
- * @property {boolean} canCreate
- * @property {boolean} canPlan
- * @property {GanttRenderer["onCreate"]} onCreate
- * @property {GanttRenderer["onPlan"]} onPlan
  *
  * @typedef Column
  * @property {ColumnId} id
@@ -157,7 +149,6 @@ const NEW_CONNECTOR_ID = "__connector__new";
 export class GanttRenderer extends Component {
     static components = {
         GanttConnector,
-        GanttCellButtons,
         GanttResizeBadge,
         GanttRowProgressBar,
         Popover: GanttPopover,
@@ -204,6 +195,10 @@ export class GanttRenderer extends Component {
             pill: null,
         };
 
+        this.selection = {
+            active: false,
+        };
+
         this.state = useState({ rowHeaderWidth: 0 });
 
         /** @type {Interaction} */
@@ -215,15 +210,6 @@ export class GanttRenderer extends Component {
             () => this.onInteractionChange()
         );
         this.onInteractionChange(); // Used to hook into "interaction"
-
-        /** @type {CellButtonsProps} */
-        this.cellButtonsProps = {
-            reactive: reactive({ cell: null }),
-            canCreate: this.model.metaData.canCellCreate,
-            canPlan: this.model.metaData.canPlan,
-            onCreate: this.onCreate.bind(this),
-            onPlan: this.onPlan.bind(this),
-        };
         /** @type {Record<ConnectorId, ConnectorProps>} */
         this.connectors = reactive({});
         this.progressBarsReactive = reactive({ el: null });
@@ -261,6 +247,7 @@ export class GanttRenderer extends Component {
 
         useExternalListener(window, "keydown", (ev) => this.onWindowKeyDown(ev));
         useExternalListener(window, "keyup", (ev) => this.onWindowKeyUp(ev));
+        useExternalListener(window, "pointerup", (ev) => this.onSelectStop(ev));
 
         const computeColumnWidth = debounce(() => this.computeColumnWidth(), 100);
         useExternalListener(window, "resize", computeColumnWidth);
@@ -670,7 +657,7 @@ export class GanttRenderer extends Component {
      * @param {PointerEvent} ev
      */
     computeDerivedParamsFromHover(ev) {
-        const { canCellCreate, canPlan, scale } = this.model.metaData;
+        const { scale } = this.model.metaData;
 
         const { connector, hoverable, pill } = this.hovered;
 
@@ -686,7 +673,6 @@ export class GanttRenderer extends Component {
         }
 
         if (this.isDragging) {
-            this.cellButtonsProps.reactive.cell = null;
             this.progressBarsReactive.el = null;
             return;
         }
@@ -701,7 +687,6 @@ export class GanttRenderer extends Component {
             }
             if (hoveredConnectorId) {
                 this.progressBarsReactive.el = null;
-                this.cellButtonsProps.reactive.cell = null;
                 return this.toggleConnectorHighlighting(hoveredConnectorId, true);
             }
         }
@@ -716,16 +701,30 @@ export class GanttRenderer extends Component {
         this.togglePillHighlighting(hoveredPillId, true);
 
         // Update cell buttons
-        let isSet = false;
-        if (canCellCreate || canPlan) {
+        if (
+            this.selection.active &&
+            isCellHovered &&
+            Number(hoverable.dataset.columnIndex) !== this.selection.lastSelectId
+        ) {
             const isUngroupedCellHovered = hoverable?.matches(".o_gantt_cell:not(.o_gantt_group)");
             if (isUngroupedCellHovered && !ev?.target.closest(".o_connector_creator")) {
-                isSet = true;
-                this.cellButtonsProps.reactive.cell = hoverable;
+                const columnIndex = Number(hoverable.dataset.columnIndex);
+                const columnStart = Math.min(this.selection.initialIndex, columnIndex);
+                const columnStop = Math.max(this.selection.initialIndex, columnIndex);
+                this.selection.lastSelectId = columnIndex;
+                document
+                    .querySelectorAll(`.o_gantt_cell[data-row-id='${this.selection.rowId}']`)
+                    .forEach((cell) => {
+                        if (
+                            cell.dataset.columnIndex < columnStart ||
+                            cell.dataset.columnIndex > columnStop
+                        ) {
+                            cell.classList.remove("o_drag_hover");
+                        } else {
+                            cell.classList.add("o_drag_hover");
+                        }
+                    });
             }
-        }
-        if (!isSet) {
-            this.cellButtonsProps.reactive.cell = null;
         }
 
         // Update progress bars
@@ -893,10 +892,12 @@ export class GanttRenderer extends Component {
     }
 
     /**
-     * @param {number} columnIndex
+     * @param {number} columnStart
+     * @param {number} columnStop
      */
-    getColumnStartStop(columnIndex) {
-        const { start, stop } = this.columns[columnIndex];
+    getColumnStartStop(columnStartIndex, columnStopIndex = columnStartIndex) {
+        const { start } = this.columns[columnStartIndex];
+        const { stop } = this.columns[columnStopIndex];
         return { start, stop };
     }
 
@@ -1308,6 +1309,7 @@ export class GanttRenderer extends Component {
             resModel: this.model.metaData.resModel,
             context: schedule,
             domain,
+            noCreate: !this.model.metaData.canCellCreate,
             onSelected: (resIds) => {
                 if (resIds.length) {
                     this.model.reschedule(resIds, schedule, this.openPlanDialogCallback.bind(this));
@@ -1503,8 +1505,10 @@ export class GanttRenderer extends Component {
                 const level = this.calculatePillsLevel(rowPills);
                 span = level * baseSpan;
             }
+            // We want to keep enough space to be able to click directly on a cell
+            span += 4;
         }
-        if (progressBar && span === baseSpan && this.isTouchDevice) {
+        if (progressBar && this.isTouchDevice && (!rowPills.length || span === baseSpan + 4)) {
             // In mobile: rows span over 2 rows to alllow progressbars to properly display
             span += ROW_SPAN;
         }
@@ -1773,8 +1777,8 @@ export class GanttRenderer extends Component {
      * @param {RowId} params.rowId
      * @param {number} params.columnIndex
      */
-    onCreate({ rowId, columnIndex }) {
-        const { start, stop } = this.getColumnStartStop(columnIndex);
+    onCreate(rowId, columnStart, columnStop) {
+        const { start, stop } = this.getColumnStartStop(columnStart, columnStop);
         const context = this.model.getDialogContext({
             rowId,
             start,
@@ -1792,6 +1796,42 @@ export class GanttRenderer extends Component {
         if (this.rootRef.el) {
             for (const [action, className] of INTERACTION_CLASSNAMES) {
                 this.rootRef.el.classList.toggle(className, mode === action);
+            }
+        }
+    }
+
+    onSelectStart(ev) {
+        if (ev.button !== 0) {
+            return;
+        }
+        const { hoverable } = this.hovered;
+        const { canCellCreate, canPlan } = this.model.metaData;
+        if (canCellCreate || canPlan) {
+            const isUngroupedCellHovered = hoverable?.matches(".o_gantt_cell:not(.o_gantt_group)");
+            if (isUngroupedCellHovered && !ev?.target.closest(".o_connector_creator")) {
+                this.selection.active = true;
+                this.selection.rowId = hoverable.dataset.rowId;
+                this.selection.initialIndex = Number(hoverable.dataset.columnIndex);
+                this.selection.lastSelectId = this.selection.initialIndex;
+                hoverable.classList.add("o_drag_hover");
+            }
+        }
+    }
+
+    onSelectStop() {
+        const { canPlan } = this.model.metaData;
+        if (this.selection.active) {
+            this.selection.active = false;
+            const { rowId, initialIndex, lastSelectId } = this.selection;
+            const columnStart = Math.min(initialIndex, lastSelectId);
+            const columnStop = Math.max(initialIndex, lastSelectId);
+            document
+                .querySelectorAll(`.o_gantt_cell[data-row-id='${rowId}']`)
+                .forEach((cell) => cell.classList.remove("o_drag_hover"));
+            if (canPlan) {
+                this.onPlan(rowId, columnStart, columnStop);
+            } else {
+                this.onCreate(rowId, columnStart, columnStop);
             }
         }
     }
@@ -1855,8 +1895,8 @@ export class GanttRenderer extends Component {
      * @param {RowId} params.rowId
      * @param {number} params.columnIndex
      */
-    onPlan({ rowId, columnIndex }) {
-        const { start, stop } = this.getColumnStartStop(columnIndex);
+    onPlan(rowId, columnStart, columnStop) {
+        const { start, stop } = this.getColumnStartStop(columnStart, columnStop);
         this.dialogService.add(
             SelectCreateDialog,
             this.getSelectCreateDialogProps({ rowId, start, stop })
@@ -1906,6 +1946,12 @@ export class GanttRenderer extends Component {
             this.prevDragAction =
                 this.interaction.dragAction === "copy" ? "reschedule" : this.interaction.dragAction;
             this.interaction.dragAction = "copy";
+        }
+        if (ev.key === "Escape") {
+            this.selection.active = false;
+            document
+                .querySelectorAll(".o_gantt_cell")
+                .forEach((cell) => cell.classList.remove("o_drag_hover"));
         }
     }
 

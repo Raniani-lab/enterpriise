@@ -379,6 +379,15 @@ export async function hoverGridCell(row, column, options) {
 }
 
 /**
+ * Click on a cell found from given grid coordinates.
+ * @type {CellHelper<Promise<HTMLElement>>}
+ */
+export async function clickCell(row, column, options) {
+    const cell = getCell(row, column, options);
+    await click(cell);
+}
+
+/**
  * Hovers a cell found from a pill element.
  * @param {HTMLElement} pill
  * @returns {Promise<HTMLElement>}

@@ -12,7 +12,13 @@ import {
 import { contains } from "@web/../tests/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 
-import { editPill, getGridContent, hoverGridCell, SELECTORS } from "@web_gantt/../tests/helpers";
+import {
+    clickCell,
+    editPill,
+    getGridContent,
+    hoverGridCell,
+    SELECTORS,
+} from "@web_gantt/../tests/helpers";
 
 async function ganttResourceWorkIntervalRPC(_, args) {
     if (args.method === "gantt_resource_work_interval") {
@@ -153,7 +159,7 @@ QUnit.module("Views", (hooks) => {
             type: "gantt",
             resModel: "task",
             serverData,
-            arch: '<gantt js_class="planning_gantt" date_start="start_datetime" date_stop="end_datetime" sample="1"/>',
+            arch: '<gantt js_class="planning_gantt" date_start="start_datetime" date_stop="end_datetime" sample="1" plan="false"/>',
             groupBy: ["resource_id"],
             mockRPC: ganttResourceWorkIntervalRPC,
         });
@@ -165,7 +171,7 @@ QUnit.module("Views", (hooks) => {
         assert.doesNotHaveClass(firstRow, "o_sample_data_disabled");
 
         await hoverGridCell(1, 1);
-        await click(target, SELECTORS.cellAddButton);
+        await clickCell(1, 1);
 
         await editInput(target, ".modal .o_form_view .o_field_widget[name=name] input", "new task");
         await clickSave(target.querySelector(".modal"));
@@ -377,26 +383,6 @@ QUnit.module("Views", (hooks) => {
             assert.containsNone(target, ".o_gantt_cells .o_gantt_pill");
         }
     );
-
-    QUnit.test("no button 'Create' in plan dialog", async function (assert) {
-        serverData.views = {
-            "task,false,list": `<list/>`,
-        };
-        await makeView({
-            type: "gantt",
-            resModel: "task",
-            serverData,
-            arch: `<gantt js_class="planning_gantt" date_start="start_datetime" date_stop="end_datetime"/>`,
-        });
-
-        assert.containsNone(target, ".modal");
-
-        await hoverGridCell(1, 1);
-        await click(target, SELECTORS.cellPlanButton);
-
-        assert.containsOnce(target, ".modal");
-        assert.containsNone(target, ".modal button.o_create_button");
-    });
 
     QUnit.test("progress bar has the correct unit", async (assert) => {
         const makeViewArgs = _getCreateViewArgsForGanttViewTotalsTests();

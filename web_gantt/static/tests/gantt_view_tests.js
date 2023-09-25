@@ -32,6 +32,7 @@ import {
     editPill,
     getActiveScale,
     getCell,
+    clickCell,
     getCellColorProperties,
     getGridContent,
     getPill,
@@ -1328,21 +1329,56 @@ QUnit.test(
     }
 );
 
-QUnit.test("show cell buttons when hovering a cell: ungrouped", async (assert) => {
+QUnit.test("select cells to plan a task", async (assert) => {
+    const dialogService = {
+        start() {
+            return {
+                add(_, props) {
+                    assert.step(`[dialog] ${props.title}`);
+                    assert.deepEqual(props.context, {
+                        lang: "en",
+                        start: "2018-11-30 23:00:00",
+                        stop: "2018-12-02 22:59:59",
+                        tz: "taht",
+                        uid: 7,
+                    });
+                },
+            };
+        },
+    };
+    registry.category("services").add("dialog", dialogService, { force: true });
     await makeView({
         type: "gantt",
         resModel: "tasks",
         serverData,
         arch: '<gantt date_start="start" date_stop="stop"/>',
     });
-    assert.containsNone(target, SELECTORS.cellButtons);
     await hoverGridCell(1, 1);
-    assert.containsOnce(target, SELECTORS.cellButtons);
-    assert.containsOnce(target, SELECTORS.cellAddButton);
-    assert.containsOnce(target, SELECTORS.cellPlanButton);
+    await triggerEvent(getCell(1, 1), null, "pointerdown");
+    await hoverGridCell(1, 2);
+    await triggerEvent(getCell(1, 2), null, "pointerup");
+    assert.verifySteps(["[dialog] Plan"]);
 });
 
-QUnit.test("show cell buttons when hovering a cell: 1-level grouped", async (assert) => {
+QUnit.test("select cells to plan a task: 1-level grouped", async (assert) => {
+    const dialogService = {
+        start() {
+            return {
+                add(_, props) {
+                    assert.step(`[dialog] ${props.title}`);
+                    assert.deepEqual(props.context, {
+                        lang: "en",
+                        start: "2018-11-30 23:00:00",
+                        stop: "2018-12-02 22:59:59",
+                        tz: "taht",
+                        uid: 7,
+                        user_id: 1,
+                    });
+                },
+            };
+        },
+    };
+    registry.category("services").add("dialog", dialogService, { force: true });
     await makeView({
         type: "gantt",
         resModel: "tasks",
@@ -1350,14 +1386,33 @@ QUnit.test("show cell buttons when hovering a cell: 1-level grouped", async (ass
         arch: '<gantt date_start="start" date_stop="stop"/>',
         groupBy: ["user_id"],
     });
-    assert.containsNone(target, SELECTORS.cellButtons);
     await hoverGridCell(1, 1);
-    assert.containsOnce(target, SELECTORS.cellButtons);
-    assert.containsOnce(target, SELECTORS.cellAddButton);
-    assert.containsOnce(target, SELECTORS.cellPlanButton);
+    await triggerEvent(getCell(1, 1), null, "pointerdown");
+    await hoverGridCell(1, 2);
+    await triggerEvent(getCell(1, 2), null, "pointerup");
+    assert.verifySteps(["[dialog] Plan"]);
 });
 
-QUnit.test("show cell buttons when hovering a cell: 2-level grouped", async (assert) => {
+QUnit.test("select cells to plan a task: 2-level grouped", async (assert) => {
+    const dialogService = {
+        start() {
+            return {
+                add(_, props) {
+                    assert.step(`[dialog] ${props.title}`);
+                    assert.deepEqual(props.context, {
+                        lang: "en",
+                        project_id: 1,
+                        start: "2018-11-30 23:00:00",
+                        stop: "2018-12-02 22:59:59",
+                        tz: "taht",
+                        uid: 7,
+                        user_id: 1,
+                    });
+                },
+            };
+        },
+    };
+    registry.category("services").add("dialog", dialogService, { force: true });
     await makeView({
         type: "gantt",
         resModel: "tasks",
@@ -1365,15 +1420,16 @@ QUnit.test("show cell buttons when hovering a cell: 2-level grouped", async (ass
         arch: '<gantt date_start="start" date_stop="stop"/>',
         groupBy: ["user_id", "project_id"],
     });
-    assert.containsNone(target, SELECTORS.cellButtons);
-    // hover on a cell in a grouped row should not show the cell buttons
-    await hoverGridCell(1, 1, { ignoreHoverableClass: true });
-    assert.containsNone(target, SELECTORS.cellButtons);
-    // hover on a cell in a non-grouped row should show the cell buttons
+    await hoverGridCell(1, 1);
+    await triggerEvent(getCell(1, 1), null, "pointerdown");
+    await hoverGridCell(1, 2);
+    await triggerEvent(getCell(1, 2), null, "pointerup");
+    // nothing happens
     await hoverGridCell(2, 1);
-    assert.containsOnce(target, SELECTORS.cellButtons);
-    assert.containsOnce(target, SELECTORS.cellAddButton);
-    assert.containsOnce(target, SELECTORS.cellPlanButton);
+    await triggerEvent(getCell(2, 1), null, "pointerdown");
+    await hoverGridCell(2, 2);
+    await triggerEvent(getCell(2, 2), null, "pointerup");
+    assert.verifySteps(["[dialog] Plan"]);
 });
 
 QUnit.test("hovering a cell with special character", async (assert) => {
@@ -1397,25 +1453,6 @@ QUnit.test("hovering a cell with special character", async (assert) => {
         "o_gantt_group_hovered",
         "hover style is applied to the element"
     );
-});
-
-QUnit.test("if a cell_create is specified to false then do not show + icon", async (assert) => {
-    await makeView({
-        type: "gantt",
-        resModel: "tasks",
-        serverData,
-        arch: '<gantt date_start="start" date_stop="stop" cell_create="false"/>',
-    });
-    assert.containsN(
-        target,
-        SELECTORS.addButton,
-        2,
-        "Should have 2 add button (small and xl screens)"
-    );
-    await hoverGridCell(1, 1);
-    assert.containsOnce(target, SELECTORS.cellButtons);
-    assert.containsNone(target, SELECTORS.cellAddButton);
-    assert.containsOnce(target, SELECTORS.cellPlanButton);
 });
 
 QUnit.test("open a dialog to add a new task", async (assert) => {
@@ -1467,14 +1504,14 @@ QUnit.test("open a dialog to create/edit a task", async (assert) => {
         type: "gantt",
         resModel: "tasks",
         serverData,
-        arch: '<gantt date_start="start" date_stop="stop" />',
+        arch: '<gantt date_start="start" date_stop="stop" plan="false"/>',
         groupBy: ["user_id", "project_id", "stage"],
     });
 
     // open dialog to create a task
     assert.containsNone(target, ".modal");
     await hoverGridCell(4, 10);
-    await click(target, SELECTORS.cellAddButton);
+    await clickCell(4, 10);
 
     // check that the dialog is opened with prefilled fields
     assert.containsOnce(target, ".modal");
@@ -1551,7 +1588,7 @@ QUnit.test("open a dialog to create a task when grouped by many2many field", asy
         type: "gantt",
         resModel: "tasks",
         serverData,
-        arch: `<gantt date_start="start" date_stop="stop" />`,
+        arch: `<gantt date_start="start" date_stop="stop" plan="false"/>`,
         groupBy: ["user_ids", "project_id"],
     });
 
@@ -1606,7 +1643,7 @@ QUnit.test("open a dialog to create a task when grouped by many2many field", asy
 
     // open dialog to create a task with two many2many values
     await hoverGridCell(5, 10);
-    await click(target, SELECTORS.cellAddButton);
+    await clickCell(5, 10);
     let modal = target.querySelector(".modal");
     await editInput(modal, ".o_field_widget[name=name] input", "NEW TASK 0");
     await editInput(modal, ".o_field_widget[name=user_ids] input", "User 2");
@@ -1631,7 +1668,7 @@ QUnit.test("open a dialog to create a task when grouped by many2many field", asy
 
     // open dialog to create a task with no many2many values
     await hoverGridCell(3, 24);
-    await click(target, SELECTORS.cellAddButton);
+    await clickCell(3, 24);
     modal = target.querySelector(".modal");
     await editInput(modal, ".o_field_widget[name=name] input", "NEW TASK 1");
     await click(modal, ".o_form_button_save");
@@ -1655,11 +1692,11 @@ QUnit.test("open a dialog to create a task, does not have a delete button", asyn
         type: "gantt",
         resModel: "tasks",
         serverData,
-        arch: '<gantt date_start="start" date_stop="stop" />',
+        arch: '<gantt date_start="start" date_stop="stop" plan="false"/>',
         groupBy: [],
     });
     await hoverGridCell(1, 10);
-    await click(target, SELECTORS.cellAddButton);
+    await clickCell(1, 10);
     assert.containsNone(target, ".modal .o_btn_remove");
 });
 
@@ -1762,7 +1799,7 @@ QUnit.test("create dialog with timezone", async (assert) => {
         type: "gantt",
         resModel: "tasks",
         serverData,
-        arch: '<gantt date_start="start" date_stop="stop" />',
+        arch: '<gantt date_start="start" date_stop="stop" plan="false"/>',
         mockRPC(route, { method, args }) {
             if (method === "web_save") {
                 assert.deepEqual(args[1], {
@@ -1773,7 +1810,7 @@ QUnit.test("create dialog with timezone", async (assert) => {
         },
     });
     await hoverGridCell(1, 10);
-    await click(target, SELECTORS.cellAddButton);
+    await clickCell(1, 10);
     const modal = target.querySelector(".modal");
     assert.strictEqual(
         modal.querySelector(".o_field_widget[name=start] input").value,
@@ -1784,69 +1821,6 @@ QUnit.test("create dialog with timezone", async (assert) => {
         "12/10/2018 23:59:59"
     );
     await click(modal, ".o_form_button_save");
-});
-
-QUnit.test(
-    "plan button is not present if edit === false and plan is not specified",
-    async (assert) => {
-        await makeView({
-            type: "gantt",
-            resModel: "tasks",
-            serverData,
-            arch: '<gantt date_start="start" date_stop="stop" edit="false" />',
-        });
-        await hoverGridCell(1, 1);
-        assert.containsOnce(target, SELECTORS.cellAddButton);
-        assert.containsNone(target, SELECTORS.cellPlanButton);
-    }
-);
-
-QUnit.test("plan button is not present if edit === false and plan is true", async (assert) => {
-    await makeView({
-        type: "gantt",
-        resModel: "tasks",
-        serverData,
-        arch: '<gantt date_start="start" date_stop="stop" edit="false" plan="true" />',
-    });
-    await hoverGridCell(1, 1);
-    assert.containsOnce(target, SELECTORS.cellAddButton);
-    assert.containsNone(target, SELECTORS.cellPlanButton);
-});
-
-QUnit.test("plan button is not present if edit === true and plan === false", async (assert) => {
-    await makeView({
-        type: "gantt",
-        resModel: "tasks",
-        serverData,
-        arch: '<gantt date_start="start" date_stop="stop" edit="true" plan="false" />',
-    });
-    await hoverGridCell(1, 1);
-    assert.containsOnce(target, SELECTORS.cellAddButton);
-    assert.containsNone(target, SELECTORS.cellPlanButton);
-});
-
-QUnit.test("plan button is present if edit === true and plan is not set", async (assert) => {
-    await makeView({
-        type: "gantt",
-        resModel: "tasks",
-        serverData,
-        arch: '<gantt date_start="start" date_stop="stop" edit="true" />',
-    });
-    await hoverGridCell(1, 1);
-    assert.containsOnce(target, SELECTORS.cellAddButton);
-    assert.containsOnce(target, SELECTORS.cellPlanButton);
-});
-
-QUnit.test("plan button is present if edit === true and plan is true", async (assert) => {
-    await makeView({
-        type: "gantt",
-        resModel: "tasks",
-        serverData,
-        arch: '<gantt date_start="start" date_stop="stop" edit="true" plan="true" />',
-    });
-    await hoverGridCell(1, 1);
-    assert.containsOnce(target, SELECTORS.cellAddButton);
-    assert.containsOnce(target, SELECTORS.cellPlanButton);
 });
 
 QUnit.test("open a dialog to plan a task", async (assert) => {
@@ -1878,7 +1852,7 @@ QUnit.test("open a dialog to plan a task", async (assert) => {
 
     // click on the plan button
     await hoverGridCell(1, 10);
-    await click(target, SELECTORS.cellPlanButton);
+    await clickCell(1, 10);
     assert.containsOnce(target, ".modal .o_list_view");
     assert.deepEqual(getTexts(".modal .o_list_view .o_data_cell"), [
         "Task 41",
@@ -1927,7 +1901,7 @@ QUnit.test("open a dialog to plan a task (multi-level)", async (assert) => {
 
     // click on the plan button
     await hoverGridCell(3, 10);
-    await click(target, SELECTORS.cellPlanButton);
+    await clickCell(3, 10);
     assert.containsOnce(target, ".modal .o_list_view");
     assert.deepEqual(getText(".modal .o_list_view .o_data_cell"), "Task 41");
 
@@ -2183,12 +2157,12 @@ QUnit.test("create a task maintains the domain", async (assert) => {
         type: "gantt",
         resModel: "tasks",
         serverData,
-        arch: '<gantt date_start="start" date_stop="stop"></gantt>',
+        arch: '<gantt date_start="start" date_stop="stop" plan="false"></gantt>',
         domain: [["user_id", "=", 2]], // I am an important line
     });
     assert.containsN(target, SELECTORS.pill, 3);
     await hoverGridCell(1, 1);
-    await click(target, SELECTORS.cellAddButton);
+    await clickCell(1, 1);
 
     await editInput(target, ".modal [name=name] input", "new task");
     await click(target, ".modal .o_form_button_save");
@@ -2921,16 +2895,39 @@ QUnit.test("drag&drop on other pill in grouped view", async (assert) => {
 // ATTRIBUTES TESTS
 
 QUnit.test("create attribute", async (assert) => {
+    serverData.views = {
+        "tasks,false,list": '<tree><field name="name"/></tree>',
+        "tasks,false,search": '<search><field name="name"/></search>',
+    };
     await makeView({
         type: "gantt",
         resModel: "tasks",
         serverData,
         arch: '<gantt date_start="start" date_stop="stop" create="0" />',
     });
-    assert.containsNone(target, SELECTORS.addButton);
+    assert.containsNone(target, ".o_dialog");
     await hoverGridCell(1, 1);
-    assert.containsOnce(target, SELECTORS.cellPlanButton);
-    assert.containsNone(target, SELECTORS.cellAddButton);
+    await clickCell(1, 1);
+    assert.containsOnce(target, ".o_dialog");
+    assert.strictEqual(target.querySelector(".modal-title").textContent, "Plan");
+    assert.containsNone(target, ".o_create_button");
+});
+
+QUnit.test("plan attribute", async (assert) => {
+    serverData.views = {
+        "tasks,false,form": `<form><field name="name"/></form>`,
+    };
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: '<gantt date_start="start" date_stop="stop" plan="0" />',
+    });
+    assert.containsNone(target, ".o_dialog");
+    await hoverGridCell(1, 1);
+    await clickCell(1, 1);
+    assert.containsOnce(target, ".o_dialog");
+    assert.strictEqual(target.querySelector(".modal-title").textContent, "Create");
 });
 
 QUnit.test("edit attribute", async (assert) => {
@@ -3564,9 +3561,9 @@ QUnit.test("style without unavailabilities", async (assert) => {
     });
     const cell5 = getCell(1, 5);
     assert.hasClass(cell5, "o_gantt_today");
-    assert.hasAttrValue(cell5, "style", "grid-column:9 / span 2;grid-row:1 / span 27;"); // span 27 = 3 level * 9 per level
+    assert.hasAttrValue(cell5, "style", "grid-column:9 / span 2;grid-row:1 / span 31;"); // span 31 = 3 level * 9 per level + 4 for general space
     const cell6 = getCell(1, 6);
-    assert.hasAttrValue(cell6, "style", "grid-column:11 / span 2;grid-row:1 / span 27;");
+    assert.hasAttrValue(cell6, "style", "grid-column:11 / span 2;grid-row:1 / span 31;");
 });
 
 QUnit.test('Unavailabilities ("month": "day:half")', async (assert) => {
@@ -4646,7 +4643,7 @@ QUnit.test("plan dialog initial domain has the action domain as its only base", 
     await doAction(webClient, ganttAction);
     assert.verifySteps(["&,start,<=,2018-12-31 22:59:59,stop,>=,2018-11-30 23:00:00"]);
     await hoverGridCell(1, 10);
-    await click(target, SELECTORS.cellPlanButton);
+    await clickCell(1, 10);
     assert.verifySteps(["|,start,=,false,stop,=,false"]);
 
     // Load action WITH domain and open plan dialog
@@ -4659,7 +4656,7 @@ QUnit.test("plan dialog initial domain has the action domain as its only base", 
     ]);
 
     await hoverGridCell(1, 10);
-    await click(target, SELECTORS.cellPlanButton);
+    await clickCell(1, 10);
     assert.verifySteps(["&,project_id,=,1,|,start,=,false,stop,=,false"]);
 
     // Load action without domain, activate a filter and then open plan dialog
@@ -4673,7 +4670,7 @@ QUnit.test("plan dialog initial domain has the action domain as its only base", 
     ]);
 
     await hoverGridCell(1, 10);
-    await click(target, SELECTORS.cellPlanButton);
+    await clickCell(1, 10);
     assert.verifySteps(["|,start,=,false,stop,=,false"]);
 });
 
@@ -4956,11 +4953,11 @@ QUnit.test("add record in empty gantt", async (assert) => {
         type: "gantt",
         resModel: "tasks",
         serverData,
-        arch: '<gantt date_start="start" date_stop="stop" />',
+        arch: '<gantt date_start="start" date_stop="stop" plan="false"/>',
         groupBy: ["project_id"],
     });
     await hoverGridCell(1, 10);
-    await click(target, SELECTORS.cellAddButton);
+    await clickCell(1, 10);
     assert.containsOnce(target, ".modal");
 });
 

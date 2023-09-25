@@ -44,7 +44,7 @@ patch(PlanningGanttRenderer.prototype, {
     /**
      * @override
      */
-    onPlan({ rowId }) {
+    onPlan(rowId) {
         const currentRow = this.rows.find((row) => row.id === rowId);
         this.roleIds = (currentRow.progressBar && currentRow.progressBar.role_ids) || [];
         super.onPlan(...arguments);

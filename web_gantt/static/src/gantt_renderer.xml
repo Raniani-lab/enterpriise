@@ -44,7 +44,6 @@
                         />
                     </t>
                 </t>
-                <GanttCellButtons t-props="cellButtonsProps" />
                 <GanttResizeBadge reactive="resizeBadgeReactive" />
             </div>
             <t t-if="totalRow">
@@ -193,6 +192,7 @@
                 t-attf-style="{{ getGridPosition({ column: column.grid.column, row: row.grid.row }) }};{{ row.cellColors[column.id] || '' }}"
                 t-att-data-row-id="row.id"
                 t-att-data-column-index="column_index"
+                t-on-pointerdown.synthetic="onSelectStart"
                 t-on-click.synthetic="() => row.isGroup and this.model.toggleRow(row.id)"
             />
         </t>

@@ -13,8 +13,8 @@ class TestUiCommon(HttpCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.employee_thibault = cls.env['hr.employee'].create({
-            'name': 'Thibault',
-            'work_email': 'thibault@a.be',
+            'name': 'Aaron',
+            'work_email': 'aaron@a.be',
             'tz': 'UTC',
             'employee_type': 'freelance',
             'resource_calendar_id': False,

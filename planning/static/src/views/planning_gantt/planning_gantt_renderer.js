@@ -118,13 +118,14 @@ export class PlanningGanttRenderer extends GanttRenderer {
     /**
      * @override
      */
-    getColumnStartStop(columnIndex) {
+    getColumnStartStop(columnStartIndex, columnStopIndex = columnStartIndex) {
         const { scale } = this.model.metaData;
         if (["week", "month"].includes(scale.id)) {
-            const { start } = this.columns[columnIndex];
+            const { start } = this.columns[columnStartIndex];
+            const { stop } = this.columns[columnStopIndex];
             return {
                 start: start.set({ hours: 8, minutes: 0, seconds: 0 }),
-                stop: start.set({ hours: 17, minutes: 0, seconds: 0 }),
+                stop: stop.set({ hours: 17, minutes: 0, seconds: 0 }),
             };
         }
         return super.getColumnStartStop(...arguments);
@@ -188,16 +189,6 @@ export class PlanningGanttRenderer extends GanttRenderer {
      */
     isOpenShift(record) {
         return !record.resource_id;
-    }
-
-    /**
-     * @override
-     */
-    getSelectCreateDialogProps() {
-        return {
-            ...super.getSelectCreateDialogProps(...arguments),
-            noCreate: true,
-        };
     }
 
     hasAvatar(row) {

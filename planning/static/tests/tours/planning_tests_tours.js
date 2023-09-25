@@ -11,14 +11,14 @@ registry.category("web_tour.tours").add('planning_test_tour', {
     position: 'bottom',
 }, {
     trigger: ".o_gantt_button_add",
-    content: "Let's create your first <b>shift</b> by clicking on Add. <i>Tip: use the (+) shortcut available on each cell of the Gantt view to save time.</i>",
+    content: "Let's create your first <b>shift</b>.",
     id: 'project_planning_start',
 }, {
     trigger: ".o_field_widget[name='resource_id'] input",
     content: "Assign this shift to your <b>resource</b>, or leave it open for the moment.",
-    run: 'text Thibault',
+    run: 'text Aaron',
 }, {
-    trigger: ".o-autocomplete--dropdown-item > a:contains('Thibault')",
+    trigger: ".o-autocomplete--dropdown-item > a:contains('Aaron')",
     auto: true,
     in_modal: false,
 }, {
@@ -87,7 +87,7 @@ registry.category("web_tour.tours").add('planning_test_tour', {
     trigger: "button[name='action_check_emails']",
     content: "<b>Publish & send</b> your planning to make it available to your employees.",
 }, {
-    trigger: ".o_gantt_row_header:contains('Thibault') .o_gantt_progress_bar",
+    trigger: ".o_gantt_row_header:contains('Aaron') .o_gantt_progress_bar",
     content: "See employee progress bar",
     auto: true,
     run: function () {

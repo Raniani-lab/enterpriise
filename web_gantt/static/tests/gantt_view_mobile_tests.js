@@ -122,8 +122,8 @@ QUnit.test("Progressbar: check the progressbar percentage visibility.", async (a
     assert.ok(rowTitle1.matches(SELECTORS.rowTitle));
     assert.strictEqual(rowTitle1.nextElementSibling, progressBar1);
 
-    assert.strictEqual(window.getComputedStyle(rowHeader1).gridTemplateRows, "36px 35px");
-    assert.strictEqual(window.getComputedStyle(rowTitle1).height, "36px");
+    assert.strictEqual(window.getComputedStyle(rowHeader1).gridTemplateRows, "52px 35px");
+    assert.strictEqual(window.getComputedStyle(rowTitle1).height, "52px");
     assert.strictEqual(window.getComputedStyle(progressBar1).height, "35px");
 });
 
@@ -184,8 +184,8 @@ QUnit.test("Progressbar: grouped row", async (assert) => {
     assert.ok(rowTitle1.matches(SELECTORS.rowTitle));
     assert.strictEqual(rowTitle1.nextElementSibling, progressBar1);
 
-    assert.strictEqual(window.getComputedStyle(rowHeader1).gridTemplateRows, "24px 35px");
-    assert.strictEqual(window.getComputedStyle(rowTitle1).height, "24px");
+    assert.strictEqual(window.getComputedStyle(rowHeader1).gridTemplateRows, "40px 35px");
+    assert.strictEqual(window.getComputedStyle(rowTitle1).height, "40px");
     assert.strictEqual(window.getComputedStyle(progressBar1).height, "35px");
 });
 

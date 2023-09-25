@@ -19,7 +19,7 @@
         <div>
             <label>Select a related field</label>
             <Many2XAutocomplete
-                value="this.state.field?.name"
+                value="this.state.field?.display_name"
                 resModel="'ir.model.fields'"
                 fieldString="'Field'"
                 update.bind="(selection) => this.state.field = selection[0]"

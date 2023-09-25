@@ -3687,6 +3687,7 @@ QUnit.module("View Editors", (hooks) => {
                         ],
                         "the domain should be correctly set when searching for a related field for new button"
                     );
+                    return [[1, "Partner"]];
                 }
             };
 
@@ -3779,6 +3780,13 @@ QUnit.module("View Editors", (hooks) => {
                 )
             );
             assert.verifySteps(["/web/dataset/call_kw/ir.model.fields/name_search"]);
+            await click(target.querySelector(".modal .o_web_studio_new_button_dialog li a"));
+            assert.strictEqual(
+                target.querySelector(
+                    ".modal .o_web_studio_new_button_dialog .o-autocomplete--input"
+                ).value,
+                "Partner"
+            );
         }
     );
 

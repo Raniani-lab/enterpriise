@@ -176,6 +176,7 @@ QUnit.test(
         await click(".o_pager_previous");
         await contains(".o_pager_counter", { text: "1 / 2" });
         await contains(".arrow", { count: 2 });
+        await contains(".o-mail-Message", { count: 2 });
         await click(".o-mail-Attachment .o_move_next");
         await contains(".o-mail-Attachment-imgContainer img");
         await click(".o-mail-Attachment .o_move_previous");

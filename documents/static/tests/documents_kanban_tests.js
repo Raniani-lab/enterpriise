@@ -2780,7 +2780,6 @@ QUnit.module("documents", {}, function () {
                     res_model: "documents.document",
                     views: [[false, "kanban"]],
                 });
-
                 assert.containsNone(target, ".o-mail-Chatter");
 
                 // select a record
@@ -2789,18 +2788,15 @@ QUnit.module("documents", {}, function () {
                 assert.containsNone(target, ".o-mail-Chatter");
 
                 // open the chatter
-                await legacyClick(
-                    target.querySelector(".o_documents_inspector .o_inspector_open_chatter")
-                );
-
-                assert.containsOnce(target, ".o-mail-Chatter", "should display the chatter");
+                await click(".o_documents_inspector .o_inspector_open_chatter");
+                await contains(".o-mail-Chatter");
                 assert.containsOnce(target, ".o_search_panel:visible");
                 assert.containsOnce(target, ".o_kanban_renderer:visible");
                 assert.containsOnce(target, ".o_documents_inspector:visible");
 
                 // close the chatter
-                await legacyClick(target.querySelector(".o-mail-Chatter-close"));
-                assert.containsNone(target, ".o_document_chatter_container .o-mail-Chatter");
+                await click(".o-mail-Chatter-close");
+                await contains(".o_document_chatter_container .o-mail-Chatter", { count: 0 });
             });
 
             QUnit.test(
@@ -2842,10 +2838,9 @@ QUnit.module("documents", {}, function () {
                     await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
                     await click(".o_documents_inspector .o_inspector_open_chatter");
                     await contains(".o_document_chatter_container .o-mail-Chatter");
-                    assert.containsN(
-                        target,
+                    await contains(
                         ".o_document_chatter_container .o-mail-Chatter .o-mail-Message",
-                        2
+                        { count: 2 }
                     );
                 }
             );
@@ -2890,12 +2885,8 @@ QUnit.module("documents", {}, function () {
                 });
 
                 await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
-
-                await legacyClick(
-                    target.querySelector(".o_documents_inspector .o_inspector_open_chatter")
-                );
-
-                assert.containsOnce(target, ".o_document_chatter_container .o-mail-Chatter");
+                await click(".o_documents_inspector .o_inspector_open_chatter");
+                await contains(".o_document_chatter_container .o-mail-Chatter");
                 assert.containsOnce(target, ".o_document_chatter_container .o-mail-Followers");
                 assert.strictEqual(
                     target.querySelector(".o-mail-Followers-counter").textContent,
@@ -2944,11 +2935,8 @@ QUnit.module("documents", {}, function () {
 
                 await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
 
-                await legacyClick(
-                    target.querySelector(".o_documents_inspector .o_inspector_open_chatter")
-                );
-
-                assert.containsOnce(target, ".o_document_chatter_container .o-mail-Chatter");
+                await click(".o_documents_inspector .o_inspector_open_chatter");
+                await contains(".o_document_chatter_container .o-mail-Chatter");
 
                 const $activityButtons = $(target).find(
                     ".o_document_chatter_container button:contains(Activities)"
@@ -2991,11 +2979,8 @@ QUnit.module("documents", {}, function () {
 
                 await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
 
-                await legacyClick(
-                    target.querySelector(".o_documents_inspector .o_inspector_open_chatter")
-                );
-
-                assert.containsOnce(target, ".o_document_chatter_container .o-mail-Chatter");
+                await click(".o_documents_inspector .o_inspector_open_chatter");
+                await contains(".o_document_chatter_container .o-mail-Chatter");
 
                 assert.containsOnce(target, ".o-mail-ActivityList");
                 assert.containsOnce(target, ".o-mail-Activity", "should display an activity");
@@ -3131,11 +3116,8 @@ QUnit.module("documents", {}, function () {
 
                     await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
 
-                    await legacyClick(
-                        target.querySelector(".o_documents_inspector .o_inspector_open_chatter")
-                    );
-
-                    assert.containsOnce(target, ".o_document_chatter_container .o-mail-Chatter");
+                    await click(".o_documents_inspector .o_inspector_open_chatter");
+                    await contains(".o_document_chatter_container .o-mail-Chatter");
 
                     // reload with a domain
                     await toggleSearchBarMenu(target);
@@ -3171,11 +3153,8 @@ QUnit.module("documents", {}, function () {
 
                     await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
 
-                    await legacyClick(
-                        target.querySelector(".o_documents_inspector .o_inspector_open_chatter")
-                    );
-
-                    assert.containsOnce(target, ".o_document_chatter_container .o-mail-Chatter");
+                    await click(".o_documents_inspector .o_inspector_open_chatter");
+                    await contains(".o_document_chatter_container .o-mail-Chatter");
 
                     await legacyClick(
                         $(target).find(".o_kanban_record:contains(blip) .o_record_selector")[0]
@@ -3213,14 +3192,8 @@ QUnit.module("documents", {}, function () {
 
                     await legacyClick($(target).find(".o_kanban_record:contains(yop)")[0]);
 
-                    await legacyClick(
-                        document.querySelector(".o_documents_inspector .o_inspector_open_chatter")
-                    );
-
-                    assert.containsOnce(
-                        document.body,
-                        ".o_document_chatter_container .o-mail-Chatter"
-                    );
+                    await click(".o_documents_inspector .o_inspector_open_chatter");
+                    await contains(".o_document_chatter_container .o-mail-Chatter", { count: 0 });
 
                     // reload with a domain
                     await toggleSearchBarMenu(target);

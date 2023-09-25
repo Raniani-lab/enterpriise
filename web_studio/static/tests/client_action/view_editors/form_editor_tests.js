@@ -12,6 +12,7 @@ import {
     dragAndDrop,
     drag,
 } from "@web/../tests/helpers/utils";
+import { click as asyncClick, contains } from "@web/../tests/utils";
 import {
     createViewEditor,
     registerViewEditorDependencies,
@@ -691,7 +692,6 @@ QUnit.module("View Editors", (hooks) => {
     });
 
     QUnit.test("form editor - chatter edition", async function (assert) {
-        assert.expect(5);
         const pyEnv = await startServer();
         serverData.models = {
             ...serverData.models,
@@ -716,17 +716,11 @@ QUnit.module("View Editors", (hooks) => {
             },
         });
 
-        assert.containsOnce(
-            target,
-            ".o_web_studio_form_view_editor .o-mail-Form-chatter",
-            "there should be a chatter node"
-        );
+        await contains(".o_web_studio_form_view_editor .o-mail-Form-chatter");
 
         // click on the chatter
-        await click(
-            target,
-            ".o_web_studio_form_view_editor .o-mail-Form-chatter .o_web_studio_overlay",
-            true
+        await asyncClick(
+            ".o_web_studio_form_view_editor .o-mail-Form-chatter .o_web_studio_overlay"
         );
         await nextTick();
 
@@ -736,11 +730,7 @@ QUnit.module("View Editors", (hooks) => {
             "the Properties tab should now be active"
         );
 
-        assert.containsOnce(
-            target,
-            '.o_web_studio_sidebar input[name="email_alias"]',
-            "the sidebar should now display the chatter properties"
-        );
+        await contains('.o_web_studio_sidebar input[name="email_alias"]');
         assert.strictEqual(
             target.querySelector('.o_web_studio_sidebar input[name="email_alias"]').value,
             "coucou",

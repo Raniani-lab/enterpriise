@@ -9,7 +9,7 @@ import { patch } from "@web/core/utils/patch";
 patch(DiscussApp, {
     new(data) {
         const res = super.new(data);
-        res.whatsapp = this.store.DiscussAppCategory.insert({
+        res.whatsapp = {
             extraClass: "o-mail-DiscussSidebarCategory-whatsapp",
             id: "whatsapp",
             name: _t("WhatsApp"),
@@ -17,7 +17,7 @@ patch(DiscussApp, {
             canView: false,
             canAdd: true,
             serverStateKey: "is_discuss_sidebar_category_whatsapp_open",
-        });
+        };
         return res;
     },
 });

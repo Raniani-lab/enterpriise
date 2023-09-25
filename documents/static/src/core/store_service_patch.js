@@ -4,7 +4,7 @@ import { Store } from "@mail/core/common/store_service";
 
 import { patch } from "@web/core/utils/patch";
 
-let gEnv;
+let self;
 patch(Store.prototype, {
     hasDocumentsUserGroup: false,
     Document: {
@@ -14,10 +14,10 @@ patch(Store.prototype, {
          * @param {Object} data
          * @returns {import("@documents/core/document_model").Document}
          */
-        insert: (data) => gEnv.services["document.document"].insert(data),
+        insert: (data) => self.env.services["document.document"].insert(data),
     },
-    setup(env) {
-        super.setup(env);
-        gEnv = env;
+    setup() {
+        super.setup();
+        self = this;
     },
 });

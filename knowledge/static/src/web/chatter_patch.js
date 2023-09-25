@@ -33,10 +33,10 @@ const ChatterPatch = {
                     Object.assign(recordInfo, {
                         canPostMessages: this.props.threadId &&
                             this.props.hasMessageList && (
-                                this.state.thread.hasWriteAccess ||
-                                (this.state.thread.hasReadAccess && this.state.thread.canPostOnReadonly)
+                                this.state.thread?.hasWriteAccess ||
+                                (this.state.thread?.hasReadAccess && this.state.thread?.canPostOnReadonly)
                             ),
-                        canAttachFiles: this.props.threadId && this.state.thread.hasWriteAccess
+                        canAttachFiles: this.props.threadId && this.state.thread?.hasWriteAccess
                     });
                 }
             );

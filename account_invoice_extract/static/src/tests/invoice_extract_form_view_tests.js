@@ -6,6 +6,7 @@ import { patchUiSize, SIZES } from "@mail/../tests/helpers/patch_ui_size";
 import { start } from "@mail/../tests/helpers/test_utils";
 
 import { click, triggerEvent } from "@web/../tests/helpers/utils";
+import { contains } from "@web/../tests/utils";
 
 import invoiceExtractTestUtils from "@account_invoice_extract/tests/helpers/invoice_extract_test_utils";
 import { accountMove } from "@account/components/account_move_service/account_move_service";
@@ -120,9 +121,8 @@ QUnit.module(
             });
             await openFormView("account.move", accountMoveId1);
 
+            await contains(".o-mail-Attachment-imgContainer");
             const attachmentPreview = document.querySelector(".o-mail-Attachment-imgContainer");
-
-            assert.ok(attachmentPreview, "should display attachment preview");
 
             // ---------- Supplier & VAT Number ----------
 

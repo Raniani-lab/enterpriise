@@ -13,6 +13,30 @@ export class Orderline extends Component {
         this.orm = useService("orm");
     }
 
+    get attributeData() {
+        const attributeVal = this.preparationDisplay.attributeValues;
+        const attributes = this.preparationDisplay.attributes;
+
+        return Object.values(
+            this.props.orderline.attribute_ids.reduce((acc, attr) => {
+                const attributeValue = attributeVal.find((v) => v.id === attr);
+                const attribute = attributes.find((a) => a.id === attributeValue.attribute_id[0]);
+
+                if (acc[attribute.id]) {
+                    acc[attribute.id].value += `, ${attributeValue.name}`;
+                } else {
+                    acc[attribute.id] = {
+                        id: attr,
+                        name: attribute.name,
+                        value: attributeValue.name,
+                    };
+                }
+
+                return acc;
+            }, {})
+        );
+    }
+
     async changeOrderlineStatus() {
         const orderline = this.props.orderline;
         const newState = !orderline.todo;

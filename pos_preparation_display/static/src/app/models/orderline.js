@@ -11,6 +11,7 @@ export class Orderline extends Reactive {
             product_id,
             product_name,
             product_quantity,
+            attribute_ids,
             todo,
         },
         order
@@ -24,6 +25,7 @@ export class Orderline extends Reactive {
         this.productId = product_id;
         this.productName = product_name;
         this.productQuantity = product_quantity;
+        this.attribute_ids = attribute_ids ?? [];
         this.todo = todo;
         this.order = order;
     }

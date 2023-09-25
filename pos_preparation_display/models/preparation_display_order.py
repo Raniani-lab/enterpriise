@@ -42,6 +42,9 @@ class PosPreparationDisplayOrder(models.Model):
                 for orderline in orderlines:
                     if orderline.internal_note == negative_orderline["internal_note"]:
                         if orderline.product_quantity > orderline.product_cancelled:
+                            if negative_orderline.get('attribute_value_ids') and set(negative_orderline.get('attribute_value_ids')) != set(orderline.attribute_value_ids.ids):
+                                continue
+
                             if orderline.product_quantity >= quantity_to_cancel:
                                 orderline.product_cancelled = quantity_to_cancel
                                 quantity_to_cancel = 0
@@ -127,7 +130,6 @@ class PosPreparationDisplayOrder(models.Model):
         preparation_display = self.env['pos_preparation_display.display'].browse(preparation_display_id)
         orders = self.env['pos_preparation_display.order'].search(['|', ('pos_config_id', 'in', preparation_display.get_pos_config_ids().ids), ('pos_order_id', '=', False)])
         first_stage = preparation_display.stage_ids[0]
-        last_stage = preparation_display.stage_ids[-1]
 
         preparation_display_orders = []
         for order in orders:
@@ -163,6 +165,7 @@ class PosPreparationDisplayOrder(models.Model):
                     'id': orderline.id,
                     'todo': orderline.todo,
                     'internal_note': orderline.internal_note,
+                    'attribute_ids': orderline.attribute_value_ids.ids,
                     'product_id': orderline.product_id.id,
                     'product_name': orderline.product_id.display_name,
                     'product_quantity': orderline.product_quantity,

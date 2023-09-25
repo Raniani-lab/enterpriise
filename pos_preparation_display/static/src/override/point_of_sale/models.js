@@ -10,7 +10,8 @@ patch(Order.prototype, {
         // orders traceable in the preparation tools.
         // For the pos_restaurant, this is mandatory, without the server_id,
         // we cannot find the order table.
-        if (!this.server_id || this.customerCountChanges) {
+
+        if (!this.server_id || this.pos.ordersToUpdateSet.has(this)) {
             this.pos.ordersToUpdateSet.add(this);
             await this.pos.sendDraftToServer();
         }
@@ -32,6 +33,7 @@ patch(Order.prototype, {
                         return {
                             todo: true,
                             internal_note: change.note,
+                            attribute_value_ids: change.attribute_value_ids,
                             product_id: change.product_id,
                             product_quantity: quantity,
                             product_category_ids: product.pos_categ_ids,
@@ -69,6 +71,6 @@ patch(Order.prototype, {
     },
     setCustomerCount(count) {
         super.setCustomerCount(count);
-        this.customerCountChanges = true;
+        this.pos.ordersToUpdateSet.add(this);
     },
 });

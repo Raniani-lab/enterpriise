@@ -7,6 +7,7 @@ class PosPreparationDisplayOrderline(models.Model):
 
     todo = fields.Boolean("Status of the orderline", help="The status of a command line, todo or not")
     internal_note = fields.Char(help="Internal notes written at the time of the order")
+    attribute_value_ids = fields.Many2many('product.template.attribute.value', 'pos_pdis_orderline_product_template_attribute_value_rel', string="Selected Attributes")
     product_id = fields.Many2one('product.product', string="Product ID")
     product_quantity = fields.Integer("Quantity of ordered product")
     product_cancelled = fields.Integer("Quantity of cancelled product")

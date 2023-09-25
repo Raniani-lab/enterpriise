@@ -32,12 +32,16 @@ export class PreparationDisplay extends Reactive {
             categories: data.categories,
             orders: data.orders,
             stages: data.stages,
+            attributes: data.attributes,
+            attributeValues: data.attribute_values,
         };
 
         this.restoreFilterFromLocalStorage();
         this.processStages();
         this.processCategories();
         this.processOrders();
+        this.attributes = data.attributes;
+        this.attributeValues = data.attribute_values;
         this.posHasProducts = await this.loadPosHasProducts();
         this.loadingProducts = false;
     }

@@ -32,6 +32,13 @@
                     />
                 </div>
             </div>
+            <div t-if="this.props.orderline.attribute_ids.length > 0" class="ms-4 text-muted">
+                <div t-foreach="attributeData" t-as="attribute" t-key="attribute.id">
+                    <p class="p-0 m-0">
+                        - <t t-esc="attribute.name" /> : <t t-esc="attribute.value" />
+                    </p>
+                </div>
+            </div>
         </section>
     </t>
 </templates>

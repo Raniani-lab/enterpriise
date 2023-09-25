@@ -56,7 +56,9 @@ class PosPreparationDisplay(models.Model):
         return {
             'categories': self._get_pos_category_ids().read(['id', 'display_name', 'sequence']),
             'stages': self.stage_ids.read(),
-            'orders': self.env["pos_preparation_display.order"].get_preparation_display_order(self.id)
+            'orders': self.env["pos_preparation_display.order"].get_preparation_display_order(self.id),
+            'attributes': self.env['product.attribute'].search([]).read(['id', 'name']),
+            'attribute_values': self.env['product.attribute.value'].search([]).read(['id', 'name', 'attribute_id']),
         }
 
     def open_reset_wizard(self):

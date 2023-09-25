@@ -804,7 +804,10 @@ class MrpProductionWorkcenterLine(models.Model):
         super().button_pending()
 
     def action_mark_as_done(self):
-        main_employee_connected = self.env['hr.employee'].get_session_owner()
+        if self.env.context.get('mrp_display'):
+            main_employee_connected = self.env['hr.employee'].get_session_owner()
+        else:
+            main_employee_connected = self.env.user.employee_id.id
 
         for wo in self:
             if not main_employee_connected:
@@ -826,11 +829,8 @@ class MrpProductionWorkcenterLine(models.Model):
                 now = fields.Datetime.now()
                 date_start = datetime.fromtimestamp(now.timestamp() - ((wo.duration_expected * 60) // 1))
                 date_end = now
-                if not self.env.context.get('mrp_display'):
-                    if wo.employee_assigned_ids:
-                        main_employee_connected = wo.employee_assigned_ids[0].id
-                    else:
-                        main_employee_connected = self.env.user.employee_id.id
+                if not self.env.context.get('mrp_display') and wo.employee_assigned_ids:
+                    main_employee_connected = wo.employee_assigned_ids[0].id
                 productivity.append({
                     'workorder_id': wo.id,
                     'workcenter_id': wo.workcenter_id.id,

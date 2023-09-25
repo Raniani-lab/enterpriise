@@ -73,16 +73,6 @@ class AccountMoveSend(models.Model):
     # BUSINESS ACTIONS
     # -------------------------------------------------------------------------
 
-    def _get_invoice_pdf_report_to_render(self, invoice, invoice_data):
-        # EXTENDS 'account'
-        template, template_values = super()._get_invoice_pdf_report_to_render(invoice, invoice_data)
-
-        if invoice.l10n_mx_edi_cfdi_attachment_id:
-            template = 'l10n_mx_edi.report_invoice_document'
-            template_values['cfdi_values'] = invoice._l10n_mx_edi_get_extra_invoice_report_values()
-
-        return template, template_values
-
     def _call_web_service_before_invoice_pdf_render(self, invoices_data):
         # EXTENDS 'account'
         super()._call_web_service_before_invoice_pdf_render(invoices_data)

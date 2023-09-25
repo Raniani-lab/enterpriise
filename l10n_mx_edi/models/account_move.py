@@ -702,6 +702,13 @@ class AccountMove(models.Model):
             res.extend([self.env['ir.model.fields']._get(self._name, 'l10n_mx_edi_usage')])
         return res
 
+    def _get_name_invoice_report(self):
+        # EXTENDS account
+        self.ensure_one()
+        if self.l10n_mx_edi_cfdi_attachment_id:
+            return 'l10n_mx_edi.report_invoice_document'
+        return super()._get_name_invoice_report()
+
     # -------------------------------------------------------------------------
     # CFDI Generation: Generic
     # -------------------------------------------------------------------------

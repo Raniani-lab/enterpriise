@@ -572,10 +572,10 @@ QUnit.module(
                 });
                 await openGlobalFilterSidePanel();
                 await clickCreateFilter("text");
-                await contains(
-                    ".o_notification.border-info:contains(New spreadsheet created in Documents)"
-                );
-                assert.containsOnce(target, ".o-sidePanel");
+                await contains(".o_notification.border-info", {
+                    text: "New spreadsheet created in Documents",
+                });
+                await contains(".o-sidePanel");
                 await editGlobalFilterLabel(uniqueFilterName);
                 await editGlobalFilterDefaultValue("Default Value");
                 await selectFieldMatching("name");

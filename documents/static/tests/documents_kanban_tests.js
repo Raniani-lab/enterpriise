@@ -2124,9 +2124,7 @@ QUnit.module("documents", {}, function () {
                 assert.containsOnce(target, ".o_inspector_tag", "should display one tag");
             });
 
-            QUnit.test("document inspector: add a tag", async function (assert) {
-                assert.expect(8);
-
+            QUnit.test("document inspector: add a tag [REQUIRE FOCUS]", async function (assert) {
                 const [lastDocumentsTagId] = pyEnv["documents.tag"].search([
                     ["display_name", "=", "No stress"],
                 ]);
@@ -2134,11 +2132,11 @@ QUnit.module("documents", {}, function () {
                     type: "kanban",
                     resModel: "documents.document",
                     arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
-                    <div>
-                        <i class="fa fa-circle-thin o_record_selector"/>
-                        <field name="name"/>
-                    </div>
-                </t></templates></kanban>`,
+                                <div>
+                                    <i class="fa fa-circle-thin o_record_selector"/>
+                                    <field name="name"/>
+                                </div>
+                            </t></templates></kanban>`,
                     mockRPC: function (route, args) {
                         if (args.method === "write") {
                             assert.deepEqual(
@@ -2157,36 +2155,17 @@ QUnit.module("documents", {}, function () {
                     },
                 });
 
-                await legacyClick(
-                    target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
-                );
-                await legacyClick(target.querySelector(".o_kanban_record"));
-                await legacyClick(
-                    target.querySelector(".o_kanban_record:nth-of-type(2) .o_record_selector")
-                );
-
-                const input = target.querySelector(".o_inspector_tags input");
-
-                assert.notOk(
-                    input === document.activeElement,
-                    "the tag input should not be focused"
-                );
-
-                legacyClick(input);
+                await click(".o_search_panel_category_value:nth-of-type(2) header");
+                await click(":nth-child(1 of .o_kanban_record)");
+                await click(".o_kanban_record:nth-of-type(2) .o_record_selector");
+                await click(".o_inspector_tags input:not(:focus)");
                 await contains(".o_inspector_tags ul li", { count: 2 });
-                assert.containsOnce(target, ".o_inspector_tag");
-
-                editInput(input, null, "stress");
-                await contains(".o_inspector_tags ul:not(:contains(Status))");
-
-                legacyClick(target.querySelector(".o_inspector_tags ul li"));
+                await contains(".o_inspector_tag");
+                await insertText(".o_inspector_tags input", "stress");
+                await contains(".o_inspector_tags ul", { count: 0, text: "Status" });
+                await click(".o_inspector_tags ul li");
                 await contains(".o_inspector_tag", { count: 2 });
-
-                assert.strictEqual(
-                    input,
-                    document.activeElement,
-                    "the tag input should be focused"
-                );
+                await contains(".o_inspector_tags input:focus");
             });
 
             QUnit.test(

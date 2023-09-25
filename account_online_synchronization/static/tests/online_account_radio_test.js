@@ -61,15 +61,23 @@ QUnit.module("Views", {}, function () {
             },
         });
         await openFormView("account.bank.selection", bankSelection);
-        await contains(".o_radio_input", { count: 2 });
-        await contains(".o_radio_item p:eq(0)", { text: "$ 10.0" });
-        await contains(".o_radio_item label:eq(0)", { text: "account_1" });
-        await contains(".o_radio_item p:eq(1)", { text: "$ 20.0" });
-        await contains(".o_radio_item label:eq(1)", { text: "account_2" });
-        await contains(".o_radio_input:eq(0):checked");
-        await contains(".o_radio_input:eq(1):checked", { count: 0 });
-        await click(".o_radio_input:eq(1)");
-        await contains(".o_radio_input:eq(0):checked", { count: 0 });
-        await contains(".o_radio_input:eq(1):checked");
+        await contains(".o_radio_item", { count: 2 });
+        await contains(":nth-child(1 of .o_radio_item)", {
+            containsMulti: [
+                ["p", { text: "$ 10.0" }],
+                ["label", { text: "account_1" }],
+                [".o_radio_input:checked"],
+            ],
+        });
+        await contains(":nth-child(2 of .o_radio_item)", {
+            containsMulti: [
+                ["p", { text: "$ 20.0" }],
+                ["label", { text: "account_2" }],
+                [".o_radio_input:not(:checked)"],
+            ],
+        });
+        await click(":nth-child(2 of .o_radio_item) .o_radio_input");
+        await contains(":nth-child(1 of .o_radio_item) .o_radio_input:not(:checked)");
+        await contains(":nth-child(2 of .o_radio_item) .o_radio_input:checked");
     });
 });

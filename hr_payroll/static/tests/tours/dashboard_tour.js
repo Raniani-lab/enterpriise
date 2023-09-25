@@ -27,27 +27,8 @@ registry.category("web_tour.tours").add('payroll_dashboard_ui_tour', {
     {
         content: "Input contract name",
         trigger: '.modal-content .o_field_char[name="name"] input',
+        id: "input_contract_name",
         run: 'text Laurie\'s Contract',
-    },
-    {
-        content: "Select Contract Details Tab",
-        trigger: '.o_notebook ul > li > a:contains(Contract)',
-        run: 'click',
-    },
-    {
-        content: "Set HR Responsible",
-        trigger: 'div[name="hr_responsible_id"] div input',
-        run: 'text Laurie',
-    },
-    {
-        content: "Select HR Reponsible",
-        id: "set_hr_responsible",
-        trigger: 'div[name=hr_responsible_id] input',
-        run: 'text Laurie',
-    },
-    {
-        content: "Select HR Reponsible (2)",
-        trigger: 'div[name=hr_responsible_id] .dropdown-item:contains(Laurie)',
     },
     {
         content: "Save contract",

@@ -158,8 +158,13 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget',
             trigger: ".ui-autocomplete:visible li:contains('Sales')",
         },
         {
+            content: "Tax column appears in list of lines",
+            trigger: "div[name='line_ids'] td[field='tax_ids']",
+            run: () => {},
+        },
+        {
             content: "Validate",
-            extra_trigger: "div[name='line_ids'] td[field='tax_ids']",
+            extra_trigger: "button.btn-primary:contains('Validate')",
             trigger: "button:contains('Validate')",
         },
         {

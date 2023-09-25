@@ -670,6 +670,19 @@ class AccountReport(models.Model):
 
         return date_from, date_to, allow_include_initial_balance
 
+    def build_domain_from_period(self, period):
+        if period != "total" and period[-1].isdigit():
+            period_number = int(period[-1])
+            if period_number == 0:
+                domain = [('date_maturity', '>=', datetime.date.today())]
+            else:
+                period_end = datetime.date.today() - datetime.timedelta(30*(period_number-1)+1)
+                period_start = datetime.date.today() - datetime.timedelta(30*(period_number))
+                domain = [('date_maturity', '>=', period_start), ('date_maturity', '<=', period_end)]
+        else:
+            domain = []
+        return domain
+
     ####################################################
     # OPTIONS: analytic filter
     ####################################################
@@ -3792,6 +3805,26 @@ class AccountReport(models.Model):
         action['domain'] = [('state', '=', 'draft'), ('date', '<=', options['date']['date_to'])]
         #overwrite the context to avoid default filtering on 'misc' journals
         action['context'] = {}
+        return action
+
+    def action_open_payment_items_with_options(self, options=None):
+        action = self.env['ir.actions.actions']._for_xml_id('account.action_open_payment_items')
+        if options:
+            domain = ast.literal_eval(action['domain'])
+            if options.get('domain'):
+                options_domain = ast.literal_eval(options.get('domain'))
+                domain += options_domain
+            model_info = self._get_model_info_from_id(options['line']['id'])
+            if model_info[0] == 'res.partner':
+                domain.append(('partner_id', '=', model_info[1]))
+            elif model_info[0] == 'account.move.line':
+                domain.append(('move_name', '=', self.env[model_info[0]].search([('id', '=', model_info[1])]).move_name))
+
+            if options.get('period'):
+                domain.extend(
+                    self.build_domain_from_period(options.get('period'))
+                )
+            action['domain'] = domain
         return action
 
     def _get_generated_deferral_entries_domain(self, options):

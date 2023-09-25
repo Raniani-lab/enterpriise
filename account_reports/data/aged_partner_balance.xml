@@ -294,42 +294,49 @@
                         <field name="engine">custom</field>
                         <field name="formula">_report_custom_engine_aged_payable</field>
                         <field name="subformula">period0</field>
+                        <field name="auditable" eval="True"/>
                     </record>
                     <record id="aged_payable_line_period1" model="account.report.expression">
                         <field name="label">period1</field>
                         <field name="engine">custom</field>
                         <field name="formula">_report_custom_engine_aged_payable</field>
                         <field name="subformula">period1</field>
+                        <field name="auditable" eval="True"/>
                     </record>
                     <record id="aged_payable_line_period2" model="account.report.expression">
                         <field name="label">period2</field>
                         <field name="engine">custom</field>
                         <field name="formula">_report_custom_engine_aged_payable</field>
                         <field name="subformula">period2</field>
+                        <field name="auditable" eval="True"/>
                     </record>
                     <record id="aged_payable_line_period3" model="account.report.expression">
                         <field name="label">period3</field>
                         <field name="engine">custom</field>
                         <field name="formula">_report_custom_engine_aged_payable</field>
                         <field name="subformula">period3</field>
+                        <field name="auditable" eval="True"/>
                     </record>
                     <record id="aged_payable_line_period4" model="account.report.expression">
                         <field name="label">period4</field>
                         <field name="engine">custom</field>
                         <field name="formula">_report_custom_engine_aged_payable</field>
                         <field name="subformula">period4</field>
+                        <field name="auditable" eval="True"/>
                     </record>
                     <record id="aged_payable_line_period5" model="account.report.expression">
                         <field name="label">period5</field>
                         <field name="engine">custom</field>
                         <field name="formula">_report_custom_engine_aged_payable</field>
                         <field name="subformula">period5</field>
+                        <field name="auditable" eval="True"/>
                     </record>
                     <record id="aged_payable_line_total" model="account.report.expression">
                         <field name="label">total</field>
                         <field name="engine">custom</field>
                         <field name="formula">_report_custom_engine_aged_payable</field>
                         <field name="subformula">total</field>
+                        <field name="auditable" eval="True"/>
                     </record>
                 </field>
             </record>

@@ -18,6 +18,7 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
             'css_custom_class': 'age_partner_balance',
             'components': {
                 'AccountReportLineName': 'account_reports.AgedPartnerBalanceLineName',
+                'AccountReportLineCell': 'account_reports.AgedPartnerBalanceLineCell',
             },
         }
 

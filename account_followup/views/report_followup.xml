@@ -2,6 +2,9 @@
 <odoo>
     <data>
         <template id="template_followup_report">
+           <!-- doc is a 'res.partner' -->
+           <t t-set="report" t-value="doc.env['account.followup.report']"/>
+           <t t-set="options" t-value="report._get_followup_report_options(doc, options)"/>
             <div class='o_account_reports_body'>
                 <div class="o_account_reports_page o_account_reports_no_print o_account_followup">
                     <t t-call="account_followup.followup_filter_info_template"/>
@@ -10,13 +13,14 @@
                         <div class="print_only">
                             <h2>
                             <strong>
-                                <t t-out="report_title"/>
+                                Payment Reminder
                             </strong>
                             </h2>
                         </div>
                     </div>
 
                     <div class="o_account_reports_summary">
+                        <t t-set="report_summary" t-value="report._get_main_body(options)"/>
                         <div class="o_account_report_summary" role="alert">
                             <span class="o_account_report_summary_content">
                                 <t t-out="report_summary" t-options="{'widget': 'text'}"/>
@@ -26,12 +30,12 @@
 
                     <div>
                         <table class="o_account_reports_table" t-att-width="'100%'" style="page-break-inside: avoid">
-                            <t t-call="account_followup.table_header_template_followup_report"/>
+                            <t t-call="account_followup.table_header_template_followup_report">
+                                <t t-set="column_headers" t-value="[report._get_followup_report_columns_name()]"/>
+                            </t>
 
-                            <t t-if="lines.get('lines')">
-                                <t t-call="account_followup.line_template">
-                                    <t t-set="lines" t-value="lines.get('lines')"/>
-                                </t>
+                            <t t-call="account_followup.line_template">
+                                <t t-set="lines" t-value="report._get_followup_report_lines(options)"/>
                             </t>
                         </table>
                     </div>
@@ -41,8 +45,9 @@
 
         <template id="followup_filter_info_template">
             <div t-if='context.get("mail") != True' class="print_only" style='margin-bottom: 20px;'>
+                <t t-set="invoice_address_id" t-value="doc.env['res.partner'].browse(doc.address_get(['invoice'])['invoice'])"/>
                 <t t-if="invoice_address_id" t-set="partner_addr" t-value="invoice_address_id"/>
-                <t t-else="" t-set="partner_addr" t-value="partner"/>
+                <t t-else="" t-set="partner_addr" t-value="doc"/>
 
                 <t t-if="context.get('snailmail_layout')" t-set="contact_widget_fields" t-value="['address', 'name']"/>
                 <t t-else="" t-set="contact_widget_fields" t-value="['address', 'name', 'phone']"/>
@@ -56,7 +61,7 @@
                 </div>
 
                 <p style="margin-top: 35px;">
-                    Date: <span t-out="today" t-options="{'widget': 'date'}"/><br/>
+                    Date: <span t-out="datetime.date.today()" t-options="{'widget': 'date'}"/><br/>
                     <t t-if='partner_addr.ref'>Customer ref: <span t-field="partner_addr.ref"/></t>
                 </p>
             </div>
@@ -64,7 +69,7 @@
 
         <template id="table_header_template_followup_report">
             <thead class="o_account_reports_header_hierarchy">
-                <t t-foreach="lines.get('columns_header')" t-as="header_line">
+                <t t-foreach="column_headers" t-as="header_line">
                     <tr>
                         <t t-foreach="header_line" t-as="cell">
                             <th t-att-class="'acc_rep_column_header ' + (cell.get('class', ''))"
@@ -133,7 +138,9 @@
                         <t t-set="fallback_address" t-value="doc.browse(doc.address_get(['invoice'])['invoice']) or doc"/>
                         <t t-call-assets="account_followup.assets_followup_report" />
                         <div class="page">
-                            <span t-out="doc.get_followup_html(options)"/>
+                            <t t-call="account_followup.template_followup_report">
+                                <t t-set="context" t-value="doc.env.context"/>
+                            </t>
                         </div>
                     </t>
                     <t t-if="(options or {}).get('join_invoices', doc.followup_line_id.join_invoices)" t-foreach="doc._get_invoices_to_print(options)" t-as="o">

@@ -23,20 +23,26 @@ class AccountFollowupReport(models.AbstractModel):
         Return the html of the followup report, based on the report options.
         """
         template = 'account_followup.template_followup_report'
-        render_values = self._get_followup_report_html_render_values(options)
-
-        headers = [self._get_followup_report_columns_name()]
-        lines = self._get_followup_report_lines(options)
-
-        # Catch negative numbers when present
-        for line in lines:
-            for col in line['columns']:
-                if self.env.company.currency_id.compare_amounts(col.get('no_format', 0.0), 0.0) == -1:
-                    col['class'] = 'number color-red'
-
-        render_values['lines'] = {'columns_header': headers, 'lines': lines}
-
+        partner = self.env['res.partner'].browse(options['partner_id'])
+        render_values = {
+            'doc': partner,
+            'lang': partner.lang or get_lang(self.env).code,
+            'options': options,
+            'context': self.env.context,
+        }
         return self.env['ir.qweb']._render(template, render_values)
+
+    def _get_followup_report_options(self, partner, options=None):
+        """
+        Compute the report options for a given partner.
+        """
+        options = options or {}
+        options.update({
+            'partner_id': partner.id,
+            'followup_line': options.get('followup_line_id', partner.followup_line_id),
+            'context': self.env.context,
+        })
+        return options
 
     def _get_followup_report_lines(self, options):
         """
@@ -179,21 +185,14 @@ class AccountFollowupReport(models.AbstractModel):
         # Remove the last empty line
         if lines:
             lines.pop()
-        return lines
 
-    def _get_followup_report_html_render_values(self, options):
-        partner = self.env['res.partner'].browse(options['partner_id'])
-        return {
-            'partner': partner,
-            'lang': partner.lang or get_lang(self.env).code,
-            'invoice_address_id': self.env['res.partner'].browse(partner.address_get(['invoice'])['invoice']),
-            'today': fields.date.today().strftime(DEFAULT_SERVER_DATE_FORMAT),
-            'report_summary': self._get_main_body(options),
-            'report_title': _("Payment Reminder"),
-            'followup_line': options.get('followup_line_id', partner.followup_line_id),
-            'options': options,
-            'context': self.env.context,
-        }
+        # Catch negative numbers when present
+        for line in lines:
+            for col in line['columns']:
+                if self.env.company.currency_id.compare_amounts(col.get('no_format', 0.0), 0.0) == -1:
+                    col['class'] = 'number color-red'
+
+        return lines
 
     @api.model
     def _followup_report_format_aml_name(self, line_name, move_ref, move_name=None):

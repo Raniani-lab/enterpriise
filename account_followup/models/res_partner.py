@@ -347,7 +347,6 @@ class ResPartner(models.Model):
         options.update({
             'partner_id': self.id,
             'followup_line_id': self.followup_line_id,
-            'keep_summary': True
         })
         return self.env['account.followup.report'].with_context(print_mode=True, lang=self.lang or self.env.user.lang).get_followup_report_html(options)
 

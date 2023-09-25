@@ -14,11 +14,6 @@ class AccountFollowupReport(models.AbstractModel):
     _name = 'account.followup.report'
     _description = "Follow-up Report"
 
-    # This report, while not an account.report per se, still uses (inherited) templates from account_reports
-    main_table_header_template = 'account_followup.table_header_template_followup_report'
-
-    filter_show_draft = False
-
     ####################################################
     # REPORT COMPUTATION - TEMPLATE RENDERING
     ####################################################
@@ -187,8 +182,6 @@ class AccountFollowupReport(models.AbstractModel):
         return lines
 
     def _get_followup_report_html_render_values(self, options):
-        # Needed for account_reports templates
-        options['show_debug_column'] = False
         partner = self.env['res.partner'].browse(options['partner_id'])
         return {
             'partner': partner,
@@ -196,20 +189,10 @@ class AccountFollowupReport(models.AbstractModel):
             'invoice_address_id': self.env['res.partner'].browse(partner.address_get(['invoice'])['invoice']),
             'today': fields.date.today().strftime(DEFAULT_SERVER_DATE_FORMAT),
             'report_summary': self._get_main_body(options),
-            'report': self,
             'report_title': _("Payment Reminder"),
-            'report_company_name': self.env.company.name,
-            'followup_report_email_subject': self._get_email_subject(options),
             'followup_line': options.get('followup_line_id', partner.followup_line_id),
             'options': options,
             'context': self.env.context,
-            'model': self,
-            'table_end': markupsafe.Markup('''
-                </tbody></table>
-                <div style="page-break-after: always"></div>
-                <table class="o_account_reports_table table-hover">
-            '''),
-            'table_start': markupsafe.Markup('<tbody>'),
         }
 
     @api.model
@@ -231,10 +214,6 @@ class AccountFollowupReport(models.AbstractModel):
             names.append(line_name)
         name = '-'.join(names)
         return name
-
-    def _get_caret_options(self):
-        # Method needed by the account_reports.main_template template, but unused for the followup report
-        return {}
 
     ####################################################
     # DEFAULT BODY AND EMAIL SUBJECT

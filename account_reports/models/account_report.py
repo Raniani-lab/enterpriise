@@ -1875,12 +1875,12 @@ class AccountReport(models.Model):
         """
         self.ensure_one()
 
-        if options['report_id'] != self.id:
-            if on_sections_source:
-                report_to_call = self.env['account.report'].browse(options['sections_source_id'])
-                options = report_to_call.get_options(previous_options={**options, 'no_report_reroute': True})
-                return report_to_call.dispatch_report_action(options, action, action_param=action_param, on_sections_source=on_sections_source)
+        if on_sections_source:
+            report_to_call = self.env['account.report'].browse(options['sections_source_id'])
+            options = report_to_call.get_options(previous_options={**options, 'no_report_reroute': True})
+            return report_to_call.dispatch_report_action(options, action, action_param=action_param, on_sections_source=False)
 
+        if options['report_id'] != self.id:
             raise UserError(_("Trying to dispatch an action on a report not compatible with the provided options."))
 
         check_method_name(action)

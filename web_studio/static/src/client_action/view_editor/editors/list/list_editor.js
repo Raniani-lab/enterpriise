@@ -8,11 +8,7 @@ import { ListEditorRenderer, columnsStyling } from "./list_editor_renderer";
 
 import { Component, xml } from "@odoo/owl";
 import { ListEditorSidebar } from "./list_editor_sidebar/list_editor_sidebar";
-import {
-    getStudioNoFetchFields,
-    useExternalParentInModel,
-    useModelConfigFetchInvisible,
-} from "../utils";
+import { getStudioNoFetchFields, useModelConfigFetchInvisible } from "../utils";
 
 function parseStudioGroups(node) {
     if (node.hasAttribute("studio_groups")) {
@@ -56,7 +52,7 @@ class EditorArchParser extends listView.ArchParser {
 
 /**
  * X2Many fields can have their subview edited. There are some challenges currently with the RelationalModel
- * - We need to inject the context of the parent record from the outside. That way, within the subview's arch
+ * - We need to inject the parent record in the evalContext. That way, within the subview's arch
  *   a snippet like `<field name="..." invisible="not parent.id" />` works.
  * - We already know the resIds we have, since we are coming from a x2m. There is no need to search_read them, just to read them
  * - The RelationalModel doesn't really supports creatic staticLists as the root record
@@ -72,12 +68,11 @@ function useParentedStaticList(model, parentRecord, resIds) {
     config.limit = Math.max(7, resIds.length); // don't load everything
 
     model._createRoot = (config, data) => {
-        const list = new model.constructor.StaticList(model, { ...config }, data);
-        list._parent = { evalContext: config.context.parent };
+        const options = { parent: parentRecord };
+        const list = new model.constructor.StaticList(model, { ...config }, data, options);
         list.selection = [];
         return list;
     };
-    useExternalParentInModel(model, parentRecord);
 }
 
 class ListEditorController extends listView.Controller {

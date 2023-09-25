@@ -34,11 +34,13 @@ class OneRecordModel extends kanbanView.Model {
                     fields: list.config.fields,
                     activeFields: list.config.activeFields,
                     groupByFieldName: list.groupBy[0],
+                    context: list.context,
                     list: {
                         resModel: list.config.resModel,
                         fields: list.config.fields,
                         activeFields: list.config.activeFields,
                         groupBy: [],
+                        context: list.context,
                     },
                 };
 

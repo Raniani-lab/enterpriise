@@ -11,6 +11,7 @@ from unittest.mock import patch
 from odoo.addons.mail.tests.common import MailCommon, mail_new_test_user
 from odoo.addons.whatsapp.tools.whatsapp_api import WhatsAppApi
 from odoo.addons.whatsapp.models.whatsapp_message import WhatsAppMessage
+from odoo.addons.whatsapp.tests.template_data import template_data
 from odoo.addons.whatsapp.tools.whatsapp_exception import WhatsAppError
 from odoo.tests import common
 
@@ -28,12 +29,35 @@ class MockOutgoingWhatsApp(common.BaseCase):
         # Whatsapp API
         # ------------------------------------------------------------
 
+        def _get_all_template():
+            return template_data
+
+        def _get_template_data(wa_template_uid):
+            for tmpl in template_data["data"]:
+                if tmpl["id"] == wa_template_uid:
+                    return tmpl
+            return {}
+
         def _send_whatsapp(number, *, send_vals, **kwargs):
             if send_vals:
                 msg_uid = f'test_wa_{time.time():.9f}'
                 self._wa_msg_sent.append(msg_uid)
                 return msg_uid
             raise WhatsAppError("Please make sure to define a template before proceeding.")
+
+        def _submit_template_new(json_data):
+            if json_data:
+                return {
+                    "id": f"{time.time():.15f}",
+                    "status": "PENDING",
+                    "category": "MARKETING",
+                }
+            raise WhatsAppError("Please make sure to define a template before proceeding.")
+
+        def _upload_demo_document(attachment):
+            if attachment:
+                return "2:c2SpecFlow6karmaFsdWU="
+            raise WhatsAppError("There is no attachment to upload.")
 
         def _upload_whatsapp_document(attachment):
             if attachment:
@@ -59,8 +83,12 @@ class MockOutgoingWhatsApp(common.BaseCase):
             return res
 
         try:
-            with patch.object(WhatsAppApi, '_upload_whatsapp_document', side_effect=_upload_whatsapp_document), \
+            with patch.object(WhatsAppApi, '_get_all_template', side_effect=_get_all_template), \
+                 patch.object(WhatsAppApi, '_get_template_data', side_effect=_get_template_data), \
+                 patch.object(WhatsAppApi, '_upload_demo_document', side_effect=_upload_demo_document), \
+                 patch.object(WhatsAppApi, '_upload_whatsapp_document', side_effect=_upload_whatsapp_document), \
                  patch.object(WhatsAppApi, '_send_whatsapp', side_effect=_send_whatsapp), \
+                 patch.object(WhatsAppApi, '_submit_template_new', side_effect=_submit_template_new), \
                  patch.object(WhatsAppMessage, 'create', autospec=True, wraps=WhatsAppMessage, side_effect=_wa_message_create):
                 yield
         finally:
@@ -77,6 +105,41 @@ class MockIncomingWhatsApp(common.HttpCase):
     # ------------------------------------------------------------
     # TOOLS FOR SIMULATING RECEPTION
     # ------------------------------------------------------------
+
+    def _get_message_signature(self, account, message_data):
+        return hmac.new(
+            account.app_secret.encode(),
+            msg=message_data.encode(),
+            digestmod=hashlib.sha256,
+        ).hexdigest()
+
+    def _receive_template_update(self, field, account, data):
+        """ Simulate reception of a template update from WhatsApp API.
+
+        param field: field to update (e.g. "message_template_status_update")
+        param account: whatsapp.account
+        param data: data to send in the request (e.g. {"event": "APPROVED"})
+        """
+        data = json.dumps({
+            "entry": [{
+                "id": account.account_uid,
+                "changes": [
+                    {
+                        "field": field,
+                        "value": data,
+                    }
+                ]
+            }]
+        })
+
+        return self._make_webhook_request(
+            account,
+            message_data=data,
+            headers={
+                "Content-Type": "application/json",
+                "X-Hub-Signature-256": f"sha256={self._get_message_signature(account, data)}",
+            }
+        )
 
     def _receive_whatsapp_message(self, account, body, sender_phone_number, additional_message_values=None):
         message_data = json.dumps({
@@ -99,18 +162,12 @@ class MockIncomingWhatsApp(common.HttpCase):
             }]
         })
 
-        message_signature = hmac.new(
-            self.whatsapp_account.app_secret.encode(),
-            msg=message_data.encode(),
-            digestmod=hashlib.sha256,
-        ).hexdigest()
-
         return self._make_webhook_request(
             account,
             message_data=message_data,
             headers={
                 "Content-Type": "application/json",
-                "X-Hub-Signature-256": f"sha256={message_signature}",
+                "X-Hub-Signature-256": f"sha256={self._get_message_signature(account, message_data)}",
             }
         )
 
@@ -241,11 +298,50 @@ class WhatsAppCase(MockOutgoingWhatsApp):
     # TEMPLATE ASSERTS
     # ------------------------------------------------------------
 
+    def assertWATemplate(self, template, status='pending', fields_values=None, attachment_values=None, template_variables=None):
+        """ Assert content of WhatsApp template.
+
+        :param <whatsapp.template> template: whatsapp template whose content
+          is going to be checked;
+        :param str status: one of whatsapp.template.status field value;
+        :param dict fields_values: if given, should be a dictionary of field
+          names / values allowing to check template content (e.g. body);
+        :param dict attachment_values: if given, should be a dictionary of field
+          names / values allowing to check attachment values (e.g. mimetype);
+        """
+        # check base template data
+        self.assertEqual(template.status, status,
+                         f'whatsapp.template invalid status: found {template.status}, expected {status}')
+
+        # check template content
+        for fname, fvalue in (fields_values or {}).items():
+            with self.subTest(fname=fname, fvalue=fvalue):
+                self.assertEqual(
+                    template[fname], fvalue,
+                    f'whatsapp.template: expected {fvalue} for {fname}, got {template[fname]}'
+                )
+
+        if attachment_values:
+            # check attachment values
+            attachment = template.attachment_ids
+            # only support one attachment for whatsapp templates
+            self.assertEqual(len(attachment), 1, 'whatsapp.template: should have only one attachment')
+
+            for fname, fvalue in (attachment_values).items():
+                with self.subTest(fname=fname, fvalue=fvalue):
+                    attachment_value = attachment[fname]
+                    self.assertEqual(
+                        attachment_value, fvalue,
+                        f'whatsapp.template invalid attachment: expected {fvalue} for {fname}, got {attachment_value}'
+                    )
+        if template_variables:
+            self.assertWATemplateVariables(template, template_variables)
+
     def assertWATemplateVariables(self, template, expected_variables):
         for (exp_name, exp_line_type, exp_field_type, exp_vals) in expected_variables:
             with self.subTest(exp_name=exp_name):
                 tpl_variable = template.variable_ids.filtered(
-                    lambda v: v.name == exp_name
+                    lambda v: v.name == exp_name and v.line_type == exp_line_type
                 )
                 self.assertTrue(tpl_variable)
                 self.assertEqual(tpl_variable.field_type, exp_field_type)

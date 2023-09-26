@@ -4925,11 +4925,17 @@ class AccountReport(models.Model):
                 raise UserError(_("Field %s of account.move.line is not stored, and hence cannot be used in a groupby expression", field_name))
 
     # ============ Accounts Coverage Debugging Tool - START ================
-    @api.depends('country_id', 'root_report_id')
+    @api.depends('country_id', 'chart_template', 'root_report_id')
     def _compute_is_account_coverage_report_available(self):
         for report in self:
             report.is_account_coverage_report_available = (
-                self.env.company.account_fiscal_country_id == self.country_id
+                (
+                    self.availability_condition == 'country' and self.env.company.account_fiscal_country_id == self.country_id
+                    or
+                    self.availability_condition == 'coa' and self.env.company.chart_template == self.chart_template
+                    or
+                    self.availability_condition == 'always'
+                )
                 and
                 self.root_report_id in (self.env.ref('account_reports.profit_and_loss'), self.env.ref('account_reports.balance_sheet'))
             )

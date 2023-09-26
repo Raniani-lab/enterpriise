@@ -60,6 +60,7 @@ class L10nMxEdiDocument(models.Model):
     )
 
     cancel_payment_button_needed = fields.Boolean(compute='_compute_cancel_payment_button_needed')
+    retry_button_needed = fields.Boolean(compute='_compute_retry_button_needed')
 
     # -------------------------------------------------------------------------
     # COMPUTE
@@ -72,6 +73,19 @@ class L10nMxEdiDocument(models.Model):
                 doc.state == 'payment_sent'
                 and doc.move_id.l10n_mx_edi_cfdi_state == 'sent'
             )
+
+    @api.model
+    def _get_retry_button_map(self):
+        return {
+            'invoice_sent_failed': lambda x: x.move_id._l10n_mx_edi_cfdi_invoice_try_send(),
+            'invoice_cancel_failed': lambda x: x.move_id._l10n_mx_edi_cfdi_invoice_try_cancel(),
+        }
+
+    @api.depends('state')
+    def _compute_retry_button_needed(self):
+        doc_state_mapping = self._get_retry_button_map()
+        for doc in self:
+            doc.retry_button_needed = doc.state in doc_state_mapping
 
     # -------------------------------------------------------------------------
     # BUTTON ACTIONS
@@ -102,6 +116,11 @@ class L10nMxEdiDocument(models.Model):
         """ Cancel a payment document. """
         self.ensure_one()
         self.move_id._l10n_mx_edi_cfdi_payment_try_cancel()
+
+    def action_retry(self):
+        """ Retry the cancellation of invoices. """
+        self.ensure_one()
+        self._get_retry_button_map()[self.state](self)
 
     # -------------------------------------------------------------------------
     # CFDI: HELPERS

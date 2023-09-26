@@ -21,6 +21,13 @@ class L10nMxEdiDocument(models.Model):
         },
     )
 
+    def _get_retry_button_map(self):
+        # EXTENDS 'l10n_mx_edi'
+        results = super()._get_retry_button_map()
+        results['picking_sent_failed'] = lambda x: x.picking_id.l10n_mx_edi_cfdi_try_send()
+        results['picking_cancel_failed'] = lambda x: x.picking_id.l10n_mx_edi_cfdi_try_cancel()
+        return results
+
     @api.model
     def _create_update_picking_document(self, picking, document_values):
         """ Create/update a new document for picking.

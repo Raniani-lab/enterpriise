@@ -22,6 +22,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
                 'message': "No PAC specified.",
                 'state': 'invoice_sent_failed',
                 'sat_state': False,
+                'retry_button_needed': True,
             },
         ])
         self.assertRecordValues(invoice, [{'l10n_mx_edi_cfdi_state': None}])
@@ -29,7 +30,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
         # Set back the PAC but make it raising an error.
         self.env.company.l10n_mx_edi_pac = 'solfact'
         with freeze_time('2017-01-06'), self.with_mocked_pac_sign_error():
-            invoice._l10n_mx_edi_cfdi_invoice_try_send()
+            invoice.l10n_mx_edi_invoice_document_ids.action_retry()
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids, [
             {
                 'move_id': invoice.id,
@@ -37,6 +38,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
                 'message': "turlututu",
                 'state': 'invoice_sent_failed',
                 'sat_state': False,
+                'retry_button_needed': True,
             },
         ])
         self.assertRecordValues(invoice, [{'l10n_mx_edi_cfdi_state': None}])
@@ -53,6 +55,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'message': False,
             'state': 'invoice_sent',
             'sat_state': 'not_defined',
+            'retry_button_needed': False,
         }
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids, [sent_doc_values])
         self.assertTrue(invoice.l10n_mx_edi_cfdi_attachment_id)
@@ -70,6 +73,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
                 'message': "No PAC specified.",
                 'state': 'invoice_cancel_failed',
                 'sat_state': False,
+                'retry_button_needed': True,
             },
             sent_doc_values,
         ])
@@ -77,7 +81,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
         # Set back the PAC but make it raising an error.
         self.env.company.l10n_mx_edi_pac = 'solfact'
         with freeze_time('2017-02-06'), self.with_mocked_pac_cancel_error():
-            invoice._l10n_mx_edi_cfdi_invoice_try_cancel()
+            invoice.l10n_mx_edi_invoice_document_ids.sorted()[0].action_retry()
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
             {
                 'move_id': invoice.id,
@@ -85,6 +89,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
                 'message': "turlututu",
                 'state': 'invoice_cancel_failed',
                 'sat_state': False,
+                'retry_button_needed': True,
             },
             sent_doc_values,
         ])
@@ -98,6 +103,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'message': False,
             'state': 'invoice_cancel',
             'sat_state': 'not_defined',
+            'retry_button_needed': False,
         }
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
             cancel_doc_values,
@@ -119,6 +125,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'message': False,
             'state': 'invoice_sent',
             'sat_state': 'not_defined',
+            'retry_button_needed': False,
         }
         sent_doc_values['sat_state'] = 'skip'
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
@@ -156,6 +163,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
                 'message': "turlututu",
                 'state': 'payment_sent_failed',
                 'sat_state': False,
+                'retry_button_needed': False,
             },
             sent_doc_values2,
             cancel_doc_values,
@@ -189,6 +197,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
                 'message': "turlututu",
                 'state': 'payment_sent_failed',
                 'sat_state': False,
+                'retry_button_needed': False,
             },
             sent_doc_values2,
             cancel_doc_values,
@@ -205,6 +214,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'message': False,
             'state': 'payment_sent',
             'sat_state': 'not_defined',
+            'retry_button_needed': False,
         }
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
             payment1_doc_values1,
@@ -242,6 +252,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'message': False,
             'state': 'payment_sent',
             'sat_state': 'not_defined',
+            'retry_button_needed': False,
         }
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
             payment2_doc_values1,
@@ -261,6 +272,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'message': "turlututu",
             'state': 'invoice_cancel_failed',
             'sat_state': False,
+            'retry_button_needed': True,
         }
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
             cancel_doc_values2,
@@ -300,6 +312,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'message': False,
             'state': 'invoice_cancel',
             'sat_state': 'not_defined',
+            'retry_button_needed': False,
         })
         cancel_doc_values['sat_state'] = 'skip'
         self.assertRecordValues(

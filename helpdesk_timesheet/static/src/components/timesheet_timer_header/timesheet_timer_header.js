@@ -19,7 +19,6 @@ patch(TimesheetTimerHeader.prototype, {
             // Means helpdesk projects has not been fetched yet
             await this.helpdeskTimerService.fetchHelpdeskProjects();
         }
-        this._setHasHelpdeskProject();
     },
 
     /**
@@ -32,20 +31,11 @@ patch(TimesheetTimerHeader.prototype, {
                 // Means helpdesk projects has not been fetched yet
                 await this.helpdeskTimerService.fetchHelpdeskProjects();
             }
-            this._setHasHelpdeskProject(nextProps);
         }
     },
 
-    /**
-     * Set the hasHelpdeskProject according to the project set on the timesheet used for the timer
-     *
-     * If the selected project is linked to the helpdesk, the task field will be hidden and the ticket field will be displayed.
-     *
-     * @private
-     * @param props {Object} props of the component to use.
-     */
-    _setHasHelpdeskProject(props = this.props) {
-        const project = props.timesheet?.data?.project_id;
-        this.hasHelpdeskProject = Boolean(project) && this.helpdeskTimerService.helpdeskProjects?.includes(project[0]);
+    get hasHelpdeskProject() {
+        const project = this.props.timesheet?.data?.project_id;
+        return Boolean(project) && this.helpdeskTimerService.helpdeskProjects?.includes(project[0]);
     },
 });

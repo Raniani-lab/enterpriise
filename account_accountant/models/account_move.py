@@ -395,6 +395,23 @@ class AccountMoveLine(models.Model):
                 values['deferred_end_date'] = line.deferred_end_date
         return data_list
 
+    def write(self, vals):
+        """ Prevent changing the account of a move line when there are already deferral entries.
+        """
+        if 'account_id' in vals:
+            for line in self:
+                if (
+                    line.has_deferred_moves
+                    and line.deferred_start_date
+                    and line.deferred_end_date
+                    and vals['account_id'] != line.account_id.id
+                ):
+                    raise UserError(_(
+                        "You cannot change the account for a deferred line in %(move_name)s if it has already been deferred.",
+                        move_name=line.move_id.display_name
+                    ))
+        return super().write(vals)
+
     def _compute_has_deferred_moves(self):
         for line in self:
             line.has_deferred_moves = line.move_id.deferred_move_ids

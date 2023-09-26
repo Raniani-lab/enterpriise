@@ -28,6 +28,15 @@ class AccountAnalyticLine(models.Model):
             if not line.project_id or line.project_id != line.helpdesk_ticket_id.project_id:
                 line.helpdesk_ticket_id = False
 
+    @api.depends('helpdesk_ticket_id')
+    def _compute_project_id(self):
+        timesheets_with_ticket = self.filtered('helpdesk_ticket_id')
+        for timesheet in timesheets_with_ticket:
+            if not timesheet.helpdesk_ticket_id.project_id or timesheet.helpdesk_ticket_id.project_id == timesheet.project_id:
+                continue
+            timesheet.project_id = timesheet.helpdesk_ticket_id.project_id
+        super(AccountAnalyticLine, self - timesheets_with_ticket)._compute_project_id()
+
     @api.constrains('task_id', 'helpdesk_ticket_id')
     def _check_no_link_task_and_ticket(self):
         # Check if any timesheets are not linked to a ticket and a task at the same time

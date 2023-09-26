@@ -48,7 +48,10 @@ class DeferredReportCustomHandler(models.AbstractModel):
         options['columns'] = total_column + before_column + options['columns'] + later_column
         options['column_headers'] = []
         options['deferred_report_type'] = self._get_deferred_report_type()
-        if self.env.company.generate_deferred_entries_method == 'manual':
+        if (
+            self._get_deferred_report_type() == 'expense' and self.env.company.generate_deferred_expense_entries_method == 'manual'
+            or self._get_deferred_report_type() == 'revenue' and self.env.company.generate_deferred_revenue_entries_method == 'manual'
+        ):
             options['buttons'].append({'name': _('Generate entry'), 'action': 'action_generate_entry', 'sequence': 80, 'always_show': True})
 
     def _generate_deferral_entry(self, options):
@@ -263,7 +266,10 @@ class DeferredReportCustomHandler(models.AbstractModel):
 
         if warnings is not None:
             already_generated = (
-                self.env.company.generate_deferred_entries_method == 'manual'
+                (
+                    self._get_deferred_report_type() == 'expense' and self.env.company.generate_deferred_expense_entries_method == 'manual'
+                    or self._get_deferred_report_type() == 'revenue' and self.env.company.generate_deferred_revenue_entries_method == 'manual'
+                )
                 and self.env['account.move'].search_count(
                     report._get_generated_deferral_entries_domain(options)
                 )

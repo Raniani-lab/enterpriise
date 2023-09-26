@@ -62,7 +62,7 @@ class AccountMove(models.Model):
         # Deferred management
         posted = super()._post(soft)
         for move in self:
-            if move.company_id.generate_deferred_entries_method == 'on_validation' and any(move.line_ids.mapped('deferred_start_date')):
+            if move._get_deferred_entries_method() == 'on_validation' and any(move.line_ids.mapped('deferred_start_date')):
                 move._generate_deferred_entries()
         return posted
 
@@ -80,6 +80,12 @@ class AccountMove(models.Model):
         return super().button_draft()
 
     # ============================= START - Deferred Management ====================================
+
+    def _get_deferred_entries_method(self):
+        self.ensure_one()
+        if self.is_outbound():
+            return self.company_id.generate_deferred_expense_entries_method
+        return self.company_id.generate_deferred_revenue_entries_method
 
     @api.depends('deferred_original_move_ids')
     def _compute_deferred_entry_type(self):

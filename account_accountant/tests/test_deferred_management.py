@@ -123,12 +123,12 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
 
     def test_deferred_expense_generate_entries_method(self):
         # The deferred entries are NOT generated when the invoice is validated if the method is set to 'manual'.
-        self.company.generate_deferred_entries_method = 'manual'
+        self.company.generate_deferred_expense_entries_method = 'manual'
         move2 = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [self.expense_lines[0]], post=True)
         self.assertEqual(len(move2.deferred_move_ids), 0)
 
         # Test that the deferred entries are generated when the invoice is validated.
-        self.company.generate_deferred_entries_method = 'on_validation'
+        self.company.generate_deferred_expense_entries_method = 'on_validation'
         move = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [self.expense_lines[0]], post=True)
         self.assertEqual(len(move.deferred_move_ids), 5)  # 1 for the invoice deferred + 4 for the deferred entries
         # See test_deferred_expense_credit_note for the values
@@ -137,7 +137,6 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
         """
         Test that the deferred entries are deleted/reverted when the invoice is reset to draft.
         """
-        self.company.generate_deferred_entries_method = 'on_validation'
         move = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [(self.expense_accounts[0], 1680, '2023-01-21', '2023-04-14')], date='2023-03-15')
         self.assertEqual(len(move.deferred_move_ids), 5)
         move.button_draft()
@@ -212,7 +211,6 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
         """
         Test that the debit/credit values are correctly computed, even after a credit note is issued.
         """
-        self.company.generate_deferred_entries_method = 'on_validation'
 
         expected_line_values1 = [
             # Date         [Line expense] [Line deferred]
@@ -245,7 +243,6 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
         """
         Test that the debit/credit values are correctly computed when values are rounded
         """
-        self.company.generate_deferred_entries_method = 'on_validation'
 
         # Vendor Bill
         expense_line = [self.expense_accounts[0], 500, '2020-08-07', '2020-12-07']
@@ -284,7 +281,6 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
         on the last day of the month, but the full amount will be accounted for on the same day too, thus
         cancelling each other. Therefore we should not create the deferred entries.
         """
-        self.company.generate_deferred_entries_method = 'on_validation'
         move = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [(self.expense_accounts[0], 1680, '2023-01-01', '2023-01-31')], date='2023-01-01')
         self.assertEqual(len(move.deferred_move_ids), 0)
 
@@ -293,7 +289,6 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
         If we have an invoice covering only one period, we should only avoid creating deferral entries when the
         accounting date is the same as the period for the deferral. Otherwise we should still generate a deferral entry.
         """
-        self.company.generate_deferred_entries_method = 'on_validation'
         self.company.deferred_amount_computation_method = 'month'
         move = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [(self.expense_accounts[0], 1680, '2023-02-01', '2023-02-28')])
         self.assertRecordValues(move.deferred_move_ids, [
@@ -305,7 +300,6 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
         """
         Test that applicable taxes get deferred also when the dates of the base line are filled in after a first save.
         """
-        self.company.generate_deferred_entries_method = 'on_validation'
 
         expected_line_values = [
             # Date         [Line expense] [Line deferred]

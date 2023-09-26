@@ -64,8 +64,12 @@
                             <field name="deferred_revenue_account_id" domain="[('account_type', '=', 'liability_current'), ('deprecated', '=', False), ('company_id', '=', company_id)]"/>
                         </div>
                         <div class="row mt8">
-                            <label for="generate_deferred_entries_method" class="col-lg-5 o_light_label" string="Generate Entries" />
-                            <field name="generate_deferred_entries_method"/>
+                            <label for="generate_deferred_expense_entries_method" class="col-lg-5 o_light_label" string="Generate Expense Entries" />
+                            <field name="generate_deferred_expense_entries_method"/>
+                        </div>
+                        <div class="row mt8">
+                            <label for="generate_deferred_revenue_entries_method" class="col-lg-5 o_light_label" string="Generate Revenue Entries"/>
+                            <field name="generate_deferred_revenue_entries_method"/>
                         </div>
                         <div class="row mt8">
                             <label for="deferred_amount_computation_method" class="col-lg-5 o_light_label" string="Amount Computation" />

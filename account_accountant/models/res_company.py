@@ -27,10 +27,19 @@ class ResCompany(models.Model):
         comodel_name='account.account',
         string="Deferred Revenue",
     )
-    generate_deferred_entries_method = fields.Selection(
-        string="Generate Deferred Entries Method",
+    generate_deferred_expense_entries_method = fields.Selection(
+        string="Generate Deferred Expense Entries Method",
         selection=[
-            ('on_validation', 'On invoice/bill validation'),
+            ('on_validation', 'On bill validation'),
+            ('manual', 'Manually & Grouped'),
+        ],
+        default='on_validation',
+        required=True,
+    )
+    generate_deferred_revenue_entries_method = fields.Selection(
+        string="Generate Deferred Revenue Entries Method",
+        selection=[
+            ('on_validation', 'On invoice validation'),
             ('manual', 'Manually & Grouped'),
         ],
         default='on_validation',

@@ -44,10 +44,15 @@ class ResConfigSettings(models.TransientModel):
         readonly=False,
         related='company_id.deferred_revenue_account_id',
     )
-    generate_deferred_entries_method = fields.Selection(
-        related='company_id.generate_deferred_entries_method',
+    generate_deferred_expense_entries_method = fields.Selection(
+        related='company_id.generate_deferred_expense_entries_method',
         readonly=False, required=True,
-        help='Method used to generate deferred entries',
+        help='Method used to generate deferred expense entries',
+    )
+    generate_deferred_revenue_entries_method = fields.Selection(
+        related='company_id.generate_deferred_revenue_entries_method',
+        readonly=False, required=True,
+        help='Method used to generate deferred revenue entries',
     )
     deferred_amount_computation_method = fields.Selection(
         related='company_id.deferred_amount_computation_method',

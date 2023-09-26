@@ -4665,8 +4665,11 @@ class AccountReport(models.Model):
         """
         self.ensure_one()
 
-        if self.env.company.account_fiscal_country_id != self.country_id:
+        if self.availability_condition == 'country' and self.env.company.account_fiscal_country_id != self.country_id:
             raise UserError(_("The company's country does not match the report's country."))
+
+        if self.availability_condition == 'coa' and self.env.company.chart_template_id != self.chart_template_id:
+            raise UserError(_("The company's chart of account does not match the report's chart of accounts."))
 
         if self.root_report_id not in (self.env.ref('account_reports.profit_and_loss'), self.env.ref('account_reports.balance_sheet')):
             raise UserError(_("The Accounts Coverage Report is only available for the Profit and Loss and Balance Sheet reports."))

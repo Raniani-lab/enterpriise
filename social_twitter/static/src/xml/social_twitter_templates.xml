@@ -73,7 +73,7 @@
     </t>
 
     <t t-name="social_twitter.TwitterQuoteDialog">
-        <Dialog title="props.title" size="'md'" bodyClass="'o_social_quote_modal'">
+        <Dialog title="props.title" size="'md'" bodyClass="'o_social_quote_modal o_social_comments_modal'">
             <StreamPostCommentsReplyTwitterQuote
                     mediaSpecificProps="props.mediaSpecificProps"
                     originalPost="props.originalPost"/>

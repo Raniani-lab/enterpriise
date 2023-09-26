@@ -106,7 +106,8 @@ export class StreamPostKanbanController extends KanbanController {
                 { title: _t("Stream Added (%s)", streams[0].name), type: "success" }
             );
         } else {
-            this.model.load();
+            await this.model.load();
+            this.model.notify();
         }
     }
 

@@ -90,6 +90,7 @@ class HrPayslip(models.Model):
         readonly=False)
     paid = fields.Boolean(
         string='Made Payment Order? ', copy=False)
+    paid_date = fields.Date(string="Close Date", help="The date on which the payment is made to the employee.")
     note = fields.Text(string='Internal Note')
     contract_domain_ids = fields.Many2many('hr.contract', compute='_compute_contract_domain_ids')
     contract_id = fields.Many2one(
@@ -485,7 +486,10 @@ class HrPayslip(models.Model):
     def action_payslip_paid(self):
         if any(slip.state != 'done' for slip in self):
             raise UserError(_('Cannot mark payslip as paid if not confirmed.'))
-        self.write({'state': 'paid'})
+        self.write({
+            'state': 'paid',
+            'paid_date': fields.Date.today(),
+        })
 
     def action_open_work_entries(self):
         self.ensure_one()

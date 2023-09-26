@@ -55,14 +55,15 @@
     </record>
 
     <record id="survey_survey_action_appraisal_view_form" model="ir.actions.act_window.view">
-        <field name="sequence" eval="10"/>
+        <field name="sequence" eval="20"/> <!-- Lower priority than kanban view -->
         <field name="view_mode">form</field>
         <field name="view_id" ref="hr_appraisal_survey.survey_survey_view_form"/>
         <field name="act_window_id" ref="survey_survey_action_appraisal"/>
     </record>
 
+    <!-- Default to kanban view when opening 360 Feedback -->
     <record id="survey_survey_action_appraisal_view_kanban" model="ir.actions.act_window.view">
-        <field name="sequence" eval="10"/>
+        <field name="sequence" eval="10"/> <!-- Higher priority than form view -->
         <field name="view_mode">kanban</field>
         <field name="view_id" ref="hr_appraisal_survey.survey_survey_view_kanban"/>
         <field name="act_window_id" ref="survey_survey_action_appraisal"/>

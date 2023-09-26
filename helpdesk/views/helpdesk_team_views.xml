@@ -127,20 +127,24 @@
                             documentation="/applications/services/helpdesk/overview/receiving_tickets.html">
                             <field name="use_alias" string="Email Alias"/>
                             <div invisible="not use_alias" class="mt16">
-                                <div class="oe_edit_only" invisible="not alias_domain">
+                                <div class="oe_edit_only">
                                     <strong>Alias </strong>
-                                    <field name="alias_name" class="w-25"/>@<field name="alias_domain" class="oe_inline" readonly="1"/><br/>
+                                    <field name="alias_name" class="w-25"/>@
+                                    <field name="alias_domain_id" class="oe_inline" placeholder="e.g. domain.com"
+                                           options="{'no_create': True, 'no_open': True}"/>
+                                    <br/>
                                     <label for="alias_contact"/>
                                     <field name="alias_contact" string="Accept Emails From"/>
                                 </div>
-                                <p class="oe_read_only" invisible="not alias_domain">
-                                <strong>Alias </strong><field name="alias_id" class="oe_read_only oe_inline" required="False"/>
+                                <p class="oe_read_only">
+                                    <strong>Alias </strong>
+                                    <field name="alias_id" class="oe_read_only oe_inline" required="False"/>
                                 </p>
                                 <field name="has_external_mail_server" invisible="1"/>
-                                <p class="text-muted o_row ps-1" invisible="alias_domain or has_external_mail_server">
+                                <p class="text-muted o_row ps-1" invisible="alias_domain_id or has_external_mail_server">
                                     <i class="fa fa-lightbulb-o" role='img'/><span class="ms-2">To use an email alias, the first step is to configure an Alias Domain. You can achieve this by navigating to the General Settings and configuring the corresponding field.</span>
                                 </p>
-                                <p invisible="alias_domain">
+                                <p invisible="alias_domain_id">
                                     <button name="%(base_setup.action_general_configuration)d" type="action" string="Set an Alias Domain" icon="oi-arrow-right" class="btn-link mt-2"/>
                                 </p>
                             </div>
@@ -284,9 +288,6 @@
                 <field name="color"/>
                 <field name="use_alias"/>
                 <field name="alias_email"/>
-                <field name="alias_name"/>
-                <field name="alias_domain"/>
-                <field name="alias_id"/>
                 <field name="use_rating"/>
                 <field name="use_sla"/>
                 <field name="unassigned_tickets"/>

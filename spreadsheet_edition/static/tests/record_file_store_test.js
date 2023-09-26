@@ -67,10 +67,9 @@ QUnit.module(
             const env = await makeTestEnv({
                 mockRPC: (route, args) => {
                     if (args.method === "unlink") {
-                        assert.step("image deleted");
-                        assert.strictEqual(args.model, "ir.attachment");
                         const ids = args.args[0];
-                        assert.deepEqual(ids, [10]);
+                        assert.step(`image ${ids} deleted`);
+                        assert.strictEqual(args.model, "ir.attachment");
                         return true;
                     }
                 },
@@ -82,7 +81,8 @@ QUnit.module(
                 env.services.orm
             );
             await fileStore.delete("/web/image/10");
-            assert.verifySteps(["image deleted"]);
+            await fileStore.delete("/web/image/11?access_token=the-image-access-token");
+            assert.verifySteps(["image 10 deleted", "image 11 deleted"]);
         });
 
         QUnit.test("delete file with path without attachment id", async (assert) => {

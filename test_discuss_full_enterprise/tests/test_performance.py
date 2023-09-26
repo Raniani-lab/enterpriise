@@ -27,9 +27,6 @@ def _get_init_messaging_result(self):
     res['helpdesk_livechat_active'] = False
     return res
 
-def _get_query_count(self):
-    return 65
-
 
 TestDiscussFullPerformance._get_init_messaging_result = _get_init_messaging_result
-TestDiscussFullPerformance._get_query_count = _get_query_count
+TestDiscussFullPerformance._query_count += 6

@@ -28,7 +28,7 @@ class SodaAccountMapping(models.Model):
         for mapping in self:
             mapping.account_id = self.env['account.account'].search([
                 *self.env['account.account']._check_company_domain(self.company_id),
-                ('code', 'like', f'{mapping.code}%'),
+                ('code', '=like', f'{mapping.code}%'),
             ], limit=1)
 
     @api.model

@@ -1238,8 +1238,8 @@ class View(models.Model):
         domain = [
             ('type', '=', 'qweb'),
             ('key', '!=', new.key),
-            ('key', 'like', '%s_copy_%%' % new.key),
-            ('key', 'not like', '%s_copy_%%_copy_%%' % new.key)]
+            ('key', '=like', '%s_copy_%%' % new.key),
+            '!', ('key', '=like', '%s_copy_%%_copy_%%' % new.key)]
         old_copies = self.search_read(domain, order='key desc')
         nos = [int(old_copy.get('key').split('_copy_').pop()) for old_copy in old_copies]
         copy_no = (nos and max(nos) or 0) + 1

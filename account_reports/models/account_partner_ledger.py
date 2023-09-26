@@ -131,7 +131,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
         partner_prefix_domains = []
         for line_dict in lines_to_expand_by_function.get('_report_expand_unfoldable_line_partner_ledger_prefix_group', []):
             prefix = report._get_prefix_groups_matched_prefix_from_line_id(line_dict['id'])
-            partner_prefix_domains.append([('name', 'ilike', f'{prefix}%')])
+            partner_prefix_domains.append([('name', '=ilike', f'{prefix}%')])
 
             # amls without partners are regrouped "Unknown Partner", which is also used to create prefix groups
             if no_partner_line_label.startswith(prefix):

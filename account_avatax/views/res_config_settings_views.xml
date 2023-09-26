@@ -25,9 +25,8 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="account.res_config_settings_view_form"/>
         <field name="arch" type="xml">
-            <setting id="taxcloud_settings" position="after">
-                <setting id="avatax_settings" string="AvaTax" help="Automatically compute tax rates"
-                    documentation="/applications/finance/accounting/taxation/taxes/avatax.html">
+            <setting id="avatax_settings" position="inside">
+                    <label for="setting_account_avatax" class="col-lg-3 o_light_label"/>
                     <field name="setting_account_avatax"/>
                     <div class="content-group" invisible="not setting_account_avatax">
                         <div class="row mt16">
@@ -94,7 +93,6 @@
                             </button>
                         </div>
                     </div>
-                </setting>
             </setting>
         </field>
     </record>

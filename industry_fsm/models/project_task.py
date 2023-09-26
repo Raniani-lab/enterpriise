@@ -184,7 +184,7 @@ class Task(models.Model):
         res = super()._group_expand_project_ids(projects, domain, order)
         if self._context.get('fsm_mode'):
             search_on_comodel = self._search_on_comodel(domain, "project_id", "project.project", order, [('is_fsm', '=', True)])
-            res |= search_on_comodel
+            res &= search_on_comodel
         return res
 
     @api.model

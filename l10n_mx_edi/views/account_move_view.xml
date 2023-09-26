@@ -33,7 +33,8 @@
                     <field name="l10n_mx_edi_cfdi_uuid"
                            invisible="not l10n_mx_edi_cfdi_uuid"/>
                     <field name="l10n_mx_edi_cfdi_origin"
-                           invisible="not l10n_mx_edi_is_cfdi_needed"/>
+                           invisible="not l10n_mx_edi_is_cfdi_needed"
+                           readonly="l10n_mx_edi_cfdi_state in ('sent', 'cancel')"/>
                     <field name="l10n_mx_edi_cfdi_cancel_id"
                            invisible="not l10n_mx_edi_cfdi_cancel_id"/>
                 </xpath>

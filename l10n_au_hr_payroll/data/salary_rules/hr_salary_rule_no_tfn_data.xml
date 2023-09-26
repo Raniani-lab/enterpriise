@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sources
+        https://www.ato.gov.au/
+        https://oac.chris21.com/OAC_ichrisp/Help/ichrisUG/646250.htm
+    -->
+<!-- No TFN provided -->
+    <record id="l10n_au_withholding_no_tfn" model="hr.salary.rule">
+        <field name="category_id" ref="l10n_au_hr_payroll.rule_category_withholding"/>
+        <field name="name">PAYG Withholding</field>
+        <field name="code">WITHHOLD</field>
+        <field name="sequence">100</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result_rate = -payslip._rule_parameter("l10n_au_withholding_no_tfn")["foreign" if employee.is_non_resident else "national"]
+result = categories['GROSS']
+        </field>
+        <field name="struct_id" ref="l10n_au_hr_payroll.hr_payroll_structure_au_no_tfn"/>
+    </record>
+    <record id="l10n_au_withholding_net_no_tfn" model="hr.salary.rule">
+        <field name="category_id" ref="l10n_au_hr_payroll.rule_category_net_withholding"/>
+        <field name="name">Total Withholding Amount</field>
+        <field name="code">WITHHOLD.TOTAL</field>
+        <field name="sequence">160</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories['WITHHOLD'] + min(-categories['WITHHOLD'], categories["WITHHOLD.OFFSET"])
+        </field>
+        <field name="struct_id" ref="l10n_au_hr_payroll.hr_payroll_structure_au_no_tfn"/>
+    </record>
+</odoo>

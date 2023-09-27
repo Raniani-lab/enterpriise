@@ -2163,6 +2163,7 @@ class AccountReport(models.Model):
                 info_popup_data['applied_carryover'] = self.format_value(options, applied_carryover_value, figure_type='monetary')
                 info_popup_data['allow_carryover_audit'] = self.user_has_groups('base.group_no_one')
                 info_popup_data['expression_id'] = line_expressions_map['_applied_carryover_%s' % column_expr_label]['id']
+                info_popup_data['column_group_key'] = column_data['column_group_key']
 
             # Handle manual edition popup
             edit_popup_data = {}

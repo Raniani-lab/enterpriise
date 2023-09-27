@@ -42,7 +42,7 @@
                         <td/>
                         <td>
                             <button
-                                t-on-click="() => this.viewCarryoverLinesAction(props.carryoverData.expression_id)"
+                                t-on-click="() => this.viewCarryoverLinesAction(props.carryoverData.expression_id, props.carryoverData.column_group_key)"
                             >
                                 View Carryover Lines
                             </button>

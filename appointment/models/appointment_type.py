@@ -131,6 +131,7 @@ class AppointmentType(models.Model):
     appointment_count_report = fields.Integer(
         '# Appointments in the last 30 days', compute='_compute_appointment_count_report')
     appointment_invite_ids = fields.Many2many('appointment.invite', string='Invitation Links')
+    appointment_invite_count = fields.Integer('# Invitation Links', compute='_compute_appointment_invite_count')
     meeting_ids = fields.One2many('calendar.event', 'appointment_type_id', string="Appointment Meetings")
 
     # Technical field for backward compatibility with previous default published appointment type
@@ -170,6 +171,17 @@ class AppointmentType(models.Model):
         for record in self:
             record.appointment_duration_formatted = self.env['ir.qweb.field.duration'].value_to_html(
                 record.appointment_duration * 3600, {})
+
+    @api.depends('appointment_invite_ids')
+    def _compute_appointment_invite_count(self):
+        appointment_data = self.env['appointment.invite']._read_group(
+            [('appointment_type_ids', 'in', self.ids)],
+            ['appointment_type_ids'],
+            ['__count'],
+        )
+        mapped_data = {appointment_type.id: count for appointment_type, count in appointment_data}
+        for appointment_type in self:
+            appointment_type.appointment_invite_count = mapped_data.get(appointment_type.id, 0)
 
     @api.depends('category')
     def _compute_avatars_display(self):
@@ -274,6 +286,13 @@ class AppointmentType(models.Model):
         action["context"] = {
             'default_appointment_type_ids': self.ids,
         }
+        return action
+
+    def action_appointment_shared_links(self):
+        action = self.env["ir.actions.act_window"]._for_xml_id("appointment.appointment_invite_action")
+        action["domain"] = [('appointment_type_ids', 'in', self.ids)]
+        if len(self) == 1:
+            action["context"] = {'schedule_based_on': self.schedule_based_on}
         return action
 
     def action_calendar_events_reporting(self):

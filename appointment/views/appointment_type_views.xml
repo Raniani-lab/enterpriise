@@ -193,6 +193,12 @@
                         invisible="active"/>
                     <div class="oe_button_box" name="button_box" groups="base.group_user">
                         <button class="oe_stat_button" type="object"
+                            name="action_appointment_shared_links"
+                            icon="fa-link"
+                            invisible="appointment_invite_count == 0">
+                            <field string="Shared Links" name="appointment_invite_count" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="object"
                             name="action_appointment_resources"
                             icon="fa-cubes"
                             invisible="schedule_based_on == 'users'">

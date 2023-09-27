@@ -285,9 +285,12 @@ class AccountMove(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': _("Deferred Entries"),
-            'res_model': 'account.move',
-            'domain': [('id', 'in', self.deferred_move_ids.ids)],
-            'views': [(self.env.ref('account_accountant.view_move_tree_deferred_moves').id, 'tree'), (False, 'form')],
+            'res_model': 'account.move.line',
+            'domain': [('id', 'in', self.deferred_move_ids.line_ids.ids)],
+            'views': [(False, 'tree'), (False, 'form')],
+            'context': {
+                'search_default_group_by_move': True,
+            }
         }
 
     def open_deferred_original_entry(self):
@@ -295,12 +298,16 @@ class AccountMove(models.Model):
         action = {
             'type': 'ir.actions.act_window',
             'name': _("Original Deferred Entries"),
-            'res_model': 'account.move',
-            'domain': [('id', 'in', self.deferred_original_move_ids.ids)],
-            'views': [(self.env.ref('account.view_move_tree').id, 'tree'), (False, 'form')],
+            'res_model': 'account.move.line',
+            'domain': [('id', 'in', self.deferred_original_move_ids.line_ids.ids)],
+            'views': [(False, 'tree'), (False, 'form')],
+            'context': {
+                'search_default_group_by_move': True,
+            }
         }
         if len(self.deferred_original_move_ids) == 1:
             action.update({
+                'res_model': 'account.move',
                 'res_id': self.deferred_original_move_ids[0].id,
                 'views': [(False, 'form')],
             })

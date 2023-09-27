@@ -3715,13 +3715,16 @@ class AccountReport(models.Model):
 
     def open_deferral_entries(self, options, params):
         domain = self._get_generated_deferral_entries_domain(options)
-        deferral_moves_ids = self.env['account.move'].search(domain).ids
+        deferral_line_ids = self.env['account.move'].search(domain).line_ids.ids
         return {
             'type': 'ir.actions.act_window',
             'name': _('Deferred Entries'),
-            'res_model': 'account.move',
-            'domain': [('id', 'in', deferral_moves_ids)],
-            'views': [(self.env.ref('account.view_move_tree').id, 'tree'), (False, 'form')],
+            'res_model': 'account.move.line',
+            'domain': [('id', 'in', deferral_line_ids)],
+            'views': [(False, 'tree'), (False, 'form')],
+            'context': {
+                'search_default_group_by_move': True,
+            }
         }
 
     def action_modify_manual_value(self, options, column_group_key, new_value_str, target_expression_id, rounding, json_friendly_column_group_totals):

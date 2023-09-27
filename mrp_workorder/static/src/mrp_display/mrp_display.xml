@@ -50,6 +50,34 @@
                             onlyRecord="relevantRecords.length == 1"
                             />
                     </t>
+                    <t t-if="!relevantRecords.length">
+                        <t t-foreach="demoMORecords" t-as="record" t-key="record.id">
+                            <MrpDisplayRecord
+                            addToValidationStack.bind="addToValidationStack"
+                            groups="groups"
+                            record="record"
+                            production="getproduction(record)"
+                            workorders="record.data.workorder_ids.records"
+                            workcenters="workcenters"
+                            selectWorkcenter.bind="selectWorkcenter"
+                            selectUser.bind="useEmployee.openEmployeeSelection"
+                            updateEmployees.bind="useEmployee.getConnectedEmployees"
+                            sessionOwner="useEmployee.employees.admin"
+                            recordUpdated.bind="recordUpdated"
+                            removeFromValidationStack.bind="removeFromValidationStack"
+                            demoRecord="true"
+                            />
+                        </t>
+                        <div class="o_view_nocontent">
+                        <div class="o_nocontent_help">
+                            <p>
+                                Shop Floor Control Panel
+                            </p><p>
+                                Track work orders, show instructions and record operations: quality control, serial numbers, quantities consumed, etc. from here
+                            </p>
+                        </div>
+                    </div>
+                    </t>
                 </div>
             </Layout>
         </div>

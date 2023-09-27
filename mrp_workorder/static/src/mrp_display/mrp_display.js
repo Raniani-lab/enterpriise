@@ -83,8 +83,14 @@ export class MrpDisplay extends Component {
                 await this.useEmployee.getConnectedEmployees();
             },
         });
-
-        this.showEmployeesPanel = true;
+        this.showEmployeesPanel = JSON.parse(localStorage.getItem("mrp_workorder.show_employees"));
+        if (this.showEmployeesPanel === null) {
+            this.showEmployeesPanel = false;
+            localStorage.setItem(
+                "mrp_workorder.show_employees",
+                JSON.stringify(this.showEmployeesPanel)
+            );
+        }
         this.useEmployee = useConnectedEmployee("mrp_display", this.props.context, this.env);
         this.barcode = useService("barcode");
         useBus(this.barcode.bus, "barcode_scanned", (event) =>
@@ -100,16 +106,13 @@ export class MrpDisplay extends Component {
                 workorders: await this.userService.hasGroup("mrp.group_mrp_routings"),
             };
             this.group_mrp_routings = await this.userService.hasGroup("mrp.group_mrp_routings");
-            if (!this.state.workcenters.length){
-                const allWorkcenters = await this.orm.searchRead(
-                    "mrp.workcenter",
-                    [],
-                    ["id", "display_name"]
-                );
-                localStorage.setItem(this.env.localStorageName, JSON.stringify(allWorkcenters));
-                this.state.workcenters = allWorkcenters;
-            }
             await this.useEmployee.getConnectedEmployees(true);
+            if (
+                JSON.parse(localStorage.getItem(this.env.localStorageName)) === null &&
+                this.group_mrp_routings
+            ) {
+                this.toggleWorkcenterDialog();
+            }
         });
         onWillDestroy(async () => {
             await this.processValidationStack(false);
@@ -260,6 +263,7 @@ export class MrpDisplay extends Component {
 
     toggleEmployeesPanel() {
         this.showEmployeesPanel = !this.showEmployeesPanel;
+        localStorage.setItem('mrp_workorder.show_employees', JSON.stringify(this.showEmployeesPanel));
         this.render(true);
     }
 
@@ -385,7 +389,7 @@ export class MrpDisplay extends Component {
 
     toggleWorkcenterDialog() {
         const params = {
-            title: _t("Select your Work Centers"),
+            title: _t("Select Work Centers for this station"),
             confirm: this.toggleWorkcenter.bind(this),
             disabled: [],
             active: this.state.workcenters.map((wc) => wc.id),
@@ -434,4 +438,97 @@ export class MrpDisplay extends Component {
         };
         return params;
     }
+
+    demoMORecords = [
+        {
+            id: 1,
+            resModel: 'mrp.production',
+            data: {
+                product_id: [0, "[FURN_8522] Table Top"],
+                product_tracking: "serial",
+                product_qty: 4,
+                product_uom_id: [1, "Units"],
+                qty_producing: 4,
+                state: "progress",
+                move_raw_ids: {
+                    records: [
+                        {
+                            resModel: "stock.move",
+                            data: {
+                                product_id: [0, "[FURN_7023] Wood Panel"],
+                                product_uom_qty: 8,
+                                product_uom: [1, "Units"],
+                                manual_consumption: true,
+                            }
+                        }
+                    ]
+                },
+                move_byproduct_ids: {records: []},
+                workorder_ids: {
+                    records: [
+                        {
+                            resModel: "mrp.workorder",
+                            data: {
+                                id: 1,
+                                name: "Manual Assembly",
+                                workcenter_id: [1, "Assembly Line 1"],
+                                check_ids: {
+                                    records: []
+                                },
+                                employee_ids: {records: []}
+                            }
+                        }
+                    ]
+                },
+                display_name: "WH/MO/00013",
+                check_ids: {records: []},
+                employee_ids: {records: []}
+            },
+            fields: {
+                state: {
+                    selection: [["progress", "In Progress"]],
+                    type: "selection"
+                },
+            },
+        },
+        {
+            id: 2,
+            resModel: 'mrp.production',
+            data: {
+                product_id: [0, "[D_0045_B] Stool (Dark Blue)"],
+                product_tracking: "serial",
+                product_qty: 1,
+                product_uom_id: [1, "Units"],
+                qty_producing: 1,
+                state: "confirmed",
+                move_raw_ids: {records: []},
+                move_byproduct_ids: {records: []},
+                workorder_ids: {
+                    records: [
+                        {
+                            resModel: "mrp.workorder",
+                            data: {
+                                id: 1,
+                                name: "Assembly  0/6",
+                                workcenter_id: [2, "Assembly Line 2"],
+                                check_ids: {
+                                    records: []
+                                },
+                                employee_ids: {records: []}
+                            }
+                        }
+                    ]
+                },
+                display_name: "WH/MO/00015",
+                check_ids: {records: []},
+                employee_ids: {records: []}
+            },
+            fields: {
+                state: {
+                    selection: [["confirmed", "Confirmed"]],
+                    type: "selection"
+                },
+            },
+        }
+    ]
 }

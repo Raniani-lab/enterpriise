@@ -42,6 +42,7 @@ export class MrpDisplayRecord extends Component {
         updateEmployees: Function,
         workorders: Array,
         workcenters: Array,
+        demoRecord: { type: Boolean, optional: true },
     };
     static template = "mrp_workorder.MrpDisplayRecord";
 
@@ -341,6 +342,9 @@ export class MrpDisplayRecord extends Component {
     }
 
     get disabled() {
+        if (this.props.demoRecord){
+            return true
+        }
         if (
             this.resModel === "mrp.workorder" &&
             !this.props.record.data.all_employees_allowed &&

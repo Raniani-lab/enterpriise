@@ -69,6 +69,9 @@ registry.category("web_tour.tours").add('test_access_shop_floor_with_multicomany
         content: 'Select Shop Floor app',
         trigger: 'a.o_app:contains("Shop Floor")',
     },{
+        content: 'Close the select workcenter panel',
+        trigger: 'button.btn-close',
+    },{
         content: 'Check that we entered the app with first company',
         trigger: 'div.o_mrp_display',
     },{
@@ -87,6 +90,9 @@ registry.category("web_tour.tours").add('test_access_shop_floor_with_multicomany
     },{
         content: 'Select Shop Floor app',
         trigger: 'a.o_app:contains("Shop Floor")',
+    },{
+        content: 'Close the select workcenter panel again',
+        trigger: '.btn-close',
     },{
         content: 'Check that we entered the app with second company',
         trigger: 'div.o_mrp_display',

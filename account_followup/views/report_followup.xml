@@ -23,7 +23,7 @@
                         <t t-set="report_summary" t-value="report._get_main_body(options)"/>
                         <div class="o_account_report_summary" role="alert">
                             <span class="o_account_report_summary_content">
-                                <t t-out="report_summary" t-options="{'widget': 'text'}"/>
+                                <t t-out="report_summary" t-options="{'widget': 'text'}">Follow-up message</t>
                             </span>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                 </div>
 
                 <p style="margin-top: 35px;">
-                    Date: <span t-out="datetime.date.today()" t-options="{'widget': 'date'}"/><br/>
+                    Date: <span><t t-out="datetime.date.today()" t-options="{'widget': 'date'}">Today's date</t></span><br/>
                     <t t-if='partner_addr.ref'>Customer ref: <span t-field="partner_addr.ref"/></t>
                 </p>
             </div>
@@ -76,7 +76,7 @@
                                 t-att-style="cell.get('style', '')"
                             >
                                 <div t-att-class="classes" t-att-style="style">
-                                    <t t-out="cell.get('name')"/>
+                                    <t t-out="cell.get('name')">Table Header</t>
                                 </div>
                             </th>
                         </t>
@@ -113,7 +113,7 @@
                         t-att-colspan="line.get('colspan', '1')"
                     >
                         <span class="acc_rep_line_name" t-att-title="line.get('title_hover')">
-                            <t t-out="line.get('name')"/>
+                            <t t-out="line.get('name')">Table Value</t>
                         </span>
                     </td>
 
@@ -122,7 +122,9 @@
 
                         <td>
                             <div t-att-style="cell.get('style', '')" t-att-class="cell_classes + ' o_account_report_column_value ps-2 pe-2'">
-                                <span class="o_account_report_column_value" t-out="cell.get('name')"/>
+                                <span class="o_account_report_column_value">
+                                    <t t-out="cell.get('name')">Table Value</t>
+                                </span>
                             </div>
                         </td>
                     </t>

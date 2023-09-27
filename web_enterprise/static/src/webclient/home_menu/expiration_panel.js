@@ -16,7 +16,6 @@ import { Component, useState, useRef } from "@odoo/owl";
 export class ExpirationPanel extends Component {
     setup() {
         this.subscription = useState(useService("enterprise_subscription"));
-        this.cookie = useService("cookie");
 
         this.state = useState({
             displayRegisterForm: false,

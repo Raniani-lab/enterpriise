@@ -1,9 +1,8 @@
 /** @odoo-module */
 
-
 import { loadJS } from "@web/core/assets";
 import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
+import { cookie } from "@web/core/browser/cookie";
 const fieldRegistry = registry.category("fields");
 const { Component, onWillStart, onWillUnmount, useEffect, useRef } = owl;
 
@@ -14,7 +13,7 @@ export class MarketingActivityGraph extends Component {
     setup() {
         this.chart = null;
         this.canvasRef = useRef("canvas");
-        this.isDarkMode = useService("cookie").current.color_scheme;
+        this.isDarkMode = cookie.get("color_scheme");
 
         onWillStart(() => loadJS("/web/static/lib/Chart/Chart.js"));
         useEffect(() => this.renderChart());

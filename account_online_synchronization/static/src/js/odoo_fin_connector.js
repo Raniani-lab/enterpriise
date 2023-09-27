@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { loadJS } from "@web/core/assets";
-import { getCookie } from "@web/legacy/js/core/cookie_utils";
+import { cookie } from "@web/core/browser/cookie";
 const actionRegistry = registry.category('actions');
 /* global OdooFin, debugMode */
 
@@ -12,7 +12,7 @@ function OdooFinConnector(parent, action) {
     const notificationService = parent.services.notification;
 
     const id = action.id;
-    action.params.colorScheme = getCookie("color_scheme");
+    action.params.colorScheme = cookie.get("color_scheme");
     let mode = action.params.mode || 'link';
     // Ensure that the proxyMode is valid
     const modeRegexp = /^[a-z0-9-_]+$/i;

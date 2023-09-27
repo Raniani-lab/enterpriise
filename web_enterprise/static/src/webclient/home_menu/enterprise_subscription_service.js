@@ -7,6 +7,7 @@ import { deserializeDateTime, serializeDate, formatDate } from "@web/core/l10n/d
 import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
 import { ExpirationPanel } from "./expiration_panel";
+import { cookie } from "@web/core/browser/cookie";
 
 const { DateTime } = luxon;
 import { Component, xml, useState } from "@odoo/owl";
@@ -17,11 +18,10 @@ function daysUntil(datetime) {
 }
 
 export class SubscriptionManager {
-    constructor(env, { rpc, orm, cookie, notification }) {
+    constructor(env, { rpc, orm, notification }) {
         this.env = env;
         this.rpc = rpc;
         this.orm = orm;
-        this.cookie = cookie;
         this.notification = notification;
         if (session.expiration_date) {
             this.expirationDate = deserializeDateTime(session.expiration_date);
@@ -38,7 +38,7 @@ export class SubscriptionManager {
         // "user" or "admin"
         this.warningType = session.warning;
         this.lastRequestStatus = null;
-        this.isWarningHidden = this.cookie.current.oe_instance_hide_panel;
+        this.isWarningHidden = cookie.get("oe_instance_hide_panel");
     }
 
     get formattedExpirationDate() {
@@ -55,7 +55,7 @@ export class SubscriptionManager {
 
     hideWarning() {
         // Hide warning for 24 hours.
-        this.cookie.setCookie("oe_instance_hide_panel", true, 24 * 60 * 60);
+        cookie.set("oe_instance_hide_panel", true, 24 * 60 * 60);
         this.isWarningHidden = true;
     }
 
@@ -183,12 +183,12 @@ ExpiredSubscriptionBlockUI.components = { ExpirationPanel };
 
 export const enterpriseSubscriptionService = {
     name: "enterprise_subscription",
-    dependencies: ["orm", "rpc", "cookie", "notification"],
-    start(env, { rpc, orm, cookie, notification }) {
+    dependencies: ["orm", "rpc", "notification"],
+    start(env, { rpc, orm, notification }) {
         registry
             .category("main_components")
             .add("expired_subscription_block_ui", { Component: ExpiredSubscriptionBlockUI });
-        return new SubscriptionManager(env, { rpc, orm, cookie, notification });
+        return new SubscriptionManager(env, { rpc, orm, notification });
     },
 };
 

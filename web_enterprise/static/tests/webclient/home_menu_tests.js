@@ -166,22 +166,6 @@ QUnit.module(
                 isMailInstalled: false,
                 warning: "admin",
             });
-            let cookie = false;
-            const mockedCookieService = {
-                name: "cookie",
-                start() {
-                    return {
-                        get current() {
-                            return cookie;
-                        },
-                        setCookie() {
-                            cookie = true;
-                        },
-                    };
-                },
-            };
-
-            serviceRegistry.add(mockedCookieService.name, mockedCookieService);
 
             await createHomeMenu(homeMenuProps);
 

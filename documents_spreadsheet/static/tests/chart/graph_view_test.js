@@ -4,8 +4,6 @@ import { patchGraphSpreadsheet } from "@spreadsheet_edition/assets/graph_view/gr
 import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
 import { click, patchWithCleanup, triggerEvent } from "@web/../tests/helpers/utils";
 import { GraphRenderer } from "@web/views/graph/graph_renderer";
-import { fakeCookieService } from "@web/../tests/helpers/mock_services";
-import { registry } from "@web/core/registry";
 import {
     createSpreadsheetFromGraphView,
     spawnGraphViewForSpreadsheet,
@@ -15,7 +13,6 @@ import { toggleMenu, toggleMenuItem } from "@web/../tests/search/helpers";
 
 function beforeEach() {
     patchWithCleanup(GraphRenderer.prototype, patchGraphSpreadsheet());
-    registry.category("services").add("cookie", fakeCookieService);
 }
 
 QUnit.module("documents_spreadsheet > graph view", { beforeEach }, () => {

@@ -2,6 +2,7 @@
 import { registry } from "@web/core/registry";
 import { resetViewCompilerCache } from "@web/views/view_compiler";
 import { _t } from "@web/core/l10n/translation";
+import { cookie } from "@web/core/browser/cookie";
 
 import { EventBus, onWillUnmount, useState } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
@@ -39,17 +40,8 @@ export function viewTypeToString(vType) {
 }
 
 export const studioService = {
-    dependencies: [
-        "action",
-        "cookie",
-        "color_scheme",
-        "home_menu",
-        "router",
-        "user",
-        "rpc",
-        "menu",
-    ],
-    async start(env, { user, cookie, color_scheme, rpc, menu }) {
+    dependencies: ["action", "color_scheme", "home_menu", "router", "user", "rpc", "menu"],
+    async start(env, { user, color_scheme, rpc, menu }) {
         const supportedViewTypes = Object.keys(SUPPORTED_VIEW_TYPES);
 
         function _getCurrentAction() {
@@ -209,7 +201,7 @@ export const studioService = {
                 throw e;
             }
             // force color_scheme light
-            if (cookie.current.color_scheme === "dark") {
+            if (cookie.get("color_scheme") === "dark") {
                 // ensure studio is fully loaded
                 await new Promise((resolve) => setTimeout(resolve));
                 color_scheme.switchToColorScheme("light");

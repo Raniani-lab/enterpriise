@@ -17,7 +17,7 @@ import {
 import { registry } from "@web/core/registry";
 import { getOrigin } from "@web/core/utils/urls";
 import { setupViewRegistries } from "@web/../tests/views/helpers";
-import { fakeCookieService, makeFakeUserService } from "@web/../tests/helpers/mock_services";
+import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 
 import {
     toggleMenuItem,
@@ -86,7 +86,6 @@ QUnit.module("documents", {}, function () {
                     bus_service: busService,
                     "bus.parameters": busParametersService,
                     file_upload: fileUploadService,
-                    cookie: fakeCookieService,
                 };
                 for (const [serviceName, service] of Object.entries(REQUIRED_SERVICES)) {
                     if (!serviceRegistry.contains(serviceName)) {

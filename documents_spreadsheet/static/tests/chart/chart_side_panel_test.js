@@ -6,12 +6,9 @@ import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { createSpreadsheetFromGraphView, openChartSidePanel } from "../utils/chart_helpers";
 import { GraphRenderer } from "@web/views/graph/graph_renderer";
 import { patchGraphSpreadsheet } from "@spreadsheet_edition/assets/graph_view/graph_view";
-import { fakeCookieService } from "@web/../tests/helpers/mock_services";
-import { registry } from "@web/core/registry";
 
 function beforeEach() {
     patchWithCleanup(GraphRenderer.prototype, patchGraphSpreadsheet());
-    registry.category("services").add("cookie", fakeCookieService);
 }
 
 QUnit.module("documents_spreadsheet > chart side panel", { beforeEach }, () => {

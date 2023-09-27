@@ -22,21 +22,6 @@ const serviceRegistry = registry.category("services");
 let target;
 
 async function createExpirationPanel(params = {}) {
-    const mockedCookieService = {
-        name: "cookie",
-        start() {
-            return Object.assign(
-                {
-                    current: {},
-                    setCookie() {},
-                    deleteCookie() {},
-                },
-                params.cookie
-            );
-        },
-    };
-
-    serviceRegistry.add(mockedCookieService.name, mockedCookieService);
     serviceRegistry.add("orm", ormService);
     serviceRegistry.add("home_menu", homeMenuService);
     serviceRegistry.add(

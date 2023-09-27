@@ -5,8 +5,6 @@ import { getFixture } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { start } from "@mail/../tests/helpers/test_utils";
 import { checkLabels, checkLegend, selectMode } from "@web/../tests/views/graph_view_tests";
-import { fakeCookieService } from "@web/../tests/helpers/mock_services";
-import { registry } from "@web/core/registry";
 
 let target;
 let serverData;
@@ -35,7 +33,6 @@ QUnit.module("helpdesk", (hooks) => {
         }
         target = getFixture();
         setupViewRegistries();
-        registry.category("services").add("cookie", fakeCookieService);
     });
 
     QUnit.module("helpdesk_ticket_list");

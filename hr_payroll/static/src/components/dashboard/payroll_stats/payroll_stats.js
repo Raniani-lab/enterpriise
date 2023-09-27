@@ -3,13 +3,13 @@
 import { loadJS } from "@web/core/assets";
 import { useService } from "@web/core/utils/hooks";
 import { getColor } from "@web/core/colors/colors";
+import { cookie } from "@web/core/browser/cookie";
 
 const { Component, onWillUnmount, useEffect, useRef, useState, onWillStart } = owl;
 
 export class PayrollDashboardStats extends Component {
     setup() {
         this.actionService = useService("action");
-        this.cookies = useService("cookie");
         this.canvasRef = useRef('canvas');
         this.state = useState({ monthly: true });
         onWillStart(() => loadJS("/web/static/lib/Chart/Chart.js"));
@@ -125,7 +125,7 @@ export class PayrollDashboardStats extends Component {
         const data = [];
         const labels = [];
         const backgroundColors = [];
-        const color19 = getColor(19, this.cookies.current.color_scheme);
+        const color19 = getColor(19, cookie.get("color_scheme"));
         this.graphData.forEach((pt) => {
             data.push(pt.value);
             labels.push(pt.label);
@@ -190,7 +190,7 @@ export class PayrollDashboardStats extends Component {
         if (this.props.is_sample) {
             colors = ['#e7e7e7', '#dddddd', '#f0f0f0', '#fafafa'];
         } else {
-            colors = [getColor(13, this.cookies.current.color_scheme), '#a5d8d7', '#ebebeb', '#ebebeb'];
+            colors = [getColor(13, cookie.get("color_scheme")), '#a5d8d7', '#ebebeb', '#ebebeb'];
         }
 
 

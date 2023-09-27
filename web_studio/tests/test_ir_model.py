@@ -456,3 +456,10 @@ class TestStudioIrModel(TransactionCase):
             # the model will be missing but x_rockets is still in the pool, breaking some optimizations
             self.env['ir.model'].with_context(studio=True).studio_model_create('PerformanceIssues', options=OPTIONS_WL)
         self.assertEqual(count_setup_models, 1)
+
+    def test_update_xmlid(self):
+        record = self.env['ir.model.data'].search([], limit=1)
+        with self.assertQueryCount(1):
+            self.env['ir.model.data'].with_context(studio=True)._update_xmlids([
+                {'xml_id': 'web_studio.xmlid', 'record': record}
+            ])

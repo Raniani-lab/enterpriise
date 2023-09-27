@@ -28,5 +28,5 @@ class IrModelData(models.Model):
     def _build_insert_xmlids_values(self):
         values = super()._build_insert_xmlids_values()
         if self._context.get('studio'):
-            values['studio'] = 't'
+            values['studio'] = 'true'
         return values

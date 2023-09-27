@@ -24,8 +24,7 @@
                             <field name="employee_autocomplete_ids" invisible="1"/>
                             <field name="employee_id" domain="[['id', 'in', employee_autocomplete_ids]]"
                                 readonly="not is_manager"
-                                widget="many2one_avatar_employee"
-                                options="{'relation': 'hr.employee.public'}"/>
+                                widget="many2one_avatar_employee"/>
                             <field name="progression" widget="selection_badge"/>
                         </group>
                         <group>

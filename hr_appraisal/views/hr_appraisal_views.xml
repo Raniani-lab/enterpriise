@@ -53,7 +53,6 @@
                                 domain="[('id', 'in', employee_autocomplete_ids)]"
                                 readonly="state != 'new'"
                                 placeholder="e.g. John Doe"
-                                options="{'relation': 'hr.employee.public'}"
                                 widget="many2one_avatar_employee"/>
                         </h1>
                     </div>
@@ -65,7 +64,7 @@
                     <group>
                         <field name="manager_ids"
                             widget="many2many_avatar_employee"
-                            options="{'color_field': 'color', 'relation': 'hr.employee.public'}"
+                            options="{'color_field': 'color'}"
                             required="1"
                             readonly="state == 'done' or (state == 'pending' and 'uid' not in manager_user_ids and not is_manager)"/>
                         <field name="date_close" readonly="state in ['done', 'cancel']"/>

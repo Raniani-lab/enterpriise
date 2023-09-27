@@ -273,6 +273,7 @@ export class ReportEditorWysiwyg extends Component {
             },
             powerboxCategories: [{ name: _t("Report Tools"), priority: 100 }], // on Top
             powerboxCommands: this.getPowerboxCommands(),
+            allowCommandVideo: false,
             editorPlugins: [QWebPlugin],
             savableSelector: "[data-oe-model='ir.ui.view']",
             autostart: true,

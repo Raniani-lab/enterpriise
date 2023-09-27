@@ -63,14 +63,14 @@ QUnit.module("Views", {}, function () {
         await openFormView("account.bank.selection", bankSelection);
         await contains(".o_radio_item", { count: 2 });
         await contains(":nth-child(1 of .o_radio_item)", {
-            containsMulti: [
+            contains: [
                 ["p", { text: "$ 10.0" }],
                 ["label", { text: "account_1" }],
                 [".o_radio_input:checked"],
             ],
         });
         await contains(":nth-child(2 of .o_radio_item)", {
-            containsMulti: [
+            contains: [
                 ["p", { text: "$ 20.0" }],
                 ["label", { text: "account_2" }],
                 [".o_radio_input:not(:checked)"],

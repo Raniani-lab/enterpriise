@@ -46,7 +46,7 @@ QUnit.test(
             parent: [
                 ".o-mail-DiscussSidebarChannel",
                 {
-                    containsMulti: [
+                    contains: [
                         ["span", { text: "WhatsApp 1" }],
                         [".o-mail-ThreadIcon .fa-whatsapp"],
                     ],
@@ -75,7 +75,7 @@ QUnit.test("Message unread counter in whatsapp channels", async () => {
     const { openDiscuss } = await start();
     await openDiscuss(channelId);
     await contains(".o-mail-DiscussSidebarChannel", {
-        containsMulti: [
+        contains: [
             ["span", { text: "WhatsApp 1" }],
             [".badge", { text: "1" }],
         ],

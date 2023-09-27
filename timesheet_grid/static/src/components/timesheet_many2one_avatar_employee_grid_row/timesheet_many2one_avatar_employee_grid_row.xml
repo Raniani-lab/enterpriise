@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="timesheet_grid.TimesheetMany2OneAvatarEmployeeGridRow" owl="1">
+    <t t-name="timesheet_grid.TimesheetMany2OneAvatarEmployeeGridRow">
         <div t-att-name="props.name" t-attf-class="{{ props.classNames }} d-flex align-items-center gap-1" t-att-data-tooltip="displayName">
             <span class="o_avatar o_m2o_avatar" t-on-click.stop.prevent="onClickAvatar">
                 <span t-if="!resId and props.canOpen" class="o_avatar_empty o_m2o_avatar_empty"></span>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="web_grid.Many2OneGridRow" owl="1">
+    <t t-name="web_grid.Many2OneGridRow">
         <div t-att-name="props.name" t-att-class="props.classNames" t-att-style="props.style">
             <t t-if="!props.canOpen and resId">
                 <span>

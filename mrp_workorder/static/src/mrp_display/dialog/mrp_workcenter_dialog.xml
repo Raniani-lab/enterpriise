@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="mrp_workorder.MrpWorkcenterDialog" owl="1">
+    <t t-name="mrp_workorder.MrpWorkcenterDialog">
         <Dialog size="'md'" title="props.title" modalRef="modalRef">
                 <div class="o_mrp_workcenter_dialog w-100">
                     <t t-foreach="workcenters" t-as="workcenter" t-key="workcenter.id">

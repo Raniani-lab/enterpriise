@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <templates xml:space="preserve">
-    <t t-name="stock_barcode.ImagePreviewField" t-inherit="web.ImageField" t-inherit-mode="primary" owl="1">
+    <t t-name="stock_barcode.ImagePreviewField" t-inherit="web.ImageField" t-inherit-mode="primary">
         <xpath expr="//img[hasclass('img-fluid')]" position="attributes">
             <attribute name="t-on-click">openImageFullScreen</attribute>
         </xpath>
     </t>
 
-    <t t-name="stock_barcode.FullScreenImage" owl="1">
+    <t t-name="stock_barcode.FullScreenImage">
         <div class="d-flex justify-content-center modal fixed-top bottom-0">
             <div class="o-FileViewer flex-column align-items-center d-flex w-100 h-100" tabindex="0">
                 <div class="o-FileViewer-header position-absolute top-0 w-100 bg-black-75">

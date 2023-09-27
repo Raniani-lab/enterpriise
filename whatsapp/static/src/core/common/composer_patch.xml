@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="whatsapp.Composer" t-inherit="mail.Composer" t-inherit-mode="extension" owl="1">
+    <t t-name="whatsapp.Composer" t-inherit="mail.Composer" t-inherit-mode="extension">
         <xpath expr="//div[contains(@class, 'o-mail-Composer-actions')]" position="attributes">
             <attribute name="t-if">!thread || thread.type != 'whatsapp' || state.active</attribute>
         </xpath>

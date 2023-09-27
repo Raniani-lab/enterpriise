@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-inherit="mrp_workorder.MrpDisplayProductionFooter" t-inherit-mode="extension" owl="1">
+    <t t-inherit="mrp_workorder.MrpDisplayProductionFooter" t-inherit-mode="extension">
         <xpath expr="//button/t[@t-else]" position="before">
             <t t-elif="record.quality_check_todo">Quality Checks</t>
         </xpath>
     </t>
-    <t t-inherit="mrp_workorder.MrpDisplayWorkorderFooter" t-inherit-mode="extension" owl="1">
+    <t t-inherit="mrp_workorder.MrpDisplayWorkorderFooter" t-inherit-mode="extension">
         <xpath expr="//t[@t-elif]" position="attributes">
             <attribute name="t-elif">record.is_last_unfinished_wo &amp;&amp; !props.production.data.quality_check_todo</attribute>
         </xpath>

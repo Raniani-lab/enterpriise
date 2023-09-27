@@ -2,7 +2,7 @@
 
 <templates xml:space="preserve">
 
-    <t t-name="sale_subscription.deleteTokenDialog" owl="1">
+    <t t-name="sale_subscription.deleteTokenDialog">
         <div>
             <p>This payment method cannot be deleted, because it is currently linked to the
                 following active subscriptions:

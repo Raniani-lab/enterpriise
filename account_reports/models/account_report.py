@@ -2133,10 +2133,18 @@ class AccountReport(models.Model):
                 if grouping_key not in grouped_formulas[engine]:
                     grouped_formulas[engine][grouping_key] = {}
 
-                if expression.formula not in grouped_formulas[engine][grouping_key]:
-                    grouped_formulas[engine][grouping_key][expression.formula] = expression
+                formula = expression.formula
+
+                if expression.engine == 'aggregation' and expression.formula == 'sum_children':
+                    formula = ' + '.join(
+                        f'_expression:{child_expr.id}'
+                        for child_expr in expression.report_line_id.children_ids.expression_ids.filtered(lambda e: e.label == expression.label)
+                    )
+
+                if formula not in grouped_formulas[engine][grouping_key]:
+                    grouped_formulas[engine][grouping_key][formula] = expression
                 else:
-                    grouped_formulas[engine][grouping_key][expression.formula] |= expression
+                    grouped_formulas[engine][grouping_key][formula] |= expression
 
         if groupby_to_expand and any(not expression.report_line_id.groupby for expression in expressions):
             raise UserError(_("Trying to expand groupby results on lines without a groupby value."))
@@ -2344,10 +2352,18 @@ class AccountReport(models.Model):
 
         :return : A dict((formula, expressions), result), where result is in the form {'result': numeric_value}
         """
-        def _resolve_subformula_on_dict(result, subformula):
-            for key in subformula.split('.'):
-                result = result[key]
-            return result
+        def _resolve_subformula_on_dict(result, line_codes_expression_map, subformula):
+            split_subformula = subformula.split('.')
+            if len(split_subformula) > 1:
+                line_code, expression_label = split_subformula
+                return result[line_codes_expression_map[line_code][expression_label]]
+
+            if subformula.startswith('_expression:'):
+                expression_id = int(subformula.split(':')[1])
+                return result[expression_id]
+
+            # Wrong subformula; the KeyError is caught in the function below
+            raise KeyError()
 
         def _check_is_float(to_test):
             try:
@@ -2356,26 +2372,34 @@ class AccountReport(models.Model):
             except ValueError:
                 return False
 
-        current_report_eval_dict = {} # {line code: {expression label: value}}
-        other_reports_eval_dict = {} # {forced_date_scope: {line code: {expression label: value}}}
+        current_report_eval_dict = {} # {expression_id: value}
+        other_reports_eval_dict = {} # {forced_date_scope: {expression_id: value}}
+        current_report_codes_map = {} # {line_code: {expression_label: expression_id}}
+        other_reports_codes_map = {} # {forced_date_scope: {line_code: {expression_label: expression_id}}}
 
         for expression, expression_res in other_current_report_expr_totals.items():
             if expression.report_line_id.code:
-                line_code_result_dict = current_report_eval_dict.setdefault(expression.report_line_id.code, {})
-                line_code_result_dict[expression.label] = self.env.company.currency_id.round(expression_res['value'])
+                current_report_codes_map.setdefault(expression.report_line_id.code, {})[expression.label] = expression.id
+                current_report_eval_dict[expression.id] = self.env.company.currency_id.round(expression_res['value'])
 
         for forced_date_scope, scope_expr_totals in other_cross_report_expr_totals_by_scope.items():
             for expression, expression_res in scope_expr_totals.items():
                 if expression.report_line_id.code:
-                    line_code_result_dict = other_reports_eval_dict.setdefault(forced_date_scope, {}).setdefault(expression.report_line_id.code, {})
-                    line_code_result_dict[expression.label] = self.env.company.currency_id.round(expression_res['value'])
+                    other_reports_codes_map.setdefault(forced_date_scope, {}).setdefault(expression.report_line_id.code, {})[expression.label] = expression.id
+                    other_reports_eval_dict.setdefault(forced_date_scope, {})[expression.id] = self.env.company.currency_id.round(expression_res['value'])
 
         # Complete current_report_eval_dict with the formulas of uncomputed aggregation lines
         aggregations_terms_to_evaluate = set() # Those terms are part of the formulas to evaluate; we know they will get a value eventually
         for (formula, forced_date_scope), expressions in formulas_dict.items():
             for expression in expressions:
                 if expression.report_line_id.code:
+                    if expression.report_line_id.report_id == self:
+                        current_report_codes_map.setdefault(expression.report_line_id.code, {})[expression.label] = expression.id
+                    else:
+                        other_reports_codes_map.setdefault(forced_date_scope, {}).setdefault(expression.report_line_id.code, {})[expression.label] = expression.id
+
                     aggregations_terms_to_evaluate.add(f"{expression.report_line_id.code}.{expression.label}")
+                    aggregations_terms_to_evaluate.add(f"_expression:{expression.id}") # In case it needs to be called by sum_children
 
                     if not expression.subformula:
                         # Expressions with bounds cannot be replaced by their formula in formulas calling them (otherwize, bounds would be ignored).
@@ -2385,7 +2409,7 @@ class AccountReport(models.Model):
                         else:
                             eval_dict = other_reports_eval_dict.setdefault(forced_date_scope, {})
 
-                        eval_dict.setdefault(expression.report_line_id.code, {})[expression.label] = formula
+                        eval_dict[expression.id] = formula
 
         rslt = {}
         to_treat = [(formula, formula, forced_date_scope) for (formula, forced_date_scope) in formulas_dict.keys()] # Formed like [(expanded formula, original unexpanded formula)]
@@ -2400,13 +2424,18 @@ class AccountReport(models.Model):
                 # and enqueue the formula back; it'll be tried anew later in the loop.
                 for term in terms_to_eval:
                     try:
-                        expanded_term = _resolve_subformula_on_dict({**current_report_eval_dict, **other_reports_eval_dict.get(forced_date_scope, {})}, term)
+                        expanded_term = _resolve_subformula_on_dict(
+                            {**current_report_eval_dict, **other_reports_eval_dict.get(forced_date_scope, {})},
+                            {**current_report_codes_map, **other_reports_codes_map.get(forced_date_scope, {})},
+                            term,
+                        )
                     except KeyError:
                         if term in aggregations_terms_to_evaluate:
                             # Then, the term is probably an aggregation with bounds that still needs to be computed. We need to keep on looping
                             continue
                         else:
                             raise UserError(_("Could not expand term %s while evaluating formula %s", term, unexpanded_formula))
+
                     formula = re.sub(term_replacement_regex % re.escape(term), f'({expanded_term})', formula)
 
                 to_treat.append((formula, unexpanded_formula, forced_date_scope))
@@ -2433,7 +2462,8 @@ class AccountReport(models.Model):
 
                         criterium_code = other_expr_criterium_match['line_code']
                         criterium_label = other_expr_criterium_match['expr_label']
-                        criterium_val = current_report_eval_dict.get(criterium_code, {}).get(criterium_label)
+                        criterium_expression_id = current_report_codes_map.get(criterium_code, {}).get(criterium_label)
+                        criterium_val = current_report_eval_dict.get(criterium_expression_id)
                         if not isinstance(criterium_val, float):
                             # The criterium expression has not be evaluated yet. Postpone the evaluation of this formula, and skip this expression
                             # for now. We still try to evaluate other expressions using this formula if any; this means those expressions will
@@ -2455,13 +2485,12 @@ class AccountReport(models.Model):
                         # This condition ensures we don't return necessary subcomputations in the final result
                         rslt[(unexpanded_formula, expression)] = {'result': expression_result}
 
-                    if expression.report_line_id.code:
-                        # If lines using this formula have a code, they are probably used in other formulas.
-                        # We need to make the result of our computation available to them, as they are still waiting in to_treat to be evaluated.
-                        if expression.report_line_id.report_id == self:
-                            current_report_eval_dict.setdefault(expression.report_line_id.code, {})[expression.label] = expression_result
-                        else:
-                            other_reports_eval_dict.setdefault(forced_date_scope, {}).setdefault(expression.report_line_id.code, {})[expression.label] = expression_result
+                    # Handle recursive aggregations (explicit or through the sum_children shortcut).
+                    # We need to make the result of our computation available to other aggregations, as they are still waiting in to_treat to be evaluated.
+                    if expression.report_line_id.report_id == self:
+                        current_report_eval_dict[expression.id] = expression_result
+                    else:
+                        other_reports_eval_dict.setdefault(forced_date_scope, {})[expression.id] = expression_result
 
         return rslt
 

@@ -91,8 +91,12 @@
         <field name="model">appointment.type</field>
         <field name="inherit_id" ref="appointment.appointment_type_view_search"/>
         <field name="arch" type="xml">
+            <xpath expr="//filter[@name='filter_category_anytime']" position="after">
+                <separator/>
+                <filter name="filter_is_published" string="Published" domain="[('is_published', '=', True)]"/>
+            </xpath>
             <xpath expr="//filter[@name='group_by_timezone']" position="after">
-                <separator />
+                <separator/>
                 <filter string="Published" name="group_by_is_published" context="{'group_by': 'is_published'}"/>
             </xpath>
         </field>

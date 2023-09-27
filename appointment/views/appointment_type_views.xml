@@ -13,9 +13,14 @@
                 <field name="category"/>
                 <filter string="My Appointments" name="my_appointments" domain="[('staff_user_ids', 'in', [uid])]"/>
                 <separator/>
+                <filter string="Recurring" name="filter_category_recurring" domain="[('category', '=', 'recurring')]"/>
+                <filter string="Punctual" name="filter_category_punctual" domain="[('category', '=', 'punctual')]"/>
+                <filter string="Any Time" name="filter_category_anytime" domain="[('category', '=', 'anytime')]"/>
+                <separator/>
                 <filter name="filter_active" string="Archived" domain="[('active', '=', False)]"/>
                 <group expand="0" string="Group By">
                     <filter string="Timezone" name="group_by_timezone" context="{'group_by': 'appointment_tz'}"/>
+                    <filter string="Type" name="group_by_category" context="{'group_by': 'category'}"/>
                 </group>
             </search>
         </field>
@@ -59,9 +64,7 @@
                                     </span>
                                     <field name="location_id" invisible="1"/>
                                     <span class="d-block text-truncate text-large mt-1">
-                                        <i class="fa fa-map-marker me-2" title="Location"/>
-                                        <span t-if="record.location_id.value" t-out="record.location_id.value"></span>
-                                        <span t-else="">Online</span>
+                                        <field name="category"/>
                                     </span>
                                 </div>
                                 <div class="align-self-center justify-content-center text-large d-flex col">
@@ -398,7 +401,8 @@
         <field name="name">Appointments</field>
         <field name="res_model">appointment.type</field>
         <field name="view_mode">kanban,tree,form</field>
-        <field name="domain">[('category', 'in', ['punctual', 'recurring'])]</field>
+        <field name="domain">[('category', '!=', 'custom')]</field>
+        <field name="context">{'search_default_filter_category_recurring': 1}</field>
         <field name="help" type="html">
             <p class="o_view_no_content_appointment_type">
                 No Appointment Configured
@@ -408,12 +412,12 @@
         </field>
     </record>
 
-    <record id="appointment_type_action_custom_and_anytime" model="ir.actions.act_window">
+    <record id="appointment_type_action_custom" model="ir.actions.act_window">
         <field name="name">Invitations</field>
         <field name="res_model">appointment.type</field>
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="appointment_type_view_tree_invitation"/>
-        <field name="domain">[('category', 'not in', ['punctual', 'recurring'])]</field>
+        <field name="domain">[('category', '=', 'custom')]</field>
         <field name="context">{
             'default_category': 'custom',
         }</field>

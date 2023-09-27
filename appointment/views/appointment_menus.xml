@@ -65,9 +65,9 @@
         action="appointment_resource_action"
         groups="group_appointment_manager"/>
     <menuitem
-        id="menu_appointment_type_custom_and_anytime"
+        id="menu_appointment_type_custom"
         parent="appointment.appointment_menu_config"
-        action="appointment_type_action_custom_and_anytime"
+        action="appointment_type_action_custom"
         groups="group_appointment_user"/>
     <menuitem
         id="menu_appointment_invite"

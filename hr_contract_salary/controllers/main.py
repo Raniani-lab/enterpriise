@@ -550,6 +550,7 @@ class HrContractSalary(http.Controller):
         if bank_account_vals:
             bank_account_vals['partner_id'] = partner.id
             existing_bank_account = request.env['res.partner.bank'].sudo().search([
+                ('partner_id', '=', partner.id),
                 ('acc_number', '=', bank_account_vals['acc_number'])], limit=1)
             if existing_bank_account:
                 bank_account = existing_bank_account

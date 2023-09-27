@@ -400,7 +400,7 @@ export class ReportEditorWysiwyg extends Component {
                     validate: (qwebVar, fieldNameChain, defaultValue = "") => {
                         this.wysiwyg.focus();
 
-                        const span = document.createElement("span");
+                        const span = doc.createElement("span");
                         span.textContent = defaultValue;
                         span.setAttribute("t-field", `${qwebVar}.${fieldNameChain}`);
                         odooEditor.execCommand("insert", span);

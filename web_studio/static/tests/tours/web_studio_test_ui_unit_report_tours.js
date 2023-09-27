@@ -205,7 +205,7 @@ registry.category("web_tour.tours").add("web_studio.test_basic_report_edition_ro
             run() {
                 const editable = this.$anchor[0].querySelector(".odoo-editor-editable");
                 const wysiwyg = $(editable).data("wysiwyg");
-                const telse = document.createElement("t");
+                const telse = wysiwyg.odooEditor.document.createElement("t");
                 telse.setAttribute("t-else", "");
                 wysiwyg.odooEditor.execCommand("insert", telse);
             },

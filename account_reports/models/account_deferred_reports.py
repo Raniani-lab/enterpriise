@@ -47,6 +47,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
         }]
         options['columns'] = total_column + before_column + options['columns'] + later_column
         options['column_headers'] = []
+        options['deferred_report_type'] = self._get_deferred_report_type()
         if self.env.company.generate_deferred_entries_method == 'manual':
             options['buttons'].append({'name': _('Generate entry'), 'action': 'action_generate_entry', 'sequence': 80, 'always_show': True})
 
@@ -260,7 +261,6 @@ class DeferredReportCustomHandler(models.AbstractModel):
                 for period in periods
             ]
 
-        options['deferred_report_type'] = self._get_deferred_report_type()
         if warnings is not None:
             already_generated = (
                 self.env.company.generate_deferred_entries_method == 'manual'

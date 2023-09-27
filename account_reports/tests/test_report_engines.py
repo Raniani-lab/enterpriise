@@ -810,14 +810,37 @@ class TestReportEngines(TestAccountReportsCommon):
             name='test11_6', code='test11_6',
         )
 
+        # Test sum_children formula (parent_id relationship is populated below)
+        test_12_1 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation('sum_children'),
+            name='test12_1', code='test12_1',
+        )
+        test_12_2 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation('test1.tax_tags'),
+            name='test12_2', code='test12_2',
+        )
+        test_12_3 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation('test1.domain'),
+            name='test12_3', code='test12_3',
+        )
+        test_12_4 = self._prepare_test_report_line(
+            self._prepare_test_expression_domain([('account_id.code', '=', '101003')], 'sum'),
+            name='test12_4', code='test12_4',
+        )
+
         report = self._create_report(
             [
                 test1, test2_1, test2_2, test2_3, test2_4, test3_1, test3_2, test3_3, test4_1, test4_2,
                 test5, test6, test7, test9, test10_1, test10_2, test10_3, test11_1, test11_2, test11_3, test11_4,
-                test11_5, test11_6,
+                test11_5, test11_6, test_12_1, test_12_2, test_12_3, test_12_4,
             ],
             country_id=self.fake_country.id,
         )
+
+        # Set parent link properly for sum_children test, now that all lines are created:
+        line_12_1 = self.env['account.report.line'].search([('code', '=', 'test12_1')])
+        children_lines = self.env['account.report.line'].search([('code', 'in', ('test12_2', 'test12_3', 'test12_4'))])
+        children_lines.parent_id = line_12_1
 
         # Create the journal entries.
         moves = self._create_test_account_moves([
@@ -858,6 +881,10 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('test11_4',              0.0),
                 ('test11_5',            100.0),
                 ('test11_6',              0.0),
+                ('test12_1',           3200.0),
+                ('test12_2',           2000.0),
+                ('test12_3',           -300.0),
+                ('test12_4',           1500.0),
             ],
             options,
         )

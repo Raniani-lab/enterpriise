@@ -122,8 +122,6 @@ class ProductTemplate(models.Model):
                 best_pricings[p.recurrence_id] = p
         suitable_pricings = best_pricings.values()
         currency = pricelist and pricelist.currency_id or self.env.company.currency_id
-        product_taxes = product.sudo().taxes_id.filtered(lambda t: t.company_id == company_id)
-        taxes = fpos.map_tax(product_taxes)
 
         def _pricing_price(pricing):
             if not website:

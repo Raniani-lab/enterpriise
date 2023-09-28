@@ -74,7 +74,7 @@ class AccountAsset(models.Model):
     prorata_date = fields.Date(  # the starting date of the depreciations
         string='Prorata Date',
         compute='_compute_prorata_date', store=True, readonly=False,
-        copy=False,
+        copy=True,
     )
     paused_prorata_date = fields.Date(compute='_compute_paused_prorata_date')  # number of days to shift the computation of future deprecations
     account_asset_id = fields.Many2one('account.account', string='Fixed Asset Account', compute='_compute_account_asset_id', help="Account used to record the purchase of the asset at its original price.", store=True, readonly=False, states={'close': [('readonly', True)]}, domain="[('company_id', '=', company_id), ('is_off_balance', '=', False)]")
@@ -117,7 +117,7 @@ class AccountAsset(models.Model):
     original_move_line_ids = fields.Many2many('account.move.line', 'asset_move_line_rel', 'asset_id', 'line_id', string='Journal Items', readonly=True, states={'draft': [('readonly', False)]}, copy=False)
 
     # Dates
-    acquisition_date = fields.Date(compute='_compute_acquisition_date', store=True, states={'draft': [('readonly', False)]}, copy=False)
+    acquisition_date = fields.Date(compute='_compute_acquisition_date', store=True, states={'draft': [('readonly', False)]}, copy=True)
     disposal_date = fields.Date(readonly=True, states={'draft': [('readonly', False)]}, compute="_compute_disposal_date", store=True)
 
     # model-related fields

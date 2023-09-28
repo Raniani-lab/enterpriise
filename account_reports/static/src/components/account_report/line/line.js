@@ -25,10 +25,10 @@ export class AccountReportLine extends Component {
     get lineClasses() {
         let classes = ('level' in this.props.line) ? `line_level_${this.props.line.level}` : 'line_level_default';
 
-        if (!this.props.line.visible || this.hiddenBySearchFilter())
+        if (!this.props.line.visible || this.isHiddenBySearchFilter())
             classes += " d-none";
 
-        if (this.props.line.unfolded)
+        if (this.props.line.unfolded && this.hasVisibleChild())
             classes += " unfolded";
 
         if (this.controller.isTotalLine(this.props.lineIndex))
@@ -38,6 +38,18 @@ export class AccountReportLine extends Component {
             classes += ` ${this.props.line.class}`;
 
         return classes;
+    }
+
+    hasVisibleChild() {
+        let nextLineIndex = this.props.lineIndex + 1;
+
+        while (this.controller.isNextLineChild(nextLineIndex, this.props.line['id'])) {
+            if (this.controller.lines[nextLineIndex].visible && !this.isHiddenBySearchFilter(this.controller.lines[nextLineIndex].id))
+                return true;
+
+            nextLineIndex += 1;
+        }
+        return false;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -64,12 +76,16 @@ export class AccountReportLine extends Component {
     //------------------------------------------------------------------------------------------------------------------
     // Search
     //------------------------------------------------------------------------------------------------------------------
-    hiddenBySearchFilter() {
+    isHiddenBySearchFilter(lineId = null) {
+        // If no lineId is provided, this will execute on the current line object
+        // Otherwise, it will execute on the given lineId
+        lineId ||= this.props.line.id;
+
         if (!("lines_searched" in this.controller))
             return false;
 
         for (let searchLineId of this.controller.lines_searched)
-            if (this.controller.isLineRelatedTo(searchLineId, this.props.line.id) || this.props.line.id === searchLineId)
+            if (this.controller.isLineRelatedTo(searchLineId, lineId) || lineId === searchLineId)
                 return false;
 
         return true;

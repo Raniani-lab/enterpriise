@@ -21,7 +21,7 @@ class PosSession(models.Model):
 
     def _get_pos_ui_res_partner(self, params):
         partners_list = super()._get_pos_ui_res_partner(params)
-        if self.config_id.currency_id != self.env.company.currency_id:
+        if self.config_id.currency_id != self.env.company.currency_id and self.user_has_groups('account.group_account_readonly'):
             for partner in partners_list:
                 partner['total_due'] = self.env.company.currency_id._convert(partner['total_due'], self.config_id.currency_id, self.env.company, fields.Date.today())
         return partners_list

@@ -78,8 +78,9 @@ patch(PaymentScreen.prototype, {
         const hasCustomerAccountAsPaymentMethod = this.currentOrder
             .get_paymentlines()
             .find((paymentline) => paymentline.payment_method.type === "pay_later");
-        if (hasCustomerAccountAsPaymentMethod) {
-            this.pos.refreshTotalDueOfPartner(this.currentOrder.get_partner());
+        const partner = this.currentOrder.get_partner();
+        if (hasCustomerAccountAsPaymentMethod && partner.total_due !== undefined) {
+            this.pos.refreshTotalDueOfPartner(partner);
         }
     },
 });

@@ -156,7 +156,6 @@
                                             'account_type_domain': [('account_type', 'in', (
                                                 'asset_fixed',
                                                 'asset_non_current'))]}"
-                                        groups="base.group_no_one"
                                         attrs="{'invisible': ['|', ('display_account_asset_id', '=', False), ('asset_type', '!=', 'purchase')]}"/>
                                     <field
                                         name="account_depreciation_id"

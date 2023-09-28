@@ -38,9 +38,9 @@ patch(MainComponent.prototype, {
     //--------------------------------------------------------------------------
 
     _getModel() {
-        const { resId, resModel, rpc, notification, orm } = this;
+        const { resId, resModel, rpc, notification, orm, action } = this;
         if (this.resModel === 'stock.picking.batch') {
-            return new BarcodePickingBatchModel(resModel, resId, { rpc, notification, orm });
+            return new BarcodePickingBatchModel(resModel, resId, { rpc, notification, orm, action });
         }
         return super._getModel(...arguments);
     },

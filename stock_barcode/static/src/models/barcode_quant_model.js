@@ -34,8 +34,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
             this.trigger('history-back');
         };
         if (action && action.res_model) {
-            const options = { on_close: notifyAndGoAhead };
-            return this.trigger('do-action', { action, options });
+            return this.action.doAction(action, { onClose: notifyAndGoAhead });
         }
         notifyAndGoAhead();
     }
@@ -635,7 +634,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
         if (quantsToPrint.length === 0) {
             return { warning: _t("There is nothing to print in this page.") };
         }
-        options.additional_context = { active_ids: quantsToPrint.map(quant => quant.id) };
+        options.additionalContext = { active_ids: quantsToPrint.map(quant => quant.id) };
         return options;
     }
 

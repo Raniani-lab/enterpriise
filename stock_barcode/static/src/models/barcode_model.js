@@ -16,6 +16,7 @@ export default class BarcodeModel extends EventBus {
         this.orm = services.orm;
         this.rpc = services.rpc;
         this.notificationService = services.notification;
+        this.action = services.action;
         this.resId = resId;
         this.resModel = resModel;
         this.unfoldLineKey = false;
@@ -473,12 +474,12 @@ export default class BarcodeModel extends EventBus {
             { context },
         );
         const options = {
-            on_close: ev => this._closeValidate(ev)
+            onClose: ev => this._closeValidate(ev)
         };
         if (action && action.res_model) {
-            return this.trigger('do-action', { action, options });
+            return this.action.doAction(action, options);
         }
-        return options.on_close();
+        return options.onClose();
     }
 
     async processBarcode(barcode) {
@@ -655,11 +656,8 @@ export default class BarcodeModel extends EventBus {
 
     async _goToMainMenu() {
         await this.save();
-        this.trigger('do-action', {
-            action: 'stock_barcode.stock_barcode_action_main_menu',
-            options: {
-                clear_breadcrumbs: true,
-            },
+        this.action.doAction('stock_barcode.stock_barcode_action_main_menu', {
+            clearBreadcrumbs: true,
         });
     }
 
@@ -820,7 +818,7 @@ export default class BarcodeModel extends EventBus {
                 [[this.resId]]
             );
         }
-        this.trigger('do-action', { action, options });
+        this.action.doAction(action, options);
     }
 
     async _processGs1Data(data) {

@@ -38,7 +38,7 @@ patch(BarcodePickingModel.prototype, {
     _actionRecordComponents(line) {
         const moveId = line && line.move_id || false;
         return this._getActionRecordComponents(moveId).then(
-            res => this.trigger('do-action', res),
+            ({ action, options }) => this.action.doAction(action, options),
             error => this.notification(error)
         );
     },
@@ -66,7 +66,7 @@ patch(BarcodePickingModel.prototype, {
             });
         }
         const options = {
-            on_close: () => {
+            onClose: () => {
                 this.trigger('refresh');
             },
         };

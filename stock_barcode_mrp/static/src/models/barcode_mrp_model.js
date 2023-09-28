@@ -407,7 +407,7 @@ export default class BarcodeMRPModel extends BarcodePickingModel {
             return {};
         }
         return {
-            additional_context: {
+            additionalContext: {
                 active_ids: [this.resId],
             }
         }

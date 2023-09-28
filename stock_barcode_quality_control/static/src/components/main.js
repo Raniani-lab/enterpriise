@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { _t } from "@web/core/l10n/translation";
-import { bus } from "@web/legacy/js/services/core";
 import MainComponent from '@stock_barcode/components/main';
 import { patch } from "@web/core/utils/patch";
 
@@ -19,11 +18,8 @@ patch(MainComponent.prototype, {
             [[this.resId]]
         );
         if (typeof res === 'object' && res !== null) {
-            return bus.trigger('do-action', {
-                action: res,
-                options: {
-                    on_close: this._onRefreshState.bind(this, { recordId: this.resId }),
-                },
+            return this.action.doAction(res, {
+                onClose: this._onRefreshState.bind(this, { recordId: this.resId }),
             });
         } else {
             this.notification.add(_t("All the quality checks have been done"));

@@ -51,6 +51,7 @@ class MainComponent extends Component {
         this.orm = useService('orm');
         this.notification = useService('notification');
         this.dialog = useService('dialog');
+        this.action = useService('action');
         this.resModel = this.props.action.res_model;
         this.resId = this.props.action.context.active_id || false;
         const model = this._getModel();
@@ -85,7 +86,6 @@ class MainComponent extends Component {
             this.env.model.addEventListener('process-action', this._onDoAction.bind(this));
             this.env.model.addEventListener('refresh', (ev) => this._onRefreshState(ev.detail));
             this.env.model.addEventListener('update', () => this.render(true));
-            this.env.model.addEventListener('do-action', args => bus.trigger('do-action', args.detail));
             this.env.model.addEventListener('history-back', () => this.env.config.historyBack());
         });
 
@@ -164,7 +164,7 @@ class MainComponent extends Component {
     //--------------------------------------------------------------------------
 
     _getModel() {
-        const services = { rpc: this.rpc, orm: this.orm, notification: this.notification };
+        const services = { rpc: this.rpc, orm: this.orm, notification: this.notification, action: this.action };
         if (this.resModel === 'stock.picking') {
             services.dialog = this.dialog;
             return new BarcodePickingModel(this.resModel, this.resId, services);
@@ -192,11 +192,8 @@ class MainComponent extends Component {
                 this.env.config.historyBack();
             }
         };
-        bus.trigger('do-action', {
-            action,
-            options: {
-                on_close: onClose.bind(this),
-            },
+        this.action.doAction(action, {
+            onClose: onClose.bind(this),
         });
     }
 
@@ -347,11 +344,8 @@ class MainComponent extends Component {
     }
 
     async _onDoAction(ev) {
-        bus.trigger('do-action', {
-            action: ev.detail,
-            options: {
-                on_close: this._onRefreshState.bind(this),
-            },
+        this.action.doAction(ev.detail, {
+            onClose: this._onRefreshState.bind(this),
         });
     }
 

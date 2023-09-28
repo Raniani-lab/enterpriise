@@ -889,14 +889,11 @@ export default class BarcodePickingModel extends BarcodeModel {
                 this.backordersDomain,
                 ["display_name", "id"]);
             const buttons = backorders.map(bo => {
-                const additional_context = { active_id: bo.id };
+                const additionalContext = { active_id: bo.id };
                 return {
                     name: bo.display_name,
                     onClick: () => {
-                        this.trigger('do-action', {
-                            action: this.actionName,
-                            options: { additional_context },
-                        });
+                        this.action.doAction(this.actionName, { additionalContext });
                     },
                 };
             });
@@ -1382,7 +1379,7 @@ export default class BarcodePickingModel extends BarcodeModel {
              'action_create_return_picking',
             [[this.resId]]
          )
-        return this.trigger('do-action', { action, options: {stackPosition: "replaceCurrentAction"} });
+        return this.action.doAction(action, { stackPosition: "replaceCurrentAction" });
     }
 
     async _scrap() {
@@ -1391,7 +1388,7 @@ export default class BarcodePickingModel extends BarcodeModel {
             return this.notification(message, { type: "warning" });
         }
         const action = await this.orm.call(this.resModel, "button_scrap", [[this.resId]]);
-        this.trigger("do-action", { action });
+        this.action.doAction(action);
     }
 
     /**

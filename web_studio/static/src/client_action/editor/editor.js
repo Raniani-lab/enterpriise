@@ -7,7 +7,6 @@ import { useBus, useService } from "@web/core/utils/hooks";
 
 import { StudioActionContainer } from "./studio_action_container";
 import { EditorMenu } from "./editor_menu/editor_menu";
-import { mapDoActionOptionAPI } from "@web/legacy/backend_utils";
 
 import { AppMenuEditor } from "./app_menu_editor/app_menu_editor";
 import { NewModelItem } from "./new_model_item/new_model_item";
@@ -132,16 +131,6 @@ export class Editor extends Component {
 
     switchTab({ tab }) {
         this.studio.setParams({ editorTab: tab });
-    }
-
-    onDoAction(ev) {
-        // @legacy;
-        const payload = ev.detail;
-        const legacyOptions = mapDoActionOptionAPI(payload.options);
-        this.actionService.doAction(
-            payload.action,
-            Object.assign(legacyOptions || {}, { clearBreadcrumbs: true })
-        );
     }
 }
 Editor.template = "web_studio.Editor";

@@ -3,7 +3,6 @@
     import models from "point_of_sale.models";
     import { Gui } from "point_of_sale.Gui";
     import { _t } from "@web/core/l10n/translation";
-    import Class from "@web/legacy/js/core/class";
     import devices from "point_of_sale.devices";
     import { range, roundPrecision } from "@web/core/utils/numbers";
 
@@ -794,8 +793,8 @@
         },
     });
 
-        var FDMPacketField = Class.extend({
-        init: function (name, length, content, pad_character) {
+    class FDMPacketField {
+        constructor(name, length, content, pad_character) {
             if (typeof content !== 'string') {
                 throw "Can only handle string contents";
             }
@@ -808,9 +807,9 @@
             this.length = length;
 
             this.content = this._pad_left_to_length(content, pad_character);
-        },
+        }
 
-        _pad_left_to_length: function (content, pad_character) {
+        _pad_left_to_length(content, pad_character) {
             if (content.length < this.length && ! pad_character) {
                 throw "Can't pad without a pad character";
             }
@@ -820,32 +819,32 @@
             }
 
             return content;
-        },
+        }
 
-        to_string: function () {
+        to_string() {
             return this.content;
         }
-    });
+    }
 
-    var FDMPacket = Class.extend({
-        init: function () {
+    class FDMPacket {
+        constructor() {
             this.fields = [];
-        },
+        }
 
-        add_field: function (field) {
+        add_field(field) {
             this.fields.push(field);
-        },
+        }
 
-        to_string: function () {
+        to_string() {
             return this.fields.map((field) => field.to_string()).join("");
-        },
+        }
 
-        to_human_readable_string: function () {
+        to_human_readable_string() {
             return this.fields.map((field) => {
                 return field.name + ": " + field.to_string();
             }).join("\n");
         }
-    });
+    }
 
     devices.ProxyDevice.include({
         _get_sequence_number: function () {

@@ -62,6 +62,7 @@
                 <xpath expr="//page[@id='other_tab_entry']" position="after">
                     <page id="edi_documents"
                           string="CFDI"
+                          name="page_cfdi"
                           invisible="not l10n_mx_edi_document_ids">
                         <field name="l10n_mx_edi_document_ids">
                             <tree create="false" delete="false" edit="false" no_open="1">

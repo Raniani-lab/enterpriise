@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="hr_appraisal.view_hr_appraisal_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='appraisal']" position="after">
-                <page string="Skills">
+                <page string="Skills" name="page_skills">
                     <div class="o_hr_skills_group o_group_skills col-lg-12 ps-0 pe-0 position-relative w-100">
                         <span class="o_appraisal_overlay" invisible="state != 'new'">
                             Skills tab will be active once the appraisal is confirmed.

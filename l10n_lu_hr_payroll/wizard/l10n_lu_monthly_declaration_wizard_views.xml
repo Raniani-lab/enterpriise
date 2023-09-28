@@ -23,7 +23,7 @@
                     </p>
                     <group invisible="not situational_unemployment_ids">
                         <notebook>
-                            <page string="Situational Unemployment">
+                            <page string="Situational Unemployment" name="page_situational_unemployment">
                                 <field name="situational_unemployment_ids" nolabel="1" force_save="1">
                                     <tree editable="bottom" create="0" delete="0">
                                         <field name="currency_id" column_invisible="True"/>

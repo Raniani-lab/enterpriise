@@ -44,7 +44,7 @@
 
             <xpath expr="//sheet" position="inside">
                 <notebook invisible="not custom_appraisal_templates">
-                    <page string="Appraisal Templates">
+                    <page string="Appraisal Templates" name="page_appraisal_templates">
                         <div class="o_appraisal_both_feedback d-flex flex-column flex-md-row flex-wrap align-items-stretch" >
                             <div class="o_appraisal_feedback col-12 col-md-6">
                                 <div class="row">

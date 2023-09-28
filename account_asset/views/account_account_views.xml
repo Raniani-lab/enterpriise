@@ -18,7 +18,7 @@
         <field name="inherit_id" ref="account.view_account_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='accounting']" position="after">
-                <page string="Automation" invisible="not can_create_asset">
+                <page string="Automation" name="page_automation" invisible="not can_create_asset">
                     <group>
                         <group>
                             <field name="can_create_asset" invisible="1"/>

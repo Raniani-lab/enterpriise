@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <page name="job_description_page" position="after">
                 <page string="Payroll" groups="hr_payroll.group_hr_payroll_user"
-                    invisible="not display_l10n_be_scale">
+                    name="page_payroll" invisible="not display_l10n_be_scale">
                     <group col="2">
                         <group col="1" >
                             <field name="display_l10n_be_scale" invisible="1"/>

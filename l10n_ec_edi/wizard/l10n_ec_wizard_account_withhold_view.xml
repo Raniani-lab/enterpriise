@@ -29,7 +29,7 @@
                     </group>
                 </group>
                 <notebook>
-                    <page id="withhold_lines_tab" string="Withhold Lines">
+                    <page id="withhold_lines_tab" string="Withhold Lines" name="page_withhold_lines">
                         <field name="withhold_line_ids" force_save="1" mode="tree">
                             <tree editable="bottom">
                                 <field name="company_id" column_invisible="True"/>

@@ -80,6 +80,26 @@ tour.register('account_accountant_bank_rec_widget_ui',
             trigger: "a[name='manual_operations_tab']",
         },
         {
+            content: "Liquidity line displays debit '$ 1,000.00'",
+            trigger: "div[name='lines_widget'] table.o_list_table tr.o_bank_rec_liquidity_line td[field='debit']:contains('$ 1,000.00')",
+            run: () => {},
+        },
+        {
+            content: "Select the liquidity line",
+            trigger: "tr.o_bank_rec_liquidity_line td[field='debit']",
+        },
+        {
+            content: "Modify the liquidity line amount",
+            extra_trigger: "div.tab-pane.active input[id='form_balance']:focus",
+            trigger: "div.tab-pane.active input[id='form_balance']",
+            run: "text 100.00",
+        },
+        {
+            content: "Liquidity line displays debit '$ 100.00'",
+            trigger: "div[name='lines_widget'] table.o_list_table tr.o_bank_rec_liquidity_line td[field='debit']:contains('$ 100.00')",
+            run: () => {},
+        },
+        {
             content: "Select 'amls_tab'",
             extra_trigger: "a.active[name='manual_operations_tab']",
             trigger: "a[name='amls_tab']",
@@ -554,9 +574,9 @@ tour.register('account_accountant_bank_rec_widget_ui',
             trigger: ".o_bank_rec_st_line:contains('line1')",
         },
         {
-            content: "balance is 3000",
+            content: "balance is 2100",
             extra_trigger: ".o_bank_rec_selected_st_line:contains('line1')",
-            trigger: ".btn-secondary:contains('$ 3,000.00')",
+            trigger: ".btn-secondary:contains('$ 2,100.00')",
         },
         {
             content: "Breadcrumb back to Bank Reconciliation from the report",
@@ -597,6 +617,56 @@ tour.register('account_accountant_bank_rec_widget_ui',
             content: "statement line displays combustion and $-333.33",
             extra_trigger: ".o_bank_rec_selected_st_line:contains('Combustion'):contains('$ -333.33')",
             trigger: ".o_bank_rec_selected_st_line:contains('Combustion'):contains('$ -333.33')",
+            run: () => {},
+        },
+        // Test that changing the balance in the list view updates the right side of the kanban view
+        // (including reapplying matching rules)
+        {
+            content: "select matched 'line2'",
+            trigger: ".o_bank_rec_st_line:contains('line2')",
+        },
+        {
+            content: "'line2' should be selected, reset it",
+            extra_trigger: ".o_bank_rec_selected_st_line:contains('line2')",
+            trigger: "button[name='button_reset']"
+        },
+        {
+            content: "Liquidity line displays debit '$ 100.00'",
+            trigger: "div[name='lines_widget'] table.o_list_table tr.o_bank_rec_liquidity_line td[field='debit']:contains('$ 100.00')",
+            run: () => {},
+        },
+        {
+            content: "Switch to list view",
+            extra_trigger: ".o_switch_view.o_kanban.active",
+            trigger: ".o_switch_view.o_list",
+        },
+        {
+            content: "Click amount field of 'line2'; Selects the row",
+            trigger: "table.o_list_table tr.o_data_row:contains('line2') td[name='amount']",
+        },
+        {
+            content: "Set balance of 'line2' (selected row) to 500.00",
+            trigger: "table.o_list_table tr.o_data_row.o_selected_row td[name='amount'] input",
+            run: "text 500.00",
+        },
+        {
+            content: "Switch back to kanban",
+            extra_trigger: ".o_switch_view.o_list.active",
+            trigger: ".o_switch_view.o_kanban",
+        },
+        {
+            content: "'line2' is still selected",
+            trigger: ".o_bank_rec_st_line:contains('line2')",
+            run: () => {},
+        },
+        {
+            content: "Liquidity line displays debit '$ 500.00'",
+            trigger: "div[name='lines_widget'] table.o_list_table tr.o_bank_rec_liquidity_line td[field='debit']:contains('$ 500.00')",
+            run: () => {},
+        },
+        {
+            content: "'INV/2019/00001' has been selected as a matching existing entry by matching rules (matching rules were triggered)",
+            trigger: "div.o_widget_bank_rec_form_list table.o_list_table tr.o_rec_widget_list_selected_item td[name='name']:contains('INV/2019/00001')",
             run: () => {},
         },
         // End

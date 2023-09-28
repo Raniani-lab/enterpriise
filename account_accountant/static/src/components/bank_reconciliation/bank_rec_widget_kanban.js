@@ -101,6 +101,15 @@ export class BankRecKanbanController extends KanbanController {
             this.action.doAction(actionData);
         });
 
+        this.bankRecService.useTodoCommand("kanban-create-backup", async (linesWidget) => {
+            const stLineState = this.bankRecService.getStLineState(this.state.selectedStLineId);
+            const selectedKanbanRecord = this.records.find((stLine) => stLine.data.id === this.state.selectedStLineId);
+            stLineState.formRestoreData = selectedKanbanRecord ? {
+                lines_widget: linesWidget,
+                applies_to: selectedKanbanRecord.data,
+            } : null;
+        });
+
         // Mount the first available statement line when the model is fully loaded.
         this.model.addEventListener(
             "update",
@@ -273,6 +282,15 @@ export class BankRecKanbanController extends KanbanController {
         this.mountStLineInEdit(this.getNextAvailableStLineId(this.state.selectedStLineId));
     }
 
+    getValidBackup(){
+        const selectedKanbanRecord = this.records.find((stLine) => stLine.data.id === this.state.selectedStLineId);
+        const formRestoreData = this.bankRecService.getStLineState(this.state.selectedStLineId).formRestoreData;
+        const useBackup = selectedKanbanRecord
+                          && formRestoreData
+                          && _.isEqual(formRestoreData.applies_to, selectedKanbanRecord.data);
+        return useBackup ? formRestoreData : null;
+    }
+
     /**
     Give the props when creating the embedded form view.
     **/
@@ -281,10 +299,8 @@ export class BankRecKanbanController extends KanbanController {
         // Otherwise, try to find a match automatically.
         let extraContext = {default_todo_command: "trigger_matching_rules"};
 
-        // Retrieve a backup of the current form.
-        const stLineState = this.bankRecService.getStLineState(this.state.selectedStLineId);
-        if (stLineState.formRestoreData) {
-            let formRestoreData = JSON.parse(stLineState.formRestoreData);
+        const formRestoreData = this.getValidBackup();
+        if (formRestoreData) {
             extraContext = {
                 default_todo_command: null,
                 default_lines_widget: formRestoreData.lines_widget,

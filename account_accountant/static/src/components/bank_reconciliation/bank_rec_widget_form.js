@@ -50,7 +50,7 @@ export class BankRecWidgetFormController extends FormController {
             this.stLineState.selectedAmlIds = selectedAmlIds;
 
             // Save the data.
-            this.stLineState.formRestoreData = JSON.stringify({lines_widget: this.record.data.lines_widget});
+            this.bankRecService.trigger("kanban-create-backup", this.record.data.lines_widget);
         }
 
         // Refresh Kanban if the liquidity line values changed

@@ -52,13 +52,13 @@ class TestNacha(AccountTestInvoicingCommon):
             # header
             "101IMM_DESTIN  IMM_ORIG2011301945A094101DESTINATION            company_1_data         {:8d}".format(batch.id),
             # batch header for payment "test1"
-            "5220company_1_data                      COMPANY_IDPPDtest1     201130201130   1ORIGINAT0000000",
+            "5220company_1_data                      COMPANY_IDCCDtest1     201130201130   1ORIGINAT0000000",
             # entry detail for payment "test1"
             "622123456789987654321        0000012345               partner_a               0ORIGINAT0000000",
             # batch control record for payment "test1"
             "82200000010012345678000000000000000000012345COMPANY_ID                         ORIGINAT0000000",
             # batch header for payment "test2"
-            "5220company_1_data                      COMPANY_IDPPDtest2     201130201130   1ORIGINAT0000001",
+            "5220company_1_data                      COMPANY_IDCCDtest2     201130201130   1ORIGINAT0000001",
             # entry detail for payment "test2"
             "622123456789987654321        0000045678               partner_b               0ORIGINAT0000000",
             # batch control record for payment "test2"

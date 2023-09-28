@@ -76,7 +76,7 @@ class AccountBatchPayment(models.Model):
         batch.append("{:16.16}".format(self.journal_id.company_id.name))  # Company Name
         batch.append("{:20.20}".format(""))  # Company Discretionary Data (optional)
         batch.append("{:0>10.10}".format(self.journal_id.nacha_company_identification))  # Company Identification
-        batch.append("PPD")  # Standard Entry Class Code
+        batch.append(self.journal_id.nacha_entry_class_code)  # Standard Entry Class Code
         batch.append("{:10.10}".format(payment.ref))  # Company Entry Description
         batch.append("{:6.6}".format(payment.date.strftime("%y%m%d")))  # Company Descriptive Date
         batch.append("{:6.6}".format(payment.date.strftime("%y%m%d")))  # Effective Entry Date

@@ -354,7 +354,7 @@ export default class BarcodeModel extends EventBus {
      */
     notification(message, options={}) {
         if (options.type === "danger") {
-            this.trigger('error');
+            this.trigger("playSound", "error");
         }
         return this.notificationService.add(message, options);
     }
@@ -479,6 +479,7 @@ export default class BarcodeModel extends EventBus {
             if (action.type == "ir.actions.client") {
                 action.params = Object.assign(action.params || {}, options)
             }
+            this.trigger("playSound");
             return this.action.doAction(action, options);
         }
         return options.onClose();
@@ -572,7 +573,7 @@ export default class BarcodeModel extends EventBus {
                 if (this.canBeValidate) {
                     this.validate();
                 } else {
-                    this.trigger('error');
+                    this.trigger("playSound", "error");
                 }
             },
         };

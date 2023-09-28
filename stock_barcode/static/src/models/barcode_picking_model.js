@@ -63,6 +63,7 @@ export default class BarcodePickingModel extends BarcodeModel {
                 (product.code ? `[${product.code}] ` : '') + product.display_name,
             );
             const confirmationPromise = new Promise((resolve, reject) => {
+                this.trigger("playSound");
                 this.dialogService.add(ConfirmationDialog, {
                     title: _t("Add extra product?"),
                     body,
@@ -772,6 +773,7 @@ export default class BarcodePickingModel extends BarcodeModel {
                 atLeastOneLinePartiallyProcessed = atLeastOneLinePartiallyProcessed || (qtyDone > 0);
             }
             if (this.showBackOrderDialog && atLeastOneLinePartiallyProcessed && uncompletedLines.length) {
+                this.trigger("playSound");
                 return this.dialogService.add(BackorderDialog, {
                     displayUoM: this.groups.group_uom,
                     uncompletedLines,

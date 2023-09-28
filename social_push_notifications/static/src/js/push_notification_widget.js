@@ -27,7 +27,7 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
         if (Notification.permission === "granted") {
             const { pushConfigurationPromise, wasUpdated } = this._getNotificationRequestConfiguration();
             pushConfigurationPromise.then((pushConfiguration) => {
-                if (!Object.keys(pushConfiguration).length) {
+                if (Object.keys(pushConfiguration).length === 1) {
                     return superPromise;
                 }
                 const messaging = self._initializeFirebaseApp(pushConfiguration);
@@ -196,11 +196,7 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
         return this._rpc({
             route: '/social_push_notifications/fetch_push_configuration'
         }).then(function (config) {
-            if (!Object.keys(config).length) {
-                // this means firebase push notification is not enable on the current website
-                return config;
-            }
-            let expirationDate = new Date();
+            const expirationDate = new Date();
             expirationDate.setDate(expirationDate.getDate() + 7);
             Object.assign(config, {'expirationDate': expirationDate});
             localStorage.setItem(
@@ -289,7 +285,7 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
 
         const { pushConfigurationPromise } = this._getNotificationRequestConfiguration();
         const pushConfiguration = await pushConfigurationPromise;
-        if (!Object.keys(pushConfiguration).length) {
+        if (Object.keys(pushConfiguration).length === 1) {
             return;
         }
         let popupConfig = {

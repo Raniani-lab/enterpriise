@@ -60,7 +60,7 @@ class AccountChartTemplate(models.AbstractModel):
                 if 'debit' in rule_mapping:
                     vals['account_debit'] = accounts.get(rule_mapping['debit'], AccountAccount).id
                 if vals:
-                    rule.write(vals)
+                    rule.with_company(company).write(vals)
 
     @template(model='account.journal')
     def _get_payroll_account_journal(self, template_code):

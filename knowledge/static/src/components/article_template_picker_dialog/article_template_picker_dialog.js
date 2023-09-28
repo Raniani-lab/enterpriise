@@ -62,9 +62,11 @@ export class ArticleTemplatePickerDialog extends Component {
      */
     async onSelectTemplate(articleTemplateId) {
         const { el } = this.scrollView;
-        el.style.visibility = "hidden";
         el.scrollTop = 0;
-        this.state.resId = articleTemplateId;
+        if (articleTemplateId !== this.state.resId) {
+            el.style.visibility = "hidden";
+            this.state.resId = articleTemplateId;
+        }
     }
 
     async onLoadTemplate() {

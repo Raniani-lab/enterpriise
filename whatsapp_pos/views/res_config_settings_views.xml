@@ -12,7 +12,7 @@
                     <div class="content-group" invisible="not pos_whatsapp_enabled">
                         <div class="row mt16" id="pos_receipt_template_id">
                             <label for="pos_receipt_template_id" class="col-lg-3"/>
-                            <field name="pos_receipt_template_id" invisible="pos_whatsapp_enabled"/>
+                            <field name="pos_receipt_template_id" required="pos_whatsapp_enabled"/>
                         </div>
                         <div class="row mt16" id="pos_invoice_template_id">
                             <label for="pos_invoice_template_id" class="col-lg-3"/>

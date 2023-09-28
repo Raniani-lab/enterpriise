@@ -397,7 +397,7 @@ QUnit.module("Knowledge - Ensure body save scenarios", (hooks) => {
                 <div class="witness">WITNESS_ME!</div>
             </div>
         `;
-        const anchor = parseHTML(behaviorHTML).firstChild;
+        const anchor = parseHTML(editor.document, behaviorHTML).firstChild;
         const target = editor.editable.querySelector(".test_target");
         // The BehaviorState MutationObserver will try to start the mounting
         // process for the Behavior with the anchor node as soon as it is in
@@ -709,7 +709,7 @@ QUnit.module("Knowledge - Silenced Failure Cases (Recoverable)", (hooks) => {
             </div>
             <p><br></p>
         `;
-        const anchor = parseHTML(behaviorHTML).firstChild;
+        const anchor = parseHTML(editor.document, behaviorHTML).firstChild;
         const target = editor.editable.querySelector(".test_target");
         editor.observerUnactive('test_insert_behavior');
         editor.editable.replaceChild(anchor, target);

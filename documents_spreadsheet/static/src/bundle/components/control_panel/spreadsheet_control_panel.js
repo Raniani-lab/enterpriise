@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { SpreadsheetControlPanel } from "@spreadsheet_edition/bundle/actions/control_panel/spreadsheet_control_panel";
-import { Dropdown } from "@web/core/dropdown/dropdown";
 
 export class DocumentsSpreadsheetControlPanel extends SpreadsheetControlPanel {}
 
@@ -9,7 +8,6 @@ DocumentsSpreadsheetControlPanel.template =
     "documents_spreadsheet.DocumentsSpreadsheetControlPanel";
 DocumentsSpreadsheetControlPanel.components = {
     ...SpreadsheetControlPanel.components,
-    Dropdown,
 };
 DocumentsSpreadsheetControlPanel.props = {
     ...SpreadsheetControlPanel.props,

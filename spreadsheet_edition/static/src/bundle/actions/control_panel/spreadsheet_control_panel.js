@@ -8,6 +8,7 @@ import { session } from "@web/session";
 import { _t } from "@web/core/l10n/translation";
 import { Component, onWillUnmount, useState } from "@odoo/owl";
 import { helpers } from "@odoo/o-spreadsheet";
+import { Dropdown } from "@web/core/dropdown/dropdown";
 
 /**
  * @typedef {import("@spreadsheet_edition/bundle/actions/spreadsheet_component").User} User
@@ -122,6 +123,7 @@ export class SpreadsheetControlPanel extends Component {
 SpreadsheetControlPanel.template = "spreadsheet_edition.SpreadsheetControlPanel";
 SpreadsheetControlPanel.components = {
     ControlPanel,
+    Dropdown,
     SpreadsheetName,
     SpreadsheetShareButton,
 };

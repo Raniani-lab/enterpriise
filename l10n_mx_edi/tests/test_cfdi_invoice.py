@@ -99,14 +99,7 @@ class TestCFDIInvoice(TestMxEdiCommon):
             'l10n_mx_factor_type': 'Tasa',
             'price_include': True,
             'include_base_amount': True,
-            'invoice_repartition_line_ids': [
-                Command.create({'repartition_type': 'base'}),
-                Command.create({'repartition_type': 'tax', 'tag_ids': [Command.set(self.tag_iva.ids)]}),
-            ],
-            'refund_repartition_line_ids': [
-                Command.create({'repartition_type': 'base'}),
-                Command.create({'repartition_type': 'tax', 'tag_ids': [Command.set(self.tag_iva.ids)]}),
-            ],
+            'l10n_mx_tax_type': 'iva',
         })
 
         invoice = self._create_invoice(

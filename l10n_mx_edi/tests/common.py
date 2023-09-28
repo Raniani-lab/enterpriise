@@ -60,7 +60,6 @@ class TestMxEdiCommon(AccountTestInvoicingCommon):
         })
 
         # ==== Business ====
-        cls.tag_iva = cls.env.ref('l10n_mx.tag_iva')
         cls.tax_16 = cls.env["account.chart.template"].ref('tax12')
         cls.tax_0 = cls.env["account.chart.template"].ref('tax9')
         cls.tax_0_exento = cls.tax_0.copy()
@@ -71,14 +70,7 @@ class TestMxEdiCommon(AccountTestInvoicingCommon):
             'amount': -10,
             'type_tax_use': 'sale',
             'l10n_mx_factor_type': 'Tasa',
-            'invoice_repartition_line_ids': [
-                Command.create({'repartition_type': 'base'}),
-                Command.create({'repartition_type': 'tax', 'tag_ids': [Command.set(cls.tag_iva.ids)]}),
-            ],
-            'refund_repartition_line_ids': [
-                Command.create({'repartition_type': 'base'}),
-                Command.create({'repartition_type': 'tax', 'tag_ids': [Command.set(cls.tag_iva.ids)]}),
-            ],
+            'l10n_mx_tax_type': 'iva',
         })
 
         cls.product = cls.env['product.product'].create({

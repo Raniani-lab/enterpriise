@@ -43,9 +43,9 @@ class Company(models.Model):
         return result
 
     def _timesheet_postprocess(self, values):
-        if any(field_name in values for field_name in ['timesheet_mail_employee_delay', 'timesheet_mail_employee_interval']):
+        if any(field_name in values for field_name in ['timesheet_mail_employee_delay', 'timesheet_mail_employee_interval']) or values.get('timesheet_mail_employee_allow'):
             self._calculate_timesheet_mail_employee_nextdate()
-        if any(field_name in values for field_name in ['timesheet_mail_delay', 'timesheet_mail_interval']):
+        if any(field_name in values for field_name in ['timesheet_mail_delay', 'timesheet_mail_interval']) or values.get('timesheet_mail_allow'):
             self._calculate_timesheet_mail_nextdate()
 
     def _calculate_next_week_date(self, delay):

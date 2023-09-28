@@ -80,7 +80,10 @@ export class UseAsDescriptionMacro extends AbstractMacro {
             // Search in notebook tabs too.
             trigger: function () {
                 this.validatePage();
-                const el = this.getFirstVisibleElement(`.o_field_html[name="${this.data.fieldName}"]:has(.odoo-editor-editable)`);
+                const el = this.getFirstVisibleElement(
+                    `.o_field_html[name="${this.data.fieldName}"]`,
+                    (element) => element.querySelector('.odoo-editor-editable'),
+                );
                 if (el) {
                     return el;
                 }

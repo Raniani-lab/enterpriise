@@ -157,7 +157,6 @@
                                             'account_type_domain': [('account_type', 'in', (
                                                 'asset_fixed',
                                                 'asset_non_current'))]}"
-                                        groups="base.group_no_one"
                                         invisible="not display_account_asset_id"
                                         readonly="state == 'close'"/>
                                     <field

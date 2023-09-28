@@ -1162,6 +1162,15 @@ class BankRecWidget(models.Model):
 
         self.st_line_id = self.env['account.bank.statement.line'].browse(initial_values['st_line_id'])
 
+        # Skip restore and trigger matching rules if the liquidity line was modified
+        liquidity_line = self.line_ids.filtered(lambda l: l.flag == 'liquidity')
+        initial_liquidity_line_values = next((cmd[2] for cmd in initial_values['line_ids'] if cmd[2]['flag'] == 'liquidity'), {})
+        initial_liquidity_line = self.env['bank.rec.widget.line'].new(initial_liquidity_line_values)
+        for field in initial_liquidity_line_values.keys() - ['index', 'suggestion_html']:
+            if initial_liquidity_line[field] != liquidity_line[field]:
+                self._js_action_mount_st_line(self.st_line_id.id)
+                return
+
         # If the user goes to reco model and create a new one, we want to make it appearing when coming back.
         # That's why we pop 'available_reco_model_ids' as well.
         for field_name in ('id', 'st_line_id', 'todo_command', 'return_todo_command', 'available_reco_model_ids'):

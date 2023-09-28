@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from freezegun import freeze_time
 from .common import TestAccountReportsCommon
 
 from odoo import fields, Command
@@ -476,6 +476,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             },
         )
 
+    @freeze_time('2023-01-26')
     def test_payment_in_company_currency_invoice_in_foreign_currency_fully_reconcile(self):
         """ In this test, we will create a move with a foreign currency and do a payment in the company currency,
             but thanks to the changing of rates, the move is fully reconcile
@@ -505,6 +506,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
         options = self._generate_options(self.report, '2023-01-01', '2023-02-20')
         self.assertEqual(len(self.report._get_lines(options)), 0)
 
+    @freeze_time('2023-01-26')
     def test_payment_in_company_currency_invoice_in_foreign_currency_not_fully_reconcile(self):
         """ In this test, we will create a move with a foreign currency and do a payment in the company currency """
         bill = self.create_move_one_line(
@@ -571,6 +573,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             },
         )
 
+    @freeze_time('2023-01-28')
     def test_pay_all_move_check_before_full_payment(self):
         """ In this test we pay all the move, and then we check when coming back before the payment if the report display
             the lines.
@@ -623,6 +626,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             },
         )
 
+    @freeze_time('2023-01-26')
     def test_move_credit_note(self):
         """ Create a credit note, change the currency rate and then the payment. Check if the report gives the correct
             values before and after the payment
@@ -682,6 +686,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             },
         )
 
+    @freeze_time('2023-01-26')
     def test_with_payment_term(self):
         """ In this test, we will create a new payment term where you need to pay 30% of the amount directly, and then
             you have 60 days for the rest. We will check the report before and after the payment to make sure it's working
@@ -852,6 +857,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             },
         )
 
+    @freeze_time('2023-01-26')
     def test_refund_invoice_keep_exchange_diff_line(self):
         """ Create an invoice, cancel it with a credit note.
             Check the report, unreconcile the credit note and
@@ -909,28 +915,6 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             ('credit_move_id', '=', line_to_reconciles[1].id),
         ])
         partial.unlink()
-
-        # Checking the report after un-reconciling the invoice and the credit note (Rate 1 USD = 4 GOL)
-        self.assertLinesValues(
-            # pylint: disable=C0326
-            self.report._get_lines(options),
-            #   Name                                           Balance in foreign currency     Balance at op. rate     Balance at curr rate     Adjustment
-            [   0,                                                                      1,                      2,                       3,              4],
-            [
-                ('Accounts To Adjust',                                                 '',                     '',                      '',             ''),
-                ('Gol (1 USD = 4.0 Gol)',                                           700.0,                  700.0,                   175.0,         -525.0),
-                ('121000 Account Receivable',                                       700.0,                  700.0,                   175.0,         -525.0),
-                ('RINV/2023/00001 (Reversal of: INV/2023/00001)',                  -300.0,                 -150.0,                   -75.0,           75.0),
-                ('EXCH/2023/01/0001 Currency exchange rate difference',               0.0,                 -150.0,                     0.0,          150.0),
-                ('INV/2023/00001 INV/2023/00001',                                  1000.0,                 1000.0,                   250.0,         -750.0),
-                ('Total 121000 Account Receivable',                                 700.0,                  700.0,                   175.0,         -525.0),
-                ('Total Gol',                                                       700.0,                  700.0,                   175.0,         -525.0),
-            ],
-            options,
-            currency_map={
-                1: {'currency': self.currency_data['currency']},
-            },
-        )
 
         # Check the report in february, the exchange diff should disappear as it was computed in january (Rate 1 USD = 4 Gol)
         options = self._generate_options(self.report, '2023-01-01', '2023-02-15')

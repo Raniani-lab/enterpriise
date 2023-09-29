@@ -62,7 +62,10 @@ export class MrpQualityCheckConfirmationDialog extends ConfirmationDialog {
             return this.doActionAndClose("action_worksheet_check", false);
         }
         const skipSave = ["instructions", "passfail"].includes(this.recordData.test_type);
-        this.doActionAndClose("action_next", !skipSave);
+        await this.doActionAndClose("action_next", !skipSave);
+        if (this.recordData.test_type === "register_production"){
+            await this.props.record.model.orm.call("mrp.production", "set_qty_producing", [this.recordData.production_id[0]]);
+        }
     }
 
     async continueProduction() {

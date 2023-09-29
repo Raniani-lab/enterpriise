@@ -27,8 +27,8 @@ const EmbeddedViewRendererPatch = () => ({
     setup() {
         super.setup(...arguments);
         if (this.env.searchModel) {
-            useBus(this.env.searchModel, 'insert-embedded-view', this._insertCurrentViewInKnowledge.bind(this, 'knowledge.embedded_view'));
-            useBus(this.env.searchModel, 'insert-view-link', this._insertCurrentViewInKnowledge.bind(this, 'knowledge.embedded_view_link'));
+            useBus(this.env.searchModel, 'insert-embedded-view', this._insertCurrentViewInKnowledge.bind(this, 'knowledge.EmbeddedViewBehaviorBlueprint'));
+            useBus(this.env.searchModel, 'insert-view-link', this._insertCurrentViewInKnowledge.bind(this, 'knowledge.EmbeddedViewLinkBehaviorBlueprint'));
             this.orm = useService('orm');
             this.actionService = useService('action');
             this.addDialog = useOwnedDialogs();
@@ -131,7 +131,7 @@ const EmbeddedViewRendererPatch = () => ({
      */
     _insertCurrentViewInKnowledge(template) {
         const config = this.env.config;
-        const templateProps = this._extractCurrentViewEmbedTemplateProps(template === "knowledge.embedded_view");
+        const templateProps = this._extractCurrentViewEmbedTemplateProps(template === "knowledge.EmbeddedViewBehaviorBlueprint");
         if (config.actionType !== 'ir.actions.act_window' || !templateProps) {
             throw new Error('This view can not be embedded in an article: the action is not an "ir.actions.act_window" or is not serializable.');
         }

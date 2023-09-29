@@ -25,7 +25,7 @@ patch(Wysiwyg.prototype, {
      */
     async resetEditor() {
         await super.resetEditor(...arguments);
-        this.$editable[0].dispatchEvent(new Event('refresh_behaviors'));
+        this.$editable[0].dispatchEvent(new Event('mount_knowledge_behaviors'));
     },
     /**
      * @override
@@ -219,10 +219,10 @@ patch(Wysiwyg.prototype, {
      */
     _notifyNewBehavior(anchor, restoreSelection, insert = null) {
         const type = Array.from(anchor.classList).find(className => className.startsWith('o_knowledge_behavior_type_'));
-        this.$editable[0].dispatchEvent(new CustomEvent('refresh_behaviors', { detail: { behaviorData: {
+        this.$editable[0].dispatchEvent(new CustomEvent('mount_knowledge_behaviors', { detail: { behaviorData: {
             anchor,
             behaviorType: type,
-            setCursor: true,
+            shouldSetCursor: true,
             restoreSelection,
             behaviorStatus: 'new',
             insert,
@@ -233,7 +233,7 @@ patch(Wysiwyg.prototype, {
      */
     _insertTableOfContent: function () {
         const restoreSelection = preserveCursor(this.odooEditor.document);
-        const tableOfContentBlock = renderToElement('knowledge.abstract_behavior', {
+        const tableOfContentBlock = renderToElement('knowledge.AbstractBehaviorBlueprint', {
             behaviorType: "o_knowledge_behavior_type_toc",
         });
         this._notifyNewBehavior(tableOfContentBlock, restoreSelection);
@@ -245,7 +245,7 @@ patch(Wysiwyg.prototype, {
      */
     _insertArticlesStructure: function () {
         const restoreSelection = preserveCursor(this.odooEditor.document);
-        const articlesStructureBlock = renderToElement('knowledge.articles_structure_wrapper');
+        const articlesStructureBlock = renderToElement('knowledge.ArticlesStructureBehaviorBlueprint');
         this._notifyNewBehavior(articlesStructureBlock, restoreSelection);
     },
     /**
@@ -253,7 +253,7 @@ patch(Wysiwyg.prototype, {
      */
     _insertTemplate() {
         const restoreSelection = preserveCursor(this.odooEditor.document);
-        const templateBlock = renderToElement('knowledge.abstract_behavior', {
+        const templateBlock = renderToElement('knowledge.AbstractBehaviorBlueprint', {
             behaviorType: "o_knowledge_behavior_type_template",
         });
         this._notifyNewBehavior(templateBlock, restoreSelection);
@@ -267,7 +267,7 @@ patch(Wysiwyg.prototype, {
             title: _t('Link an Article'),
             confirmLabel: _t('Insert Link'),
             articleSelected: article => {
-                const articleLinkBlock = renderToElement('knowledge.wysiwyg_article_link', {
+                const articleLinkBlock = renderToElement('knowledge.ArticleBehaviorBlueprint', {
                     href: '/knowledge/article/' + article.articleId,
                     data: JSON.stringify({
                         article_id: article.articleId,
@@ -312,7 +312,7 @@ patch(Wysiwyg.prototype, {
             props.additionalViewProps = additionalViewProps;
         }
         const behaviorProps = encodeDataBehaviorProps(props);
-        const embeddedViewBlock = renderToElement('knowledge.embedded_view', {
+        const embeddedViewBlock = renderToElement('knowledge.EmbeddedViewBehaviorBlueprint', {
             behaviorProps,
             action_help: actionWindow.act_window?.help,
         });
@@ -324,7 +324,7 @@ patch(Wysiwyg.prototype, {
      * @param {function} restoreSelection
      */
     _insertVideo: function (media, restoreSelection) {
-        const videoBlock = renderToElement('knowledge.wysiwyg_video', {
+        const videoBlock = renderToElement('knowledge.VideoBehaviorBlueprint', {
             behaviorProps: encodeDataBehaviorProps({
                 videoId: media.videoId,
                 platform: media.platform,
@@ -345,7 +345,7 @@ patch(Wysiwyg.prototype, {
             // Set the cursor to the end of the article by not normalizing the position.
             // By not normalizing we ensure that we will use the articleś body as the container
             // and not an invisible character.
-            setCursorEnd(this.odooEditor.editable, false);
+            return setCursorEnd(this.odooEditor.editable, false);
         }
         const insert = (anchor) => {
             const fragment = this.odooEditor.document.createDocumentFragment();
@@ -354,18 +354,22 @@ patch(Wysiwyg.prototype, {
             const p = this.odooEditor.document.createElement('p');
             p.append(this.odooEditor.document.createElement('br'));
             fragment.append(anchor, p);
-            const [behavior] = this.odooEditor.execCommand('insert', fragment);
-            behavior.scrollIntoView();
+            const insertedNodes = this.odooEditor.execCommand('insert', fragment);
+            if (insertedNodes) {
+                insertedNodes[0].scrollIntoView();
+                return insertedNodes;
+            }
         };
         // Clone behaviorBlueprint to be sure that the nodes are not modified
         // during the first insertion attempt and that the correct nodes
         // are inserted the second time.
         this._notifyNewBehavior(behaviorBlueprint.cloneNode(true), restoreSelection, (anchor) => {
-            insert(anchor);
+            const insertedNodes = insert(anchor);
             this._onHistoryResetFromSteps = () => {
                 this._notifyNewBehavior(behaviorBlueprint.cloneNode(true), restoreSelection, insert);
                 this._onHistoryResetFromSteps = undefined;
             };
+            return insertedNodes;
         });
     },
     /**
@@ -380,8 +384,7 @@ patch(Wysiwyg.prototype, {
             element.classList.remove('o_is_knowledge_file');
             element.classList.add('o_image');
             const extension = (element.title && element.title.split('.').pop()) || element.dataset.mimetype;
-            const fileBlock = renderToElement('knowledge.WysiwygFileBehavior', {
-                behaviorType: "o_knowledge_behavior_type_file",
+            const fileBlock = renderToElement('knowledge.FileBehaviorBlueprint', {
                 fileName: element.title,
                 fileImage: markup(element.outerHTML),
                 behaviorProps: encodeDataBehaviorProps({

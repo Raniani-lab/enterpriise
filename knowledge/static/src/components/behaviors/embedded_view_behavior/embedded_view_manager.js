@@ -35,15 +35,15 @@ export class EmbeddedViewManager extends Component {
         BehaviorToolbarButton,
     };
     static props = {
-        el: { type: HTMLElement },
         action: { type: Object },
         additionalViewProps: { type: Object, optional: true },
+        anchor: { type: HTMLElement },
         context: { type: Object },
-        viewType: { type: String },
-        setTitle: { type: Function },
         getTitle: { type: Function },
+        setTitle: { type: Function },
         readonly: { type: Boolean },
         record: { type: Object },
+        viewType: { type: String },
     };
     static template = 'knowledge.EmbeddedViewManager';
 
@@ -110,9 +110,9 @@ export class EmbeddedViewManager extends Component {
             saveItemCalendarProps: async (name, itemCalendarProps) => {
                 this.props.setTitle(name);
                 this.state.additionalViewProps.itemCalendarProps = itemCalendarProps;
-                const behaviorProps = decodeDataBehaviorProps(this.props.el.dataset.behaviorProps);
+                const behaviorProps = decodeDataBehaviorProps(this.props.anchor.dataset.behaviorProps);
                 behaviorProps.additionalViewProps.itemCalendarProps = itemCalendarProps;
-                this.props.el.dataset.behaviorProps = encodeDataBehaviorProps(behaviorProps);
+                this.props.anchor.dataset.behaviorProps = encodeDataBehaviorProps(behaviorProps);
             },
             knowledgeArticleId: this.embeddedViewProps.context.active_id,
             ...this.state.additionalViewProps.itemCalendarProps,
@@ -149,11 +149,11 @@ export class EmbeddedViewManager extends Component {
             });
             return;
         }
-        const data = decodeDataBehaviorProps(this.props.el.getAttribute("data-behavior-props"));
+        const data = decodeDataBehaviorProps(this.props.anchor.getAttribute("data-behavior-props"));
         const favorites = data.favorites || [];
         favorites.push(favorite);
         data.favorites = favorites;
-        this.props.el.setAttribute("data-behavior-props", encodeDataBehaviorProps(data));
+        this.props.anchor.setAttribute("data-behavior-props", encodeDataBehaviorProps(data));
     }
 
     /**
@@ -167,10 +167,10 @@ export class EmbeddedViewManager extends Component {
             return;
         }
 
-        const data = decodeDataBehaviorProps(this.props.el.getAttribute("data-behavior-props"));
+        const data = decodeDataBehaviorProps(this.props.anchor.getAttribute("data-behavior-props"));
         const favorites = data.favorites || [];
         data.favorites = favorites.filter((favorite) => favorite.name != searchItem.description);
-        this.props.el.setAttribute("data-behavior-props", encodeDataBehaviorProps(data));
+        this.props.anchor.setAttribute("data-behavior-props", encodeDataBehaviorProps(data));
     }
 
     /**
@@ -325,7 +325,7 @@ export class EmbeddedViewManager extends Component {
      * Load search favorites from the view arch.
      */
     _loadKnowledgeFavorites() {
-        const data = decodeDataBehaviorProps(this.props.el.getAttribute("data-behavior-props"));
+        const data = decodeDataBehaviorProps(this.props.anchor.getAttribute("data-behavior-props"));
         const favorites = data.favorites || [];
 
         return favorites.map((favorite) => {

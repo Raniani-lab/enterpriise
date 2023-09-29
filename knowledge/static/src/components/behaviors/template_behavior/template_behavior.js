@@ -18,6 +18,9 @@ import {
     BehaviorToolbar,
     BehaviorToolbarButton,
 } from "@knowledge/components/behaviors/behavior_toolbar/behavior_toolbar";
+import {
+    getPropNameNode,
+} from "@knowledge/js/knowledge_utils";
 
 
 export class TemplateBehavior extends AbstractBehavior {
@@ -75,19 +78,46 @@ export class TemplateBehavior extends AbstractBehavior {
         this.targetRecordInfo = this.knowledgeCommandsService.getCommandsRecordInfo();
         this.htmlFieldTargetMessage = _t('Use as %s', this.targetRecordInfo?.fieldInfo?.string || 'Description');
     }
+
+    //--------------------------------------------------------------------------
+    // TECHNICAL
+    //--------------------------------------------------------------------------
+
+    /**
+     * Create a dataTransfer object with the editable content of the template
+     * block, to be used for a paste event in the editor
+     */
+    _createHtmlDataTransfer() {
+        const dataTransfer = new DataTransfer();
+        const content = this.props.anchor.querySelector('.o_knowledge_content');
+        dataTransfer.setData('text/odoo-editor', `<p></p>${content.innerHTML}<p></p>`);
+        return dataTransfer;
+    }
+
+    //--------------------------------------------------------------------------
+    // BUSINESS
+    //--------------------------------------------------------------------------
+
     /**
      * Set the cursor of the user inside the template block when the user types
-     * the `/clipboard` command.
+     * the `/clipboard` command (Used for a new TemplateBehavior on its first
+     * mount).
      */
     setCursor() {
-        setCursorStart(this.props.anchor.querySelector('[data-prop-name="content"] > p'));
+        setCursorStart(getPropNameNode("content", this.props.anchor).querySelector("p"));
     }
+
     showTooltip() {
         this.popover.open(this.copyToClipboardButton, {
             tooltip: _t("Content copied to clipboard."),
         });
         browser.setTimeout(this.popover.close, 800);
     }
+
+    //--------------------------------------------------------------------------
+    // HANDLERS
+    //--------------------------------------------------------------------------
+
     /**
      * @param {Event} ev
      */
@@ -95,6 +125,26 @@ export class TemplateBehavior extends AbstractBehavior {
         ev.stopPropagation();
         ev.preventDefault();
     }
+
+    /**
+     * Callback function called when the user clicks on the "Send as Message" button.
+     * The function executes a macro that opens the latest form view, composes a
+     * new message and attaches the associated file to it.
+     * @param {Event} ev
+     */
+    onClickSendAsMessage(ev) {
+        const dataTransfer = this._createHtmlDataTransfer();
+        const macro = new SendAsMessageMacro({
+            targetXmlDoc: this.targetRecordInfo.xmlDoc,
+            breadcrumbs: this.targetRecordInfo.breadcrumbs,
+            data: {
+                dataTransfer: dataTransfer,
+            },
+            services: this.macrosServices,
+        });
+        macro.start();
+    }
+
     /**
      * Callback function called when the user clicks on the "Use As ..." button.
      * The function executes a macro that opens the latest form view containing
@@ -115,33 +165,5 @@ export class TemplateBehavior extends AbstractBehavior {
             services: this.macrosServices,
         });
         macro.start();
-    }
-    /**
-     * Callback function called when the user clicks on the "Send as Message" button.
-     * The function executes a macro that opens the latest form view, composes a
-     * new message and attaches the associated file to it.
-     * @param {Event} ev
-     */
-    onClickSendAsMessage(ev) {
-        const dataTransfer = this._createHtmlDataTransfer();
-        const macro = new SendAsMessageMacro({
-            targetXmlDoc: this.targetRecordInfo.xmlDoc,
-            breadcrumbs: this.targetRecordInfo.breadcrumbs,
-            data: {
-                dataTransfer: dataTransfer,
-            },
-            services: this.macrosServices,
-        });
-        macro.start();
-    }
-    /**
-     * Create a dataTransfer object with the editable content of the template
-     * block, to be used for a paste event in the editor
-     */
-    _createHtmlDataTransfer() {
-        const dataTransfer = new DataTransfer();
-        const content = this.props.anchor.querySelector('.o_knowledge_content');
-        dataTransfer.setData('text/odoo-editor', `<p></p>${content.innerHTML}<p></p>`);
-        return dataTransfer;
     }
 }

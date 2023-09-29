@@ -8,6 +8,8 @@ import {
     useState } from "@odoo/owl";
 
 export class TableOfContentBehavior extends AbstractBehavior {
+    static template = "knowledge.TableOfContentBehavior";
+
     setup () {
         super.setup();
         this.state = useState({
@@ -39,6 +41,10 @@ export class TableOfContentBehavior extends AbstractBehavior {
             this._updateTableOfContents();
         });
     }
+
+    //--------------------------------------------------------------------------
+    // TECHNICAL
+    //--------------------------------------------------------------------------
 
     /**
      * Observes the changes made to the titles of the editor.
@@ -81,7 +87,7 @@ export class TableOfContentBehavior extends AbstractBehavior {
     }
 
     //--------------------------------------------------------------------------
-    // Table of content - BUSINESS LOGIC
+    // BUSINESS
     //--------------------------------------------------------------------------
 
     /**
@@ -191,7 +197,7 @@ export class TableOfContentBehavior extends AbstractBehavior {
     }
 
     //--------------------------------------------------------------------------
-    // Table of content - HANDLERS
+    // HANDLERS
     //--------------------------------------------------------------------------
 
     /**
@@ -217,6 +223,3 @@ export class TableOfContentBehavior extends AbstractBehavior {
         }
     }
 }
-
-TableOfContentBehavior.template = "knowledge.TableOfContentBehavior";
-TableOfContentBehavior.components = {};

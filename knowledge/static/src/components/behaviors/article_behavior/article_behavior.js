@@ -8,6 +8,13 @@ import { useEffect } from "@odoo/owl";
 
 
 export class ArticleBehavior extends AbstractBehavior {
+    static props = {
+        ...AbstractBehavior.props,
+        article_id: { type: Number, optional: false },
+        display_name: { type: String, optional: false },
+    };
+    static template = "knowledge.ArticleBehavior";
+
     setup () {
         super.setup();
         this.actionService = useService('action');
@@ -36,6 +43,10 @@ export class ArticleBehavior extends AbstractBehavior {
         });
     }
 
+    //--------------------------------------------------------------------------
+    // TECHNICAL
+    //--------------------------------------------------------------------------
+
     /**
      * @override
      */
@@ -43,6 +54,10 @@ export class ArticleBehavior extends AbstractBehavior {
         super.setupAnchor();
         this.props.anchor.setAttribute('target', '_blank');
     }
+
+    //--------------------------------------------------------------------------
+    // HANDLERS
+    //--------------------------------------------------------------------------
 
     async openArticle () {
         try {
@@ -60,11 +75,3 @@ export class ArticleBehavior extends AbstractBehavior {
         }
     }
 }
-
-ArticleBehavior.template = "knowledge.ArticleBehavior";
-ArticleBehavior.components = {};
-ArticleBehavior.props = {
-    ...AbstractBehavior.props,
-    display_name: { type: String, optional: false },
-    article_id: { type: Number, optional: false }
-};

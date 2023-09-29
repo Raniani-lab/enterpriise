@@ -38,7 +38,7 @@ const insertKanbanEmbed = async (htmlField, target) => {
     embedDiv.setAttribute('data-behavior-props', behaviorProps);
     target.replaceWith(embedDiv);
     await htmlFieldReadyPromise;
-    await htmlField.updateBehaviors();
+    await htmlField.mountBehaviors();
     wysiwyg.odooEditor.observerActive();
     await nextTick();
 };

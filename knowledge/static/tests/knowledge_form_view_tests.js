@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { onWillStart, onMounted } from "@odoo/owl";
+import { onMounted, onWillStart, status } from "@odoo/owl";
 import { click, getFixture, makeDeferred, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { renderToElement } from "@web/core/utils/render";
@@ -11,6 +11,7 @@ import { ArticlesStructureBehavior } from "@knowledge/components/behaviors/artic
 import { TableOfContentBehavior } from "@knowledge/components/behaviors/table_of_content_behavior/table_of_content_behavior";
 import { TemplateBehavior } from "@knowledge/components/behaviors/template_behavior/template_behavior";
 import { KnowledgeArticleFormController } from "@knowledge/js/knowledge_controller";
+
 
 const articlesStructureSearch = {
     records: [
@@ -193,7 +194,7 @@ QUnit.module("Knowledge - Articles Structure Command", (hooks) => {
 const testAppendBehavior = async (editable) => {
     const wysiwyg = $(editable).data('wysiwyg');
 
-    const insertedDiv = renderToElement('knowledge.abstract_behavior', {
+    const insertedDiv = renderToElement('knowledge.AbstractBehaviorBlueprint', {
         behaviorType: "o_knowledge_behavior_type_template",
     });
     wysiwyg.appendBehaviorBlueprint(insertedDiv);
@@ -418,7 +419,7 @@ QUnit.module("Knowledge - Ensure body save scenarios", (hooks) => {
 
         // Wait for the mount mutex to be idle. The Template Behavior should
         // be fully mounted after this.
-        await htmlField.updateBehaviors();
+        await htmlField.mountBehaviors();
 
         // Attempt a save when the mutex is idle.
         await formController[formSaveHandlerName]();
@@ -625,5 +626,128 @@ QUnit.module("Knowledge Table of Content", (hooks) => {
             {title: 'Main 2',      depth: 0},
         ];
         assertHeadings(assert, editable, expectedHeadings);
+    });
+});
+
+QUnit.module("Knowledge - Silenced Failure Cases (Recoverable)", (hooks) => {
+    hooks.beforeEach(() => {
+        htmlFieldPromise = makeDeferred();
+        patchWithCleanup(HtmlField.prototype, {
+            async startWysiwyg() {
+                await super.startWysiwyg(...arguments);
+                await nextTick();
+                htmlFieldPromise.resolve(this);
+            }
+        });
+        fixture = getFixture();
+        type = "form";
+        resModel = "knowledge_article";
+        record = {
+            id: 1,
+            display_name: "Article",
+            body: "<p class='test_target'><br></p>",
+        };
+        serverData = {
+            models: {
+                knowledge_article: {
+                    fields: {
+                        display_name: {string: "Displayed name", type: "char"},
+                        body: {string: "Body", type: "html"},
+                    },
+                    records: [record],
+                    methods: {
+                        get_sidebar_articles() {
+                            return {articles: [], favorite_ids: []};
+                        }
+                    }
+                }
+            },
+        };
+        arch = `
+            <form js_class="knowledge_article_view_form">
+                <sheet>
+                    <div class="o_knowledge_editor">
+                        <field name="body" widget="html"/>
+                    </div>
+                </sheet>
+            </form>
+        `;
+        setupViewRegistries();
+    });
+
+    QUnit.test("Insertion target node disappeared before mounting and recovery (mount another Behavior afterwards)", async function (assert) {
+        await makeView({
+            type,
+            resModel,
+            serverData,
+            arch,
+            resId: 1,
+        });
+        htmlField = await htmlFieldPromise;
+        const editor = htmlField.wysiwyg.odooEditor;
+
+        // Patch to control when the mounting is done
+        const isAtWillStart = makeDeferred();
+        const pauseWillStart = makeDeferred();
+        const unpatch = patch(TemplateBehavior.prototype, {
+            setup() {
+                super.setup(...arguments);
+                onWillStart(async () => {
+                    isAtWillStart.resolve();
+                    await pauseWillStart;
+                    unpatch();
+                });
+            }
+        });
+
+        // Insert a Behavior to mount in the editable
+        const behaviorHTML = `
+            <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_template">
+                <div data-prop-name="content">
+                    <p><br></p>
+                </div>
+            </div>
+            <p><br></p>
+        `;
+        const anchor = parseHTML(behaviorHTML).firstChild;
+        const target = editor.editable.querySelector(".test_target");
+        editor.observerUnactive('test_insert_behavior');
+        editor.editable.replaceChild(anchor, target);
+        editor.observerActive('test_insert_behavior');
+
+        // Wait for the Behavior mounting process to be almost finished
+        await isAtWillStart;
+
+        // Remove the target node from the editable
+        editor.observerUnactive('test_insert_behavior');
+        editor.editable.replaceChild(target, anchor);
+        editor.observerActive('test_insert_behavior');
+
+        // unlock onWillstart so that the mouting can continue
+        pauseWillStart.resolve();
+
+        // wait for mount mutex
+        await htmlField.mountBehaviors();
+
+        // Ensure that the Behavior is not in the editable but in the Handler
+        assert.notOk(editor.editable.querySelector('.o_knowledge_behavior_type_template'), "The Behavior cannot be mounted in the editable since its target anchor was removed.");
+        const behavior = htmlField.behaviorState.handlerRef.el.querySelector('.o_knowledge_behavior_type_template');
+        assert.equal(status(behavior.oKnowledgeBehavior.root.component), "mounted");
+
+        // Put the anchor blueprint in the editable again, this time we'll allow
+        // it to be mounted in the editable
+        editor.observerUnactive('test_insert_behavior');
+        editor.editable.replaceChild(anchor, target);
+        editor.observerActive('test_insert_behavior');
+
+        // wait for mount mutex
+        await htmlField.mountBehaviors();
+
+        // Ensure that the obsolete Behavior was destroyed and the new one is
+        // mounted in the editable
+        assert.notOk(htmlField.behaviorState.handlerRef.el.querySelector('.o_knowledge_behavior_type_template'), "The obsolete Behavior should have been destroyed.");
+        const newBehavior = editor.editable.querySelector('.o_knowledge_behavior_type_template');
+        assert.equal(status(newBehavior.oKnowledgeBehavior.root.component), "mounted");
+        assert.notEqual(behavior, newBehavior);
     });
 });

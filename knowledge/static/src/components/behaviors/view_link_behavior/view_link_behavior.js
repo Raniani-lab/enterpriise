@@ -11,6 +11,16 @@ import { useEffect } from "@odoo/owl";
  * usable in Odoo)
  */
 export class ViewLinkBehavior extends AbstractBehavior {
+    static props = {
+        ...AbstractBehavior.props,
+        action_xml_id: { type: String, optional: true },
+        act_window: { type: Object, optional: true },
+        context: { type: Object },
+        name: { type: String },
+        view_type: { type: String }
+    };
+    static template = "knowledge.ViewLinkBehavior";
+
     setup () {
         super.setup();
         this.actionService = useService('action');
@@ -28,6 +38,10 @@ export class ViewLinkBehavior extends AbstractBehavior {
             };
         });
     }
+
+    //--------------------------------------------------------------------------
+    // HANDLERS
+    //--------------------------------------------------------------------------
 
     /**
      * @param {Event} event
@@ -55,14 +69,3 @@ export class ViewLinkBehavior extends AbstractBehavior {
         });
     }
 }
-
-ViewLinkBehavior.template = "knowledge.ViewLinkBehavior";
-ViewLinkBehavior.components = {};
-ViewLinkBehavior.props = {
-    ...AbstractBehavior.props,
-    act_window: { type: Object, optional: true },
-    action_xml_id: { type: String, optional: true },
-    context: { type: Object },
-    name: { type: String },
-    view_type: { type: String }
-};

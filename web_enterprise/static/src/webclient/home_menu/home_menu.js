@@ -4,7 +4,7 @@ import { isIosApp, isMobileOS, isMacOS } from "@web/core/browser/feature_detecti
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 import { useService } from "@web/core/utils/hooks";
 import { ExpirationPanel } from "./expiration_panel";
-import { useSortable } from "@web/core/utils/sortable";
+import { useSortable } from "@web/core/utils/sortable_owl";
 import { reorderApps } from "@web/webclient/menus/menu_helpers";
 
 import {

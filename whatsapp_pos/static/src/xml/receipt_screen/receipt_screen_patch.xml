@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
     <t t-name="whatsapp_pos.ReceiptScreen" t-inherit="point_of_sale.ReceiptScreen" t-inherit-mode="extension">
         <xpath expr="//form[hasclass('send-email')]" position="after">
-            <form t-if="pos.config.pos_whatsapp_enable" t-on-submit.prevent="onSendWhatsapp" class="mt-4 send-whatsapp">
+            <form t-if="this.pos.config.whatsapp_enabled" t-on-submit.prevent="onSendWhatsapp" class="mt-4 send-whatsapp">
                 <div class="input-whatsapp">
                     <input type="tel" placeholder="WhatsApp Receipt" t-on-input="onInputWhatsapp" t-att-value="whatsappState.inputWhatsapp"/>
                     <button class="send" t-att-class="{ highlight: !whatsappState.whatsappButtonDisabled and is_valid_mobile }" type="submit">
@@ -12,7 +12,7 @@
             </form>
         </xpath>
         <xpath expr="//div[hasclass('notice')]" position="after">
-            <div t-if="pos.config.pos_whatsapp_enable" class="whatsapp-notice">
+            <div t-if="this.pos.config.whatsapp_enabled" class="whatsapp-notice">
                 <div t-if="whatsappState.whatsappSuccessful !== null" t-att-class="whatsappState.whatsappSuccessful ? 'successful' : 'failed'">
                     <t t-esc="whatsappState.whatsappNotice"/>
                 </div>

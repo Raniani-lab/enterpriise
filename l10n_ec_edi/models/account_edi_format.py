@@ -194,7 +194,7 @@ class AccountEdiFormat(models.Model):
                     ),
                 )
             else:
-                auth_num, auth_date, errors, warnings = self._l10n_ec_get_authorization_status(move)
+                _, auth_num, auth_date, errors, warnings = self._l10n_ec_get_authorization_status(move)
                 if auth_num:
                     errors.append(
                         _("You cannot cancel a document that is still authorized (%s, %s), check the SRI portal",
@@ -342,7 +342,7 @@ class AccountEdiFormat(models.Model):
         # === STEP 2 ===
         # Get authorization status, store response & raise any errors
         attachment = False
-        auth_num, auth_date, auth_errors, auth_warnings = self._l10n_ec_get_authorization_status(move)
+        auth_state, auth_num, auth_date, auth_errors, auth_warnings = self._l10n_ec_get_authorization_status(move)
         errors.extend(auth_errors)
         warnings.extend(auth_warnings)
         if auth_num and auth_date:
@@ -368,12 +368,13 @@ class AccountEdiFormat(models.Model):
         elif move.edi_state == 'to_cancel' and not move.company_id.l10n_ec_production_env:
             # In test environment, we act as if invoice had already been cancelled for the govt
             warnings.append(_("Document with access key %s has been cancelled", move.l10n_ec_authorization_number))
-        elif not auth_num:
-            # No authorization number means the invoice was no authorized
-            errors.append(_("Document not authorized by SRI, please try again later"))
-        else:
+        elif not auth_num and auth_state == 'EN PROCESO':
+            # No authorization number means the invoice was no authorized yet
             warnings.append(_("Document with access key %s received by government and pending authorization",
                               move.l10n_ec_authorization_number))
+        else:
+            # SRI unexpected error
+            errors.append(_("Document not authorized by SRI, please try again later"))
 
         return errors or warnings, 'error' if errors else 'warning', attachment
 
@@ -381,24 +382,25 @@ class AccountEdiFormat(models.Model):
         """
         Government interaction: retrieves status of previously sent document.
         """
-        auth_num, auth_date = None, None
+        auth_state, auth_num, auth_date = None, None, None
 
         response, zeep_errors, zeep_warnings = self._l10n_ec_get_client_service_response(
             move, "authorization",
             claveAccesoComprobante=move.l10n_ec_authorization_number
         )
         if zeep_errors:
-            return auth_num, auth_date, zeep_errors, zeep_warnings
+            return auth_state, auth_num, auth_date, zeep_errors, zeep_warnings
         try:
             response_auth_list = response.autorizaciones and response.autorizaciones.autorizacion or []
         except AttributeError as err:
-            return auth_num, auth_date, [_("SRI response unexpected: %s", err)], zeep_warnings
+            return auth_state, auth_num, auth_date, [_("SRI response unexpected: %s", err)], zeep_warnings
 
         errors = []
         if not isinstance(response_auth_list, list):
             response_auth_list = [response_auth_list]
 
         for doc in response_auth_list:
+            auth_state = doc.estado
             if doc.estado == "AUTORIZADO":
                 auth_num = doc.numeroAutorizacion
                 auth_date = doc.fechaAutorizacion
@@ -412,7 +414,7 @@ class AccountEdiFormat(models.Model):
                         errors.append(' - '.join(
                             filter(None, [msg.identificador, msg.informacionAdicional, msg.mensaje, msg.tipo])
                         ))
-        return auth_num, auth_date, errors, zeep_warnings
+        return auth_state, auth_num, auth_date, errors, zeep_warnings
 
     def _l10n_ec_get_client_service_response(self, move, mode, **kwargs):
         """

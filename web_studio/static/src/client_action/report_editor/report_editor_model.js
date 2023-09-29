@@ -130,9 +130,11 @@ export class ReportEditorModel extends Reactive {
         return this._isInEdition;
     }
 
-    set isInEdition(value) {
+    setInEdition(value) {
+        // Reactivity limitation: if we used a setter, the reactivity will trigger the getter
+        // thus subscribing us to the key. This is not what we want here.
         value = !!value; // enforce boolean
-        if (this._isInEdition === value) {
+        if (reactive(this)._isInEdition === value) {
             return;
         }
         this._isInEdition = value;
@@ -187,7 +189,7 @@ export class ReportEditorModel extends Reactive {
             // TODO: display some sort of intelligible error
             this._reportArchs.reportQweb = "";
         }
-        this.isInEdition = false;
+        this.setInEdition(false);
     }
 
     async loadReportHtml({ resId } = {}) {
@@ -211,7 +213,7 @@ export class ReportEditorModel extends Reactive {
             // TODO: display some sort of intelligible error
             this._reportArchs.reportHtml = "";
         }
-        this.isInEdition = false;
+        this.setInEdition(false);
     }
 
     async saveReport({ htmlParts, urgent, xmlVerbatim } = {}) {
@@ -225,7 +227,7 @@ export class ReportEditorModel extends Reactive {
             return;
         }
         if (!urgent) {
-            this.isInEdition = true;
+            this.setInEdition(true);
         }
 
         let result;
@@ -243,7 +245,7 @@ export class ReportEditorModel extends Reactive {
                 { silent: urgent }
             );
         } catch {
-            this.isInEdition = false;
+            this.setInEdition(false);
             if (!urgent) {
                 this.isDirty = false;
                 this.renderKey++;
@@ -273,7 +275,7 @@ export class ReportEditorModel extends Reactive {
             this._reportArchs.reportHtml = report_html;
             this._reportArchs.reportQweb = report_qweb;
         }
-        this.isInEdition = false;
+        this.setInEdition(false);
     }
 
     /**
@@ -314,7 +316,7 @@ export class ReportEditorModel extends Reactive {
     }
 
     async resetReport() {
-        this.isInEdition = true;
+        this.setInEdition(true);
         await this._services.rpc("/web_studio/reset_report_archs", {
             report_id: this.editedReportId,
         });

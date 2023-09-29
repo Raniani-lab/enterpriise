@@ -15,7 +15,7 @@ class MrpCostStructure(models.AbstractModel):
         ProductProduct = self.env['product.product']
         StockMove = self.env['stock.move']
         res = []
-        currency_table = self.env['res.currency']._get_query_currency_table({'multi_company': True, 'date': {'date_to': fields.Date.today()}})
+        currency_table = self.env['res.currency']._get_query_currency_table(self.env.companies.ids, fields.Date.today())
         for product in productions.mapped('product_id'):
             mos = productions.filtered(lambda m: m.product_id == product)
             # variables to calc cost share (i.e. between products/byproducts) since MOs can have varying distributions

@@ -288,7 +288,7 @@ class AccountReport(models.Model):
         # Overridden to support 'oss' availability condition
         if self.availability_condition == 'oss':
             oss_tag = self.env.ref('l10n_eu_oss.tag_oss')
-            company_ids = [company_opt['id'] for company_opt in options.get('multi_company', [])] or self.env.company.ids
+            company_ids = self.get_report_company_ids(options)
             return bool(self.env['account.tax.repartition.line']\
                         .search([('tag_ids', 'in', oss_tag.ids), ('company_id', 'in', company_ids)], limit=1))
         else:

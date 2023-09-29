@@ -97,7 +97,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         ledger = self.env['account.report'].browse(options['report_id'])
         # Options ---------------------------------
         # We don't need all companies
-        options.pop('multi_company', None)
+        options['companies'] = [{'name': self.env.company.name, 'id': self.env.company.id}]
 
         # Prepare query to get lines
         domain = ledger._get_options_domain(options, "strict_range")

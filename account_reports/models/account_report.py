@@ -106,13 +106,13 @@ class AccountReport(models.Model):
 
     def _get_filter_journals(self, options, additional_domain=None):
         return self.env['account.journal'].with_context(active_test=False).search([
-                *self.env['account.journal']._check_company_domain([comp['id'] for comp in options.get('multi_company', self.env.company)]),
+                *self.env['account.journal']._check_company_domain(self.get_report_company_ids(options)),
                 *(additional_domain or []),
             ], order="company_id, name")
 
     def _get_filter_journal_groups(self, options, report_accepted_journals):
         groups = self.env['account.journal.group'].search([
-            ('company_id', 'in', [comp['id'] for comp in options.get('multi_company', self.env.company)]),
+            ('company_id', 'in', self.get_report_company_ids(options)),
             ], order='sequence')
 
         all_journals = self._get_filter_journals(options)
@@ -1009,7 +1009,7 @@ class AccountReport(models.Model):
     ####################################################
 
     def _init_options_fiscal_position(self, options, previous_options=None):
-        if self.filter_fiscal_position and self.country_id and len(options.get('multi_company', [])) <= 1:
+        if self.filter_fiscal_position and self.country_id and len(options['companies']) == 1:
             vat_fpos_domain = [
                 *self.env['account.fiscal.position']._check_company_domain(next(comp_id for comp_id in self.get_report_company_ids(options))),
                 ('foreign_vat', '!=', False),
@@ -1096,25 +1096,24 @@ class AccountReport(models.Model):
     # OPTIONS: MULTI COMPANY
     ####################################################
 
-    def _init_options_multi_company(self, options, previous_options=None):
+    def _init_options_companies(self, options, previous_options=None):
         if self.filter_multi_company == 'selector':
             self._multi_company_selector_init_options(options, previous_options=previous_options)
         elif self.filter_multi_company == 'tax_units':
             self._multi_company_tax_units_init_options(options, previous_options=previous_options)
-
-        if not 'multi_company' in options:
-            options['single_company'] = [self.env.company.id]
+        else:
+            # filter_multi_company == 'disabled'
+            options['companies'] = [{'name': self.env.company.name, 'id': self.env.company.id}]
 
     def _multi_company_selector_init_options(self, options, previous_options=None):
-        """ Initializes the multi_company option for reports configured to compute it from the company selector.
+        """ Initializes the companies option for reports configured to compute it from the company selector.
         """
-        if len(self.env.companies) > 1:
-            options['multi_company'] = [
-                {'id': c.id, 'name': c.name, 'currency_id': c.currency_id.id} for c in self.env.companies
-            ]
+        options['companies'] = [
+            {'id': c.id, 'name': c.name, 'currency_id': c.currency_id.id} for c in self.env.companies
+        ]
 
     def _multi_company_tax_units_init_options(self, options, previous_options=None):
-        """ Initializes the multi_company option for reports configured to compute it from tax units.
+        """ Initializes the companies option for reports configured to compute it from tax units.
         """
         tax_units_domain = [('company_ids', 'in', self.env.company.id)]
 
@@ -1158,17 +1157,19 @@ class AccountReport(models.Model):
             else:
                 options['tax_unit'] = 'company_only'
 
-        # Finally initialize multi_company filter
-        if options['tax_unit'] != 'company_only':
+        # Finally initialize the 'companies' option
+        if options['tax_unit'] == 'company_only':
+            options['companies'] = [{'name': self.env.company.name, 'id': self.env.company.id}]
+        else:
             tax_unit = available_tax_units.filtered(lambda x: x.id == options['tax_unit'])
-            options['multi_company'] = [{'name': company.name, 'id': company.id} for company in tax_unit.company_ids]
+            options['companies'] = [{'name': company.name, 'id': company.id} for company in tax_unit.company_ids]
 
     ####################################################
     # OPTIONS: MULTI CURRENCY
     ####################################################
     def _init_options_multi_currency(self, options, previous_options=None):
         options['multi_currency'] = (
-            any([company.get('currency_id') != options['multi_company'][0].get('currency_id') for company in options.get('multi_company', [])])
+            any([company.get('currency_id') != options['companies'][0].get('currency_id') for company in options['companies']])
             or any([column.figure_type != 'monetary' for column in self.column_ids])
             or any(expression.figure_type and expression.figure_type != 'monetary' for expression in self.line_ids.expression_ids)
         )
@@ -1593,7 +1594,7 @@ class AccountReport(models.Model):
                                  Multiple filters may share the same sequence, their relative order is then not guaranteed.
         """
         return {
-            self._init_options_multi_company: 10,
+            self._init_options_companies: 10,
             self._init_options_variants: 15,
             self._init_options_sections: 16,
             self._init_options_report_id: 17,
@@ -2214,7 +2215,7 @@ class AccountReport(models.Model):
             edit_popup_data = {}
             formatter_params = {}
             if column_expression.engine == 'external' and column_expression.subformula \
-                and len(options.get('multi_company', [])) < 2 \
+                and len(options['companies']) == 1 \
                 and (not options['available_vat_fiscal_positions'] or options['fiscal_position'] != 'all'):
 
                 # Compute rounding for manual values
@@ -2852,7 +2853,7 @@ class AccountReport(models.Model):
             all_expressions |= expressions
         tags = all_expressions._get_matching_tags()
 
-        currency_table_query = self.env['res.currency']._get_query_currency_table(options)
+        currency_table_query = self._get_query_currency_table(options)
         groupby_sql = f'account_move_line.{current_groupby}' if current_groupby else None
         tables, where_clause, where_params = self._query_get(options, date_scope)
         tail_query, tail_params = self._get_engine_query_tail(offset, limit)
@@ -2941,7 +2942,7 @@ class AccountReport(models.Model):
         self._check_groupby_fields((next_groupby.split(',') if next_groupby else []) + ([current_groupby] if current_groupby else []))
 
         groupby_sql = f'account_move_line.{current_groupby}' if current_groupby else None
-        ct_query = self.env['res.currency']._get_query_currency_table(options)
+        ct_query = self._get_query_currency_table(options)
 
         rslt = {}
 
@@ -3072,9 +3073,7 @@ class AccountReport(models.Model):
         # Create the subquery for the WITH linking our prefixes with account.account entries
         all_prefixes_queries = []
         prefix_params = []
-        prefilter = self.env['account.account']._check_company_domain([
-            comp_opt['id'] for comp_opt in options.get('multi_company', self.env.company)
-        ])
+        prefilter = self.env['account.account']._check_company_domain(self.get_report_company_ids(options))
         for prefix, excluded_prefixes in prefixes_to_compute:
             account_domain = [
                 *prefilter,
@@ -3128,7 +3127,7 @@ class AccountReport(models.Model):
         # Run main query
         tables, where_clause, where_params = self._query_get(options, date_scope)
 
-        currency_table_query = self.env['res.currency']._get_query_currency_table(options)
+        currency_table_query = self._get_query_currency_table(options)
         extra_groupby_sql = f', account_move_line.{current_groupby}' if current_groupby else ''
         extra_select_sql = f', account_move_line.{current_groupby} AS grouping_key' if current_groupby else ''
         tail_query, tail_params = self._get_engine_query_tail(offset, limit)
@@ -3210,8 +3209,7 @@ class AccountReport(models.Model):
             external_value_domain.append(('date', '>=', date_from))
 
         # Company clause
-        multi_company_opt = options.get('multi_company', [{'id': self.env.company.id}])
-        external_value_domain.append(('company_id', 'in', [x['id'] for x in multi_company_opt]))
+        external_value_domain.append(('company_id', 'in', self.get_report_company_ids(options)))
 
         # Fiscal Position clause
         fpos_option = options['fiscal_position']
@@ -3223,7 +3221,7 @@ class AccountReport(models.Model):
 
         # Do the computation
         dummy, where_clause, where_params = self.env['account.report.external.value']._where_calc(external_value_domain).get_sql()
-        currency_table_query = self.env['res.currency']._get_query_currency_table(options)
+        currency_table_query = self._get_query_currency_table(options)
 
         # We have to execute two separate queries, one for text values and one for numeric values
         num_queries, num_query_params = [], []
@@ -3336,16 +3334,16 @@ class AccountReport(models.Model):
         expression_totals = expression_totals_per_col_group[list(options['column_groups'].keys())[0]]
         carryover_values = {expression: expression_totals[expression]['value'] for expression in carryover_expressions}
 
-        if len(options.get('multi_company', [])) < 2:
+        if len(options['companies']) == 1:
             company = self.env['res.company'].browse(self.get_report_company_ids(options))
             self._create_carryover_for_company(options, company, {expr: result for expr, result in carryover_values.items()})
         else:
             multi_company_carryover_values_sum = defaultdict(lambda: 0)
 
             column_group_key = next(col_group_key for col_group_key in options['column_groups'])
-            for company_opt in options['multi_company']:
+            for company_opt in options['companies']:
                 company = self.env['res.company'].browse(company_opt['id'])
-                company_options = {**options, 'multi_company': [{'id': company.id, 'name': company.name}]}
+                company_options = {**options, 'companies': [{'id': company.id, 'name': company.name}]}
                 company_expressions_totals = self._compute_expression_totals_for_each_column_group(expressions_to_evaluate, company_options)
                 company_carryover_values = {expression: company_expressions_totals[column_group_key][expression]['value'] for expression in carryover_expressions}
                 self._create_carryover_for_company(options, company, company_carryover_values)
@@ -3823,7 +3821,7 @@ class AccountReport(models.Model):
         """
         self.ensure_one()
 
-        if 'multi_company' in options:
+        if len(options['companies']) > 1:
             raise UserError(_("Editing a manual report line is not allowed when multiple companies are selected."))
 
         if options['fiscal_position'] == 'all' and options['available_vat_fiscal_positions']:
@@ -4132,10 +4130,7 @@ class AccountReport(models.Model):
         """
         self.ensure_one()
 
-        if options.get('multi_company'):
-            companies = self.env['res.company'].browse([comp['id'] for comp in options['multi_company']])
-        else:
-            companies = self.env.company
+        companies = self.env['res.company'].browse(self.get_report_company_ids(options))
 
         if self.availability_condition == 'country':
             countries = companies.account_fiscal_country_id
@@ -4618,7 +4613,6 @@ class AccountReport(models.Model):
 
         render_values = {
             'report': self,
-            'report_company_name': self.env.company.name,
             'report_title': self.name,
             'options': options,
             'table_start': markupsafe.Markup('<tbody>'),
@@ -4840,10 +4834,13 @@ class AccountReport(models.Model):
         """ Returns a list containing the ids of the companies to be used to
         render this report, following the provided options.
         """
-        if options.get('multi_company'):
-            return [comp_data['id'] for comp_data in options['multi_company']]
-        else:
-            return self.env.company.ids
+        return [comp_data['id'] for comp_data in options['companies']]
+
+    @api.model
+    def _get_query_currency_table(self, options):
+        company_ids = self.get_report_company_ids(options)
+        conversion_date = options['date']['date_to']
+        return self.env['res.currency']._get_query_currency_table(company_ids, conversion_date)
 
     def _get_partner_and_general_ledger_initial_balance_line(self, options, parent_line_id, eval_dict, account_currency=None, level_shift=0):
         """ Helper to generate dynamic 'initial balance' lines, used by general ledger and partner ledger.

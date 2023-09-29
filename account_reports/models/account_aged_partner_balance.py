@@ -57,7 +57,7 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
                 AND company_id IN %s
             """, [
                 tuple(f"res.partner,{partner_id}" for partner_id in partner_lines_map),
-                tuple(comp['id'] for comp in options.get('multi_company', [])) or (self.env.company.id,),
+                tuple(report.get_report_company_ids(options)),
             ])
 
             trust_map = {}
@@ -146,7 +146,7 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
         # Build query
         tables, where_clause, where_params = report._query_get(options, 'strict_range', domain=[('account_id.account_type', '=', internal_type)])
 
-        currency_table = self.env['res.currency']._get_query_currency_table(options)
+        currency_table = report._get_query_currency_table(options)
         always_present_groupby = "period_table.period_index, currency_table.rate, currency_table.precision"
         if current_groupby:
             select_from_groupby = f"account_move_line.{current_groupby} AS grouping_key,"

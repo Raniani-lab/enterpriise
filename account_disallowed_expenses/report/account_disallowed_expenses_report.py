@@ -98,7 +98,7 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
             :param line_dict_id:    The generic id of the line being expanded (optional).
             :return:                The query, split into several elements that can be overridden in child reports.
         """
-        company_ids = tuple(self.env.companies.ids) if options.get('multi_company', False) else tuple(self.env.company.ids)
+        company_ids = tuple(self.env['account.report'].get_report_company_ids(options))
         current = self._parse_line_id(options, line_dict_id)
         params = {
             'date_to': options['date']['date_to'],

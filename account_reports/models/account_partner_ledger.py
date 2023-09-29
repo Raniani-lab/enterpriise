@@ -105,7 +105,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
         super()._custom_options_initializer(report, options, previous_options=previous_options)
         domain = []
 
-        company_ids = [company_opt['id'] for company_opt in options.get('multi_company', self.env.company)]
+        company_ids = report.get_report_company_ids(options)
         exch_code = self.env['res.company'].browse(company_ids).mapped('currency_exchange_journal_id')
         if exch_code:
             domain += ['!', '&', '&', '&', ('credit', '=', 0.0), ('debit', '=', 0.0), ('amount_currency', '!=', 0.0), ('journal_id', 'in', exch_code.ids)]
@@ -243,7 +243,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
         report = self.env.ref('account_reports.partner_ledger_report')
 
         # Create the currency table.
-        ct_query = self.env['res.currency']._get_query_currency_table(options)
+        ct_query = report._get_query_currency_table(options)
         for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
             tables, where_clause, where_params = report._query_get(column_group_options, 'normal')
             params.append(column_group_key)
@@ -267,7 +267,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
         queries = []
         params = []
         report = self.env.ref('account_reports.partner_ledger_report')
-        ct_query = self.env['res.currency']._get_query_currency_table(options)
+        ct_query = report._get_query_currency_table(options)
         for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
             # Get sums for the initial balance.
             # period: [('date' <= options['date_from'] - 1)]
@@ -317,7 +317,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
         queries = []
         params = []
         report = self.env.ref('account_reports.partner_ledger_report')
-        ct_query = self.env['res.currency']._get_query_currency_table(options)
+        ct_query = report._get_query_currency_table(options)
         for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
             tables, where_clause, where_params = report._query_get(column_group_options, 'normal')
             params += [
@@ -429,7 +429,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
             indirectly_linked_aml_partner_params.append(tuple(partner_ids_wo_none))
         directly_linked_aml_partner_clause = '(' + ' OR '.join(directly_linked_aml_partner_clauses) + ')'
 
-        ct_query = self.env['res.currency']._get_query_currency_table(options)
+        ct_query = self.env['account.report']._get_query_currency_table(options)
         queries = []
         all_params = []
         lang = self.env.lang or get_lang(self.env).code

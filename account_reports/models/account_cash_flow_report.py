@@ -37,7 +37,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
     def _get_report_data(self, report, options, layout_data):
         report_data = {}
 
-        currency_table_query = self.env['res.currency']._get_query_currency_table(options)
+        currency_table_query = report._get_query_currency_table(options)
 
         payment_account_ids = self._get_account_ids(report, options)
 

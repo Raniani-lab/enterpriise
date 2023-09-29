@@ -25,7 +25,7 @@ class AccountMove(models.Model):
             # Generate carryover values
             report, options = move._get_report_options_from_tax_closing_entry()
 
-            company_ids = [comp_opt['id'] for comp_opt in options.get('multi_company', [])] or self.env.company.ids
+            company_ids = report.get_report_company_ids(options)
             if len(company_ids) >= 2:
                 # For tax units, we only do the carryover for all the companies when the last of their closing moves for the period is posted.
                 # If a company has no closing move for this tax_closing_date, we consider the closing hasn't been done for it.

@@ -114,7 +114,7 @@ class MrpReport(models.Model):
             {total_produced}
             LEFT JOIN {currency_table} ON currency_table.company_id = mo.company_id
         """.format(
-            currency_table=self.env['res.currency']._get_query_currency_table({'multi_company': True, 'date': {'date_to': fields.Date.today()}}),
+            currency_table=self.env['res.currency']._get_query_currency_table(self.env.companies.ids, fields.Date.today()),
             company_id=int(self.env.company.id),
             comp_cost=self._join_component_cost(),
             op_cost=self._join_operations_cost(),

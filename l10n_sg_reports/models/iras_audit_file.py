@@ -184,7 +184,6 @@ class IrasAuditFile(models.Model):
             ])
 
         options = self.get_options(previous_options={
-            'multi_company': {'id': company.id, 'name': company.name},
             'unfold_all': True,
             'unfolded_lines': [],
             'date': {

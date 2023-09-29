@@ -128,7 +128,7 @@ export class AccountReportFilters extends Component {
     }
 
     get hasFiscalPositionFilter() {
-        return this.controller.options.available_vat_fiscal_positions.length > (this.controller.options.allow_domestic ? 0 : 1) && this.controller.options.multi_company;
+        return this.controller.options.available_vat_fiscal_positions.length > (this.controller.options.allow_domestic ? 0 : 1) && (this.controller.options.companies.length > 1);
     }
 
     //------------------------------------------------------------------------------------------------------------------

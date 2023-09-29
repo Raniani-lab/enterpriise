@@ -67,8 +67,6 @@ class L10nLuGenerateAccountsReport(models.TransientModel):
             'all_entries': report_options['all_entries'],
             'date': report_options['date'],
         }
-        if report_options.get('multi_company'):
-            options['multi_company'] = report_options['multi_company']
         coa_report = self.env.ref('account_reports.trial_balance_report')
         options = coa_report.get_options(options)
         options['date'].update(report_options.get('date', {}))

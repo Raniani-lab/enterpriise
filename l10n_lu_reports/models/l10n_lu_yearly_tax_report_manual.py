@@ -16,9 +16,10 @@ class L10nLuYearlyTaxReportManual(models.Model):
 
     # ==== DEFAULTS ====
     def _get_default_company_ids(self):
-        options = self.env.ref('l10n_lu.tax_report').get_options()
-        if options.get('multi_company'):
-            return [c['id'] for c in options['multi_company']]
+        report = self.env.ref('l10n_lu.tax_report')
+        options = report.get_options()
+        if len(options['companies']) > 1:
+            return report.get_report_company_ids(options)
         return self.env.company.ids if self.env.company.account_fiscal_country_id.code == "LU" else []
 
     # ==== XML generation fields ====

@@ -306,13 +306,13 @@ class TestTaxReport(TestAccountReportsCommon):
         :param options: the tax report options to make the closing for
         :param closing_vals_by_fpos: A list of dict(fiscal_position: [dict(line_vals)], where fiscal_position is (possibly empty)
                                      account.fiscal.position record, and line_vals, the expected values for each closing move lines.
-                                     In case options contains the 'multi_company' key, a tuple (company, fiscal_position) replaces the
-                                     fiscal_position key
+                                     In case the option 'companies' contains more than 1 company, a tuple (company, fiscal_position)
+                                     replaces the fiscal_position key
         """
         with patch.object(type(self.env['account.move']), '_get_vat_report_attachments', autospec=True, side_effect=lambda *args, **kwargs: []):
             vat_closing_moves = self.env['account.generic.tax.report.handler']._generate_tax_closing_entries(report, options)
 
-            if options.get('multi_company'):
+            if len(options['companies']) > 1:
                 closing_moves_by_fpos = {(move.company_id, move.fiscal_position_id): move for move in vat_closing_moves}
             else:
                 closing_moves_by_fpos = {move.fiscal_position_id: move for move in vat_closing_moves}

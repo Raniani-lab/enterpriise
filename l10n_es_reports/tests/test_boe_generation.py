@@ -82,9 +82,8 @@ class TestBOEGeneration(TestAccountReportsCommon):
     def _check_boe_111_to_303(self, modelo_number):
         self.init_invoice('out_invoice', partner=self.spanish_partner, amounts=[10000], invoice_date=fields.Date.today(), taxes=self.spanish_test_tax, post=True)
         report = self.env.ref('l10n_es.mod_%s' % modelo_number)
+        report.filter_multi_company = 'disabled'
         options = self._generate_options(report, fields.Date.from_string('2020-12-01'), fields.Date.from_string('2020-12-31'))
-        if 'multi_company' in options:
-            del options['multi_company']
         self._check_boe_export(report, options, modelo_number)
 
     @freeze_time('2020-12-22')
@@ -105,9 +104,8 @@ class TestBOEGeneration(TestAccountReportsCommon):
         invoice.l10n_es_reports_mod347_invoice_type = 'regular'
         invoice._post()
         report = self.env.ref('l10n_es_reports.mod_347')
+        report.filter_multi_company = 'disabled'
         options = self._generate_options(report, fields.Date.from_string('2020-01-01'), fields.Date.from_string('2020-12-31'))
-        if 'multi_company' in options:
-            del options['multi_company']
         self._check_boe_export(report, options, 347)
 
     @freeze_time('2020-12-22')
@@ -120,9 +118,8 @@ class TestBOEGeneration(TestAccountReportsCommon):
         invoice.l10n_es_reports_mod349_invoice_type = 'E'
         invoice._post()
         report = self.env.ref('l10n_es_reports.mod_349')
+        report.filter_multi_company = 'disabled'
         options = self._generate_options(report, fields.Date.from_string('2020-12-01'), fields.Date.from_string('2020-12-31'))
-        if 'multi_company' in options:
-            del options['multi_company']
         self._check_boe_export(report, options, 349)
 
     @freeze_time('2020-12-22')

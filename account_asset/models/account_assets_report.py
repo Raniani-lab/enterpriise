@@ -333,15 +333,10 @@ class AssetsReportCustomHandler(models.AbstractModel):
 
         move_filter = f"""move.state {"!= 'cancel'" if options.get('all_entries') else "= 'posted'"}"""
 
-        if options.get('multi_company', False):
-            company_ids = tuple(self.env.companies.ids)
-        else:
-            company_ids = tuple(self.env.company.ids)
-
         query_params = {
             'date_to': options['date']['date_to'],
             'date_from': options['date']['date_from'],
-            'company_ids': company_ids,
+            'company_ids': tuple(self.env['account.report'].get_report_company_ids(options)),
             'include_draft': options.get('all_entries', False),
         }
 

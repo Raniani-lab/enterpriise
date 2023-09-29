@@ -47,8 +47,7 @@ class AccountTaxReportHandler(models.AbstractModel):
 
         # Get all companies impacting the report.
         end_date = fields.Date.from_string(options['date']['date_to'])
-        options_company_ids = [company_opt['id'] for company_opt in options.get('multi_company', [])]
-        companies = self.env['res.company'].browse(options_company_ids) if options_company_ids else self.env.company
+        companies = self.env['res.company'].browse(report.get_report_company_ids(options))
 
         # Get the moves separately for companies with a lock date on the concerned period, and those without.
         tax_locked_companies = companies.filtered(lambda c: c.tax_lock_date and c.tax_lock_date >= end_date)
@@ -97,8 +96,7 @@ class AccountTaxReportHandler(models.AbstractModel):
         :return: The closing moves.
         """
         if companies is None:
-            options_company_ids = [company_opt['id'] for company_opt in options.get('multi_company', [])]
-            companies = self.env['res.company'].browse(options_company_ids) if options_company_ids else self.env.company
+            companies = self.env['res.company'].browse(report.get_report_company_ids(options))
         end_date = fields.Date.from_string(options['date']['date_to'])
 
         closing_moves_by_company = defaultdict(lambda: self.env['account.move'])
@@ -209,7 +207,7 @@ class AccountTaxReportHandler(models.AbstractModel):
             **options,
             'all_entries': False,
             'date': dict(options['date']),
-            'multi_company': [{'id': company.id, 'name': company.name}],
+            'companies': [{'id': company.id, 'name': company.name}],
         }
 
         period_start, period_end = company._get_tax_closing_period_boundaries(fields.Date.from_string(options['date']['date_to']))
@@ -539,7 +537,7 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
                 WHERE group_tax.amount_type = 'group' AND group_tax.company_id IN %s
                 GROUP BY group_tax.id
             ''',
-            [tuple(comp['id'] for comp in options.get('multi_company', self.env.company))],
+            [tuple(report.get_report_company_ids(options))],
         )
         group_of_taxes_info = {}
         child_to_group_of_taxes = {}

@@ -15,6 +15,7 @@
                 <field name="state" invisible="1"/>
                 <field name="asset_type" invisible="1"/>
                 <field name="total_depreciation_entries_count" invisible="1"/>
+                <field name="parent_id" invisible="1"/>
                 <header>
                     <button name="validate" states="draft" string="Confirm" type="object" class="oe_highlight"/>
                     <button type="object" name="compute_depreciation_board" string="Compute Depreciation" states="draft"/>
@@ -34,6 +35,7 @@
                         <button class="oe_stat_button" name="open_increase"  type="object" icon="fa-chevron-circle-up" attrs="{'invisible': [('gross_increase_count', '=', 0)]}">
                             <field string="Gross Increase" name="gross_increase_count" widget="statinfo" />
                         </button>
+                        <button class="oe_stat_button" string="Parent Asset" name="open_parent_id" type="object" icon="fa-bars" attrs="{'invisible': [('parent_id', '=', False)]}"/>
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">

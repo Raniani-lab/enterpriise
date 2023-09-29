@@ -12,6 +12,3 @@ class ResCompany(models.Model):
     @api.model
     def winbooks_import_action(self):
         return self.env["ir.actions.actions"]._for_xml_id("account_winbooks_import.winbooks_import_action")
-
-    def get_account_dashboard_onboarding_steps_states_names(self):
-        return super(ResCompany, self).get_account_dashboard_onboarding_steps_states_names() + ['account_onboarding_winbooks_state']

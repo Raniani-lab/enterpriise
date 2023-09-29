@@ -838,8 +838,7 @@ class WinbooksImportWizard(models.TransientModel):
 
                 self._post_import(account_deprecated_ids)
                 _logger.info("Completed")
-                self.env.company.sudo().set_onboarding_step_done('account_onboarding_winbooks_state')
-                self.env.company.sudo().set_onboarding_step_done('account_setup_coa_state')
+                self.env['onboarding.onboarding.step'].sudo().action_validate_step('account.onboarding_onboarding_step_chart_of_accounts')
             finally:
                 for fd in pdffiles.values():
                     fd.close()

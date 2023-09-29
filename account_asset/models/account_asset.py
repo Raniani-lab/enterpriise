@@ -716,15 +716,31 @@ class AccountAsset(models.Model):
         }
 
     def open_increase(self):
-        return {
+        result = {
             'name': _('Gross Increase'),
             'view_mode': 'tree,form',
             'res_model': 'account.asset',
+            'context': {**self.env.context, 'create': False},
             'view_id': False,
             'type': 'ir.actions.act_window',
             'domain': [('id', 'in', self.children_ids.ids)],
             'views': [(False, 'tree'), (False, 'form')],
         }
+        if len(self.children_ids) == 1:
+            result['views'] = [(False, 'form')]
+            result['res_id'] = self.children_ids.id
+        return result
+
+    def open_parent_id(self):
+        result = {
+            'name': _('Parent Asset'),
+            'view_mode': 'form',
+            'res_model': 'account.asset',
+            'type': 'ir.actions.act_window',
+            'res_id': self.parent_id.id,
+            'views': [(False, 'form')],
+        }
+        return result
 
     def validate(self):
         fields = [

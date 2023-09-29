@@ -68,13 +68,11 @@
             <menuitem id="menu_sale_renting_periods"
                 name="Rental periods"
                 action="sale_temporal.sale_temporal_recurrence_action"
-                groups="sales_team.group_sale_manager"
-                sequence="20" />
+                sequence="20"/>
 
             <menuitem id="menu_quotation_template"
                 name="Quotation Templates"
                 action="sale_order_template_action"
-                groups="sales_team.group_sale_manager"
                 sequence="30"/>
 
         </menuitem>

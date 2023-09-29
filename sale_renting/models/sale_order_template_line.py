@@ -10,7 +10,4 @@ class SaleOrderTemplateLine(models.Model):
     @api.model
     def _product_id_domain(self):
         """ Override to allow users to add a rental product to a quotation template line """
-        domain = super()._product_id_domain()
-        if self.env.context.get('in_rental_app'):
-            domain = expression.OR([domain, [('rent_ok', '=', True)]])
-        return domain
+        return expression.OR([super()._product_id_domain(), [('rent_ok', '=', True)]])

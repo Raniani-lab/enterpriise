@@ -83,10 +83,12 @@ export class XmlResourceEditor extends Component {
         defaultResourceId: { type: true, optional: true },
         canSave: { type: Boolean, optional: true },
         minWidth: { type: Number, optional: true },
+        reloadSources: { type: Number, optional: true },
     };
     static defaultProps = {
         canSave: true,
         minWidth: 400,
+        reloadSources: 1,
     };
 
     setup() {
@@ -96,13 +98,24 @@ export class XmlResourceEditor extends Component {
             currentResourceId: null,
             _codeChanges: null,
         });
+        this.codeEditorKey = this.props.reloadSources;
         onWillStart(() => this.loadResources(this.props.mainResourceId));
 
         onWillUpdateProps(async (nextProps) => {
-            this.state._codeChanges = null;
-            if (nextProps.mainResourceId !== this.props.mainResourceId) {
+            const shouldReload =
+                nextProps.mainResourceId !== this.props.mainResourceId ||
+                this.codeEditorKey !== nextProps.reloadSources;
+            const nextResourceId =
+                nextProps.mainResourceId !== this.props.mainResourceId
+                    ? nextProps.mainResourceId
+                    : this.state.currentResourceId;
+
+            if (shouldReload) {
+                this.state._codeChanges = null;
                 await this.loadResources(nextProps.mainResourceId);
+                this.state.currentResourceId = nextResourceId;
             }
+            this.codeEditorKey = nextProps.reloadSources;
         });
 
         this.hiddenAlerts = useState({});

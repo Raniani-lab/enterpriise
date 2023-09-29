@@ -628,3 +628,6 @@ class TestReportEditorUIUnit(HttpCase):
                 <p><span t-field="doc.company_id.x_new_file">file default value</span><span t-field="doc.company_id.x_new_image" t-options-widget="\'image\'" t-options-qweb_img_raw_data="1">image default value</span><br/></p>
             </t>
         """)
+
+    def test_saving_xml_editor_reload(self):
+        self.start_tour(self.tour_url, "web_studio.test_saving_xml_editor_reload", login="admin")

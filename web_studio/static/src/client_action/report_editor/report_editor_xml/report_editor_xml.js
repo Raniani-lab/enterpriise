@@ -69,6 +69,7 @@ export class ReportEditorXml extends Component {
         this.reportEditorModel = useState(this.env.reportEditorModel);
         this.state = useState({
             xmlChanges: null,
+            reloadSources: 1,
             get isDirty() {
                 return !!this.xmlChanges;
             },
@@ -100,11 +101,15 @@ export class ReportEditorXml extends Component {
     }
 
     async save({ urgent = false } = {}) {
+        const changes = { ...toRaw(this.state.xmlChanges) };
         await this.reportEditorModel.saveReport({
             urgent,
-            xmlVerbatim: { ...toRaw(this.state.xmlChanges) },
+            xmlVerbatim: changes,
         });
         this.state.xmlChanges = null;
+        if (!urgent && Object.keys(changes).length) {
+            this.state.reloadSources++;
+        }
     }
 
     onIframeLoaded({ iframeRef }) {

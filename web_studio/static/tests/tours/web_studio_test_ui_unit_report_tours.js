@@ -2,9 +2,15 @@
 import { registry } from "@web/core/registry";
 import { download } from "@web/core/network/download";
 import { patch } from "@web/core/utils/patch";
+import { parseXML, serializeXML } from "@web/core/utils/xml";
 import { assertEqual, stepNotInStudio } from "@web_studio/../tests/tours/tour_helpers";
 
 const getBoundingClientRect = Element.prototype.getBoundingClientRect;
+
+function normalizeXML(str) {
+    const doc = parseXML(str);
+    return serializeXML(doc.firstElementChild);
+}
 
 function insertText(element, text, offset = 0) {
     const doc = element.ownerDocument;
@@ -678,18 +684,21 @@ registry.category("web_tour.tours").add("web_studio.test_report_edition_binary_f
                 ".oe-powerbox-wrapper .oe-powerbox-commandDescription:contains(Insert a field)",
         },
         {
-            trigger: ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover_search input",
+            trigger:
+                ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover_search input",
             run: "text Company",
         },
         {
             trigger: "[data-name=company_id] > button.o_model_field_selector_popover_item_relation",
         },
         {
-            trigger: ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover_search input",
+            trigger:
+                ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover_search input",
             run: "text New File",
         },
         {
-            trigger: ".o_model_field_selector_popover_item_name:contains(New File):not(:contains(filename))",
+            trigger:
+                ".o_model_field_selector_popover_item_name:contains(New File):not(:contains(filename))",
         },
         {
             trigger:
@@ -716,14 +725,16 @@ registry.category("web_tour.tours").add("web_studio.test_report_edition_binary_f
                 ".oe-powerbox-wrapper .oe-powerbox-commandDescription:contains(Insert a field)",
         },
         {
-            trigger: ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover_search input",
+            trigger:
+                ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover_search input",
             run: "text Company",
         },
         {
             trigger: "[data-name=company_id] > button.o_model_field_selector_popover_item_relation",
         },
         {
-            trigger: ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover_search input",
+            trigger:
+                ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover_search input",
             run: "text New Image",
         },
         {
@@ -748,6 +759,48 @@ registry.category("web_tour.tours").add("web_studio.test_report_edition_binary_f
         {
             trigger: ".o-web-studio-save-report:not(.btn-primary)",
             isCheck: true,
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("web_studio.test_saving_xml_editor_reload", {
+    test: true,
+    sequence: 260,
+    steps: () => [
+        {
+            trigger: "button[name='report_edit_sources']",
+        },
+        {
+            extra_trigger: ".o-web-studio-save-report:not(.btn-primary)",
+            trigger: ".o_web_studio_xml_editor .ace_editor",
+            run() {
+                ace.edit(this.$anchor[0])
+                    .getSession()
+                    .insert(
+                        { row: 2, column: 0 },
+                        '<span class="test-added-0">in document view</span>\n'
+                    );
+            },
+        },
+        {
+            trigger: ".o-web-studio-save-report.btn-primary",
+        },
+        {
+            extra_trigger: ".o-web-studio-save-report:not(.btn-primary)",
+            trigger: ".o_web_studio_xml_editor .ace_editor",
+            run() {
+                const aceValue = ace.edit(this.$anchor[0]).getSession().getValue();
+
+                assertEqual(
+                    normalizeXML(aceValue),
+                    normalizeXML(`
+                        <t t-name="web_studio.test_report_document">
+                            <div><p t-field="doc.name"/></div>
+                            <span class="test-added-0">in document view</span>
+                            <p><br/></p>
+                        </t>`)
+                );
+            },
         },
     ],
 });

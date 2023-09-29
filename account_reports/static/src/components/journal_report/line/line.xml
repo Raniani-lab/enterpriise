@@ -16,7 +16,7 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th t-att-colspan="taxesByCountry.length > 1 ? 3 : 4">
+                                        <th t-att-colspan="taxesByCountry.length > 1 ? 4 : 3">
                                             Taxes Applied
                                             <t t-if="controller.groups.account_user">
                                                 <a

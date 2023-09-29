@@ -160,6 +160,7 @@
         color: $o-gray-700;
         font-weight: bold;
 
+        > td { border-bottom: 0 !important; }
         .muted { color: $o-gray-400 !important }
         .btn_debug { color: $o-gray-400 }
     }

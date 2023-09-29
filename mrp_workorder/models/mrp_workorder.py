@@ -301,6 +301,10 @@ class MrpProductionWorkcenterLine(models.Model):
     def button_finish(self):
         """ When using the Done button of the simplified view, validate directly some types of quality checks
         """
+        self.verify_quality_checks()
+        return super().button_finish()
+
+    def verify_quality_checks(self):
         for check in self.check_ids:
             if check.quality_state in ['pass', 'fail']:
                 continue
@@ -308,7 +312,6 @@ class MrpProductionWorkcenterLine(models.Model):
                 check.quality_state = 'pass'
             else:
                 raise UserError(_("You need to complete Quality Checks using the Shop Floor before marking Work Order as Done."))
-        return super().button_finish()
 
     def action_propose_change(self, change_type, check_id):
         change_type_to_title = {'update_step': 'Update Instructions', 'remove_step': 'Remove Step', 'set_picture': 'Change Picture'}

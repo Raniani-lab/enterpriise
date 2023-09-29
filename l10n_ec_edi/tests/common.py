@@ -209,7 +209,7 @@ L10N_EC_EDI_XML_OUT_INV = """
             <descripcion>product_a</descripcion>
             <cantidad>5.000000</cantidad>
             <precioUnitario>100.000000</precioUnitario>
-            <descuento>100.000000</descuento>
+            <descuento>100.00</descuento>
             <precioTotalSinImpuesto>400.00</precioTotalSinImpuesto>
             <impuestos>
                 <impuesto>
@@ -320,7 +320,7 @@ L10N_EC_EDI_XML_CREDIT_NOTE = """
             <descripcion>product_a</descripcion>
             <cantidad>5.000000</cantidad>
             <precioUnitario>100.000000</precioUnitario>
-            <descuento>100.000000</descuento>
+            <descuento>100.00</descuento>
             <precioTotalSinImpuesto>400.00</precioTotalSinImpuesto>
             <impuestos>
                 <impuesto>
@@ -394,7 +394,7 @@ L10N_EC_EDI_XML_PURCHASE_LIQ = """
             <descripcion>product_a</descripcion>
             <cantidad>5.000000</cantidad>
             <precioUnitario>100.000000</precioUnitario>
-            <descuento>100.000000</descuento>
+            <descuento>100.00</descuento>
             <precioTotalSinImpuesto>400.00</precioTotalSinImpuesto>
             <impuestos>
                 <impuesto>

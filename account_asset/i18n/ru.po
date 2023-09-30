@@ -102,7 +102,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "(incl."
-msgstr ""
+msgstr "(включая"
 
 #. module: account_asset
 #. odoo-python

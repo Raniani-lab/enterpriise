@@ -12,6 +12,7 @@
 # Mikael Åkerberg <mikael.akerberg@mariaakerberg.com>, 2023
 # Martin Trigaux, 2023
 # Lasse L, 2023
+# Levi Siuzdak (sile), 2023
 # 
 msgid ""
 msgstr ""
@@ -19,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Lasse L, 2023\n"
+"Last-Translator: Levi Siuzdak (sile), 2023\n"
 "Language-Team: Swedish (https://app.transifex.com/odoo/teams/41243/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,6 +54,8 @@ msgid ""
 "<span class=\"fa fa-filter\"/>\n"
 "                Types:"
 msgstr ""
+"<span class=\"fa fa-filter\"/>\n"
+"                Typer:"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
@@ -62,7 +65,7 @@ msgstr "<span class=\"fa fa-filter\"/> Alternativ:"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
 msgid "<span class=\"fa fa-filter\"/> Partners:"
-msgstr "<span class=”fa fa-filter”/> Partners:"
+msgstr "<span class=\"fa fa-filter\"/> Partners:"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_move_line_tree_view_account_intrastat_transaction_codes

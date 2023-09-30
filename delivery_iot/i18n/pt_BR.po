@@ -41,7 +41,7 @@ msgstr "Assistente de seleção de pacote de entrega"
 #. module: delivery_iot
 #: model:ir.model.fields,field_description:delivery_iot.field_choose_delivery_package__iot_ip
 msgid "Domain Address"
-msgstr ""
+msgstr "Endereço do domínio"
 
 #. module: delivery_iot
 #: model:ir.model,name:delivery_iot.model_iot_device
@@ -66,12 +66,12 @@ msgstr ""
 #. module: delivery_iot
 #: model:ir.model.fields,field_description:delivery_iot.field_choose_delivery_package__manual_measurement
 msgid "Manual Measurement"
-msgstr ""
+msgstr "Medição manual"
 
 #. module: delivery_iot
 #: model:ir.model.fields,help:delivery_iot.field_choose_delivery_package__manual_measurement
 msgid "Manually read the measurement from the device"
-msgstr ""
+msgstr "Ler manualmente a medição do dispositivo"
 
 #. module: delivery_iot
 #: model:ir.model.fields,field_description:delivery_iot.field_iot_device__picking_type_ids

@@ -5,7 +5,8 @@
 # Translators:
 # Chrille Hedberg <hedberg.chrille@gmail.com>, 2022
 # Martin Trigaux, 2022
-# Lasse Larsson, 2023
+# Lasse L, 2023
+# Levi Siuzdak (sile), 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Lasse Larsson, 2023\n"
+"Last-Translator: Levi Siuzdak (sile), 2023\n"
 "Language-Team: Swedish (https://app.transifex.com/odoo/teams/41243/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,8 +28,8 @@ msgid ""
 "<b class=\"o_fedex_order_location\"/>\n"
 "                    <span class=\"fa fa-trash-o ms-2 o_remove_fedex_order_location\" aria-label=\"Remove this location\" title=\"Remove this location\"/>"
 msgstr ""
-"<b class=”o_fedex_order_location”/>\n"
-"                    <span class=”fa fa-trash-o ms-2 o_remove_fedex_order_location” aria-label=”Ta bort denna plats” title=”Ta bort denna plats”/>"
+"<b class=\"o_fedex_order_location\"/>\n"
+"                    <span class=\"fa fa-trash-o ms-2 o_remove_fedex_order_location\" aria-label=\"Ta bort denna plats\" title=\"Ta bort denna plats\"/>"
 
 #. module: website_delivery_fedex
 #: model:ir.model.fields,help:website_delivery_fedex.field_delivery_carrier__fedex_use_locations

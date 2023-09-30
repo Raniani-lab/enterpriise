@@ -1857,8 +1857,8 @@ msgid ""
 " basic salary per product can defined in expression like: result = "
 "inputs.SALEURO.amount * contract.wage * 0.01."
 msgstr ""
-"계산에 사용됩니다. 예. 제품 당 기본급의 1%를 수당으로 제공받는 영업사원은 result = inputs.SALEURO.amount *"
-" contract.wage * 0.01 의 표현식으로 수수료를 정의할 수 있습니다."
+"계산에 사용됩니다. 예. 제품 당 기본급의 1%%를 수당으로 제공받는 영업사원은 result = inputs.SALEURO.amount "
+"* contract.wage * 0.01 의 표현식으로 수수료를 정의할 수 있습니다."
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_report__job_id

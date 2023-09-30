@@ -64,7 +64,7 @@ msgstr "HR作業エントリ"
 #. module: hr_work_entry_contract_attendance
 #: model:ir.model,name:hr_work_entry_contract_attendance.model_hr_work_entry_regeneration_wizard
 msgid "Regenerate Employee Work Entries"
-msgstr ""
+msgstr "従業員作業エントリを再生成"
 
 #. module: hr_work_entry_contract_attendance
 #: model:ir.model.fields,field_description:hr_work_entry_contract_attendance.field_hr_contract__work_entry_source

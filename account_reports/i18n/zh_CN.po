@@ -1988,6 +1988,28 @@ msgstr "社区内税项用于"
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
+msgid "Invalid domain formula in expression %r of line %r: %s"
+msgstr "第 %r 行表达式 %r 中的域公式无效：%s"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Invalid method %r"
+msgstr "无效方法 %r"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Invalid subformula in expression %r of line %r: %s"
+msgstr "第 %r 行表达式 %r 中的子公式无效：%s"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
 msgid "Invalid token '%s' in account_codes formula '%s'"
 msgstr "公式 '%s 中的令牌'%s account_codes无效"
 
@@ -3500,6 +3522,13 @@ msgid ""
 "values impacting the tax report of a locked period. To do this, you first "
 "need to modify you tax return lock date."
 msgstr "您不能将此条目重置为草稿，因为将会删除影响锁定期间纳税报告的结转值。应首先修改报税锁定日期。"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_multicurrency_revaluation_report.py:0
+#, python-format
+msgid "You need to activate more than one currency to access this report."
+msgstr "您需要激活一种以上货币才能访问该报告。"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template

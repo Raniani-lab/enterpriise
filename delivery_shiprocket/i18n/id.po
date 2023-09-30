@@ -445,7 +445,7 @@ msgstr ""
 #. module: delivery_shiprocket
 #: model:ir.model.fields,field_description:delivery_shiprocket.field_shiprocket_courier__name
 msgid "Service Name"
-msgstr ""
+msgstr "Nama Layanan"
 
 #. module: delivery_shiprocket
 #: model:product.template,name:delivery_shiprocket.product_product_delivery_shiprocket_product_template

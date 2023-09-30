@@ -32,12 +32,12 @@ msgstr "พร้อม"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
 msgid "Average Cycle Time (Days)"
-msgstr ""
+msgstr "รอบเวลาเฉลี่ย (วัน)"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
 msgid "Average Delay (Days)"
-msgstr ""
+msgstr "ความล่าช้าเฉลี่ย (วัน)"
 
 #. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__cancel
@@ -62,12 +62,12 @@ msgstr "ลูกค้า"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
 msgid "Cycle Time"
-msgstr ""
+msgstr "รอบเวลา"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__cycle_time
 msgid "Cycle Time (Days)"
-msgstr ""
+msgstr "รอบเวลา (วัน)"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
@@ -82,7 +82,7 @@ msgstr "ล่าช้า"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__delay
 msgid "Delay (Days)"
-msgstr ""
+msgstr "ความล่าช้า (วัน)"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__display_name
@@ -97,12 +97,12 @@ msgstr "เสร็จสิ้น"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
 msgid "Done Deliveries"
-msgstr ""
+msgstr "จัดส่งเรียบร้อยแล้ว"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
 msgid "Done Receipts"
-msgstr ""
+msgstr "ใบเสร็จรับเงินเรียบร้อยแล้ว"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
@@ -132,7 +132,7 @@ msgstr "ล่าช้า"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__is_backorder
 msgid "Is a Backorder"
-msgstr ""
+msgstr "เป็นการสั่งซื้อซ้ำ"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report____last_update
@@ -172,7 +172,7 @@ msgstr "ประสิทธิภาพ"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__picking_name
 msgid "Picking Name"
-msgstr ""
+msgstr "ชื่อการเบิกสินค้า"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__product_id
@@ -218,7 +218,7 @@ msgstr "สถานะ"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
 msgid "Stock Overview"
-msgstr ""
+msgstr "ภาพรวมสต็อก"
 
 #. module: stock_enterprise
 #: model:ir.model,name:stock_enterprise.model_stock_report
@@ -233,7 +233,7 @@ msgstr "วันที่โอน"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__picking_id
 msgid "Transfer Reference"
-msgstr ""
+msgstr "อ้างอิงการโอนย้าย"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__picking_type_code
@@ -258,4 +258,4 @@ msgstr "กำลังรอความพร้อม"
 #. module: stock_enterprise
 #: model:ir.actions.act_window,name:stock_enterprise.stock_report_action_performance
 msgid "Warehouse Analysis"
-msgstr ""
+msgstr "การวิเคราะห์คลังสินค้า"

@@ -154,7 +154,7 @@ msgstr "Detail Order Penjualan"
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_tree
 msgid "Sub-tasks Hours Spent"
-msgstr ""
+msgstr "Jam yang Digunakan untuk sub-task"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_project_task

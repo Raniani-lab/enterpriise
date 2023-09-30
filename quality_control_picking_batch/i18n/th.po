@@ -30,7 +30,7 @@ msgstr "การโอนย้ายเป็นกลุ่ม"
 #. module: quality_control_picking_batch
 #: model:ir.model.fields,help:quality_control_picking_batch.field_quality_check__batch_id
 msgid "Batch associated to this transfer"
-msgstr ""
+msgstr "ชุดที่เกี่ยวข้องกับการโอนย้ายนี้"
 
 #. module: quality_control_picking_batch
 #: model_terms:ir.ui.view,arch_db:quality_control_picking_batch.view_move_line_tree

@@ -38,7 +38,7 @@ msgstr "Verificar"
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_check_view_form_inherit_mrp_workorder
 msgid "Component Lot/Serial"
-msgstr ""
+msgstr "Lote/série do componente"
 
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_alert_view_form_inherit_mrp
@@ -53,19 +53,19 @@ msgstr "Concluído"
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_check_view_form_tablet_inherit_quality
 msgid "Fail"
-msgstr ""
+msgstr "Falhou"
 
 #. module: quality_mrp_workorder
 #. odoo-python
 #: code:addons/quality_mrp_workorder/models/quality.py:0
 #, python-format
 msgid "Failure"
-msgstr ""
+msgstr "Falha"
 
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_check_view_search_inherit_quality_mrp_workorder
 msgid "Finished Lot/Serial"
-msgstr ""
+msgstr "Lote/série concluído"
 
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_check_view_search_inherit_mrp_workorder
@@ -76,7 +76,7 @@ msgstr "Etapas da fabricação"
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_check_view_form_tablet_inherit_quality
 msgid "Measure:"
-msgstr ""
+msgstr "Medida:"
 
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_alert_view_search_inherit_quality_mrp_workorder
@@ -86,7 +86,7 @@ msgstr "Operação"
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_check_view_form_tablet_inherit_quality
 msgid "Pass"
-msgstr ""
+msgstr "Aprovado"
 
 #. module: quality_mrp_workorder
 #: model:ir.model,name:quality_mrp_workorder.model_product_template
@@ -125,7 +125,7 @@ msgstr "Verificar Qualidade"
 #: code:addons/quality_mrp_workorder/models/quality.py:0
 #, python-format
 msgid "Quality Check Failed"
-msgstr ""
+msgstr "Falha na verificação de qualidade"
 
 #. module: quality_mrp_workorder
 #: model:ir.actions.act_window,name:quality_mrp_workorder.quality_check_action_wo
@@ -141,7 +141,7 @@ msgstr "Ponto de Controle de Qualidade"
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_point_view_search_inherit_mrp_workorder
 msgid "Quality Points"
-msgstr ""
+msgstr "Pontos de qualidade"
 
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_alert_view_form_inherit_mrp
@@ -164,12 +164,3 @@ msgstr "Validar"
 #: model:ir.model,name:quality_mrp_workorder.model_mrp_workorder
 msgid "Work Order"
 msgstr "Ordem de trabalho"
-
-#. module: quality_mrp_workorder
-#. odoo-python
-#: code:addons/quality_mrp_workorder/models/mrp_workorder.py:0
-#, python-format
-msgid ""
-"You first need to complete the Quality Check using the Tablet View before "
-"marking the Operation as Done."
-msgstr ""

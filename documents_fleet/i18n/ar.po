@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Niyas Raphy, 2022
 # Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
@@ -24,7 +23,7 @@ msgstr ""
 #. module: documents_fleet
 #: model:documents.tag,name:documents_fleet.documents_fine
 msgid "Fine"
-msgstr "بخير"
+msgstr "مخالفة "
 
 #. module: documents_fleet
 #: model:documents.facet,name:documents_fleet.documents_fleet

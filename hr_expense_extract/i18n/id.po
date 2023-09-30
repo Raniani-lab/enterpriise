@@ -512,6 +512,7 @@ msgstr "Menunggu validasi"
 #, python-format
 msgid "Wasting time recording your receipts? Let’s try a better way."
 msgstr ""
+"Menghabiskan waktu mencatat pengeluaran? Ayo coba cara yang lebih baik."
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__word_page

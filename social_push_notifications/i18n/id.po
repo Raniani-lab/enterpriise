@@ -403,7 +403,7 @@ msgstr ""
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.social_post_template_view_form
 msgid "Target URL"
-msgstr ""
+msgstr "URL Target"
 
 #. module: social_push_notifications
 #: model:ir.model.constraint,message:social_push_notifications.constraint_social_account_website_unique

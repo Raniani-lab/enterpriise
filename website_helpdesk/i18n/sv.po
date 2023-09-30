@@ -10,7 +10,8 @@
 # Chrille Hedberg <hedberg.chrille@gmail.com>, 2022
 # Anders Wallenquist <anders.wallenquist@vertel.se>, 2022
 # Martin Trigaux, 2022
-# Lasse Larsson, 2023
+# Lasse L, 2023
+# Levi Siuzdak (sile), 2023
 # 
 msgid ""
 msgstr ""
@@ -18,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:50+0000\n"
-"Last-Translator: Lasse Larsson, 2023\n"
+"Last-Translator: Levi Siuzdak (sile), 2023\n"
 "Language-Team: Swedish (https://app.transifex.com/odoo/teams/41243/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,13 +38,13 @@ msgid ""
 "<i class=\"fa fa-check-circle fa-1x text-success me-2\" role=\"img\" aria-"
 "label=\"Success\" title=\"Success\"/>"
 msgstr ""
-"<i class=”fa fa-check-circle fa-1x text-success me-2” role=”img” aria-"
-"label=”Lyckades” title=”Lyckades”/>"
+"<i class=\"fa fa-check-circle fa-1x text-success me-2\" role=\"img\" aria-"
+"label=\"Lyckades\" title=\"Lyckades\"/>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar
 msgid "<span class=\"navbar-brand h4 my-0 me-auto\">Help Center</span>"
-msgstr "<span class=”navbar-brand h4 my-0 me-auto”>Kundtjänst</span>"
+msgstr "<span class=\"navbar-brand h4 my-0 me-auto\">Kundtjänst</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
@@ -90,7 +91,7 @@ msgstr ""
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.search_results
 msgid "<span class=\"text-600\">Search results for</span>"
-msgstr "<span class=”text-600”>Sökresultat för</span>"
+msgstr "<span class=\"text-600\">Sökresultat för</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.footer
@@ -98,8 +99,8 @@ msgid ""
 "<span style=\"font-size: 24px;\">Can't find your answer? Our support team is"
 " here to help.</span>"
 msgstr ""
-"<span style=”font-size: 24px;”>Kan du inte hitta ditt svar? Vårt kundtjänst "
-"är här för att hjälpa till.</span>"
+"<span style=\"font-size: 24px;\">Kan du inte hitta ditt svar? Vårt "
+"kundtjänst är här för att hjälpa till.</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.knowledge_base
@@ -107,7 +108,7 @@ msgid ""
 "<span style=\"font-size: 48px; font-weight: bolder;\">How can we help "
 "you?</span>"
 msgstr ""
-"<span style=”font-size: 48px; font-weight: bolder;”>Hur kan vi hjälpa "
+"<span style=\"font-size: 48px; font-weight: bolder;\">Hur kan vi hjälpa "
 "dig?</span>"
 
 #. module: website_helpdesk

@@ -55,4 +55,4 @@ msgstr "Ticketanalyse"
 #. module: helpdesk_sale
 #: model:res.groups,name:helpdesk_sale.group_use_helpdesk_sale_timesheet
 msgid "Use Time Billing"
-msgstr "Factureer je tijd"
+msgstr "Gebruik urenfacturatie"

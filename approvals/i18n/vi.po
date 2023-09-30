@@ -1177,6 +1177,8 @@ msgid ""
 "You cannot unlink an attachment which is linked to a validated, refused or "
 "cancelled approval request."
 msgstr ""
+"Bạn không thể hủy liên kết tệp đính kèm được liên kết với yêu cầu phê duyệt "
+"đã được xác thực, bị từ chối hoặc bị hủy."
 
 #. module: approvals
 #. odoo-python

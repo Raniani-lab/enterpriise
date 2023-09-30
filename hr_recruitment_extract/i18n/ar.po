@@ -144,7 +144,7 @@ msgstr "حالة الاستخلاص "
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Generated Applicant"
-msgstr "ولدت متقدمين"
+msgstr "طلب التقديم المنشأ "
 
 #. module: hr_recruitment_extract
 #. odoo-python

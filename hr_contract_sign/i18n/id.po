@@ -67,7 +67,7 @@ msgstr "Kontrak"
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_contract_history
 msgid "Contract history"
-msgstr ""
+msgstr "Sejarah Kontrak"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__cc_partner_ids
@@ -225,7 +225,7 @@ msgstr ""
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_plan_wizard
 msgid "Plan Wizard"
-msgstr ""
+msgstr "Wizard Rencana"
 
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_plan_activity_type

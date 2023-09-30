@@ -3,10 +3,10 @@
 # 	* delivery_shiprocket
 # 
 # Translators:
-# Sarah Park, 2023
 # Wil Odoo, 2023
 # Martin Trigaux, 2023
 # Daye Jeong, 2023
+# Sarah Park, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-03 13:52+0000\n"
 "PO-Revision-Date: 2023-09-09 22:20+0000\n"
-"Last-Translator: Daye Jeong, 2023\n"
+"Last-Translator: Sarah Park, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +25,7 @@ msgstr ""
 #. module: delivery_shiprocket
 #: model_terms:ir.ui.view,arch_db:delivery_shiprocket.view_delivery_carrier_form_inherit_delivery_shiprocket
 msgid "<b>Click on Add a New Channel</b>"
-msgstr ""
+msgstr "<b>새로운 채널 추가를 클릭하세요.</b>"
 
 #. module: delivery_shiprocket
 #: model_terms:ir.ui.view,arch_db:delivery_shiprocket.view_delivery_carrier_form_inherit_delivery_shiprocket
@@ -86,38 +86,38 @@ msgstr ""
 #. module: delivery_shiprocket
 #: model_terms:ir.ui.view,arch_db:delivery_shiprocket.view_delivery_carrier_form_inherit_delivery_shiprocket
 msgid "API User"
-msgstr ""
+msgstr "API 사용자"
 
 #. module: delivery_shiprocket
 #. odoo-python
 #: code:addons/delivery_shiprocket/models/delivery_carrier.py:0
 #, python-format
 msgid "AWB number(s) not found to cancel the shipment!"
-msgstr ""
+msgstr "배송을 취소할 AWB 번호를 찾을 수 없습니다!"
 
 #. module: delivery_shiprocket
 #. odoo-python
 #: code:addons/delivery_shiprocket/models/delivery_carrier.py:0
 #, python-format
 msgid "Access token is generated successfully!"
-msgstr ""
+msgstr "액세스 토큰이 생성되었습니다!"
 
 #. module: delivery_shiprocket
 #: model_terms:ir.ui.view,arch_db:delivery_shiprocket.view_delivery_carrier_form_inherit_delivery_shiprocket
 msgid "Add Manual Channel"
-msgstr ""
+msgstr "수기 채널 추가"
 
 #. module: delivery_shiprocket
 #: model_terms:ir.ui.view,arch_db:delivery_shiprocket.view_delivery_carrier_form_inherit_delivery_shiprocket
 msgid "Add New Channel"
-msgstr ""
+msgstr "새로운 채널 추가"
 
 #. module: delivery_shiprocket
 #. odoo-python
 #: code:addons/delivery_shiprocket/models/delivery_carrier.py:0
 #, python-format
 msgid "Authentication failed! Please check your credentials."
-msgstr ""
+msgstr "인증에 실패했습니다! 자격 증명을 확인하세요."
 
 #. module: delivery_shiprocket
 #: model:ir.model.fields.selection,name:delivery_shiprocket.selection__delivery_carrier__shiprocket_payment_method__cod
@@ -132,7 +132,7 @@ msgstr "운송업체"
 #. module: delivery_shiprocket
 #: model:ir.model.fields,field_description:delivery_shiprocket.field_shiprocket_channel__channel_code
 msgid "Channel Code"
-msgstr ""
+msgstr "채널 코드"
 
 #. module: delivery_shiprocket
 #: model:ir.model.fields,field_description:delivery_shiprocket.field_shiprocket_channel__name
@@ -163,26 +163,26 @@ msgstr ""
 #: code:addons/delivery_shiprocket/models/shiprocket_request.py:0
 #, python-format
 msgid "Country is required!"
-msgstr ""
+msgstr "국가는 필수 입력 항목입니다!"
 
 #. module: delivery_shiprocket
 #: model:ir.model.fields,field_description:delivery_shiprocket.field_shiprocket_courier__courier_code
 msgid "Courier Code"
-msgstr ""
+msgstr "배송업체 코드"
 
 #. module: delivery_shiprocket
 #. odoo-python
 #: code:addons/delivery_shiprocket/models/shiprocket_request.py:0
 #, python-format
 msgid "Courier is - %s"
-msgstr ""
+msgstr "배송업체 %s"
 
 #. module: delivery_shiprocket
 #. odoo-python
 #: code:addons/delivery_shiprocket/models/shiprocket_request.py:0
 #, python-format
 msgid "Courier is - %s, recommended by %s!"
-msgstr ""
+msgstr "배송업체 - %s, 다음에서 추천되었습니다: %s!"
 
 #. module: delivery_shiprocket
 #. odoo-python
@@ -490,7 +490,7 @@ msgstr ""
 #. module: delivery_shiprocket
 #: model:ir.model.fields,field_description:delivery_shiprocket.field_res_config_settings__module_delivery_shiprocket
 msgid "Shiprocket Connector"
-msgstr ""
+msgstr "Shiprocket 배송"
 
 #. module: delivery_shiprocket
 #: model:ir.model,name:delivery_shiprocket.model_shiprocket_courier

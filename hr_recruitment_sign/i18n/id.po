@@ -247,7 +247,7 @@ msgstr ""
 #: code:addons/hr_recruitment_sign/models/hr_applicant.py:0
 #, python-format
 msgid "You must define a Contact Name for this applicant."
-msgstr ""
+msgstr "Anda harus mendefinisikan Nama Kontak untuk pelamar ini."
 
 #. module: hr_recruitment_sign
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_sign.message_signature_request

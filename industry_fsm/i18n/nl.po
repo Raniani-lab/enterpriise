@@ -389,7 +389,7 @@ msgstr "Klantvoorbeeld"
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_reporting_customer_ratings
 msgid "Customer Ratings"
-msgstr "Klantenbeoordelingen"
+msgstr "Klantbeoordelingen"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
@@ -566,7 +566,7 @@ msgstr "Vind hier je aankomende taken voor de komende dagen."
 #. module: industry_fsm
 #: model:ir.model.fields,help:industry_fsm.field_report_project_task_user_fsm__is_closed
 msgid "Folded in Kanban stages are closing stages."
-msgstr "Ingevouwen Kanban-fasen zijn slotfasen."
+msgstr "Ingevouwen Kanban-fases zijn slotfases."
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -1052,7 +1052,7 @@ msgid ""
 "stages"
 msgstr ""
 "Stel deze sjabloon in op de fase van een project om e-mail te automatiseren "
-"wanneer taken de fasen bereiken"
+"wanneer taken de fases bereiken"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.res_config_settings_action_fsm

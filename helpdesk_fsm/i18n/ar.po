@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Niyas Raphy, 2023
 # Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
@@ -167,7 +166,7 @@ msgstr "انتهت المهمة "
 #: code:addons/helpdesk_fsm/wizard/create_task.py:0
 #, python-format
 msgid "Task created"
-msgstr "المهمة خلقت"
+msgstr "تم إنشاء المهمة "
 
 #. module: helpdesk_fsm
 #. odoo-python

@@ -1045,4 +1045,4 @@ msgstr "作業区不良"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point_test_type__active
 msgid "active"
-msgstr ""
+msgstr "アクティブ"

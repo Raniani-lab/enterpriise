@@ -1962,7 +1962,7 @@ msgstr "如果訂閱這模板集，將發票做在這個分類帳；否則銷售
 msgid ""
 "If you confirm, your subscription will be closed right away. Your current "
 "invoicing period is valid until"
-msgstr ""
+msgstr "如果你確認，你的定期訂購將立即關閉。你目前的發票期有效至"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3028,24 +3028,24 @@ msgstr "傳送為（SMS 短訊）"
 #: model:mail.template,description:sale_subscription.email_payment_success
 msgid ""
 "Sent automatically with subscription invoice when payment is successful"
-msgstr ""
+msgstr "付款成功後，自動與定期訂購發票一同發送"
 
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.mail_template_subscription_invoice
 msgid "Sent manually to customers with the invoice in attachment"
-msgstr ""
+msgstr "附上發票附件，手動發送給客戶"
 
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.email_payment_close
 msgid ""
 "Sent to customer to indicate that subscription is automatically terminated"
-msgstr ""
+msgstr "發送給客戶以表明定期訂購會自動終止"
 
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.email_payment_reminder
 msgid ""
 "Sent to customer when payment failed but subscription is not yet cancelled"
-msgstr ""
+msgstr "付款失敗但定期訂購尚未取消時，發送給客戶"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__sequence
@@ -3074,7 +3074,7 @@ msgstr "在訂閱上設定一個階段"
 msgid ""
 "Set on subscription's stage (e.g. Closed, Upsell) to ask a rating to "
 "customers"
-msgstr ""
+msgstr "在定期訂購的階段設定（例如已關閉、追加銷售）以向客戶詢問評分"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__binding_model_id
@@ -3304,7 +3304,7 @@ msgstr "訂閱到達結束日期"
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_log__category
 msgid "Subscription stage category when the change occurred"
-msgstr ""
+msgstr "發生變更時的定期訂購階段類別"
 
 #. module: sale_subscription
 #: model:mail.message.subtype,description:sale_subscription.subtype_stage_change
@@ -3392,6 +3392,8 @@ msgid ""
 "Subscriptions can be automatically generated from sales orders in Sales or eCommerce\n"
 "                apps."
 msgstr ""
+"可從「銷售」或「電子商務」應用程式中的銷售訂單\n"
+"                自動產生定期訂購計劃。"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -3450,7 +3452,7 @@ msgstr "活動模板"
 msgid ""
 "Template to be used on customized alerts for subscriptions requiring "
 "attention"
-msgstr ""
+msgstr "警報範本，用於需要關注的定期訂購的自訂警報"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_template_action
@@ -3472,7 +3474,7 @@ msgstr "臨時價錢類型"
 #: model:mail.template,subject:sale_subscription.email_payment_close
 msgid ""
 "Termination of subscription {{ object.client_order_ref or object.name }}"
-msgstr ""
+msgstr "終止定期訂購 {{ object.client_order_ref or object.name }}"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3495,7 +3497,7 @@ msgstr ""
 msgid ""
 "The action will be triggered if and only if one of these fields is updated. "
 "If empty, all fields are watched."
-msgstr ""
+msgstr "只會在這些欄位其中任何一項有更新時，才會觸發該操作。如果留空，則監視所有欄位。"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3504,7 +3506,7 @@ msgstr ""
 msgid ""
 "The following recurring orders have draft invoices. Please Confirm them or "
 "cancel them before creating new invoices. %s."
-msgstr ""
+msgstr "以下經常性訂單有草稿發票。請在建立新發票之前，確認或取消它們。 %s。"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3526,12 +3528,12 @@ msgstr "通過網站存取此伺服器動作的完整網址。"
 #, python-format
 msgid ""
 "The last invoice (%s) of this subscription is unpaid after the due date."
-msgstr ""
+msgstr "此定期訂購的最新一張發票 (%s) 在到期日後尚未付款。"
 
 #. module: sale_subscription
 #: model:ir.model.constraint,message:sale_subscription.constraint_sale_order_check_start_date_lower_next_invoice_date
 msgid "The next invoice date of a sale order should be after its start date."
-msgstr ""
+msgstr "銷售訂單的下次發票日期，應在開始日期之後。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__next_invoice_date
@@ -3545,19 +3547,19 @@ msgstr "將在此日期上建立下一張發票，那麼期間將會延長。"
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "The renewal %s has been canceled."
-msgstr ""
+msgstr "續訂「%s」已被取消。"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid ""
 "The scheduled action for alerts has been deleted. Update the Subscriptions "
 "module to re-create it."
-msgstr ""
+msgstr "警報的預先排程操作已被刪除。請更新定期訂購模組，以重新建立它。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__start_date
 msgid "The start date indicate when the subscription periods begin."
-msgstr ""
+msgstr "開始日期表示定期訂購期間開始的日期。"
 
 #. module: sale_subscription
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_renew
@@ -3569,7 +3571,7 @@ msgstr ""
 #: code:addons/sale_subscription/models/sale_order_line.py:0
 #, python-format
 msgid "The time unit cannot be used. Please chose one of these unit: %s."
-msgstr ""
+msgstr "未能使用此時間單位。請選擇以下其中一個單位： %s。"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3583,7 +3585,7 @@ msgstr ""
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "The upsell %s has been canceled."
-msgstr ""
+msgstr "追加銷售「%s」已被取消。"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3612,7 +3614,7 @@ msgstr "這個工具條允許您根據安排的事件來過濾商機。"
 msgid ""
 "This payment method cannot be removed as it is currently linked to the "
 "following active subscriptions:"
-msgstr ""
+msgstr "此付款方式不可刪除，因為它目前連結到以下有效的定期訂購："
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_stage__fold
@@ -3626,17 +3628,17 @@ msgstr "當這個階段中沒有任何記錄要呈現的時候，這個階段在
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "This subscription is renewed in %s with a change of plan."
-msgstr ""
+msgstr "此定期訂購計劃已於 %s 改用新的服務計劃續訂。"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "This subscription is the renewal of subscription"
-msgstr ""
+msgstr "此次定期訂購是續訂"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "This upsell order has been created from the subscription"
-msgstr ""
+msgstr "此追加銷售訂單是從該定期訂購建立的"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -3718,7 +3720,7 @@ msgstr "觸發時間"
 msgid ""
 "Trigger alerts for salespersons or customers: churn, invoice not paid, "
 "upsell, etc."
-msgstr ""
+msgstr "向銷售人員或客戶觸發警報：流失、發票未付款、追加銷售，等等。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__stage_from_id
@@ -3743,6 +3745,15 @@ msgid ""
 "- 'Create Next Activity': create an activity (Discuss)\n"
 "- 'Send SMS Text Message': send SMS, log them on documents (SMS)"
 msgstr ""
+"伺服器操作類型。可使用以下的值：\n"
+"- 「執行 Python 程式碼」：將執行的一段 Python 程式碼\n"
+"- 「建立新記錄」：使用新的值建立新記錄\n"
+"- 「更新記錄」：更新記錄的值\n"
+"- 「執行多個操作」：定義一個操作以觸發多個其他伺服器操作\n"
+"- 「發送電郵」：張貼訊息、備註或發送電子郵件（聊天應用程式）\n"
+"- 「加入關注者」：將關注者加至記錄（聊天應用程式）\n"
+"- 「建立下一活動」：建立一個活動（聊天應用程式）\n"
+"- 「發送 SMS 簡訊」：發送 SMS 文字短訊，將其記錄在文件上（短訊應用程式）"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3772,6 +3783,8 @@ msgid ""
 "Unpaid subscription after the due date majored by this number of days will be automatically closed by the subscriptions expiration scheduled action. \n"
 "If the chosen payment method has failed to renew the subscription after this time, the subscription is automatically closed."
 msgstr ""
+"若定期訂購在到期日之後仍未付款多達此天數，將透過定期訂購到期預排操作，自動關閉訂購計劃。\n"
+"如果在此時間之後，所選的付款方式未能續訂，定期訂購計劃將自動關閉。"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
@@ -3915,6 +3928,8 @@ msgid ""
 "When should the condition be triggered.\n"
 "                If present, will be checked by the scheduler. If empty, will be checked at creation and update."
 msgstr ""
+"應在何時觸發該條件。\n"
+"                如果存在，將由排期程式檢查。如果留空，將在建立和更新時檢查。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__active
@@ -3959,7 +3974,7 @@ msgstr ""
 msgid ""
 "You can not delete a confirmed subscription. You must first close and cancel"
 " it before you can delete it."
-msgstr ""
+msgstr "不可刪除已確認的定期訂購。必須先關閉並取消它，然後才可將其刪除。"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3968,7 +3983,7 @@ msgstr ""
 msgid ""
 "You can't archive the partner as it is used in the following recurring "
 "orders: %s"
-msgstr ""
+msgstr "不可封存該合作夥伴，因為它仍用於以下經常訂單： %s"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3979,6 +3994,9 @@ msgid ""
 " - Has not started yet.\n"
 " - Has no invoiced period in the future."
 msgstr ""
+"未能為此定期訂購建立追加銷售，因為它：\n"
+"- 還未開始。\n"
+"- 未有將來的開立發票期間。"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3986,14 +4004,14 @@ msgstr ""
 #, python-format
 msgid ""
 "You cannot save a sale order with a recurrence and no recurring product."
-msgstr ""
+msgstr "無法儲存具有重複周期但沒有經常性產品的銷售訂單。"
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "You cannot save a sale order with recurring product and no recurrence."
-msgstr ""
+msgstr "無法儲存具有經常性產品但沒有重複周期的銷售訂單。"
 
 #. module: sale_subscription
 #. odoo-python
@@ -4002,14 +4020,14 @@ msgstr ""
 msgid ""
 "You cannot set to draft a canceled quotation linked to invoiced "
 "subscriptions. Please create a new quotation."
-msgstr ""
+msgstr "已取消的報價單，若連結至已開立發票的定期訂購，便不可設為草稿。請建立新的報價。"
 
 #. module: sale_subscription
 #: model:ir.model.constraint,message:sale_subscription.constraint_sale_order_sale_subscription_stage_coherence
 msgid ""
 "You cannot set to draft a confirmed subscription. Please create a new "
 "quotation"
-msgstr ""
+msgstr "已確認的定期訂購，不可設為草稿。請建立新的報價。"
 
 #. module: sale_subscription
 #. odoo-python
@@ -4019,6 +4037,8 @@ msgid ""
 "You cannot upsell a subscription whose next invoice date is in the past.\n"
 "Please, invoice directly the %s contract."
 msgstr ""
+"若定期訂購的下次發票日期已過去，便不可進行追加銷售。\n"
+"請直接在 %s 合約中開立發票。"
 
 #. module: sale_subscription
 #. odoo-python
@@ -4027,17 +4047,17 @@ msgstr ""
 msgid ""
 "You cannot validate a renewal quotation starting before the next invoice "
 "date of the parent contract. Please update the start date after the %s."
-msgstr ""
+msgstr "續訂報價的開始日期若先於母項合約的下次發票日期，便無法驗證。請將開始日期更新為 %s 之後。"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
 msgid "You don't have any subscriptions yet."
-msgstr "您還沒有任何訂閱"
+msgstr "你尚未有任何定期訂購。"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "You must be logged in to manage your payment methods."
-msgstr ""
+msgstr "必須登入才可管理你的付款方法。"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.product_action_subscription
@@ -4053,29 +4073,29 @@ msgstr ""
 msgid ""
 "You will find here the subscriptions to be renewed (end date is close or "
 "passed)"
-msgstr ""
+msgstr "此處列出需要續訂的定期訂購（臨近到期日或已過期）"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Your Details"
-msgstr "您的詳細資訊"
+msgstr "你的詳細資料"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Your Plan"
-msgstr ""
+msgstr "你的服務計劃"
 
 #. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Your contract is recurrent"
-msgstr ""
+msgstr "你的合約是經常性"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.payment_checkout_inherit
 msgid "Your payment details will be saved for automatic renewals."
-msgstr ""
+msgstr "你的付款資料會被儲存，供日後自動續訂。"
 
 #. module: sale_subscription
 #. odoo-python
@@ -4087,7 +4107,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Your subscription is closed."
-msgstr "您的訂閱已關閉."
+msgstr "你的定期訂購已關閉。"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form

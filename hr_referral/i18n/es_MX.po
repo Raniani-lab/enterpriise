@@ -6,8 +6,8 @@
 # Braulio D. López Vázquez <bdl@odoo.com>, 2022
 # Martin Trigaux, 2022
 # Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022
-# Fernanda Alvarez, 2023
 # Iran Villalobos López, 2023
+# Fernanda Alvarez, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Iran Villalobos López, 2023\n"
+"Last-Translator: Fernanda Alvarez, 2023\n"
 "Language-Team: Spanish (Mexico) (https://app.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -119,8 +119,8 @@ msgid ""
 "A new alert has been added to the Referrals app! Check your <a "
 "href=%(url)s>dashboard</a> now!"
 msgstr ""
-"¡Se agregó una alerta nueva en la aplicación de Referencias! ¡Revise su <a "
-"href=%(url)s>tablero</a> ahora!"
+"Se agregó una nueva alerta a la aplicación Referencias. ¡Revise su <a "
+"href=%(url)s>tablero</a>!"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_needaction
@@ -305,7 +305,7 @@ msgstr "Costo"
 #. module: hr_referral
 #: model_terms:ir.actions.act_window,help:hr_referral.action_hr_referral_alert_configuration
 msgid "Create new alerts"
-msgstr "Crea nuevas alertas"
+msgstr "Cree nuevas alertas"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__create_uid
@@ -431,7 +431,7 @@ msgid ""
 "Do you want to confirm this reward? After confirmation an HR will contact "
 "you."
 msgstr ""
-"¿Quiere confirmar esta recompensa? Después de la confirmación RR. HH. se "
+"¿Desea confirmar esta recompensa? Después de la confirmación, RR. HH. se "
 "pondrá en contacto con usted."
 
 #. module: hr_referral
@@ -450,7 +450,7 @@ msgstr "Correo electrónico"
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Email a friend"
-msgstr "Escriba un correo electrónico a un amigo"
+msgstr "Envíe un correo a un amigo"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_search
@@ -619,8 +619,8 @@ msgid ""
 "Hello,<br><br>There is an amazing job offer for %s in my company! It will be"
 " a fit for you<br><a href=\"%s\">See Job Offer</a>"
 msgstr ""
-"Hola,<br><br>¡Hay una oferta de trabajo increíble para el puesto de%s en mi "
-"empresa! Será perfecta para ti<br><a href=\"%s\">Ver oferta de trabajo</a>"
+"Hola,<br><br>¡Revisa esta oferta! Es para el puesto de %s en mi empresa, es "
+"perfecta para ti.<br><a href=\"%s\">Ver oferta de trabajo</a>"
 
 #. module: hr_referral
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_applicant__referral_state__hired
@@ -1100,7 +1100,7 @@ msgstr "Usuario responsable por el premio de la referencia"
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_referral_send_mail
 msgid "Referral Send Mail"
-msgstr "Mandar correo de recomendación"
+msgstr "Enviar correo de referencia"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__referral_state
@@ -1274,7 +1274,7 @@ msgstr "Información de artículos compartidos"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_recruitment_stage__use_in_referral
 msgid "Show in Referrals"
-msgstr "Mostrar en referencias"
+msgstr "Mostrar en Referidos"
 
 #. module: hr_referral
 #. odoo-javascript
@@ -1288,7 +1288,7 @@ msgstr "Saltar"
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Skip and Start"
-msgstr "Saltar y comenzar"
+msgstr "Omitir y comenzar"
 
 #. module: hr_referral
 #. odoo-python
@@ -1557,7 +1557,7 @@ msgstr "Ganó"
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_kanban
 msgid "You need another"
-msgstr "Necesita otro"
+msgstr "Requiere"
 
 #. module: hr_referral
 #. odoo-python

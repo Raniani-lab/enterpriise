@@ -461,11 +461,12 @@ msgid ""
 "In case of Quality Check by Quantity, Move Line on which the Quality Check "
 "applies"
 msgstr ""
+"ในกรณีของการตรวจสอบคุณภาพตามปริมาณ ให้ย้ายรายการที่ใช้การตรวจสอบคุณภาพ"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Instructions"
-msgstr ""
+msgstr "คำแนะนำ"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__is_last_check

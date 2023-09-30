@@ -1497,7 +1497,7 @@ msgstr "Openen uitschakelen"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Display"
-msgstr "Tonen"
+msgstr "Weergave"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__display_name
@@ -3064,7 +3064,7 @@ msgstr "Draaitabel"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Placeholder"
-msgstr "Label"
+msgstr "Placeholder"
 
 #. module: web_studio
 #. odoo-javascript

@@ -3600,6 +3600,8 @@ msgstr ""
 #, python-format
 msgid "You need to activate more than one currency to access this report."
 msgstr ""
+"Вам потрібно активувати більше ніж одну валюту, щоб отримати доступ до цього"
+" звіту."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template

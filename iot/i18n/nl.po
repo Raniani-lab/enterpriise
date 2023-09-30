@@ -270,7 +270,7 @@ msgstr "Apparaten"
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__display
 msgid "Display"
-msgstr "Tonen"
+msgstr "Weergave"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__display_name

@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Niyas Raphy, 2023
 # Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
@@ -83,7 +82,7 @@ msgstr "استرداد الأموال "
 #: code:addons/helpdesk_account/wizard/account_move_reversal.py:0
 #, python-format
 msgid "Refund created"
-msgstr "تم إنشاء رد الأموال"
+msgstr "تم إنشاء عملية رد الأموال "
 
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_move_reversal__helpdesk_sale_order_id
@@ -98,4 +97,4 @@ msgstr "حركة مناسبة "
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_move_reversal__suitable_sale_order_ids
 msgid "Suitable Sale Order"
-msgstr "مناسب أمر البيع"
+msgstr "أمر بيع مناسب "

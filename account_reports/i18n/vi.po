@@ -3576,7 +3576,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_multicurrency_revaluation_report.py:0
 #, python-format
 msgid "You need to activate more than one currency to access this report."
-msgstr ""
+msgstr "Bạn cần kích hoạt nhiều hơn một loại tiền tệ để truy cập báo cáo này."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template

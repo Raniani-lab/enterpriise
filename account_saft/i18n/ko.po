@@ -64,3 +64,9 @@ msgstr "다음 협력사에 대하여 하나 이상의 주소 (우편번호/시�
 #, python-format
 msgid "SAFT is only compatible with one column group."
 msgstr "SAFT는 하나의 열 그룹과만 호환됩니다."
+
+#. module: account_saft
+#: code:addons/account_saft/models/account_general_ledger.py:0
+#, python-format
+msgid "Please define one or more Contacts belonging to your company."
+msgstr "회사 연락처를 하나 이상 지정하세요."

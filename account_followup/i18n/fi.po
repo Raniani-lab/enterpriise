@@ -14,8 +14,8 @@
 # Vallen Delobel <edv@odoo.com>, 2022
 # Kari Lindgren <karisatu@gmail.com>, 2022
 # Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2022
-# Konsta Aavaranta, 2023
 # Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
+# Konsta Aavaranta, 2023
 # 
 msgid ""
 msgstr ""
@@ -23,7 +23,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-28 12:54+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
+"Last-Translator: Konsta Aavaranta, 2023\n"
 "Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -124,6 +124,35 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px;\">\n"
+"                        <t t-if=\"object.id != object.commercial_partner_id.id\">Hyvä <t t-out=\"object.name or ''\"></t> (<t t-out=\"object.commercial_partner_id.name or ''\"></t>),</t>\n"
+"                        <t t-else=\"\">Hyvä <t t-out=\"object.name or ''\"></t>,</t>\n"
+"                        <br>\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        Olemme havainneet poikkeuksen maksussa. Saattaa olla, että kyse on meidän virheestämme, mutta näyttää siltä, että laskusuoritus <t t-out=\"format_amount(object.total_overdue, object.currency_id) or ''\"></t>\n"
+"                        on jäänyt maksamatta. Pyydämme teitä ryhtymään tarvittaviin toimenpiteisiin, jotta maksu voidaan suorittaa seuraavien 8 päivän aikana.\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        Jos maksunne olisi suoritettu tämän viestin lähettämisen jälkeen, jättäkää tämä viesti huomiotta.\n"
+"                        Mikäli teillä on kysyttävää, älkää epäröikö ottaa yhteyttä kirjanpito-osastoomme.\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        Ystävällisin terveisin,\n"
+"                        <t t-if=\"not is_html_empty(object._get_followup_responsible().signature)\">\n"
+"                            <br>\n"
+"                            <t t-out=\"object._get_followup_responsible().signature\"></t>\n"
+"                        </t>\n"
+"                       <t t-else=\"\">\n"
+"                           <br>\n"
+"                            --\n"
+"                           <br>\n"
+"                            <t t-out=\"object._get_followup_responsible().name\"></t>\n"
+"                       </t>\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
 
 #. module: account_followup
 #: model:mail.template,body_html:account_followup.demo_followup_email_template_4
@@ -284,7 +313,7 @@ msgstr "Tilikarttamalli"
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__account_followup_followup_line__activity_default_responsible_type__account_manager
 msgid "Account Manager"
-msgstr "Tilinhallintaesimies"
+msgstr "Asiakasvastaava"
 
 #. module: account_followup
 #: model:ir.actions.server,name:account_followup.ir_cron_auto_post_draft_entry_ir_actions_server

@@ -218,7 +218,7 @@ msgstr "يؤدي بواسطة شهر"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Lost Reason"
-msgstr "سبب الضياع "
+msgstr "سبب الخسارة"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript

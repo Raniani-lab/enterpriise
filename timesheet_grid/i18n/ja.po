@@ -762,7 +762,7 @@ msgstr "マネージャーのリマインダーの次の予定日"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "No activities found. Let's start a new one!"
-msgstr ""
+msgstr "活動が見つかりません。新しく始めましょう！"
 
 #. module: timesheet_grid
 #: model_terms:ir.actions.act_window,help:timesheet_grid.action_timesheet_previous_month

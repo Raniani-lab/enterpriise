@@ -3540,7 +3540,7 @@ msgstr ""
 #. module: helpdesk
 #: model:mail.message.subtype,description:helpdesk.mt_ticket_new
 msgid "Ticket created"
-msgstr ""
+msgstr "支援請求已建立"
 
 #. module: helpdesk
 #. odoo-javascript

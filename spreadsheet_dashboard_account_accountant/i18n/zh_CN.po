@@ -8,6 +8,7 @@
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
 # digitalliuzg8888, 2022
+# Chloe Wang, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-08 11:15+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
-"Last-Translator: digitalliuzg8888, 2022\n"
+"Last-Translator: Chloe Wang, 2023\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -92,14 +93,14 @@ msgstr "< 3%：业务效率不高"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 45: company gets paid for sales quickly"
-msgstr ""
+msgstr "< 45：公司迅速获得销售报酬"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 45: company liquidates debts to suppliers quickly"
-msgstr ""
+msgstr "< 45：公司迅速清偿对供应商的债务"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -169,14 +170,14 @@ msgstr "> 5：公司拥有大量债务，而不是大量自有资金"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 60: company might not get paid for sales quickly enough"
-msgstr ""
+msgstr "> 60：公司可能无法迅速收到销售款"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 70: company might be slow to pay suppliers"
-msgstr ""
+msgstr "> 70：公司可能迟迟不向供应商付款"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -229,7 +230,7 @@ msgstr "平均债务天数"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Average payable days"
-msgstr ""
+msgstr "平均应付款天数"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

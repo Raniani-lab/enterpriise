@@ -72,6 +72,8 @@ msgid ""
 "<span attrs=\"{'invisible': [('contract_id', '!=', False)]}\">An offer "
 "template need to be selected to have an offer link.</span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('contract_id', '!=', False)]}\">Tarjousmalli "
+"on valittava, jotta tarjouslinkki voidaan ottaa käyttöön.</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
@@ -537,6 +539,8 @@ msgid ""
 "Default contract used to generate an offer. If empty, advantages will be "
 "taken from current contract of the employee/nothing for an applicant."
 msgstr ""
+"Oletussopimus, jota käytetään tarjouksen luomiseen. Jos tyhjä, edut otetaan "
+"työntekijän nykyisestä sopimuksesta / ei mitään hakijalle."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__sign_template_id
@@ -870,7 +874,7 @@ msgstr "Tiedot"
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__display_type__integer
 msgid "Integer"
-msgstr "kokonaisluku"
+msgstr "Kokonaisluku"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__is_required
@@ -1142,7 +1146,7 @@ msgstr "Tarjouslinkki"
 #: code:addons/hr_contract_salary/wizard/generate_simulation_link.py:0
 #, python-format
 msgid "Offer link can not be send. The applicant needs to have a name."
-msgstr ""
+msgstr "Tarjouslinkkiä ei voi lähettää. Hakijalla on oltava nimi."
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1570,6 +1574,8 @@ msgid ""
 "The employee does not have a valid work email set. The Simulation Link won't"
 " be able to be completed."
 msgstr ""
+"Työntekijällä ei ole voimassa olevaa työsähköpostia. Simulointilinkkiä ei "
+"voida suorittaa."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form

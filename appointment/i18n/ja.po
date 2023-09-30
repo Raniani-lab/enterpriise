@@ -1759,7 +1759,7 @@ msgstr "すべて検索"
 #: code:addons/appointment/controllers/portal.py:0
 #, python-format
 msgid "Search in Description"
-msgstr ""
+msgstr "説明を検索"
 
 #. module: appointment
 #. odoo-python

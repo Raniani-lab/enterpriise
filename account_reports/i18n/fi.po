@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Pekko Tuomisto <pekko.tuomisto@web-veistamo.fi>, 2022
+# Eino Mäkitalo <eino.makitalo@netitbe.fi>, 2022
 # Topi Aura <topi@aurat.fi>, 2022
 # Svante Suominen <svante.suominen@web-veistamo.fi>, 2022
 # Atte Isopuro <atte.isopuro@web-veistamo.fi>, 2022
@@ -13,7 +14,6 @@
 # Veikko Väätäjä <veikko.vaataja@gmail.com>, 2022
 # Miku Laitinen <miku.laitinen@gmail.com>, 2022
 # Tuomas Lyyra <tuomas.lyyra@legenda.fi>, 2022
-# Eino Mäkitalo <eino.makitalo@netitbe.fi>, 2022
 # Mikko Virtanen <mikko.virtanen2013@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Sanna Edelman <direct@generare.com>, 2022
@@ -1316,7 +1316,7 @@ msgstr "Kuluvan vuoden kohdennettu tulos"
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_current_year_earnings_line_1
 msgid "Current Year Earnings"
-msgstr "kuluvan vuoden tulos"
+msgstr "Kuluvan vuoden tulos"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_current_year_earnings0
@@ -1355,7 +1355,7 @@ msgstr "Päivämäärä"
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "Date :"
-msgstr "Päiväys"
+msgstr "Päiväys :"
 
 #. module: account_reports
 #. odoo-javascript
@@ -1396,7 +1396,7 @@ msgstr "Viiveen yksiköt"
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_depreciation0
 msgid "Depreciation"
-msgstr "poistot"
+msgstr "Poistot"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__display_name
@@ -1797,7 +1797,7 @@ msgstr "Yleinen veroraportin mukautettu käsittelijä (Vero -> Tili)"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Go to report configuration"
-msgstr ""
+msgstr "Siirry raportin kokoonpanoon"
 
 #. module: account_reports
 #. odoo-python
@@ -2046,14 +2046,14 @@ msgstr "Yhteisön sisäisiä veroja sovelletaan"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Invalid domain formula in expression %r of line %r: %s"
-msgstr ""
+msgstr "Rivin %r lausekkeessa %r on virheellinen hakualueen kaava: %s"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Invalid method %r"
-msgstr ""
+msgstr "Virheellinen metodi %r"
 
 #. module: account_reports
 #. odoo-python
@@ -2061,7 +2061,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Invalid subformula in expression %r of line %r: %s"
-msgstr ""
+msgstr "Rivin %r lausekkeessa %r on virheellinen alakaava: %s"
 
 #. module: account_reports
 #. odoo-python
@@ -2525,7 +2525,7 @@ msgstr "Vaihtoehdot"
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_other_income0
 msgid "Other Income"
-msgstr "muut tulot"
+msgstr "Muut tulot"
 
 #. module: account_reports
 #. odoo-python
@@ -2602,7 +2602,7 @@ msgstr "Partnerit:"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Payable"
-msgstr "ostovelat"
+msgstr "Ostovelat"
 
 #. module: account_reports
 #. odoo-python
@@ -2654,7 +2654,7 @@ msgstr "Täsmennä verotuksen päättämiskirjausta varten tarvittavat tilit."
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_fixed_assets_view0
 msgid "Plus Fixed Assets"
-msgstr "+ käyttöom."
+msgstr "+ käyttöomaisuus"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_non_current_assets_view0
@@ -2696,7 +2696,7 @@ msgstr "Kirjatut ja luonnosmerkinnät"
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_prepayements0
 msgid "Prepayments"
-msgstr "ennakot"
+msgstr "Ennakot"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__preview_data
@@ -3140,6 +3140,8 @@ msgid ""
 "The 'load more limit' setting of this report is too low to display all the "
 "lines of the entry you're trying to show."
 msgstr ""
+"Tämän raportin 'load more limit' -asetus on liian alhainen, jotta kaikki "
+"halutut rivit voitaisiin näyttää."
 
 #. module: account_reports
 #. odoo-python
@@ -3416,7 +3418,7 @@ msgstr "Kohdistamattomat tulot"
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Unfold"
-msgstr "avautua"
+msgstr "Avaa laskostus"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -3595,6 +3597,8 @@ msgstr "Käytät mukautettuja valuuttakursseja."
 #, python-format
 msgid "You can't open a tax report from a move without a VAT closing date."
 msgstr ""
+"Et voi avata veroraporttia siirrosta, jossa ei ole arvonlisäveron "
+"päättymispäivää."
 
 #. module: account_reports
 #. odoo-python
@@ -3608,6 +3612,15 @@ msgstr ""
 "Et voi palauttaa tätä lopetuskirjausta luonnokseksi, koska se poistaisi "
 "siirtoarvot, jotka vaikuttavat lukitun kauden veroraporttiin. Tätä varten on"
 " ensin muutettava veroilmoituksen lukituspäivää."
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_multicurrency_revaluation_report.py:0
+#, python-format
+msgid "You need to activate more than one currency to access this report."
+msgstr ""
+"Sinun on aktivoitava useampi kuin yksi valuutta, jotta voit käyttää tätä "
+"raporttia."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
@@ -3635,7 +3648,7 @@ msgstr "vuosittain"
 #: code:addons/account_reports/models/res_partner.py:0
 #, python-format
 msgid "any"
-msgstr "Mikä tahansa"
+msgstr "mikä tahansa"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form

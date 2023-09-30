@@ -578,7 +578,7 @@ msgstr ""
 #: code:addons/hr_appraisal_survey/wizard/appraisal_ask_feedback.py:0
 #, python-format
 msgid "Missing email"
-msgstr ""
+msgstr "行方不明のEメール"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_1_1

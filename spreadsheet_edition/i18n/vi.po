@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2022
+# Nancy Momoland <thanh.np2502@gmail.com>, 2022
 # Thi Huong Nguyen, 2023
 # 
 msgid ""
@@ -867,4 +867,4 @@ msgstr ""
 #. module: spreadsheet_edition
 #: model:ir.model,name:spreadsheet_edition.model_ir_websocket
 msgid "websocket message handling"
-msgstr ""
+msgstr "xử lý thông báo websocket"

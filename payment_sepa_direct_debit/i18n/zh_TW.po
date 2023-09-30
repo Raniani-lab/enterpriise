@@ -601,7 +601,7 @@ msgstr ""
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_payment_provider__code
 msgid "The technical code of this payment provider."
-msgstr ""
+msgstr "此付款服務商的技術代碼。"
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -615,7 +615,7 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/models/payment_transaction.py:0
 #, python-format
 msgid "The transaction is not linked to a token."
-msgstr ""
+msgstr "交易未有連結至代碼。"
 
 #. module: payment_sepa_direct_debit
 #. odoo-python

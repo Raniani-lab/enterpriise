@@ -778,7 +778,7 @@ msgstr "收取日期"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
 msgid "Pickup Receipt #"
-msgstr "收取貨品收據 #"
+msgstr "取貨收據 #"
 
 #. module: sale_renting
 #: model:ir.actions.report,name:sale_renting.action_report_rental_saleorder

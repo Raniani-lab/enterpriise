@@ -414,7 +414,7 @@ msgstr "Doorgaan"
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
 msgid "Create a Marketing Automation Campaign"
-msgstr "Een marketingautomatiseringscampagne maken"
+msgstr "Een Marketing Automation campagne maken"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__create_uid
@@ -1351,7 +1351,7 @@ msgstr "Fase"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Start"
-msgstr "Start"
+msgstr "Starten"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__state

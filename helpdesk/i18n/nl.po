@@ -50,17 +50,17 @@ msgstr "# Dringend ticket"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__failed_sla_rate
 msgid "% of Failed SLA"
-msgstr "% van mislukte SLA"
+msgstr "% mislukte SLA"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__ongoing_sla_rate
 msgid "% of SLA In Progress"
-msgstr "% van SLA in uitvoering"
+msgstr "% SLA in behandeling"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__successful_sla_rate
 msgid "% of Successful SLA"
-msgstr "% van succesvolle SLA"
+msgstr "% succesvolle SLA"
 
 #. module: helpdesk
 #. odoo-python
@@ -258,7 +258,7 @@ msgid ""
 msgstr ""
 "<div>\n"
 "    Beste <t t-out=\"object.sudo().partner_id.name or 'Madam/Sir'\">mevrouw/heer</t>,<br><br>\n"
-"    Dit automatisch bericht informeert je dat we je ticket hebben afgesloten (referentie <t t-out=\"object.id or ''\">15</t>).\n"
+"    Dit automatisch bericht informeert je dat we je ticket hebben gesloten (referentie <t t-out=\"object.id or ''\">15</t>).\n"
 "    We hopen dat de geleverde diensten aan je verwachtingen hebben voldaan.\n"
 "    Als je nog vragen of opmerkingen hebt, aarzel dat niet om deze e-mail te beantwoorden om je ticket opnieuw te openen.<br><br>\n"
 "    Hartelijk dank voor je medewerking.<br>\n"
@@ -620,7 +620,7 @@ msgid ""
 "Adapt your <b>pipeline</b> to your workflow by adding <b>stages</b> <i>(e.g."
 " Awaiting Customer Feedback, etc.).</i>"
 msgstr ""
-"Pas de <b>pijplijn</b> aan je workflow aan door <b>fasen</b> <i> toe te "
+"Pas de <b>pijplijn</b> aan je workflow aan door <b>fases</b> <i> toe te "
 "voegen (bijvoorbeeld in afwachting van feedback van klanten, enz.).</i>"
 
 #. module: helpdesk
@@ -756,7 +756,7 @@ msgstr "Weet je zeker dat je door wilt gaan?"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_wizard
 msgid "Are you sure you want to delete those stages ?"
-msgstr "Weet je zeker dat je deze fasen wilt verwijderen?"
+msgstr "Weet je zeker dat je deze fases wilt verwijderen?"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
@@ -852,7 +852,7 @@ msgstr "Automatische toewijzing"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__auto_close_ticket
 msgid "Automatic Closing"
-msgstr "Automatische afsluiting"
+msgstr "Automatische sluiting"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_progress_data
@@ -863,7 +863,7 @@ msgstr "Gemiddelde"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__avg_response_hours
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket_report_analysis__avg_response_hours
 msgid "Average Hours to Respond"
-msgstr "Gemiddelde uren om te reageren"
+msgstr "Gemiddeld aantal uren om te reageren"
 
 #. module: helpdesk
 #. odoo-javascript
@@ -1008,7 +1008,7 @@ msgstr "Sluit het ticket af"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "Close ticket"
-msgstr "Ticket afsluiten"
+msgstr "Ticket sluiten"
 
 #. module: helpdesk
 #. odoo-python
@@ -1025,18 +1025,18 @@ msgstr "Gesloten"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
 #, python-format
 msgid "Closed Tickets"
-msgstr "Afgesloten tickets"
+msgstr "Gesloten tickets"
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_ticket_action_7days_analysis
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_ticket_action_close_analysis
 msgid "Closed Tickets Analysis"
-msgstr "Analyse afgesloten tickets"
+msgstr "Analyse gesloten tickets"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__closed_by_partner
 msgid "Closed by Partner"
-msgstr "Afgesloten door relatie"
+msgstr "Gesloten door relatie"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
@@ -1276,14 +1276,14 @@ msgstr "Telefoonnummer klant"
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__access_url
 msgid "Customer Portal URL"
-msgstr "Klant portaal URL"
+msgstr "Klantenportaal URL"
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.rating_rating_action_helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_rating
 #: model:ir.ui.menu,name:helpdesk.helpdesk_ticket_report_menu_ratings
 msgid "Customer Ratings"
-msgstr "Klantenbeoordelingen"
+msgstr "Klantbeoordelingen"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__partner_ids
@@ -1503,7 +1503,7 @@ msgstr ""
 #. module: helpdesk
 #: model:mail.template,description:helpdesk.rating_ticket_request_email_template
 msgid "Enable \"customer ratings\" feature on the helpdesk team"
-msgstr "Activeer de \"klantenbeoordeling\"-functie op het helpdesk team"
+msgstr "Activeer de \"klantbeoordeling\"-functie op het helpdesk team"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_website_helpdesk_slides
@@ -1540,7 +1540,7 @@ msgstr "Mislukt"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__sla_fail
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket_report_analysis__sla_fail
 msgid "Failed SLA Policy"
-msgstr "Niet gehaalde SLA afspraak"
+msgstr "Mislukte SLA afspraak"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__sla_failed
@@ -2158,7 +2158,7 @@ msgstr "Laten we eens kijken naar je <b>teamtickets</b>."
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_website_helpdesk_livechat
 msgid "Live Chat"
-msgstr "Live Chat"
+msgstr "Livechat"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_report_analysis_view_search
@@ -2467,7 +2467,7 @@ msgstr "Geen"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__sla_status_ongoing
 msgid "Number SLA In Progress"
-msgstr "Aantal SLA in uitvoering"
+msgstr "Aantal SLA in behandeling"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_needaction_counter
@@ -2478,7 +2478,7 @@ msgstr "Aantal acties"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__sla_status_failed
 msgid "Number of SLA Failed"
-msgstr "Aantal mislukte SLA's"
+msgstr "Aantal SLA mislukt"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__sla_status_successful
@@ -2774,7 +2774,7 @@ msgstr "Eigenschappen"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Publish this team's ratings on your website"
-msgstr "Publiceer de beoordeling van dit team op je website"
+msgstr "Publiceer de beoordelingen van dit team op je website"
 
 #. module: helpdesk
 #: model:helpdesk.ticket.type,name:helpdesk.type_question
@@ -3111,7 +3111,7 @@ msgstr "SLA status mislukt"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "SLA Success"
-msgstr "SLA gehaald"
+msgstr "SLA geslaagd"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_report_analysis_view_search
@@ -3251,7 +3251,7 @@ msgstr "Dienst"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Set an Email Template on Stages"
-msgstr "Stel een e-mailsjabloon in op fasen"
+msgstr "Stel een e-mailsjabloon in op fases"
 
 #. module: helpdesk
 #: model:mail.template,description:helpdesk.new_ticket_request_email_template
@@ -3261,7 +3261,7 @@ msgid ""
 "stages"
 msgstr ""
 "Stel deze sjabloon in op de fase van een project om e-mail te automatiseren "
-"wanneer taken de fasen bereiken"
+"wanneer taken de fases bereiken"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -3415,7 +3415,7 @@ msgstr "Succesratio-analyse"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__sla_success
 msgid "Success SLA Policy"
-msgstr "Gehaalde SLA afspraak"
+msgstr "Geslaagde SLA afspraak"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tag_view_tree
@@ -3556,7 +3556,7 @@ msgstr ""
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "The team does not allow ticket closing through portal"
-msgstr "Het team staat het afsluiten van tickets via het portaal niet toe"
+msgstr "Het team staat het sluiten van tickets via het portaal niet toe"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_sla__exclude_stage_ids
@@ -3745,7 +3745,7 @@ msgstr "Ticketsoort"
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Ticket closed by the customer"
-msgstr "Ticket afgesloten door de klant"
+msgstr "Ticket gesloten door de klant"
 
 #. module: helpdesk
 #: model:mail.message.subtype,description:helpdesk.mt_ticket_new
@@ -3795,7 +3795,7 @@ msgstr "Tickets"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_graph_analysis
 #, python-format
 msgid "Tickets Analysis"
-msgstr "Ticketsanalyse"
+msgstr "Ticketanalyse"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_digest_digest__kpi_helpdesk_tickets_closed
@@ -3817,7 +3817,7 @@ msgstr "Tickets in een gevouwen fase worden als gesloten beschouwd."
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_helpdesk_sale_timesheet
 msgid "Time Billing"
-msgstr "Tijdfacturering"
+msgstr "Urenfacturatie"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__close_hours
@@ -3879,7 +3879,7 @@ msgstr "Totale wisseltijd in uren"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Track &amp; Bill Time"
-msgstr "Volg &amp; Factureer tijd"
+msgstr "Tijd bijhouden & factureren"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form

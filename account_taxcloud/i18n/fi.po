@@ -263,7 +263,7 @@ msgstr "Verokannan malli"
 #: code:addons/account_taxcloud/models/product.py:0
 #, python-format
 msgid "The Taxcloud Category must be integer."
-msgstr ""
+msgstr "Taxcloud-luokan on oltava kokonaisluku."
 
 #. module: account_taxcloud
 #: code:addons/account_taxcloud/models/account_invoice.py:0

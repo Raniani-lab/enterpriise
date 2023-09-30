@@ -1232,7 +1232,7 @@ msgstr "Eror!"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
 msgid "Error 404"
-msgstr ""
+msgstr "Error 404"
 
 #. module: sign
 #. odoo-python
@@ -2286,7 +2286,7 @@ msgstr "Alasan"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__redirect_url
 msgid "Redirect Link"
-msgstr ""
+msgstr "Alihkan Ulang Link"
 
 #. module: sign
 #. odoo-javascript

@@ -1208,7 +1208,7 @@ msgstr "Остановить таймер"
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "Suspicious Durations"
-msgstr "Сомнительная длительность"
+msgstr "Подозрительная длительность"
 
 #. module: timesheet_grid
 #. odoo-javascript

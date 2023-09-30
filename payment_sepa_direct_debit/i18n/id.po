@@ -231,7 +231,7 @@ msgstr ""
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.payment_provider_form
 msgid "Buy credits"
-msgstr ""
+msgstr "Beli kredit"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_payment_provider__code

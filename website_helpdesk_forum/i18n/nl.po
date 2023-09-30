@@ -93,7 +93,7 @@ msgstr "Maak bericht"
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_select_forum_wizard_view_form
 msgid "Create and View Post"
-msgstr "Maak en bekijk bericht"
+msgstr "Post maken en bekijken"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_select_forum_wizard__create_uid
@@ -123,12 +123,12 @@ msgstr "Forum"
 #. module: website_helpdesk_forum
 #: model:ir.model,name:website_helpdesk_forum.model_forum_post
 msgid "Forum Post"
-msgstr "Forumbericht"
+msgstr "Forumpost"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__forum_post_count
 msgid "Forum Post Count"
-msgstr "Aantal forumberichten"
+msgstr "Aantal forumposts"
 
 #. module: website_helpdesk_forum
 #: code:addons/website_helpdesk_forum/models/helpdesk.py:0
@@ -136,7 +136,7 @@ msgstr "Aantal forumberichten"
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_view_form_inherit_website_helpdesk_forum
 #, python-format
 msgid "Forum Posts"
-msgstr "Forumberichten"
+msgstr "Forumposts"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_team__website_forum_ids
@@ -175,8 +175,8 @@ msgid ""
 "In the help center, customers will only be able to see posts from the "
 "selected forums."
 msgstr ""
-"In het helpcentrum kunnen klanten alleen berichten zien van de geselecteerde"
-" forums."
+"In het helpcentrum kunnen klanten alleen posts zien van de geselecteerde "
+"forums."
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_select_forum_wizard____last_update

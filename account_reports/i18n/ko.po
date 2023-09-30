@@ -5,8 +5,8 @@
 # Translators:
 # Martin Trigaux, 2022
 # JH CHOI <hwangtog@gmail.com>, 2023
-# Sarah Park, 2023
 # Daye Jeong, 2023
+# Sarah Park, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:36+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Daye Jeong, 2023\n"
+"Last-Translator: Sarah Park, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1991,6 +1991,28 @@ msgstr "지역 세금이 다음 항목에 적용됩니다."
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
+msgid "Invalid domain formula in expression %r of line %r: %s"
+msgstr "%r 내역의 %r 식에 잘못된 도메인 수식이 있습니다: %s"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Invalid method %r"
+msgstr "잘못된 방법 %r"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Invalid subformula in expression %r of line %r: %s"
+msgstr "%r 내역의 %r 식에 잘못된 하위 수식이 있습니다: %s"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
 msgid "Invalid token '%s' in account_codes formula '%s'"
 msgstr " '%s'  account_codes formula '%s'의 토큰이 유효하지 않습니다"
 
@@ -3504,6 +3526,13 @@ msgid ""
 msgstr ""
 "잠긴 기간에 대한 세금 보고와 관련한 이월 항목이 삭제 처리되기 때문에, 이 마감 분개 항목을 초안으로 재설정할 수 없습니다. "
 "진행하시려면 먼저 세무 신고 잠금 날짜를 조정해야 합니다."
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_multicurrency_revaluation_report.py:0
+#, python-format
+msgid "You need to activate more than one currency to access this report."
+msgstr "이 보고서를 사용하려면 통화를 두 개 이상 활성화시켜야 합니다."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template

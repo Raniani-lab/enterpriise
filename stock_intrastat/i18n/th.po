@@ -28,7 +28,7 @@ msgstr "การคลังของประเทศ"
 #. module: stock_intrastat
 #: model:ir.model,name:stock_intrastat.model_stock_intrastat_report_handler
 msgid "Intrastat Report Custom Handler (Stock)"
-msgstr ""
+msgstr "ตัวจัดการแบบกำหนดเองของรายงานอินทราสแทต (สต็อd)"
 
 #. module: stock_intrastat
 #: model:ir.model.fields,field_description:stock_intrastat.field_stock_warehouse__intrastat_region_id

@@ -1237,6 +1237,8 @@ msgid ""
 "You need to complete Quality Checks using the Tablet View before marking "
 "Work Order as Done."
 msgstr ""
+"Bạn cần hoàn thành Kiểm tra chất lượng bằng Chế độ xem máy tính bảng trước "
+"khi đánh dấu Hoàn tất Công đoạn."
 
 #. module: mrp_workorder
 #. odoo-python

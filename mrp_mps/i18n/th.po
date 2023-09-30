@@ -664,6 +664,9 @@ msgid ""
 "MPS. Note that if the demand is higher than that amount, the remaining "
 "quantity will be transferred to the next period automatically."
 msgstr ""
+"การเติมเต็มสูงสุดที่คุณต้องการเปิดใช้ในแต่ละช่วงเวลาใน MPS "
+"โปรดทราบว่าหากความต้องการสูงกว่าจำนวนนั้น "
+"ปริมาณคงเหลือจะถูกโอนไปยังงวดถัดไปโดยอัตโนมัติ"
 
 #. module: mrp_mps
 #. odoo-javascript
@@ -687,7 +690,7 @@ msgstr "จำนวนที่จะเติมสินค้าผ่าน
 msgid ""
 "This is the minimum free stock you want to keep for that product at all "
 "times."
-msgstr ""
+msgstr "นี่คือสต็อกฟรีขั้นต่ำที่คุณต้องการเก็บไว้สำหรับสินค้านั้นตลอดเวลา"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.res_config_settings_view_form
@@ -706,14 +709,14 @@ msgstr "เติมสินค้า"
 #: model:ir.model.fields,help:mrp_mps.field_mrp_production_schedule__min_to_replenish_qty
 msgid ""
 "Unless the demand is 0, Odoo will always at least replenish this quantity."
-msgstr ""
+msgstr "เว้นแต่ความต้องการจะเป็น 0 อย่างน้อย Odoo จะเติมปริมาณนี้เสมอ"
 
 #. module: mrp_mps
 #. odoo-python
 #: code:addons/mrp_mps/models/res_company.py:0
 #, python-format
 msgid "Week {week_num} ({start_date}-{end_date}/{month})"
-msgstr ""
+msgstr "สัปดาห์ {week_num} ({start_date}-{end_date}/{month})"
 
 #. module: mrp_mps
 #: model:ir.model.fields.selection,name:mrp_mps.selection__res_company__manufacturing_period__week

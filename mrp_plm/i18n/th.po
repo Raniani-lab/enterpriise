@@ -46,7 +46,7 @@ msgstr "# ECOs อยู่ระหว่างดำเนินการ"
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "%(approval_name)s %(approver_name)s %(approval_status)s this ECO"
-msgstr ""
+msgstr "%(approval_name)s %(approver_name)s %(approval_status)s ECO นี้"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
@@ -325,7 +325,7 @@ msgstr "รอการตรวจสอบ"
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_report_mrp_report_bom_structure
 msgid "BOM Overview Report"
-msgstr ""
+msgstr "รายงานภาพรวมบิลวัสดุ (BOM)"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_bom

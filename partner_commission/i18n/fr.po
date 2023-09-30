@@ -406,6 +406,8 @@ msgid ""
 "The commission partner order %s must be checked manually (especially refund "
 "lines which can be duplicated)."
 msgstr ""
+"La commande de commission partenaire %s doit être vérifiée manuellement "
+"(surtout les lignes de remboursement qui peuvent être dupliquées)."
 
 #. module: partner_commission
 #: model:ir.model.fields,help:partner_commission.field_res_partner_grade__default_commission_plan_id

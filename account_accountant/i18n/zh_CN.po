@@ -283,7 +283,7 @@ msgstr "添加新标签"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "All Transactions"
-msgstr ""
+msgstr "全部交易"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
@@ -369,7 +369,7 @@ msgstr "盎格鲁撒克逊会计"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "Back to"
-msgstr ""
+msgstr "返回"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__balance
@@ -2197,7 +2197,7 @@ msgstr "勾选核验"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "transaction in"
-msgstr ""
+msgstr "交易在"
 
 #. module: account_accountant
 #. odoo-javascript

@@ -3,7 +3,7 @@
 # 	* sale_subscription
 # 
 # Translators:
-# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2022
+# Nancy Momoland <thanh.np2502@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Thi Huong Nguyen, 2023
 # 
@@ -963,6 +963,10 @@ msgid ""
 "Post as Message: post on document and notify followers\n"
 "Post as Note: log a note on document"
 msgstr ""
+"Chọn phương thức gửi email:\n"
+"Email: gửi email trực tiếp\n"
+"Gửi dưới dạng thông báo: đăng trên tài liệu và thông báo cho người theo dõi\n"
+"Gửi dưới dạng ghi chú: ghi lại ghi chú trên tài liệu"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log__event_type__2_churn
@@ -1239,6 +1243,9 @@ msgid ""
 "        You can put a negative number if you need a delay before the\n"
 "        trigger date, like sending a reminder 15 minutes before a meeting."
 msgstr ""
+"Trì hoãn sau ngày kích hoạt.\n"
+"            Bạn có thể đặt số âm nếu bạn cần trì hoãn trước\n"
+"            ngày kích hoạt, như gửi lời nhắc 15 phút trước cuộc họp."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_range
@@ -2639,7 +2646,7 @@ msgstr "Gửi email cho khách hàng khi đăng ký được chuyển sang giai 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mail_post_method
 msgid "Send as"
-msgstr ""
+msgstr "Gửi dưới dạng"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__sms_method
@@ -2808,7 +2815,7 @@ msgstr "Gửi"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mail_post_autofollow
 msgid "Subscribe Recipients"
-msgstr ""
+msgstr "Đăng ký người nhận"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3119,6 +3126,8 @@ msgid ""
 "The action will be triggered if and only if one of these fields is updated. "
 "If empty, all fields are watched."
 msgstr ""
+"Hành động này sẽ được kích hoạt nếu và chỉ nếu một trong các trường này được"
+" cập nhật. Nếu để trống, mọi trường sẽ được theo dõi. "
 
 #. module: sale_subscription
 #. odoo-python
@@ -3567,6 +3576,8 @@ msgid ""
 "When should the condition be triggered.\n"
 "                If present, will be checked by the scheduler. If empty, will be checked at creation and update."
 msgstr ""
+"Khi nào thì điều kiện sẽ được kích hoạt.\n"
+"             Nếu có, sẽ được kiểm tra bởi công cụ lập kế hoạch. Nếu trống, sẽ được kiểm tra khi tạo và cập nhật. "
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__active

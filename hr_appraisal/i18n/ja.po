@@ -715,7 +715,7 @@ msgstr "期日"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_activity
 msgid "Deadline:"
-msgstr ""
+msgstr "期日:"
 
 #. module: hr_appraisal
 #. odoo-python

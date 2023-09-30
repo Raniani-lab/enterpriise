@@ -52,7 +52,7 @@ msgstr ""
 #. module: social_crm
 #: model_terms:ir.ui.view,arch_db:social_crm.social_post_to_lead_view_form
 msgid "Convert"
-msgstr ""
+msgstr "轉換"
 
 #. module: social_crm
 #: model:ir.actions.act_window,name:social_crm.social_post_to_lead_action
@@ -71,7 +71,7 @@ msgstr ""
 #: code:addons/social_crm/static/src/xml/social_crm_button.xml:0
 #, python-format
 msgid "Create Lead"
-msgstr ""
+msgstr "建立潛在客戶"
 
 #. module: social_crm
 #: model:ir.model.fields.selection,name:social_crm.selection__social_post_to_lead__action__create

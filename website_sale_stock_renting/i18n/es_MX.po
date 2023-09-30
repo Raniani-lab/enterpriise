@@ -32,7 +32,7 @@ msgid ""
 "            "
 msgstr ""
 "\n"
-"            Solicitó %(desired_qty)s productos pero solo %(new_qty)s están disponibles en\n"
+"            Solicitó %(desired_qty)s productos pero solo hay %(new_qty)s disponibles en\n"
 "            %(rental_period)s.\n"
 "            "
 
@@ -76,14 +76,14 @@ msgstr "Línea de la orden de venta"
 #, python-format
 msgid "The product is not available for the following time period(s):\n"
 msgstr ""
-"El producto no está disponible para los siguientes períodos de tiempo:\n"
+"El producto no está disponible durante los siguientes periodos de tiempo:\n"
 
 #. module: website_sale_stock_renting
 #. odoo-javascript
 #: code:addons/website_sale_stock_renting/static/src/xml/website_sale_stock_renting_product_availability.xml:0
 #, python-format
 msgid "You already added"
-msgstr "Ya añadió"
+msgstr "Ya agregó"
 
 #. module: website_sale_stock_renting
 #. odoo-javascript
@@ -93,8 +93,8 @@ msgid ""
 "You already added all the available product in your cart during the selected"
 " period."
 msgstr ""
-"Ya ha añadido todos los productos disponibles en su carrito durante el "
-"período seleccionado."
+"Ya ha agregado todos los productos disponibles a su carrito durante el "
+"periodo seleccionado."
 
 #. module: website_sale_stock_renting
 #. odoo-javascript
@@ -111,8 +111,7 @@ msgstr ""
 #, python-format
 msgid "Your rental product cannot be prepared on time, please rent later."
 msgstr ""
-"Su producto de alquiler no podrá ser preparado a tiempo, alquílelo más "
-"tarde."
+"Su producto de alquiler no estará disponible a tiempo, alquílelo más tarde."
 
 #. module: website_sale_stock_renting
 #. odoo-javascript

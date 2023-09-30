@@ -39,4 +39,4 @@ msgstr "แตะเพื่อสแกน"
 #: code:addons/pos_hr_mobile/static/src/js/LoginScreenMobile.js:0
 #, python-format
 msgid "Unable to scan"
-msgstr ""
+msgstr "ไม่สามารถสแกนได้"

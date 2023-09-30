@@ -1480,6 +1480,13 @@ msgid "Social: Publish Scheduled Posts"
 msgstr ""
 
 #. module: social
+#. openerp-web
+#: code:addons/social/static/src/js/stream_post_comments.js:0
+#, python-format
+msgid "Something went wrong while posting the comment."
+msgstr ""
+
+#. module: social
 #. odoo-javascript
 #: code:addons/social/static/src/js/stream_post_kanban_dashboard.js:0
 #, python-format
@@ -1667,7 +1674,7 @@ msgstr "Tipo"
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "Tipo de atividade de exceção registada."
 
 #. module: social
 #: model:ir.model,name:social.model_utm_campaign

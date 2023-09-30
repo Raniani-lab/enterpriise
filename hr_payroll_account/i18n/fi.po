@@ -33,7 +33,7 @@ msgstr "Tilikarttamalli"
 #. module: hr_payroll_account
 #: model:account.account,name:hr_payroll_account.demo_account
 msgid "Account Payslip Houserental"
-msgstr ""
+msgstr "Tilin palkkalaskelman asunnon vuokra"
 
 #. module: hr_payroll_account
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_salary_rule_view_form
@@ -145,7 +145,7 @@ msgstr "Palkkalaskelma"
 #. module: hr_payroll_account
 #: model:account.journal,name:hr_payroll_account.hr_payroll_account_journal
 msgid "Salaries"
-msgstr ""
+msgstr "Palkat"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payroll_structure__journal_id

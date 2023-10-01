@@ -7,7 +7,8 @@ class LinkToRecordWizard(models.TransientModel):
 
     def _get_model_domain(self):
         models = self.env['ir.model'].sudo().search([('model', '!=', 'documents.document'), ('is_mail_thread', '=', 'True')])
-        model_ids = models.filtered(lambda m: self.env[m.model].check_access_rights('write', raise_exception=False)).ids
+        # check that model is in the registry so there's no issue when checking the view in upgrades
+        model_ids = models.filtered(lambda m: self.env[m.model].check_access_rights('write', raise_exception=False) if m.model in self.env else False).ids
         return [('id', 'in', model_ids)]
 
     @api.model

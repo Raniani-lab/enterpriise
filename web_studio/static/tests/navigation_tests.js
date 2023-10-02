@@ -455,20 +455,12 @@ QUnit.module("Studio", (hooks) => {
     });
 
     QUnit.test("user context is unpolluted when entering studio in error", async (assert) => {
+        assert.expectErrors();
         patchWithCleanup(StudioClientAction.prototype, {
             setup() {
                 throw new Error("Boom");
             },
         });
-        registry.category("services").add("error", { start() {} });
-
-        const handler = (ev) => {
-            assert.strictEqual(ev.reason.cause.message, "Boom");
-            assert.step("error");
-            ev.preventDefault();
-        };
-        window.addEventListener("unhandledrejection", handler);
-        registerCleanup(() => window.removeEventListener("unhandledrejection", handler));
 
         const mockRPC = (route, args) => {
             if (route === "/web/dataset/call_kw/partner/get_views") {
@@ -487,10 +479,10 @@ QUnit.module("Studio", (hooks) => {
         assert.containsOnce(target, ".o_kanban_view");
 
         await openStudio(target);
-        assert.verifySteps(["error"]);
 
         assert.containsNone(target, ".o_web_studio_kanban_view_editor");
         assert.containsOnce(target, ".o_kanban_view");
+        assert.verifyErrors(["Boom"]);
 
         await click(target.querySelector(".o_menu_sections a[data-menu-xmlid=menu_12]"));
         await nextTick();
@@ -499,6 +491,7 @@ QUnit.module("Studio", (hooks) => {
     });
 
     QUnit.test("error bubbles up if first rendering", async (assert) => {
+        assert.expectErrors();
         const _console = window.console;
         window.console = Object.assign(Object.create(_console), {
             warn(msg) {
@@ -514,15 +507,6 @@ QUnit.module("Studio", (hooks) => {
                 throw new Error("Boom");
             },
         });
-        registry.category("services").add("error", { start() {} });
-
-        const handler = (ev) => {
-            assert.strictEqual(ev.reason.cause.message, "Boom");
-            assert.step("error");
-            ev.preventDefault();
-        };
-        window.addEventListener("unhandledrejection", handler);
-        registerCleanup(() => window.removeEventListener("unhandledrejection", handler));
 
         await createEnterpriseWebClient({
             serverData,
@@ -535,14 +519,14 @@ QUnit.module("Studio", (hooks) => {
         assert.containsOnce(target, ".o_list_view");
 
         await openStudio(target);
-        assert.verifySteps(["error"]);
+        assert.verifyErrors(["Boom"]);
         // FIXME : due to https://github.com/odoo/owl/issues/1298,
         // the visual result is not asserted here, ideally we'd want to be in the studio
         // action, with a blank editor
     });
 
     QUnit.test("error when new app's view is invalid", async (assert) => {
-        registry.category("services").add("error", { start() {} });
+        assert.expectErrors();
 
         serverData.menus.root.children.push(99);
         serverData.menus[99] = {
@@ -563,14 +547,6 @@ QUnit.module("Studio", (hooks) => {
             name: "test action",
             groups_id: [],
         };
-
-        const handler = (ev) => {
-            assert.strictEqual(ev.reason.cause.message, "Boom");
-            assert.step("error");
-            ev.preventDefault();
-        };
-        window.addEventListener("unhandledrejection", handler);
-        registerCleanup(() => window.removeEventListener("unhandledrejection", handler));
 
         await createEnterpriseWebClient({
             serverData,
@@ -593,7 +569,7 @@ QUnit.module("Studio", (hooks) => {
         await click(target, ".o_web_studio_app_creator_next");
         await click(target, ".o_web_studio_model_configurator_next");
         await contains(".o_web_studio_action_editor");
-        assert.verifySteps(["error"]);
+        assert.verifyErrors(["Boom"]);
     });
 
     QUnit.test("open same record when leaving form", async function (assert) {

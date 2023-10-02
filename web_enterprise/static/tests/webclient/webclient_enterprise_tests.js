@@ -15,7 +15,6 @@ import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";
 import { ormService } from "@web/core/orm_service";
 import { enterpriseSubscriptionService } from "@web_enterprise/webclient/home_menu/enterprise_subscription_service";
-import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { browser } from "@web/core/browser/browser";
 import { errorService } from "@web/core/errors/error_service";
 import { session } from "@web/session";
@@ -518,17 +517,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
     );
 
     QUnit.test("initial action crashes", async (assert) => {
-        const handler = (ev) => {
-            // need to preventDefault to remove error from console (so python test pass)
-            ev.preventDefault();
-        };
-        window.addEventListener("unhandledrejection", handler);
-        registerCleanup(() => window.removeEventListener("unhandledrejection", handler));
-
-        patchWithCleanup(QUnit, {
-            onUnhandledRejection: () => {},
-        });
-
+        assert.expectErrors();
         browser.location.hash = "#action=__test__client__action__&menu_id=1";
         const ClientAction = registry.category("actions").get("__test__client__action__");
         class Override extends ClientAction {
@@ -551,6 +540,8 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             action: "__test__client__action__",
             menu_id: 1,
         });
+        await nextTick();
+        assert.verifyErrors(["my error"]);
     });
 
     QUnit.test(

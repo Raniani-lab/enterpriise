@@ -104,5 +104,5 @@ class AccountMove(models.Model):
                 # Check that the computed taxes are close enough. For exemptions this could not be the case
                 # since some integrations will return the non-exempt rate%. In that case this will manually fix the tax
                 # lines to what the external service says they should be.
-                if float_compare(tax_line.balance, external_amount, precision_rounding=record.currency_id.rounding) != 0:
-                    tax_line.balance = external_amount
+                if float_compare(tax_line.amount_currency, external_amount, precision_rounding=record.currency_id.rounding) != 0:
+                    tax_line.amount_currency = external_amount

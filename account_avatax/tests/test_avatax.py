@@ -170,6 +170,75 @@ class TestAccountAvalaraInternal(TestAccountAvalaraInternalCommon):
         res = self.env['account.external.tax.mixin']._get_avatax_invoice_line(line_data)
         self.assertEqual(res['quantity'], 1, 'Quantities sent to Avatax should always be positive.')
 
+    def test_multi_currency_exempted_tax(self):
+        """ Test an invoice in another currency having 2 taxes computed from AvaTax whose one is exempted"""
+        # create an invoice of 100 in a currency with a rate of 2.0
+        invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner.id,
+            'fiscal_position_id': self.fp_avatax.id,
+            'currency_id': self.currency_data['currency'].id,
+            'invoice_date': '2021-01-01',
+            'invoice_line_ids': [
+                (0, 0, {
+                    'product_id': self.product_user.id,
+                    'tax_ids': None,
+                    'price_unit': 100.00,
+                }),
+            ]
+        })
+        # Taxes from AvaTax:
+        # - "CA STATE TAX" (4%)
+        # - "CA COUNTY TAX" (6%) [exempted]
+        lines = [{
+            'details': [{
+                'jurisCode': '06',
+                'nonTaxableAmount': 0.0,
+                'rate': 0.04,
+                'taxableAmount': 100.0,
+                'taxName': 'CA STATE TAX',
+            }, {
+                'jurisCode': '075',
+                'nonTaxableAmount': 100.0,
+                'rate': 0.06,
+                'taxableAmount': 0.0,
+                'taxName': 'CA COUNTY TAX',
+            }],
+            'lineAmount': 100.0,
+            'lineNumber': 'account.move.line,' + str(invoice.invoice_line_ids.id),
+            'tax': 4.0,
+        }]
+        summary = [{
+            'jurisCode': '06',
+            'nonTaxable': 0.0,
+            'rate': 0.04,
+            'tax': 4.0,
+            'taxCalculated': 4.0,
+            'taxName': 'CA STATE TAX',
+            'taxable': 100.0,
+        }, {
+            'country': 'US',
+            'jurisCode': '075',
+            'nonTaxable': 100.0,
+            'rate': 0.06,
+            'tax': 0.0,
+            'taxCalculated': 0.0,
+            'taxName': 'CA COUNTY TAX',
+            'taxable': 0.0,
+        }]
+        with self._capture_request(return_value={'lines': lines, 'summary': summary}):
+            invoice.action_post()
+        self.assertRecordValues(invoice, [{'amount_tax': 4.0, 'amount_total': 104.0, 'amount_untaxed': 100.0}])
+        # The tax lines should be:
+        # ________________________________________________________________________________
+        #              Label              | Amount in Currency | Balance | Debit | Credit
+        # --------------------------------------------------------------------------------
+        #  CA STATE TAX [06] (4.0000 %)   |        -4.0        |   -2.0  |  0.0  |  2.0
+        #  CA COUNTY TAX [075] (6.0000 %) |         0.0        |    0.0  |  0.0  |  0.0
+        tax_line = invoice.line_ids.filtered(lambda l: l.tax_line_id.name == 'CA STATE TAX [06] (4.0000 %)')
+        self.assertRecordValues(tax_line, [{'amount_currency': -4.0, 'balance': -2.0, 'debit': 0.0, 'credit': 2.0}])
+        exempted_tax_line = invoice.line_ids.filtered(lambda l: l.tax_line_id.name == 'CA COUNTY TAX [075] (6.0000 %)')
+        self.assertRecordValues(exempted_tax_line, [{'name': 'CA COUNTY TAX [075] (6.0000 %)', 'amount_currency': 0.0, 'balance': 0.0, 'debit': 0.0, 'credit': 0.0}])
 
 @tagged("external_l10n", "external", "-at_install", "post_install", "-standard")
 class TestAccountAvalaraInternalIntegration(TestAccountAvalaraInternalCommon):

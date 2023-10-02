@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-24 17:48+0000\n"
-"PO-Revision-Date: 2023-08-24 17:48+0000\n"
+"POT-Creation-Date: 2023-10-13 00:06+0000\n"
+"PO-Revision-Date: 2023-10-13 00:06+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -117,6 +117,7 @@ msgstr ""
 #. module: l10n_pe_reports
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_res_company__l10n_pe_chart_of_accounts
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_res_config_settings__l10n_pe_chart_of_accounts
+#: model:ir.model.fields,field_description:l10n_pe_reports.field_res_config_test__l10n_pe_chart_of_accounts
 msgid "Chart of Accounts PLE 5.3 (PE)"
 msgstr ""
 
@@ -538,11 +539,6 @@ msgid "Others"
 msgstr ""
 
 #. module: l10n_pe_reports
-#: model:account.report.line,name:l10n_pe_reports.ple_14_1_line
-msgid "PLE 14.1"
-msgstr ""
-
-#. module: l10n_pe_reports
 #. odoo-python
 #: code:addons/l10n_pe_reports/models/account_general_ledger.py:0
 #, python-format
@@ -564,28 +560,18 @@ msgid "PLE 6.1"
 msgstr ""
 
 #. module: l10n_pe_reports
-#: model:account.report.line,name:l10n_pe_reports.ple_81_line
-msgid "PLE 8.1"
-msgstr ""
-
-#. module: l10n_pe_reports
-#: model:account.report.line,name:l10n_pe_reports.ple_82_line
-msgid "PLE 8.2"
-msgstr ""
-
-#. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_l10n_pe_tax_ple_report_handler
 msgid "PLE Generic Report"
 msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_l10n_pe_tax_ple_8_1_report_handler
-msgid "PLE Purchase Report 8.1"
+msgid "PLE Purchase Report 8.1 (Now RCE 8.4)"
 msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_l10n_pe_tax_ple_8_2_report_handler
-msgid "PLE Purchase Report 8.2"
+msgid "PLE Purchase Report 8.2 (Now RCE 8.5)"
 msgstr ""
 
 #. module: l10n_pe_reports
@@ -595,7 +581,7 @@ msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_l10n_pe_tax_ple_14_1_report_handler
-msgid "PLE Sales Report 14.1"
+msgid "PLE Sales Report 14.1 (Now RVIE 14.2)"
 msgstr ""
 
 #. module: l10n_pe_reports
@@ -660,6 +646,21 @@ msgstr ""
 #. module: l10n_pe_reports
 #: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_L_NC_PROV
 msgid "Provisions for non-current liabilities"
+msgstr ""
+
+#. module: l10n_pe_reports
+#: model:account.report.line,name:l10n_pe_reports.ple_81_line
+msgid "RCE 8.4"
+msgstr ""
+
+#. module: l10n_pe_reports
+#: model:account.report.line,name:l10n_pe_reports.ple_82_line
+msgid "RCE 8.5"
+msgstr ""
+
+#. module: l10n_pe_reports
+#: model:account.report.line,name:l10n_pe_reports.ple_14_1_line
+msgid "RVIE 14.4"
 msgstr ""
 
 #. module: l10n_pe_reports
@@ -812,17 +813,17 @@ msgstr ""
 
 #. module: l10n_pe_reports
 #: model:account.report,name:l10n_pe_reports.tax_report_ple_purchase_8_1
-msgid "VAT Report (PLE Purchase 8.1)"
+msgid "VAT Report (RCE Purchase 8.4)"
 msgstr ""
 
 #. module: l10n_pe_reports
 #: model:account.report,name:l10n_pe_reports.tax_report_ple_purchase_8_2
-msgid "VAT Report (PLE Purchase 8.2)"
+msgid "VAT Report (RCE Purchase 8.5)"
 msgstr ""
 
 #. module: l10n_pe_reports
 #: model:account.report,name:l10n_pe_reports.tax_report_ple_sales_14_1
-msgid "VAT Report (PLE Sales 14.1)"
+msgid "VAT Report (RVIE Sales 14.4)"
 msgstr ""
 
 #. module: l10n_pe_reports
@@ -833,6 +834,7 @@ msgstr ""
 #. module: l10n_pe_reports
 #: model:ir.model.fields,help:l10n_pe_reports.field_res_company__l10n_pe_chart_of_accounts
 #: model:ir.model.fields,help:l10n_pe_reports.field_res_config_settings__l10n_pe_chart_of_accounts
+#: model:ir.model.fields,help:l10n_pe_reports.field_res_config_test__l10n_pe_chart_of_accounts
 msgid "Value used on PLE 5.3 report to indicate the chart of accounts used."
 msgstr ""
 

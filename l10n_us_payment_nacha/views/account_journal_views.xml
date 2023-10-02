@@ -15,6 +15,7 @@
                         <field name="nacha_company_identification"/>
                         <field name="nacha_origination_dfi_identification"/>
                         <field name="nacha_entry_class_code"/>
+                        <field name="nacha_is_balanced"/>
                     </group>
                 </xpath>
             </field>

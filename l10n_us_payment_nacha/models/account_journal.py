@@ -27,3 +27,5 @@ class AccountJournal(models.Model):
     ], default="CCD", required=True, string="Standard Entry Class Code",
     help="Corporate Credit or Debit (CCD) - Used to pay from corporate (business) accounts.\n"
          "Prearranged Payment and Deposit (PPD) - Used to pay from personal (consumer) accounts.")
+    nacha_is_balanced = fields.Boolean("Generate Balanced Files",
+                                       help="Use if your bank asks for a \"balanced\" NACHA file.")

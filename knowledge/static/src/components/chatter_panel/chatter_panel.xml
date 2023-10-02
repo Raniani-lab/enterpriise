@@ -10,6 +10,7 @@
                 hasParentReloadOnFollowersUpdate="true"
                 hasParentReloadOnMessagePosted="true"
                 isChatterAside="isChatterAside"
+                saveRecord="props.record.save.bind(props.record, { reload: false })"
             />
         </div>
     </div>

@@ -19,9 +19,12 @@ Kenyan Payroll Rules.
     * Integrated with Leaves Management
     """,
     'data': [
+        'security/ir.model.access.csv',
+        'security/l10n_ke_hr_payroll_security.xml',
         'data/resource_calendar_data.xml',
         'data/hr_salary_rule_category_data.xml',
         'data/hr_payroll_structure_type_data.xml',
+        'wizards/l10n_ke_hr_payroll_nssf_report_wizard_views.xml',
         'views/hr_payroll_report.xml',
         'data/hr_payroll_structure_data.xml',
         'data/hr_payslip_input_type_data.xml',
@@ -30,6 +33,8 @@ Kenyan Payroll Rules.
         'views/hr_contract_views.xml',
         'views/hr_employee_views.xml',
         'views/report_payslip_templates.xml',
+        'views/res_company_views.xml',
+        'views/l10n_ke_hr_payroll_menus.xml'
     ],
     'license': 'OEEL-1',
 }

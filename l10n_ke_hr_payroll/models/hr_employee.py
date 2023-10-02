@@ -9,6 +9,8 @@ class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
     l10n_ke_mortgage = fields.Monetary(string="Mortgage Interest", currency_field='currency_id', groups="hr.group_hr_user")
+    l10n_ke_kra_pin = fields.Char(string="KRA PIN", help="KRA PIN provided by the KRA", groups="hr.group_hr_user")
+    l10n_ke_nssf_number = fields.Char(string="NSSF Number", help="NSSF Number provided by the NSSF", groups="hr.group_hr_user")
 
     @api.constrains('l10n_ke_mortgage')
     def _check_l10n_ke_mortgage(self):
@@ -16,3 +18,10 @@ class HrEmployee(models.Model):
         for employee in self:
             if max_amount_yearly and employee.l10n_ke_mortgage > max_amount_yearly:
                 raise UserError(_('The mortgage interest cannot exceed %s Ksh yearly.', max_amount_yearly))
+
+    @api.constrains('l10n_ke_nssf_number', 'country_id')
+    def _check_l10n_ke_nssf_number(self):
+        for employee in self:
+            number = employee.l10n_ke_nssf_number
+            if number and (not number.isdigit() or len(number) > 10 or len(number) < 9):
+                raise UserError(_('The NSSF number must be a nine or ten digits number.'))

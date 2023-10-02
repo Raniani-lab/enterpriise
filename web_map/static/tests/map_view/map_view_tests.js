@@ -376,7 +376,7 @@ QUnit.module("Views", (hooks) => {
 
     /**
      * data: one record that has no partner linked to it
-     * The record should be kept and displayed in the list of records in gray (no clickable)
+     * The record shouldn't be kept and displayed in the list of records
      * should have no marker
      * Should have no route
      */
@@ -399,13 +399,9 @@ QUnit.module("Views", (hooks) => {
             "path",
             "No route should be shown"
         );
-        assert.containsOnce(
+        assert.containsNone(
             target,
             ".o-map-renderer--pin-list-container .o-map-renderer--pin-list-details li"
-        );
-        assert.containsOnce(
-            target,
-            ".o-map-renderer--pin-list-container .o-map-renderer--pin-list-details li span"
         );
     });
 
@@ -446,7 +442,7 @@ QUnit.module("Views", (hooks) => {
     /**
      * data: one record linked to one partner with no address and wrong coordinates
      * api: MapBox
-     * record should be kept and displayed in the list
+     * record shouldn't be kept and displayed in the list
      * no route
      * no marker
      */
@@ -475,13 +471,9 @@ QUnit.module("Views", (hooks) => {
                 "path",
                 "There should be no route on the map"
             );
-            assert.containsOnce(
+            assert.containsNone(
                 target,
                 ".o-map-renderer--pin-list-container .o-map-renderer--pin-list-details li"
-            );
-            assert.containsOnce(
-                target,
-                ".o-map-renderer--pin-list-container .o-map-renderer--pin-list-details li span"
             );
         }
     );

@@ -68,13 +68,19 @@ class AccountMove(models.Model):
                 tax_line = record.line_ids.filtered(lambda l: l.tax_line_id == tax)
 
                 # Tax avatax returns is opposite from aml balance (avatax is positive on invoice, negative on refund)
-                avatax_balance = -avatax_amount
+                avatax_amount_currency = -avatax_amount
+                avatax_balance = (
+                    avatax_amount_currency
+                    if tax_line.currency_id == tax_line.company_currency_id else
+                    tax_line.currency_id._convert(avatax_amount_currency, tax_line.company_currency_id, tax_line.company_id, tax_line.date)
+                )
 
                 # Check that the computed taxes are close enough. For exemptions this will never be the case
                 # since Avatax will return the non-exempt rate%. In that case this will manually fix the tax
                 # lines to what Avatax says they should be.
                 if float_compare(tax_line.balance, avatax_balance, precision_rounding=record.currency_id.rounding) != 0:
                     tax_line.balance = avatax_balance
+                    tax_line.amount_currency = avatax_amount_currency
 
     def _get_avatax_invoice_lines(self):
         return [

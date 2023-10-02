@@ -21,6 +21,7 @@ class TestSubscriptionTask(TestSubscriptionCommon):
                 Command.create({'name': 'a'}),
                 Command.create({'name': 'b'}),
             ],
+            'allow_billable': True,
         })
 
         cls.product_no_recurrence, cls.product_recurrence = cls.env['product.template'].create([{

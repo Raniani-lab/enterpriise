@@ -435,9 +435,13 @@ export class AccountReportController {
         let nextLineIndex = lineIndex + 1;
 
         while (this.isNextLineChild(nextLineIndex, lineId)) {
-            if (this.isNextLineDirectChild(nextLineIndex, lineId))
-                this.lines[nextLineIndex].visible = true;
-
+            if (this.isNextLineDirectChild(nextLineIndex, lineId)) {
+                const nextLine = this.lines[nextLineIndex];
+                nextLine.visible = true;
+                if (!nextLine.unfoldable && this.isNextLineChild(nextLineIndex + 1, nextLine.id)) {
+                    this.unfoldLine(nextLineIndex);
+                }
+            }
             nextLineIndex += 1;
         }
     }

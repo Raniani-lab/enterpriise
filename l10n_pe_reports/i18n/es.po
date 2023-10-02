@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-14 23:40+0000\n"
-"PO-Revision-Date: 2023-06-14 23:40+0000\n"
+"POT-Creation-Date: 2023-10-02 23:45+0000\n"
+"PO-Revision-Date: 2023-10-02 23:45+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -294,43 +294,43 @@ msgid "Other Taxes"
 msgstr "Otros Impuestos"
 
 #. module: l10n_pe_reports
-#: model:account.report.line,name:l10n_pe_reports.ple_14_1_line
-msgid "PLE 14.1"
-msgstr ""
-
-#. module: l10n_pe_reports
-#: model:account.report.line,name:l10n_pe_reports.ple_81_line
-msgid "PLE 8.1"
-msgstr ""
-
-#. module: l10n_pe_reports
-#: model:account.report.line,name:l10n_pe_reports.ple_82_line
-msgid "PLE 8.2"
-msgstr ""
-
-#. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_l10n_pe_tax_ple_report_handler
 msgid "PLE Generic Report"
 msgstr "Reporte genérico PLE"
 
 #. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_l10n_pe_tax_ple_8_1_report_handler
-msgid "PLE Purchase Report 8.1"
-msgstr "PLE Registro de Compras 8.1"
+msgid "PLE Purchase Report 8.1 (Now RCE 8.4)"
+msgstr "PLE Registro de Compras 8.1 (Ahora RCE 8.4)"
 
 #. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_l10n_pe_tax_ple_8_2_report_handler
-msgid "PLE Purchase Report 8.2"
-msgstr "PLE Registro de Compras de No Domiciliados 8.2"
+msgid "PLE Purchase Report 8.2 (Now RCE 8.5)"
+msgstr "PLE Registro de Compras de No Domiciliados 8.2 (Ahora RCE 8.5)"
 
 #. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_l10n_pe_tax_ple_14_1_report_handler
-msgid "PLE Sales Report 14.1"
-msgstr "PLE Registro de Ventas 14.1"
+msgid "PLE Sales Report 14.1 (Now RVIE 14.2)"
+msgstr "PLE Registro de Ventas 14.1 (Ahora RVIE 14.2)"
 
 #. module: l10n_pe_reports
 #: model_terms:ir.ui.view,arch_db:l10n_pe_reports.view_invoice_form
 msgid "Peru"
+msgstr ""
+
+#. module: l10n_pe_reports
+#: model:account.report.line,name:l10n_pe_reports.ple_81_line
+msgid "RCE 8.4"
+msgstr ""
+
+#. module: l10n_pe_reports
+#: model:account.report.line,name:l10n_pe_reports.ple_82_line
+msgid "RCE 8.5"
+msgstr ""
+
+#. module: l10n_pe_reports
+#: model:account.report.line,name:l10n_pe_reports.ple_14_1_line
+msgid "RVIE 14.4"
 msgstr ""
 
 #. module: l10n_pe_reports
@@ -405,18 +405,18 @@ msgstr "Tipo de uso"
 
 #. module: l10n_pe_reports
 #: model:account.report,name:l10n_pe_reports.tax_report_ple_purchase_8_1
-msgid "VAT Report (PLE Purchase 8.1)"
-msgstr "PLE Registro de Compras 8.1"
+msgid "VAT Report (RCE Purchase 8.4)"
+msgstr "RCE Registro de Compras 8.4"
 
 #. module: l10n_pe_reports
 #: model:account.report,name:l10n_pe_reports.tax_report_ple_purchase_8_2
-msgid "VAT Report (PLE Purchase 8.2)"
-msgstr "PLE Registro de Compras no Domiciliados 8.2"
+msgid "VAT Report (RCE Purchase 8.5)"
+msgstr "RCE Registro de Compras no Domiciliados 8.5"
 
 #. module: l10n_pe_reports
 #: model:account.report,name:l10n_pe_reports.tax_report_ple_sales_14_1
-msgid "VAT Report (PLE Sales 14.1)"
-msgstr "PLE Registro de Ventas 14.1"
+msgid "VAT Report (RVIE Sales 14.4)"
+msgstr "RVIE Registro de Ventas 14.4"
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,help:l10n_pe_reports.field_l10n_pe_ple_usage__code

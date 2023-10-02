@@ -23,6 +23,10 @@ function OdooFinConnector(parent, action) {
         url = action.params.proxyMode + '/proxy/v1/odoofin_link';
     }
 
+    const context = {
+        allowed_company_ids: parent.services.company.allowedCompanyIds,
+    };
+
     loadJS(url)
         .then(function () {
             // Create and open the iframe
@@ -43,6 +47,7 @@ function OdooFinConnector(parent, action) {
                             parent.services.rpc(rpcUrl + '/exchange_token', {
                                 model: 'account.online.link',
                                 method: 'exchange_token',
+                                context: context,
                                 args: [[id], data],
                                 kwargs: {}
                             })
@@ -53,7 +58,8 @@ function OdooFinConnector(parent, action) {
                                 model: 'account.online.link',
                                 method: 'success',
                                 args: [[id], mode, data],
-                                kwargs: {}
+                                context: context,
+                                kwargs: {},
                             })
                             .then(action => parent.services.action.doAction(action));
                         default:
@@ -66,6 +72,7 @@ function OdooFinConnector(parent, action) {
                         model: 'account.online.link',
                         method: 'create_new_bank_account_action',
                         args: [],
+                        context: context,
                         kwargs: {}
                     })
                     .then(action => parent.services.action.doAction(action, {replace_last_action: true}));

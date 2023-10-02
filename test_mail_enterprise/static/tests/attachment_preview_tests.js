@@ -4,6 +4,7 @@ import { startServer } from "@bus/../tests/helpers/mock_python_environment";
 
 import { patchUiSize, SIZES } from "@mail/../tests/helpers/patch_ui_size";
 import { start } from "@mail/../tests/helpers/test_utils";
+
 import {
     click,
     contains,
@@ -42,7 +43,7 @@ QUnit.test("Should not have attachment preview for still uploading attachment", 
         },
         serverData: { views },
     });
-    openFormView("mail.test.simple.main.attachment", recordId);
+    await openFormView("mail.test.simple.main.attachment", recordId);
     const files = [await createFile({ name: "invoice.pdf", contentType: "application/pdf" })];
     await dragenterFiles(".o-mail-Chatter", files);
     await dropFiles(".o-mail-Dropzone", files);
@@ -54,7 +55,7 @@ QUnit.test("Should not have attachment preview for still uploading attachment", 
     );
 });
 
-QUnit.test("Attachment on side", async (assert) => {
+QUnit.test("Attachment on side", async () => {
     const pyEnv = await startServer();
     const recordId = pyEnv["mail.test.simple.main.attachment"].create({});
     const attachmentId = pyEnv["ir.attachment"].create({
@@ -89,22 +90,19 @@ QUnit.test("Attachment on side", async (assert) => {
         },
         serverData: { views },
     });
-    openFormView("mail.test.simple.main.attachment", recordId);
+    await openFormView("mail.test.simple.main.attachment", recordId);
     await contains(".o-mail-Attachment-imgContainer > img");
     await contains(".o_form_sheet_bg > .o-mail-Form-chatter");
-    assert.doesNotHaveClass($(".o-mail-Form-chatter"), "o-aside");
+    await contains(".o-mail-Form-chatter:not(.o-aside)");
     await contains(".o_form_sheet_bg + .o_attachment_preview");
     // Don't display arrow if there is no previous/next element
     await contains(".arrow", { count: 0 });
     // send a message with attached PDF file
     await click("button", { text: "Send message" });
     await inputFiles(".o-mail-Composer-coreMain .o_input_file", [
-        await createFile({
-            name: "invoice.pdf",
-            contentType: "application/pdf",
-        }),
+        await createFile({ name: "invoice.pdf", contentType: "application/pdf" }),
     ]);
-    await click(".o-mail-Composer-send:not(:disabled)");
+    await click(".o-mail-Composer-send:enabled");
     await contains(".arrow", { count: 2 });
     await click(".o_move_next");
     await contains(".o-mail-Attachment-imgContainer > img", { count: 0 });
@@ -167,12 +165,14 @@ QUnit.test(
                 }
             },
         });
-        openFormView("mail.test.simple.main.attachment", recordId_1, {
+        await openFormView("mail.test.simple.main.attachment", recordId_1, {
             props: { resIds: [recordId_1, recordId_2] },
         });
         await contains(".o_pager_counter", { text: "1 / 2" });
+        await contains(".arrow", { count: 2 });
         await click(".o_pager_next");
         await contains(".o_pager_counter", { text: "2 / 2" });
+        await contains(".arrow", { count: 0 });
         await click(".o_pager_previous");
         await contains(".o_pager_counter", { text: "1 / 2" });
         await contains(".arrow", { count: 2 });
@@ -199,7 +199,7 @@ QUnit.test("Attachment on side on new record", async () => {
     };
     patchUiSize({ size: SIZES.XXL });
     const { openFormView } = await start({ serverData: { views } });
-    openFormView("mail.test.simple.main.attachment");
+    await openFormView("mail.test.simple.main.attachment");
     await contains(".o_form_sheet_bg + .o-mail-Form-chatter");
     await contains(".o_attachment_preview", { count: 0 });
 });
@@ -231,7 +231,7 @@ QUnit.test("Attachment on side not displayed on smaller screens", async () => {
     };
     patchUiSize({ size: SIZES.XL });
     const { openFormView } = await start({ serverData: { views } });
-    openFormView("mail.test.simple.main.attachment", recordId);
+    await openFormView("mail.test.simple.main.attachment", recordId);
     await contains(".o_form_sheet_bg + .o-mail-Form-chatter");
     await contains(".o_attachment_preview", { count: 0 });
 });

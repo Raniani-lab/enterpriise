@@ -31,9 +31,9 @@ class MrpWorkcenterProductivity(models.Model):
         )
         distribution_update = old_dist and employee_aal
         if distribution_update:
-            account = int(max(old_dist, key=old_dist.get))
-            biggest_aal = employee_aal.filtered(lambda line: line.account_id.id == account)
-            amount = biggest_aal.amount / (old_dist[str(account)] / 100)
+            account = self.env['account.analytic.account'].browse(int(max(old_dist, key=old_dist.get)))
+            biggest_aal = employee_aal.filtered(lambda line: line[account.plan_id._column_name()] == account)
+            amount = biggest_aal.amount / (old_dist[str(account.id)] / 100)
             duration = biggest_aal.unit_amount
         else:
             duration = (self.duration - previous_duration) / 60.0

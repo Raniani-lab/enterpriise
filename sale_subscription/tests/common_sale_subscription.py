@@ -212,7 +212,6 @@ class TestSubscriptionCommon(TestSaleCommon):
         # Test analytic account
         cls.plan_1 = AnalyticPlan.create({
             'name': 'Test Plan 1',
-            'company_id': False,
         })
         cls.account_1 = Analytic.create({
             'partner_id': cls.user_portal.partner_id.id,

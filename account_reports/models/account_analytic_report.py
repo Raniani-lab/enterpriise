@@ -130,7 +130,9 @@ class AccountReport(models.AbstractModel):
                     asname=sql.SQL(fname),
                 ))
             elif fname == 'analytic_distribution':
-                selected_fields.append(sql.SQL('to_jsonb(account_id) AS "account_move_line.analytic_distribution"'))
+                project_plan, other_plans = self.env['account.analytic.plan']._get_all_plans()
+                analytic_cols = ", ".join(n._column_name() for n in (project_plan+other_plans))
+                selected_fields.append(sql.SQL(f'to_jsonb(UNNEST(ARRAY[{analytic_cols}])) AS "account_move_line.analytic_distribution"'))
             else:
                 if line_fields[fname].get("translate"):
                     typecast = sql.SQL('jsonb')

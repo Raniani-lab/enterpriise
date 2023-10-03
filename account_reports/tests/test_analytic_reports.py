@@ -18,12 +18,10 @@ class TestAnalyticReport(TestAccountReportsCommon):
 
         cls.analytic_plan_parent = cls.env['account.analytic.plan'].create({
             'name': 'Plan Parent',
-            'company_id': False,
         })
         cls.analytic_plan_child = cls.env['account.analytic.plan'].create({
             'name': 'Plan Child',
             'parent_id': cls.analytic_plan_parent.id,
-            'company_id': False,
         })
 
         cls.analytic_account_parent = cls.env['account.analytic.account'].create({

@@ -1099,7 +1099,6 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
 
         analytic_plan_a = self.env['account.analytic.plan'].create({
             'name': 'Plan A',
-            'company_id': False,
         })
         aa_a1 = self.env['account.analytic.account'].create({
             'name': 'Account A1',
@@ -1130,11 +1129,9 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
 
         analytic_plan_a = self.env['account.analytic.plan'].create({
             'name': 'Plan A',
-            'company_id': False,
         })
         analytic_plan_b = self.env['account.analytic.plan'].create({
             'name': 'Plan B',
-            'company_id': False,
         })
         aa_a1 = self.env['account.analytic.account'].create({
             'name': 'Account A1',
@@ -1229,36 +1226,42 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             deferral_account.id: {str(aa_a1.id): 62.0, str(aa_a2.id): 8.0, str(aa_b1.id): 10.0, str(aa_b2.id): 10.0, str(aa_a3.id): 10.0},
         }
         expected_analytic_amount = [{
-            aa_a1.id: 3120.12,  # 3600 * 86.67%
-            aa_a2.id: 479.88,   # 3600 * 13.33%
-            aa_b1.id: 600.12,   # 3600 * 16.67%
-            aa_b2.id: 600.12,   # 3600 * 16.67%
+            aa_a1.id: (3120.12,     0.00),   # 3600 * 86.67%
+            aa_a2.id: ( 479.88,     0.00),   # 3600 * 13.33%
+            aa_b1.id: (   0.00,   600.12),   # 3600 * 16.67%
+            aa_b2.id: (   0.00,   600.12),   # 3600 * 16.67%
         }, {
-            aa_a1.id: -2080.08, # -2400 * 86.67%
-            aa_a2.id: -319.92,  # -2400 * 13.33%
-            aa_b1.id: -400.08,  # -2400 * 16.67%
-            aa_b2.id: -400.08,  # -2400 * 16.67%
+            aa_a1.id: (-2080.08,    0.00),   # -2400 * 86.67%
+            aa_a2.id: ( -319.92,    0.00),   # -2400 * 13.33%
+            aa_b1.id: (    0.00, -400.08),   # -2400 * 16.67%
+            aa_b2.id: (    0.00, -400.08),   # -2400 * 16.67%
         },{
-            aa_a1.id: 600.0,    # 2400 * 25%
-            aa_a3.id: 600.0,    # 2400 * 25%
+            aa_a1.id: (  600.00,    0.00),   # 2400 * 25%
+            aa_a3.id: (  600.00,    0.00),   # 2400 * 25%
         },{
-            aa_a1.id: -400.0,   # -1600 * 25%
-            aa_a3.id: -400.0,   # -1600 * 25%
+            aa_a1.id: ( -400.00,    0.00),   # -1600 * 25%
+            aa_a3.id: ( -400.00,    0.00),   # -1600 * 25%
         }, {
-            aa_a1.id: -1240.0,  # -2000 * 62%
-            aa_a2.id: -160.0,   # -2000 * 8%
-            aa_b1.id: -200.0,   # -2000 * 10%
-            aa_b2.id: -200.0,   # -2000 * 10%
-            aa_a3.id: -200.0,   # -2000 * 10%
+            aa_a1.id: (-1240.00,    0.00),   # -2000 * 62%
+            aa_a2.id: ( -160.00,    0.00),   # -2000 * 8%
+            aa_a3.id: ( -200.00,    0.00),   # -2000 * 10%
+            aa_b1.id: (    0.00, -200.00),   # -2000 * 10%
+            aa_b2.id: (    0.00, -200.00),   # -2000 * 10%
         }]
         # testing the amount of the analytic lines for the "Grouped Deferral Entry of Aug 2023"
         for index, line in enumerate(generated_entries[0].line_ids):
             self.assertEqual(line.analytic_distribution, expected_analytic_distribution[line.account_id.id])
             for al in line.analytic_line_ids:
-                self.assertAlmostEqual(al.amount, expected_analytic_amount[index][al.account_id.id])
+                fname_a = analytic_plan_a._column_name()
+                fname_b = analytic_plan_b._column_name()
+                fname, idx = (fname_a, 0) if al[fname_a] else (fname_b, 1)
+                self.assertAlmostEqual(al.amount, expected_analytic_amount[index][al[fname].id][idx])
         # testing the amount of the analytic lines for the "Reversal of Grouped Deferral Entry of Aug 2023"
         # the values should be the opposite of the "Grouped Deferral Entry of Aug 2023"
         for index, line in enumerate(generated_entries[1].line_ids):
             self.assertEqual(line.analytic_distribution, expected_analytic_distribution[line.account_id.id])
             for al in line.analytic_line_ids:
-                self.assertAlmostEqual(al.amount, -expected_analytic_amount[index][al.account_id.id])
+                fname_a = analytic_plan_a._column_name()
+                fname_b = analytic_plan_b._column_name()
+                fname, idx = (fname_a, 0) if al[fname_a] else (fname_b, 1)
+                self.assertAlmostEqual(al.amount, -expected_analytic_amount[index][al[fname].id][idx])

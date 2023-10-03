@@ -30,7 +30,7 @@ class TestInterCompanyInvoice(TestInterCompanyRulesCommon):
         if company:
             self.env.user.company_id = company
             display_name = company.display_name
-        analytic_plan = self.env['account.analytic.plan'].create({'name': f'Analytic Plan {display_name}', 'company_id': company and company.id})
+        analytic_plan = self.env['account.analytic.plan'].create({'name': f'Analytic Plan {display_name}'})
         analytic_account = self.env['account.analytic.account'].create({
             'name': f'Account {display_name}',
             'company_id': company and company.id,

@@ -59,8 +59,8 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
         self.assertEqual(employee1_aa_line.amount, -100.0)
         self.assertEqual(employee2_aa_line.amount, -200.0)
         self.assertEqual(mo.workorder_ids.mo_analytic_account_line_ids.amount, -10.0)
-        self.assertEqual(employee1_aa_line.account_id, self.analytic_account)
-        self.assertEqual(employee2_aa_line.account_id, self.analytic_account)
+        self.assertEqual(employee1_aa_line[self.analytic_plan._column_name()], self.analytic_account)
+        self.assertEqual(employee2_aa_line[self.analytic_plan._column_name()], self.analytic_account)
         new_account = self.env['account.analytic.account'].create({
             'name': 'test_analytic_account_change',
             'plan_id': self.analytic_plan.id,
@@ -68,8 +68,8 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
         mo.analytic_distribution = {str(new_account.id): 100.0}
         employee1_aa_line = mo.workorder_ids.employee_analytic_account_line_ids.filtered(lambda l: l.employee_id == self.employee1)
         employee2_aa_line = mo.workorder_ids.employee_analytic_account_line_ids.filtered(lambda l: l.employee_id == self.employee2)
-        self.assertEqual(employee2_aa_line.account_id, new_account)
-        self.assertEqual(employee1_aa_line.account_id, new_account)
+        self.assertEqual(employee2_aa_line[self.analytic_plan._column_name()], new_account)
+        self.assertEqual(employee1_aa_line[self.analytic_plan._column_name()], new_account)
 
     def test_mrp_analytic_account_without_workorder(self):
         """
@@ -195,4 +195,4 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
         mo_form.qty_producing = 1.0
         mo = mo_form.save()
         mo.button_mark_done()
-        self.assertEqual(len(self.analytic_account.line_ids), 4, '2 lines for workcenters costs 2 for employee cost')
+        self.assertEqual(len(self.analytic_account.with_context(analytic_plan_id=self.analytic_account.plan_id.id).line_ids), 4, '2 lines for workcenters costs 2 for employee cost')

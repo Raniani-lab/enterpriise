@@ -1762,10 +1762,6 @@ class AccountMove(models.Model):
         }
         return self.env['l10n_mx_edi.document']._create_update_payment_document(self, document_values)
 
-    def _get_edi_doc_attachments_to_export(self):
-        # EXTENDS 'account'
-        return super()._get_edi_doc_attachments_to_export() + self.l10n_mx_edi_cfdi_attachment_id
-
     # -------------------------------------------------------------------------
     # CFDI: FLOWS
     # -------------------------------------------------------------------------

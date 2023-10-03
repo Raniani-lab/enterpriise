@@ -1,7 +1,10 @@
+import re
+
 from odoo import Command, fields
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.exceptions import UserError
 from odoo.tests import tagged
+
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 
 @tagged('post_install', '-at_install')
@@ -43,7 +46,25 @@ class TestAccountReconcileWizard(AccountTestInvoicingCommon):
         ).new(input_values)
         if expected_transfer_values:
             transfer_move = wizard.create_transfer()
+            # transfer move values
             self.assertRecordValues(transfer_move.line_ids.sorted('balance'), expected_transfer_values)
+            # transfer warning message
+            self.assertTrue(wizard.transfer_warning_message)
+            regex_match = re.findall(r'([+-]*\d*,*\d+\.*\d+)', wizard.transfer_warning_message)
+            # match transferred amount
+            self.assertEqual(
+                float(regex_match[0].replace(',', '')),
+                transfer_move.amount_total_in_currency_signed or transfer_move.amount_total_signed
+            )
+            transfer_from_account = transfer_move.line_ids.filtered(lambda aml: 'Transfer from' in aml.name).account_id
+            transfer_to_account = transfer_move.line_ids.account_id - transfer_from_account
+            transfer_from_amls = transfer_move.line_ids.filtered(lambda aml: aml.account_id == transfer_from_account)
+            transfer_amount = sum(aml.balance for aml in transfer_from_amls)
+            # match account codes
+            if transfer_amount > 0:
+                self.assertEqual(regex_match[1:], [transfer_from_account.code, transfer_to_account.code])
+            else:
+                self.assertEqual(regex_match[1:], [transfer_to_account.code, transfer_from_account.code])
         write_off_move = wizard.create_write_off()
         self.assertRecordValues(write_off_move.line_ids.sorted('balance'), wo_expected_values)
         wizard.reconcile()

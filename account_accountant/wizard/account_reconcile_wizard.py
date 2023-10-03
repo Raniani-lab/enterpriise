@@ -240,8 +240,8 @@ class AccountReconcileWizard(models.TransientModel):
             # Compute transfer data
             if wizard.is_transfer_required:
                 transfer_amount_currency = 0.0
-                for aml in amls.filtered(lambda aml: aml.account_id == transfer_from_account and residual_amounts[aml]):
-                    transfer_amount_currency += aml.amount_currency if aml.currency_id == reco_currency else aml.amount
+                for aml in amls.filtered(lambda aml: aml.account_id == transfer_from_account):
+                    transfer_amount_currency += aml.amount_currency if aml.currency_id == reco_currency else aml.balance
 
                 wizard.transfer_from_account_id = transfer_from_account
                 wizard.transfer_warning_message = _get_transfer_warning_message(transfer_amount_currency, reco_currency, transfer_from_account, transfer_to_account)

@@ -10,7 +10,7 @@ import utils from "web.utils";
 import {
     encodeDataBehaviorProps,
 } from "@knowledge/js/knowledge_utils";
-import { downloadFile } from "@web/core/network/download";
+import { configureBlobDownloadXHR, downloadFile } from "@web/core/network/download";
 
 
 export class FileBehavior extends AbstractBehavior {
@@ -43,16 +43,17 @@ export class FileBehavior extends AbstractBehavior {
         }
         const title = fileLink.getAttribute('title');
         const href = fileLink.getAttribute('href');
-        try {
-            await downloadFile(href);
-        } catch {
-            this.dialogService.add(AlertDialog, {
-                body: sprintf(_t('Oops, the file %s could not be found. Please replace this file box by a new one to re-upload the file.'), title),
-                title: _t('Missing File'),
-                confirm: () => {},
-                confirmLabel: _t('Ok'),
-            });
-        }
+        const xhr = downloadFile(href);
+        configureBlobDownloadXHR(xhr, {
+            onFailure: () => {
+                this.dialogService.add(AlertDialog, {
+                    body: sprintf(_t('Oops, the file %s could not be found. Please replace this file box by a new one to re-upload the file.'), title),
+                    title: _t('Missing File'),
+                    confirm: () => {},
+                    confirmLabel: _t('Ok'),
+                });
+            }
+        });
     }
     /**
      * Callback function called when the user clicks on the "Send as Message" button.

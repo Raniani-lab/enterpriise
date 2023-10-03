@@ -15,6 +15,7 @@ import {
     markup,
     onWillDestroy,
     onWillUnmount,
+    onWillUpdateProps,
     useEffect,
     useRef,
 } from "@odoo/owl";
@@ -100,7 +101,7 @@ const HtmlFieldPatch = {
             // continue while Behaviors are being mounted. At that point,
             // those not-yet-mounted Behaviors are obsolete and should be
             // discarded.
-            validator: this.constructBehaviorsValidator(),
+            validator: this.constructBehaviorsValidator(this.props),
         };
         this.boundMountBehaviors = this._onMountBehaviors.bind(this);
         this.knowledgeCommandsService = useService('knowledgeCommandsService');
@@ -112,8 +113,11 @@ const HtmlFieldPatch = {
         onWillUnmount(() => {
             this._removeMountBehaviorsListeners();
         });
+        onWillUpdateProps((props) => {
+            this.updateBehaviorsValidator(props);
+        });
         useEffect(() => {
-            this.updateBehaviorsValidator();
+            this.updateBehaviorsValidator(this.props);
             // Update Behaviors and reset the observer when the html_field
             // DOM element changes.
             if (this.behaviorState.observedElement !== this.valueContainerElement) {
@@ -204,7 +208,7 @@ const HtmlFieldPatch = {
      */
     async startWysiwyg() {
         await super.startWysiwyg(...arguments);
-        this.updateBehaviorsValidator();
+        this.updateBehaviorsValidator(this.props);
         this._addMountBehaviorsListeners();
         this.startAppAnchorsObserver();
         await this.mountBehaviors();
@@ -274,14 +278,15 @@ const HtmlFieldPatch = {
     /**
      * Create a validator object that will invalidate obsolete Behaviors
      * being mounted when the state of the htmlField changes.
+     * @param {Object} props
      * @returns {Object} validator
      */
-    constructBehaviorsValidator() {
+    constructBehaviorsValidator(props) {
         return {
             obsolete: false,
             state: {
-                readonly: this.props.readonly,
-                record: this.props.record,
+                readonly: props.readonly,
+                record: props.record,
                 valueContainerElement: this.valueContainerElement,
             },
         };
@@ -381,17 +386,19 @@ const HtmlFieldPatch = {
     /**
      * Invalidate Behaviors being mounted for a previous html field state and
      * construct a new validator if the state changed.
+     * @param {Object} props
      */
-    updateBehaviorsValidator() {
-        const validator = this.constructBehaviorsValidator();
-        for (const [prop, value] of Object.entries(this.behaviorState.validator.state)) {
-            if (validator.state[prop] !== value) {
-                // Invalidate ongoing mounting of Behaviors.
-                this.behaviorState.validator.obsolete = true;
-                // Create a new validator for the next Behaviors.
-                this.behaviorState.validator = validator;
-                break;
-            }
+    updateBehaviorsValidator(props) {
+        const validator = this.constructBehaviorsValidator(props);
+        if (
+            Object.entries(this.behaviorState.validator.state).some(
+                ([prop, value]) => validator.state[prop] !== value
+            )
+        ) {
+            // Invalidate ongoing mounting of Behaviors.
+            this.behaviorState.validator.obsolete = true;
+            // Create a new validator for the next Behaviors.
+            this.behaviorState.validator = validator;
         }
     },
 

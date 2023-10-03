@@ -98,8 +98,8 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
 
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         # Add the control lines in the report, with a high sequence to ensure they appear at the end.
-        control_lines = self._dynamic_check_lines(options, all_column_groups_expression_totals, warnings)
-        return control_lines or []
+        self._dynamic_check_lines(options, all_column_groups_expression_totals, warnings)
+        return []
 
     def _custom_options_initializer(self, report, options, previous_options=None):
         super()._custom_options_initializer(report, options, previous_options=previous_options)
@@ -274,23 +274,10 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
 
     def _dynamic_check_lines(self, options, all_column_groups_expression_totals, warnings):
         def _evaluate_check(check_func):
-            columns = []
-            all_check_passed = False
-            for expression_totals in all_column_groups_expression_totals.values():
-                # We know that there is only one column per column group in the Belgian report, so we don't treat other cases here
-                check_result = check_func(expression_totals)
-                all_check_passed &= check_result
-
-                if not check_result:
-                    columns.append({
-                        'name': '',
-                        'style': 'white-space:nowrap;',
-                    })
-
-            if all_check_passed:
-                return None
-
-            return columns
+            return all(
+                check_func(expression_totals)
+                for expression_totals in all_column_groups_expression_totals.values()
+            )
 
         report = self.env['account.report'].browse(options['report_id'])
         expr_map = {
@@ -345,32 +332,11 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
                 lambda expr_totals: expr_totals[expr_map['c44']]['value'] < sum(expr_totals[expr_map[grid]]['value'] for grid in ('c00', 'c01', 'c02', 'c03', 'c45', 'c46', 'c47', 'c48', 'c49')) * 200 if expr_totals[expr_map['c88']]['value'] > 99.999 else True),
         ]
 
-        failed_control_lines = []
-
-        for index, (check_name, check_func) in enumerate(checks):
-            columns = _evaluate_check(check_func)
-
-            if columns:
-                failed_control_lines.append((1000 + index, {
-                    'id': report._get_generic_line_id(None, None, markup=f"l10n_be_report_check_{index}"),
-                    'name': check_name,
-                    'columns': columns,
-                    'level': 1,
-                    'class': 'font-weight-normal border-bottom',  # Override the default level 1 styling
-                }))
-
-        if failed_control_lines:
-            failed_control_lines.insert(0, (999, {
-                'id': report._get_generic_line_id(None, None, markup="l10n_be_tax_report_check_header"),
-                'name': _("Controls failed"),
-                'columns': [{} for i in range(len(options['columns']))],
-                'level': 0,
-                'page_break': True,
-            }))
-
-            # Modify the options to add a key indicating the check failed. Thanks to this small hack, we can display a banner
-            # in the XML wizard and on the tax closing entry without needing to recompute the whole report; just using the options.
-            options['tax_report_control_error'] = True
+        failed_controls = [
+            check_name
+            for check_name, check_func in checks
+            if not _evaluate_check(check_func)
+        ]
 
         if warnings is not None and _evaluate_check(lambda expr_totals: not any(
             [expr_totals[expr_map[grid]]['value'] for grid in ('c44', 'c46L', 'c46T', 'c48s44', 'c48s46L', 'c48s46T')]
@@ -378,4 +344,5 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
             # remind user to submit EC Sales Report if any ec sales related taxes
             warnings['l10n_be_reports.tax_report_warning_ec_sales_reminder'] = {}
 
-        return failed_control_lines
+        if failed_controls:
+            warnings['l10n_be_reports.tax_report_warning_checks'] = {'failed_controls': failed_controls, 'alert_type': 'danger'}

@@ -18,7 +18,7 @@ class AccountFinancialReportXMLReportExport(models.TransientModel):
 
     control_value = fields.Boolean(compute='_compute_control_value')
 
-    def _compute_control_value(self):
+    def _compute_control_value(self): # DEPRECATED ; this computed field will be removed in master
         options = self._context.get('l10n_be_reports_generation_options', {})
         for record in self:
             record.control_value = options.get('tax_report_control_error')

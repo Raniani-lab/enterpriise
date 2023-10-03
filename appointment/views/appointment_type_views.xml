@@ -248,11 +248,11 @@
                             <field name="resource_count" invisible="1"/>
                             <field name="schedule_based_on" widget="radio" options="{'horizontal': true}"
                                 required="1"
-                                readonly="category not in ['punctual', 'recurring']"/>
+                                readonly="category == 'anytime'"/>
                             <!-- Users Details -->
                             <field name="staff_user_ids" widget="many2many_avatar_user"
                                 invisible="schedule_based_on == 'resources'"
-                                readonly="category not in ['punctual', 'recurring']"
+                                readonly="category == 'anytime'"
                                 options="{'no_open': False}"/>
                             <!-- Resources Details-->
                             <field name="resource_ids" string="Resources" widget="many2many_tags_avatar"

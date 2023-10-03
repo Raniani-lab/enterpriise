@@ -18,7 +18,7 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Push Notifications" name="push_notifications" class="order-3"
                     invisible="social_push_notifications_count == 0" groups="social.group_social_user">
-                    <field name="social_push_notification_ids" widget="one2many" mode="kanban" nolabel="1" context="{'default_campaign_id': active_id}"/>
+                    <field name="social_push_notification_ids" widget="one2many" mode="kanban" nolabel="1" context="{'default_campaign_id': id}"/>
                 </page>
             </xpath>
         </field>

@@ -134,7 +134,7 @@
                             <div t-if="!record.statement_id.raw_value"
                                  class="statement_separator text-center">
                                 <a role="button" class="btn btn-secondary btn-sm"
-                                   context="{'split_line_id':active_id, 'default_journal_id': journal_id}"
+                                   context="{'split_line_id': id, 'default_journal_id': journal_id}"
                                    tabindex="-1"
                                    type="action" name="%(account_accountant.action_bank_statement_form_bank_rec_widget)d">
                                     Statement

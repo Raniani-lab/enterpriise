@@ -132,7 +132,7 @@
                                     <field name="description"/>
                                 </p>
                                 <div class="oe_module_action" t-if="!selection_mode">
-                                    <button type="object" class="btn btn-primary btn-sm" name="create_request" context="{'category_id':active_id}">New Request</button>
+                                    <button type="object" class="btn btn-primary btn-sm" name="create_request" context="{'category_id':id}">New Request</button>
                                     <button type="action" class="btn btn-sm btn-secondary float-end" name="%(approvals.approval_request_action_to_review_category)d" groups="approvals.group_approval_user">To Review: <field name="request_to_validate_count"/></button>
                                 </div>
                             </div>

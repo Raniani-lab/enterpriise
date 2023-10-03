@@ -63,7 +63,7 @@
                                     'asset_current'))]"
                                 context="{
                                     'default_account_type': 'asset_fixed',
-                                    'hide_model_on_account': state == 'model' and not active_id,
+                                    'hide_model_on_account': state == 'model' and not id,
                                     'account_type_domain': [('account_type', 'in', (
                                         'asset_fixed',
                                         'asset_non_current'))]}"
@@ -78,7 +78,7 @@
                                     'asset_current'))]"
                                 context="{
                                     'default_account_type': 'asset_non_current',
-                                    'hide_model_on_account': state == 'model' and not active_id,
+                                    'hide_model_on_account': state == 'model' and not id,
                                     'account_type_domain': [('account_type', 'in', (
                                         'asset_fixed',
                                         'asset_non_current'))]}"
@@ -92,7 +92,7 @@
                                 context="{
                                     'default_account_type': 'expense_depreciation',
                                     'default_tax_ids': [],
-                                    'hide_model_on_account': state == 'model' and not active_id,
+                                    'hide_model_on_account': state == 'model' and not id,
                                     'account_type_domain': [('account_type', 'in', (
                                         'expense_depreciation',
                                         'expense'))]}"
@@ -153,7 +153,7 @@
                                             'asset_current'))]"
                                         context="{
                                             'default_account_type': 'asset_fixed',
-                                            'hide_model_on_account': state == 'model' and not active_id,
+                                            'hide_model_on_account': state == 'model' and not id,
                                             'account_type_domain': [('account_type', 'in', (
                                                 'asset_fixed',
                                                 'asset_non_current'))]}"
@@ -167,7 +167,7 @@
                                             'asset_current'))]"
                                         context="{
                                             'default_account_type': 'asset_non_current',
-                                            'hide_model_on_account': state == 'model' and not active_id,
+                                            'hide_model_on_account': state == 'model' and not id,
                                             'account_type_domain': [('account_type', 'in', (
                                                 'asset_fixed',
                                                 'asset_non_current'))]}"
@@ -180,7 +180,7 @@
                                             'expense'))]"
                                         context="{
                                             'default_account_type': 'expense_depreciation',
-                                            'hide_model_on_account': state == 'model' and not active_id,
+                                            'hide_model_on_account': state == 'model' and not id,
                                             'account_type_domain': [('account_type', 'in', (
                                                 'expense_depreciation',
                                                 'expense'))]}"

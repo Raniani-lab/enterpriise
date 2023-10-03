@@ -42,7 +42,7 @@
                         <field name="icon" widget="char_emojis"/>
                         <field name="body" widget="text"/>
                         <field name="description"/>
-                        <field name="parent_id" domain="[('id', '!=', active_id)]"/>
+                        <field name="parent_id" domain="[('id', '!=', id)]"/>
                         <field name="is_template_item" invisible="not parent_id"/>
                         <field name="template_properties" invisible="not parent_id"/>
                         <field name="category_id"/>

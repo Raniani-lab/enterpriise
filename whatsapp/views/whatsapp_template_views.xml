@@ -29,7 +29,7 @@
                         groups="whatsapp.group_whatsapp_admin"/>
                     <button name="%(whatsapp_preview_action_from_template)d" string="Preview"
                         type="action" target="new"
-                        context="{'active_id': active_id, 'dialog_size': 'medium'}"/>
+                        context="{'active_id': id, 'dialog_size': 'medium'}"/>
                     <field name="status" widget="statusbar" statusbar_visible="draft,pending,approved"/>
                 </header>
                 <sheet>

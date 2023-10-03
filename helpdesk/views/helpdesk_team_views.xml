@@ -219,14 +219,14 @@
                                 <field name="stage_ids" invisible="1"/>
                                 <div class="mt16">
                                     <label for="to_stage_id"/>
-                                    <field name="to_stage_id" class="ms-2 oe_inline" required="auto_close_ticket" context="{'default_team_id': active_id}"/>
+                                    <field name="to_stage_id" class="ms-2 oe_inline" required="auto_close_ticket" context="{'default_team_id': id}"/>
                                 </div>
                                 <div class="mt8">
                                     <strong>After</strong><field name="auto_close_day" class="mx-2 oe_inline text-center" required="1"/><span>days of inactivity</span>
                                 </div>
                                 <div class="mt8">
                                     <label for="from_stage_ids"/>
-                                    <field name="from_stage_ids" widget="many2many_tags" class="ms-2 oe_inline" context="{'default_team_id': active_id}"/>
+                                    <field name="from_stage_ids" widget="many2many_tags" class="ms-2 oe_inline" context="{'default_team_id': id}"/>
                                 </div>
                             </div>
                         </setting>
@@ -277,7 +277,7 @@
         <field name="arch" type="xml">
             <kanban class="o_kanban_dashboard"
                     group_create="0" create="0" js_class="helpdesk_team_kanban_view" sample="1"
-                    action="action_view_ticket" type="object" context="{'default_team_id': active_id}"
+                    action="action_view_ticket" type="object"
             >
                 <field name="name"/>
                 <field name="sequence" widget="handle"/>
@@ -314,10 +314,10 @@
                                         <span>Reporting</span>
                                     </div>
                                     <div role="menuitem">
-                                        <a name="%(helpdesk.helpdesk_ticket_analysis_dashboard_action)d" type="action" context="{'search_default_team_id': active_id}">Tickets Analysis</a>
+                                        <a name="%(helpdesk.helpdesk_ticket_analysis_dashboard_action)d" type="action" context="{'search_default_team_id': id}">Tickets Analysis</a>
                                     </div>
                                     <div role="menuitem">
-                                        <a name="%(helpdesk.helpdesk_sla_report_analysis_dashboard_action)d" type="action" context="{'search_default_team_id': active_id}">SLA Status Analysis</a>
+                                        <a name="%(helpdesk.helpdesk_sla_report_analysis_dashboard_action)d" type="action" context="{'search_default_team_id': id}">SLA Status Analysis</a>
                                     </div>
                                 </div>
                             </div>
@@ -345,7 +345,7 @@
                             <div class="container o_kanban_card_content" t-if="!selection_mode">
                                 <div class="row">
                                     <div class="col o_kanban_primary_left">
-                                        <button class="btn btn-primary o_helpdesk_ticket_btn" name="action_view_ticket" type="object" context="{'default_team_id': active_id}">Tickets</button>
+                                        <button class="btn btn-primary o_helpdesk_ticket_btn" name="action_view_ticket" type="object" context="{'default_team_id': id}">Tickets</button>
                                     </div>
                                     <div class="col o_kanban_primary_right">
                                         <div class="mb4">

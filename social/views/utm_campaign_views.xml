@@ -26,7 +26,7 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Social Media" name="social_media" class="order-2"
                     invisible="social_posts_count == 0" groups="social.group_social_user">
-                    <field name="social_post_ids" mode="kanban" widget="one2many" nolabel="1" context="{'default_campaign_id': active_id}"/>
+                    <field name="social_post_ids" mode="kanban" widget="one2many" nolabel="1" context="{'default_campaign_id': id}"/>
                 </page>
             </xpath>
         </field>

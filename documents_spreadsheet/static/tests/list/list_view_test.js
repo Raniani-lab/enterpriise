@@ -23,6 +23,7 @@ import { dom } from "@web/../tests/legacy/helpers/test_utils";
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 import { session } from "@web/session";
 import * as dsHelpers from "@web/../tests/core/domain_selector_tests";
+import { insertListInSpreadsheet } from "@spreadsheet/../tests/utils/list";
 
 const { topbarMenuRegistry, cellMenuRegistry } = spreadsheet.registries;
 const { toZone } = spreadsheet.helpers;
@@ -545,4 +546,30 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         await click(fixture, ".o_refresh_list");
         assert.strictEqual(sortingSection.querySelectorAll("div")[1].innerText, "Foo (ascending)");
     });
+
+    QUnit.test(
+        "Opening the sidepanel of a list while the panel of another list is open updates the side panel",
+        async function (assert) {
+            const { model, env } = await createSpreadsheetFromListView({});
+            insertListInSpreadsheet(model, {
+                model: "product",
+                columns: ["name", "active"],
+            });
+
+            const listIds = model.getters.getListIds();
+            const fixture = getFixture();
+
+            model.dispatch("SELECT_ODOO_LIST", { listId: listIds[0] });
+            env.openSidePanel("LIST_PROPERTIES_PANEL", {});
+            await nextTick();
+            let modelName = fixture.querySelector(".o_side_panel_section .o_model_name");
+            assert.equal(modelName.innerText, "Partner (partner)");
+
+            model.dispatch("SELECT_ODOO_LIST", { listId: listIds[1] });
+            env.openSidePanel("LIST_PROPERTIES_PANEL", {});
+            await nextTick();
+            modelName = fixture.querySelector(".o_side_panel_section .o_model_name");
+            assert.equal(modelName.innerText, "Product (product)");
+        }
+    );
 });

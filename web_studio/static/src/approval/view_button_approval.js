@@ -47,11 +47,11 @@ patch(ViewButton.prototype, {
         }
     },
     async checkBeforeExecute() {
+        this.approval.willCheck = true;
         if (!this.approval.resId) {
             const model = this.props.record.model;
             const rec = "resId" in model.root ? model.root : this.props.record;
             await rec.save();
-            this.approval.resId = rec.resId;
         } else if (this.props.record && this.props.record.isDirty) {
             await this.props.record.save();
         }

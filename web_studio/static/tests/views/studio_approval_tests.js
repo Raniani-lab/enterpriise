@@ -645,4 +645,109 @@ QUnit.module("Studio Approval", (hooks) => {
             );
         }
     );
+
+    QUnit.test("approval with domain: pager", async (assert) => {
+        const mockRPC = (route, args) => {
+            if (args.method === "get_approval_spec") {
+                assert.step(`get_approval_spec: ${args.kwargs.res_id}`);
+                let rules = [];
+                if (args.kwargs.res_id === 1) {
+                    const rule = {
+                        id: 1,
+                        group_id: [1, "Internal User"],
+                        domain: false,
+                        can_validate: true,
+                        message: false,
+                        exclusive_user: false,
+                    };
+                    rules = [rule];
+                }
+
+                const spec = {
+                    rules,
+                    entries: [],
+                    groups: [[1, "Internal User"]],
+                };
+                return Promise.resolve(spec);
+            }
+        };
+
+        await makeView({
+            serverData,
+            mockRPC,
+            type: "form",
+            resModel: "partner",
+            arch: `<form>
+                    <button type="object" name="someMethod" string="Apply Method" studio_approval="True"/>
+                    <field name="int_field"/>
+                </form>`,
+            resId: 1,
+            resIds: [1, 2],
+        });
+
+        assert.verifySteps(["get_approval_spec: 1"]);
+        assert.containsOnce(target, ".o_web_studio_approval_avatar");
+        await click(target, ".o_pager_next");
+        assert.verifySteps(["get_approval_spec: 2"]);
+        assert.containsNone(target, ".o_web_studio_approval_avatar");
+        await click(target, ".o_pager_previous");
+        assert.containsOnce(target, ".o_web_studio_approval_avatar");
+        assert.verifySteps([]);
+    });
+
+    QUnit.test("approval save a record", async (assert) => {
+        serverData.models.partner.records = [];
+        let hasRules = true;
+        const mockRPC = (route, args) => {
+            if (args.method === "web_save") {
+                assert.step(args.method, args.args);
+            }
+            if (args.method === "get_approval_spec") {
+                assert.step(`get_approval_spec: ${args.kwargs.res_id}`);
+                let rules = [];
+                if (args.kwargs.res_id === 1 && hasRules) {
+                    const rule = {
+                        id: 1,
+                        group_id: [1, "Internal User"],
+                        domain: false,
+                        can_validate: true,
+                        message: false,
+                        exclusive_user: false,
+                    };
+                    rules = [rule];
+                }
+
+                const spec = {
+                    rules,
+                    entries: [],
+                    groups: [[1, "Internal User"]],
+                };
+                return Promise.resolve(spec);
+            }
+        };
+
+        await makeView({
+            serverData,
+            mockRPC,
+            type: "form",
+            resModel: "partner",
+            arch: `<form>
+                    <button type="object" name="someMethod" string="Apply Method" studio_approval="True"/>
+                    <field name="int_field"/>
+                </form>`,
+        });
+
+        assert.verifySteps(["get_approval_spec: false"]);
+        assert.containsNone(target, ".o_web_studio_approval_avatar");
+        await click(target, ".o_form_button_save");
+        assert.containsOnce(target, ".o_web_studio_approval_avatar");
+        assert.verifySteps(["web_save", "get_approval_spec: 1"]);
+
+        await editInput(target.querySelector(`.o_field_widget[name="int_field"] input`), null, 34);
+        hasRules = false;
+        await click(target, ".o_form_button_save");
+        assert.containsNone(target, ".o_web_studio_approval_avatar");
+
+        assert.verifySteps(["web_save", "get_approval_spec: 1"]);
+    });
 });

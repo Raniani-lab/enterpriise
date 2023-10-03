@@ -3,7 +3,8 @@ import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
 import { renderToMarkup } from "@web/core/utils/render";
 
-import { xml, reactive, useComponent, useEnv } from "@odoo/owl";
+import { xml, reactive, useComponent, useEnv, toRaw, onMounted, onWillDestroy } from "@odoo/owl";
+import { useRecordObserver } from "@web/model/relational_model/utils";
 
 const missingApprovalsTemplate = xml`
     <ul>
@@ -50,7 +51,7 @@ class StudioApproval {
      */
     get state() {
         const state = this._getState();
-        if (state.rules === null && !state.syncing) {
+        if (state.rules === null && !state.syncing && !this.willCheck) {
             this.fetchApprovals();
         }
         return state;
@@ -70,11 +71,14 @@ class StudioApproval {
 
     async checkApproval() {
         const args = [this.resModel, this.resId, this.method, this.action];
+        const state = this._getState();
+        state.syncing = true;
         const result = await this.orm.call("studio.approval.rule", "check_approval", args);
         const approved = result.approved;
         if (!approved) {
             this.displayNotification(result);
         }
+        this.willCheck = false;
         this.fetchApprovals(); // don't wait
         return approved;
     }
@@ -151,11 +155,20 @@ export function useApproval({ getRecord, method, action }) {
     const unprotectedOrm = useEnv().services.orm;
     const studio = useService("studio");
     const notification = useService("notification");
-    let record = getRecord(useComponent().props);
-    let _approval = approvalMap.get(record.model);
-    if (!_approval) {
-        _approval = new StudioApproval();
-        approvalMap.set(record.model, _approval);
+    const record = getRecord(useComponent().props);
+    const model = toRaw(record.model);
+    let approvalModelCache = approvalMap.get(model);
+    if (!approvalModelCache) {
+        approvalModelCache = {
+            approval: new StudioApproval(),
+            onRecordSaved: new Map(),
+        };
+        approvalMap.set(model, approvalModelCache);
+        const onRecordSaved = model.hooks.onRecordSaved;
+        model.hooks.onRecordSaved = (...args) => {
+            approvalModelCache.onRecordSaved.forEach((fn) => fn(args[0]));
+            return onRecordSaved(...args);
+        };
     }
 
     const specialize = {
@@ -167,14 +180,26 @@ export function useApproval({ getRecord, method, action }) {
         studio,
         notification,
     };
-    const approval = Object.assign(Object.create(_approval), specialize);
-    owl.onWillUpdateProps((nextProps) => {
-        const nextRecord = getRecord(nextProps);
-        approval.resId = nextRecord.resId;
-        approval.resModel = nextRecord.resModel;
-        record = nextRecord;
+
+    const approval = reactive(
+        Object.assign(Object.create(approvalModelCache.approval), specialize)
+    );
+
+    approvalModelCache.onRecordSaved.set(toRaw(approval), () => {
+        if (!approval.resId && record.resId) {
+            approval.resId = record.resId;
+        } else {
+            delete approval._data[approval.dataKey];
+        }
     });
-    owl.onMounted(() => {
+    onWillDestroy(() => approvalModelCache.onRecordSaved.delete(toRaw(approval)));
+
+    useRecordObserver((record) => {
+        approval.resId = record.resId;
+        approval.resModel = record.resModel;
+    });
+
+    onMounted(() => {
         approval.orm = protectedOrm;
     });
 

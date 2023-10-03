@@ -3,7 +3,7 @@
 import { usePopover } from "@web/core/popover/popover_hook";
 import { useService } from "@web/core/utils/hooks";
 import { StudioApprovalInfos } from "@web_studio/approval/approval_infos";
-import { useState, Component, onWillUnmount, useRef } from "@odoo/owl";
+import { Component, onWillUnmount, useRef } from "@odoo/owl";
 
 function useOpenExternal() {
     const closeFns = [];
@@ -25,10 +25,14 @@ export class StudioApproval extends Component {
         this.popover = usePopover(StudioApprovalInfos);
         this.rootRef = useRef("root");
         this.openExternal = useOpenExternal();
+    }
 
-        const approval = this.props.approval;
-        this.approval = approval;
-        this.state = useState(approval.state);
+    get approval() {
+        return this.props.approval;
+    }
+
+    get state() {
+        return this.approval.state;
     }
 
     toggleApprovalInfo() {

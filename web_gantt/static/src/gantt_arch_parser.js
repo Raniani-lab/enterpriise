@@ -2,7 +2,7 @@
 
 import { _t } from "@web/core/l10n/translation";
 import { evaluateExpr } from "@web/core/py_js/py";
-import { XMLParser } from "@web/core/utils/xml";
+import { visitXML } from "@web/core/utils/xml";
 import { archParseBoolean, getActiveActions } from "@web/views/utils";
 
 /**
@@ -64,13 +64,13 @@ const SCALES = {
     },
 };
 
-export class GanttArchParser extends XMLParser {
+export class GanttArchParser {
     parse(arch) {
         let infoFromRootNode;
         const decorationFields = [];
         let popoverTemplate = null;
 
-        this.visitXML(arch, (node) => {
+        visitXML(arch, (node) => {
             switch (node.tagName) {
                 case "gantt": {
                     infoFromRootNode = getInfoFromRootNode(node);

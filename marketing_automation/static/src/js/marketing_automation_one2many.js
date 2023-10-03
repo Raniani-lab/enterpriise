@@ -4,7 +4,7 @@ import { _t } from "@web/core/l10n/translation";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { append, createElement, XMLParser } from "@web/core/utils/xml";
+import { append, createElement, parseXML } from "@web/core/utils/xml";
 import { useX2ManyCrud, useOpenX2ManyRecord } from "@web/views/fields/relational_utils";
 import { X2ManyField, x2ManyField } from "@web/views/fields/x2many/x2many_field";
 import { KanbanRecord } from "@web/views/kanban/kanban_record";
@@ -230,7 +230,7 @@ export class HierarchyKanbanRenderer extends KanbanRenderer {
         append(rootTemplate, rootEl);
         this.props.archInfo.templateDocs.root = rootTemplate;
 
-        const mainTemplate = new XMLParser().parseXML(
+        const mainTemplate = parseXML(
             `
             <t t-name="kanban-box">
                 <t t-set="currentDepth" t-value="currentDepth ? currentDepth + 1 : 1"/>

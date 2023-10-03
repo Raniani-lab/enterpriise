@@ -12,26 +12,11 @@ import { FormEditorSidebar } from "./form_editor_sidebar/form_editor_sidebar";
 import { getStudioNoFetchFields } from "../utils";
 
 class EditorArchParser extends formView.ArchParser {
-    parse(arch, models, modelName) {
-        const parsed = super.parse(...arguments);
-        const noFetch = getStudioNoFetchFields(parsed.fieldNodes);
-        parsed.fieldNodes = omit(parsed.fieldNodes, ...noFetch.fieldNodes);
-        return parsed;
-    }
-
-    parseXML() {
-        const result = super.parseXML(...arguments);
-        const copy = result.cloneNode(true);
-
-        Array.from(copy.querySelectorAll("field > tree, field > form, field > kanban")).forEach(
-            (el) => {
-                if (getModifier(el, "invisible") === "True" || getModifier(el, "invisible") === "1") {
-                    el.remove();
-                }
-            }
-        );
-
-        return copy;
+    parse() {
+        const archInfo = super.parse(...arguments);
+        const noFetch = getStudioNoFetchFields(archInfo.fieldNodes);
+        archInfo.fieldNodes = omit(archInfo.fieldNodes, ...noFetch.fieldNodes);
+        return archInfo;
     }
 }
 
@@ -49,6 +34,22 @@ const formEditor = {
     Renderer: FormEditorRenderer,
     Controller: FormEditorController,
     props(genericProps, editor, config) {
+        const arch = genericProps.arch;
+        Array.from(arch.querySelectorAll("field > tree, field > form, field > kanban")).forEach(
+            (el) => {
+                // Inline subviews sometimes have a "groups" attribute, allowing to have different
+                // x2many views depending on access rights. Outside Studio, this has no impact
+                // client side, because the view processing in python would remove nodes with groups
+                // the user doesn't belong to. However, when there's a "studio" key in the context,
+                // nodes are no longer removed but they are set as invisible="1" instead. This means
+                // that in Studio, we can have several x2many subviews for the same view type (even
+                // tough, only one of them should be visible). Here, we're only interested in the
+                // views that are visible (the ones the user has access to), so we remove the others.
+                if (getModifier(el, "invisible")) {
+                    el.remove();
+                }
+            }
+        );
         const props = formView.props(genericProps, editor, config);
         props.Model = makeModelErrorResilient(Model);
         props.preventEdit = true;

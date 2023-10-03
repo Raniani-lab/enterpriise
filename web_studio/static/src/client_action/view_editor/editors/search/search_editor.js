@@ -5,7 +5,7 @@ import {
     computeXpath,
     getNodesFromXpath,
 } from "@web_studio/client_action/view_editor/editors/xml_utils";
-import { XMLParser } from "@web/core/utils/xml";
+import { visitXML } from "@web/core/utils/xml";
 import { StudioHook } from "@web_studio/client_action/view_editor/editors/components/studio_hook_component";
 import { InteractiveEditorSidebar } from "@web_studio/client_action/view_editor/interactive_editor/interactive_editor_sidebar";
 import { ExistingFields } from "@web_studio/client_action/view_editor/view_structures/view_structures";
@@ -39,16 +39,15 @@ function isFilterGroupBy(node) {
 }
 
 /** CONTROLLER STUFF */
-class SearchEditorArchParser extends XMLParser {
-    parse(arch) {
-        const xmlDoc = this.parseXML(arch);
+class SearchEditorArchParser {
+    parse(xmlDoc) {
         this.fields = [];
         this.filters = [];
         this.groupBys = [];
         this.currentCategory = null;
         this.currentItems = { items: [] };
 
-        this.visitXML(xmlDoc, this.visitNode.bind(this));
+        visitXML(xmlDoc, this.visitNode.bind(this));
         this.changeCategory(null, true); // Flush
 
         return {

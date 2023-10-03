@@ -1,12 +1,11 @@
 /** @odoo-module */
 
-import { XMLParser } from "@web/core/utils/xml";
+import { visitXML } from "@web/core/utils/xml";
 import { archParseBoolean, getActiveActions, processButton } from "@web/views/utils";
 import { _t } from "@web/core/l10n/translation";
 
-export class GridArchParser extends XMLParser {
-    parse(arch, models, modelName) {
-        const xmlDoc = this.parseXML(arch);
+export class GridArchParser {
+    parse(xmlDoc, models, modelName) {
         const archInfo = {
             activeActions: getActiveActions(xmlDoc),
             hideLineTotal: false,
@@ -33,7 +32,7 @@ export class GridArchParser extends XMLParser {
         };
         let buttonId = 0;
 
-        this.visitXML(arch, (node) => {
+        visitXML(xmlDoc, (node) => {
             if (node.tagName === "grid") {
                 if (node.hasAttribute("hide_line_total")) {
                     archInfo.hideLineTotal = archParseBoolean(node.getAttribute("hide_line_total"));

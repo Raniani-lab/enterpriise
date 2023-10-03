@@ -10,6 +10,7 @@ import {
 } from "@web_studio/client_action/view_editor/editors/xml_utils";
 import { EventBus, markRaw, useEnv, reactive, toRaw } from "@odoo/owl";
 import { sprintf } from "@web/core/utils/strings";
+import { parseXML } from "@web/core/utils/xml";
 import { viewTypeToString } from "@web_studio/studio_service";
 import {
     xpathToLegacyXpathInfo,
@@ -92,12 +93,6 @@ function buildKey(...args) {
     return args.join("_");
 }
 
-function removeStudioNoFetchFromArch(arch) {
-    const xml = parseStringToXml(arch);
-    xml.querySelectorAll(`[studio_no_fetch="1"]`).forEach((n) => n.remove());
-    return serializeXmlToString(xml);
-}
-
 export class ViewEditorModel extends Reactive {
     constructor({ env, services, editionFlow, viewRef }) {
         super();
@@ -165,8 +160,10 @@ export class ViewEditorModel extends Reactive {
             resIds = resIds || [];
             resId = resId || resIds[0];
 
-            const arch =
-                this.mode === "interactive" ? this.arch : removeStudioNoFetchFromArch(this.arch);
+            const arch = parseXML(this.arch);
+            if (this.mode !== "interactive") {
+                arch.querySelectorAll(`[studio_no_fetch="1"]`).forEach((n) => n.remove());
+            }
 
             const rootArchNode = this.xmlDoc.firstElementChild;
             const controllerClasses = Array.from(

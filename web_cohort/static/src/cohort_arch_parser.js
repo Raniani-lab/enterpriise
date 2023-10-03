@@ -1,16 +1,16 @@
 /* @odoo-module */
 
-import { XMLParser } from "@web/core/utils/xml";
+import { visitXML } from "@web/core/utils/xml";
 import { _t } from "@web/core/l10n/translation";
 import { INTERVALS, MODES, TIMELINES } from "./cohort_model";
 import { archParseBoolean } from "@web/views/utils";
 
-export class CohortArchParser extends XMLParser {
+export class CohortArchParser {
     parse(arch, fields) {
         const archInfo = {
             fieldAttrs: {},
         };
-        this.visitXML(arch, (node) => {
+        visitXML(arch, (node) => {
             switch (node.tagName) {
                 case "cohort": {
                     if (node.hasAttribute("disable_linking")) {
@@ -82,7 +82,10 @@ export class CohortArchParser extends XMLParser {
                     if (node.hasAttribute("string")) {
                         archInfo.fieldAttrs[fieldName].string = node.getAttribute("string");
                     }
-                    if (node.getAttribute("invisible") === "True" || node.getAttribute("invisible") === "1") {
+                    if (
+                        node.getAttribute("invisible") === "True" ||
+                        node.getAttribute("invisible") === "1"
+                    ) {
                         archInfo.fieldAttrs[fieldName].isInvisible = true;
                         break;
                     }

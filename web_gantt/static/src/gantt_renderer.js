@@ -252,7 +252,7 @@ export class GanttRenderer extends Component {
 
         const { popoverTemplate } = this.model.metaData;
         if (popoverTemplate) {
-            this.popoverTemplate = useViewCompiler(GanttCompiler, popoverTemplate.outerHTML, {
+            this.popoverTemplate = useViewCompiler(GanttCompiler, {
                 popoverTemplate,
             }).popoverTemplate;
         }

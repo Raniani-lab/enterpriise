@@ -19,6 +19,7 @@
                         widget="many2many_tags" force_save="1"/>
                     <field name="employee_ids" widget="many2many_avatar_employee" required="1"/>
                     <field name="mail_to" widget="radio" options="{'horizontal': True}"/>
+                    <field name="mail_displayed" invisible="not mail_displayed" string=""/>
                 </group>
                 <group invisible="not sign_template_ids" string="Sign Request Options">
                     <field name="employee_role_id" options="{'no_create': True}"/>

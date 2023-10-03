@@ -69,12 +69,13 @@ class HrContractSignDocumentWizard(models.TransientModel):
     cc_partner_ids = fields.Many2many('res.partner', string="Copy to")
     attachment_ids = fields.Many2many('ir.attachment')
     mail_to = fields.Selection([
-        ('public', 'Public'),
+        ('work', 'Work'),
         ('private', 'Private'),
     ], string='Email', help="""Email used to send the signature request.
-                - Public takes the email defined in "work email"
+                - Work takes the email defined in "work email"
                 - Private takes the email defined in Private Information
-                - If the selected email is not defined, the available one will be used.""", default='public')
+                - If the selected email is not defined, the available one will be used.""", default='work')
+    mail_displayed = fields.Char(compute='_compute_mail_displayed')
 
     @api.depends('sign_template_responsible_ids')
     def _compute_employee_role_id(self):
@@ -121,6 +122,14 @@ class HrContractSignDocumentWizard(models.TransientModel):
     def _compute_has_both_template(self):
         for wizard in self:
             wizard.has_both_template = bool(wizard.sign_template_ids.filtered(lambda t: len(t.sign_item_ids.mapped('responsible_id')) == 2))
+
+    @api.depends('employee_ids', 'mail_to')
+    def _compute_mail_displayed(self):
+        for wizard in self:
+            if len(wizard.employee_ids) == 1:
+                wizard.mail_displayed = wizard.employee_ids.private_email if self.mail_to == 'private' else wizard.employee_ids.work_email
+            else:
+                wizard.mail_displayed = False
 
     def validate_signature(self):
         self.ensure_one()

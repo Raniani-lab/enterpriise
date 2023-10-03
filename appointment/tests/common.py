@@ -182,12 +182,6 @@ class AppointmentCommon(MailCommon, common.HttpCase):
                         slots_info.append(slot)
         return slots_info
 
-    def _flush_tracking(self):
-        """ Force the creation of tracking values notably, and ensure tests are
-        reproducible. """
-        self.env.flush_all()
-        self.cr.flush()
-
     def assertSlots(self, slots, exp_months, slots_data):
         """ Check slots content. Method to be improved soon, currently doing
         only basic checks. """

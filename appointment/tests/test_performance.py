@@ -22,7 +22,6 @@ class AppointmentPerformanceCase(AppointmentCommon):
         super(AppointmentPerformanceCase, self).setUp()
         # patch registry to simulate a ready environment
         self.patch(self.env.registry, 'ready', True)
-        self._flush_tracking()
 
 
 @tagged('appointment_performance', 'post_install', '-at_install')

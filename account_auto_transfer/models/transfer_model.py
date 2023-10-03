@@ -169,16 +169,16 @@ class TransferModel(models.Model):
         """
         self.ensure_one()
         current_move = self._get_move_for_period(end_date)
-        if current_move is None:
-            current_move = self.env['account.move'].create({
-                'ref': '%s: %s --> %s' % (self.name, str(start_date), str(end_date)),
-                'date': end_date,
-                'journal_id': self.journal_id.id,
-                'transfer_model_id': self.id,
-            })
-
         line_values = self._get_auto_transfer_move_line_values(start_date, end_date)
         if line_values:
+            if current_move is None:
+                current_move = self.env['account.move'].create({
+                    'ref': '%s: %s --> %s' % (self.name, str(start_date), str(end_date)),
+                    'date': end_date,
+                    'journal_id': self.journal_id.id,
+                    'transfer_model_id': self.id,
+                })
+
             line_ids_values = [(0, 0, value) for value in line_values]
             # unlink all old line ids
             current_move.line_ids.unlink()

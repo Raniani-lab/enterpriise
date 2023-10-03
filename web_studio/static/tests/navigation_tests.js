@@ -570,6 +570,8 @@ QUnit.module("Studio", (hooks) => {
         await click(target, ".o_web_studio_app_creator_next");
         await click(target, ".o_web_studio_model_configurator_next");
         await contains(".o_web_studio_action_editor");
+        // Wait for the error event to be handled
+        await nextTick();
         assert.verifyErrors(["Boom"]);
     });
 

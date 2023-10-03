@@ -378,6 +378,7 @@ Best Regards,
 
                 partner.with_context(mail_post_autofollow=True, lang=partner.lang or self.env.user.lang).message_post(
                     partner_ids=[to_send_partner.id],
+                    author_id=partner._get_followup_responsible().partner_id.id,
                     body=body_html,
                     subject=self._get_email_subject(options),
                     subtype_id=self.env.ref('mail.mt_note').id,

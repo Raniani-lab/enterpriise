@@ -2,6 +2,7 @@
 <templates id="template" xml:space="preserve">
     <t t-name="appointment.AppointmentInviteCopyClose">
         <a role="button" class="o_appointment_invite_copy_save btn btn-primary"
-            t-on-click="onSaveAndCopy">Copy Link &amp; Close</a>
+            t-att-class="props.readonly ? 'disabled ' : ' '"
+            t-on-click.prevent.stop="onSaveAndCopy">Copy Link &amp; Close</a>
     </t>
 </templates>

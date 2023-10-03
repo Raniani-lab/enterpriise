@@ -91,7 +91,11 @@
                     <field name="book_url" class="d-none o_appointment_book_url" readonly="1" nolabel="1"/>
                 </sheet>
                 <footer>
-                    <widget name="appointment_invite_copy_close"/>
+                    <widget name="appointment_invite_copy_close"
+                            readonly="not (not short_code_format_warning
+                                        and not short_code_unique_warning
+                                        and (appointment_type_count != 1 or resources_choice != 'current_user' or 'uid' in suggested_staff_user_ids)
+                                        and (suggested_staff_user_ids or appointment_type_count != 1 or suggested_resource_count &gt;= 1))"/>
                     <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="x"/>
                 </footer>
             </form>

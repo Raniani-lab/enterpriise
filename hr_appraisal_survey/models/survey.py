@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, _
-
+from werkzeug.urls import url_encode
 
 class SurveySurvey(models.Model):
     _inherit = 'survey.survey'
@@ -46,7 +46,8 @@ class SurveyUserInput(models.Model):
             'name': _("Survey Feedback"),
             'type': 'ir.actions.act_url',
             'target': 'new',
-            'url': '/survey/print/%s?answer_token=%s&amp;review=True' % (self.survey_id.access_token, self.access_token)
+            'url': '/survey/print/%s?%s' %
+                   (self.survey_id.access_token, url_encode({"answer_token": self.access_token, "review": True}))
         }
 
     def action_open_all_survey_inputs(self):
@@ -54,7 +55,8 @@ class SurveyUserInput(models.Model):
             'type': 'ir.actions.act_url',
             'name': _("Survey Feedback"),
             'target': 'new',
-            'url': '/survey/results/%s?appraisal_id=%s' % (self.survey_id[0].id, self.env.context["active_id"])
+            'url': '/survey/results/%s?%s' %
+                   (self.survey_id[0].id, url_encode({"appraisal_id": self.appraisal_id.id}))
         }
 
     def action_ask_feedback(self):

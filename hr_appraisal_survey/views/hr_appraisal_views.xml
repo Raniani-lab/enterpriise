@@ -15,24 +15,14 @@
                 <button class="oe_stat_button" name="action_open_survey_inputs" icon="fa-pencil-square-o" type="object" invisible="not employee_feedback_ids or 'uid' not in manager_user_ids and not is_manager">
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_value">
-                            <field name="completed_over_total_survey_count_display"/>
+                            <field name="completed_survey_count"/>
+                            <span> / </span>
+                            <field name="total_survey_count"/>
                         </span>
                         <span class="o_stat_text">Feedbacks</span>
                     </div>
                 </button>
             </xpath>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="view_hr_appraisal_tree">
-        <field name="name">hr.appraisal.view.inherit.tree</field>
-        <field name="model">hr.appraisal</field>
-        <field name="inherit_id" ref="hr_appraisal.view_hr_appraisal_tree"/>
-        <field name="arch" type="xml">
-            <field name="date_close" position="after">
-                <field name="total_survey_count" column_invisible="True"/>
-                <field name="completed_over_total_survey_count_display" invisible="total_survey_count == 0" optional="hide"/>
-            </field>
         </field>
     </record>
 </odoo>

@@ -11,12 +11,6 @@ class HrAppraisal(models.Model):
     survey_ids = fields.Many2many('survey.survey', help="Sent out surveys")
     completed_survey_count = fields.Integer(compute="_compute_completed_survey_count")
     total_survey_count = fields.Integer(compute="_compute_total_survey_count")
-    completed_over_total_survey_count_display = fields.Char(string="Feedback Requests", compute='_compute_completed_over_total_survey_count_display')
-
-    @api.depends('completed_survey_count', 'total_survey_count')
-    def _compute_completed_over_total_survey_count_display(self):
-        for appraisal in self:
-            appraisal.completed_over_total_survey_count_display = f'{appraisal.completed_survey_count} / {appraisal.total_survey_count}'
 
     @api.depends('survey_ids', 'survey_ids.user_input_ids.state')
     def _compute_completed_survey_count(self):
@@ -52,12 +46,14 @@ class HrAppraisal(models.Model):
 
     def action_open_survey_inputs(self):
         self.ensure_one()
+        view_id = self.env.ref('hr_appraisal_survey.hr_appraisal_survey_user_input_view_tree', raise_if_not_found=False)
         return {
             'type': 'ir.actions.act_window',
             'view_mode': 'tree',
             'res_model': 'survey.user_input',
             'target': 'current',
             'name': _('Feedback Surveys'),
+            'views': [[view_id.id, 'tree']],
             'domain': [('appraisal_id', '=', self.id)]
         }
 

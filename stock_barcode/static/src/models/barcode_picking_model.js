@@ -1229,6 +1229,7 @@ export default class BarcodePickingModel extends BarcodeModel {
                     return this.trigger('update');
                 }
                 for (const line of packageLine.lines) {
+                    this.selectedLineVirtualId = line.virtual_id;
                     await this._updateLineQty(line, { qty_done: line.reserved_uom_qty });
                     this._markLineAsDirty(line);
                 }

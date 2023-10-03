@@ -687,7 +687,7 @@ class AmazonAccount(models.Model):
         country = self.env['res.country'].search([('code', '=', country_code)], limit=1)
         state = self.env['res.country.state'].search([
             ('country_id', '=', country.id),
-            '|', ('code', '=', state_code), ('name', '=', state_code),
+            '|', ('code', '=ilike', state_code), ('name', '=ilike', state_code),
         ], limit=1)
         if not state:
             state = self.env['res.country.state'].with_context(tracking_disable=True).create({

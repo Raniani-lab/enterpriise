@@ -70,11 +70,6 @@
                 action="sale_temporal.sale_temporal_recurrence_action"
                 sequence="20"/>
 
-            <menuitem id="menu_quotation_template"
-                name="Quotation Templates"
-                action="sale_order_template_action"
-                sequence="30"/>
-
         </menuitem>
     </menuitem>
 </odoo>

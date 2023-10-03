@@ -9,7 +9,7 @@
     'version': '1.0',
     'installable': True,
     'license': 'OEEL-1',
-    'depends': ['sale', 'sale_management'],
+    'depends': ['sale'],
     'data': [
         'security/ir.model.access.csv',
         'views/product_pricing_views.xml',

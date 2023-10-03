@@ -19,6 +19,10 @@
                             <li>Define webhooks</li>
                             <li>and more!</li>
                         </ul>
+                        <a role="button" class="btn btn-secondary btn-block"
+                            href="https://www.odoo.com/app/studio" target="_blank"> Learn More <i
+                                class="fa fa-external-link" />
+                        </a>
                     </div>
                     <div id="studio_video" class="o_video_embed w-100 w-md-50 ratio ratio-16x9">
                         <iframe class="embed-responsive-item"
@@ -33,10 +37,7 @@
                         data-tooltip="Install Odoo Studio and its dependencies">
                         Start using Odoo Studio
                     </button>
-                    <a role="button" class="btn btn-secondary btn-block"
-                        href="https://www.odoo.com/app/studio" target="_blank"> Learn More <i
-                            class="fa fa-external-link" />
-                    </a>
+
                     <button class="btn btn-secondary btn-block"
                         t-on-click="props.close">
                         Discard
@@ -50,7 +51,7 @@
     <t t-name="web_enterprise.PromoteStudioAutomationDialog"
         t-inherit="web_enterprise.PromoteStudioDialog" t-inherit-mode="primary">
         <xpath expr="//div[@id='studio_video']" position="replace">
-            <img class="w-100 w-md-50" id="studio_automation_animation"
+            <img class="w-100 w-md-50"
                 src="/web_enterprise/static/img/automation.svg" />
         </xpath>
     </t>

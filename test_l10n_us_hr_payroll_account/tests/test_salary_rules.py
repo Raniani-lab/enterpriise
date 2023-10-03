@@ -75,7 +75,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'company_id': cls.env.company.id,
             'country_id': cls.env.ref('base.us').id,
             'address_id': cls.work_address.id,
-            'l10n_us_state_filing_status': 'status_1',
+            'l10n_us_state_filing_status': 'ca_status_1',
         }])
 
         cls.contract = cls.env['hr.contract'].create([{
@@ -224,11 +224,11 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'CAINCOMETAX': -411.53,
             'CASDITAX': -51.25,
             'ROTH401K': -461.14,
-            'COMPANYSUI': 96.81,
-            'COMPANYFUTA': 341.67,
+            'COMPANYSUI': 97.99,
+            'COMPANYFUTA': 345.86,
             'COMPANYMEDICARE': 82.57,
             'COMPANYSOCIAL': 353.06,
-            'COMPANYCAETT': 5.69,
+            'COMPANYCAETT': 5.76,
             'NET': 3381.77,
         }
         self._validate_payslip(payslip, payslip_results)
@@ -353,9 +353,9 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'CASDITAX': -29.4,
             'COMPANYSOCIAL': 202.52,
             'COMPANYMEDICARE': 47.36,
-            'COMPANYFUTA': 195.99,
-            'COMPANYSUI': 55.53,
-            'COMPANYCAETT': 3.27,
+            'COMPANYFUTA': 202.38,
+            'COMPANYSUI': 57.34,
+            'COMPANYCAETT': 3.37,
             'NET': 2680.55,
         }
         self._validate_payslip(payslip, payslip_results)
@@ -373,7 +373,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'l10n_us_w4_step_2': True,
             'l10n_us_w4_allowances_count': 1,
             'l10n_us_filing_status': 'jointly',
-            'l10n_us_state_filing_status': 'status_2',
+            'l10n_us_state_filing_status': 'ca_status_2',
         })
         payslip = self._generate_payslip(datetime.date(2023, 1, 1), datetime.date(2023, 1, 15))
         payslip_results = {
@@ -405,7 +405,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.employee.write({
             'l10n_us_w4_step_2': True,
             'l10n_us_filing_status': 'jointly',
-            'l10n_us_state_filing_status': 'status_2',
+            'l10n_us_state_filing_status': 'ca_status_2',
         })
         payslip = self._generate_payslip(datetime.date(2023, 1, 1), datetime.date(2023, 1, 15))
         payslip_results = {
@@ -462,11 +462,11 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'SST': -261.39,
             'CAINCOMETAX': -234.0,
             'CASDITAX': -37.94,
-            'COMPANYSUI': 71.67,
-            'COMPANYFUTA': 252.96,
+            'COMPANYSUI': 72.78,
+            'COMPANYFUTA': 256.86,
             'COMPANYMEDICARE': 61.13,
             'COMPANYSOCIAL': 261.39,
-            'COMPANYCAETT': 4.22,
+            'COMPANYCAETT': 4.28,
             'NET': 2816.14,
         }
         self._validate_payslip(payslip, payslip_results)
@@ -508,11 +508,11 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'CAINCOMETAX': -411.53,
             'CASDITAX': -51.25,
             'ROTH401K': -461.14,
-            'COMPANYSUI': 96.81,
-            'COMPANYFUTA': 341.67,
+            'COMPANYSUI': 97.99,
+            'COMPANYFUTA': 345.86,
             'COMPANYMEDICARE': 82.57,
             'COMPANYSOCIAL': 353.06,
-            'COMPANYCAETT': 5.69,
+            'COMPANYCAETT': 5.76,
             'NET': 3381.77,
         }
         self._validate_payslip(payslip, payslip_results)
@@ -786,7 +786,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'l10n_us_w4_allowances_count': 0,
             'l10n_us_w4_withholding_deduction_allowances': 0,
             'l10n_us_filing_status': 'jointly',
-            'l10n_us_state_filing_status': 'status_1',
+            'l10n_us_state_filing_status': 'ca_status_1',
         })
 
         payslip = self._generate_payslip(datetime.date(2023, 1, 1), datetime.date(2023, 1, 15))
@@ -822,7 +822,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'l10n_us_w4_allowances_count': 1,
             'l10n_us_w4_withholding_deduction_allowances': 1,
             'l10n_us_filing_status': 'jointly',
-            'l10n_us_state_filing_status': 'status_1',
+            'l10n_us_state_filing_status': 'ca_status_1',
         })
 
         payslip = self._generate_payslip(datetime.date(2023, 1, 1), datetime.date(2023, 1, 15))
@@ -858,7 +858,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'l10n_us_w4_allowances_count': 2,
             'l10n_us_w4_withholding_deduction_allowances': 2,
             'l10n_us_filing_status': 'jointly',
-            'l10n_us_state_filing_status': 'status_1',
+            'l10n_us_state_filing_status': 'ca_status_1',
         })
 
         payslip = self._generate_payslip(datetime.date(2023, 1, 1), datetime.date(2023, 1, 15))
@@ -894,7 +894,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'l10n_us_w4_allowances_count': 0,
             'l10n_us_w4_withholding_deduction_allowances': 0,
             'l10n_us_filing_status': 'separately',
-            'l10n_us_state_filing_status': 'status_2',
+            'l10n_us_state_filing_status': 'ca_status_2',
         })
 
         payslip = self._generate_payslip(datetime.date(2023, 1, 1), datetime.date(2023, 1, 15))
@@ -930,7 +930,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'l10n_us_w4_allowances_count': 1,
             'l10n_us_w4_withholding_deduction_allowances': 1,
             'l10n_us_filing_status': 'separately',
-            'l10n_us_state_filing_status': 'status_2',
+            'l10n_us_state_filing_status': 'ca_status_2',
         })
 
         payslip = self._generate_payslip(datetime.date(2023, 1, 1), datetime.date(2023, 1, 15))
@@ -966,7 +966,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'l10n_us_w4_allowances_count': 2,
             'l10n_us_w4_withholding_deduction_allowances': 2,
             'l10n_us_filing_status': 'separately',
-            'l10n_us_state_filing_status': 'status_2',
+            'l10n_us_state_filing_status': 'ca_status_2',
         })
 
         payslip = self._generate_payslip(datetime.date(2023, 1, 1), datetime.date(2023, 1, 15))
@@ -1002,7 +1002,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'l10n_us_w4_allowances_count': 0,
             'l10n_us_w4_withholding_deduction_allowances': 0,
             'l10n_us_filing_status': 'single',
-            'l10n_us_state_filing_status': 'status_1',
+            'l10n_us_state_filing_status': 'ca_status_1',
         })
 
         payslip = self._generate_payslip(datetime.date(2023, 1, 1), datetime.date(2023, 1, 15))
@@ -1038,7 +1038,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'l10n_us_w4_allowances_count': 1,
             'l10n_us_w4_withholding_deduction_allowances': 1,
             'l10n_us_filing_status': 'single',
-            'l10n_us_state_filing_status': 'status_1',
+            'l10n_us_state_filing_status': 'ca_status_1',
         })
 
         payslip = self._generate_payslip(datetime.date(2023, 1, 1), datetime.date(2023, 1, 15))
@@ -1074,7 +1074,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'l10n_us_w4_allowances_count': 2,
             'l10n_us_w4_withholding_deduction_allowances': 2,
             'l10n_us_filing_status': 'single',
-            'l10n_us_state_filing_status': 'status_1',
+            'l10n_us_state_filing_status': 'ca_status_1',
         })
 
         payslip = self._generate_payslip(datetime.date(2023, 1, 1), datetime.date(2023, 1, 15))
@@ -1109,7 +1109,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'l10n_us_w4_allowances_count': 1,
             'l10n_us_w4_withholding_deduction_allowances': 0,
             'l10n_us_filing_status': 'single',
-            'l10n_us_state_filing_status': 'status_1',
+            'l10n_us_state_filing_status': 'ca_status_1',
         })
 
         payslip = self._generate_payslip(datetime.date(2023, 1, 1), datetime.date(2023, 1, 15))
@@ -1142,7 +1142,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'l10n_us_w4_allowances_count': 2,
             'l10n_us_w4_withholding_deduction_allowances': 1,
             'l10n_us_filing_status': 'jointly',
-            'l10n_us_state_filing_status': 'status_2',
+            'l10n_us_state_filing_status': 'ca_status_2',
         })
 
         payslip = self._generate_payslip(datetime.date(2023, 1, 1), datetime.date(2023, 1, 15))
@@ -1175,7 +1175,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'l10n_us_w4_allowances_count': 5,
             'l10n_us_w4_withholding_deduction_allowances': 0,
             'l10n_us_filing_status': 'jointly',
-            'l10n_us_state_filing_status': 'status_2',
+            'l10n_us_state_filing_status': 'ca_status_2',
         })
 
         payslip = self._generate_payslip(datetime.date(2023, 1, 1), datetime.date(2023, 1, 15))
@@ -1208,7 +1208,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'l10n_us_w4_allowances_count': 3,
             'l10n_us_w4_withholding_deduction_allowances': 0,
             'l10n_us_filing_status': 'head',
-            'l10n_us_state_filing_status': 'status_4',
+            'l10n_us_state_filing_status': 'ca_status_4',
         })
 
         payslip = self._generate_payslip(datetime.date(2023, 1, 1), datetime.date(2023, 1, 15))
@@ -1241,7 +1241,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'l10n_us_w4_allowances_count': 4,
             'l10n_us_w4_withholding_deduction_allowances': 0,
             'l10n_us_filing_status': 'jointly',
-            'l10n_us_state_filing_status': 'status_2',
+            'l10n_us_state_filing_status': 'ca_status_2',
         })
 
         payslip = self._generate_payslip(datetime.date(2023, 1, 1), datetime.date(2023, 1, 15))
@@ -1274,7 +1274,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'l10n_us_w4_allowances_count': 4,
             'l10n_us_w4_withholding_deduction_allowances': 0,
             'l10n_us_filing_status': 'jointly',
-            'l10n_us_state_filing_status': 'status_2',
+            'l10n_us_state_filing_status': 'ca_status_2',
         })
 
         payslip = self._generate_payslip(datetime.date(2023, 1, 1), datetime.date(2023, 1, 15))
@@ -1333,5 +1333,340 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'COMPANYCAETT': 3.92,
             'ALLOCATEDTIPS': 300.0,
             'NET': 3112.96,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_057_ny_state_tax_single_example_1(self):
+        # Source https://www.tax.ny.gov/pdf/publications/withholding/nys50_t_nys_123.pdf
+        self.work_address.state_id = self.env.ref('base.state_us_27')
+        self.contract.write({
+            'wage': 400,
+            'schedule_pay': 'weekly',
+        })
+        self.employee.write({
+            'l10n_us_w4_allowances_count': 3,
+            'l10n_us_state_filing_status': 'ny_status_1',
+            'l10n_us_filing_status': 'single',
+        })
+
+        payslip = self._generate_payslip(datetime.date(2023, 4, 1), datetime.date(2023, 4, 7))
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 400.0,
+            'GROSS': 400.0,
+            'TAXABLE': 400.0,
+            'FIT': -13.37,
+            'MEDICARE': -5.8,
+            'MEDICAREADD': 0,
+            'SST': -24.8,
+            'NYINCOMETAX': -8.2,
+            'NYSDITAX': -0.6,
+            'NYPFLTAX': -1.82,
+            'COMPANYFUTA': 24.0,
+            'COMPANYMEDICARE': 5.8,
+            'COMPANYSOCIAL': 24.8,
+            'COMPANYSUI': 12.52,
+            'COMPANYNYREEMPLOYMENT': 0.3,
+            'NET': 345.41,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_058_ny_state_tax_single_example_2(self):
+        # Source https://www.tax.ny.gov/pdf/publications/withholding/nys50_t_nys_123.pdf
+        self.work_address.state_id = self.env.ref('base.state_us_27')
+        self.contract.write({
+            'wage': 5000,
+            'schedule_pay': 'semi-monthly',
+        })
+        self.employee.write({
+            'l10n_us_w4_allowances_count': 1,
+            'l10n_us_state_filing_status': 'ny_status_1',
+            'l10n_us_filing_status': 'single',
+        })
+
+        payslip = self._generate_payslip(datetime.date(2023, 4, 1), datetime.date(2023, 4, 15))
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 5000.0,
+            'GROSS': 5000.0,
+            'TAXABLE': 5000.0,
+            'FIT': -786.5,
+            'MEDICARE': -72.5,
+            'MEDICAREADD': 0,
+            'SST': -310.0,
+            'NYINCOMETAX': -263.19,
+            'NYSDITAX': -1.3,
+            'NYPFLTAX': -22.75,
+            'COMPANYFUTA': 300.0,
+            'COMPANYMEDICARE': 72.5,
+            'COMPANYSOCIAL': 310.0,
+            'COMPANYSUI': 156.5,
+            'COMPANYNYREEMPLOYMENT': 3.75,
+            'NET': 3543.76,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_059_ny_state_tax_single_example_3(self):
+        # Source https://www.tax.ny.gov/pdf/publications/withholding/nys50_t_nys_123.pdf
+        self.work_address.state_id = self.env.ref('base.state_us_27')
+        self.contract.write({
+            'wage': 50000,
+            'schedule_pay': 'monthly',
+        })
+        self.employee.write({
+            'l10n_us_w4_allowances_count': 3,
+            'l10n_us_state_filing_status': 'ny_status_1',
+            'l10n_us_filing_status': 'single',
+        })
+
+        payslip = self._generate_payslip(datetime.date(2023, 4, 1), datetime.date(2023, 4, 30))
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 50000.0,
+            'GROSS': 50000.0,
+            'TAXABLE': 50000.0,
+            'FIT': -14767.29,
+            'MEDICARE': -725.0,
+            'MEDICAREADD': 0,
+            'SST': -3100.0,
+            'NYINCOMETAX': -3576.71,
+            'NYSDITAX': -2.6,
+            'NYPFLTAX': -227.5,
+            'COMPANYFUTA': 420.0,
+            'COMPANYMEDICARE': 725.0,
+            'COMPANYSOCIAL': 3100.0,
+            'COMPANYSUI': 384.99,
+            'COMPANYNYREEMPLOYMENT': 9.23,
+            'NET': 27600.9,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_060_ny_state_tax_single_example_4(self):
+        # Source https://www.tax.ny.gov/pdf/publications/withholding/nys50_t_nys_123.pdf
+        self.work_address.state_id = self.env.ref('base.state_us_27')
+        self.contract.write({
+            'wage': 750,
+            'schedule_pay': 'daily',
+        })
+        self.employee.write({
+            'l10n_us_w4_allowances_count': 2,
+            'l10n_us_state_filing_status': 'ny_status_1',
+            'l10n_us_filing_status': 'single',
+        })
+
+        payslip = self._generate_payslip(datetime.date(2023, 4, 1), datetime.date(2023, 4, 1))
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 750.0,
+            'GROSS': 750.0,
+            'TAXABLE': 750.0,
+            'FIT': -141.83,
+            'MEDICARE': -10.88,
+            'MEDICAREADD': 0,
+            'SST': -46.5,
+            'NYINCOMETAX': -44.83,
+            'NYSDITAX': -0.09,
+            'NYPFLTAX': -3.41,
+            'COMPANYFUTA': 45.0,
+            'COMPANYMEDICARE': 10.88,
+            'COMPANYSOCIAL': 46.5,
+            'COMPANYSUI': 23.48,
+            'COMPANYNYREEMPLOYMENT': 0.56,
+            'NET': 502.47,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_061_ny_state_tax_married_example_1(self):
+        # Source https://www.tax.ny.gov/pdf/publications/withholding/nys50_t_nys_123.pdf
+        self.work_address.state_id = self.env.ref('base.state_us_27')
+        self.contract.write({
+            'wage': 400,
+            'schedule_pay': 'weekly',
+        })
+        self.employee.write({
+            'l10n_us_w4_allowances_count': 4,
+            'l10n_us_state_filing_status': 'ny_status_2',
+            'l10n_us_filing_status': 'jointly',
+        })
+
+        payslip = self._generate_payslip(datetime.date(2023, 4, 1), datetime.date(2023, 4, 7))
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 400.0,
+            'GROSS': 400.0,
+            'TAXABLE': 400.0,
+            'FIT': 0,
+            'MEDICARE': -5.8,
+            'MEDICAREADD': 0,
+            'SST': -24.8,
+            'NYINCOMETAX': -6.86,
+            'NYSDITAX': -0.6,
+            'NYPFLTAX': -1.82,
+            'COMPANYFUTA': 24.0,
+            'COMPANYMEDICARE': 5.8,
+            'COMPANYSOCIAL': 24.8,
+            'COMPANYSUI': 12.52,
+            'COMPANYNYREEMPLOYMENT': 0.3,
+            'NET': 360.12,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_062_ny_state_tax_single_example_2(self):
+        # Source https://www.tax.ny.gov/pdf/publications/withholding/nys50_t_nys_123.pdf
+        self.work_address.state_id = self.env.ref('base.state_us_27')
+        self.contract.write({
+            'wage': 5000,
+            'schedule_pay': 'semi-monthly',
+        })
+        self.employee.write({
+            'l10n_us_w4_allowances_count': 3,
+            'l10n_us_state_filing_status': 'ny_status_2',
+            'l10n_us_filing_status': 'jointly',
+        })
+
+        payslip = self._generate_payslip(datetime.date(2023, 4, 1), datetime.date(2023, 4, 15))
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 5000.0,
+            'GROSS': 5000.0,
+            'TAXABLE': 5000.0,
+            'FIT': -455.04,
+            'MEDICARE': -72.5,
+            'MEDICAREADD': 0,
+            'SST': -310.0,
+            'NYINCOMETAX': -252.68,
+            'NYSDITAX': -1.3,
+            'NYPFLTAX': -22.75,
+            'COMPANYFUTA': 300.0,
+            'COMPANYMEDICARE': 72.5,
+            'COMPANYSOCIAL': 310.0,
+            'COMPANYSUI': 156.5,
+            'COMPANYNYREEMPLOYMENT': 3.75,
+            'NET': 3885.73,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_063_ny_state_tax_single_example_3(self):
+        # Source https://www.tax.ny.gov/pdf/publications/withholding/nys50_t_nys_123.pdf
+        self.work_address.state_id = self.env.ref('base.state_us_27')
+        self.contract.write({
+            'wage': 50000,
+            'schedule_pay': 'monthly',
+        })
+        self.employee.write({
+            'l10n_us_w4_allowances_count': 3,
+            'l10n_us_state_filing_status': 'ny_status_2',
+            'l10n_us_filing_status': 'jointly',
+        })
+
+        payslip = self._generate_payslip(datetime.date(2023, 4, 1), datetime.date(2023, 4, 30))
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 50000.0,
+            'GROSS': 50000.0,
+            'TAXABLE': 50000.0,
+            'FIT': -12007.83,
+            'MEDICARE': -725.0,
+            'MEDICAREADD': 0,
+            'SST': -3100.0,
+            'NYINCOMETAX': -3622.01,
+            'NYSDITAX': -2.6,
+            'NYPFLTAX': -227.5,
+            'COMPANYFUTA': 420.0,
+            'COMPANYMEDICARE': 725.0,
+            'COMPANYSOCIAL': 3100.0,
+            'COMPANYSUI': 384.99,
+            'COMPANYNYREEMPLOYMENT': 9.23,
+            'NET': 30315.06,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_064_ny_state_tax_single_example_4(self):
+        # Source https://www.tax.ny.gov/pdf/publications/withholding/nys50_t_nys_123.pdf
+        self.work_address.state_id = self.env.ref('base.state_us_27')
+        self.contract.write({
+            'wage': 750,
+            'schedule_pay': 'daily',
+        })
+        self.employee.write({
+            'l10n_us_w4_allowances_count': 2,
+            'l10n_us_state_filing_status': 'ny_status_2',
+            'l10n_us_filing_status': 'jointly',
+        })
+
+        payslip = self._generate_payslip(datetime.date(2023, 4, 1), datetime.date(2023, 4, 1))
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 750.0,
+            'GROSS': 750.0,
+            'TAXABLE': 750.0,
+            'FIT': -105.47,
+            'MEDICARE': -10.88,
+            'MEDICAREADD': 0,
+            'SST': -46.5,
+            'NYINCOMETAX': -45.29,
+            'NYSDITAX': -0.09,
+            'NYPFLTAX': -3.41,
+            'COMPANYFUTA': 45.0,
+            'COMPANYMEDICARE': 10.88,
+            'COMPANYSOCIAL': 46.5,
+            'COMPANYSUI': 23.48,
+            'COMPANYNYREEMPLOYMENT': 0.56,
+            'NET': 538.37,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_065_ny_state_tax_common(self):
+        # Source https://www.tax.ny.gov/pdf/publications/withholding/nys50_t_nys_123.pdf
+        self.work_address.state_id = self.env.ref('base.state_us_27')
+        self.contract.write({
+            'wage': 10000,
+            'schedule_pay': 'semi-monthly',
+            'l10n_us_pre_retirement_amount': 10.0,
+            'l10n_us_pre_retirement_type': 'percent',
+            'l10n_us_health_benefits_medical': 10.0,
+            'l10n_us_health_benefits_dental': 10.0,
+            'l10n_us_health_benefits_vision': 10.0,
+            'l10n_us_health_benefits_hsa': 10.0,
+        })
+        self.employee.write({
+            'l10n_us_w4_allowances_count': 0,
+            'l10n_us_state_filing_status': 'ny_status_1',
+            'l10n_us_filing_status': 'single',
+        })
+
+        payslip = self._generate_payslip(datetime.date(2023, 4, 1), datetime.date(2023, 4, 15))
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 10000.0,
+            'GROSS': 10000.0,
+            '401K': -1000.0,
+            'DENTAL': -10.0,
+            'MEDICAL': -10.0,
+            'VISION': -10.0,
+            'MEDICALHSA': -10.0,
+            'TAXABLE': 8960.0,
+            'FIT': -1800.53,
+            'MEDICARE': -144.42,
+            'MEDICAREADD': 0,
+            'SST': -617.52,
+            'NYINCOMETAX': -545.04,
+            'NYSDITAX': -1.3,
+            'NYPFLTAX': -45.5,
+            'COMPANYFUTA': 420.0,
+            'COMPANYMEDICARE': 144.42,
+            'COMPANYSOCIAL': 617.52,
+            'COMPANYSUI': 313.0,
+            'COMPANYNYREEMPLOYMENT': 7.5,
+            'NET': 5805.68,
         }
         self._validate_payslip(payslip, payslip_results)

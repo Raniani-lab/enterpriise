@@ -47,6 +47,19 @@ class AccountChartTemplate(models.AbstractModel):
         ca_sdi_rule = self.env.ref('l10n_us_hr_payroll.l10n_us_employee_salary_ca_sdi_tax')
         rules_mapping[ca_sdi_rule]['debit'] = '2301'
 
+        ny_income_rule = self.env.ref('l10n_us_hr_payroll.l10n_us_employee_salary_ny_state_income_tax')
+        rules_mapping[ny_income_rule]['debit'] = '2301'
+
+        ny_sdi_rule = self.env.ref('l10n_us_hr_payroll.l10n_us_employee_salary_ny_sdi_tax')
+        rules_mapping[ny_sdi_rule]['debit'] = '2301'
+
+        ny_pfl_rule = self.env.ref('l10n_us_hr_payroll.l10n_us_employee_salary_ny_pfl_tax')
+        rules_mapping[ny_pfl_rule]['debit'] = '2301'
+
+        ny_reimployment_rule = self.env.ref('l10n_us_hr_payroll.l10n_us_employee_salary_ny_reimployment_tax')
+        rules_mapping[ny_reimployment_rule]['debit'] = '6300'
+        rules_mapping[ny_reimployment_rule]['credit'] = '2302'
+
         company_sst_rule = self.env.ref('l10n_us_hr_payroll.l10n_us_employee_salary_company_social_security')
         rules_mapping[company_sst_rule]['debit'] = '6300'
         rules_mapping[company_sst_rule]['credit'] = '2302'

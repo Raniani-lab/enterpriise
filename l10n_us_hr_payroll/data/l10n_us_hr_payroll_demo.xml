@@ -40,7 +40,7 @@
         <field name="gender">male</field>
         <field name="ssnid">876545679</field>
         <field name="l10n_us_filing_status">single</field>
-        <field name="l10n_us_state_filing_status">status_1</field>
+        <field name="l10n_us_state_filing_status">ca_status_1</field>
     </record>
 
     <record id="res_partner_maggie" model="res.partner">
@@ -121,7 +121,7 @@
         <field name="company_id" ref="l10n_us_hr_payroll.res_company_us"/>
         <field name="user_id" ref="l10n_us_hr_payroll.user_maggie"/>
         <field name="l10n_us_filing_status">single</field>
-        <field name="l10n_us_state_filing_status">status_1</field>
+        <field name="l10n_us_state_filing_status">ca_status_1</field>
     </record>
 
     <record id="hr_contract_cdi_maggie_previous" model="hr.contract">

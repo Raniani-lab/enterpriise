@@ -1960,4 +1960,459 @@
         <field name="date_from" eval="datetime(2023, 1, 1).date()"/>
     </record>
 
+    <record id="rule_parameter_ny_state_income_tax_table_a" model="hr.rule.parameter">
+        <field name="name">US: New York State Income Tax (Table A)</field>
+        <field name="code">l10n_us_ny_state_income_tax_table_a</field>
+        <field name="country_id" ref="base.us"/>
+    </record>
+    <record id="rule_parameter_ny_state_income_tax_table_a_2023" model="hr.rule.parameter.value">
+        <field name="parameter_value">{
+    'daily': {
+        'single': [28.45, 32.30, 36.15, 40, 43.85, 47.70, 51.55, 55.40, 59.25, 63.10, 66.95],
+        'married': [30.60, 34.45, 38.30, 42.15, 46, 49.85, 53.70, 57.55, 61.40, 65.25, 69.10]},
+    'weekly': {
+        'single': [142.30, 161.55, 180.80, 200.05, 219.30, 238.55, 257.80, 277.05, 296.30, 315.55, 334.80],
+        'married': [152.90, 172.15, 191.40, 210.65, 229.90, 249.15, 268.40, 287.65, 306.90, 326.15, 345.40]},
+    'bi-weekly': {
+        'single': [284.60, 323.10, 361.60, 400.10, 438.60, 477.10, 515.60, 554.10, 592.60, 631.10, 669.60],
+        'married': [305.80, 344.30, 382.80, 421.30, 459.80, 498.30, 536.80, 575.30, 613.80, 652.30, 690.80]},
+    'semi-monthly': {
+        'single': [308.35, 350.00, 391.65, 433.30, 474.95, 516.60, 558.25, 599.90, 641.55, 683.20, 724.85],
+        'married': [331.25, 372.90, 414.55, 456.20, 497.85, 539.50, 581.15, 622.80, 664.45, 706.10, 747.75]},
+    'monthly': {
+        'single': [616.70, 700.00, 783.30, 866.60, 949.90, 1033.20, 1116.50, 1199.80, 1283.10, 1366.40, 1449.70],
+        'married': [662.50, 745.80, 829.10, 912.40, 995.70, 1079.00, 1162.30, 1245.60, 1328.90, 1412.20, 1495.50]},
+    'bi-monthly': {
+        'single': [1233.4, 1400.0, 1566.6, 1733.2, 1899.8, 2066.4, 2233.0, 2399.6, 2566.2, 2732.8, 2899.4],
+        'married': [1325.0, 1491.6, 1658.2, 1824.8, 1991.4, 2158.0, 2324.6, 2491.2, 2657.8, 2824.4, 2991.0]},
+    'quarterly': {
+        'single': [1850.10, 2100.00, 2349.90, 2599.80, 2849.70, 3099.60, 3349.50, 3599.40, 3849.30, 4099.20, 4349.10],
+        'married': [1987.50, 2237.40, 2487.30, 2737.20, 2987.10, 3237.00, 3486.90, 3736.80, 3986.70, 4236.60, 4486.50]},
+    'semi-annually': {
+        'single': [3700.20, 4200.00, 4699.80, 5199.60, 5699.40, 6199.20, 6699.00, 7198.80, 7698.60, 8198.40, 8698.20],
+        'married': [3975.00, 4474.80, 4974.60, 5474.40, 5974.20, 6474.00, 6973.80, 7473.60, 7973.40, 8473.20, 8973.00]},
+    'annually': {
+        'single': [7400, 8400, 9400, 10400, 11400, 12400, 13400, 14400, 15400, 16400, 17400],
+        'married': [7950, 8950, 9950, 10950, 11950, 12950, 13950, 14950, 15950, 16950, 17950]}}</field>
+        <field name="rule_parameter_id" ref="rule_parameter_ny_state_income_tax_table_a"/>
+        <field name="date_from" eval="datetime(2023, 1, 1).date()"/>
+    </record>
+
+    <record id="rule_parameter_ny_state_income_tax_table_b" model="hr.rule.parameter">
+        <field name="name">US: New York State Income Tax (Table B)</field>
+        <field name="code">l10n_us_ny_state_income_tax_table_b</field>
+        <field name="country_id" ref="base.us"/>
+    </record>
+    <record id="rule_parameter_ny_state_income_tax_table_b_2023" model="hr.rule.parameter.value">
+        <field name="parameter_value">{
+    'daily': {
+        'single': 28.45,
+        'married': 30.60},
+    'weekly': {
+        'single': 142.30,
+        'married': 152.90},
+    'bi-weekly': {
+        'single': 284.60,
+        'married': 305.80},
+    'semi-monthly': {
+        'single': 308.35,
+        'married': 331.25},
+    'monthly': {
+        'single': 616.70,
+        'married': 662.50},
+    'bi-monthly': {
+        'single': 1233.4,
+        'married': 1325.0},
+    'quarterly': {
+        'single': 1850.10,
+        'married': 1987.5},
+    'semi-annually': {
+        'single': 3700.20,
+        'married': 3975.0},
+    'annually': {
+        'single': 7400,
+        'married': 7950}}</field>
+        <field name="rule_parameter_id" ref="rule_parameter_ny_state_income_tax_table_b"/>
+        <field name="date_from" eval="datetime(2023, 1, 1).date()"/>
+    </record>
+
+    <record id="rule_parameter_ny_state_income_tax_table_c" model="hr.rule.parameter">
+        <field name="name">US: New York State Income Tax (Table C)</field>
+        <field name="code">l10n_us_ny_state_income_tax_table_c</field>
+        <field name="country_id" ref="base.us"/>
+    </record>
+    <record id="rule_parameter_ny_state_income_tax_table_c_2023" model="hr.rule.parameter.value">
+        <field name="parameter_value">{
+    'daily': 3.85,
+    'weekly': 19.25,
+    'bi-weekly': 38.50,
+    'semi-monthly': 41.65,
+    'monthly': 83.30,
+    'bi-monthly': 166.6,
+    'quarterly': 249.90,
+    'semi-annually': 499.80,
+    'annually': 1000,
+}</field>
+        <field name="rule_parameter_id" ref="rule_parameter_ny_state_income_tax_table_c"/>
+        <field name="date_from" eval="datetime(2023, 1, 1).date()"/>
+    </record>
+
+    <record id="rule_parameter_ny_state_income_tax_table_d" model="hr.rule.parameter">
+        <field name="name">US: New York State Income Tax (Table D)</field>
+        <field name="code">l10n_us_ny_state_income_tax_table_d</field>
+        <field name="country_id" ref="base.us"/>
+    </record>
+    <record id="rule_parameter_ny_state_income_tax_table_d_2023" model="hr.rule.parameter.value">
+        <field name="parameter_value">{
+    'daily': 12.70,
+    'weekly': 63.50,
+    'bi-weekly': 127.00,
+    'semi-monthly': 137.50,
+    'monthly': 275.00,
+    'quarterly': 825.00,
+    'semi-annually': 1650.00,
+    'annually': 3300.00,
+}</field>
+        <field name="rule_parameter_id" ref="rule_parameter_ny_state_income_tax_table_d"/>
+        <field name="date_from" eval="datetime(2023, 1, 1).date()"/>
+    </record>
+
+    <record id="rule_parameter_ny_state_income_tax_rates" model="hr.rule.parameter">
+        <field name="name">US: New York State Income Tax (Rates)</field>
+        <field name="code">l10n_us_ny_state_income_tax_rates</field>
+        <field name="country_id" ref="base.us"/>
+    </record>
+    <record id="rule_parameter_ny_state_income_tax_rates_2023" model="hr.rule.parameter.value">
+        <field name="parameter_value">{
+    'daily': {
+        'single': [
+            (0, 33, 0, 0.0400, 0),
+            (33, 45, 33, 0.0450, 1.31),
+            (45, 53, 45, 0.0525, 1.86),
+            (53, 310, 53, 0.0550, 2.31),
+            (310, 372, 310, 0.0600, 16.43),
+            (372, 414, 372, 0.0714, 20.15),
+            (414, 606, 414, 0.0764, 23.13),
+            (606, 828, 606, 0.0650, 37.82),
+            (828, 1021, 828, 0.1101, 52.25),
+            (1021, 4144, 1021, 0.0735, 73.43),
+        ],
+        'married': [
+            (0, 33, 0, 0.0400, 0),
+            (33, 45, 33, 0.0450, 1.31),
+            (45, 53, 45, 0.0525, 1.86),
+            (53, 310, 53, 0.0550, 2.31),
+            (310, 372, 310, 0.0600, 16.43),
+            (372, 414, 372, 0.0667, 20.15),
+            (414, 606, 414, 0.0717, 22.93),
+            (606, 814, 606, 0.0811, 36.72),
+            (814, 1243, 814, 0.0650, 53.53),
+            (1243, 1435, 1243, 0.1284, 81.45),
+            (1435, 4144, 1435, 0.0735, 106.15),
+            (4144, 8290, 4144, 0.0765, 305.26),
+        ]
+    },
+    'weekly': {
+        'single': [
+            (0, 163, 0, 0.0400, 0),
+            (163, 225, 163, 0.0450, 6.54),
+            (225, 267, 225, 0.0525, 9.31),
+            (267, 1,551, 267, 0.0550, 11.54),
+            (1551, 1862, 1551, 0.0600, 82.13),
+            (1862, 2070, 1862, 0.0714, 100.77),
+            (2070, 3032, 2070, 0.0764, 115.65),
+            (3032, 4142, 3032, 0.0650, 189.08),
+            (4142, 5104, 4142, 0.1101, 261.27),
+            (5104, 20722, 5104, 0.0735, 367.15),
+        ],
+        'married': [
+            (0, 163, 0, 0.0400, 0),
+            (163, 225, 163, 0.0450, 6.54),
+            (225, 267, 225, 0.0525, 9.31),
+            (267, 1551, 267, 0.0550, 11.54),
+            (1551, 1862, 1551, 0.0600, 82.13),
+            (1862, 2070, 1862, 0.0667, 100.77),
+            (2070, 3032, 2070, 0.0717, 114.67),
+            (3032, 4068, 3032, 0.0811, 183.58),
+            (4068, 6215, 4068, 0.0650, 267.67),
+            (6215, 7177, 6215, 0.1284, 407.25),
+            (7177, 20722, 7177, 0.0735, 530.75),
+            (20722, 41449, 20722, 0.0765, 1526.31),
+        ]
+    },
+    'bi-weekly': {
+        'single': [
+            (0, 327, 0, 0.0400, 0),
+            (327, 450, 327, 0.0450, 13.08),
+            (450, 535, 450, 0.0525, 18.62),
+            (535, 3102, 535, 0.0550, 23.08),
+            (3102, 3723, 3102, 0.0600, 164.27),
+            (3723, 4140, 3723, 0.0714, 201.54),
+            (4140, 6063, 4140, 0.0764, 231.31),
+            (6063, 8285, 6063, 0.0650, 378.15),
+            (8285, 10208, 8285, 0.1101, 522.54),
+            (10208, 41444, 10208, 0.0735, 734.31),
+        ],
+        'married': [
+            (0, 327, 0, 0.0400, 0),
+            (327, 450, 327, 0.0450, 13.08),
+            (450, 535, 450, 0.0525, 18.62),
+            (535, 3102, 535, 0.0550, 23.08),
+            (3102, 3723, 3102, 0.0600, 164.27),
+            (3723, 4140, 3723, 0.0667, 201.54),
+            (4140, 6063, 4140, 0.0717, 229.35),
+            (6063, 8137, 6063, 0.0811, 367.15),
+            (8137, 12431, 8137, 0.0650, 535.35),
+            (12431, 14354, 12431, 0.1284, 814.50),
+            (14354, 41444, 14354, 0.0735, 1061.50),
+            (41444, 82898, 41444, 0.0765, 3052.62),
+        ]
+    },
+    'semi-monthly': {
+        'single': [
+            (0, 354, 0, 0.0400, 0),
+            (354, 488, 354, 0.0450, 14.17),
+            (488, 579, 488, 0.0525, 20.17),
+            (579, 3360, 579, 0.0550, 25.00),
+            (3360, 4033, 3360, 0.0600, 177.96),
+            (4033, 4485, 4033, 0.0714, 218.33),
+            (4485, 6569, 4485, 0.0764, 250.58),
+            (6569, 8975, 6569, 0.0650, 409.67),
+            (8975, 11058, 8975, 0.1101, 566.08),
+            (11058, 44898, 11058, 0.0735, 795.50),
+        ],
+        'married': [
+            (0, 354, 0, 0.0400, 0),
+            (354, 488, 354, 0.0450, 14.17),
+            (488, 579, 488, 0.0525, 20.17),
+            (579, 3360, 579, 0.0550, 25.00),
+            (3360, 4033, 3360, 0.0600, 177.96),
+            (4033, 4485, 4033, 0.0667, 218.33),
+            (4485, 6569, 4485, 0.0717, 248.46),
+            (6569, 8815, 6569, 0.0811, 397.75),
+            (8815, 13467, 8815, 0.0650, 579.96),
+            (13467, 15550, 13467, 0.1284, 882.38),
+            (15550, 44898, 15550, 0.0735, 1149.96),
+            (44898, 89806, 44898, 0.0765, 3307.00),
+        ]
+    },
+    'monthly': {
+        'single': [
+            (0, 708, 0, 0.0400, 0),
+            (708, 975, 708, 0.0450, 28.33),
+            (975, 1158, 975, 0.0525, 40.33),
+            (1158, 6721, 1158, 0.0550, 50.00),
+            (6721, 8067, 6721, 0.0600, 355.92),
+            (8067, 8971, 8067, 0.0714, 436.67),
+            (8971, 13138, 8971, 0.0764, 501.17),
+            (13138, 17950, 13138, 0.0650, 819.33),
+            (17950, 22117, 17950, 0.1101, 1132.17),
+            (22117, 89796, 22117, 0.0735, 1591.00),
+        ],
+        'married': [
+            (0, 708, 0, 0.0400, 0),
+            (708, 975, 708, 0.0450, 28.33),
+            (975, 1158, 975, 0.0525, 40.33),
+            (1158, 6721, 1158, 0.0550, 50.00),
+            (6721, 8067, 6721, 0.0600, 355.92),
+            (8067, 8971, 8067, 0.0667, 436.67),
+            (8971, 13138, 8971, 0.0717, 496.92),
+            (13138, 17629, 13138, 0.0811, 795.50),
+            (17629, 26933, 17629, 0.0650, 1159.92),
+            (26933, 31100, 26933, 0.1284, 1764.75),
+            (31100, 89796, 31100, 0.0735, 2299.92),
+            (89796, 179613, 89796, 0.0765, 6614.00),
+        ]
+    },
+    'bi-monthly': {
+        'single': [
+            (0, 1416, 0, 0.04, 0),
+            (1416, 1950, 1416, 0.045, 56.66),
+            (1950, 2316, 1950, 0.0525, 80.66),
+            (2316, 13442, 2316, 0.055, 100.0),
+            (13442, 16134, 13442, 0.06, 711.84),
+            (16134, 17942, 16134, 0.0714, 873.34),
+            (17942, 26276, 17942, 0.0764, 1002.34),
+            (26276, 35900, 26276, 0.065, 1638.66),
+            (35900, 44234, 35900, 0.1101, 2264.34),
+            (44234, 179592, 44234, 0.0735, 3182.0)
+        ],
+        'married': [
+            (0, 1416, 0, 0.04, 0),
+            (1416, 1950, 1416, 0.045, 56.66),
+            (1950, 2316, 1950, 0.0525, 80.66),
+            (2316, 13442, 2316, 0.055, 100.0),
+            (13442, 16134, 13442, 0.06, 711.84),
+            (16134, 17942, 16134, 0.0667, 873.34),
+            (17942, 26276, 17942, 0.0717, 993.84),
+            (26276, 35258, 26276, 0.0811, 1591.0),
+            (35258, 53866, 35258, 0.065, 2319.84),
+            (53866, 62200, 53866, 0.1284, 3529.5),
+            (62200, 179592, 62200, 0.0735, 4599.84),
+            (179592, 359226, 179592, 0.0765, 13228.0)
+        ]
+    },
+    'quarterly': {
+        'single': [
+            (0, 2124, 0, 0.04, 0),
+            (2124, 2925, 2124, 0.045, 84.99),
+            (2925, 3474, 2925, 0.0525, 120.99),
+            (3474, 20163, 3474, 0.055, 150.0),
+            (20163, 24201, 20163, 0.06, 1067.76),
+            (24201, 26913, 24201, 0.0714, 1310.01),
+            (26913, 39414, 26913, 0.0764, 1503.51),
+            (39414, 53850, 39414, 0.065, 2458.00),
+            (53850, 66351, 53850, 0.1101, 3396.51),
+            (66351, 269388, 66351, 0.0735, 4773.0)
+        ],
+        'married': [
+            (0, 2124, 0, 0.04, 0),
+            (2124, 2925, 2124, 0.045, 84.99),
+            (2925, 3474, 2925, 0.0525, 120.99),
+            (3474, 20163, 3474, 0.055, 150.0),
+            (20163, 24201, 20163, 0.06, 1067.76),
+            (24201, 26913, 24201, 0.0667, 1310.01),
+            (26913, 39414, 26913, 0.0717, 1490.76),
+            (39414, 52887, 39414, 0.0811, 2386.5),
+            (52887, 80799, 52887, 0.065, 3479.76),
+            (80799, 93300, 80799, 0.1284, 5294.25),
+            (93300, 269388, 93300, 0.0735, 6899.76),
+            (269388, 538839, 269388, 0.0765, 19842.0)
+        ],
+    },
+    'semi-annually': {
+        'single': [
+            (0, 4248, 0, 0.04, 0),
+            (4248, 5850, 4248, 0.045, 169.98),
+            (5850, 6948, 5850, 0.0525, 241.98),
+            (6948, 40326, 6948, 0.055, 300.0),
+            (40326, 48402, 40326, 0.06, 2135.52),
+            (48402, 53826, 48402, 0.0714, 2620.02),
+            (53826, 78828, 53826, 0.0764, 3007.02),
+            (78828, 107700, 78828, 0.065, 4915.98),
+            (107700, 132702, 107700, 0.1101, 6793.02),
+            (132702, 538776, 132702, 0.0735, 9546.0)
+        ],
+        'married': [
+            (0, 4248, 0, 0.04, 0),
+            (4248, 5850, 4248, 0.045, 169.98),
+            (5850, 6948, 5850, 0.0525, 241.98),
+            (6948, 40326, 6948, 0.055, 300.0),
+            (40326, 48402, 40326, 0.06, 2135.52),
+            (48402, 53826, 48402, 0.0667, 2620.02),
+            (53826, 78828, 53826, 0.0717, 2981.52),
+            (78828, 105774, 78828, 0.0811, 4773.0),
+            (105774, 161598, 105774, 0.065, 6959.52),
+            (161598, 186600, 161598, 0.1284, 10588.5),
+            (186600, 538776, 186600, 0.0735, 13799.52),
+            (538776, 1077678, 538776, 0.0765, 39684.0)
+        ],
+    },
+    'annually': {
+        'single': [
+            (0, 8500, 0, 0.0400, 0),
+            (8500, 11700, 8500, 0.0450, 340.00),
+            (11700, 13900, 11700, 0.0525, 484.00),
+            (13900, 80650, 13900, 0.0550, 600.00),
+            (80650, 96800, 80650, 0.0600, 4271.00),
+            (96800, 107650, 96800, 0.0714, 5240.00),
+            (107650, 157650, 107650, 0.0764, 6014.00),
+            (157650, 215400, 157650, 0.0650, 9832.00),
+            (215400, 265400, 215400, 0.1101, 13586.00),
+            (265400, 1077550, 265400, 0.0735, 19092.00),
+        ],
+        'married': [
+            (0, 8500, 0, 0.0400, 0),
+            (8500, 11700, 8500, 0.0450, 340.00),
+            (11700, 13900, 11700, 0.0525, 484.00),
+            (13900, 80650, 13900, 0.0550, 600.00),
+            (80650, 96800, 80650, 0.0600, 4271.00),
+            (96800, 107650, 96800, 0.0667, 5240.00),
+            (107650, 157650, 107650, 0.0717, 5963.00),
+            (157650, 211550, 157650, 0.0811, 9546.00),
+            (211550, 323200, 211550, 0.0650, 13919.00),
+            (323200, 373200, 323200, 0.1284, 21177.00),
+            (373200, 1077550, 373200, 0.0735, 27599.00),
+            (1077550, 2155350, 1077550, 0.0765, 79368.00),
+        ]
+    },
+}</field>
+        <field name="rule_parameter_id" ref="rule_parameter_ny_state_income_tax_rates"/>
+        <field name="date_from" eval="datetime(2023, 1, 1).date()"/>
+    </record>
+
+    <record id="rule_parameter_ny_sdi_max_amount" model="hr.rule.parameter">
+        <field name="name">US: New York State SDI (Max Amount)</field>
+        <field name="code">l10n_us_ny_sdi_max_amount</field>
+        <field name="country_id" ref="base.us"/>
+    </record>
+    <record id="rule_parameter_ny_sdi_max_amount_2023" model="hr.rule.parameter.value">
+        <field name="parameter_value">{
+    'daily': 0.0857,
+    'weekly': 0.6,
+    'bi-weekly': 1.2,
+    'semi-monthly': 1.3,
+    'monthly': 2.6,
+    'bi-monthly': 5.2,
+    'quarterly': 7.8,
+    'semi-annually': 15.6,
+    'annually': 31.20,
+}</field>
+        <field name="rule_parameter_id" ref="rule_parameter_ny_sdi_max_amount"/>
+        <field name="date_from" eval="datetime(2023, 1, 1).date()"/>
+    </record>
+
+    <record id="rule_parameter_ny_pfl_max_amount" model="hr.rule.parameter">
+        <field name="name">US: New York State PFL (Max Amount)</field>
+        <field name="code">l10n_us_ny_pfl_max_amount</field>
+        <field name="country_id" ref="base.us"/>
+    </record>
+    <record id="rule_parameter_ny_pfl_max_amount_2023" model="hr.rule.parameter.value">
+        <field name="parameter_value">399.43</field>
+        <field name="rule_parameter_id" ref="rule_parameter_ny_pfl_max_amount"/>
+        <field name="date_from" eval="datetime(2023, 1, 1).date()"/>
+    </record>
+    <record id="rule_parameter_ny_pfl_max_amount_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">333.25</field>
+        <field name="rule_parameter_id" ref="rule_parameter_ny_pfl_max_amount"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+    <record id="rule_parameter_ny_pfl_rate" model="hr.rule.parameter">
+        <field name="name">US: New York State PFL (Rate)</field>
+        <field name="code">l10n_us_ny_pfl_rate</field>
+        <field name="country_id" ref="base.us"/>
+    </record>
+    <record id="rule_parameter_ny_pfl_rate_2023" model="hr.rule.parameter.value">
+        <field name="parameter_value">0.455</field>
+        <field name="rule_parameter_id" ref="rule_parameter_ny_pfl_rate"/>
+        <field name="date_from" eval="datetime(2023, 1, 1).date()"/>
+    </record>
+    <record id="rule_parameter_ny_pfl_rate_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">0.373</field>
+        <field name="rule_parameter_id" ref="rule_parameter_ny_pfl_rate"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+    <record id="l10n_us_employee_salary_ny_reimployment_rate" model="hr.rule.parameter">
+        <field name="name">US: New York Re-employment Tax Rate</field>
+        <field name="code">l10n_us_nt_reemployment_tax_rate</field>
+        <field name="country_id" ref="base.us"/>
+    </record>
+    <record id="l10n_us_employee_salary_ny_reimployment_rate_2023" model="hr.rule.parameter.value">
+        <field name="parameter_value">0.075</field>
+        <field name="rule_parameter_id" ref="l10n_us_employee_salary_ny_reimployment_rate"/>
+        <field name="date_from" eval="datetime(2023, 1, 1).date()"/>
+    </record>
+
+    <record id="l10n_us_employee_salary_ny_reimployment_cap" model="hr.rule.parameter">
+        <field name="name">US: New York Re-employment Tax Cap</field>
+        <field name="code">l10n_us_nt_reemployment_tax_cap</field>
+        <field name="country_id" ref="base.us"/>
+    </record>
+    <record id="l10n_us_employee_salary_ny_reimployment_cap_2023" model="hr.rule.parameter.value">
+        <field name="parameter_value">12300</field>
+        <field name="rule_parameter_id" ref="l10n_us_employee_salary_ny_reimployment_cap"/>
+        <field name="date_from" eval="datetime(2023, 1, 1).date()"/>
+    </record>
 </odoo>

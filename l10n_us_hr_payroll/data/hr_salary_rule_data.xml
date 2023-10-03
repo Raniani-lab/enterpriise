@@ -469,14 +469,14 @@ schedule_pay = contract.schedule_pay
 #        to be withheld.
 low_income_exemption_table = payslip._rule_parameter('l10n_us_ca_low_income_exemption_table')
 table_index = None
-if employee.l10n_us_state_filing_status == 'status_1':
+if employee.l10n_us_state_filing_status == 'ca_status_1':
     table_index = 0
-elif employee.l10n_us_state_filing_status == 'status_2':
+elif employee.l10n_us_state_filing_status == 'ca_status_2':
     if employee.l10n_us_w4_allowances_count &lt;= 1:
         table_index = 1
     else:
         table_index = 2
-elif employee.l10n_us_state_filing_status == 'status_4':
+elif employee.l10n_us_state_filing_status == 'ca_status_4':
     table_index = 3
 if table_index is None:
     raise UserError(f'No state tax filling status for employee {contract.employee_id.name}')
@@ -506,11 +506,11 @@ taxable = max(0, gross - deduction_amount)
 #        is located. Perform the indicated calculations to arrive at the
 #        computed tax liability.
 tax_rate_tables = payslip._rule_parameter('l10n_us_ca_tax_rate_tables')
-if employee.l10n_us_state_filing_status == 'status_1':
+if employee.l10n_us_state_filing_status == 'ca_status_1':
     tax_table_key = 'separately'
-elif employee.l10n_us_state_filing_status == 'status_2':
+elif employee.l10n_us_state_filing_status == 'ca_status_2':
     tax_table_key = 'jointly'
-elif employee.l10n_us_state_filing_status == 'status_4':
+elif employee.l10n_us_state_filing_status == 'ca_status_4':
     tax_table_key = 'head'
 tax_rates = tax_rate_tables[schedule_pay][tax_table_key]
 
@@ -540,6 +540,79 @@ result = - tax_to_be_withheld
         <field name="partner_id" ref="res_partner_edd_ca"/>
     </record>
 
+    <record id="l10n_us_employee_salary_ny_state_income_tax" model="hr.salary.rule">
+        <field name="category_id" ref="l10n_us_hr_payroll.hr_payroll_taxes"/>
+        <field name="name">NY State Income Tax</field>
+        <field name="code">NYINCOMETAX</field>
+        <field name="sequence">162</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = contract.employee_id.address_id.state_id.code == 'NY'</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+# There are three methods in New York for determining the amount from salaries to
+# be withheld for state personal income tax (Method I, II, and III). We will use
+# Method II Exact Calculation due to its wider amplitude of salaries covered.
+# See: https://www.tax.ny.gov/pdf/publications/withholding/nys50_t_nys_123.pdf
+
+# Step 1
+# If the number of exemptions claimed is ten or fewer, look up the total exemption
+# and deduction amount in Table A on page 14, according to the payroll period and
+# marital status claimed. (If there are more than 10 exemptions, multiply the
+# number by the exemption amount in Table C on page 14 and add it to the deduction
+# amount from Table B.) Subtract the total exemption and deduction amount from the
+# wages to get net wages.
+# For weekly payroll periods, if the amount of net wages is $600 or less, you may
+# use the simplified Dollar to Dollar Withholding Table beginning on page 20 to
+# find the amount to withhold. Otherwise, continue with Step 2.
+# Note: If the annualized amount of net wages is at least $1,077,550, then you must
+# use Method III to determine the amount to withhold.
+gross = categories['TAXABLE']
+schedule_pay = contract.schedule_pay
+if contract.employee_id.l10n_us_state_filing_status in ['ny_status_1', 'ny_status_3']:
+    marital = "single"
+else:
+    marital = "married"
+
+allowances_count = contract.employee_id.l10n_us_w4_allowances_count
+if allowances_count &lt;= 10:
+    table_a = payslip._rule_parameter('l10n_us_ny_state_income_tax_table_a')
+    total_exemption_deduction_amount = table_a[schedule_pay][marital][allowances_count]
+else:
+    table_c = payslip._rule_parameter('l10n_us_ny_state_income_tax_table_c')
+    exemption_allowance = table_c[schedule_pay]
+    table_b = payslip._rule_parameter('l10n_us_ny_state_income_tax_table_b')
+    deduction_allowance = table_b[schedule_pay][marital]
+    total_exemption_deduction_amount = allowances_count * exemption_allowance + deduction_allowance
+net_wages = gross - total_exemption_deduction_amount
+
+# Step 2 Locate the table on page 17/19 for the appropriate payroll period. Find the
+# line on which the net wages fall between the amounts in Columns 1 and 2.
+all_rates = payslip._rule_parameter('l10n_us_ny_state_income_tax_rates')
+rates = all_rates[schedule_pay][marital]
+def find_rates(x, rates):
+    for low, high, col3, col4, col5 in rates:
+        if low &lt;= x &lt;= high:
+            return low, high, col3, col4, col5
+    return 0, 0, 0, 0, 0
+col1, col2, col3, col4, col5 = find_rates(net_wages, rates)
+
+# Step 3 Following across on the line you found in Step 2, subtract the amount in
+# Column 3 from the net wages.
+step3 = net_wages - col3
+
+# Step 4 Following across the same line, multiply the result from Step 3 by the
+# amount in Column 4.
+step4 = step3 * col4
+
+# Step 5 Following across on the same line, add the result from Step 4 to the amount
+# in Column 5. The resulting sum is the amount to withhold from wages.
+step5 = step4 + col5
+result = -step5
+        </field>
+        <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
+        <field name="partner_id" ref="res_partner_tax_finance_ny"/>
+    </record>
+
     <record id="l10n_us_employee_salary_ca_sdi_tax" model="hr.salary.rule">
         <field name="category_id" ref="l10n_us_hr_payroll.hr_payroll_taxes"/>
         <field name="name">CA SDI Tax</field>
@@ -554,6 +627,54 @@ result_rate = - 0.9
         </field>
         <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
         <field name="partner_id" ref="res_partner_edd_ca"/>
+    </record>
+
+    <record id="l10n_us_employee_salary_ny_sdi_tax" model="hr.salary.rule">
+        <field name="category_id" ref="l10n_us_hr_payroll.hr_payroll_taxes"/>
+        <field name="name">NY SDI Tax</field>
+        <field name="code">NYSDITAX</field>
+        <field name="sequence">163</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = contract.employee_id.address_id.state_id.code == 'NY'</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+taxable = categories['GROSS']
+max_amount = payslip._rule_parameter('l10n_us_ny_sdi_max_amount')[contract.schedule_pay]
+result = - min(0.005 * taxable, max_amount)</field>
+        <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
+        <field name="partner_id" ref="res_partner_tax_finance_ny"/>
+    </record>
+
+    <record id="l10n_us_employee_salary_ny_pfl_tax" model="hr.salary.rule">
+        <field name="category_id" ref="l10n_us_hr_payroll.hr_payroll_taxes"/>
+        <field name="name">NY PFL Tax</field>
+        <field name="code">NYPFLTAX</field>
+        <field name="sequence">165</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = contract.employee_id.address_id.state_id.code == 'NY'</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+taxable = categories['GROSS']
+rate = payslip._rule_parameter('l10n_us_ny_pfl_rate')
+pfl_amount = taxable * rate / 100.0
+
+year_payslips = contract.env['hr.payslip'].search([
+    ('employee_id', '=', contract.employee_id.id),
+    ('state', 'in', ['done', 'paid']),
+    ('date_from', '&gt;=', payslip.date_from + relativedelta(day=1, month=1)),
+    ('date_to', '&lt;=', payslip.date_from + relativedelta(days=-1)),
+    ('company_id', '=', contract.company_id.id),
+])
+previous_amounts = -year_payslips._get_line_values(['NYPFLTAX'], compute_sum=True)['NYPFLTAX']['sum']['total']
+cap = payslip._rule_parameter('l10n_us_ny_pfl_max_amount')
+if previous_amounts &gt; cap:
+    pfl_amount = 0
+else:
+    pfl_amount = min(cap - previous_amounts, pfl_amount)
+result = -pfl_amount
+        </field>
+        <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
+        <field name="partner_id" ref="res_partner_tax_finance_ny"/>
     </record>
 
     <record id="l10n_us_employee_salary_roth_401k" model="hr.salary.rule">
@@ -629,7 +750,7 @@ result_rate = - result_rules['MEDICARE']['rate']
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-taxable = categories['TAXABLE'] - result_rules['401K']['total']
+taxable = categories['GROSS']
 year_payslips = contract.env['hr.payslip'].search([
     ('employee_id', '=', contract.employee_id.id),
     ('state', 'in', ['done', 'paid']),
@@ -660,7 +781,7 @@ result_rate = payslip._rule_parameter('l10n_us_FUTA_tax_rate')
         <field name="condition_python">result = contract.employee_id.address_id.state_id.code</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-taxable = categories['TAXABLE'] - result_rules['401K']['total']
+taxable = categories['GROSS']
 year_payslips = contract.env['hr.payslip'].search([
     ('employee_id', '=', contract.employee_id.id),
     ('state', 'in', ['done', 'paid']),
@@ -679,7 +800,6 @@ else:
     result = min(cap - already_taxed, taxable)
         </field>
         <field name="appears_on_payslip" eval="False"/>
-        <field name="partner_id" ref="res_partner_edd_ca"/>
         <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
     </record>
 
@@ -694,7 +814,7 @@ else:
         <field name="amount_python_compute">
 # https://edd.ca.gov/en/payroll_taxes/What_Are_State_Payroll_Taxes
 if contract.company_id.l10n_us_ca_ett_tax:
-    taxable = categories['TAXABLE'] - result_rules['401K']['total']
+    taxable = categories['GROSS']
     year_payslips = contract.env['hr.payslip'].search([
         ('employee_id', '=', contract.employee_id.id),
         ('state', 'in', ['done', 'paid']),
@@ -717,6 +837,38 @@ result_rate = payslip._rule_parameter('l10n_us_ca_ett_rate')
         <field name="partner_id" ref="res_partner_edd_ca"/>
         <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
     </record>
+
+    <record id="l10n_us_employee_salary_ny_reimployment_tax" model="hr.salary.rule">
+        <field name="category_id" ref="l10n_us_hr_payroll.hr_payroll_employer_deductions"/>
+        <field name="name">Employer Taxes: NY Re-employment Tax</field>
+        <field name="code">COMPANYNYREEMPLOYMENT</field>
+        <field name="sequence">176</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = contract.employee_id.address_id.state_id.code == 'NY'</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+taxable = categories['GROSS']
+year_payslips = contract.env['hr.payslip'].search([
+    ('employee_id', '=', contract.employee_id.id),
+    ('state', 'in', ['done', 'paid']),
+    ('date_from', '&gt;=', payslip.date_from + relativedelta(day=1, month=1)),
+    ('date_to', '&lt;=', payslip.date_from + relativedelta(days=-1)),
+    ('company_id', '=', contract.company_id.id),
+])
+line_values = year_payslips._get_line_values(['COMPANYNYREEMPLOYMENT'], vals_list=['amount'], compute_sum=True)
+previous_amounts = line_values['COMPANYNYREEMPLOYMENT']['sum']['amount']
+cap = payslip._rule_parameter('l10n_us_nt_reemployment_tax_cap')
+if previous_amounts &gt; cap:
+    result = 0
+else:
+    result = min(cap - previous_amounts, taxable)
+result_rate = payslip._rule_parameter('l10n_us_nt_reemployment_tax_rate')
+        </field>
+        <field name="appears_on_payslip" eval="False"/>
+        <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
+        <field name="partner_id" ref="res_partner_labor_department_ny"/>
+    </record>
+
 
     <record id="l10n_us_employee_salary_allocated_tips" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll.ALW"/>

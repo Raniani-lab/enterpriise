@@ -153,7 +153,9 @@ class L10nUsW2(models.Model):
         for employee, payslips in payslips_by_employee.items():
             line_values = payslips._get_line_values([
                 'TAXABLE', 'FIT', '401K', 'TIPS', 'SST', 'MEDICARE', 'MEDICAREADD', 'ALLOCATEDTIPS',
-                'MEDICALFSADC', 'MEDICALHSA', 'ROTH401K', 'CAINCOMETAX', 'CASDITAX',
+                'MEDICALFSADC', 'MEDICALHSA', 'ROTH401K',
+                'CAINCOMETAX', 'NYINCOMETAX',
+                'CASDITAX', 'NYSDITAX',
             ], compute_sum=True)
 
             writer.writerow([
@@ -201,8 +203,8 @@ class L10nUsW2(models.Model):
                 "TRUE" if employee.l10n_us_statutory_employee else "FALSE",
                 "TRUE" if employee.l10n_us_retirement_plan else "FALSE",
                 "TRUE" if employee.l10n_us_third_party_sick_pay else "FALSE",
-                "CA SDI Tax",
-                abs(line_values['CASDITAX']['sum']['total']),
+                _("%s SDI Tax", employee.address_id.state_id.code) if employee.address_id.state_id.code in ['NY', 'CA'] else "",
+                abs(line_values['CASDITAX']['sum']['total'] + line_values['NYSDITAX']['sum']['total']),
                 "",
                 "",
                 "",
@@ -211,7 +213,7 @@ class L10nUsW2(models.Model):
                 employee.address_id.state_id.code or "",
                 self.company_id.company_registry or "",
                 abs(line_values['TAXABLE']['sum']['total']),
-                abs(line_values['CAINCOMETAX']['sum']['total']),
+                abs(line_values['CAINCOMETAX']['sum']['total'] + line_values['NYINCOMETAX']['sum']['total']),
                 "",
                 "",
                 "",

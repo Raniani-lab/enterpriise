@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { ProductCatalogKanbanController } from "@sale/js/product_catalog/kanban_controller";
+import { ProductCatalogKanbanController } from "@product/product_catalog/kanban_controller";
 
 export class FSMProductCatalogKanbanController extends ProductCatalogKanbanController {
     static template = "web.KanbanView";

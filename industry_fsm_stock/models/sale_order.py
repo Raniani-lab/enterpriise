@@ -61,7 +61,7 @@ class SaleOrderLine(models.Model):
             self.env['stock.move.line'].create(ml_to_create)
         return result
 
-    def _get_catalog_info(self):
+    def _get_product_catalog_lines_data(self, **kwargs):
         """ Override of `sale`
 
         Add whether the product is tracked and change the way the read-only property is computed.
@@ -79,7 +79,7 @@ class SaleOrderLine(models.Model):
                 'tracking': bool,
             }
         """
-        res = super()._get_catalog_info()
+        res = super()._get_product_catalog_lines_data(**kwargs)
         res['tracking'] = self.product_id.tracking not in ['none', False]
         res['minimumQuantityOnProduct'] = len(self) and res['quantity'] - self.product_id.quantity_decreasable_sum
         if len(self) != 1 and self.order_id and res['tracking'] and self.env.context.get('fsm_task_id', False):

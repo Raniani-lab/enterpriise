@@ -1,18 +1,19 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.http import request, route
-from odoo.addons.sale.controllers.catalog import CatalogController
+from odoo.addons.product.controllers.catalog import ProductCatalogController
 
-class CatalogControllerFSM(CatalogController):
+class CatalogControllerFSM(ProductCatalogController):
 
     @route()
-    def sale_product_catalog_get_sale_order_lines_info(self, order_id, product_ids, task_id=None):
+    def product_catalog_get_order_lines_info(self, res_model, order_id, product_ids, **kwargs):
+        task_id = kwargs.get('task_id')
         if task_id:
             request.update_context(fsm_task_id=task_id)
-        return super().sale_product_catalog_get_sale_order_lines_info(order_id, product_ids)
+        return super().product_catalog_get_order_lines_info(res_model, order_id, product_ids, **kwargs)
 
     @route()
-    def sale_product_catalog_update_sale_order_line_info(self, order_id, product_id, quantity, task_id=None):
+    def product_catalog_update_order_line_info(self, res_model, order_id, product_id, quantity=0, **kwargs):
         """ Update sale order line information on a given sale order for a given product.
 
         :param int order_id: The sale order, as a `sale.order` id.
@@ -24,8 +25,9 @@ class CatalogControllerFSM(CatalogController):
                  the quantity selected.
         :rtype: A dictionary containing the SN action and the SOL price_unit
         """
+        task_id = kwargs.get('task_id')
         if not task_id:
-            return super().sale_product_catalog_update_sale_order_line_info(order_id, product_id, quantity)
+            return super().product_catalog_update_order_line_info(res_model, order_id, product_id, quantity, **kwargs)
         request.update_context(fsm_task_id=task_id)
         task = request.env['project.task'].browse(task_id)
         product = request.env['product.product'].browse(product_id)

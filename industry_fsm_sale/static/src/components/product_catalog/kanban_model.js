@@ -18,10 +18,11 @@ export class FSMProductCatalogKanbanModel extends RelationalModel {
     async _loadData(params) {
         const result = await super._loadData(...arguments);
         if (!params.isMonoRecord && !params.groupBy.length) {
-            const saleOrderLinesInfo = await this.rpc("/sales/catalog/sale_order_lines_info", {
+            const saleOrderLinesInfo = await this.rpc("/product/catalog/order_lines_info", {
                 order_id: params.context.order_id,
                 product_ids: result.records.map((rec) => rec.id),
                 task_id: params.context.fsm_task_id,
+                res_model: params.context.product_catalog_order_model,
             });
             for (const record of result.records) {
                 record.productCatalogData = saleOrderLinesInfo[record.id];

@@ -3,7 +3,7 @@
     <record id="industry_fsm_sale_product_catalog_kanban_view" model="ir.ui.view">
         <field name="name">industry_fsm.product.catalog.kanban.view.inherit</field>
         <field name="model">product.product</field>
-        <field name="inherit_id" ref="sale.sale_product_catalog_kanban_view"/>
+        <field name="inherit_id" ref="product.product_view_kanban_catalog"/>
         <field name="mode">primary</field>
         <field name="arch" type="xml">
             <kanban position="attributes">
@@ -17,15 +17,14 @@
                     <img t-att-src="kanban_image('product.product', 'image_128', record.id.raw_value, 'product/static/img/placeholder_thumbnail.png')"
                         alt="Product"/>
                 </div>
-                
             </xpath>
         </field>
-    </record> 
+    </record>
 
 <!-- Material kanban -->
     <record id="industry_fsm_sale_product_catalog_inherit_search_view" model="ir.ui.view">
         <field name="name">industry.fsm.sale.product.catalog.inherit.search.view</field>
-        <field name="inherit_id" ref="sale.sale_product_catalog_search_view"/>
+        <field name="inherit_id" ref="product.product_view_search_catalog"/>
         <field name="model">product.product</field>
         <field name="mode">primary</field>
         <field name="arch" type="xml">

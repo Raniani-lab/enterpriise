@@ -332,7 +332,7 @@ class Task(models.Model):
                 'fsm_task_id': self.id,  # avoid 'default_' context key as we are going to create SOL with this context
                 'pricelist': self.partner_id.property_product_pricelist.id,
                 'order_id': self.sale_order_id.id,
-                **self.sudo().env['sale.order.line']._get_action_add_from_catalog_extra_context(self.sale_order_id),
+                **self.sale_order_id.sudo()._get_action_add_from_catalog_extra_context(),
                 'hide_qty_buttons': self.sale_order_id.sudo().locked,
                 'default_invoice_policy': 'delivery',
             },

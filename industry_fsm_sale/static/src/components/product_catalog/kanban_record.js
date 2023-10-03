@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { useSubEnv } from "@odoo/owl";
-import { ProductCatalogKanbanRecord } from "@sale/js/product_catalog/kanban_record";
+import { ProductCatalogKanbanRecord } from "@product/product_catalog/kanban_record";
 import { useService } from '@web/core/utils/hooks';
 
 export class FSMProductCatalogKanbanRecord extends ProductCatalogKanbanRecord {
@@ -16,10 +16,11 @@ export class FSMProductCatalogKanbanRecord extends ProductCatalogKanbanRecord {
     }
 
     async _updateQuantity() {
-        const { action, price } = await this.rpc("/sales/catalog/update_sale_order_line_info", {
+        const { action, price } = await this.rpc("/product/catalog/update_order_line_info", {
             order_id: this.env.orderId,
             product_id: this.env.productId,
             quantity: this.productCatalogData.quantity,
+            res_model: this.env.orderResModel,
             task_id: this.env.fsm_task_id,
         });
         if (price) {

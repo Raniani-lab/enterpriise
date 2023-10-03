@@ -3,8 +3,8 @@ import { registry } from "@web/core/registry";
 import { FSMProductCatalogKanbanRecord } from "./kanban_record";
 import { FSMProductCatalogKanbanController } from "./kanban_controller";
 import { FSMProductCatalogKanbanModel } from "./kanban_model";
-import { productCatalogKanbanView } from "@sale/js/product_catalog/kanban_view";
-import { ProductCatalogKanbanRenderer } from "@sale/js/product_catalog/kanban_renderer";
+import { productCatalogKanbanView } from "@product/product_catalog/kanban_view";
+import { ProductCatalogKanbanRenderer } from "@product/product_catalog/kanban_renderer";
 
 export class FSMProductCatalogKanbanRenderer extends ProductCatalogKanbanRenderer {
     static components = {

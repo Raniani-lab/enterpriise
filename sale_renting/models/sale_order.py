@@ -246,3 +246,37 @@ class SaleOrder(models.Model):
             'rental_start_date': start_date,
             'rental_return_date': return_date,
         })
+
+    #=== BUSINESS METHODS ===#
+
+    def _get_product_catalog_order_data(self, products, **kwargs):
+        """ Override to add the rental dates for the price computation """
+        return super()._get_product_catalog_order_data(
+            products,
+            start_date=self.rental_start_date,
+            end_date=self.rental_return_date,
+            **kwargs,
+        )
+
+    def _update_order_line_info(self, product_id, quantity, **kwargs):
+        """ Override to add the context to mark the line as rental and the rental dates for the
+        price computation
+        """
+        if self.is_rental_order:
+            self = self.with_context(in_rental_app=True)
+            product = self.env['product.product'].browse(product_id)
+            if product.rent_ok:
+                self._rental_set_dates()
+        return super()._update_order_line_info(
+            product_id,
+            quantity,
+            start_date=self.rental_start_date,
+            end_date=self.rental_return_date,
+            **kwargs,
+        )
+
+    def _get_action_add_from_catalog_extra_context(self):
+        """ Override to add rental dates in the context for product availabilities. """
+        extra_context = super()._get_action_add_from_catalog_extra_context()
+        extra_context.update(start_date=self.rental_start_date, end_date=self.rental_return_date)
+        return extra_context

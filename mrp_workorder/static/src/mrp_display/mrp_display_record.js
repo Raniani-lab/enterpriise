@@ -31,7 +31,7 @@ export class MrpDisplayRecord extends Component {
     static props = {
         addToValidationStack: Function,
         groups: Object,
-        onlyRecord: Boolean,
+        barcodeTarget: Boolean,
         production: { optional: true, type: Object },
         record: Object,
         recordUpdated: Function,

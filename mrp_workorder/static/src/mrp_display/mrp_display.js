@@ -143,7 +143,7 @@ export class MrpDisplay extends Component {
         if (production) {
             return this._onProductionBarcodeScanned(barcode);
         }
-        const workorder = this.workorders.find((wo) => wo.data.barcode === barcode);
+        const workorder = this.relevantRecords.find((wo) => wo.data.barcode === barcode && wo.resModel === 'mrp.workorder');
         if (workorder) {
             return this._onWorkorderBarcodeScanned(workorder);
         }
@@ -152,6 +152,9 @@ export class MrpDisplay extends Component {
             barcode,
         ]);
         if (employee) {
+            if (this.useEmployee.popup.SelectionPopup.isShown){
+                this.useEmployee.popup.SelectionPopup.close();
+            }
             return this.useEmployee.setSessionOwner(employee, undefined);
         }
     }
@@ -189,6 +192,12 @@ export class MrpDisplay extends Component {
         await this.recordUpdated(resId);
         this.render();
         await this.useEmployee.getConnectedEmployees();
+    }
+
+    get barcodeTargetRecord(){
+        const adminId = this.useEmployee.employees.admin.id;
+        const firstWorking = this.relevantRecords.find((r) => r.data.employee_ids.records.some((e) => e.resId === adminId));
+        return firstWorking ? firstWorking.resId : this.relevantRecords[0].resId;
     }
 
     async recordUpdated(wo_id) {

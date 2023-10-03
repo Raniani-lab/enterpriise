@@ -47,7 +47,7 @@
                             sessionOwner="useEmployee.employees.admin"
                             recordUpdated.bind="recordUpdated"
                             removeFromValidationStack.bind="removeFromValidationStack"
-                            onlyRecord="relevantRecords.length == 1"
+                            barcodeTarget="barcodeTargetRecord === record.resId"
                             />
                     </t>
                     <t t-if="!relevantRecords.length">
@@ -66,6 +66,7 @@
                             recordUpdated.bind="recordUpdated"
                             removeFromValidationStack.bind="removeFromValidationStack"
                             demoRecord="true"
+                            barcodeTarget="false"
                             />
                         </t>
                         <div class="o_view_nocontent">

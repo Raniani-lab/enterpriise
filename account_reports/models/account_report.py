@@ -2049,6 +2049,10 @@ class AccountReport(models.Model):
             if column_value is None:
                 formatted_name = ''
             else:
+                foreign_currency_id = target_line_res_dict.get(f'_currency_{column_expr_label}', {}).get('value')
+                if foreign_currency_id:
+                    formatter_params['currency'] = self.env['res.currency'].browse(foreign_currency_id)
+
                 formatted_name = self.format_value(
                     column_value,
                     figure_type=figure_type,

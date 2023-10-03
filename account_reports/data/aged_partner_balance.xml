@@ -126,6 +126,12 @@
                       <field name="subformula">amount_currency</field>
                       <field name="auditable" eval="False"/>
                   </record>
+                  <record id="aged_receivable_line_amount_currency_forced_currency" model="account.report.expression">
+                      <field name="label">_currency_amount_currency</field>
+                      <field name="engine">custom</field>
+                      <field name="formula">_report_custom_engine_aged_receivable</field>
+                      <field name="subformula">currency_id</field>
+                  </record>
                   <record id="aged_receivable_line_currency" model="account.report.expression">
                       <field name="label">currency</field>
                       <field name="engine">custom</field>
@@ -289,6 +295,12 @@
                         <field name="formula">_report_custom_engine_aged_payable</field>
                         <field name="subformula">amount_currency</field>
                         <field name="auditable" eval="False"/>
+                    </record>
+                    <record id="aged_payable_line_amount_currency_forced_currency" model="account.report.expression">
+                        <field name="label">_currency_amount_currency</field>
+                        <field name="engine">custom</field>
+                        <field name="formula">_report_custom_engine_aged_payable</field>
+                        <field name="subformula">currency_id</field>
                     </record>
                     <record id="aged_payable_line_currency" model="account.report.expression">
                         <field name="label">currency</field>

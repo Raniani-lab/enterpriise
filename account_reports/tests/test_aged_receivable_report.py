@@ -708,7 +708,7 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
             [   0,                                               1,                  2,           3,        6,       12],
             [
                 ('foreign_partner',                             '',                 '',          '',     50.0,     50.0),
-                ('INV/2023/00001 INV/2023/00001',     '05/01/2023',              100.0,       'Gol',     50.0,       ''),
+                ('INV/2023/00001 INV/2023/00001',     '05/01/2023',     '100.000\xa0☺',       'Gol',     50.0,       ''),
             ],
         )
 
@@ -722,6 +722,6 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
             [   0,                                               1,                  2,           3,        6,       7,       12],
             [
                 ('foreign_partner',                             '',                 '',          '',       '',    45.0,     45.0),
-                ('INV/2023/00001 INV/2023/00001',     '05/01/2023',               90.0,       'Gol',       '',    45.0,       ''),
+                ('INV/2023/00001 INV/2023/00001',     '05/01/2023',      '90.000\xa0☺',       'Gol',       '',    45.0,       ''),
             ],
         )

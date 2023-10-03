@@ -102,6 +102,7 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
                 rslt.update({
                     'due_date': query_res['due_date'][0] if len(query_res['due_date']) == 1 else None,
                     'amount_currency': query_res['amount_currency'],
+                    'currency_id': query_res['currency_id'][0] if len(query_res['currency_id']) == 1 else None,
                     'currency': currency.display_name if currency else None,
                     'account_name': query_res['account_name'][0] if len(query_res['account_name']) == 1 else None,
                     'expected_date': query_res['expected_date'][0] if len(query_res['expected_date']) == 1 else None,
@@ -115,6 +116,7 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
                 rslt.update({
                     'due_date': None,
                     'amount_currency': None,
+                    'currency_id': None,
                     'currency': None,
                     'account_name': None,
                     'expected_date': None,
@@ -305,12 +307,12 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
 
                                 for expression in expressions_to_evaluate:
                                     partner_aml_expression_totals[expression]['value'].append(
-                                        (aml_data['aml_id'], aml_data[expression.label])
+                                        (aml_data['aml_id'], aml_data[expression.subformula])
                                     )
 
                             for expression in expressions_to_evaluate:
                                 partner_expression_totals[expression]['value'].append(
-                                    (partner_id, partner_values[expression.label])
+                                    (partner_id, partner_values[expression.subformula])
                                 )
 
         return rslt
@@ -319,6 +321,7 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
         partner_values = {
             'due_date': None,
             'amount_currency': None,
+            'currency_id': None,
             'currency': None,
             'account_name': None,
             'expected_date': None,

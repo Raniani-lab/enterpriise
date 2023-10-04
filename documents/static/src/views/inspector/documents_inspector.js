@@ -16,12 +16,21 @@ import { DocumentsInspectorField } from "./documents_inspector_field";
 import { download } from "@web/core/network/download";
 import { onNewPdfThumbnail } from "../helper/documents_pdf_thumbnail_service";
 import { useTriggerRule } from "@documents/views/hooks";
-import dUtils from '@documents/views/helper/documents_utils';
+import dUtils from "@documents/views/helper/documents_utils";
 import { serializeDate } from "@web/core/l10n/dates";
 import { utils as uiUtils } from "@web/core/ui/ui_service";
+import {
+    Component,
+    markup,
+    useEffect,
+    useState,
+    useRef,
+    onPatched,
+    onWillUpdateProps,
+    onWillStart,
+} from "@odoo/owl";
 
 const { DateTime } = luxon;
-const { Component, markup, useEffect, useState, useRef, onPatched, onWillUpdateProps, onWillStart } = owl;
 
 async function toggleArchive(model, resModel, resIds, doArchive) {
     const method = doArchive ? "action_archive" : "action_unarchive";
@@ -106,10 +115,15 @@ export class DocumentsInspector extends Component {
         });
         const updateLockedState = (props) => {
             this.isLocked =
-                (props.documents.find((rec) => rec.data.lock_uid && rec.data.lock_uid[0] !== session.uid) && true) ||
+                (props.documents.find(
+                    (rec) => rec.data.lock_uid && rec.data.lock_uid[0] !== session.uid
+                ) &&
+                    true) ||
                 false;
             const folderIds = props.documents.map((rec) => rec.data.folder_id[0]);
-            const folders = this.env.searchModel.getFolders().filter((folder) => folderIds.includes(folder.id));
+            const folders = this.env.searchModel
+                .getFolders()
+                .filter((folder) => folderIds.includes(folder.id));
             this.isEditDisabled = !!folders.find((folder) => !folder.has_write_access);
         };
         onWillStart(() => {
@@ -139,7 +153,10 @@ export class DocumentsInspector extends Component {
                     el.removeEventListener("reload", chatterReloadHandler);
                 };
             },
-            () => [this.chatterContainer.el && this.chatterContainer.el.querySelector(".o-mail-Chatter")]
+            () => [
+                this.chatterContainer.el &&
+                    this.chatterContainer.el.querySelector(".o-mail-Chatter"),
+            ]
         );
 
         // Pdf thumbnails
@@ -213,7 +230,13 @@ export class DocumentsInspector extends Component {
             this.orm
                 .searchRead(
                     "ir.attachment",
-                    [["id", "in", record.data.previous_attachment_ids.records.map((rec) => rec.resId)]],
+                    [
+                        [
+                            "id",
+                            "in",
+                            record.data.previous_attachment_ids.records.map((rec) => rec.resId),
+                        ],
+                    ],
                     ["name", "create_date", "create_uid"],
                     {
                         order: "create_date desc",
@@ -269,7 +292,12 @@ export class DocumentsInspector extends Component {
         if (nbPreviews === 1) {
             classes.push("o_documents_single_preview");
         }
-        if (additionalData.isImage || additionalData.isYoutubeVideo || record.data.url_preview_image || (record.isPdf() && record.hasThumbnail())) {
+        if (
+            additionalData.isImage ||
+            additionalData.isYoutubeVideo ||
+            record.data.url_preview_image ||
+            (record.isPdf() && record.hasThumbnail())
+        ) {
             classes.push("o_documents_preview_image");
         } else {
             classes.push("o_documents_preview_mimetype");
@@ -293,7 +321,7 @@ export class DocumentsInspector extends Component {
         } else {
             download({
                 data: {
-                    file_ids: records.map(rec => rec.resId),
+                    file_ids: records.map((rec) => rec.resId),
                     zip_name: `documents-${serializeDate(DateTime.now())}.zip`,
                 },
                 url: "/document/zip",
@@ -306,16 +334,15 @@ export class DocumentsInspector extends Component {
         if (!documents.length) {
             return;
         }
-        const linkDocuments = documents.filter(el => el.data.type === 'url');
-        const noLinkDocuments = documents.filter(el => el.data.type !== 'url');
+        const linkDocuments = documents.filter((el) => el.data.type === "url");
+        const noLinkDocuments = documents.filter((el) => el.data.type !== "url");
         // Manage link documents
         if (documents.length === 1 && linkDocuments.length) {
             // Redirect to the link
             let url = linkDocuments[0].data.url;
             url = /^(https?|ftp):\/\//.test(url) ? url : "http://" + url;
             window.open(url, "_blank");
-        }
-        else if (noLinkDocuments.length) {
+        } else if (noLinkDocuments.length) {
             // Download all documents which are not links
             this.download(noLinkDocuments);
         }
@@ -335,16 +362,15 @@ export class DocumentsInspector extends Component {
             );
         }
         browser.navigator.clipboard.writeText(this.generatedUrls[resIds]);
-        if (linkProportion == 'some') {
+        if (linkProportion == "some") {
             this.notificationService.add(
                 _t("The share url has been copied to your clipboard. Links were excluded."),
-                { type: "warning", },
+                { type: "warning" }
             );
         } else {
-            this.notificationService.add(
-                _t("The share url has been copied to your clipboard."),
-                { type: "success", },
-            );
+            this.notificationService.add(_t("The share url has been copied to your clipboard."), {
+                type: "success",
+            });
         }
     }
 
@@ -368,7 +394,9 @@ export class DocumentsInspector extends Component {
 
         await this.env.documentsView.bus.trigger("documents-upload-files", {
             files: ev.target.files,
-            folderId: this.env.searchModel.getSelectedFolderId() || (record.data.folder_id && record.data.folder_id[0]),
+            folderId:
+                this.env.searchModel.getSelectedFolderId() ||
+                (record.data.folder_id && record.data.folder_id[0]),
             recordId: record.resId,
             tagIds: this.env.searchModel.getSelectedTagIds(),
         });
@@ -440,7 +468,9 @@ export class DocumentsInspector extends Component {
                 documents[idx].data[field].records.map((rec) => rec.resId)
             );
         }
-        return commonData.map((id) => documents[0].data[field].records.find((data) => data.resId === id));
+        return commonData.map((id) =>
+            documents[0].data[field].records.find((data) => data.resId === id)
+        );
     }
 
     getCommonTags() {
@@ -498,7 +528,9 @@ export class DocumentsInspector extends Component {
                         request = request.toLowerCase();
                         return additionalTags
                             .filter((tag) =>
-                                (tag.group_name + " > " + tag.display_name).toLowerCase().includes(request)
+                                (tag.group_name + " > " + tag.display_name)
+                                    .toLowerCase()
+                                    .includes(request)
                             )
                             .map((tag) => {
                                 return {
@@ -516,16 +548,21 @@ export class DocumentsInspector extends Component {
 
     async onClickResModel() {
         const record = this.props.documents[0];
-        const action = await this.orm.call(record.data.res_model, "get_formview_action", [[record.data.res_id]], {
-            context: record.model.user.context,
-        });
+        const action = await this.orm.call(
+            record.data.res_model,
+            "get_formview_action",
+            [[record.data.res_id]],
+            {
+                context: record.model.user.context,
+            }
+        );
         await this.action.doAction(action);
     }
 
     async triggerRule(rule) {
         await this._triggerRule(
-            this.props.documents.map(rec => rec.resId),
-            rule.resId,
+            this.props.documents.map((rec) => rec.resId),
+            rule.resId
         );
     }
 
@@ -564,7 +601,7 @@ export class DocumentsInspector extends Component {
         if ((isPdfSplit && !this.isPdfOnly()) || this.previewLockCount) {
             return;
         }
-        const documents = this.props.documents.filter(rec => rec.isViewable());
+        const documents = this.props.documents.filter((rec) => rec.isViewable());
         if (!documents.length) {
             return;
         }
@@ -583,9 +620,14 @@ export class DocumentsInspector extends Component {
         if (record.data.res_model && record.data.res_id) {
             defaultResourceRef = `${record.data.res_model},${record.data.res_id}`;
         }
-        const models = await this.orm.searchRead("ir.model", [["model", "=", record.data.res_model]], ["id"], {
-            limit: 1,
-        });
+        const models = await this.orm.searchRead(
+            "ir.model",
+            [["model", "=", record.data.res_model]],
+            ["id"],
+            {
+                limit: 1,
+            }
+        );
         this.action.doAction(
             {
                 name: _t("Edit the linked record"),

@@ -8,8 +8,7 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { session } from "@web/session";
 import { date_to_str } from "@web/legacy/js/core/time";
-
-const { Component, onMounted, onWillUnmount, onWillStart, useState } = owl;
+import { Component, onMounted, onWillUnmount, onWillStart, useState } from "@odoo/owl";
 
 export class MainMenu extends Component {
     setup() {

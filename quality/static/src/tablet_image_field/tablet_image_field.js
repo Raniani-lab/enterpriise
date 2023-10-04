@@ -4,8 +4,7 @@ import { Dialog } from "@web/core/dialog/dialog";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { ImageField, imageField } from '@web/views/fields/image/image_field';
-
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 class ImagePreviewDialog extends Component {}
 ImagePreviewDialog.components = { Dialog };

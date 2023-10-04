@@ -4,8 +4,7 @@ import { CharField, charField } from "@web/views/fields/char/char_field";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { renderToElement } from "@web/core/utils/render";
-
-const { useEffect, useRef } = owl;
+import { useEffect, useRef } from "@odoo/owl";
 
 export class TwitterUsersAutocompleteField extends CharField {
     setup() {

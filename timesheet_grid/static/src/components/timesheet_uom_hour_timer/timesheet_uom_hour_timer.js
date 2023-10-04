@@ -5,8 +5,7 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
 import { TimesheetDisplayTimer } from "../timesheet_display_timer/timesheet_display_timer";
-
-const { Component, useState } = owl;
+import { Component, useState } from "@odoo/owl";
 
 export class TimesheetUOMHourTimer extends Component {
     setup() {

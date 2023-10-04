@@ -1,8 +1,7 @@
 /** @odoo-module **/
 
 import { Box } from '@account_invoice_extract/js/box';
-
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 export class BoxLayer extends Component {
     /**

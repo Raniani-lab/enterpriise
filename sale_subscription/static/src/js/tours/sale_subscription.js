@@ -3,7 +3,7 @@
 
 import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
-const { markup } = owl;
+import { markup } from "@odoo/owl";
 
 registry.category("web_tour.tours").add('sale_subscription_tour', {
     url: "/web",

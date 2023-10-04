@@ -4,8 +4,7 @@
     import { registry } from "@web/core/registry";
     import { stepUtils } from "@web_tour/tour_service/tour_utils";
     import { patch } from "@web/core/utils/patch";
-
-    const { markup } = owl;
+    import { markup } from "@odoo/owl";
 
     // Update the invoicing tour as the menu items have changed, but we want the test to still work
     patch(registry.category("web_tour.tours").get("account_tour"), {

@@ -7,8 +7,7 @@ import { StreamPostCommentsReply } from './stream_post_comments_reply';
 import { ConfirmationDialog } from '@web/core/confirmation_dialog/confirmation_dialog';
 import { escape } from '@web/core/utils/strings';
 import { useService } from '@web/core/utils/hooks';
-
-const { Component, markup, useState } = owl;
+import { Component, markup, useState } from "@odoo/owl";
 
 export class StreamPostComment extends SocialPostFormatterMixin(Component) {
 

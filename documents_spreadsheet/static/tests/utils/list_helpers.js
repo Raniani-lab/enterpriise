@@ -21,6 +21,7 @@ import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 import { registry } from "@web/core/registry";
 import { fieldService } from "@web/core/field_service";
 import { browser } from "@web/core/browser/browser";
+import { onMounted } from "@odoo/owl";
 
 /** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */
 
@@ -84,7 +85,7 @@ export async function createSpreadsheetFromListView(params = {}) {
     patchWithCleanup(SpreadsheetAction.prototype, {
         setup() {
             super.setup();
-            owl.onMounted(() => {
+            onMounted(() => {
                 spreadsheetAction = this;
                 def.resolve();
             });

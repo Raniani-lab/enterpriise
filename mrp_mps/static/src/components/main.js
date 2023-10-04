@@ -14,8 +14,7 @@ import { WithSearch } from "@web/search/with_search/with_search";
 import { ActionMenus } from "@web/search/action_menus/action_menus";
 import { download } from "@web/core/network/download";
 import { ExportDataDialog } from "@web/views/view_dialogs/export_data_dialog";
-
-const { Component, onWillStart, useSubEnv } = owl;
+import { Component, onWillStart, useSubEnv } from "@odoo/owl";
 
 class MainComponent extends Component {
     //--------------------------------------------------------------------------

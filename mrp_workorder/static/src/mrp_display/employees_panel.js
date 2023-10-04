@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 export class MrpDisplayEmployeesPanel extends Component {
     static template = "mrp_workorder.MrpDisplayEmployeesPanel";

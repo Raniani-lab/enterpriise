@@ -7,8 +7,7 @@ import { SocialPostFormatterMixin } from '@social/js/social_post_formatter_mixin
 import { Dialog } from '@web/core/dialog/dialog';
 import { sprintf } from '@web/core/utils/strings';
 import { useService } from '@web/core/utils/hooks';
-
-const { Component, markup } = owl;
+import { Component, markup } from "@odoo/owl";
 
 export class StreamPostTwitterQuote extends SocialPostFormatterMixin(Component) {
 

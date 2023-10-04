@@ -9,7 +9,7 @@ import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
 import { AccountMoveFormRenderer } from '@account/components/account_move_form/account_move_form';
 import { BoxLayer } from '@account_invoice_extract/js/box_layer';
 
-const { App, onWillUnmount, useExternalListener, useState } = owl;
+import { App, onWillUnmount, reactive, useExternalListener, useState } from "@odoo/owl";
 
 /**
  * This is the renderer of the subview that adds OCR features on the attachment
@@ -159,7 +159,7 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
                 const dataToFetch = this.boxes.length === 0 || (this.dataMoveId !== this.props.record.resId);
                 const prom = dataToFetch ? this.fetchBoxData() : new Promise(resolve => resolve([]));
                 prom.then((boxes) => {
-                    boxes.map(b => owl.reactive(b)).forEach((box) => {
+                    boxes.map(b => reactive(b)).forEach((box) => {
                         if (box.page in this.boxes) {
                             this.boxes[box.page].push(box);
                         }

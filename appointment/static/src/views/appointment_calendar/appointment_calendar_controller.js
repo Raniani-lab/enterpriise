@@ -8,8 +8,7 @@ import { useService } from "@web/core/utils/hooks";
 import { Tooltip } from "@web/core/tooltip/tooltip";
 import { browser } from "@web/core/browser/browser";
 import { serializeDateTime } from "@web/core/l10n/dates";
-
-const { useRef, useState, useSubEnv, onWillStart } = owl;
+import { useRef, useState, useSubEnv, onWillStart } from "@odoo/owl";
 
 patch(AttendeeCalendarController.prototype, {
     setup() {

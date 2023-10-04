@@ -2,8 +2,7 @@
 
 import { registry } from '@web/core/registry';
 import { useIotDevice } from '../iot_device_hook';
-
-const { Component, useState } = owl;
+import { Component, useState } from "@odoo/owl";
 
 export class IoTDeviceValueDisplay extends Component {
     setup() {

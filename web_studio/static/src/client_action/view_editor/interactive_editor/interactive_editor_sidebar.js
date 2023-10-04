@@ -1,6 +1,6 @@
 /** @odoo-module */
 import { _t } from "@web/core/l10n/translation";
-import { onWillStart, useState, onWillUpdateProps } from "@odoo/owl";
+import { onWillStart, useState, onWillUpdateProps, Component } from "@odoo/owl";
 
 import { Notebook } from "@web/core/notebook/notebook";
 import { useBus } from "@web/core/utils/hooks";
@@ -20,7 +20,7 @@ const tabsDisplay = {
     },
 };
 
-export class InteractiveEditorSidebar extends owl.Component {
+export class InteractiveEditorSidebar extends Component {
     static components = { Notebook };
     static template = "web_studio.ViewEditor.InteractiveEditorSidebar";
     static props = {

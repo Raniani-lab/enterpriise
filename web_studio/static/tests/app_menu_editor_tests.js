@@ -38,7 +38,7 @@ QUnit.module("Studio Navbar > AppMenuEditor", (hooks) => {
         if (hasLegacyEnv) {
             const legacyEnv = makeTestEnvironment();
             mapLegacyEnvToWowlEnv(legacyEnv, env);
-            owl.Component.env = legacyEnv;
+            Component.env = legacyEnv;
         }
 
         await mount(Parent, target, { env });

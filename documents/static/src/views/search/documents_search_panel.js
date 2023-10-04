@@ -7,12 +7,11 @@ import { useNestedSortable } from "@web/core/utils/nested_sortable";
 import { usePopover } from "@web/core/popover/popover_hook";
 import { useService } from "@web/core/utils/hooks";
 import { utils as uiUtils } from "@web/core/ui/ui_service";
+import { Component, onWillStart, useState } from "@odoo/owl";
 
 const VALUE_SELECTOR = [".o_search_panel_category_value", ".o_search_panel_filter_value"].join();
 const FOLDER_VALUE_SELECTOR = ".o_search_panel_category_value";
 const LONG_TOUCH_THRESHOLD = 400;
-
-const { Component, onWillStart, useState } = owl;
 
 /**
  * This file defines the DocumentsSearchPanel component, an extension of the
@@ -27,7 +26,8 @@ export class DocumentsSearchPanelItemSettingsPopover extends Component {
         "onEdit", // Function, edit element
     ];
 }
-DocumentsSearchPanelItemSettingsPopover.template = "documents.DocumentsSearchPanelItemSettingsPopover";
+DocumentsSearchPanelItemSettingsPopover.template =
+    "documents.DocumentsSearchPanelItemSettingsPopover";
 
 export class DocumentsSearchPanel extends SearchPanel {
     setup() {
@@ -114,7 +114,9 @@ export class DocumentsSearchPanel extends SearchPanel {
     }
 
     isUploadingInFolder(folderId) {
-        return Object.values(this.documentUploads).find(upload => upload.data.get("folder_id") === folderId);
+        return Object.values(this.documentUploads).find(
+            (upload) => upload.data.get("folder_id") === folderId
+        );
     }
 
     //---------------------------------------------------------------------
@@ -140,7 +142,9 @@ export class DocumentsSearchPanel extends SearchPanel {
         // By default the category is not reloaded.
         if (reloadCategories) {
             await searchModel._fetchSections(
-                searchModel.getSections((s) => s.type === "category" && s.fieldName === "folder_id"),
+                searchModel.getSections(
+                    (s) => s.type === "category" && s.fieldName === "folder_id"
+                ),
                 []
             );
         }
@@ -223,7 +227,7 @@ export class DocumentsSearchPanel extends SearchPanel {
             const group = section.groups.get(parentValue);
             const groupValues = [...group.values.values()];
             let index = 2;
-            while (groupValues.find(v => v.display_name === createValues.name)) {
+            while (groupValues.find((v) => v.display_name === createValues.name)) {
                 createValues.name = defaultName + ` (${index++})`;
             }
         }
@@ -240,19 +244,22 @@ export class DocumentsSearchPanel extends SearchPanel {
     }
 
     async editSectionValue(resModel, resId) {
-        this.action.doAction({
-            res_model: resModel,
-            res_id: resId,
-            name: _t("Edit"),
-            type: "ir.actions.act_window",
-            target: "new",
-            views: [[false, "form"]],
-            context: {
-                create: false,
+        this.action.doAction(
+            {
+                res_model: resModel,
+                res_id: resId,
+                name: _t("Edit"),
+                type: "ir.actions.act_window",
+                target: "new",
+                views: [[false, "form"]],
+                context: {
+                    create: false,
+                },
             },
-        }, {
-            onClose: this._reloadSearchModel.bind(this, true),
-        });
+            {
+                onClose: this._reloadSearchModel.bind(this, true),
+            }
+        );
     }
 
     //---------------------------------------------------------------------

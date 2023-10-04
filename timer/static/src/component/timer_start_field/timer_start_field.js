@@ -1,12 +1,10 @@
 /** @odoo-module */
 
-import { onWillUnmount } from "@odoo/owl";
+import { Component, useState, onWillStart, onWillUnmount } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { useRecordObserver } from "@web/model/relational_model/utils";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
-
-const { Component, useState, onWillStart } = owl;
 
 export class TimerStartField extends Component {
     setup() {

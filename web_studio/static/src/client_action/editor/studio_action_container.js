@@ -4,7 +4,7 @@ import { ActionContainer } from "@web/webclient/actions/action_container";
 import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { KeepLast } from "@web/core/utils/concurrency";
-import { Component, onWillStart, onWillUpdateProps, xml } from "@odoo/owl";
+import { Component, markup, onWillStart, onWillUnmount, onWillUpdateProps, xml } from "@odoo/owl";
 import { useStudioServiceAsReactive } from "@web_studio/studio_service";
 import { resetViewCompilerCache } from "@web/views/view_compiler";
 
@@ -32,9 +32,7 @@ export class StudioActionContainer extends Component {
             this.render();
         };
         this.env.bus.addEventListener("ACTION_MANAGER:UPDATE", onUiUpdate);
-        owl.onWillUnmount(() =>
-            this.env.bus.removeEventListener("ACTION_MANAGER:UPDATE", onUiUpdate)
-        );
+        onWillUnmount(() => this.env.bus.removeEventListener("ACTION_MANAGER:UPDATE", onUiUpdate));
 
         const doAction = async (action, options) => {
             try {
@@ -97,7 +95,7 @@ export class StudioActionContainer extends Component {
                 model: editedAction.res_model,
                 view_id: editedAction.view_id && editedAction.view_id[0], // Not sure it is correct or desirable
             });
-            action.help = action.help && owl.markup(action.help);
+            action.help = action.help && markup(action.help);
             return action;
         }
     }

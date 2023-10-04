@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { onPatched, useEffect, useRef } from "@odoo/owl";
+import { markup, onPatched, useEffect, useRef } from "@odoo/owl";
 import {
     click,
     editInput,
@@ -1208,7 +1208,7 @@ QUnit.test("no content helper from action when no data and sample mode", async (
         resModel: "tasks",
         serverData,
         arch: `<gantt date_start="start" date_stop="stop" sample="1"/>`,
-        noContentHelp: owl.markup('<p class="hello">click to add a partner</p>'),
+        noContentHelp: markup('<p class="hello">click to add a partner</p>'),
     });
 
     assert.containsOnce(target, SELECTORS.noContentHelper);

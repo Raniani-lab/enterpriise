@@ -17,6 +17,7 @@ import {
     prepareWebClientForSpreadsheet,
 } from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
+import { onMounted } from "@odoo/owl";
 
 /** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */
 
@@ -77,7 +78,7 @@ export async function createSpreadsheetFromGraphView(params = {}) {
         setup() {
             super.setup();
             spreadsheetAction = this;
-            owl.onMounted(() => {
+            onMounted(() => {
                 def.resolve();
             });
         },

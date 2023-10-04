@@ -5,11 +5,7 @@ import { CharField, charField } from '@web/views/fields/char/char_field';
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { useService } from "@web/core/utils/hooks";
 import { humanSize } from "@web/core/utils/binary";
-
-const {
-    useRef,
-    useState,
-} = owl;
+import { useRef, useState } from "@odoo/owl";
 import { _t } from "@web/core/l10n/translation";
 
 /**

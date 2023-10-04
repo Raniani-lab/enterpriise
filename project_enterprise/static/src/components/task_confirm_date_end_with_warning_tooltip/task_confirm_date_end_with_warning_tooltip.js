@@ -2,8 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { DateTimeField, dateTimeField } from "@web/views/fields/datetime/datetime_field";
-
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 export class WarningTooltip extends Component {
     static template = "industry_fsm.warning_tooltip";

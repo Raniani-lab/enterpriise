@@ -12,8 +12,7 @@ import { DocumentsKanbanRecord } from "./documents_kanban_record";
 import { DocumentsActionHelper } from "../helper/documents_action_helper";
 import { DocumentsFileViewer } from "../helper/documents_file_viewer";
 import { useCommand } from "@web/core/commands/command_hook";
-
-const { useRef } = owl;
+import { useRef } from "@odoo/owl";
 
 export class DocumentsKanbanRenderer extends KanbanRenderer {
     static props = [...KanbanRenderer.props, "inspectedDocuments", "previewStore"];

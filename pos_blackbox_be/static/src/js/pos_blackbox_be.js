@@ -1,5 +1,5 @@
 /** @odoo-module **/
-/* global Sha1 */
+/* eslint-disable */
     import models from "point_of_sale.models";
     import { Gui } from "point_of_sale.Gui";
     import { _t } from "@web/core/l10n/translation";

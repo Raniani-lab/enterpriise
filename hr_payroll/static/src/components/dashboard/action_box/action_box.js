@@ -1,8 +1,7 @@
 /** @odoo-module **/
 
 import { useService } from "@web/core/utils/hooks";
-
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 export class PayrollDashboardActionBox extends Component {
     setup() {

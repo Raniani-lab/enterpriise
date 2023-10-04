@@ -3,7 +3,7 @@
 import { ListController } from "@web/views/list/list_controller";
 
 import { preSuperSetup, useDocumentView } from "@documents/views/hooks";
-const { useState } = owl;
+import { useState } from "@odoo/owl";
 
 export class DocumentsListController extends ListController {
     setup() {

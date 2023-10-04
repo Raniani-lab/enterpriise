@@ -3,8 +3,7 @@
 import { CheckBox } from "@web/core/checkbox/checkbox";
 import { useService, useBus } from "@web/core/utils/hooks";
 import { formatFloat } from "@web/core/utils/numbers";
-
-const { Component, useRef, onPatched } = owl;
+import { Component, useRef, onPatched } from "@odoo/owl";
 
 export default class MpsLineComponent extends Component {
 

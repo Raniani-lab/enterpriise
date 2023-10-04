@@ -17,8 +17,15 @@ import { View } from "@web/views/view";
 import { ManualBarcodeScanner } from './manual_barcode';
 import { url } from '@web/core/utils/urls';
 import { utils as uiUtils } from "@web/core/ui/ui_service";
-
-const { Component, onMounted, onPatched, onWillStart, onWillUnmount, useState, useSubEnv } = owl;
+import {
+    Component,
+    onMounted,
+    onPatched,
+    onWillStart,
+    onWillUnmount,
+    useState,
+    useSubEnv,
+} from "@odoo/owl";
 
 class StockBarcodeUnlinkButton extends Component {
     static template = "stock_barcode.UnlinkButton";

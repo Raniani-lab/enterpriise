@@ -5,7 +5,7 @@ import { ActivityRenderer } from "@mail/views/web/activity/activity_renderer";
 import { DocumentsInspector } from "../inspector/documents_inspector";
 import { DocumentsFileViewer } from "../helper/documents_file_viewer";
 
-const { useRef } = owl;
+import { useRef } from "@odoo/owl";
 
 export class DocumentsActivityRenderer extends ActivityRenderer {
     static props = {

@@ -8,8 +8,8 @@ import { FormViewDialog } from '@web/views/view_dialogs/form_view_dialog';
 import { Wysiwyg } from '@web_editor/js/wysiwyg/wysiwyg';
 import { preserveCursor, closestElement } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
 import { patch } from "@web/core/utils/patch";
+import { Component } from "@odoo/owl";
 
-const { Component } = owl;
 patch(Wysiwyg.prototype, {
     _getPowerboxOptions() {
         const options = super._getPowerboxOptions(...arguments);

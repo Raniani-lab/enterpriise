@@ -4,8 +4,7 @@ import { registry } from "@web/core/registry";
 import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
 import { throttleForAnimation } from "@web/core/utils/timing";
 import { useService } from "@web/core/utils/hooks";
-
-const { Component, onWillUpdateProps, onWillStart, useRef, useState } = owl;
+import { Component, onWillUpdateProps, onWillStart, useRef, useState } from "@odoo/owl";
 
 class KnowledgeCover extends Component {
     setup() {

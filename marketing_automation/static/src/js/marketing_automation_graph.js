@@ -3,8 +3,8 @@
 import { loadJS } from "@web/core/assets";
 import { registry } from "@web/core/registry";
 import { cookie } from "@web/core/browser/cookie";
+import { Component, onWillStart, onWillUnmount, useEffect, useRef } from "@odoo/owl";
 const fieldRegistry = registry.category("fields");
-const { Component, onWillStart, onWillUnmount, useEffect, useRef } = owl;
 
 /**
  * Inspired from the GraphView

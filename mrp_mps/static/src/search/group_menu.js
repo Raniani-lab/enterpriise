@@ -1,8 +1,7 @@
 /** @odoo-module **/
 
 import { SearchDropdownItem } from "@web/search/search_dropdown_item/search_dropdown_item";
-
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 export class GroupMenu extends Component {
     get items() {

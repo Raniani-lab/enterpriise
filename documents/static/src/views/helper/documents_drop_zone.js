@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-const { Component, useEffect, useState } = owl;
+import { Component, useEffect, useState } from "@odoo/owl";
 
 export class DocumentsDropZone extends Component {
     static props = [
@@ -32,7 +32,7 @@ export class DocumentsDropZone extends Component {
                     el.removeEventListener("scroll", scrollHandler);
                 };
             },
-            () => [this.props.parentRoot.el],
+            () => [this.props.parentRoot.el]
         );
     }
 

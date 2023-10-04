@@ -3,8 +3,7 @@
 import { registry } from "@web/core/registry";
 import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
 import { useService } from "@web/core/utils/hooks";
-
-const { Component, onWillStart } = owl;
+import { Component, onWillStart } from "@odoo/owl";
 
 export class Digipad extends Component {
     setup() {

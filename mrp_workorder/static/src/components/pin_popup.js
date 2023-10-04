@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { Dialog } from "@web/core/dialog/dialog";
-const { Component, useState, useExternalListener } = owl;
+import { Component, useState, useExternalListener } from "@odoo/owl";
 
 const INPUT_KEYS = new Set(['Delete', 'Backspace'].concat('0123456789,'.split('')));
 

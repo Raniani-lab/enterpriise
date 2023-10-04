@@ -3,8 +3,7 @@
 import { _t } from "@web/core/l10n/translation";
 // import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { Dialog } from "@web/core/dialog/dialog";
-
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 export class BackorderDialog extends Component {
     setup() {

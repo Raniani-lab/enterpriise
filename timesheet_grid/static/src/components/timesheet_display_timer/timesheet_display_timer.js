@@ -4,8 +4,7 @@ import { useService } from "@web/core/utils/hooks";
 import { formatFloatTime } from "@web/views/fields/formatters";
 import { FloatTimeField } from "@web/views/fields/float_time/float_time_field";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
-
-const { Component, useState, onWillStart, onWillDestroy, onWillUpdateProps } = owl;
+import { Component, useState, onWillStart, onWillDestroy, onWillUpdateProps } from "@odoo/owl";
 
 export class TimesheetTimerFloatTimerField extends FloatTimeField {
     get formattedValue() {

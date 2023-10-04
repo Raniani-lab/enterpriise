@@ -3,7 +3,7 @@
 import { KanbanController } from "@web/views/kanban/kanban_controller";
 
 import { preSuperSetup, useDocumentView } from "@documents/views/hooks";
-const { useState } = owl;
+import { useState } from "@odoo/owl";
 
 export class DocumentsKanbanController extends KanbanController {
     setup() {
@@ -29,7 +29,8 @@ export class DocumentsKanbanController extends KanbanController {
      */
     documentsViewHelpers() {
         return {
-            getSelectedDocumentsElements: () => this.root.el.querySelectorAll(".o_kanban_record.o_record_selected"),
+            getSelectedDocumentsElements: () =>
+                this.root.el.querySelectorAll(".o_kanban_record.o_record_selected"),
             setInspectedDocuments: (inspectedDocuments) => {
                 this.documentStates.inspectedDocuments = inspectedDocuments;
             },

@@ -17,6 +17,7 @@ import {
 import { KanbanRecord } from "@web/views/kanban/kanban_record";
 import { registry } from "@web/core/registry";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
+import { onWillRender } from "@odoo/owl";
 
 /** @type {Node} */
 let target;
@@ -320,7 +321,7 @@ QUnit.module(
                 setup() {
                     super.setup();
                     if (triggerError) {
-                        owl.onWillRender(() => {
+                        onWillRender(() => {
                             triggerError = false;
                             throw new Error("Boom");
                         });

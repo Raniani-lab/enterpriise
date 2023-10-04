@@ -5,8 +5,7 @@ import { useService } from "@web/core/utils/hooks";
 import { multiFileUpload } from "@sign/backend_components/multi_file_upload";
 import { getDataURLFromFile } from "@web/core/utils/urls";
 import { TemplateAlertDialog } from "@sign/backend_components/template_alert_dialog/template_alert_dialog";
-
-const { onWillStart, useComponent, useRef } = owl;
+import { onWillStart, useComponent, useRef } from "@odoo/owl";
 
 export function useSignViewButtons() {
     const component = useComponent();

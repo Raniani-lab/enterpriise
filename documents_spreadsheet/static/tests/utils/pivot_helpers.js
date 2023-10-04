@@ -19,6 +19,7 @@ import {
 import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 import { registry } from "@web/core/registry";
 import { fieldService } from "@web/core/field_service";
+import { onMounted } from "@odoo/owl";
 
 /** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */
 
@@ -79,7 +80,7 @@ export async function createSpreadsheetFromPivotView(params = {}) {
         setup() {
             super.setup();
             spreadsheetAction = this;
-            owl.onMounted(() => {
+            onMounted(() => {
                 def.resolve();
             });
         },

@@ -6,8 +6,7 @@ import LazyBarcodeCache from '@stock_barcode/lazy_barcode_cache';
 import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { FNC1_CHAR } from "@barcodes_gs1_nomenclature/js/barcode_parser";
-
-const { EventBus } = owl;
+import { EventBus } from "@odoo/owl";
 
 export default class BarcodeModel extends EventBus {
     constructor(resModel, resId, services) {

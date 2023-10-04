@@ -10,6 +10,7 @@ import {
     editAnySelect,
 } from "@web_studio/../tests/client_action/view_editors/view_editor_tests_utils";
 import { CodeEditor } from "@web/core/code_editor/code_editor";
+import { onMounted } from "@odoo/owl";
 
 /** @type {Node} */
 let target;
@@ -213,7 +214,7 @@ QUnit.module(
             patchWithCleanup(CodeEditor.prototype, {
                 setup() {
                     super.setup();
-                    owl.onMounted(() => xmlEditorDef.resolve());
+                    onMounted(() => xmlEditorDef.resolve());
                 },
             });
 

@@ -3,8 +3,7 @@
 import { _t } from "@web/core/l10n/translation";
 import { formatInteger } from '@web/views/fields/formatters';
 import { useService } from '@web/core/utils/hooks';
-
-const { Component, onMounted, onWillUnmount, useRef } = owl;
+import { Component, onMounted, onWillUnmount, useRef } from "@odoo/owl";
 
 export class StreamPostDashboard extends Component {
 

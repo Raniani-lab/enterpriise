@@ -22,6 +22,7 @@ import {
 import { CodeEditor } from "@web/core/code_editor/code_editor";
 import { registry } from "@web/core/registry";
 import { PivotEditorSidebar } from "@web_studio/client_action/view_editor/editors/pivot/pivot_editor";
+import { onMounted } from "@odoo/owl";
 
 const serviceRegistry = registry.category("services");
 
@@ -765,7 +766,7 @@ QUnit.module(
             patchWithCleanup(CodeEditor.prototype, {
                 setup() {
                     super.setup();
-                    owl.onMounted(() => xmlEditorDef.resolve());
+                    onMounted(() => xmlEditorDef.resolve());
                 },
             });
 

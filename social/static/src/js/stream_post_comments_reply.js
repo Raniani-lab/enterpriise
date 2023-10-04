@@ -3,9 +3,7 @@
 import { FileUploader } from "@web/views/fields/file_handler";
 import { useAutofocus, useService } from "@web/core/utils/hooks";
 import { useEmojiPicker } from "@web/core/emoji_picker/emoji_picker";
-import { useRef } from "@odoo/owl";
-
-const { Component, useState } = owl;
+import { Component, useState, useRef } from "@odoo/owl";
 
 export class StreamPostCommentsReply extends Component {
     setup() {

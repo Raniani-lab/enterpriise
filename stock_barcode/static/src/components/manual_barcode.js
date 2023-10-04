@@ -2,8 +2,7 @@
 
 import { _t } from "@web/core/l10n/translation";
 import { Dialog } from "@web/core/dialog/dialog";
-
-const { Component, onMounted, useRef, useState } = owl;
+import { Component, onMounted, useRef, useState } from "@odoo/owl";
 
 export class ManualBarcodeScanner extends Component {
     setup() {

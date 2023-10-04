@@ -9,8 +9,7 @@ import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
 import { useSetupView } from "@web/views/view_hook";
 import { PdfManager } from "@documents/owl/components/pdf_manager/pdf_manager";
 import { x2ManyCommands } from "@web/core/orm_service";
-
-const { EventBus, onWillStart, markup, useComponent, useEnv, useRef, useSubEnv } = owl;
+import { EventBus, onWillStart, markup, useComponent, useEnv, useRef, useSubEnv } from "@odoo/owl";
 
 /**
  * Controller/View hooks
@@ -108,10 +107,9 @@ export function useDocumentView(helpers) {
             action.doAction("documents.action_request_form", {
                 additionalContext: {
                     default_partner_id: props.context.default_partner_id || false,
-                    default_folder_id: env.searchModel.getSelectedFolderId() || env.searchModel.getFolders()[1].id,
-                    default_tag_ids: [
-                        x2ManyCommands.set(env.searchModel.getSelectedTagIds()),
-                    ],
+                    default_folder_id:
+                        env.searchModel.getSelectedFolderId() || env.searchModel.getFolders()[1].id,
+                    default_tag_ids: [x2ManyCommands.set(env.searchModel.getSelectedTagIds())],
                     default_res_id: props.context.default_res_id || false,
                     default_res_model: props.context.default_res_model || false,
                 },
@@ -128,9 +126,7 @@ export function useDocumentView(helpers) {
                 additionalContext: {
                     default_partner_id: props.context.default_partner_id || false,
                     default_folder_id: env.searchModel.getSelectedFolderId(),
-                    default_tag_ids: [
-                        x2ManyCommands.set(env.searchModel.getSelectedTagIds()),
-                    ],
+                    default_tag_ids: [x2ManyCommands.set(env.searchModel.getSelectedTagIds())],
                     default_res_id: props.context.default_res_id || false,
                     default_res_model: props.context.default_res_model || false,
                 },
@@ -183,7 +179,9 @@ export function useDocumentView(helpers) {
                       ]
                     : false,
             };
-            const vals = helpers?.sharePopupAction ? await helpers.sharePopupAction(defaultVals) : defaultVals;
+            const vals = helpers?.sharePopupAction
+                ? await helpers.sharePopupAction(defaultVals)
+                : defaultVals;
             const act = await orm.call("documents.share", "open_share_popup", [vals]);
             const shareResId = act.res_id;
             let saved = false;
@@ -197,12 +195,9 @@ export function useDocumentView(helpers) {
                         // Copy the share link to the clipboard
                         navigator.clipboard.writeText(record.data.full_url);
                         // Show a notification to the user about the copy to clipboard
-                        notification.add(
-                            _t("The share url has been copied to your clipboard."),
-                            {
-                                type: "success",
-                            }
-                        );
+                        notification.add(_t("The share url has been copied to your clipboard."), {
+                            type: "success",
+                        });
                     },
                 },
                 {
@@ -440,8 +435,9 @@ function useDocumentsViewFileUpload() {
     });
 
     const uploadFiles = async ({ files, folderId, recordId, context, tagIds }) => {
-        const validFiles = component.maxUploadSize ?
-            [...files].filter((file) => file.size <= component.maxUploadSize) : files;
+        const validFiles = component.maxUploadSize
+            ? [...files].filter((file) => file.size <= component.maxUploadSize)
+            : files;
         if (validFiles.length !== 0) {
             await fileUpload.upload("/documents/upload_attachment", validFiles, {
                 buildFormData: (formData) => {
@@ -517,7 +513,7 @@ export function useTriggerRule() {
                 documentIds,
             ]);
             if (result && typeof result === "object") {
-                if (result.hasOwnProperty("warning")) {
+                if (Object.prototype.hasOwnProperty.call(result, "warning")) {
                     notification.add(
                         markup(
                             `<ul>${result["warning"]["documents"]

@@ -6,6 +6,7 @@ import { patch } from "@web/core/utils/patch";
 
 import { StudioApproval } from "@web_studio/approval/studio_approval";
 import { useApproval } from "@web_studio/approval/approval_hook";
+import { useSubEnv } from "@odoo/owl";
 
 patch(ViewCompiler.prototype, {
     compileButton(el, params) {
@@ -35,7 +36,7 @@ patch(ViewButton.prototype, {
             });
 
             const onClickViewButton = this.env.onClickViewButton;
-            owl.useSubEnv({
+            useSubEnv({
                 onClickViewButton: (params) => {
                     if (params.clickParams.type === "action") {
                         // if the button is an action then we check the approval client side

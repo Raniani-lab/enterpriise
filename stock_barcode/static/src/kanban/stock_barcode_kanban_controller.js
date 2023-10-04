@@ -2,8 +2,7 @@
 
 import { KanbanController } from '@web/views/kanban/kanban_controller';
 import { bus } from "@web/legacy/js/services/core";
-
-const { onMounted, onWillUnmount } = owl;
+import { onMounted, onWillUnmount } from "@odoo/owl";
 
 export class StockBarcodeKanbanController extends KanbanController {
     setup() {

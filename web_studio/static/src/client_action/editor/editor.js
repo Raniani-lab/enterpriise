@@ -1,5 +1,5 @@
 /** @odoo-module **/
-import { Component, EventBus, onWillDestroy, useSubEnv, xml } from "@odoo/owl";
+import { Component, EventBus, onWillDestroy, useState, useSubEnv, xml } from "@odoo/owl";
 
 import { registry } from "@web/core/registry";
 import { actionService } from "@web/webclient/actions/action_service";
@@ -96,7 +96,7 @@ export class Editor extends Component {
         this.actionService = useService("action");
         this.rpc = useService("rpc");
 
-        this.state = owl.useState({ actionContainerId: 1 });
+        this.state = useState({ actionContainerId: 1 });
         useBus(this.studio.bus, "UPDATE", async () => {
             this.state.actionContainerId++;
         });

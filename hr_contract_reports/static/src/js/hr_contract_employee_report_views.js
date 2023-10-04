@@ -4,10 +4,9 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { graphView } from "@web/views/graph/graph_view";
 import { pivotView } from "@web/views/pivot/pivot_view";
+import { useComponent } from "@odoo/owl";
 
 const viewRegistry = registry.category("views");
-
-const { useComponent } = owl;
 
 function useOpenView() {
     const comp = useComponent();

@@ -4,8 +4,7 @@ import { registry } from "@web/core/registry";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
 
 import { SocialPostFormatterMixin } from "../social_post_formatter_mixin";
-
-const { Component, markup } = owl;
+import { Component, markup } from "@odoo/owl";
 
 export class PostFormatterField extends SocialPostFormatterMixin(Component) {
     get formattedPost() {

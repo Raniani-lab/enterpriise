@@ -1,8 +1,7 @@
 /* @odoo-module **/
 
 import { FileViewer } from "@documents/attachments/document_file_viewer";
-
-const { Component, useEffect, useRef, useState } = owl;
+import { Component, useEffect, useRef, useState } from "@odoo/owl";
 
 export class DocumentsFileViewer extends Component {
     static props = [

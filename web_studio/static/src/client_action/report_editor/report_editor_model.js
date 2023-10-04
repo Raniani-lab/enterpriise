@@ -1,6 +1,15 @@
 /** @odoo-module */
 import { Reactive } from "@web_studio/client_action/utils";
-import { EventBus, markRaw, onWillStart, reactive, toRaw, useState, useSubEnv } from "@odoo/owl";
+import {
+    EventBus,
+    markRaw,
+    onWillStart,
+    reactive,
+    toRaw,
+    useEnv,
+    useState,
+    useSubEnv,
+} from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { omit, pick } from "@web/core/utils/objects";
 import { _t } from "@web/core/l10n/translation";
@@ -326,7 +335,7 @@ export function useReportEditorModel() {
             return [name, useService(name)];
         })
     );
-    const env = owl.useEnv();
+    const env = useEnv();
     services.studio = { ...env.services.studio };
     services.unProtectedRpc = env.services.rpc;
     services.unProtectedNotification = env.services.notification;

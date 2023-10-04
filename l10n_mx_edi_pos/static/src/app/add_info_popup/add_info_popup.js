@@ -2,8 +2,7 @@
 
 import { AbstractAwaitablePopup } from "@point_of_sale/app/popup/abstract_awaitable_popup";
 import { usePos } from "@point_of_sale/app/store/pos_hook";
-
-const { useState } = owl;
+import { useState } from "@odoo/owl";
 
 export class AddInfoPopup extends AbstractAwaitablePopup {
     static template = "l10n_mx_edi_pos.AddInfoPopup"

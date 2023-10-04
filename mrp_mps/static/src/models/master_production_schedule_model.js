@@ -3,8 +3,7 @@
 import { _t } from "@web/core/l10n/translation";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { Mutex } from "@web/core/utils/concurrency";
-
-const { EventBus } = owl;
+import { EventBus } from "@odoo/owl";
 
 export class MasterProductionScheduleModel extends EventBus {
     constructor(params, services) {

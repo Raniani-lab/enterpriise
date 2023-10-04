@@ -5,8 +5,7 @@ import { CANCEL_GLOBAL_CLICK, StreamPostKanbanRecord } from '@social/js/stream_p
 import { StreamPostCommentsYoutube } from './stream_post_comments';
 
 import { patch } from "@web/core/utils/patch";
-
-const { useEffect } = owl;
+import { useEffect } from "@odoo/owl";
 
 patch(StreamPostKanbanRecord.prototype, {
 

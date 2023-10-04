@@ -2,6 +2,7 @@
 import { sortBy } from "@web/core/utils/arrays";
 import { registry } from "@web/core/registry";
 import { SIDEBAR_SAFE_FIELDS } from "@web_studio/client_action/view_editor/editors/sidebar_safe_fields";
+import { useComponent, useEffect, useRef } from "@odoo/owl";
 
 export const hookPositionTolerance = 50;
 
@@ -70,9 +71,9 @@ export function cleanClickedElements(mainEl) {
 
 export function useStudioRef(refName = "studioRef", onClick) {
     // create two hooks and call them here?
-    const comp = owl.useComponent();
-    const ref = owl.useRef(refName);
-    owl.useEffect(
+    const comp = useComponent();
+    const ref = useRef(refName);
+    useEffect(
         (el) => {
             if (el) {
                 el.setAttribute("data-studio-xpath", comp.props.studioXpath);
@@ -83,7 +84,7 @@ export function useStudioRef(refName = "studioRef", onClick) {
 
     if (onClick) {
         const handler = onClick.bind(comp);
-        owl.useEffect(
+        useEffect(
             (el) => {
                 if (el) {
                     el.addEventListener("click", handler, { capture: true });

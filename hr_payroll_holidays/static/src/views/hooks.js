@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { useService } from "@web/core/utils/hooks";
-const { Component, onWillStart, xml } = owl;
+import { Component, onWillStart, xml } from "@odoo/owl";
 
 export class TimeOffToDeferWarning extends Component {
     setup() {

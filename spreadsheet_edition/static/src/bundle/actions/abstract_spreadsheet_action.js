@@ -1,5 +1,13 @@
 /** @odoo-module **/
-import { onMounted, onWillStart, useState, Component, useSubEnv, onWillUnmount } from "@odoo/owl";
+import {
+    onMounted,
+    onWillStart,
+    useState,
+    Component,
+    useSubEnv,
+    onWillUnmount,
+    status,
+} from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { useSetupAction } from "@web/webclient/actions/action_hook";
 import { _t } from "@web/core/l10n/translation";
@@ -113,7 +121,7 @@ export class AbstractSpreadsheetAction extends Component {
         if (!this.props.state) {
             await Promise.all([this._setupPreProcessingCallbacks()]);
         }
-        if (owl.status(this) === "destroyed") {
+        if (status(this) === "destroyed") {
             return;
         }
         const [record] = await Promise.all([this._fetchData()]);

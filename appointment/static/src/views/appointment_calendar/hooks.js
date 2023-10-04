@@ -1,8 +1,7 @@
 /** @odoo-module **/
 
 import { localization } from "@web/core/l10n/localization";
-
-const { useComponent, useEffect, useEnv, useState } = owl;
+import { useComponent, useEffect, useEnv, useState } from "@odoo/owl";
 
 /**
  * Common code between common and year renderer for our calendar.

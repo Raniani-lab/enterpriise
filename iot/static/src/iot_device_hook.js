@@ -2,8 +2,7 @@
 
 import { useService } from '@web/core/utils/hooks';
 import { DeviceController } from './device_controller';
-
-const { useEffect } = owl;
+import { useEffect } from "@odoo/owl";
 
 /**
  * Use this hook to be able to interact with an iot device.

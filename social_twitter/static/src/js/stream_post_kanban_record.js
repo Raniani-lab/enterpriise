@@ -8,8 +8,7 @@ import { StreamPostTwitterQuote } from './stream_post_twitter_quote';
 import { patch } from "@web/core/utils/patch";
 import { sprintf } from '@web/core/utils/strings';
 import { useService } from '@web/core/utils/hooks';
-
-const { useEffect } = owl;
+import { useEffect } from "@odoo/owl";
 
 patch(StreamPostKanbanRecord.prototype, {
 

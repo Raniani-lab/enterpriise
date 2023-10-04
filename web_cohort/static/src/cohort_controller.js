@@ -8,12 +8,12 @@ import { useSetupView } from "@web/views/view_hook";
 import { SearchBar } from "@web/search/search_bar/search_bar";
 import { CogMenu } from "@web/search/cog_menu/cog_menu";
 
-import { Component, useRef } from "@odoo/owl";
+import { Component, toRaw, useRef } from "@odoo/owl";
 
 export class CohortController extends Component {
     setup() {
         this.actionService = useService("action");
-        this.model = useModelWithSampleData(this.props.Model, owl.toRaw(this.props.modelParams));
+        this.model = useModelWithSampleData(this.props.Model, toRaw(this.props.modelParams));
 
         useSetupView({
             rootRef: useRef("root"),

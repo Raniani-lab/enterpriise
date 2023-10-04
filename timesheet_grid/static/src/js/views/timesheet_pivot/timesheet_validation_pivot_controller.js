@@ -2,8 +2,7 @@
 
 import { PivotController } from "@web/views/pivot/pivot_controller";
 import { useService } from "@web/core/utils/hooks";
-
-const { onWillStart } = owl;
+import { onWillStart } from "@odoo/owl";
 
 export class TimesheetValidationPivotController extends PivotController {
     setup() {

@@ -5,7 +5,7 @@ import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { url } from "@web/core/utils/urls";
 import { fileTypeMagicWordMap } from "@web/views/fields/image/image_field";
-const { Component, useEffect, useRef } = owl;
+import { Component, useEffect, useRef } from "@odoo/owl";
 
 class DocumentViewer extends Component {
 

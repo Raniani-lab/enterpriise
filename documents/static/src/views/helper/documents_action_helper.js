@@ -2,8 +2,7 @@
 
 import { useService } from "@web/core/utils/hooks";
 import { Domain } from "@web/core/domain";
-
-const { Component, onWillStart, onWillUpdateProps, useState } = owl;
+import { Component, onWillStart, onWillUpdateProps, useState } from "@odoo/owl";
 
 export class DocumentsActionHelper extends Component {
     static props = [
@@ -27,17 +26,24 @@ export class DocumentsActionHelper extends Component {
     async updateShareInformation() {
         this.state.mailTo = undefined;
         // Only load data if we are in a single folder.
-        let domain = this.env.searchModel.domain.filter((leaf) => Array.isArray(leaf) && leaf.includes("folder_id"));
+        let domain = this.env.searchModel.domain.filter(
+            (leaf) => Array.isArray(leaf) && leaf.includes("folder_id")
+        );
         if (domain.length !== 1) {
             return;
         }
         // make sure we have a mail.alias configured
-        domain = Domain.and([domain, [['alias_name', '!=', false]]]).toList();
+        domain = Domain.and([domain, [["alias_name", "!=", false]]]).toList();
         if (this.hasShareReadAccessRights === undefined) {
-            this.hasShareReadAccessRights = await this.orm.call("documents.share", "check_access_rights", [], {
-                operation: "read",
-                raise_exception: false,
-            });
+            this.hasShareReadAccessRights = await this.orm.call(
+                "documents.share",
+                "check_access_rights",
+                [],
+                {
+                    operation: "read",
+                    raise_exception: false,
+                }
+            );
         }
         if (!this.hasShareReadAccessRights) {
             return;

@@ -9,8 +9,8 @@ import { useX2ManyCrud, useOpenX2ManyRecord } from "@web/views/fields/relational
 import { X2ManyField, x2ManyField } from "@web/views/fields/x2many/x2many_field";
 import { KanbanRecord } from "@web/views/kanban/kanban_record";
 import { KanbanRenderer } from "@web/views/kanban/kanban_renderer";
+import { useEffect, useRef, useSubEnv } from "@odoo/owl";
 
-const { useEffect, useRef, useSubEnv } = owl;
 const fieldRegistry = registry.category("fields");
 
 

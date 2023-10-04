@@ -32,7 +32,7 @@ import { start } from "@mail/../tests/helpers/test_utils";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { RPCError } from "@web/core/network/rpc_service";
 import { setupManager } from "@mail/../tests/helpers/webclient_setup";
-import { EventBus } from "@odoo/owl";
+import { Component, EventBus, onMounted, xml } from "@odoo/owl";
 import { fieldService } from "@web/core/field_service";
 import { Setting } from "@web/views/form/setting/setting";
 
@@ -388,7 +388,7 @@ QUnit.module("View Editors", (hooks) => {
         patchWithCleanup(ImageField.prototype, {
             setup() {
                 super.setup();
-                owl.onMounted(() => {
+                onMounted(() => {
                     assert.step(
                         `image, width: ${this.props.width}, height: ${this.props.height}, previewImage: ${this.props.previewImage}`
                     );
@@ -3026,8 +3026,8 @@ QUnit.module("View Editors", (hooks) => {
     );
 
     QUnit.test("X2Many field widgets not using subviews", async function (assert) {
-        class NoSubView extends owl.Component {
-            static template = owl.xml`<div>nosubview <t t-esc="this.props.record.fields[props.name].type"/></div>`;
+        class NoSubView extends Component {
+            static template = xml`<div>nosubview <t t-esc="this.props.record.fields[props.name].type"/></div>`;
         }
         registry.category("fields").add("nosubview", {
             component: NoSubView,
@@ -3456,7 +3456,7 @@ QUnit.module("View Editors", (hooks) => {
                 setup() {
                     super.setup();
                     const record = this.props.record;
-                    owl.onMounted(() => {
+                    onMounted(() => {
                         assert.step(
                             `widget Dependency: ${JSON.stringify(record.fields.is_dep)} : ${
                                 record.data.is_dep
@@ -3511,8 +3511,8 @@ QUnit.module("View Editors", (hooks) => {
     );
 
     QUnit.test("entering x2many with view widget", async (assert) => {
-        class MyWidget extends owl.Component {}
-        MyWidget.template = owl.xml`<div class="myWidget" />`;
+        class MyWidget extends Component {}
+        MyWidget.template = xml`<div class="myWidget" />`;
         const myWidget = {
             component: MyWidget,
         };

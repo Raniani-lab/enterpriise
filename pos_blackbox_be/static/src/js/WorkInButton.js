@@ -5,8 +5,7 @@ import { useService } from "@web/core/utils/hooks";
     import PosComponent from "point_of_sale.PosComponent";
     import ProductScreen from "point_of_sale.ProductScreen";
     import Registries from "point_of_sale.Registries";
-
-    const { onWillStart, useState } = owl;
+    import { onWillStart, useState } from "@odoo/owl";
 
     class WorkInButton extends PosComponent {
         // TODO: add the clock in/out ticket and push it to the blackbox.

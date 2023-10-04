@@ -5,8 +5,7 @@ import { useAutofocus } from "@web/core/utils/hooks";
 import { archParseBoolean } from '@web/views/utils';
 import { formatFloat } from "@web/core/utils/numbers";
 import { FloatField, floatField } from '@web/views/fields/float/float_field';
-
-const { useState, useRef, useEffect } = owl;
+import { useState, useRef, useEffect } from "@odoo/owl";
 
 export class FsmProductQuantity extends FloatField {
     setup() {

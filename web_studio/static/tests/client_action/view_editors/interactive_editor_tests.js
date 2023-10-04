@@ -23,6 +23,7 @@ import { CodeEditor } from "@web/core/code_editor/code_editor";
 import { registry } from "@web/core/registry";
 import { charField } from "@web/views/fields/char/char_field";
 import { COMPUTED_DISPLAY_OPTIONS } from "@web_studio/client_action/view_editor/interactive_editor/properties/field_properties/field_type_properties";
+import { onMounted } from "@odoo/owl";
 
 /* global ace */
 
@@ -782,7 +783,7 @@ QUnit.module("View Editors", () => {
             patchWithCleanup(CodeEditor.prototype, {
                 setup() {
                     super.setup();
-                    owl.onMounted(() => def.resolve());
+                    onMounted(() => def.resolve());
                 },
                 get aceTheme() {
                     return false;
@@ -861,7 +862,7 @@ QUnit.module("View Editors", () => {
             patchWithCleanup(CodeEditor.prototype, {
                 setup() {
                     super.setup();
-                    owl.onMounted(() => def.resolve());
+                    onMounted(() => def.resolve());
                 },
                 get aceTheme() {
                     return false;

@@ -6,8 +6,7 @@ import { useBus } from "@web/core/utils/hooks";
 
 import { formView } from "@web/views/form/form_view";
 import { FormController } from "@web/views/form/form_controller";
-
-const { useRef } = owl;
+import { useRef } from "@odoo/owl";
 
 export class WorkorderFormController extends FormController {
     setup() {

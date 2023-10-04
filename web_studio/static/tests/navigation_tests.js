@@ -31,6 +31,7 @@ import { StudioView } from "@web_studio/client_action/view_editor/studio_view";
 import { ViewEditor } from "@web_studio/client_action/view_editor/view_editor";
 import { StudioClientAction } from "@web_studio/client_action/studio_client_action";
 import { ListEditorRenderer } from "@web_studio/client_action/view_editor/editors/list/list_editor_renderer";
+import { onMounted } from "@odoo/owl";
 
 // -----------------------------------------------------------------------------
 // Tests
@@ -264,7 +265,7 @@ QUnit.module("Studio", (hooks) => {
         const unpatch = patch(StudioView.prototype, {
             setup() {
                 super.setup();
-                owl.onMounted(() => {
+                onMounted(() => {
                     prom.resolve();
                 });
             },

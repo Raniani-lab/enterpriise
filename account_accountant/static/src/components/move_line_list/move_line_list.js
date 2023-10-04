@@ -1,7 +1,5 @@
 /** @odoo-module **/
 
-const { useState } = owl;
-
 import { AttachmentView } from "@mail/core/common/attachment_view";
 
 import { registry } from "@web/core/registry";
@@ -10,6 +8,7 @@ import { listView } from "@web/views/list/list_view";
 import { ListRenderer } from "@web/views/list/list_renderer";
 import { ListController } from "@web/views/list/list_controller";
 import { SIZES } from '@web/core/ui/ui_service';
+import { useState } from "@odoo/owl";
 
 export class AccountMoveLineListController extends ListController {
     setup() {

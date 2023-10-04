@@ -2,8 +2,7 @@
 
 import { Dialog } from '@web/core/dialog/dialog';
 import { _t } from "@web/core/l10n/translation";
-
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 export class IoTConnectionErrorDialog extends Component {}
 IoTConnectionErrorDialog.template = 'iot.IoTConnectionErrorDialog';

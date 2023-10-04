@@ -3,8 +3,7 @@
 import { registry } from "@web/core/registry";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
 import { useService } from "@web/core/utils/hooks";
-
-const { Component, onWillStart } = owl;
+import { Component, onWillStart } from "@odoo/owl";
 
 export class SetReservedQuantityButton extends Component {
     setup() {

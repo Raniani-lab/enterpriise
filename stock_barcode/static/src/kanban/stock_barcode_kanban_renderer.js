@@ -5,8 +5,7 @@ import { KanbanRenderer } from '@web/views/kanban/kanban_renderer';
 import { useService } from '@web/core/utils/hooks';
 import * as BarcodeScanner from '@web/webclient/barcode/barcode_scanner';
 import { bus } from "@web/legacy/js/services/core";
-
-const { onWillStart } = owl;
+import { onWillStart } from "@odoo/owl";
 
 export class StockBarcodeKanbanRenderer extends KanbanRenderer {
     setup() {

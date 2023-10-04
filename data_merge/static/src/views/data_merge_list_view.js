@@ -6,6 +6,7 @@ import { registry } from '@web/core/registry';
 import { listView } from '@web/views/list/list_view';
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { useService } from "@web/core/utils/hooks";
+import { useSubEnv } from "@odoo/owl";
 
 export class DataMergeListModel extends listView.Model {}
 export class DataMergeListRecord extends DataMergeListModel.Record {
@@ -28,7 +29,7 @@ export class DataMergeListController extends DataCleaningCommonListController {
         this.notificationService = useService("notification");
         const onClickViewButton = this.env.onClickViewButton;
 
-        owl.useSubEnv({
+        useSubEnv({
             onClickViewButton: (params) => {
                 const paramsName = params.clickParams.name;
                 const ResParams = params.getResParams();

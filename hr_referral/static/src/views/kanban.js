@@ -5,8 +5,7 @@ import { useService } from "@web/core/utils/hooks";
 
 import { kanbanView } from '@web/views/kanban/kanban_view';
 import { KanbanRenderer } from '@web/views/kanban/kanban_renderer';
-
-const { onWillStart } = owl;
+import { onWillStart } from "@odoo/owl";
 
 export class ReferralKanbanRenderer extends KanbanRenderer {
     setup() {

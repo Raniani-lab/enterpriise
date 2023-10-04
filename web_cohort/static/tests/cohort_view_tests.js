@@ -22,6 +22,7 @@ import {
 } from "@web/../tests/search/helpers";
 import { browser } from "@web/core/browser/browser";
 import { makeFakeLocalizationService } from "@web/../tests/helpers/mock_services";
+import { markup } from "@odoo/owl";
 
 const serviceRegistry = registry.category("services");
 
@@ -755,7 +756,7 @@ QUnit.module("Views", (hooks) => {
             resModel: "subscription",
             serverData,
             context: { search_default_small_than_0: true },
-            noContentHelp: owl.markup('<p class="abc">click to add a foo</p>'),
+            noContentHelp: markup('<p class="abc">click to add a foo</p>'),
             config: {
                 views: [[false, "search"]],
             },
@@ -785,7 +786,7 @@ QUnit.module("Views", (hooks) => {
             resModel: "subscription",
             serverData,
             context: { search_default_small_than_0: true },
-            noContentHelp: owl.markup('<p class="abc">click to add a foo</p>'),
+            noContentHelp: markup('<p class="abc">click to add a foo</p>'),
             config: {
                 views: [[false, "search"]],
             },
@@ -819,7 +820,7 @@ QUnit.module("Views", (hooks) => {
             type: "cohort",
             resModel: "subscription",
             serverData,
-            noContentHelp: owl.markup('<p class="abc">click to add a foo</p>'),
+            noContentHelp: markup('<p class="abc">click to add a foo</p>'),
             config: {
                 views: [[false, "search"]],
             },

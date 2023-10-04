@@ -4,8 +4,7 @@ import { registry } from '@web/core/registry';
 import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
 
 import { useOpenChat } from "@mail/core/web/open_chat_hook";
-
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 export class AppraisalManagerChat extends Component {
     setup() {

@@ -3,9 +3,9 @@
 import { MrpTimer } from "@mrp/widgets/timer";
 import { useService } from "@web/core/utils/hooks";
 import { parseDate } from "@web/core/l10n/dates";
+import { Component, onWillStart } from "@odoo/owl";
 
 const { DateTime } = luxon;
-const { Component, onWillStart } = owl;
 
 export class WorkingEmployeePopup extends Component {
     setup() {

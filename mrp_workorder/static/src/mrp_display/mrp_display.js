@@ -14,8 +14,7 @@ import { SelectionPopup } from "@mrp_workorder/components/popup";
 import { PinPopup } from "@mrp_workorder/components/pin_popup";
 import { useConnectedEmployee } from "@mrp_workorder/views/hooks/employee_hooks";
 import { SearchBar } from "@web/search/search_bar/search_bar";
-
-const { Component, onWillDestroy, onWillStart, useState, useSubEnv } = owl;
+import { Component, onWillDestroy, onWillStart, useState, useSubEnv } from "@odoo/owl";
 
 export class MrpDisplay extends Component {
     static template = "mrp_workorder.MrpDisplay";

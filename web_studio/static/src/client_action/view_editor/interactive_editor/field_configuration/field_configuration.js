@@ -1,5 +1,5 @@
 /** @odoo-module */
-import { Component, useState } from "@odoo/owl";
+import { Component, useState, xml } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
@@ -191,7 +191,7 @@ class RelatedChainBuilderModel {
 }
 
 export class RelatedChainBuilder extends Component {
-    static template = owl.xml`<ModelFieldSelector resModel="props.resModel" path="fieldChain" readonly="false" filter.bind="filter" update.bind="updateChain" />`;
+    static template = xml`<ModelFieldSelector resModel="props.resModel" path="fieldChain" readonly="false" filter.bind="filter" update.bind="updateChain" />`;
     static components = { ModelFieldSelector };
     static props = {
         resModel: { type: String },

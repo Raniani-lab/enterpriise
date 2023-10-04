@@ -4,8 +4,7 @@ import { _t } from "@web/core/l10n/translation";
 import { ControlPanel } from "@web/search/control_panel/control_panel";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-
-const { Component, onWillStart, onWillRender } = owl;
+import { Component, onWillStart, onWillRender } from "@odoo/owl";
 
 export class AccountImportGuide extends Component {
     setup() {

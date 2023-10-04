@@ -21,8 +21,8 @@ import { spreadsheetLinkMenuCellService } from "@spreadsheet/ir_ui_menu/index";
 
 import { loadJS } from "@web/core/assets";
 import { makeFakeSpreadsheetService } from "@spreadsheet_edition/../tests/utils/collaborative_helpers";
+import { Component } from "@odoo/owl";
 
-const { Component } = owl;
 const serviceRegistry = registry.category("services");
 const favoriteMenuRegistry = registry.category("favoriteMenu");
 

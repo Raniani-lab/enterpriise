@@ -4,8 +4,7 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { WithSearch } from "@web/search/with_search/with_search";
 import { MrpDisplay } from "@mrp_workorder/mrp_display/mrp_display";
-
-const { Component, onWillStart } = owl;
+import { Component, onWillStart } from "@odoo/owl";
 
 // from record.js
 const defaultActiveField = { attrs: {}, options: {}, domain: "[]", string: "" };

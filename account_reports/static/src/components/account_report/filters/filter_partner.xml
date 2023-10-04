@@ -8,16 +8,12 @@
 
             <div class="dropdown-item">
                 <label>Partners</label>
-                <Record t-props="recordProps('Partners', 'res.partner', 'partner_ids')" t-slot-scope="data">
-                    <Many2ManyTagsField id="'record_data'" name="'record_data'" record="data.record"/>
-                </Record>
+                <MultiRecordSelector t-props="getMultiRecordSelectorProps('res.partner', 'partner_ids')"/>
             </div>
 
             <div class="dropdown-item">
                 <label>Tags</label>
-                <Record t-props="recordProps('Tags', 'res.partner.category', 'partner_categories')" t-slot-scope="data">
-                    <Many2ManyTagsField id="'record_data'" name="'record_data'" record="data.record"/>
-                </Record>
+                <MultiRecordSelector t-props="getMultiRecordSelectorProps('res.partner.category', 'partner_categories')"/>
             </div>
         </Dropdown>
     </t>

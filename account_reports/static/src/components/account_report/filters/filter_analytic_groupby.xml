@@ -8,16 +8,12 @@
 
             <div class="dropdown-item">
                 <label>Accounts</label>
-                <Record t-props="recordProps('Analytic accounts', 'account.analytic.account', 'analytic_accounts_groupby')" t-slot-scope="data">
-                    <Many2ManyTagsField id="'record_data'" name="'record_data'" record="data.record"/>
-                </Record>
+                <MultiRecordSelector t-props="getMultiRecordSelectorProps('account.analytic.account', 'analytic_accounts_groupby')"/>
             </div>
 
             <div class="dropdown-item">
                 <label>Plans</label>
-                <Record t-props="recordProps('Analytic plans', 'account.analytic.plan', 'analytic_plans_groupby')" t-slot-scope="data">
-                    <Many2ManyTagsField id="'record_data'" name="'record_data'" record="data.record"/>
-                </Record>
+                <MultiRecordSelector t-props="getMultiRecordSelectorProps('account.analytic.plan', 'analytic_plans_groupby')"/>
             </div>
         </Dropdown>
     </t>

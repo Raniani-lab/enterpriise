@@ -9,8 +9,7 @@ import { WarningDialog } from "@web/core/errors/error_dialogs";
 import { DateTimeInput } from '@web/core/datetime/datetime_input';
 import { Dropdown } from "@web/core/dropdown/dropdown";
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { Many2ManyTagsField } from "@web/views/fields/many2many_tags/many2many_tags_field";
-import { Record } from "@web/views/record";
+import { MultiRecordSelector } from "@web/core/record_selectors/multi_record_selector";
 
 const { DateTime } = luxon;
 
@@ -21,8 +20,7 @@ export class AccountReportFilters extends Component {
         DateTimeInput,
         Dropdown,
         DropdownItem,
-        Many2ManyTagsField,
-        Record,
+        MultiRecordSelector,
     };
 
     setup() {
@@ -190,27 +188,12 @@ export class AccountReportFilters extends Component {
     //------------------------------------------------------------------------------------------------------------------
     // Records
     //------------------------------------------------------------------------------------------------------------------
-    recordProps(string, relation, optionKey) {
-        const fields = {
-            record_data: {
-                string: _t(string),
-                relation: relation,
-                type: "many2many",
-                related: {
-                    fields: { display_name: { type: "char" } },
-                    activeFields: { display_name: { type: "char" } },
-                },
-            },
-        };
-
+    getMultiRecordSelectorProps(resModel, optionKey) {
         return {
-            fields: fields,
-            values: {
-                record_data: this.controller.options[optionKey],
-            },
-            activeFields: fields,
-            onRecordChanged: async (record) => {
-                await this.updateFilter(optionKey, record.data.record_data.currentIds);
+            resModel,
+            resIds: this.controller.options[optionKey],
+            update: (resIds) => {
+                this.updateFilter(optionKey, resIds);
             },
         };
     }

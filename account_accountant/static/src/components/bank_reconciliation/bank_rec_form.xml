@@ -364,7 +364,7 @@
                                     readonly="readonly"
                                     canOpen="false"
                                     canQuickCreate="false"
-                                    domain="[['deprecated', '=', false], ['account_type', '!=', 'asset_cash'], ['company_id', '=', data.company_id[0]]]"
+                                    domain="[['deprecated', '=', false], ['account_type', '!=', 'asset_cash'], ['company_id', 'parent_of', data.company_id[0]]]"
                                 />
                             </div>
                         </div>

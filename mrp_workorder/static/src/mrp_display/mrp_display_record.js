@@ -304,6 +304,7 @@ export class MrpDisplayRecord extends Component {
         const params = {
             body: record.data.note,
             record,
+            reload: this.env.reload.bind(this),
             title: record.data.title,
             worksheetData,
             checkInstruction: this.record.operation_note,

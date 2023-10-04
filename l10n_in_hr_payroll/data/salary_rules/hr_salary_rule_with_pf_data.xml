@@ -86,7 +86,7 @@ result = bonus_base * worked_days_ratio
         <field name="category_id" ref="l10n_in_hr_payroll.LEAVE"/>
         <field name="sequence" eval="101"/>
         <field name="condition_select">python</field>
-        <field name="amount_python_compute">result = contract.l10n_in_leave_allowance</field>
+        <field name="condition_python">result = contract.l10n_in_leave_allowance</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">result = contract.l10n_in_leave_allowance</field>
         <field name="struct_id" ref="l10n_in_hr_payroll.structure_with_pf"/>

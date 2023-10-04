@@ -154,9 +154,6 @@ class AssetsReportCustomHandler(models.AbstractModel):
         hierarchy_activated = (previous_options or {}).get('hierarchy', True)
         options['hierarchy'] = has_account_group and hierarchy_activated or False
 
-        # Automatically unfold the report when printing it or not using prefix groups, unless some specific lines have been unfolded
-        options['unfold_all'] = (options['export_mode'] == 'print' and not options.get('unfolded_lines')) or (report.filter_unfold_all and (previous_options or {}).get('unfold_all', not report.prefix_groups_threshold))
-
     def _with_context_company2code2account(self, report):
         if self.env.context.get('company2code2account') is not None:
             return report

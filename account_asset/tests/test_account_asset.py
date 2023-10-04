@@ -2286,6 +2286,7 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         # No prefix group, group by account
         options = self._generate_options(report, '2021-01-01', '2021-12-31', default_options={'assets_groupby_account': True})
+        options['unfold_all'] = True
         self.assertLinesValues(
             # pylint: disable=C0326
             report._get_lines(options),
@@ -2304,6 +2305,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         report.prefix_groups_threshold = 3
         # Prefix group, no group by account
         options = self._generate_options(report, '2021-01-01', '2021-12-31', default_options={'assets_groupby_account': False, 'unfold_all': True})
+        options['unfold_all'] = True
         self.assertLinesValues(
             # pylint: disable=C0326
             report._get_lines(options),
@@ -2322,6 +2324,7 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         # Prefix group, group by account
         options = self._generate_options(report, '2021-01-01', '2021-12-31', default_options={'assets_groupby_account': True, 'unfold_all': True})
+        options['unfold_all'] = True
         self.assertLinesValues(
             # pylint: disable=C0326
             report._get_lines(options),

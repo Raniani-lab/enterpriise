@@ -17,7 +17,7 @@ patch(CustomFavoriteItem.prototype, {
         return (
             this.env.searchModel &&
             this.env.searchModel._context &&
-            this.env.searchModel._context.knowledge_embedded_view_framework
+            this.env.searchModel._context.knowledgeEmbeddedViewId
         );
     },
 });

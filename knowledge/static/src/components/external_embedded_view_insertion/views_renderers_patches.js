@@ -116,9 +116,6 @@ const EmbeddedViewRendererPatch = () => ({
         const fns = this.env.__getContext__.callbacks;
         const localContext = Object.assign({}, ...fns.map(fn => fn()));
         Object.assign(context, localContext);
-        Object.assign(context, {
-            knowledge_embedded_view_framework: 'owl'
-        });
         return context;
     },
     /**

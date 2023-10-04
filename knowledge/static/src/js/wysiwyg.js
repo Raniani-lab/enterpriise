@@ -300,7 +300,6 @@ patch(Wysiwyg.prototype, {
         context={}, additionalViewProps=undefined
     ) {
         const actionWindow = actWindowXMLId ? { action_xml_id: actWindowXMLId } : { act_window: actWindowObject };
-        context.knowledge_embedded_view_framework = 'owl';
         const props = {
             ...actionWindow,
             display_name: name,

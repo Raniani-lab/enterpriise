@@ -114,7 +114,7 @@
                                 </div>
                             </form>
                             <div class="col-lg-4 col-md-12 mb-5 mb-lg-0 pt-3 pt-lg-0">
-                                <article t-if="(based_on_users and (len(users_possible) == 1 or is_chosen_user_assign_method or appointment_type.category != 'website')) or (not based_on_users and resource)"
+                                <article t-if="(based_on_users and (len(users_possible) == 1 or is_chosen_user_assign_method or appointment_type.category not in ['punctual', 'recurring'])) or (not based_on_users and resource)"
                                     class="card o_appointment_user_short_card border-1 shadow-sm mb-3"
                                     itemscope="itemscope"
                                     itemtype="http://schema.org/Employee">

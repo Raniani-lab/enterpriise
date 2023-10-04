@@ -89,7 +89,7 @@ class AppointmenHrPerformanceCase(AppointmentHrCommon, AppointmentPerformanceCas
             'appointment_tz': 'Europe/Brussels',
             'appointment_duration': 1,
             'assign_method': 'time_auto_assign',
-            'category': 'website',
+            'category': 'recurring',
             'max_schedule_days': 60,
             'min_cancellation_hours': 1,
             'min_schedule_hours': 1,

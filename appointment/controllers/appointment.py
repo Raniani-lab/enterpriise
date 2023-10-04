@@ -131,7 +131,10 @@ class AppointmentController(http.Controller):
 
     @classmethod
     def _appointments_base_domain(cls, filter_appointment_type_ids, search=False, invite_token=False):
-        domain = [('category', '=', 'website')]
+        domain = [
+            ('category', 'in', ['punctual', 'recurring']),
+            '|', ('end_datetime', '=', False), ('end_datetime', '>=', datetime.utcnow()), # Remove past end datetimes
+        ]
 
         if filter_appointment_type_ids:
             filter_appointment_type_ids = unquote_plus(filter_appointment_type_ids)

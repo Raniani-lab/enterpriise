@@ -176,7 +176,7 @@
                             </div>
                         </div>
                         <div t-attf-class="col-lg-4 mb-2 o_appointment_details_column o_not_editable #{'d-none' if month_first_available is False or not appointment_type.active else ''}">
-                            <div t-if="appointment_type.category == 'website'">
+                            <div t-if="appointment_type.category in ['punctual', 'recurring']">
                                 <div class="d-flex fs-6 lh-lg text-muted w-100 ps-0 mb-1">
                                     <i class="fa fa-map-marker o_appointment_fa_width text-center fs-5 me-2 mt-1"/>
                                     <span t-if="appointment_type.location_id">

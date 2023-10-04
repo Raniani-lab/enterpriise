@@ -30,7 +30,7 @@ class AppointmentShare(models.Model):
     # In case the appointment type is archived, we still want old links to work and display with a message telling
     # that it's no longer available.
     appointment_type_ids = fields.Many2many('appointment.type', string='Appointment Types',
-        domain="[('category', '=', 'website')]", context={"active_test": False})
+        domain="[('category', 'in', ['punctual', 'recurring'])]", context={"active_test": False})
     appointment_type_info_msg = fields.Html('No User Assigned Message', compute='_compute_appointment_type_info_msg')
     appointment_type_count = fields.Integer('Selected Appointments Count', compute='_compute_appointment_type_count', store=True)
     schedule_based_on = fields.Char('Schedule Based On', compute="_compute_schedule_based_on")

@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import Counter
+from datetime import datetime
 
 from odoo.addons.appointment.tests.common import AppointmentCommon
 from odoo.addons.website_appointment.controllers.appointment import WebsiteAppointment
@@ -85,16 +86,19 @@ class WAppointmentTest(AppointmentCommon, MockVisitor):
     def test_apt_type_is_published(self):
         for category, default in [
                 ('custom', True),
-                ('website', False),
+                ('punctual', False),
+                ('recurring', False),
                 ('anytime', True)
             ]:
             appointment_type = self.env['appointment.type'].create({
                 'name': 'Custom Appointment',
                 'category': category,
+                'start_datetime': datetime(2023, 10, 3, 8, 0) if category == 'punctual' else False,
+                'end_datetime': datetime(2023, 10, 10, 8, 0) if category == 'punctual' else False,
             })
             self.assertEqual(appointment_type.is_published, default)
 
-            if category in ['custom', 'website']:
+            if category in ['custom', 'punctual', 'recurring']:
                 appointment_copied = appointment_type.copy()
                 self.assertFalse(appointment_copied.is_published, "When we copy an appointment type, the new one should not be published")
 
@@ -109,19 +113,26 @@ class WAppointmentTest(AppointmentCommon, MockVisitor):
     @users('admin')
     def test_apt_type_is_published_update(self):
         appointment = self.env['appointment.type'].create({
-            'name': 'Website Appointment',
-            'category': 'website',
+            'name': 'Recurring Appointment',
+            'category': 'recurring',
         })
-        self.assertFalse(appointment.is_published, "A website appointment type should not be published at creation")
+        self.assertFalse(appointment.is_published, "A recurring appointment type should not be published at creation")
 
         appointment.write({'category': 'custom'})
         self.assertTrue(appointment.is_published, "Modifying an appointment type category to custom auto-published it")
 
-        appointment.write({'category': 'website'})
-        self.assertFalse(appointment.is_published, "Modifying an appointment type category to website unpublished it")
+        appointment.write({'category': 'recurring'})
+        self.assertFalse(appointment.is_published, "Modifying an appointment type category to recurring unpublished it")
 
         appointment.write({'category': 'anytime'})
         self.assertTrue(appointment.is_published, "Modifying an appointment type category to anytime auto-published it")
+
+        appointment.write({
+            'category': 'punctual',
+            'start_datetime': datetime(2022, 2, 14, 8, 0, 0),
+            'end_datetime': datetime(2022, 2, 20, 20, 0, 0),
+        })
+        self.assertFalse(appointment.is_published, "Modifying an appointment type category to punctual unpublished it")
 
     def test_find_customer_country_from_visitor(self):
         belgium = self.env.ref('base.be')

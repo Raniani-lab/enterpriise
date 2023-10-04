@@ -32,8 +32,6 @@ class AppointmentType(models.Model):
                 result['name'] = _("%s - Let's meet", self.env.user.name)
             if 'staff_user_ids' in default_fields and not result.get('staff_user_ids'):
                 result['staff_user_ids'] = [Command.set(self.env.user.ids)]
-        if 'slot_ids' in default_fields and result.get('category') == 'website':
-            result['slot_ids'] = self._get_default_slots(result.get('category'))
         return result
 
     # Global Settings
@@ -55,6 +53,9 @@ class AppointmentType(models.Model):
         help='Location formatted for one line uses')
     event_videocall_source = fields.Selection([('discuss', 'Odoo Discuss')], string="Videoconference Link", default="discuss",
         help="Defines the type of video call link that will be used for the generated events. Keep it empty to prevent generating meeting url.")
+    # 'punctual' types are time-bound
+    start_datetime = fields.Datetime('Start Datetime')
+    end_datetime = fields.Datetime('End Datetime')
 
     # Assign Configuration
     assign_method = fields.Selection([
@@ -69,13 +70,15 @@ class AppointmentType(models.Model):
         help="""This option toggles the display of avatars of the staff members or resources during the frontend appointment process.
         When choosing amongst several possibilities, a selection screen will also be used, if website is installed.""")
     category = fields.Selection([
-        ('website', 'Website'),
+        ('recurring', 'Recurring'),
+        ('punctual', 'Punctual'),
         ('custom', 'Custom'),
         ('anytime', 'Any Time')],
-        string="Category", default="website",
+        string="Category", compute="_compute_category", inverse="_inverse_category", store="True",
         help="""Used to define this appointment type's category.\n
         Can be one of:\n
-            - Website: the default category, the people can access and schedule the appointment with users from the website\n
+            - Recurring: the default category, weekly recurring slots. Accessible from the website\n
+            - Punctual: recurring slots limited between 2 datetimes. Accessible from the website\n
             - Custom: the user will create and share to another user a custom appointment type with hand-picked time slots\n
             - Anytime: the user will create and share to another user an appointment type covering all their time slots""")
     country_ids = fields.Many2many(
@@ -185,12 +188,26 @@ class AppointmentType(models.Model):
 
     @api.depends('category')
     def _compute_avatars_display(self):
-        """ By default, enable avatars for custom appointment types and hide them for website-category ones."""
+        """ By default, enable avatars for custom appointment types and hide them for recurring and punctual category ones."""
         for record in self:
-            if record.category != 'website':
+            if record.category not in ['punctual', 'recurring']:
                 record.avatars_display = 'show'
             elif not record.avatars_display:
                 record.avatars_display = 'hide'
+
+    @api.depends('end_datetime')
+    def _compute_category(self):
+        for appointment_type in self:
+            appointment_type.category = 'punctual' if appointment_type.end_datetime else 'recurring'
+            if not appointment_type.slot_ids:
+                appointment_type.slot_ids = appointment_type._get_default_slots(appointment_type.category)
+
+    def _inverse_category(self):
+        """ Generate the default slots for the anytime appointment types.
+        If the category is 'custom', no need to generate default slots. """
+        anytime_appointment_types = self.filtered_domain([('category', '=', 'anytime')])
+        anytime_appointment_types.slot_ids = False # Reset slots if existing
+        anytime_appointment_types.slot_ids = self._get_default_slots('anytime')
 
     @api.depends('location_id')
     def _compute_location(self):
@@ -246,6 +263,14 @@ class AppointmentType(models.Model):
         for record in self:
             record.staff_user_count = len(record.staff_user_ids)
 
+    @api.constrains('category', 'start_datetime', 'end_datetime')
+    def _check_appointment_category_time_boundaries(self):
+        for appointment_type in self:
+            if appointment_type.category == 'punctual' and not (appointment_type.start_datetime and appointment_type.end_datetime):
+                raise ValidationError(_('A punctual appointment type should be limited between a start and end datetime.'))
+            elif appointment_type.category != 'punctual' and (appointment_type.start_datetime or appointment_type.end_datetime):
+                raise ValidationError(_('A %s appointment type shouldn\'t be limited by datetimes.' % appointment_type.category))
+
     @api.constrains('appointment_duration')
     def _check_appointment_duration(self):
         for record in self:
@@ -256,7 +281,7 @@ class AppointmentType(models.Model):
     def _check_staff_user_configuration(self):
         anytime_appointments = self.search([('category', '=', 'anytime')])
         for appointment_type in self.filtered(lambda appt: appt.schedule_based_on == "users"):
-            if appointment_type.category != 'website' and len(appointment_type.staff_user_ids) != 1:
+            if appointment_type.category not in ['punctual', 'recurring'] and len(appointment_type.staff_user_ids) != 1:
                 raise ValidationError(_("This category of appointment type should only have one user but got %s users", len(appointment_type.staff_user_ids)))
             invalid_restricted_users = appointment_type.slot_ids.restrict_to_user_ids - appointment_type.staff_user_ids
             if invalid_restricted_users:
@@ -277,6 +302,7 @@ class AppointmentType(models.Model):
     def copy(self, default=None):
         default = default or {}
         default['name'] = self.name + _(' (copy)')
+        default['category'] = self.category
         return super().copy(default=default)
 
     def action_appointment_resources(self):
@@ -454,16 +480,16 @@ class AppointmentType(models.Model):
 
     def _get_default_range_slots(self, category):
         '''
-            If the appointment type is of category website, we set the arbitrary 'standard'
+            If the appointment type is of category recurring or punctual, we set the arbitrary 'standard'
             appointment slots range (from monday to friday, 9AM-12PM and 2PM-5PM).
             If the appointment type is of category anytime, we set the slots range
             as any time between 2 arbitrary hours (monday to sunday, 7AM-7PM).
             The slot range for the anytime category will be updated in appointment_hr
             to match the user work hours.
         '''
-        if category not in ['website', 'anytime']:
+        if category not in ['punctual', 'recurring', 'anytime']:
             raise ValueError(_("Default slots cannot be applied to the %s appointment type category.", category))
-        if category == 'website':
+        if category in ['punctual', 'recurring']:
             weekday_range = (1, 6)
             hours_range = ((9, 12), (14, 17))
         else:
@@ -505,7 +531,8 @@ class AppointmentType(models.Model):
         :param str timezone: requested timezone string e.g.: 'Europe/Brussels' or 'Etc/GMT+1'
         :param datetime reference_date: starting datetime to fetch slots. If not
           given now (in UTC) is used instead. Note that minimum schedule hours
-          defined on appointment type is added to the beginning of slots;
+          defined on appointment type is added to the beginning of slots if the
+          slot start is too close from now;
 
         :return: [ {'slot': slot_record, <timezone>: (date_start, date_end), ...},
                   ... ]
@@ -514,8 +541,22 @@ class AppointmentType(models.Model):
             reference_date = datetime.utcnow()
         appt_tz = pytz.timezone(self.appointment_tz)
         requested_tz = pytz.timezone(timezone)
+        end_tz_apt_type = self.end_datetime.astimezone(appt_tz) if self.category == 'punctual' else False
         ref_tz_apt_type = reference_date.astimezone(appt_tz)
+        now_tz_apt_type = datetime.utcnow().astimezone(appt_tz)
         slots = []
+
+        # Considering:
+        #   - Now = 9AM
+        #   - Min schedule hours = 1 hour
+        #   - Reference datetime = now (recurring / anytime / punctual with start in the past)
+        #                          or a datetime in the future (punctual with start in the future).
+        # If the reference datetime is <= now + min (meaning between 9AM and 10AM) then
+        # we need to add the min schedule hours to the beginning of first slot (the reference datetime).
+        # Otherwise no need to add it as min schedule hours isn't needed when the start is far enough in the future.
+        ref_start = ref_tz_apt_type
+        if ref_start <= (now_tz_apt_type + relativedelta(hours=self.min_schedule_hours)):
+            ref_start += relativedelta(hours=self.min_schedule_hours)
 
         def append_slot(day, slot):
             """ Appends and generates all recurring slots. In case day is the
@@ -536,16 +577,21 @@ class AppointmentType(models.Model):
                                      )
                                 )
             )
+            # Adapt local start to not append slot in the past from ref
+            # Using ref_start to consider or not the min schedule hours at the beginning of first slot
+            if local_start.date() == ref_tz_apt_type.date():
+                while local_start < ref_start:
+                    local_start += relativedelta(hours=self.appointment_duration)
+
+            local_end = local_start + relativedelta(hours=self.appointment_duration)
             # localized end time for the entire slot on that day
             local_slot_end = appt_tz.localize(
                 day.replace(hour=0, minute=0, second=0) +
                 timedelta(hours=slot._convert_end_hour_24_format())
             )
-            # Adapt local start to not append slot in the past for today
-            if local_start.date() == ref_tz_apt_type.date():
-                while local_start < ref_tz_apt_type + relativedelta(hours=self.min_schedule_hours):
-                    local_start += relativedelta(hours=self.appointment_duration)
-            local_end = local_start + relativedelta(hours=self.appointment_duration)
+            # Adapt local_slot_end to not append slot if local_slot_end is in the future of the appointment end_datetime
+            if end_tz_apt_type and local_start.date() == end_tz_apt_type.date() and local_slot_end > end_tz_apt_type:
+                local_slot_end = end_tz_apt_type
 
             # if local_start >= local_slot_end, no slot will be appended
             end_start_delta = ((local_slot_end - local_start).total_seconds() / 3600)
@@ -571,6 +617,11 @@ class AppointmentType(models.Model):
 
         # We use only the recurring slot if it's not a custom appointment type.
         if self.category != 'custom':
+
+            # Don't generate slots if the appointment boundaries are completely in the past
+            if last_day < reference_date.astimezone(pytz.UTC):
+                return slots
+
             # Regular recurring slots (not a custom appointment), generate necessary slots using configuration rules
             slot_weekday = [int(weekday) - 1 for weekday in self.slot_ids.mapped('weekday')]
             for day in rrule.rrule(rrule.DAILY,
@@ -642,8 +693,9 @@ class AppointmentType(models.Model):
 
         if not self.active:
             return []
+        now = datetime.utcnow()
         if not reference_date:
-            reference_date = datetime.utcnow()
+            reference_date = now
 
         requested_tz = pytz.timezone(timezone)
 
@@ -651,15 +703,21 @@ class AppointmentType(models.Model):
         unique_slots = self.slot_ids.filtered(lambda slot: slot.slot_type == 'unique')
 
         if self.category == 'custom' and unique_slots:
-            # With custom appointment type, the first day should depend on the first slot datetime
+            # Custom appointment type, the first day should depend on the first slot datetime
             start_first_slot = unique_slots[0].start_datetime
             first_day_utc = start_first_slot if reference_date > start_first_slot else reference_date
             first_day = requested_tz.fromutc(first_day_utc + relativedelta(hours=self.min_schedule_hours))
             appointment_duration_days = (unique_slots[-1].end_datetime.date() - reference_date.date()).days
+            last_day = requested_tz.fromutc(reference_date + relativedelta(days=appointment_duration_days))
+        elif self.category == 'punctual':
+            # Punctual appointment type, the first day is the start_datetime if it is in the future, else the first day is now
+            reference_date = self.start_datetime if self.start_datetime > now else now
+            first_day = requested_tz.fromutc(reference_date)
+            last_day = requested_tz.fromutc(self.end_datetime)
         else:
+            # Recurring appointment type
             first_day = requested_tz.fromutc(reference_date + relativedelta(hours=self.min_schedule_hours))
-
-        last_day = requested_tz.fromutc(reference_date + relativedelta(days=appointment_duration_days))
+            last_day = requested_tz.fromutc(reference_date + relativedelta(days=appointment_duration_days))
 
         # Compute available slots (ordered)
         slots = self._slots_generate(

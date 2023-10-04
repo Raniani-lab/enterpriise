@@ -10,7 +10,7 @@ class AppointmentSnippets(http.Controller):
     def get_snippet_data(self, appointment_type_id=None):
         """
         :param int appointment_type_id: Optional: Only fetch this appointment type's data
-        :return: published 'website' category appointment types with their staff users formatted as
+        :return: published 'recurring' and 'punctual' category appointment types with their staff users formatted as
           {'id': {
               'id': appointment_type1 id,
               'name': appointment_type1 name,
@@ -22,7 +22,7 @@ class AppointmentSnippets(http.Controller):
            ...appointments
           }
         """
-        domain = [('category', '=', 'website'), ('website_published', '=', True), ('staff_user_ids', '!=', False)]
+        domain = [('category', 'in', ['punctual', 'recurring']), ('website_published', '=', True), ('staff_user_ids', '!=', False)]
         if appointment_type_id:
             appointment_types = request.env["appointment.type"].browse(appointment_type_id).filtered_domain(domain)
         else:

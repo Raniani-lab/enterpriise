@@ -26,7 +26,7 @@ class OnelineWAppointmentPerformance(AppointmentUIPerformanceCase, AppointmenHrP
             'appointment_tz': 'Europe/Brussels',
             'appointment_duration': 1,
             'assign_method': 'time_auto_assign',
-            'category': 'website',
+            'category': 'recurring',
             'is_published': True,
             'max_schedule_days': 60,
             'min_cancellation_hours': 1,

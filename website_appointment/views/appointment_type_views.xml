@@ -62,9 +62,6 @@
                 <xpath expr="//form" position="inside">
                     <field name="website_url" invisible="1"/>
                 </xpath>
-                <xpath expr="//group[@name='left_details']/div[2]/div[hasclass('my-2')]" position="attributes">
-                    <attribute name="class" remove="my-2" separator=" "/>
-                </xpath>
                 <xpath expr="//field[@name='appointment_duration']" position="attributes">
                     <attribute name="style" add="max-width: 40%;" separator=" "/>
                 </xpath>

@@ -180,7 +180,7 @@ class AppointmentTest(AppointmentCommon, HttpCase):
     def test_appointment_slot_start_end_hour_auto_correction(self):
         """ Test the autocorrection of invalid intervals [start_hour, end_hour]. """
         appt_type = self.env['appointment.type'].create({
-            'category': 'website',
+            'category': 'recurring',
             'name': 'Schedule a demo',
             'appointment_duration': 1,
             'slot_ids': [(0, 0, {
@@ -220,7 +220,7 @@ class AppointmentTest(AppointmentCommon, HttpCase):
     def test_generate_slots_until_midnight(self):
         """ Generate recurring slots until midnight. """
         appt_type = self.env['appointment.type'].create({
-            'category': 'website',
+            'category': 'recurring',
             'name': 'Schedule a demo',
             'max_schedule_days': 1,
             'appointment_duration': 1,
@@ -387,7 +387,7 @@ class AppointmentTest(AppointmentCommon, HttpCase):
             'appointment_tz': 'Pacific/Auckland',
             'appointment_duration': 1,
             'assign_method': 'time_auto_assign',
-            'category': 'website',
+            'category': 'recurring',
             'location_id': self.staff_user_nz.partner_id.id,
             'name': 'New Zealand Appointment',
             'max_schedule_days': 15,
@@ -481,6 +481,67 @@ class AppointmentTest(AppointmentCommon, HttpCase):
                              f'{appointment_type.name} with {host_partner.name or "somebody"}')
 
     @users('apt_manager')
+    @freeze_time('2022-02-13T20:00:00')
+    def test_generate_slots_punctual_appointment_type(self):
+        """ Generates recurring slots, check begin and end slot boundaries depending on the start and end datetimes. """
+        apt_type = self.env['appointment.type'].create({
+            'appointment_tz': 'Europe/Brussels',
+            'appointment_duration': 1,
+            'assign_method': 'time_auto_assign',
+            'category': 'punctual',
+            'location_id': self.staff_user_bxls.partner_id.id,
+            'name': 'Punctual Appt Type',
+            'max_schedule_days': False,
+            'min_cancellation_hours': 1,
+            'min_schedule_hours': 1,
+            'start_datetime': datetime(2022, 2, 14, 8, 0, 0),
+            'end_datetime': datetime(2022, 2, 20, 20, 0, 0),
+            'slot_ids': [
+                (0, False, {'weekday': weekday,
+                            'start_hour': hour,
+                            'end_hour': hour + 1,
+                           })
+                for weekday in ['1', '2']
+                for hour in range(8, 14)
+            ],
+            'staff_user_ids': [(4, self.staff_user_bxls.id)],
+        }).with_user(self.env.user)
+
+        slots_weekdays = {slot.weekday for slot in apt_type.slot_ids}
+        timezone = 'Europe/Brussels'
+        requested_tz = pytz.timezone(timezone)
+        # reference_now: datetime(2022, 2, 13, 20, 0, 0) (sunday evening)
+        # apt slot_ids: Monday 8AM -> 2PM, Tuesday 8AM -> 2PM
+
+        cases = [
+            # start datetime / end_datetime (UTC)
+            (datetime(2022, 2, 14, 9, 0, 0), datetime(2022, 2, 25, 9, 0, 0)), # Slots fully in the future
+            (datetime(2022, 2, 1, 9, 0, 0), datetime(2022, 2, 25, 9, 0, 0)), # start_datetime < now < end_datetimes
+            (datetime(2022, 2, 1, 9, 0, 0), datetime(2022, 2, 12, 9, 0, 0)), # Slots fully in the past
+        ]
+        expected = [
+            # first slot start datetime / last slot end_datetime (UTC)
+            (datetime(2022, 2, 14, 9, 0, 0), datetime(2022, 2, 22, 13, 0, 0)), # start = specified start_datetime
+            (datetime(2022, 2, 14, 7, 0, 0), datetime(2022, 2, 22, 13, 0, 0)), # start = 8AM from apt slots_ids converted to UTC
+            (False, False)
+        ]
+
+        for (start_datetime, end_datetime), (first_slot_expected_start, last_slot_expected_end) in zip(cases, expected):
+            with self.subTest(start_datetime=start_datetime, end_datetime=end_datetime):
+                apt_type.write({'start_datetime': start_datetime, 'end_datetime': end_datetime})
+                reference_date = start_datetime if start_datetime > self.reference_now else self.reference_now
+                first_day = requested_tz.fromutc(reference_date)
+                last_day = requested_tz.fromutc(end_datetime)
+                slots = apt_type._slots_generate(first_day, last_day, timezone, reference_date=reference_date)
+                if not slots:
+                    self.assertFalse(first_slot_expected_start)
+                    self.assertFalse(last_slot_expected_end)
+                    continue
+                self.assertTrue({slot['slot'].weekday for slot in slots}.issubset(slots_weekdays), 'Slots: wrong weekday')
+                self.assertEqual(slots[0]['UTC'][0], first_slot_expected_start, 'Slots: wrong first slot start datetime')
+                self.assertEqual(slots[-1]['UTC'][1], last_slot_expected_end, 'Slots: wrong last slot end datetime')
+
+    @users('apt_manager')
     def test_generate_slots_recurring(self):
         """ Generates recurring slots, check begin and end slot boundaries. """
         apt_type = self.apt_type_bxls_2days.with_user(self.env.user)
@@ -528,7 +589,7 @@ class AppointmentTest(AppointmentCommon, HttpCase):
         apt_type = self.env['appointment.type'].create({
             'appointment_duration': 1.0,
             'appointment_tz': 'Europe/Brussels',
-            'category': 'website',
+            'category': 'recurring',
             'name': 'Overflow Appointment',
             'max_schedule_days': 8,
             'min_schedule_hours': 12.0,
@@ -786,7 +847,7 @@ class AppointmentTest(AppointmentCommon, HttpCase):
         apt_type_UTC = self.env['appointment.type'].create({
             'appointment_tz': 'UTC',
             'assign_method': 'time_auto_assign',
-            'category': 'website',
+            'category': 'recurring',
             'max_schedule_days': 5,  # Only consider the first three slots
             'name': 'Private Guitar Lesson',
             'slot_ids': [(0, False, {

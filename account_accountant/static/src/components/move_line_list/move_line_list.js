@@ -9,6 +9,7 @@ import { ListRenderer } from "@web/views/list/list_renderer";
 import { ListController } from "@web/views/list/list_controller";
 import { SIZES } from '@web/core/ui/ui_service';
 import { useState } from "@odoo/owl";
+import { makeActiveField } from "@web/model/relational_model/utils";
 
 export class AccountMoveLineListController extends ListController {
     setup() {
@@ -23,6 +24,20 @@ export class AccountMoveLineListController extends ListController {
             thread: null,
         });
         useBus(this.ui.bus, "resize", this.evaluatePreviewEnabled);
+    }
+
+    get modelParams() {
+        const params = super.modelParams;
+        params.config.activeFields.move_attachment_ids = makeActiveField();
+        params.config.activeFields.move_attachment_ids.related = {
+            fields: {
+                mimetype: { name: "mimetype", type: "char" },
+            },
+            activeFields: {
+                mimetype: makeActiveField(),
+            },
+        }
+        return params;
     }
 
     togglePreview() {

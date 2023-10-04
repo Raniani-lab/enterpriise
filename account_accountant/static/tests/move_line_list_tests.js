@@ -50,18 +50,11 @@ import { ROUTES_TO_IGNORE as MAIL_ROUTES_TO_IGNORE } from "@mail/../tests/helper
 
         const OpenPreparedView = async (assert, size) => {
             const views = {
-                // move_attachment_ids needs to be visible in order for the datas to be fetched
-                // This is due to inconsistencies between mock_server and the real server
                 'account.move.line,false,list':
                     `<tree editable='bottom' js_class='account_move_line_list'>
                          <field name='id'/>
                          <field name='name'/>
                          <field name='move_id'/>
-                         <field name='move_attachment_ids'>
-                             <tree>
-                                 <field name="mimetype"/>
-                             </tree>
-                         </field>
                      </tree>`,
             };
             patchUiSize({ size: size });

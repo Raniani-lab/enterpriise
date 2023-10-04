@@ -25,11 +25,6 @@
                <header>
                     <button name="action_reconcile" type="object" string="Reconcile" groups="account.group_account_user"/>
                 </header>
-                <field name="move_attachment_ids" column_invisible="True">
-                    <tree>
-                        <field name="mimetype"/> <!--  We want to fetch the data for using it in the js-->
-                    </tree>
-                </field>
                 <field name="is_account_reconcile" column_invisible="True"/>
                 <field name="has_deferred_moves" column_invisible="True"/>
             </xpath>

@@ -134,6 +134,7 @@ class WhatsAppAccount(models.Model):
             'res_model': 'whatsapp.template',
             'domain': [('wa_account_id', '=', self.id)],
             'type': 'ir.actions.act_window',
+            'context': {'default_wa_account_id': self.id},
         }
 
     def _find_active_channel(self, sender_mobile_formatted, sender_name=False, create_if_not_found=False):

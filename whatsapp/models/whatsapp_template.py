@@ -100,7 +100,7 @@ class WhatsAppTemplate(models.Model):
     header_attachment_ids = fields.Many2many('ir.attachment', string="Template Static Header", copy=False)
     footer_text = fields.Char(string="Footer Message")
     report_id = fields.Many2one(comodel_name='ir.actions.report', string="Report", domain="[('model_id', '=', model_id)]", tracking=True)
-    variable_ids = fields.One2many('whatsapp.template.variable', 'wa_template_id',
+    variable_ids = fields.One2many('whatsapp.template.variable', 'wa_template_id', copy=True,
         string="Template Variables", store=True, compute='_compute_variable_ids', precompute=True, readonly=False)
     button_ids = fields.One2many('whatsapp.template.button', 'wa_template_id', string="Buttons")
 
@@ -303,6 +303,10 @@ class WhatsAppTemplate(models.Model):
             default['name'] = _('%(original_name)s (copy)', original_name=self.name)
             default['template_name'] = f'{self.template_name}_copy'
         return super().copy(default)
+
+    def _compute_display_name(self):
+        for template in self:
+            template.display_name = "%s [%s]" % (template.name, template.wa_account_id.name)
 
     #===================================================================
     #                 Register template to whatsapp

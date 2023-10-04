@@ -450,6 +450,11 @@ registry.category("web_tour.tours").add("web_studio.test_field_placeholder", {
             },
         },
         {
+            trigger:
+                ".o-web-studio-report-editor-wysiwyg iframe span[t-field='doc.function'][title='doc.function']",
+            isCheck: true,
+        },
+        {
             trigger: ".o-web-studio-report-editor-wysiwyg iframe p:eq(0)",
             run() {
                 insertText(this.$anchor[0], "edited with odooEditor");

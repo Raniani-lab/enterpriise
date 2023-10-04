@@ -264,6 +264,20 @@ export class ReportEditorWysiwyg extends Component {
             });
 
             odooEditor.addEventListener("observerActive", observe);
+
+            odooEditor.observerUnactive();
+            if (odoo.debug) {
+                ["t-esc", "t-out", "t-field"].forEach((tAtt) => {
+                    odooEditor.document.querySelectorAll(`*[${tAtt}]`).forEach((e) => {
+                        // Save the previous title to set it back before saving the report
+                        if (e.hasAttribute("title")) {
+                            e.setAttribute("data-oe-title", e.getAttribute("title"));
+                        }
+                        e.setAttribute("title", e.getAttribute(tAtt));
+                    });
+                });
+            }
+            odooEditor.observerActive();
         };
 
         this.undoRedoState = reactive({
@@ -332,6 +346,7 @@ export class ReportEditorWysiwyg extends Component {
             return;
         }
         const htmlParts = {};
+        const editableClone = this.wysiwyg.$editable.clone()[0];
 
         this.wysiwyg._saveElement = async ($el) => {
             const viewId = $el.data("oe-id");
@@ -348,8 +363,20 @@ export class ReportEditorWysiwyg extends Component {
             const xpath = $el.data("oe-xpath");
             htmlParts[viewId][xpath || "entire_view"] = escaped_html;
         };
-        this.wysiwyg.odooEditor.observerUnactive();
-        await this.wysiwyg.saveContent(false);
+
+        // Clean technical title
+        if (odoo.debug) {
+            editableClone.querySelectorAll("*[t-field],*[t-out],*[t-esc]").forEach((e) => {
+                if (e.hasAttribute("data-oe-title")) {
+                    e.setAttribute("title", e.getAttribute("data-oe-title"));
+                    e.removeAttribute("data-oe-title");
+                } else {
+                    e.removeAttribute("title");
+                }
+            });
+        }
+
+        await this.wysiwyg.saveContent(false, editableClone);
         await this.reportEditorModel.saveReport({ htmlParts, urgent });
     }
 
@@ -446,6 +473,10 @@ export class ReportEditorWysiwyg extends Component {
                         const span = doc.createElement("span");
                         span.textContent = defaultValue;
                         span.setAttribute("t-field", `${qwebVar}.${fieldNameChain}`);
+
+                        if (odoo.debug) {
+                            span.setAttribute("title", `${qwebVar}.${fieldNameChain}`);
+                        }
 
                         if (is_image) {
                             span.setAttribute("t-options-widget", "'image'");

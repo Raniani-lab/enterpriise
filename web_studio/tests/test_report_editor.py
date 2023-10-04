@@ -475,7 +475,14 @@ class TestReportEditorUIUnit(HttpCase):
         """)
 
     def test_field_placeholder(self):
-        self.start_tour(self.tour_url, "web_studio.test_field_placeholder", login="admin")
+        self.main_view_document.arch = """
+            <t t-name="web_studio.test_report_document">
+                <div><p t-field="doc.name" title="Name"/></div>
+                <p><br/></p>
+            </t>
+        """
+
+        self.start_tour(self.tour_url[:4] + '?debug=assets' + self.tour_url[4:], "web_studio.test_field_placeholder", login="admin")
         self.assertXMLEqual(self.main_view.arch, """
             <t t-name="web_studio.test_report">
                <t t-call="web.html_container">
@@ -491,7 +498,7 @@ class TestReportEditorUIUnit(HttpCase):
         self.assertXMLEqual(self.main_view_document.arch, """
             <t t-name="web_studio.test_report_document" class="">
                <div>
-                 <p t-field="doc.name"/>
+                 <p t-field="doc.name" title="Name"/>
                </div>
                <p>
                  <span t-field="doc.function">some default value</span>

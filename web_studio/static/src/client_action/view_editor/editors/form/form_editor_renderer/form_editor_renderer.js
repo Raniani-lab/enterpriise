@@ -68,6 +68,7 @@ class Setting extends formView.Renderer.components.Setting {
     static props = {
         ...formView.Renderer.components.Setting.props,
         studioXpath: { type: String, optional: true },
+        studioIsVisible: { type: Boolean, optional: true },
     };
 }
 

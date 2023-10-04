@@ -329,10 +329,11 @@ export class ReportEditorModel extends Reactive {
         return domain;
     }
 
-    async resetReport() {
+    async resetReport(includeHeaderFooter = true) {
         this.setInEdition(true);
         await this._services.rpc("/web_studio/reset_report_archs", {
             report_id: this.editedReportId,
+            include_web_layout: includeHeaderFooter,
         });
 
         this._resetInternalArchs();

@@ -10,6 +10,7 @@ import {
 } from "@odoo/owl";
 import { loadBundle } from "@web/core/assets";
 import { _t } from "@web/core/l10n/translation";
+import { omit } from "@web/core/utils/objects";
 import { usePopover } from "@web/core/popover/popover_hook";
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 import { sortBy } from "@web/core/utils/arrays";
@@ -67,7 +68,7 @@ class FieldDynamicPlaceholder extends Component {
 
     get sortedVariables() {
         const entries = Object.entries(this.props.availableQwebVariables).filter(
-            ([k, v]) => v.in_foreach
+            ([k, v]) => v.in_foreach && !this.props.isEditingFooterHeader
         );
         const resModel = this.props.resModel;
         const sortFn = ([k, v]) => {
@@ -94,6 +95,12 @@ class FieldDynamicPlaceholder extends Component {
     }
 
     getDefaultVariable() {
+        if (this.props.isEditingFooterHeader) {
+            const companyVar = Object.entries(this.props.availableQwebVariables).find(
+                ([k, v]) => v.model === "res.company"
+            );
+            return companyVar && companyVar[0];
+        }
         const entries = Object.entries(this.sortedVariables);
         let defaultVar = entries.find(([ctxVar]) => {
             return ["doc", "o"].includes(ctxVar);
@@ -106,6 +113,14 @@ class FieldDynamicPlaceholder extends Component {
 class UndoRedo extends Component {
     static template = "web_studio.ReportEditorWysiwyg.UndoRedo";
     static props = {
+        state: Object,
+    };
+}
+
+class ResetConfirmatiopnPopup extends ConfirmationDialog {
+    static template = "web_studio.ReportEditorWysiwyg.ResetConfirmatiopnPopup";
+    static props = {
+        ...omit(ConfirmationDialog.props, "body"),
         state: Object,
     };
 }
@@ -402,12 +417,18 @@ export class ReportEditorWysiwyg extends Component {
                 const resModel = this.reportEditorModel.reportResModel;
                 const docSelection = doc.getSelection();
                 const { anchorNode } = docSelection;
+                const isEditingFooterHeader =
+                    (doc.querySelector(".header") &&
+                        doc.querySelector(".header").contains(anchorNode)) ||
+                    (doc.querySelector(".footer") &&
+                        doc.querySelector(".footer").contains(anchorNode));
 
                 const popoverAnchor =
                     anchorNode.nodeType === 1 ? anchorNode : anchorNode.parentElement;
 
                 const nodeOeContext = popoverAnchor.closest("[oe-context]");
-                const availableQwebVariables = JSON.parse(nodeOeContext.getAttribute("oe-context"));
+                const availableQwebVariables =
+                    nodeOeContext && JSON.parse(nodeOeContext.getAttribute("oe-context"));
 
                 await this.fieldPopover.open(popoverAnchor, {
                     availableQwebVariables: {
@@ -417,6 +438,7 @@ export class ReportEditorWysiwyg extends Component {
                         },
                         ...availableQwebVariables,
                     },
+                    isEditingFooterHeader,
                     resModel,
                     validate: (qwebVar, fieldNameChain, defaultValue = "", is_image) => {
                         this.wysiwyg.focus();
@@ -463,18 +485,17 @@ export class ReportEditorWysiwyg extends Component {
     }
 
     async resetReport() {
-        this.addDialog(ConfirmationDialog, {
+        const state = reactive({ includeHeaderFooter: true });
+        this.addDialog(ResetConfirmatiopnPopup, {
             title: _t("Reset report"),
-            body: _t(
-                "All changes done to the report's structure will be discarded and the report will be reset to its factory settings."
-            ),
             confirmLabel: _t("Reset report"),
             confirmClass: "btn-danger",
             cancelLabel: _t("Go back"),
+            state,
             cancel: () => {},
             confirm: async () => {
                 await this.reportEditorModel.saveReport();
-                return this.reportEditorModel.resetReport();
+                return this.reportEditorModel.resetReport(state.includeHeaderFooter);
             },
         });
     }

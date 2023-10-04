@@ -96,4 +96,21 @@
   </div>
 </t>
 
+<t t-name="web_studio.ReportEditorWysiwyg.ResetConfirmatiopnPopup" t-inherit="web.ConfirmationDialog" t-inherit-mode="primary">
+  <xpath expr="//p[@t-out='props.body']" position="replace">
+    <p>All changes done to the report's structure will be discarded and the report will be reset to its factory settings.</p>
+    <div class="o_setting_box">
+      <div class="o_setting_left_pane">
+        <input class="form-check-input" type="checkbox" id="includeHeaderFooter" name="includeHeaderFooter" t-model="props.state.includeHeaderFooter"/>
+      </div>
+      <div class="o_setting_right_pane">
+        <label for="includeHeaderFooter" class="o_form_label me-4">Include header and footer</label>
+          <div class="text-muted">
+              Header and footer are shared with other reports which may be impacted by the reset.
+          </div>
+      </div>
+  </div>
+  </xpath>
+</t>
+
 </templates>

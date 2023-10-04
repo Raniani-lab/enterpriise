@@ -84,11 +84,14 @@ export class XmlResourceEditor extends Component {
         canSave: { type: Boolean, optional: true },
         minWidth: { type: Number, optional: true },
         reloadSources: { type: Number, optional: true },
+        displayAlerts: { type: Boolean, optional: true },
     };
     static defaultProps = {
         canSave: true,
         minWidth: 400,
         reloadSources: 1,
+        onResourceChange: () => {},
+        displayAlerts: true,
     };
 
     setup() {
@@ -118,14 +121,14 @@ export class XmlResourceEditor extends Component {
             this.codeEditorKey = nextProps.reloadSources;
         });
 
-        this.hiddenAlerts = useState({});
-        this.alerts = [
-            {
+        this.alerts = useState({
+            "built-in-file": {
                 message: _t(
                     "Editing a built-in file through this editor is not advised, as it will prevent it from being updated during future App upgrades."
                 ),
+                display: true,
             },
-        ];
+        });
     }
 
     get minWidth() {
@@ -164,12 +167,8 @@ export class XmlResourceEditor extends Component {
         this.tempCode = window.vkbeautify.xml(this.tempCode || this.arch, 4);
     }
 
-    hideAlert(alert) {
-        this.hiddenAlerts[alert.message] = true;
-    }
-
-    shouldShowAlert(alert) {
-        return !(this.hiddenAlerts[alert.message] === true);
+    hideAlert(alertKey) {
+        this.alerts[alertKey].display = false;
     }
 
     onCloseClick() {

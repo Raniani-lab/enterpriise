@@ -20,10 +20,12 @@
                         <button class="btn btn-sm btn-link p-0" type="button" t-on-click="onFormat">Format</button>
                         <t t-if="props.slots and props.slots.additionalControlButtons" t-slot="additionalControlButtons" currentResourceId="this.state.currentResourceId"/>
                     </div>
-                    <div t-foreach="alerts" t-as="alert" t-key="alert.message" t-if="shouldShowAlert(alert)" class="alert alert-warning d-flex justify-content-between mt-3" role="alert">
-                        <p class="mb-0" t-out="alert.message" />
-                        <button type="button" class="btn-close ms-2" aria-label="Close" t-on-click="() => this.hideAlert(alert)" />
-                    </div>
+                    <t t-if="this.props.displayAlerts">
+                        <div t-foreach="alerts" t-as="alert" t-key="alert" t-if="alert_value.display" class="alert alert-warning d-flex justify-content-between mt-3" role="alert">
+                            <p class="mb-0" t-out="alert_value.message" />
+                            <button type="button" class="btn-close ms-2" aria-label="Close" t-on-click="() => this.hideAlert(alert)" />
+                        </div>
+                    </t>
                 </div>
                 <CodeEditor mode="'qweb'" sessionId="state.currentResourceId" value="arch" onChange.bind="onCodeChange" theme="'monokai'" class="'o_web_studio_code_editor'" t-key="codeEditorKey"/>
             </ResizablePanel>

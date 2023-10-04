@@ -32,10 +32,12 @@ ACCOUNT_CODES_ENGINE_SPLIT_REGEX = re.compile(r"(?=[+-])")
 
 ACCOUNT_CODES_ENGINE_TERM_REGEX = re.compile(
     r"^(?P<sign>[+-]?)"\
-    r"(?P<prefix>[A-Za-z\d.]*((?=\\)|(?<=[^CD])))"\
+    r"(?P<prefix>([A-Za-z\d.]*|tag\([\w.]+\))((?=\\)|(?<=[^CD])))"\
     r"(\\\((?P<excluded_prefixes>([A-Za-z\d.]+,)*[A-Za-z\d.]*)\))?"\
     r"(?P<balance_character>[DC]?)$"
 )
+
+ACCOUNT_CODES_ENGINE_TAG_ID_PREFIX_REGEX = re.compile(r"tag\(((?P<id>\d+)|(?P<ref>\w+\.\w+))\)")
 
 # Performance optimisation: those engines always will receive None as their next_groupby, allowing more efficient batching.
 NO_NEXT_GROUPBY_ENGINES = {'tax_tags', 'account_codes'}
@@ -3076,8 +3078,20 @@ class AccountReport(models.Model):
         for prefix, excluded_prefixes in prefixes_to_compute:
             account_domain = [
                 *prefilter,
-                ('code', '=like', f'{prefix}%'),
             ]
+
+            tag_match = ACCOUNT_CODES_ENGINE_TAG_ID_PREFIX_REGEX.match(prefix)
+
+            if tag_match:
+                if tag_match['ref']:
+                    tag_id = self.env['ir.model.data']._xmlid_to_res_id(tag_match['ref'])
+                else:
+                    tag_id = int(tag_match['id'])
+
+                account_domain.append(('tag_ids', 'in', [tag_id]))
+            else:
+                account_domain.append(('code', '=like', f'{prefix}%'))
+
             excluded_prefixes_domains = []
 
             for excluded_prefix in excluded_prefixes:
@@ -3612,7 +3626,18 @@ class AccountReport(models.Model):
             for token in ACCOUNT_CODES_ENGINE_SPLIT_REGEX.split(formula.replace(' ', '')):
                 if token:
                     match_dict = ACCOUNT_CODES_ENGINE_TERM_REGEX.match(token).groupdict()
-                    account_codes_domain = [('account_id.code', '=like', f"{match_dict['prefix']}%")]
+                    tag_match = ACCOUNT_CODES_ENGINE_TAG_ID_PREFIX_REGEX.match(match_dict['prefix'])
+                    account_codes_domain = []
+
+                    if tag_match:
+                        if tag_match['ref']:
+                            tag_id = self.env['ir.model.data']._xmlid_to_res_id(tag_match['ref'])
+                        else:
+                            tag_id = int(tag_match['id'])
+
+                        account_codes_domain.append(('account_id.tag_ids', 'in', [tag_id]))
+                    else:
+                        account_codes_domain.append(('account_id.code', '=like', f"{match_dict['prefix']}%"))
 
                     excluded_prefix_str = match_dict['excluded_prefixes']
                     if excluded_prefix_str:
@@ -4997,8 +5022,10 @@ class AccountReport(models.Model):
                     if not token:
                         continue
                     token_match = ACCOUNT_CODES_ENGINE_TERM_REGEX.match(token)
-                    if not token_match:
+                    # tag selectors on account_codes engine are not supported for now ; this will come later (probably not in stable)
+                    if not token_match or ACCOUNT_CODES_ENGINE_TAG_ID_PREFIX_REGEX.match(token_match['prefix']):
                         continue
+
                     parsed_token = token_match.groupdict()
                     account_codes.append({
                         'prefix': parsed_token['prefix'],

@@ -254,7 +254,7 @@ registry.category("web_tour.tours").add('knowledge_calendar_command_tour', {
     trigger: '.modal-footer .btn-primary',
     run: 'click',
 }, { // Check calendar has been updated (new scale and no item shown)
-    trigger: '.o_knowledge_article_view_calendar_embedded_view .o_calendar_buttons .o_view_scale_selector:contains("Month")',
+    trigger: '.o_knowledge_article_view_calendar_embedded_view .o_calendar_header .o_view_scale_selector:contains("Month")',
     extra_trigger: '.fc-view:not(:has(.fc-event-container))',
     run: () => {},
 }, { // Change start and stop dates again
@@ -296,11 +296,11 @@ registry.category("web_tour.tours").add('knowledge_calendar_command_tour', {
     //----------------------------
 
     // Change the scale from the calendar view
-    trigger: '.o_knowledge_article_view_calendar_embedded_view .o_calendar_buttons .o_view_scale_selector button:contains("Month")',
+    trigger: '.o_knowledge_article_view_calendar_embedded_view .o_calendar_header .o_view_scale_selector button:contains("Month")',
     extra_trigger: '.o_knowledge_behavior_type_embedded_view',
     run: 'click',
 }, {
-    trigger: '.o_knowledge_article_view_calendar_embedded_view .o_calendar_buttons .o_scale_button_week',
+    trigger: '.o_knowledge_article_view_calendar_embedded_view .o_calendar_header .o_scale_button_week',
     run: 'click',
 }, { // Move the item in the calendar
     trigger: '.fc-time-grid-event .o_event_title:contains("Item Article")',

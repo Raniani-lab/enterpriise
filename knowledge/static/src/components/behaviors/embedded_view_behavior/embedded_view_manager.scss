@@ -86,6 +86,8 @@
         .o_calendar_widget {
             height: auto !important;
             min-height: clamp(300px, 60vh, 800px);
+            // Calendar Renderer's height calculation doesn't work properly on embedded Year views
+            background-color: $o-view-background-color;
         }
     }
     .o_calendar_container {

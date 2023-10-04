@@ -9,9 +9,7 @@ import FilterEditorFieldMatching from "./filter_editor_field_matching";
 import { useState } from "@odoo/owl";
 
 const RANGE_TYPES = [
-    { type: "year", description: _t("Year") },
-    { type: "quarter", description: _t("Quarter") },
-    { type: "month", description: _t("Month") },
+    { type: "fixedPeriod", description: _t("Month / Quarter") },
     { type: "relative", description: _t("Relative Period") },
 ];
 
@@ -22,9 +20,8 @@ const RANGE_TYPES = [
  *
  * @typedef DateState
  * @property {Object} defaultValue
- * @property {boolean} defaultsToCurrentPeriod
  * @property {boolean} automaticDefaultValue
- * @property {"year" | "month" | "quarter" | "relative"} type type of the filter
+ * @property {"fixedPeriod" | "relative"} type type of the filter
  */
 
 class DateFilterEditorFieldMatching extends FilterEditorFieldMatching {}
@@ -54,11 +51,9 @@ export default class DateFilterEditorSidePanel extends AbstractFilterEditorSideP
         this.type = "date";
         /** @type {DateState} */
         this.dateState = useState({
-            defaultValue: {},
-            defaultsToCurrentPeriod: false,
+            defaultValue: undefined,
             automaticDefaultValue: false,
-            type: "year",
-            options: [],
+            type: "fixedPeriod",
         });
 
         this.relativeDateRangesTypes = RELATIVE_DATE_RANGE_TYPES;
@@ -76,7 +71,6 @@ export default class DateFilterEditorSidePanel extends AbstractFilterEditorSideP
             ...values,
             defaultValue: this.dateState.defaultValue,
             rangeType: this.dateState.type,
-            defaultsToCurrentPeriod: this.dateState.defaultsToCurrentPeriod,
         };
     }
 
@@ -96,7 +90,6 @@ export default class DateFilterEditorSidePanel extends AbstractFilterEditorSideP
         this.dateState.type = globalFilter.rangeType;
         this.dateState.defaultValue = globalFilter.defaultValue;
         this.dateState.automaticDefaultValue = globalFilter.automaticDefaultValue;
-        this.dateState.defaultsToCurrentPeriod = globalFilter.defaultsToCurrentPeriod;
     }
 
     /**
@@ -123,13 +116,12 @@ export default class DateFilterEditorSidePanel extends AbstractFilterEditorSideP
     }
 
     onDateOptionChange(ev) {
-        // TODO t-model does not work ?
         this.dateState.type = ev.target.value;
-        this.dateState.defaultValue = this.dateState.type !== "relative" ? {} : "";
+        this.dateState.defaultValue = undefined;
     }
 
-    toggleDefaultsToCurrentPeriod(ev) {
-        this.dateState.defaultsToCurrentPeriod = ev.target.checked;
+    toggleDateDefaultValue(ev) {
+        this.dateState.defaultValue = ev.target.checked ? "this_month" : undefined;
     }
 }
 

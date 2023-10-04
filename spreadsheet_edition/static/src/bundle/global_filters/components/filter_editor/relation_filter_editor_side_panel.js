@@ -13,7 +13,7 @@ import { useState } from "@odoo/owl";
 
  *
  * @typedef RelationState
- * @property {Array} defaultValue
+ * @property {GlobalFilter["defaultValue"]} defaultValue
  * @property {Array} displayNames
  * @property {{label?: string, technical?: string}} relatedModel
  */
@@ -162,6 +162,10 @@ export default class RelationFilterEditorSidePanel extends AbstractFilterEditorS
     onValuesSelected(value) {
         this.relationState.defaultValue = value.map((record) => record.id);
         this.relationState.displayNames = value.map((record) => record.display_name);
+    }
+
+    toggleDefaultsToCurrentUser(ev) {
+        this.relationState.defaultValue = ev.target.checked ? "current_user" : undefined;
     }
 }
 

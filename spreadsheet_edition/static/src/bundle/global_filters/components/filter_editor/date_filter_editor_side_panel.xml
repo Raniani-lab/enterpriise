@@ -42,8 +42,8 @@
                     type="checkbox"
                     class="me-2"
                     id="date_automatic_filter"
-                    t-att-checked="dateState.defaultsToCurrentPeriod"
-                    t-on-change="toggleDefaultsToCurrentPeriod"
+                    t-att-checked="dateState.defaultValue"
+                    t-on-change="toggleDateDefaultValue"
                 />
                 <label for="date_automatic_filter"> Automatically filter on the current period </label>
             </div>
@@ -58,6 +58,13 @@
                     </option>
                 </t>
             </select>
+            <div class="pt-3" t-if="dateState.defaultValue and dateState.type !== 'relative'">
+                <select t-model="dateState.defaultValue" class="o_input">
+                    <option value="this_month">Month</option>
+                    <option value="this_quarter">Quarter</option>
+                    <option value="this_year">Year</option>
+                </select>
+            </div>
         </div>
 
         <t t-if="shouldDisplayFieldMatching()">

@@ -21,14 +21,24 @@
         </div>
         <div class="o_side_panel_section" t-if="relationState.relatedModel.technical">
             <div class="o_side_panel_title">Default value</div>
-            <div class="pivot_filter_input">
+            <div class="pivot_filter_input" t-if="!(relationState.relatedModel.technical === 'res.users' and relationState.defaultValue === 'current_user')">
                 <RecordsSelector
                     resModel="relationState.relatedModel.technical"
                     resIds="relationState.defaultValue"
                     t-key="relationState.relatedModel.technical"
-                    placeholder="placeholder"
+                    placeholder="''"
                     onValueChanged.bind="onValuesSelected"
                 />
+            </div>
+            <div t-if="relationState.relatedModel.technical === 'res.users'" class="o-checkbox mt-2">
+                <input
+                    type="checkbox"
+                    class="me-2"
+                    id="user_automatic_filter"
+                    t-att-checked="relationState.defaultValue === 'current_user'"
+                    t-on-change="toggleDefaultsToCurrentUser"
+                />
+                <label for="user_automatic_filter">Automatically filter on the current user</label>
             </div>
         </div>
         <t t-if="shouldDisplayFieldMatching()">

@@ -301,7 +301,7 @@ class SaleOrder(models.Model):
         for order in self:
             # Quotations are handled in the quotation menu
             if order.is_subscription and order.subscription_state in SUBSCRIPTION_PROGRESS_STATE + SUBSCRIPTION_CLOSED_STATE:
-                order.access_url = '/my/subscription/%s' % order.id
+                order.access_url = '/my/subscriptions/%s' % order.id
 
     @api.depends('order_line.product_id', 'order_line.product_id.active')
     def _compute_archived(self):

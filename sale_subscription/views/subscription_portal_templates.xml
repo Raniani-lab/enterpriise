@@ -327,7 +327,7 @@
                                     Close Subscription <span t-field="subscription.display_name" class="text-primary"/>
                                 </h4>
                             </header>
-                            <form method="post" t-attf-action="/my/subscription/#{subscription.id}/close?access_token=#{subscription.access_token}">
+                            <form method="post" t-attf-action="/my/subscriptions/#{subscription.id}/close?access_token=#{subscription.access_token}">
                                 <input class="d-none" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <main class="modal-body">
                                     <p class="fst-italic text-muted">You are about to permanently close a subscription that is valid until <span t-field="subscription.next_invoice_date"/>.</p>
@@ -403,7 +403,7 @@
     <template id="portal_my_home_menu_subscription" name="Portal layout : subscription menu entry" inherit_id="portal.portal_breadcrumbs" priority="10">
         <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
             <li t-if="page_name == 'subscription'" t-attf-class="breadcrumb-item #{'active' if not subscription else ''}">
-                <a t-if="subscription" t-attf-href="/my/subscription?{{ keep_query() }}">Subscriptions</a>
+                <a t-if="subscription" t-attf-href="/my/subscriptions?{{ keep_query() }}">Subscriptions</a>
                 <t t-else="">Subscriptions</t>
             </li>
             <li t-if="subscription" class="breadcrumb-item active">
@@ -422,7 +422,7 @@
                 <t t-set="icon" t-value="'/sale_subscription/static/src/img/subscription.svg'"/>
                 <t t-set="title">Subscriptions</t>
                 <t t-set="text">Manage your subscriptions</t>
-                <t t-set="url" t-value="'/my/subscription'"/>
+                <t t-set="url" t-value="'/my/subscriptions'"/>
                 <t t-set="placeholder_count" t-value="'subscription_count'"/>
             </t>
         </div>
@@ -485,7 +485,7 @@
         <xpath expr="//li[@id='o_payment_portal_home']" position="after">
             <t t-if="subscription">
                 <li class="breadcrumb-item">
-                    <a href="/my/subscription">Subscriptions</a>
+                    <a href="/my/subscriptions">Subscriptions</a>
                 </li>
                 <li class="breadcrumb-item">
                     <a t-att-href="subscription.get_portal_url()">

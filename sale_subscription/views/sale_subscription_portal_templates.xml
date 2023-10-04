@@ -25,7 +25,7 @@
                                 Change Plan for <span t-field="sale_order.display_name" class="text-primary"/>
                             </h4>
                         </header>
-                        <form method="post" t-attf-action="/my/subscription/#{sale_order.id}/change_plan?access_token=#{sale_order.access_token}">
+                        <form method="post" t-attf-action="/my/subscriptions/#{sale_order.id}/change_plan?access_token=#{sale_order.access_token}">
                             <input class="d-none" name="csrf_token" t-att-value="request.csrf_token()"/>
                             <main class="modal-body">
                                 <select id="subscription-change-plan-select" class="form-select" name="plan_id">
@@ -57,7 +57,7 @@
                                     Close Subscription <span t-field="sale_order.display_name" class="text-primary"/>
                                 </h4>
                             </header>
-                            <form method="post" t-attf-action="/my/subscription/#{sale_order.id}/close?access_token=#{sale_order.access_token}">
+                            <form method="post" t-attf-action="/my/subscriptions/#{sale_order.id}/close?access_token=#{sale_order.access_token}">
                                 <input class="d-none" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <main class="modal-body">
                                     <p class="fst-italic text-muted">You are about to permanently close a subscription that is valid until <span t-field="sale_order.next_invoice_date"/>.</p>
@@ -112,7 +112,7 @@
                             <div t-if="providers" id="payment_method" class="text-start">
                                 <t t-call="payment.manage">
                                     <t t-set="assign_token_route"
-                                       t-value="'/my/subscription/assign_token/' + str(sale_order.id)"/>
+                                       t-value="'/my/subscriptions/assign_token/' + str(sale_order.id)"/>
                                     <t t-set="landing_route"
                                        t-value="sale_order.get_portal_url() + '&amp;message=Your payment method has been changed for this subscription.&amp;message_class=alert-success'"/>
                                 </t>
@@ -329,7 +329,7 @@
                            t-if="sale_order.user_quantity and upsell_url and sale_order.subscription_state in ['3_progress', '4_paused']">
                             Add Quantity
                         </a>
-                        <a role="button" class="mt8 btn btn-primary w-100" t-attf-href="/my/subscription/{{sale_order.id}}/upsell"
+                        <a role="button" class="mt8 btn btn-primary w-100" t-attf-href="/my/subscriptions/{{sale_order.id}}/upsell"
                            t-elif="sale_order.user_quantity and sale_order.sale_order_option_ids and not sale_order._can_be_edited_on_portal() and sale_order.subscription_state in ['3_progress', '4_paused']">
                             Add Quantity
                         </a>
@@ -361,7 +361,7 @@
     <template id="portal_my_home_menu_subscription" name="Portal layout : subscription menu entry" inherit_id="sale.portal_my_home_menu_sale" priority="10">
          <li id="portal_breadcrumbs_sale" position="after">
              <li t-elif="page_name == 'subscription' or sale_order and sale_order.is_subscription" t-attf-class="breadcrumb-item #{'active ' if not sale_order else ''}">
-                <a t-if="sale_order" t-attf-href="/my/subscription?{{ keep_query() }}">Subscriptions</a>
+                <a t-if="sale_order" t-attf-href="/my/subscriptions?{{ keep_query() }}">Subscriptions</a>
                 <t t-else="">Subscriptions</t>
             </li>
          </li>

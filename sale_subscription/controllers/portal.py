@@ -44,7 +44,7 @@ class CustomerPortal(payment_portal.PaymentPortal):
             order_sudo = self._document_check_access('sale.order', order_id, access_token)
         except AccessError:
             if not logged_in:
-                subscription_url = '/my/subscription/%d' % order_id
+                subscription_url = '/my/subscriptions/%d' % order_id
                 return order_sudo, werkzeug.utils.redirect('/web/login?redirect=%s' % werkzeug.urls.url_quote(subscription_url))
             else:
                 raise werkzeug.exceptions.NotFound()
@@ -52,7 +52,7 @@ class CustomerPortal(payment_portal.PaymentPortal):
             return order_sudo, request.redirect('/my')
         return order_sudo, None
 
-    @http.route(['/my/subscription', '/my/subscription/page/<int:page>'], type='http', auth="user", website=True)
+    @http.route(['/my/subscriptions', '/my/subscriptions/page/<int:page>', '/my/subscription'], type='http', auth="user", website=True)
     def my_subscription(self, page=1, date_begin=None, date_end=None, sortby=None, filterby=None, **kw):
         values = self._prepare_portal_layout_values()
         partner = request.env.user.partner_id
@@ -87,7 +87,7 @@ class CustomerPortal(payment_portal.PaymentPortal):
         # pager
         order_count = Order.search_count(domain)
         pager = portal_pager(
-            url="/my/subscription",
+            url="/my/subscriptions",
             url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby, 'filterby': filterby},
             total=order_count,
             page=page,
@@ -100,7 +100,7 @@ class CustomerPortal(payment_portal.PaymentPortal):
             'subscriptions': orders,
             'page_name': 'subscription',
             'pager': pager,
-            'default_url': '/my/subscription',
+            'default_url': '/my/subscriptions',
             'searchbar_sortings': searchbar_sortings,
             'sortby': sortby,
             'searchbar_filters': OrderedDict(sorted(searchbar_filters.items())),
@@ -108,7 +108,8 @@ class CustomerPortal(payment_portal.PaymentPortal):
         })
         return request.render("sale_subscription.portal_my_subscriptions", values)
 
-    @http.route(['/my/subscriptions/<int:order_id>', '/my/subscriptions/<int:order_id>/<access_token>'],
+    @http.route(['/my/subscriptions/<int:order_id>', '/my/subscriptions/<int:order_id>/<access_token>',
+                 '/my/subscription/<int:order_id>', '/my/subscription/<int:order_id>/<access_token>'],
                 type='http', auth='public', website=True)
     def subscription(self, order_id, access_token=None, message='', message_class='', report_type=None, download=False, **kw):
         order_sudo, redirection = self._get_subscription(access_token, order_id)
@@ -189,7 +190,7 @@ class CustomerPortal(payment_portal.PaymentPortal):
         }
         return request.render("sale_subscription.subscription_portal_template", rendering_context)
 
-    @http.route(['/my/subscription/<int:order_id>/close'], type='http', methods=["POST"], auth="public", website=True)
+    @http.route(['/my/subscriptions/<int:order_id>/close', '/my/subscription/<int:order_id>/close'], type='http', methods=["POST"], auth="public", website=True)
     def close_account(self, order_id, access_token=None, **kw):
         order_sudo, redirection = self._get_subscription(access_token, order_id)
         if redirection:
@@ -200,7 +201,7 @@ class CustomerPortal(payment_portal.PaymentPortal):
                 if kw.get('closing_text'):
                     order_sudo.message_post(body=_('Closing text: %s', kw.get('closing_text')))
                 order_sudo.set_close(close_reason_id=close_reason.id)
-        return request.redirect(f'/my/subscription/{order_id}/{access_token}')
+        return request.redirect(f'/my/subscriptions/{order_id}?access_token={access_token}')
 
     @http.route(['/my/subscriptions/<int:order_id>/change_plan'], type='http', methods=["POST"], auth="public", website=True)
     def change_plan(self, order_id, access_token=None, **kw):
@@ -269,7 +270,7 @@ class PaymentPortal(payment_portal.PaymentPortal):
                     'allow_token_deletion': False,
                     'default_token_id': order_sudo.payment_token_id.id,
                     'transaction_route': order_sudo.get_portal_url(suffix='/transaction'),
-                    'assign_token_route': f'/my/subscription/assign_token/{sale_order_id}',
+                    'assign_token_route': f'/my/subscriptions/assign_token/{sale_order_id}',
                     'landing_route': order_sudo.get_portal_url() + '&' + url_encode({
                         'message': _("Your payment method has been changed for this subscription."),
                         'message_class': 'alert-success',
@@ -293,7 +294,7 @@ class PaymentPortal(payment_portal.PaymentPortal):
         return tx_sudo
 
 
-    @http.route('/my/subscription/<int:order_id>/transaction', type='json', auth='public')
+    @http.route('/my/subscriptions/<int:order_id>/transaction', type='json', auth='public')
     def subscription_transaction(
         self, order_id, access_token, is_validation=False, **kwargs
     ):
@@ -358,7 +359,7 @@ class PaymentPortal(payment_portal.PaymentPortal):
 
         return tx_sudo._get_processing_values()
 
-    @http.route('/my/subscription/assign_token/<int:order_id>', type='json', auth='user')
+    @http.route('/my/subscriptions/assign_token/<int:order_id>', type='json', auth='user')
     def subscription_assign_token(self, order_id, token_id, access_token=None):
         """ Assign a token to a subscription.
 

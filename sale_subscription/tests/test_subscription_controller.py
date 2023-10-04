@@ -79,7 +79,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
             close_reason_id = self.env.ref('sale_subscription.close_reason_1')
             data = {'access_token': self.subscription.access_token, 'csrf_token': http.Request.csrf_token(self),
                     'close_reason_id': close_reason_id.id, 'closing_text': "I am broke"}
-            url = "/my/subscription/%s/close" % self.subscription.id
+            url = "/my/subscriptions/%s/close" % self.subscription.id
             res = self.url_open(url, allow_redirects=False, data=data)
             self.assertEqual(res.status_code, 303)
             self.env.invalidate_all()
@@ -122,7 +122,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
                 'order_id': legit_user_subscription.id,
                 'access_token': legit_user_subscription.access_token
                 }
-        url = self._build_url("/my/subscription/assign_token/%s" % legit_user_subscription.id)
+        url = self._build_url("/my/subscriptions/assign_token/%s" % legit_user_subscription.id)
         self.make_jsonrpc_request(url, data)
         legit_user_subscription.invalidate_recordset()
         self.assertEqual(legit_user_subscription.payment_token_id, legit_payment_method)
@@ -135,7 +135,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         # Payment token is inacessible to user but the SO is OK
         self.authenticate('al', 'alalalal')
         data = {'token_id': legit_payment_method.id, 'order_id': malicious_user_subscription.id}
-        url = self._build_url("/my/subscription/assign_token/%s" % malicious_user_subscription.id)
+        url = self._build_url("/my/subscriptions/assign_token/%s" % malicious_user_subscription.id)
         with self._assertNotFound():
             self.make_jsonrpc_request(url, data)
         malicious_user_subscription.invalidate_recordset()
@@ -143,7 +143,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
 
         # The SO is not accessible but the token is mine
         data = {'token_id': stolen_payment_method.id, 'order_id': legit_user_subscription.id}
-        self._build_url("/my/subscription/assign_token/%s" % legit_user_subscription.id)
+        self._build_url("/my/subscriptions/assign_token/%s" % legit_user_subscription.id)
         with self._assertNotFound():
             self.make_jsonrpc_request(url, data)
         legit_user_subscription.invalidate_recordset()
@@ -218,7 +218,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         # test transaction flow when paying from the portal
         self.assertEqual(len(subscription.transaction_ids), 1, "Only one transaction should be created")
         first_transaction_id = subscription.transaction_ids
-        url = self._build_url("/my/subscription/%s/transaction" % subscription.id)
+        url = self._build_url("/my/subscriptions/%s/transaction" % subscription.id)
         data = {'access_token': subscription.access_token,
                 'landing_route': subscription.get_portal_url(),
                 'provider_id': self.dummy_provider.id,
@@ -229,7 +229,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         self.make_jsonrpc_request(url, data)
         # the transaction is associated to the invoice in tx._reconcile_after_done()
         invoice_transactions = subscription.invoice_ids.transaction_ids
-        self.assertEqual(len(invoice_transactions), 2, "Two transactions should be created. Calling /my/subscription/transaction/ creates a new one")
+        self.assertEqual(len(invoice_transactions), 2, "Two transactions should be created. Calling /my/subscriptions/transaction/ creates a new one")
         last_transaction_id = subscription.transaction_ids - first_transaction_id
         self.assertEqual(len(subscription.transaction_ids), 2)
         self.assertEqual(last_transaction_id.sale_order_ids, subscription)
@@ -281,7 +281,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         refund_move._post()
         self.assertEqual(refund_move.amount_total, 23, "The refund is half the invoice")
 
-        url = self._build_url("/my/subscription/%s/transaction/" % subscription.id)
+        url = self._build_url("/my/subscriptions/%s/transaction/" % subscription.id)
         data = {'access_token': subscription.access_token,
                 'landing_route': subscription.get_portal_url(),
                 'provider_id': self.dummy_provider.id,

@@ -33,7 +33,7 @@ class TestSubscriptionPaymentFlows(PaymentHttpCommon):
         cls.order._message_subscribe(partner_ids=[cls.user_with_so_access.partner_id.id])
 
     def _my_sub_assign_token(self, **values):
-        url = self._build_url(f"/my/subscription/assign_token/{self.order.id}")
+        url = self._build_url(f"/my/subscriptions/assign_token/{self.order.id}")
         with mute_logger('odoo.addons.base.models.ir_rule', 'odoo.http'):
             return self.make_jsonrpc_request(url, params=values)
 
@@ -130,7 +130,7 @@ class TestSubscriptionPaymentFlows(PaymentHttpCommon):
 
     @mute_logger('odoo.http')
     def test_transaction_route_rejects_unexpected_kwarg(self):
-        url = self._build_url(f'/my/subscription/{self.order.id}/transaction')
+        url = self._build_url(f'/my/subscriptions/{self.order.id}/transaction')
         route_kwargs = {
             'access_token': self.order._portal_ensure_token(),
             'partner_id': self.partner.id,  # This should be rejected.

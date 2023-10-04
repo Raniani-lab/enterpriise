@@ -13,7 +13,7 @@ class TestExternalTaxSubscriptionController(TestSaleSubscriptionExternalCommon, 
         self.subscription.partner_id = self.user_portal.partner_id
         self.subscription._portal_ensure_token()
 
-        url = "/my/subscription/%s?access_token=%s" % (self.subscription.id, self.subscription.access_token)
+        url = "/my/subscriptions/%s?access_token=%s" % (self.subscription.id, self.subscription.access_token)
         with patch('odoo.addons.sale_external_tax.models.sale_order.SaleOrder._set_external_taxes', autospec=True) as mocked_set, \
              self.patch_set_external_taxes():
             self.url_open(url, allow_redirects=False)
@@ -32,7 +32,7 @@ class TestExternalTaxSubscriptionController(TestSaleSubscriptionExternalCommon, 
             len(self.subscription.invoice_ids), 0, "There should be no invoices yet."
         )
 
-        url = self._build_url("/my/subscription/%s/transaction/" % self.subscription.id)
+        url = self._build_url("/my/subscriptions/%s/transaction/" % self.subscription.id)
         data = {
             "access_token": self.subscription.access_token,
             "landing_route": self.subscription.get_portal_url(),

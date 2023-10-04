@@ -371,6 +371,27 @@ class TestReportEngines(TestAccountReportsCommon):
                 self.assertEqual(move.line_ids.filtered_domain(action_dict['domain']), expected_amls)
 
     def test_engine_account_codes(self):
+        # Create test account tags
+        account_tags = self.env['account.account.tag']._load_records([
+            {
+                'xml_id': 'account_reports.account_codes_engine_test_tag1',
+                'noupdate': True,
+                'values': {
+                    'name': "account_codes test tag 1",
+                    'applicability': 'accounts',
+                },
+            },
+
+            {
+                'xml_id': 'account_reports.account_codes_engine_test_tag2',
+                'noupdate': True,
+                'values': {
+                    'name': "account_codes test tag 2",
+                    'applicability': 'accounts',
+                },
+            },
+        ])
+
         # Create the report.
         test_line_1 = self._prepare_test_report_line(
             self._prepare_test_expression_account_codes('1'),
@@ -420,10 +441,26 @@ class TestReportEngines(TestAccountReportsCommon):
             self._prepare_test_expression_account_codes(r'345D\()C'),
             groupby='account_id',
         )
+        test_line_13 = self._prepare_test_report_line(
+            self._prepare_test_expression_account_codes(rf'tag(account_reports.account_codes_engine_test_tag1) + tag({account_tags[1].id})'),
+            groupby='account_id',
+        )
+        test_line_14 = self._prepare_test_report_line(
+            self._prepare_test_expression_account_codes(r'tag(account_reports.account_codes_engine_test_tag1)D'),
+            groupby='account_id',
+        )
+        test_line_15 = self._prepare_test_report_line(
+            self._prepare_test_expression_account_codes(r'tag(account_reports.account_codes_engine_test_tag1)C'),
+            groupby='account_id',
+        )
+        test_line_16 = self._prepare_test_report_line(
+            self._prepare_test_expression_account_codes(rf'tag(account_reports.account_codes_engine_test_tag1)\(101)D + 101003 + tag({account_tags[1].id})\(101)C'),
+            groupby='account_id',
+        )
 
         report = self._create_report([
             test_line_1, test_line_2, test_line_3, test_line_4, test_line_5, test_line_6, test_line_7, test_line_8,
-            test_line_9, test_line_10, test_line_11, test_line_12,
+            test_line_9, test_line_10, test_line_11, test_line_12, test_line_13, test_line_14, test_line_15, test_line_16
         ])
 
         # Create the journal entries.
@@ -435,6 +472,10 @@ class TestReportEngines(TestAccountReportsCommon):
             self._prepare_test_account_move_line(10000.0, account_code='10.20.0'),
             self._prepare_test_account_move_line(10.0, account_code='345D'),
         ])
+
+        # Setup tags on accounts
+        self.env['account.account'].search([('code', 'in', ('100001', '101001'))]).tag_ids = account_tags[0]
+        self.env['account.account'].search([('code', 'in', ('10.20.0', '101002'))]).tag_ids = account_tags[1]
 
         # Check the values.
         options = self._generate_options(report, '2020-01-01', '2020-01-01', default_options={'unfold_all': True})
@@ -481,6 +522,18 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('test_line_11',         10.0),
                 ('345D 345D',            10.0),
                 ('test_line_12',           ''),
+                ('test_line_13',      12700.0),
+                ('10.20.0 10.20.0',   10000.0),
+                ('100001 100001',      1000.0),
+                ('101001 101001',      2000.0),
+                ('101002 101002',      -300.0),
+                ('test_line_14',       3000.0),
+                ('100001 100001',      1000.0),
+                ('101001 101001',      2000.0),
+                ('test_line_15',           ''),
+                ('test_line_16',        400.0),
+                ('100001 100001',      1000.0),
+                ('101003 101003',      -600.0),
             ],
         )
 

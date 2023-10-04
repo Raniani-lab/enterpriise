@@ -2,11 +2,11 @@
 <templates>
     <t t-name="planning.PlanningCalendarController" t-inherit="web.CalendarController" t-inherit-mode="primary">
         <xpath expr="//div[hasclass('o_calendar_sidebar')]" position="inside">
-            <t t-if="isManager" class="o_planning_legend">
+            <div t-if="isManager" class="o_planning_legend mt-4">
                 <h5>Legend</h5>
                 <img src="/hr/static/src/img/icons/plain.svg" width="30px" class="mb-1"/><span>Published</span><br/>
                 <img src="/hr/static/src/img/icons/hatched.svg" width="30px" class="mb-1"/><span>Draft</span><br/>
-            </t>
+            </div>
         </xpath>
     </t>
 

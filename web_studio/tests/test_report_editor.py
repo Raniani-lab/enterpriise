@@ -1,4 +1,5 @@
 import json
+from psycopg2.extras import Json
 
 from odoo import Command
 from odoo.addons.base.models.ir_actions_report import IrActionsReport
@@ -631,3 +632,22 @@ class TestReportEditorUIUnit(HttpCase):
 
     def test_saving_xml_editor_reload(self):
         self.start_tour(self.tour_url, "web_studio.test_saving_xml_editor_reload", login="admin")
+
+    def test_error_at_loading(self):
+        bad_view = self.env["ir.ui.view"].create({
+            "name": "bad view",
+            "inherit_id": self.main_view_document.id,
+            "arch": """<data />"""
+        })
+        arch = """<data>
+                    <xpath expr="/form/h1" position="after">
+                        will crash
+                    </xpath>
+                </data>"""
+        self.env.cr.execute(
+            """UPDATE ir_ui_view SET arch_db = %s WHERE id = %s""",
+            (Json({"en_US": arch}), bad_view.id)
+        )
+
+        with mute_logger("odoo.http"):
+            self.start_tour(self.tour_url, "web_studio.test_error_at_loading", login="admin")

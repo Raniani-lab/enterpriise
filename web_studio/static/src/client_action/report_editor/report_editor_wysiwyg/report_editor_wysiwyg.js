@@ -299,6 +299,9 @@ export class ReportEditorWysiwyg extends Component {
     }
 
     async save({ urgent = false } = {}) {
+        if (!this.wysiwyg) {
+            return;
+        }
         const htmlParts = {};
 
         this.wysiwyg._saveElement = async ($el) => {

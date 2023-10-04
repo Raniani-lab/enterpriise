@@ -804,3 +804,29 @@ registry.category("web_tour.tours").add("web_studio.test_saving_xml_editor_reloa
         },
     ],
 });
+
+registry.category("web_tour.tours").add("web_studio.test_error_at_loading", {
+    test: true,
+    sequence: 260,
+    steps: () => [
+        {
+            trigger: "body:not(:has(.o_error_dialog)) .o-web-studio-report-editor",
+        },
+        {
+            trigger: "iframe div",
+            run() {
+                assertEqual(
+                    this.$anchor[0].textContent,
+                    "The report could not be rendered due to an error"
+                );
+            },
+        },
+        {
+            trigger: "button[name='report_edit_sources']",
+        },
+        {
+            trigger: ".o_web_studio_xml_editor",
+            isCheck: true,
+        },
+    ],
+});

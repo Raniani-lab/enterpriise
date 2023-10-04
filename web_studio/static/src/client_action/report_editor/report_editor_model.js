@@ -19,6 +19,7 @@ import { renderToMarkup } from "@web/core/utils/render";
 import { makeActiveField } from "@web/model/relational_model/utils";
 
 const notificationErrorTemplate = "web_studio.ReportEditor.NotificationError";
+const errorQweb = `<html><div>The report could not be rendered due to an error</div><html>`;
 
 export class ReportEditorModel extends Reactive {
     constructor({ services, resModel }) {
@@ -28,6 +29,7 @@ export class ReportEditorModel extends Reactive {
         this._isDirty = false;
         this._isInEdition = false;
         this._services = markRaw(services);
+        this._errorMessage = false;
         this.paperFormat = {
             margin_top: 0,
             margin_left: 0,
@@ -165,7 +167,8 @@ export class ReportEditorModel extends Reactive {
         this._reportData = this._parseFakeFields(data.report_data);
         Object.assign(this.paperFormat, data.paperformat);
 
-        this._reportArchs.reportQweb = data.report_qweb;
+        this._errorMessage = data.qweb_error;
+        this._reportArchs.reportQweb = data.report_qweb || errorQweb;
         this._isLoaded = true;
     }
 
@@ -185,9 +188,9 @@ export class ReportEditorModel extends Reactive {
                 })
             );
             this._reportArchs.reportQweb = reportQweb;
-        } catch {
-            // TODO: display some sort of intelligible error
-            this._reportArchs.reportQweb = "";
+        } catch (e) {
+            this._errorMessage = e;
+            this._reportArchs.reportQweb = errorQweb;
         }
         this.setInEdition(false);
     }
@@ -210,8 +213,7 @@ export class ReportEditorModel extends Reactive {
             );
             this._reportArchs.reportHtml = reportHtml;
         } catch {
-            // TODO: display some sort of intelligible error
-            this._reportArchs.reportHtml = "";
+            this._reportArchs.reportHtml = errorQweb;
         }
         this.setInEdition(false);
     }
@@ -222,6 +224,11 @@ export class ReportEditorModel extends Reactive {
         const hasDataToSave = this.isDirty;
         if (hasVerbatimToSave && hasPartsToSave) {
             throw new Error(_t("Saving both some report's parts and full xml is not permitted."));
+        }
+        if (this._errorMessage && hasPartsToSave) {
+            throw new Error(
+                _t("The report is in error. Only editing the XML sources is permitted")
+            );
         }
         if (!hasVerbatimToSave && !hasPartsToSave && !hasDataToSave) {
             return;
@@ -259,6 +266,8 @@ export class ReportEditorModel extends Reactive {
                 title: _t("Report edition failed"),
             });
             return;
+        } finally {
+            this._errorMessage = false;
         }
         if (hasPartsToSave || hasVerbatimToSave) {
             this._resetInternalArchs();

@@ -4,8 +4,8 @@ import json
 from lxml import etree, html
 from psycopg2 import OperationalError
 
-from odoo import http, _, Command
-from odoo.http import request
+from odoo import http, _, Command, models
+from odoo.http import request, serialize_exception
 from odoo.addons.web_studio.controllers import main
 from odoo.tools.safe_eval import safe_eval
 
@@ -326,12 +326,23 @@ class WebStudioReportController(main.WebStudioController):
         report = request.env['ir.actions.report'].browse(report_id)
         report_data = report.read(fields)
         paperformat = report._read_paper_format_measures()
-        report_qweb = self._get_report_qweb(report)
+
+        qweb_error = None
+        try:
+            report_qweb = self._get_report_qweb(report)
+        except ValueError as e:
+            if (hasattr(e, "context") and isinstance(e.context.get("view"), models.BaseModel)):
+                # This is coming from _raise_view_error, don't crash
+                report_qweb = None
+                qweb_error = serialize_exception(e)
+            else:
+                raise e
 
         return {
             "report_data": report_data and report_data[0],
             "paperformat": paperformat,
             "report_qweb": report_qweb,
+            "qweb_error": qweb_error,
         }
 
     @http.route('/web_studio/get_report_html', type='json', auth='user')

@@ -65,15 +65,24 @@ class DeliveryCarrier(models.Model):
     def sendcloud_rate_shipment(self, order):
         """ Returns shipping rate for the order and chosen shipping method """
         sendcloud = SendCloud(self.sendcloud_public_key, self.sendcloud_secret_key, self.log_xml)
-        price, packages_no = sendcloud.get_shipping_rate(self, order=order)
         message = None
-        if packages_no:
-            message = _('Note that this price is for %s packages since the order weight is more than max weight of the shipping method.', packages_no)
-        return {
-            'success': True,
-            'price': price,
-            'warning_message': message
-        }
+        try:
+            price, packages_no = sendcloud.get_shipping_rate(self, order=order)
+            if packages_no:
+                message = _('Note that this price is for %s packages since the order weight is more than max weight of the shipping method.', packages_no)
+            return {
+                'success': True,
+                'price': price,
+                'warning_message': message
+            }
+        except UserError as e:
+            return {
+                'success': False,
+                'price': 0,
+                'warning_message': message,
+                'error_messgae': str(e)
+            }
+
 
     def sendcloud_send_shipping(self, pickings):
         ''' Sends Shipment to sendcloud, must request rate to return exact price '''

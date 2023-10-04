@@ -383,14 +383,10 @@ class DataMergeRecord(models.Model):
                 # Query to check the number of columns in the referencing table
                 query = psycopg2.sql.SQL(
                     """
-                    SELECT COUNT({column_name})
-                    FROM {table}
-                    WHERE {table_name} ILIKE %s
+                    SELECT COUNT("column_name")
+                    FROM "information_schema"."columns"
+                    WHERE "table_name" ILIKE %s
                     """
-                ).format(
-                    table=psycopg2.sql.Identifier('information_schema', 'columns'),
-                    table_name=psycopg2.sql.Identifier('table_name'),
-                    column_name=psycopg2.sql.Identifier('column_name')
                 )
                 self._cr.execute(query, (query_dict['table'],))
                 column_count = self._cr.fetchone()[0]
@@ -400,16 +396,12 @@ class DataMergeRecord(models.Model):
                     # Retrieve the "other" column
                     query = psycopg2.sql.SQL(
                         """
-                        SELECT {column_name}
-                        FROM {table}
+                        SELECT "column_name"
+                        FROM "information_schema"."columns"
                         WHERE
-                            {table_name} LIKE %s
-                        AND {column_name} <> %s
+                            "table_name" LIKE %s
+                        AND "column_name" <> %s
                         """
-                    ).format(
-                        table=psycopg2.sql.Identifier('information_schema', 'columns'),
-                        table_name=psycopg2.sql.Identifier('table_name'),
-                        column_name=psycopg2.sql.Identifier('column_name')
                     )
                     self._cr.execute(query, (query_dict['table'], query_dict['column']))
                     othercol = self._cr.fetchone()[0]

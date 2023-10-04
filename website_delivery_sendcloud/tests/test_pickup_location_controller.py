@@ -20,8 +20,8 @@ def _mock_call():
             'get': {
                 'service-points': [{
                     'name': 'STATION AVIA',
-                    'street': 'CHAUSSÉE DE NAMUR 67',
-                    'house_number': '',
+                    'street': 'CHAUSSÉE DE NAMUR',
+                    'house_number': '67',
                     'postal_code': '1367',
                     'city': 'RAMILLIES',
                     'country': 'BE',
@@ -130,18 +130,18 @@ class TestWebsiteDeliverySendcloudLocationsController(TransactionCase):
                 self.assertNotEqual({}, WebsiteSaleDelivery.set_access_point(self, access_point_encoded=json.dumps(close_locations['close_locations'][0])))
                 self.assertEqual({
                     'name': 'STATION AVIA',
-                    'street': 'CHAUSSÉE DE NAMUR 67',
-                    'house_number': '',
+                    'street': 'CHAUSSÉE DE NAMUR',
+                    'house_number': '67',
                     'postal_code': '1367',
                     'city': 'RAMILLIES',
                     'country': 'BE',
                     'distance': 0.765,
                     'address': 'CHAUSSÉE DE NAMUR 67, RAMILLIES (1367)',
                     'pick_up_point_name': 'STATION AVIA',
-                    'pick_up_point_address': 'CHAUSSÉE DE NAMUR 67',
+                    'pick_up_point_address': 'CHAUSSÉE DE NAMUR',
                     'pick_up_point_postal_code': '1367',
                     'pick_up_point_town': 'RAMILLIES',
                     'pick_up_point_country': 'BE',
                     'pick_up_point_state': None,
-                    'address_stringified': '{"name": "STATION AVIA", "street": "CHAUSS\\u00c9E DE NAMUR 67", "house_number": "", "postal_code": "1367", "city": "RAMILLIES", "country": "BE", "distance": 0.765, "address": "CHAUSS\\u00c9E DE NAMUR 67, RAMILLIES (1367)", "pick_up_point_name": "STATION AVIA", "pick_up_point_address": "CHAUSS\\u00c9E DE NAMUR 67", "pick_up_point_postal_code": "1367", "pick_up_point_town": "RAMILLIES", "pick_up_point_country": "BE", "pick_up_point_state": null}',
+                    'address_stringified': '{"name": "STATION AVIA", "street": "CHAUSS\\u00c9E DE NAMUR", "house_number": "67", "postal_code": "1367", "city": "RAMILLIES", "country": "BE", "distance": 0.765, "address": "CHAUSS\\u00c9E DE NAMUR 67, RAMILLIES (1367)", "pick_up_point_name": "STATION AVIA", "pick_up_point_address": "CHAUSS\\u00c9E DE NAMUR", "pick_up_point_postal_code": "1367", "pick_up_point_town": "RAMILLIES", "pick_up_point_country": "BE", "pick_up_point_state": null}',
                 }, self.order.access_point_address)

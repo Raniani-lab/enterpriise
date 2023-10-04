@@ -11,8 +11,7 @@
                 <t t-foreach="sendcloud_pickup_locations" t-as="location" t-key="location_index">
                     <li t-if="location" class="list-group-item">
                         <div class="container">
-                            <t t-set="address" t-value="location.street"/>
-                            <t t-set="pretty_address" t-value="location.street + ', '+ location.city + ' (' + location.postal_code+')'"/>
+                            <t t-set="pretty_address" t-value="location.address"/>
                             <t t-set="name" t-value="location.name"/>
                             <b>
                                 <t t-out="name"/>

@@ -47,7 +47,7 @@ class ProviderSendcloud(models.Model):
         locations = slr.get_close_locations(partner_address, distance, self.sendcloud_shipping_id.carrier)
 
         for location in locations:
-            location["address"] = f'{location["street"]}, {location["city"]} ({location["postal_code"]})'
+            location["address"] = f'{location["street"]} {location["house_number"]}, {location["city"]} ({location["postal_code"]})'
             location["pick_up_point_name"] = location["name"]
             location["pick_up_point_address"] = location["street"]
             location["pick_up_point_postal_code"] = location["postal_code"]

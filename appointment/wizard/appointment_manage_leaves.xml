@@ -12,7 +12,7 @@
                            invisible="appointment_resource_ids" groups="base.group_no_one"/>
                     <field name="appointment_resource_ids" widget="many2many_tags" options="{'no_create': True}"
                            placeholder="Restrict to specific Resources" invisible="calendar_id"/>
-                    <field name="leave_start_dt" string="Dates" placeholder="08:00" widget="daterange"  options="{'end_date_field': 'leave_end_dt'}"/>
+                    <field name="leave_start_dt" string="Dates" widget="daterange" options="{'end_date_field': 'leave_end_dt'}"/>
                     <field name="leave_end_dt" invisible="1"/>
                     <field name="reason" placeholder="e.g. Inventory count and valuation"/>
                 </group>

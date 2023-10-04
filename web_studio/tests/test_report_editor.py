@@ -367,7 +367,49 @@ class TestReportEditorUIUnit(HttpCase):
              </t>
         """)
 
-    def test_basic_report_edition_rollback(self):
+    def test_basic_report_edition_discard(self):
+        self.start_tour(self.tour_url, "web_studio.test_basic_report_edition_discard", login="admin")
+
+        self.assertXMLEqual(self.main_view.arch, """
+            <t t-name="web_studio.test_report">
+              <t t-call="web.html_container">
+                <div><p><br/></p></div>
+                <t t-foreach="docs" t-as="doc">
+                  <t t-call="web_studio.test_report_document"/>
+                </t>
+              </t>
+            </t>
+        """)
+
+        self.assertXMLEqual(self.main_view_document.arch, """
+            <t t-name="web_studio.test_report_document">
+                <div><p t-field="doc.name"/></div>
+                <p><br/></p>
+             </t>
+        """)
+
+    def test_basic_report_edition_xml_discard(self):
+        self.start_tour(self.tour_url, "web_studio.test_basic_report_edition_xml_discard", login="admin")
+
+        self.assertXMLEqual(self.main_view.arch, """
+            <t t-name="web_studio.test_report">
+              <t t-call="web.html_container">
+                <div><p><br/></p></div>
+                <t t-foreach="docs" t-as="doc">
+                  <t t-call="web_studio.test_report_document"/>
+                </t>
+              </t>
+            </t>
+        """)
+
+        self.assertXMLEqual(self.main_view_document.arch, """
+            <t t-name="web_studio.test_report_document">
+                <div><p t-field="doc.name"/></div>
+                <p><br/></p>
+             </t>
+        """)
+
+    def test_basic_report_edition_error(self):
         save_report = WebStudioReportController.save_report
         self._clear_routing()
         self.addCleanup(self._clear_routing)
@@ -388,7 +430,7 @@ class TestReportEditorUIUnit(HttpCase):
         document_view_arch = self.main_view_document.arch
 
         with mute_logger("odoo.http"):
-            self.start_tour(self.tour_url, "web_studio.test_basic_report_edition_rollback", login="admin")
+            self.start_tour(self.tour_url, "web_studio.test_basic_report_edition_error", login="admin")
 
         self.assertTrue(error)
         self.assertFalse(self.main_view_xml_id.noupdate)
@@ -398,7 +440,7 @@ class TestReportEditorUIUnit(HttpCase):
         self.assertXMLEqual(self.main_view.arch, main_view_arch)
         self.assertXMLEqual(self.main_view_document.arch, document_view_arch)
 
-    def test_basic_report_edition_xml_rollback(self):
+    def test_basic_report_edition_xml_error(self):
         save_report = WebStudioReportController.save_report
         self._clear_routing()
         self.addCleanup(self._clear_routing)
@@ -419,7 +461,7 @@ class TestReportEditorUIUnit(HttpCase):
         document_view_arch = self.main_view_document.arch
 
         with mute_logger("odoo.http"):
-            self.start_tour(self.tour_url, "web_studio.test_basic_report_edition_xml_rollback", login="admin")
+            self.start_tour(self.tour_url, "web_studio.test_basic_report_edition_xml_error", login="admin")
 
         self.assertTrue(error)
         self.assertFalse(self.main_view_xml_id.noupdate)

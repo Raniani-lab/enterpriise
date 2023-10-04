@@ -26,6 +26,7 @@ export class ReportEditorModel extends Reactive {
         super();
         this.bus = markRaw(new EventBus());
         this.mode = "wysiwyg";
+        this.warningMessage = "";
         this._isDirty = false;
         this._isInEdition = false;
         this._services = markRaw(services);
@@ -227,6 +228,7 @@ export class ReportEditorModel extends Reactive {
         const hasPartsToSave = htmlParts && Object.keys(htmlParts).length;
         const hasVerbatimToSave = xmlVerbatim && Object.keys(xmlVerbatim).length;
         const hasDataToSave = this.isDirty;
+        this.warningMessage = "";
         if (hasVerbatimToSave && hasPartsToSave) {
             throw new Error(_t("Saving both some report's parts and full xml is not permitted."));
         }
@@ -258,10 +260,6 @@ export class ReportEditorModel extends Reactive {
             );
         } catch {
             this.setInEdition(false);
-            if (!urgent) {
-                this.isDirty = false;
-                this.renderKey++;
-            }
             const message = renderToMarkup(notificationErrorTemplate, {
                 reportName: this._reportData.name,
                 recordId: this.reportEnv.currentId,
@@ -270,10 +268,13 @@ export class ReportEditorModel extends Reactive {
                 type: "warning",
                 title: _t("Report edition failed"),
             });
-            return;
+            this.warningMessage = _t("Report edition failed");
+
+            return false;
         } finally {
             this._errorMessage = false;
         }
+
         if (hasPartsToSave || hasVerbatimToSave) {
             this._resetInternalArchs();
         }
@@ -290,6 +291,13 @@ export class ReportEditorModel extends Reactive {
             this._reportArchs.reportQweb = report_qweb;
         }
         this.setInEdition(false);
+    }
+
+    discardReport() {
+        this.setInEdition(true);
+        this.warningMessage = "";
+        this.isDirty = false;
+        this.renderKey++;
     }
 
     /**

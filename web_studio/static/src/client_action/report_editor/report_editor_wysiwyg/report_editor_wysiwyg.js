@@ -209,10 +209,13 @@ export class ReportEditorWysiwyg extends Component {
 
         this.state = useState({ wysiwygKey: 0 });
         this.fieldPopover = usePopover(FieldDynamicPlaceholder);
-
         useEditorMenuItem({
             component: ReportEditorSnackbar,
-            props: { state: reportEditorModel, onSave: this.save.bind(this) },
+            props: {
+                state: reportEditorModel,
+                onSave: this.save.bind(this),
+                onDiscard: this.discard.bind(this),
+            },
         });
 
         onWillStart(async () => {
@@ -301,6 +304,7 @@ export class ReportEditorWysiwyg extends Component {
         };
         doc.body.classList.remove("container");
         this.state.wysiwygKey++;
+        this.reportEditorModel.setInEdition(false);
     }
 
     get reportQweb() {
@@ -378,6 +382,11 @@ export class ReportEditorWysiwyg extends Component {
 
         await this.wysiwyg.saveContent(false, editableClone);
         await this.reportEditorModel.saveReport({ htmlParts, urgent });
+    }
+
+    async discard() {
+        await this.wysiwyg.cancel(false);
+        await this.reportEditorModel.discardReport();
     }
 
     domChangesDirtyMutations(odooEditor, records) {

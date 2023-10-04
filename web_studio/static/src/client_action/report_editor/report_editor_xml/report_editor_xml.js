@@ -98,6 +98,7 @@ export class ReportEditorXml extends Component {
             xmlChanges: null,
             reloadSources: 1,
             viewIdToDiff: false,
+            warningMessage: "",
             get isDirty() {
                 return !!this.xmlChanges;
             },
@@ -105,7 +106,11 @@ export class ReportEditorXml extends Component {
 
         useEditorMenuItem({
             component: ReportEditorSnackbar,
-            props: { state: this.state, onSave: this.save.bind(this) },
+            props: {
+                state: this.state,
+                onSave: this.save.bind(this),
+                onDiscard: this.discardChanges.bind(this),
+            },
         });
 
         onWillStart(() => this.reportEditorModel.loadReportHtml());
@@ -131,14 +136,22 @@ export class ReportEditorXml extends Component {
 
     async save({ urgent = false } = {}) {
         const changes = { ...toRaw(this.state.xmlChanges) };
-        await this.reportEditorModel.saveReport({
+        const result = await this.reportEditorModel.saveReport({
             urgent,
             xmlVerbatim: changes,
         });
-        this.state.xmlChanges = null;
-        if (!urgent && Object.keys(changes).length) {
-            this.state.reloadSources++;
+        this.state.warningMessage = this.reportEditorModel.warningMessage;
+        if (result !== false) {
+            this.state.xmlChanges = null;
+            if (!urgent && Object.keys(changes).length) {
+                this.state.reloadSources++;
+            }
         }
+    }
+
+    async discardChanges() {
+        this.state.xmlChanges = null;
+        this.state.reloadSources++;
     }
 
     onIframeLoaded({ iframeRef }) {
@@ -153,6 +166,7 @@ export class ReportEditorXml extends Component {
             const viewId = parseInt(brandingTarget.getAttribute("data-oe-id"));
             this.reportEditorModel.bus.trigger("node-clicked", { viewId });
         });
+        this.reportEditorModel.setInEdition(false);
     }
 
     async switchToDiff(viewId) {

@@ -199,7 +199,74 @@ registry.category("web_tour.tours").add("web_studio.test_basic_report_edition_xm
     ],
 });
 
-registry.category("web_tour.tours").add("web_studio.test_basic_report_edition_rollback", {
+registry.category("web_tour.tours").add("web_studio.test_basic_report_edition_discard", {
+    test: true,
+    sequence: 260,
+    steps: () => [
+        {
+            trigger: ".o_web_studio_sidebar input[id='name']",
+            run: "text modified in test",
+        },
+        {
+            trigger: ".o_web_studio_menu .breadcrumb-item.active",
+            run() {
+                assertEqual(this.$anchor[0].textContent, "modified in test");
+            },
+        },
+        {
+            trigger: ".o-web-studio-report-editor-wysiwyg iframe p:eq(0)",
+            run: "text edited with odoo editor",
+        },
+        {
+            trigger: ".o-web-studio-report-editor-wysiwyg iframe p:eq(2)",
+            run: "text edited with odoo editor 2",
+        },
+        {
+            trigger: ".o-web-studio-discard-report.btn-secondary",
+        },
+        {
+            trigger: ".modal-dialog .btn-primary",
+        },
+        {
+            trigger: ".o-web-studio-report-editor-wysiwyg iframe p:eq(0)",
+            run() {
+                assertEqual(this.$anchor[0].textContent, "");
+            },
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("web_studio.test_basic_report_edition_xml_discard", {
+    test: true,
+    sequence: 260,
+    steps: () => [
+        {
+            trigger: ".o_web_studio_sidebar button[name='report_edit_sources']",
+        },
+        {
+            trigger: ".o_web_studio_code_editor.ace_editor",
+            run() {
+                ace.edit(this.$anchor[0])
+                    .getSession()
+                    .insert({ row: 2, column: 0 }, '<span class="test-added">in main view</span>');
+            },
+        },
+        {
+            trigger: ".o-web-studio-discard-report.btn-secondary",
+        },
+        {
+            trigger: ".o-web-studio-report-container iframe body",
+            run() {
+                const element = this.$anchor[0].querySelector(".test-added");
+                if (element) {
+                    throw new Error("The changes should have been discarded");
+                }
+            },
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("web_studio.test_basic_report_edition_error", {
     test: true,
     sequence: 260,
     steps: () => [
@@ -234,13 +301,14 @@ registry.category("web_tour.tours").add("web_studio.test_basic_report_edition_ro
         {
             trigger: ".o-web-studio-report-editor-wysiwyg iframe p:eq(0)",
             run() {
-                assertEqual(this.$anchor[0].textContent, "");
+                // The iframe shouldn't have been reset after an error
+                assertEqual(this.$anchor[0].textContent, "edited with odoo editor");
             },
         },
     ],
 });
 
-registry.category("web_tour.tours").add("web_studio.test_basic_report_edition_xml_rollback", {
+registry.category("web_tour.tours").add("web_studio.test_basic_report_edition_xml_error", {
     test: true,
     sequence: 260,
     steps: () => [
@@ -262,7 +330,6 @@ registry.category("web_tour.tours").add("web_studio.test_basic_report_edition_xm
             trigger: ".o-web-studio-save-report.btn-primary",
         },
         {
-            extra_trigger: ".o-web-studio-save-report:not(.btn-primary)",
             trigger: ".o_notification .o_notification_title",
             run() {
                 assertEqual(this.$anchor[0].textContent, "Report edition failed");
@@ -273,7 +340,7 @@ registry.category("web_tour.tours").add("web_studio.test_basic_report_edition_xm
             run() {
                 const element = this.$anchor[0].querySelector(".test-added");
                 if (element) {
-                    throw new Error("The iframe should have been re-rendered after an error");
+                    throw new Error("The changes should have been discarded");
                 }
             },
         },

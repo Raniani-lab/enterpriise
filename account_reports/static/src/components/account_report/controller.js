@@ -422,9 +422,6 @@ export class AccountReportController {
 
     async insertLines(lineIndex, deleteCount, newLines) {
         this.lines.splice(lineIndex, deleteCount, ...newLines);
-
-        if (this.areLinesOrdered())
-            await this.sortLines();
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -462,12 +459,47 @@ export class AccountReportController {
         );
 
         this.assignLinesVisibility(newLines);
+        if (this.areLinesOrdered()) {
+            this.updateLinesOrderIndexes(lineIndex, newLines, false)
+        }
         this.insertLinesAfter(lineIndex, newLines);
 
         const totalIndex = lineIndex + newLines.length + 1;
 
         if (this.filters.show_totals && this.lines[totalIndex] && this.isTotalLine(totalIndex))
             this.lines[totalIndex].visible = true;
+    }
+
+    /**
+     * When unfolding a line of a sorted report, we need to update the linesOrder array by adding the new lines,
+     * which will require subsequent updates on the array.
+     *
+     * - lineOrderValue represents the line index before sorting the report.
+     * @param {Integer} lineIndex: Index of the current line
+     * @param {Array} newLines: Array of lines to be added
+     * @param {Boolean} replaceLine: Useful for the splice of the linesOrder array in case we want to replace some line
+     *                               example: With the load more, we want to replace the line with others
+     **/
+    updateLinesOrderIndexes(lineIndex, newLines, replaceLine) {
+        let unfoldedLineIndex;
+        // The offset is useful because in case we use 'replaceLineWith' we want to replace the line at index
+        // unfoldedLineIndex with the new lines.
+        const offset = replaceLine ? 0 : 1;
+        for (const [lineOrderIndex, lineOrderValue] of Object.entries(this.linesOrder)) {
+            // Since we will have to add new lines into the linesOrder array, we have to update the index of the lines
+            // having a bigger index than the one we will unfold.
+            // deleteCount of 1 means that a line need to be replaced so the index need to be increase by 1 less than usual
+            if (lineOrderValue > lineIndex) {
+                this.linesOrder[lineOrderIndex] += newLines.length - replaceLine;
+            }
+            // The unfolded line is found, providing a reference for adding children in the 'linesOrder' array.
+            if (lineOrderValue === lineIndex) {
+                unfoldedLineIndex = parseInt(lineOrderIndex)
+            }
+        }
+
+        const arrayOfNewIndex = Array.from({ length: newLines.length }, (dummy, index) => this.linesOrder[unfoldedLineIndex] + index + offset);
+        this.linesOrder.splice(unfoldedLineIndex + offset, replaceLine, ...arrayOfNewIndex);
     }
 
     async unfoldLine(lineIndex) {

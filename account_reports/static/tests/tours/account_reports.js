@@ -264,6 +264,15 @@ registry.category("web_tour.tours").add('account_reports', {
             run: "click"
         },
         {
+            content: "Unfold not previously unfolded line",
+            trigger: "tr:nth-child(34) td:first()",
+            run: "click",
+        },
+        {
+            content: "Line is unfolded",
+            trigger: "tr:nth-child(35) .name:contains('251000')",
+        },
+        {
             content: "Sortable (asc)",
             trigger: "tr:nth-child(17) td:nth-child(2):contains('25.00')",
             run: () => {

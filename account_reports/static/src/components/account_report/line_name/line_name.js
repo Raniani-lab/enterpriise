@@ -111,6 +111,9 @@ export class AccountReportLineName extends Component {
         );
 
         this.controller.assignLinesVisibility(newLines)
+        if (this.controller.areLinesOrdered()) {
+            this.controller.updateLinesOrderIndexes(this.props.lineIndex, newLines, true)
+        }
         await this.controller.replaceLineWith(this.props.lineIndex, newLines);
     }
 

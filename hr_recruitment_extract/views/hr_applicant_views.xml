@@ -15,7 +15,7 @@
                 <field name="is_in_extractable_state" invisible="1"/>
                 <div role="status" class="alert alert-danger mb8 text-center"
                      invisible="not is_in_extractable_state or extract_state != 'not_enough_credit'">
-                    You don't have enough credit to extract data from your CV.
+                    You don't have enough credit to extract data from your Resume.
                     <button type="object" name="buy_credits" class="btn btn-link">
                         <i class="oi oi-fw o_button_icon oi-arrow-right"/>
                         Buy credits

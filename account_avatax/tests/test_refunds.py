@@ -14,7 +14,6 @@ class TestAccountAvalaraRefunds(TestAccountAvataxCommon):
             'list_price': 15.00,
             'standard_price': 15.00,
             'supplier_taxes_id': None,
-            'invoice_policy': 'order',
             'avatax_category_id': cls.env.ref('account_avatax.DC010000').id,
         })
 

@@ -646,7 +646,7 @@ class AccountEdiFormat(models.Model):
             'payment_account_ord': is_payment_code_emitter_ok and payment_account_ord,
             'receiver_vat_ord': is_payment_code_receiver_ok and move.journal_id.bank_account_id.bank_id.l10n_mx_edi_vat,
             'payment_account_receiver': is_payment_code_receiver_ok and payment_account_receiver,
-            'cfdi_date': move.l10n_mx_edi_post_time.strftime('%Y-%m-%dT%H:%M:%S'),
+            'cfdi_date': (move.l10n_mx_edi_post_time or datetime(move.invoice_date.year, move.invoice_date.month, move.invoice_date.day, 23, 59, 0)).isoformat(),
             'tax_summary': total_taxes_paid,
             'withholding_summary': total_taxes_withheld,
         }

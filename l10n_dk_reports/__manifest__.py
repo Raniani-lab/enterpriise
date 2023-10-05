@@ -16,12 +16,14 @@ Accounting reports for Denmark
         'l10n_dk',
         'account_reports',
         'account_saft',
+        'documents_account',
     ],
     'data': [
         'data/balance_sheet.xml',
         'data/profit_loss.xml',
         'data/account_report_ec_sales_list_report.xml',
         'data/saft_report.xml',
+        'data/documents_file_data.xml',
     ],
     'auto_install': [
         'l10n_dk',

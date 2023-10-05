@@ -233,6 +233,25 @@ def _guess_qweb_variables(tree, report, qcontext):
     recursive(tree, qcontext, keys_info)
     return tree
 
+VIEW_BACKUP_KEY = "web_studio.__backup__._{view.id}_._{view.key}_"
+
+def get_report_view_copy(view):
+    key = VIEW_BACKUP_KEY.format(view=view)
+    return view.with_context(active_test=False).search([("key", "=", key)], limit=1)
+
+def _copy_report_view(view):
+    copy = get_report_view_copy(view)
+    if not copy:
+        key = VIEW_BACKUP_KEY.format(view=view)
+        copy = view.copy({
+            "name": f"web_studio_backup__{view.name}",
+            "inherit_id": False,
+            "mode": "primary",
+            "key": key,
+            "active": False,
+        })
+    return copy
+
 
 class WebStudioReportController(main.WebStudioController):
 
@@ -467,6 +486,7 @@ class WebStudioReportController(main.WebStudioController):
         if html_parts:
             for view_id, data in html_parts.items():
                 view = IrView.browse(int(view_id))
+                _copy_report_view(view)
                 for xpath, escaped_html in data.items():
                     if xpath == "entire_view":
                         xpath = "."
@@ -476,6 +496,7 @@ class WebStudioReportController(main.WebStudioController):
         if xml_verbatim:
             for view_id, arch in xml_verbatim.items():
                 view = IrView.browse(int(view_id))
+                _copy_report_view(view)
                 view.write({"arch": arch})
                 xml_ids = xml_ids | view.model_data_id
 

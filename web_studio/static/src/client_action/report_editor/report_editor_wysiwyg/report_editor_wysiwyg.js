@@ -192,7 +192,7 @@ export class ReportEditorWysiwyg extends Component {
         });
 
         onWillStart(async () => {
-            await loadBundle('web_editor.backend_assets_wysiwyg');
+            await Promise.all([loadBundle('web_editor.backend_assets_wysiwyg'), this.reportEditorModel.loadReportQweb()])
             this.Wysiwyg = (await odoo.loader.modules.get('@web_editor/js/wysiwyg/wysiwyg')).Wysiwyg;
         });
 
@@ -319,6 +319,7 @@ export class ReportEditorWysiwyg extends Component {
             const xpath = $el.data("oe-xpath");
             htmlParts[viewId][xpath || "entire_view"] = escaped_html;
         };
+        this.wysiwyg.odooEditor.observerUnactive();
         await this.wysiwyg.saveContent(false);
         await this.reportEditorModel.saveReport({ htmlParts, urgent });
     }

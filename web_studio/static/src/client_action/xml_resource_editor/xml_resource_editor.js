@@ -85,13 +85,14 @@ export class XmlResourceEditor extends Component {
         minWidth: { type: Number, optional: true },
         reloadSources: { type: Number, optional: true },
         displayAlerts: { type: Boolean, optional: true },
+        onResourceChange: { type: Function, optional: true },
     };
     static defaultProps = {
         canSave: true,
         minWidth: 400,
         reloadSources: 1,
-        onResourceChange: () => {},
         displayAlerts: true,
+        onResourceChange: () => {},
     };
 
     setup() {
@@ -196,6 +197,7 @@ export class XmlResourceEditor extends Component {
 
     onResourceChange(resourceId) {
         this.state.currentResourceId = resourceId;
+        this.props.onResourceChange(this.getResourceFromId(this.state.currentResourceId));
     }
 
     async loadResources(resourceId) {

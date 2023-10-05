@@ -830,3 +830,38 @@ registry.category("web_tour.tours").add("web_studio.test_error_at_loading", {
         },
     ],
 });
+
+registry.category("web_tour.tours").add("web_studio.test_xml_and_form_diff", {
+    test: true,
+    sequence: 260,
+    steps: () => [
+        {
+            trigger: ".o-web-studio-report-editor-wysiwyg iframe p:eq(2)",
+            run() {
+                insertText(this.$anchor[0], "edited with odooEditor");
+            },
+        },
+        {
+            trigger: "button[name='report_edit_sources']",
+        },
+        {
+            trigger: "button[name='view_diff']",
+        },
+        {
+            trigger: ".o_form_view table.diff",
+            run() {
+                assertEqual(
+                    document.querySelector(".o_form_view .o_field_widget[name='view_name']")
+                        .textContent,
+                    "web_studio.test_report_document"
+                );
+                assertEqual(
+                    document.querySelector(
+                        ".o_form_view .o_field_widget[name='compare_view_id'] input"
+                    ).value,
+                    "web_studio_backup__web_studio.test_report_document"
+                );
+            },
+        },
+    ],
+});

@@ -13,6 +13,8 @@ import random
 from odoo import api, models, _
 from odoo.exceptions import UserError
 
+from odoo.addons.web_studio.controllers.report import get_report_view_copy
+
 
 CONTAINER_TYPES = (
     'group', 'page', 'sheet', 'div', 'ul', 'li', 'notebook',
@@ -1335,3 +1337,21 @@ class View(models.Model):
         if self.env.context.get("studio"):
             return
         return super().save_embedded_field(el)
+
+
+
+class ResetViewArchWizard(models.TransientModel):
+    """ A wizard to compare and reset views architecture. """
+    _inherit = "reset.view.arch.wizard"
+
+    @api.model
+    def default_get(self, fields):
+        defaults = super().default_get(fields)
+        if self._context.get("studio_report_diff"):
+            main_view_id = defaults.get("view_id")
+            if main_view_id:
+                copy = get_report_view_copy(self.env["ir.ui.view"].browse(main_view_id))
+                if copy:
+                    defaults['reset_mode'] = 'other_view'
+                    defaults['compare_view_id'] = copy.id
+        return defaults

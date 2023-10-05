@@ -4,7 +4,7 @@ from psycopg2.extras import Json
 from odoo import Command
 from odoo.addons.base.models.ir_actions_report import IrActionsReport
 from odoo.addons.web_studio.controllers.main import WebStudioController
-from odoo.addons.web_studio.controllers.report import WebStudioReportController
+from odoo.addons.web_studio.controllers.report import WebStudioReportController, get_report_view_copy
 from odoo.addons.web.controllers.report import ReportController
 from odoo.http import _request_stack, route
 from odoo.tests.common import HttpCase, TransactionCase
@@ -282,6 +282,7 @@ class TestReportEditorUIUnit(HttpCase):
         self.env.registry.clear_cache('routing')
 
     def test_basic_report_edition(self):
+        original_main_view_doc_arch = self.main_view_document.arch
         self.start_tour(self.tour_url, "web_studio.test_basic_report_edition", login="admin")
         self.assertEqual(self.report.name, "modified in test")
         self.assertTrue(self.main_view_xml_id.noupdate)
@@ -311,6 +312,12 @@ class TestReportEditorUIUnit(HttpCase):
                <p>edited with odoo editor 2</p>
              </t>
         """)
+        copied_view = get_report_view_copy(self.main_view_document)
+        self.assertXMLEqual(original_main_view_doc_arch, copied_view.arch)
+        self.assertEqual(copied_view.name, "web_studio_backup__web_studio.test_report_document")
+        self.assertEqual(copied_view.key, f"web_studio.__backup__._{self.main_view_document.id}_._{self.main_view_document.key}_")
+        self.assertFalse(copied_view.active)
+        self.assertFalse(copied_view.inherit_id)
 
     def test_basic_report_edition_without_datas(self):
         passed_in_rendering_context = False
@@ -651,3 +658,7 @@ class TestReportEditorUIUnit(HttpCase):
 
         with mute_logger("odoo.http"):
             self.start_tour(self.tour_url, "web_studio.test_error_at_loading", login="admin")
+
+    def test_xml_and_form_diff(self):
+        url = self.tour_url.replace("/web", "/web?debug=1")
+        self.start_tour(url, "web_studio.test_xml_and_form_diff", login="admin")

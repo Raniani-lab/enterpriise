@@ -8,6 +8,7 @@ import { useBus, useOwnedDialogs, useService } from "@web/core/utils/hooks";
 import { ReportEditorIframe } from "../report_editor_iframe";
 import { localization } from "@web/core/l10n/localization";
 import { TranslationDialog } from "@web/views/fields/translation_dialog";
+import { View } from "@web/views/view";
 
 class ReportResourceEditor extends XmlResourceEditor {
     static props = { ...XmlResourceEditor.props, slots: Object };
@@ -53,12 +54,38 @@ class TranslationButton extends Component {
     }
 }
 
+class _View extends View {
+    async loadView() {
+        const res = await super.loadView(...arguments);
+        const Controller = this.Controller;
+        if (
+            !("afterExecuteActionButton" in Controller.props) &&
+            "afterExecuteActionButton" in Controller.prototype
+        ) {
+            class _Controller extends Controller {
+                afterExecuteActionButton(clickParams) {
+                    const res = super.afterExecuteActionButton(...arguments);
+                    this.props.afterExecuteActionButton(this.model, ...arguments);
+                    return res;
+                }
+            }
+            _Controller.props = {
+                ...Controller.props,
+                afterExecuteActionButton: { type: Function },
+            };
+            this.Controller = _Controller;
+        }
+        return res;
+    }
+}
+
 export class ReportEditorXml extends Component {
     static components = {
         XmlResourceEditor: ReportResourceEditor,
         ReportRecordNavigation,
         ReportEditorIframe,
         TranslationButton,
+        View: _View,
     };
     static template = "web_studio.ReportEditorXml";
     static props = {
@@ -70,6 +97,7 @@ export class ReportEditorXml extends Component {
         this.state = useState({
             xmlChanges: null,
             reloadSources: 1,
+            viewIdToDiff: false,
             get isDirty() {
                 return !!this.xmlChanges;
             },
@@ -88,7 +116,8 @@ export class ReportEditorXml extends Component {
     }
 
     get minWidth() {
-        return Math.floor(document.documentElement.clientWidth * 0.4);
+        const factor = this.state.viewIdToDiff ? 0.2 : 0.4;
+        return Math.floor(document.documentElement.clientWidth * factor);
     }
 
     async onCloseXmlEditor() {
@@ -124,5 +153,40 @@ export class ReportEditorXml extends Component {
             const viewId = parseInt(brandingTarget.getAttribute("data-oe-id"));
             this.reportEditorModel.bus.trigger("node-clicked", { viewId });
         });
+    }
+
+    async switchToDiff(viewId) {
+        await this.save();
+        this.state.viewIdToDiff = viewId;
+    }
+
+    get diffProps() {
+        return {
+            type: "form",
+            resModel: "reset.view.arch.wizard",
+            context: {
+                studio: false,
+                studio_report_diff: true,
+                active_ids: [this.state.viewIdToDiff],
+                active_model: "ir.ui.view",
+            },
+            afterExecuteActionButton: (model, clickParams) => {
+                if (
+                    model.root.resModel === "reset.view.arch.wizard" &&
+                    clickParams.name === "reset_view_button"
+                ) {
+                    this.state.reloadSources++;
+                    this.reportEditorModel._resetInternalArchs();
+                    this.reportEditorModel.loadReportHtml();
+                }
+            },
+            preventCreate: true,
+        };
+    }
+
+    onResourceChanged(resource) {
+        if (this.state.viewIdToDiff) {
+            this.state.viewIdToDiff = resource.id;
+        }
     }
 }

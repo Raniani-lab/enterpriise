@@ -123,10 +123,10 @@ class AccountGenericTaxReport(models.AbstractModel):
             sheet.write(y_offset, 3, move.partner_id.name or '', default_style)
             sheet.write(y_offset, 4, move.partner_id.vat or '', default_style)
             sheet.write(y_offset, 5, move.partner_id._l10n_th_get_branch_name(), default_style)
-            sheet.write(y_offset, 6, move.amount_total, currency_default_style)
-            sheet.write(y_offset, 7, move.amount_tax, currency_default_style)
-            accumulate_total += move.amount_total
-            accumulate_tax += move.amount_tax
+            sheet.write(y_offset, 6, move.amount_total_signed, currency_default_style)
+            sheet.write(y_offset, 7, move.amount_tax_signed, currency_default_style)
+            accumulate_total += move.amount_total_signed
+            accumulate_tax += move.amount_tax_signed
             y_offset += 1
         y_offset += 1
         y_offset += 1

@@ -41,7 +41,7 @@ patch(IoTLongpolling.prototype, {
         var res = super.action(...arguments);
         res.then(() => {
             this.hardwareProxy.setProxyConnectionStatus(iot_ip, true);
-        }).guardedCatch(() => {
+        }).catch(() => {
             this.hardwareProxy.setProxyConnectionStatus(iot_ip, false);
         });
         return res;

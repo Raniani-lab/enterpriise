@@ -298,7 +298,6 @@ export const voipService = {
         const isEmployee = await user.hasGroup("base.group_user");
         if (!isEmployee) {
             const isReady = new Deferred();
-            isReady.reject();
             return {
                 bus: new EventBus(),
                 get canCall() {

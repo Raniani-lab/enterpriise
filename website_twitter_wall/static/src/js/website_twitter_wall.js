@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { RPCError } from "@web/core/network/rpc_service";
 import { renderToElement } from "@web/core/utils/render";
 import Widget from "@web/legacy/js/core/widget";
 import publicWidget from "@web/legacy/js/public/public_widget";
@@ -88,8 +89,11 @@ var TweetWall = Widget.extend({
                 if (atLeastOneNotSeen || self.repeat) {
                     self._processTweet();
                 }
-            }).guardedCatch(function () {
+            }).catch(function (e) {
                 self.fetchPromise = undefined;
+                if (!(e instanceof RPCError)) {
+                    Promise.reject(e);
+                }
             });
         }
     },

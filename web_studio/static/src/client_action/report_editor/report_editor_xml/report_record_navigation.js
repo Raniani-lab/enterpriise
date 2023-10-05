@@ -1,21 +1,29 @@
 /** @odoo-module */
 import { Component, useState } from "@odoo/owl";
 
-import { Record } from "@web/views/record";
-import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
 import { Pager } from "@web/core/pager/pager";
+import { RecordSelector } from "@web/core/record_selectors/record_selector";
 
 export class ReportRecordNavigation extends Component {
-    static components = { Record, Pager, Many2OneField };
+    static components = { RecordSelector, Pager };
     static template = "web_studio.ReportEditor.ReportRecordNavigation";
     static props = {};
 
     setup() {
         this.reportEditorModel = useState(this.env.reportEditorModel);
-        this.searchRecordFields = {
-            record_id: { type: "many2one", relation: this.reportEditorModel.reportResModel },
+    }
+
+    get multiRecordSelectorProps() {
+        const currentId = this.reportEditorModel.reportEnv.currentId;
+        return {
+            resModel: this.reportEditorModel.reportResModel,
+            update: (resId) => {
+                this.reportEditorModel.loadReportHtml({ resId });
+            },
+            resId: currentId,
+            domain: this.reportEditorModel.getModelDomain(),
+            context: { studio: false },
         };
-        this.m2oSelectorContext = "{ 'studio': False }";
     }
 
     get pagerProps() {
@@ -28,25 +36,9 @@ export class ReportRecordNavigation extends Component {
         };
     }
 
-    get searchRecordProps() {
-        const currentId = this.reportEditorModel.reportEnv.currentId;
-        return {
-            fields: this.searchRecordFields,
-            activeFields: this.searchRecordFields,
-            values: {
-                record_id: currentId ? [currentId] : false,
-            },
-        };
-    }
-
     updatePager({ offset }) {
         const ids = this.reportEditorModel.reportEnv.ids;
         const resId = ids[offset];
-        this.reportEditorModel.loadReportHtml({ resId });
-    }
-
-    updateSearch(rec) {
-        const resId = rec.data.record_id && rec.data.record_id[0];
         this.reportEditorModel.loadReportHtml({ resId });
     }
 }

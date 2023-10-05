@@ -34,9 +34,7 @@
 						<label for="select_action_to_run" class="oe_label" style="display: inline;">
 							Action to run
 						</label>
-						<Record t-props="recordProps" t-slot-scope="data">
-							<Many2OneField id="'select_action'" name="'actionId'" record="data.record" domain='[["binding_model_id", "=", props.model]]'/>
-						</Record>
+            <RecordSelector t-props="multiRecordSelectorProps"/>
 					</div>
 					<div t-if="state.button_type === 'object'">
 						<label for="set_method" class="oe_label" style="display: inline;">

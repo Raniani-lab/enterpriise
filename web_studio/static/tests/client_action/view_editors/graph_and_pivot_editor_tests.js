@@ -558,7 +558,7 @@ QUnit.module(
                     }
                 },
             });
-            await click(target, ".o_field_many2many_selection input#pivot_measure_fields");
+            await click(target, ".o_field_many2many_tags input");
             assert.verifySteps(["name_search"]);
         });
     }

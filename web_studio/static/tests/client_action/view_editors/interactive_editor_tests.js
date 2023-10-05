@@ -502,10 +502,16 @@ QUnit.module("View Editors", () => {
                 mockRPC: function (route, args) {
                     if (args.method === "name_search") {
                         assert.deepEqual(args.kwargs.args, [
+                            "&",
+                            "&",
+                            "&",
+                            "&",
                             ["relation", "=", "coucou"],
                             ["ttype", "=", "many2one"],
                             ["model_id.abstract", "=", false],
                             ["store", "=", true],
+                            "!",
+                            ["id", "in", []],
                         ]);
                         return Promise.resolve([
                             [1, "Field 1"],

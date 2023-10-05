@@ -15,6 +15,7 @@ import { Many2ManyTagsField } from "@web/views/fields/many2many_tags/many2many_t
 
 import { useEditNodeAttributes } from "@web_studio/client_action/view_editor/view_editor_model";
 import { computeReportMeasures } from "@web/views/utils";
+import { MultiRecordSelector } from "@web/core/record_selectors/multi_record_selector";
 
 function getFieldNameFromGroupby(str) {
     return str.split(":")[0];
@@ -32,40 +33,29 @@ export class PivotEditorSidebar extends Component {
         SidebarViewToolbox,
         Record,
         Many2ManyTagsField,
+        MultiRecordSelector,
     };
 
     setup() {
         this.viewEditorModel = useState(this.env.viewEditorModel);
         this.editArchAttributes = useEditNodeAttributes({ isRoot: true });
-
-        const irModelDefinition = {
-            field_ids: {
-                type: "many2many",
-                relation: "ir.model.fields",
-                domain: [
-                    ["model", "=", this.viewEditorModel.resModel],
-                    ["name", "in", Object.keys(this.possibleMeasures)],
-                ],
-                related: {
-                    fields: {
-                        display_name: { type: "char" },
-                    },
-                    activeFields: {
-                        display_name: { type: "char" },
-                    },
-                },
-            },
-        };
-        this.measureFieldsRecord = {
-            fields: irModelDefinition,
-            activeFields: irModelDefinition,
-            onRecordChanged: this.changeMeasureFields.bind(this),
-        };
     }
 
     get possibleMeasures() {
         const { fieldAttrs, activeMeasures } = this.archInfo;
         return computeReportMeasures(this.viewEditorModel.fields, fieldAttrs, activeMeasures);
+    }
+
+    get multiRecordSelectorProps() {
+        return {
+            resModel: "ir.model.fields",
+            update: this.changeMeasureFields.bind(this),
+            resIds: this.currentMeasureFields,
+            domain: [
+                ["model", "=", this.viewEditorModel.resModel],
+                ["name", "in", Object.keys(this.possibleMeasures)],
+            ],
+        };
     }
 
     get currentMeasureFields() {
@@ -90,16 +80,18 @@ export class PivotEditorSidebar extends Component {
         return this.archInfo.colGroupBys.map((fName) => getFieldNameFromGroupby(fName));
     }
 
-    changeMeasureFields(record) {
-        const newFullIds = record.data.field_ids.currentIds;
+    /**
+     * @param {Array<Number>} resIds
+     */
+    changeMeasureFields(resIds) {
         const currentFullIds = this.currentMeasureFields;
-        const newIds = newFullIds.filter((id) => !currentFullIds.includes(id));
+        const newIds = resIds.filter((id) => !currentFullIds.includes(id));
         let toRemoveIds;
 
         const operationType = newIds.length ? "add" : "remove";
 
         if (operationType === "remove") {
-            toRemoveIds = currentFullIds.filter((id) => !newFullIds.includes(id));
+            toRemoveIds = currentFullIds.filter((id) => !resIds.includes(id));
         }
 
         this.viewEditorModel.doOperation({

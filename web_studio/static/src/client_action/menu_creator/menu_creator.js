@@ -3,12 +3,11 @@ import { Component, useState } from "@odoo/owl";
 import { useOwnedDialogs } from "@web/core/utils/hooks";
 import { Dialog } from "@web/core/dialog/dialog";
 
-import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
-import { Record } from "@web/views/record";
 import { _t } from "@web/core/l10n/translation";
 
 import { useDialogConfirmation } from "@web_studio/client_action/utils";
 import { ModelConfiguratorDialog } from "../model_configurator/model_configurator";
+import { RecordSelector } from "@web/core/record_selectors/record_selector";
 
 export class MenuCreatorModel {
     constructor({ allowNoModel } = {}) {
@@ -16,18 +15,6 @@ export class MenuCreatorModel {
             modelId: false,
             menuName: "",
             modelChoice: "new",
-        };
-
-        // Info to instantiate the many2one to select an existing model
-        this.modelIdfieldsInfo = {
-            modelId: {
-                relation: "ir.model",
-                domain: [
-                    ["transient", "=", false],
-                    ["abstract", "=", false],
-                ],
-                type: "many2one",
-            },
         };
 
         // Info to select what kind of model is linked to the menu
@@ -56,7 +43,7 @@ export class MenuCreatorModel {
 
 export class MenuCreator extends Component {
     static template = "web_studio.MenuCreator";
-    static components = { Record, Many2OneField };
+    static components = { RecordSelector };
     static props = {
         menuCreatorModel: { type: Object },
         showValidation: { type: Boolean, optional: true },
@@ -64,6 +51,18 @@ export class MenuCreator extends Component {
     static defaultProps = {
         showValidation: false,
     };
+
+    get multiRecordSelectorProps() {
+        return {
+            resModel: "ir.model",
+            resId: this.state.data.modelId && this.state.data.modelId[0],
+            update: (resId) => (this.state.data.modelId = [resId]),
+            domain: [
+                ["transient", "=", false],
+                ["abstract", "=", false],
+            ],
+        };
+    }
 
     setup() {
         this.state = useState(this.props.menuCreatorModel);

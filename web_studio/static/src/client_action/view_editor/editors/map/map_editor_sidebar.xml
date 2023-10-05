@@ -31,15 +31,12 @@
                     Hide Address
                 </Property>
 
-                <Record t-props="additionalFieldsRecord" values="{ field_ids: currentAdditionalFieldsIds }" t-slot-scope="data">
-                    <t t-set="record" t-value="data.record" />
-                    <div class="o_map_popup_fields">
-                        <label for="additional_fields" class="mb-1">Additional Fields</label>
-                        <div class="o_field_widget o_field_many2many_tags" name="additional_fields">
-                            <Many2ManyTagsField id="'additional_fields'" name="'field_ids'" record="record" domain="additionalFieldsRecord.activeFields.field_ids.domain"/>
-                        </div>
+                <div class="o_map_popup_fields">
+                    <label for="additional_fields" class="mb-1">Additional Fields</label>
+                    <div class="o_field_widget o_field_many2many_tags" name="additional_fields">
+                        <MultiRecordSelector t-props="multiRecordSelectorProps" />
                     </div>
-                </Record>
+                </div>
 
                 <Property
                     name="'routing'"

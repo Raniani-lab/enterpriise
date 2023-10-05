@@ -29,23 +29,7 @@
             t-att-class="{ o_web_studio_field_warning: !isValid('modelId') }"
         >
             <label for="name">Model</label>
-            <t t-set="activeFields" t-value="{ modelId: state.modelIdfieldsInfo.modelId }" />
-            <Record
-                fields="activeFields"
-                activeFields="activeFields"
-                values="{ modelId: state.data.modelId }"
-                onRecordChanged="(rec) => { state.data.modelId = rec.data.modelId; }"
-                t-slot-scope="data">
-                <t t-set="record" t-value="data.record" />
-                <Many2OneField
-                    record="record"
-                    name="'modelId'"
-                    value="record.data.modelId"
-                    canQuickCreate="true"
-                    canOpen="false"
-                    domain="activeFields.modelId.domain"
-                />
-            </Record>
+            <RecordSelector t-props="multiRecordSelectorProps"/>
         </div>
     </div>
 </t>

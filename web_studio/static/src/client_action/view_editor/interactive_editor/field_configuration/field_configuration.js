@@ -2,8 +2,6 @@
 import { Component, useState, xml } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
-import { Record } from "@web/views/record";
 import { ModelFieldSelector } from "@web/core/model_field_selector/model_field_selector";
 import { useDialogConfirmation } from "@web_studio/client_action/utils";
 import { useOwnedDialogs, useService } from "@web/core/utils/hooks";
@@ -11,6 +9,7 @@ import { session } from "@web/session";
 import { _t } from "@web/core/l10n/translation";
 import { DomainSelector } from "@web/core/domain_selector/domain_selector";
 import { SelectionContentDialog } from "@web_studio/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog";
+import { RecordSelector } from "@web/core/record_selectors/record_selector";
 
 export function getCurrencyField(fieldsGet) {
     const field = Object.entries(fieldsGet).find(([fName, fInfo]) => {
@@ -50,7 +49,7 @@ export class SelectionValuesEditor extends Component {
 
 export class RelationalFieldConfigurator extends Component {
     static template = "web_studio.RelationalFieldConfigurator";
-    static components = { Record, Many2OneField };
+    static components = { RecordSelector };
     static props = {
         configurationModel: { type: Object },
         resModel: { type: String },
@@ -67,47 +66,35 @@ export class RelationalFieldConfigurator extends Component {
 
     setup() {
         this.state = useState(this.props.configurationModel);
-
-        const relationId = {
-            type: "many2one",
-            context: {},
-        };
-
-        if (this.fieldType === "one2many") {
-            relationId.relation = "ir.model.fields";
-            relationId.domain = [
-                ["relation", "=", this.props.resModel],
-                ["ttype", "=", "many2one"],
-                ["model_id.abstract", "=", false],
-                ["store", "=", true],
-            ];
-        } else {
-            relationId.relation = "ir.model";
-            relationId.domain = [
-                ["transient", "=", false],
-                ["abstract", "=", false],
-            ];
-        }
-
-        this.activeFields = { relationId };
-
-        const state = this.state;
-        this.recordProps = {
-            activeFields: this.activeFields,
-            fields: this.activeFields,
-            get values() {
-                return {
-                    relationId: state.relationId,
-                };
-            },
-            onRecordChanged: (rec) => {
-                this.state.relationId = rec.data.relationId;
-            },
-        };
     }
 
-    get fieldType() {
-        return this.props.fieldType;
+    get valueSelectorProps() {
+        if (this.props.fieldType === "one2many") {
+            return {
+                resModel: "ir.model.fields",
+                domain: [
+                    ["relation", "=", this.props.resModel],
+                    ["ttype", "=", "many2one"],
+                    ["model_id.abstract", "=", false],
+                    ["store", "=", true],
+                ],
+                resId: this.state.relationId,
+                update: (resId) => {
+                    this.state.relationId = resId;
+                },
+            };
+        }
+        return {
+            resModel: "ir.model",
+            domain: [
+                ["transient", "=", false],
+                ["abstract", "=", false],
+            ],
+            resId: this.state.relationId,
+            update: (resId) => {
+                this.state.relationId = resId;
+            },
+        };
     }
 }
 

@@ -162,15 +162,15 @@ registry.category("web_tour.tours").add("web_studio_main_and_rename", {
             trigger: 'div.o_web_studio_menu_creator_model_choice input[value="existing"]',
         },
         {
-            trigger: "div.o_web_studio_menu_creator_model .o_field_many2one_selection input",
+            trigger: "div.o_web_studio_menu_creator_model .o_record_selector input",
             run: "text a",
         },
         {
             trigger:
-                ".o_field_many2one_selection .o-autocomplete--dropdown-menu > li > a:not(:has(.fa-spin))",
+                ".o_record_selector .o-autocomplete--dropdown-menu > li > a:not(:has(.fa-spin))",
         },
         {
-            extra_trigger: ".o_field_many2one_selection :not(.o-autocomplete dropdown-menu)",
+            extra_trigger: ".o_record_selector :not(.o-autocomplete dropdown-menu)",
             trigger: '.o_web_studio_add_menu_modal button:contains(Confirm):not(".disabled")',
         },
         {
@@ -1349,7 +1349,7 @@ const addActionButtonModalSteps = (
         trigger: ".o-web-studio-editor--modal-add-action input#set_button_type_to_action",
     },
     {
-        trigger: ".o-web-studio-editor--modal-add-action input#select_action",
+        trigger: ".o-web-studio-editor--modal-add-action .o_record_selector input",
         run: `text ${ActionName}`,
     },
     {

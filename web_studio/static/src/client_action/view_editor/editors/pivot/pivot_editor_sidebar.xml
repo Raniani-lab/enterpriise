@@ -44,15 +44,12 @@
                     Row grouping - Second level
                 </Property>
 
-                <Record t-props="measureFieldsRecord" values="{ field_ids: currentMeasureFields }" t-slot-scope="data">
-                    <t t-set="record" t-value="data.record" />
-                    <div class="o_pivot_measures_fields">
-                        <label for="pivot_measure_fields" class="mb-1">Measures</label>
-                        <div class="o_field_widget o_field_many2many_tags" name="pivot_measure_fields">
-                            <Many2ManyTagsField id="'pivot_measure_fields'" name="'field_ids'" record="record" domain="measureFieldsRecord.activeFields.field_ids.domain"/>
-                        </div>
+                <div class="o_pivot_measures_fields">
+                    <label for="pivot_measure_fields" class="mb-1">Measures</label>
+                    <div class="o_field_widget o_field_many2many_tags" name="pivot_measure_fields">
+                        <MultiRecordSelector t-props="multiRecordSelectorProps" />
                     </div>
-                </Record>
+                </div>
 
                 <SidebarViewToolbox onMore="props.openViewInForm" canEditXml="!viewEditorModel.isEditingSubview" openDefaultValues="props.openDefaultValues" />
             </t>

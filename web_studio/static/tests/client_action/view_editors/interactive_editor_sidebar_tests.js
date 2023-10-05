@@ -245,13 +245,15 @@ QUnit.module(
                 resModel: "coucou",
                 arch,
                 mockRPC: function (route, args) {
-                    if (args.method === "web_read" && args.args[0][0] === 1234) {
-                        return [
-                            {
-                                id: 1234,
-                                display_name: "Foo",
-                            },
-                        ];
+                    if (args.method === "web_search_read" && args.model === "ir.model.fields") {
+                        return {
+                            records: [
+                                {
+                                    id: 1234,
+                                    display_name: "Foo",
+                                },
+                            ],
+                        };
                     }
                 },
             });

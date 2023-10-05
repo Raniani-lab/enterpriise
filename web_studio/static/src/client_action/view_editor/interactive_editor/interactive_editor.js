@@ -482,10 +482,10 @@ export class InteractiveEditor extends Component {
                 newNode.field_description.selection = fieldParams.selection;
             }
             if (fieldType === "one2many") {
-                newNode.field_description.relation_field_id = fieldParams.relationId[0];
+                newNode.field_description.relation_field_id = fieldParams.relationId;
             }
             if (fieldType === "many2many" || fieldType === "many2one") {
-                newNode.field_description.relation_id = fieldParams.relationId[0];
+                newNode.field_description.relation_id = fieldParams.relationId;
             }
             if (fieldType === "related") {
                 Object.assign(newNode.field_description, fieldParams.relatedParams);

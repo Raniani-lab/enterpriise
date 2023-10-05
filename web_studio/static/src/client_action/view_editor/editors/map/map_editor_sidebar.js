@@ -10,6 +10,7 @@ import { SidebarViewToolbox } from "@web_studio/client_action/view_editor/intera
 import { Record } from "@web/views/record";
 import { Many2ManyTagsField } from "@web/views/fields/many2many_tags/many2many_tags_field";
 import { useEditNodeAttributes } from "@web_studio/client_action/view_editor/view_editor_model";
+import { MultiRecordSelector } from "@web/core/record_selectors/multi_record_selector";
 
 export class MapEditorSidebar extends Component {
     static template = "web_studio.ViewEditor.MapEditorSidebar";
@@ -23,39 +24,28 @@ export class MapEditorSidebar extends Component {
         SidebarViewToolbox,
         Record,
         Many2ManyTagsField,
+        MultiRecordSelector,
     };
 
     setup() {
         this.viewEditorModel = useState(this.env.viewEditorModel);
         this.editArchAttributes = useEditNodeAttributes({ isRoot: true });
-
-        const irModelDefinition = {
-            field_ids: {
-                type: "many2many",
-                relation: "ir.model.fields",
-                domain: [
-                    ["model", "=", this.viewEditorModel.resModel],
-                    ["ttype", "not in", ["many2many", "one2many", "binary"]],
-                ],
-                related: {
-                    fields: {
-                        display_name: { type: "char" },
-                    },
-                    activeFields: {
-                        display_name: { type: "char" },
-                    },
-                },
-            },
-        };
-        this.additionalFieldsRecord = {
-            fields: irModelDefinition,
-            activeFields: irModelDefinition,
-            onRecordChanged: this.changeAdditionalFields.bind(this),
-        };
     }
 
     get modelParams() {
         return this.viewEditorModel.controllerProps.modelParams;
+    }
+
+    get multiRecordSelectorProps() {
+        return {
+            resModel: "ir.model.fields",
+            update: this.changeAdditionalFields.bind(this),
+            resIds: this.currentAdditionalFieldsIds,
+            domain: [
+                ["model", "=", this.viewEditorModel.resModel],
+                ["ttype", "not in", ["many2many", "one2many", "binary"]],
+            ],
+        };
     }
 
     get currentAdditionalFieldsIds() {
@@ -85,16 +75,18 @@ export class MapEditorSidebar extends Component {
             .map((field) => ({ label: `${field.string} (${field.name})`, value: field.name }));
     }
 
-    changeAdditionalFields(record, changes) {
-        const newFullIds = record.data.field_ids.currentIds;
+    /**
+     * @param {Array<Number>} resIds
+     */
+    changeAdditionalFields(resIds) {
         const currentFullIds = this.currentAdditionalFieldsIds;
-        const newIds = newFullIds.filter((id) => !currentFullIds.includes(id));
+        const newIds = resIds.filter((id) => !currentFullIds.includes(id));
         let toRemoveIds;
 
         const operationType = newIds.length ? "add" : "remove";
 
         if (operationType === "remove") {
-            toRemoveIds = currentFullIds.filter((id) => !newFullIds.includes(id));
+            toRemoveIds = currentFullIds.filter((id) => !resIds.includes(id));
         }
 
         this.viewEditorModel.doOperation({

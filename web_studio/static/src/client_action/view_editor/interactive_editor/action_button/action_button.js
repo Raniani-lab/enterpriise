@@ -3,12 +3,11 @@
 import { Dialog } from "@web/core/dialog/dialog";
 import { Dropdown } from "@web/core/dropdown/dropdown";
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { Record } from "@web/views/record";
-import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
 import { AutoComplete } from "@web/core/autocomplete/autocomplete";
 import { Component, useState } from "@odoo/owl";
-import { useOwnedDialogs, useService} from "@web/core/utils/hooks";
+import { useOwnedDialogs, useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
+import { RecordSelector } from "@web/core/record_selectors/record_selector";
 
 export class DialogAddNewButton extends Component {
     static template = `web_studio.DialogNewButtonStatusBar`;
@@ -17,8 +16,7 @@ export class DialogAddNewButton extends Component {
         Dialog,
         Dropdown,
         DropdownItem,
-        Many2OneField,
-        Record,
+        RecordSelector,
     };
     static props = {
         model: { type: String },
@@ -30,41 +28,39 @@ export class DialogAddNewButton extends Component {
         this.state = useState({
             action: "",
             button_type: "",
-            actionId: "",
+            actionId: false,
             methodId: "",
             methodList: [],
-            error: "", 
-            methodChecked : false, 
+            error: "",
+            methodChecked: false,
         });
-        const actionId = {
-            type: "many2one",
-            relation: "ir.actions.actions",
-        };
+    }
 
-        const self = this; 
-        this.recordProps = {
-            activeFields: { actionId },
-            fields: { actionId },
-            get values() {
-                return {
-                    actionId: self.state.actionId,
-                };
+    get multiRecordSelectorProps() {
+        return {
+            resModel: "ir.actions.actions",
+            update: (resId) => {
+                this.state.actionId = resId;
             },
-            onRecordChanged: (rec) => {
-                this.state.actionId = rec.data.actionId;
-            },
+            resId: this.state.actionId,
+            domain: [["binding_model_id", "=", this.props.model]],
         };
     }
+
     get title() {
-        return _t('Buttons Properties');
+        return _t("Buttons Properties");
     }
 
     get checkValidity() {
         if (this.state.label?.length > 0) {
-            if (this.state.button_type === "action" && this.state.actionId?.length > 0) {
+            if (this.state.button_type === "action" && this.state.actionId) {
                 return false;
-            } else if (this.state.methodChecked && this.state.button_type === "object" && 
-                    this.state.methodId?.length > 0 && this.state.error?.length === 0) {
+            } else if (
+                this.state.methodChecked &&
+                this.state.button_type === "object" &&
+                this.state.methodId?.length > 0 &&
+                this.state.error?.length === 0
+            ) {
                 return false;
             } else {
                 return true;
@@ -74,7 +70,7 @@ export class DialogAddNewButton extends Component {
         }
     }
     onChange() {
-        this.state.actionId = null;
+        this.state.actionId = false;
         this.state.methodId = null;
     }
     onConfirm() {
@@ -86,26 +82,25 @@ export class DialogAddNewButton extends Component {
     }
     async checkMethod() {
         this.state.error = "";
-        this.state.methodChecked = false
-        if(this.state.methodId?.length > 0) {
-            if(this.state.methodId.startsWith("_")) {
+        this.state.methodChecked = false;
+        if (this.state.methodId?.length > 0) {
+            if (this.state.methodId.startsWith("_")) {
                 this.state.error = _t("The method %s is private.", this.state.methodId);
-            }
-            else {
+            } else {
                 try {
                     await this.rpc("/web_studio/check_method", {
-                        model_name : this.props.model, 
-                        method_name : this.state.methodId, 
+                        model_name: this.props.model,
+                        method_name: this.state.methodId,
                     });
-                }
-                catch(error) {
-                    if(error?.data?.message?.length > 0) this.state.error = error.data.message;
+                } catch (error) {
+                    if (error?.data?.message?.length > 0) {
+                        this.state.error = error.data.message;
+                    }
                 }
                 this.state.methodChecked = true;
             }
         }
     }
-
 }
 
 export class AddButtonAction extends Component {
@@ -120,8 +115,8 @@ export class AddButtonAction extends Component {
             onConfirm: (state) => {
                 const viewEditorModel = this.env.viewEditorModel;
                 const arch = viewEditorModel.xmlDoc;
-                const findHeader = arch.firstChild.querySelector(":scope > header")
-                if(!findHeader) {
+                const findHeader = arch.firstChild.querySelector(":scope > header");
+                if (!findHeader) {
                     viewEditorModel.pushOperation({
                         type: "statusbar",
                         view_id: this.env.viewEditorModel.view.id,
@@ -130,7 +125,7 @@ export class AddButtonAction extends Component {
                 viewEditorModel.doOperation({
                     type: "add_button_action",
                     button_type: state.button_type,
-                    actionId: state.actionId && state.actionId[0],
+                    actionId: state.actionId,
                     methodId: state.methodId,
                     label: state.label,
                 });

@@ -176,7 +176,7 @@ QUnit.module("Studio Navbar > AppMenuEditor", (hooks) => {
         );
         assert.containsNone(
             target,
-            ".o_web_studio_add_menu_modal .o_field_many2one_selection",
+            ".o_web_studio_add_menu_modal .o_record_selector",
             "there should be no visible many2one for the model in the dialog"
         );
 
@@ -202,7 +202,7 @@ QUnit.module("Studio Navbar > AppMenuEditor", (hooks) => {
             target,
             '.o_web_studio_add_menu_modal .o_web_studio_menu_creator_model_choice [value="existing"]'
         );
-        assert.containsOnce(target, ".o_web_studio_add_menu_modal .o_field_many2one_selection");
+        assert.containsOnce(target, ".o_web_studio_add_menu_modal .o_record_selector");
 
         // add menu and close the modal
         await editInput(target, '.o_web_studio_add_menu_modal input[name="menuName"]', "AA");

@@ -416,8 +416,12 @@ QUnit.module("AppCreator", (hooks) => {
                 switch (route) {
                     case "/web/dataset/call_kw/ir.model/name_search": {
                         assert.deepEqual(params.kwargs.args, [
+                            "&",
+                            "&",
                             ["transient", "=", false],
                             ["abstract", "=", false],
+                            "!",
+                            ["id", "in", []],
                         ]);
                         assert.step(route);
                         assert.strictEqual(
@@ -477,7 +481,7 @@ QUnit.module("AppCreator", (hooks) => {
         assert.doesNotHaveClass(buttonNext, "is_ready");
         assert.containsOnce(
             target,
-            ".o_field_many2one_selection",
+            ".o_record_selector",
             "There should be a many2one to select a model"
         );
 
@@ -489,11 +493,11 @@ QUnit.module("AppCreator", (hooks) => {
         );
         assert.doesNotHaveClass(buttonNext, "is_ready");
 
-        await editInput(target, ".o_field_many2one_selection input", "The");
+        await editInput(target, ".o_record_selector input", "The");
         await click(target.querySelector(".o-autocomplete--dropdown-item"));
 
         assert.strictEqual(
-            target.querySelector(".o_field_many2one_selection input").value,
+            target.querySelector(".o_record_selector input").value,
             "The Value",
             "Correct value should be selected."
         );

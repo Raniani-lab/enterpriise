@@ -169,7 +169,7 @@ export class AppCreator extends Component {
                 app_name: data.appName,
                 menu_name: data.menu.menuName,
                 model_choice: data.menu.modelChoice,
-                model_id: data.menu.modelChoice && data.menu.modelId[0],
+                model_id: data.menu.modelChoice && data.menu.modelId && data.menu.modelId[0],
                 model_options: data.modelOptions,
                 icon: iconValue,
                 context: this.user.context,

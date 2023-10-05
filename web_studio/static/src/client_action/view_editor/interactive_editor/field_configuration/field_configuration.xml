@@ -9,12 +9,10 @@
 </t>
 
 <t t-name="web_studio.RelationalFieldConfigurator" >
-    <span t-if="fieldType === 'one2many'" >Select the reciprocal ManyToOne field</span>
+    <span t-if="props.fieldType === 'one2many'" >Select the reciprocal ManyToOne field</span>
     <span t-else="">Select the model in relation to this one</span>
     <div name="relation_id">
-        <Record t-props="recordProps" t-slot-scope="scope">
-            <Many2OneField record="scope.record" name="'relationId'" canCreate="false" domain="activeFields.relationId.domain"/>
-        </Record>
+        <RecordSelector t-props="valueSelectorProps"/>
     </div>
 </t>
 

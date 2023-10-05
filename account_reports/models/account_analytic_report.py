@@ -108,7 +108,7 @@ class AccountReport(models.AbstractModel):
 
         line_fields = self.env['account.move.line'].fields_get()
         self.env.cr.execute("SELECT column_name FROM information_schema.columns WHERE table_name='account_move_line'")
-        stored_fields = set(f[0] for f in self.env.cr.fetchall())
+        stored_fields = set(f[0] for f in self.env.cr.fetchall() if f[0] in line_fields)
         changed_equivalence_dict = {
             "id": sql.Identifier("id"),
             "balance": sql.SQL("-amount"),
@@ -132,9 +132,6 @@ class AccountReport(models.AbstractModel):
             elif fname == 'analytic_distribution':
                 selected_fields.append(sql.SQL('to_jsonb(account_id) AS "account_move_line.analytic_distribution"'))
             else:
-                if fname not in line_fields:
-                    # The field is still stored, but is not a field
-                    continue
                 if line_fields[fname].get("translate"):
                     typecast = sql.SQL('jsonb')
                 elif line_fields[fname].get("type") == "monetary":

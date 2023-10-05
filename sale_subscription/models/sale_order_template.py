@@ -37,13 +37,10 @@ class SaleOrderTemplate(models.Model):
     def _search_is_subscription(self, operator, value):
         if operator not in ['=', '!='] or not isinstance(value, bool):
             raise NotImplementedError(_('Operation not supported'))
-        recurring_templates = self.env['sale.order.template'].search([('plan_id', '!=', False)])
         if (operator == '=' and value) or (operator == '!=' and not value):
-            # Look for subscription templates
-            domain = [('id', 'in', recurring_templates.ids)]
+            domain = [('plan_id', '!=', False)]
         else:
-            # Look for non subscription templates
-            domain = [('id', 'not in', recurring_templates.ids)]
+            domain = [('plan_id', '=', False)]
         return domain
 
 

@@ -171,7 +171,7 @@ class HrContractSalary(main.HrContractSalary):
 
     def _get_default_template_values(self, contract, offer):
         values = super()._get_default_template_values(contract, offer)
-        values['l10n_be_canteen_cost'] = False
+        values['l10n_be_canteen_cost'] = contract.l10n_be_canteen_cost
         values['contract_type_id'] = offer.contract_type_id.id
         return values
 

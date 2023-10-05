@@ -85,66 +85,6 @@ class QualityPoint(models.Model):
         self.ensure_one()
         return True
 
-    def _get_checks_values(self, products, company_id, existing_checks=False):
-        quality_points_list = []
-        point_values = []
-        if not existing_checks:
-            existing_checks = []
-        for check in existing_checks:
-            point_key = (check.point_id.id, check.team_id.id, check.product_id.id)
-            quality_points_list.append(point_key)
-
-        for point in self:
-            if not point.check_execute_now():
-                continue
-            point_products = point.product_ids
-
-            if point.product_category_ids:
-                point_product_from_categories = self.env['product.product'].search([('categ_id', 'child_of', point.product_category_ids.ids), ('id', 'in', products.ids)])
-                point_products |= point_product_from_categories
-
-            if not point.product_ids and not point.product_category_ids:
-                point_products |= products
-
-            for product in point_products:
-                if product not in products:
-                    continue
-                point_key = (point.id, point.team_id.id, product.id)
-                if point_key in quality_points_list:
-                    continue
-                point_values.append({
-                    'point_id': point.id,
-                    'measure_on': point.measure_on,
-                    'team_id': point.team_id.id,
-                    'product_id': product.id,
-                })
-                quality_points_list.append(point_key)
-
-        return point_values
-
-    @api.model
-    def _get_domain(self, product_ids, picking_type_id, measure_on='product'):
-        """ Helper that returns a domain for quality.point based on the products and picking type
-        pass as arguments. It will search for quality point having:
-        - No product_ids and no product_category_id
-        - At least one variant from product_ids
-        - At least one category that is a parent of the product_ids categories
-
-        :param product_ids: the products that could require a quality check
-        :type product: :class:`~odoo.addons.product.models.product.ProductProduct`
-        :param picking_type_id: the products that could require a quality check
-        :type product: :class:`~odoo.addons.stock.models.stock_picking.PickingType`
-        :return: the domain for quality point with given picking_type_id for all the product_ids
-        :rtype: list
-        """
-        domain = [('picking_type_ids', 'in', picking_type_id.ids)]
-        domain_in_products_or_categs = ['|', ('product_ids', 'in', product_ids.ids), ('product_category_ids', 'parent_of', product_ids.categ_id.ids)]
-        domain_no_products_and_categs = [('product_ids', '=', False), ('product_category_ids', '=', False)]
-        domain += OR([domain_in_products_or_categs, domain_no_products_and_categs])
-        domain += [('measure_on', '=', measure_on)]
-
-        return domain
-
     def _get_type_default_domain(self):
         return []
 

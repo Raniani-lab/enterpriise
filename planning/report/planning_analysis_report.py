@@ -39,10 +39,6 @@ class PlanningAnalysisReport(models.Model):
     working_days_count = fields.Float("Working Days", readonly=True)
     slot_id = fields.Many2one("planning.slot", string="Planning Slot", readonly=True)
     request_to_switch = fields.Boolean('Has there been a request to switch on this shift slot?', readonly=True)
-    overlap_slot_count = fields.Integer('Overlapping Slots', search='_search_overlap_slot_count', store=False, readonly=True)
-
-    def _search_overlap_slot_count(self, operator, value):
-        return [('slot_id.overlap_slot_count', operator, value)]
 
     @property
     def _table_query(self):

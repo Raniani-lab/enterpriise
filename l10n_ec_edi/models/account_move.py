@@ -504,16 +504,14 @@ class AccountMove(models.Model):
         if self.commercial_partner_id.country_code != 'EC':
             foreign_data['identification'] = '02'
             taxes = self.line_ids.mapped('tax_ids')
-            # Compute header values from first tax (the wizard has restrictions to forbid mixing uncompatible tax types)
             if taxes:
-                tax_id = taxes[0]
                 foreign_data['paying_country'] = self.commercial_partner_id.country_id.l10n_ec_code_tax_haven or 'NA'
-                if tax_id.l10n_ec_code_base in L10N_EC_WTH_FOREIGN_GENERAL_REGIME_CODES:
+                if any(tax_id.l10n_ec_code_base in L10N_EC_WTH_FOREIGN_GENERAL_REGIME_CODES for tax_id in taxes):
                     foreign_data['paying_country'] = self.commercial_partner_id.country_id.l10n_ec_code_ats or 'NA'
-                if tax_id.l10n_ec_code_base in L10N_EC_WTH_FOREIGN_DOUBLE_TAXATION_CODES:
+                if any(tax_id.l10n_ec_code_base in L10N_EC_WTH_FOREIGN_DOUBLE_TAXATION_CODES for tax_id in taxes):
                     foreign_data['double_taxation'] = 'SI'
                 foreign_data['subject_withhold'] = 'SI'
-                if tax_id.l10n_ec_code_base in L10N_EC_WTH_FOREIGN_NOT_SUBJECT_WITHHOLD_CODES:
+                if any(tax_id.l10n_ec_code_base in L10N_EC_WTH_FOREIGN_NOT_SUBJECT_WITHHOLD_CODES for tax_id in taxes):
                     foreign_data['subject_withhold'] = 'NO'
             foreign_data['fiscal_payment'] = 'SI'
             foreign_data['regime_type'] = self.l10n_ec_withhold_foreign_regime

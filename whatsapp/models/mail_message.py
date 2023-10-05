@@ -15,19 +15,19 @@ class MailMessage(models.Model):
     def _post_whatsapp_reaction(self, reaction_content, partner_id):
         self.ensure_one()
         reaction_to_delete = self.reaction_ids.filtered(lambda r: r.partner_id == partner_id)
-        messageReactionGroups = []
+        reactionGroups = []
         if reaction_to_delete:
             content = reaction_to_delete.content
             reaction_to_delete.unlink()
-            messageReactionGroups.append(self._get_whatsapp_reaction_format(content, partner_id, unlink_reaction=True))
+            reactionGroups.append(self._get_whatsapp_reaction_format(content, partner_id, unlink_reaction=True))
         if reaction_content and self.id:
             self.env['mail.message.reaction'].create({
                 'message_id': self.id,
                 'content': reaction_content,
                 'partner_id': partner_id.id,
             })
-            messageReactionGroups.append(self._get_whatsapp_reaction_format(reaction_content, partner_id))
-        payload = {'Message': {'id': self.id, 'messageReactionGroups': messageReactionGroups}}
+            reactionGroups.append(self._get_whatsapp_reaction_format(reaction_content, partner_id))
+        payload = {'Message': {'id': self.id, 'reactions': reactionGroups}}
         self.env['bus.bus']._sendone(self._bus_notification_target(), 'mail.record/insert', payload)
 
     def _get_whatsapp_reaction_format(self, content, partner_id, unlink_reaction=False):

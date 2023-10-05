@@ -39,8 +39,8 @@ patch(Thread.prototype, {
     insert(data) {
         const thread = super.insert(data);
         if (thread.type === "whatsapp") {
-            if (data?.channel) {
-                assignDefined(thread, data.channel, ["anonymous_name"]);
+            if ("anonymous_name" in data) {
+                thread.anonymous_name = data.anonymous_name;
             }
         }
         return thread;

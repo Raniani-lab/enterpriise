@@ -20,7 +20,7 @@ patch(MockServer.prototype, {
         const channelInfos = super._mockDiscussChannelChannelInfo(...arguments);
         for (const channelInfo of channelInfos) {
             const channel = this.getRecords("discuss.channel", [["id", "=", channelInfo.id]])[0];
-            channelInfo["channel"]["anonymous_name"] = channel.anonymous_name;
+            channelInfo["anonymous_name"] = channel.anonymous_name;
             if (
                 channel.channel_type === "whatsapp" &&
                 Boolean(channel.whatsapp_channel_valid_until)

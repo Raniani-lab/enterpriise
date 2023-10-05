@@ -1,10 +1,16 @@
 /** @odoo-module **/
 
 import { ResizablePanel } from "@web_studio/client_action/xml_resource_editor/resizable_panel/resizable_panel";
-import { Component, xml } from "@odoo/owl";
+import { Component, reactive, xml } from "@odoo/owl";
 import { browser } from "@web/core/browser/browser";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { getFixture, patchWithCleanup, mount } from "@web/../tests/helpers/utils";
+import {
+    getFixture,
+    patchWithCleanup,
+    mount,
+    nextTick,
+    triggerEvents,
+} from "@web/../tests/helpers/utils";
 
 QUnit.module("XmlEditor", (hooks) => {
     QUnit.module("Resizable Panel");
@@ -45,5 +51,31 @@ QUnit.module("XmlEditor", (hooks) => {
             sidepanelWidth <= vw && sidepanelWidth > vw * 0.95,
             "The sidepanel should be smaller or equal to the view width"
         );
+    });
+
+    QUnit.test("minWidth props can be updated", async (assert) => {
+        class Parent extends Component {
+            static components = { ResizablePanel };
+            static template = xml`
+                <div class="d-flex">
+                    <ResizablePanel minWidth="props.state.minWidth">
+                        <div style="width: 10px;" class="text-break">
+                            A cool paragraph
+                        </div>
+                    </ResizablePanel>
+                </div>
+            `;
+        }
+        const state = reactive({ minWidth: 20 });
+        await mount(Parent, target, { env, props: { state } });
+        const resizablePanelEl = target.querySelector(".o_resizable_panel");
+        const handle = resizablePanelEl.querySelector(".o_resizable_panel_handle");
+        await triggerEvents(handle, null, ["mousedown", ["mousemove", { clientX: 15 }], "mouseup"]);
+
+        assert.strictEqual(resizablePanelEl.getBoundingClientRect().width, 20);
+        state.minWidth = 40;
+        await nextTick();
+        await triggerEvents(handle, null, ["mousedown", ["mousemove", { clientX: 15 }], "mouseup"]);
+        assert.strictEqual(resizablePanelEl.getBoundingClientRect().width, 40);
     });
 });

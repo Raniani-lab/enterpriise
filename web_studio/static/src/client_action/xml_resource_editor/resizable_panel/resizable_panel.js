@@ -1,10 +1,25 @@
 /** @odoo-module */
-import { Component, onMounted, onWillUnmount, useExternalListener, useRef } from "@odoo/owl";
+import {
+    Component,
+    onMounted,
+    onWillUpdateProps,
+    onWillUnmount,
+    useExternalListener,
+    useRef,
+    useComponent,
+} from "@odoo/owl";
 
-export function useResizable({ containerRef, handleRef, minWidth = 400, onResize = () => {} }) {
+export function useResizable({
+    containerRef,
+    handleRef,
+    getMinWidth = () => 400,
+    onResize = () => {},
+}) {
     containerRef = typeof containerRef == "string" ? useRef(containerRef) : containerRef;
     handleRef = typeof handleRef == "string" ? useRef(handleRef) : handleRef;
+    const props = useComponent().props;
 
+    let minWidth = getMinWidth(props);
     let isChangingSize = false;
 
     useExternalListener(document, "mouseup", () => onMouseUp());
@@ -15,6 +30,10 @@ export function useResizable({ containerRef, handleRef, minWidth = 400, onResize
             resize(minWidth);
             handleRef.el.addEventListener("mousedown", onMouseDown);
         }
+    });
+
+    onWillUpdateProps((nextProps) => {
+        minWidth = getMinWidth(nextProps);
     });
 
     onWillUnmount(() => {
@@ -71,7 +90,7 @@ export class ResizablePanel extends Component {
             containerRef: "containerRef",
             handleRef: "handleRef",
             onResize: this.props.onResize,
-            minWidth: this.props.minWidth,
+            getMinWidth: (props) => props.minWidth,
         });
     }
 }

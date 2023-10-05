@@ -19,7 +19,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.rl_config import TTFSearchPath
 from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from werkzeug.urls import url_join, url_quote
 from random import randint
@@ -590,10 +590,9 @@ class SignRequest(models.Model):
                             else:
                                 content.append(option.value)
                         font_size = height * normalFontSize * 0.8
-                        can.setFont(font, font_size)
                         text = " / ".join(content)
                         string_width = stringWidth(text.replace("<strike>", "").replace("</strike>", ""), font, font_size)
-                        p = Paragraph(text, getSampleStyleSheet()["Normal"])
+                        p = Paragraph(text, ParagraphStyle(name='Selection Paragraph', fontName=font, fontSize=font_size, leading=12))
                         posX = width * (item.posX + item.width * 0.5) - string_width // 2
                         posY = height * (1 - item.posY - item.height * 0.5) - p.wrap(width, height)[1] // 2
                         p.drawOn(can, posX, posY)

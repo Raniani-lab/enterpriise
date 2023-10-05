@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import contextlib
+import io
 
-from odoo.tools import street_split
+from odoo.tools import pycompat, street_split
 
 from odoo import api, models, _
 
@@ -18,6 +20,13 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                 'action': 'export_file',
                 'action_param': 'l10n_dk_export_saft_to_xml',
                 'file_export_type': _('XML')
+            })
+            options['buttons'].append({
+                'name': _('CSV'),
+                'sequence': 55,
+                'action': 'export_file',
+                'action_param': 'l10n_dk_export_general_ledger_csv',
+                'file_export_type': _('CSV')
             })
 
     @api.model
@@ -72,3 +81,28 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             "off_balance": 'Other',
         }
         return account_type_dict[account_type]
+
+    @api.model
+    def l10n_dk_export_general_ledger_csv(self, options):
+        report = self.env['account.report'].browse(options['report_id'])
+        # account number, account name, balance
+        csv_lines = [("KONTONUMMER", "KONTONAVN", "VAERDI")]
+        # fold all report lines to make sure we only get the account details
+        new_options = report.get_options(previous_options={**options, 'unfolded_lines': [], 'unfold_all': False})
+
+        balance_index = [c['expression_label'] for c in options['columns']].index('balance')
+        for line in filter(lambda line: self.env['account.report']._get_markup(line['id']) != 'total', report._get_lines(new_options)):
+            account_number, account_name = line['name'].split(maxsplit=1)
+            account_balance = int(line['columns'][balance_index]['no_format'])  # balance value must be a whole number
+            csv_lines.append((account_number, account_name, account_balance))
+
+        with contextlib.closing(io.BytesIO()) as buf:
+            writer = pycompat.csv_writer(buf, delimiter=',')
+            writer.writerows(csv_lines)
+            content = buf.getvalue()
+
+        return {
+            'file_name': report.get_default_report_filename(options, 'csv'),
+            'file_content': content,
+            'file_type': 'csv',
+        }

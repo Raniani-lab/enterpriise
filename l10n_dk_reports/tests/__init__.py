@@ -1,1 +1,1 @@
-from . import test_dk_saft_report
+from . import test_dk_report

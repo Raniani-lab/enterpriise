@@ -1,13 +1,16 @@
+import io
+
 from freezegun import freeze_time
 
 from odoo import Command, fields, tools
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 from odoo.tests import tagged
+from odoo.tools import pycompat
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install')
 @freeze_time('2022-01-01')
-class TestDKSaftReport(TestAccountReportsCommon):
+class TestDKReport(TestAccountReportsCommon):
 
     @classmethod
     def setUpClass(cls, chart_template_ref='dk'):
@@ -119,3 +122,20 @@ class TestDKSaftReport(TestAccountReportsCommon):
         account_selection = [selection[0] for selection in self.env["account.account"]._fields["account_type"].selection]
         for account_type in account_selection:
             self.env[report.custom_handler_model_name]._saft_get_account_type(account_type)
+
+    def test_l10n_dk_general_ledger_csv_export(self):
+        report = self.env.ref('account_reports.general_ledger_report')
+        options = report.get_options()
+        csv_content = self.env[report.custom_handler_model_name].l10n_dk_export_general_ledger_csv(options)['file_content']
+        reader = pycompat.csv_reader(io.BytesIO(csv_content), delimiter=',')
+
+        expected_values = (
+            ('KONTONUMMER', 'KONTONAVN', 'VAERDI'),
+            ('5960', 'Accounts receivable', '6250'),
+            ('7200', 'Creditor (copy)', '-10000'),
+            ('7740', 'VAT on purchases', '2000'),
+            ('7840', 'VAT payable', '-1250'),
+            ('999999', 'Undistributed Profits/Losses', '3000'),
+        )
+        for idx, content in enumerate(reader):
+            self.assertSequenceEqual(expected_values[idx], content)

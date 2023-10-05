@@ -1,48 +1,35 @@
 /** @odoo-module */
 
+import { AutoComplete } from "@web/core/autocomplete/autocomplete";
 import { CharField, charField } from "@web/views/fields/char/char_field";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { renderToElement } from "@web/core/utils/render";
-import { useEffect, useRef } from "@odoo/owl";
+
+class TwitterUsersAutocomplete extends AutoComplete {
+    static timeout = 500;
+
+    get autoCompleteRootClass() {
+        return `${super.autoCompleteRootClass} o_social_twitter_users_autocomplete`;
+    }
+}
 
 export class TwitterUsersAutocompleteField extends CharField {
+    static template = "social_twitter.TwitterUsersAutocompleteField";
+    static components = {
+        ...CharField.components,
+        AutoComplete: TwitterUsersAutocomplete
+    }
+
     setup() {
         super.setup();
 
         this.orm = useService("orm");
-        this.input = useRef('input');
-
-        useEffect(() => {
-            $(this.input.el).autocomplete({
-                classes: {'ui-autocomplete': 'o_social_twitter_users_autocomplete'},
-                source: async (request, response) => {
-                    const accountId = this.props.record.data.account_id[0];
-
-                    const userInfo = await this.orm.call(
-                        'social.account',
-                        'twitter_get_user_by_username',
-                        [[accountId], request.term]
-                    );
-                    response(userInfo ? [userInfo] : []);
-                },
-                select: (ev, ui) => {
-                    $(this.input.el).val(ui.item.name);
-                    this.selectTwitterUser(ui.item);
-                    ev.preventDefault();
-                },
-                html: true,
-                minLength: 2,
-                delay: 500,
-            }).data('ui-autocomplete')._renderItem = function (ul, item){
-                return $(renderToElement('social_twitter.users_autocomplete_element', {
-                    suggestion: item
-                })).appendTo(ul);
-            };
-        });
+        this.value = "";
     }
 
-    async selectTwitterUser(twitterUser) {
+    async selectTwitterUser(selectedSubjection) {
+        const twitterUser = Object.getPrototypeOf(selectedSubjection);
+        this.value = twitterUser.name;
         const twitterAccountId = await this.orm.call(
             'social.twitter.account',
             'create',
@@ -55,6 +42,24 @@ export class TwitterUsersAutocompleteField extends CharField {
         await this.props.record.update({
             twitter_followed_account_id: [twitterAccountId, twitterUser.name]
         });
+    }
+
+    get sources() {
+        return [{
+            optionTemplate: "social_twitter.users_autocomplete_element",
+            options: async (request) => {
+                if(request.length < 2) {
+                    return [];
+                }
+                const accountId = this.props.record.data.account_id[0];
+                const userInfo = await this.orm.call(
+                    'social.account',
+                    'twitter_get_user_by_username',
+                    [[accountId], request]
+                );
+                return userInfo ? [userInfo] : [];
+            }
+        }];
     }
 }
 

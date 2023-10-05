@@ -51,7 +51,7 @@ class MrpWorkorder(models.Model):
 
     def start_employee(self, employee_id):
         self.ensure_one()
-        if employee_id in self.employee_ids.ids and any(not t.date_end for t in self.time_ids if t.employee_id.id == employee_id):
+        if not self.allow_employee or employee_id in self.employee_ids.ids and any(not t.date_end for t in self.time_ids if t.employee_id.id == employee_id):
             return
         self.employee_ids = [Command.link(employee_id)]
         time_data = self._prepare_timeline_vals(self.duration, fields.Datetime.now())

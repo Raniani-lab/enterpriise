@@ -59,7 +59,7 @@
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_1_2_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">-1050</field>
+                                                        <field name="formula">-105</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -72,7 +72,7 @@
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_1_3_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">-1100</field>
+                                                        <field name="formula">-110</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -85,7 +85,7 @@
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_1_4_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">-1150</field>
+                                                        <field name="formula">-115</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -98,7 +98,7 @@
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_1_5_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">-1200</field>
+                                                        <field name="formula">-120</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -111,7 +111,7 @@
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_1_6_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">-1300</field>
+                                                        <field name="formula">-130</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -124,7 +124,7 @@
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_1_7_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">-1350</field>
+                                                        <field name="formula">-135</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -144,7 +144,7 @@
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_2_1_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">-1410</field>
+                                                        <field name="formula">-141</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -157,7 +157,7 @@
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_2_2_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">-1430</field>
+                                                        <field name="formula">-143</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -170,7 +170,7 @@
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_2_3_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">-1460</field>
+                                                        <field name="formula">-146</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -190,7 +190,7 @@
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_3_1_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">-1510</field>
+                                                        <field name="formula">-151</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -203,7 +203,7 @@
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_3_2_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">-1530</field>
+                                                        <field name="formula">-153</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -216,7 +216,7 @@
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_3_3_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">-1540</field>
+                                                        <field name="formula">-154</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -229,7 +229,7 @@
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_3_4_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">-1550</field>
+                                                        <field name="formula">-155</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -288,7 +288,7 @@
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_4_4_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">1660</field>
+                                                        <field name="formula">166</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -301,7 +301,7 @@
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_4_5_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">1710</field>
+                                                        <field name="formula">171</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -314,7 +314,7 @@
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_4_6_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">1740</field>
+                                                        <field name="formula">174</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -327,7 +327,7 @@
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_4_7_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">1770</field>
+                                                        <field name="formula">177</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -340,7 +340,7 @@
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_4_8_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">1800</field>
+                                                        <field name="formula">180</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -365,7 +365,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_1_1_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">1830</field>
+                                                                <field name="formula">183</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -378,7 +378,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_1_2_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">1850</field>
+                                                                <field name="formula">185</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -391,7 +391,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_1_3_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">1870</field>
+                                                                <field name="formula">187</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -404,7 +404,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_1_4_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">1890</field>
+                                                                <field name="formula">189</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -417,7 +417,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_1_5_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">1910</field>
+                                                                <field name="formula">191</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -430,7 +430,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_1_6_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">1930</field>
+                                                                <field name="formula">193</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -443,7 +443,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_1_7_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">1950</field>
+                                                                <field name="formula">195</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -456,7 +456,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_1_8_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">1970</field>
+                                                                <field name="formula">197</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -469,7 +469,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_1_9_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">1990</field>
+                                                                <field name="formula">199</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -489,7 +489,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_2_1_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2030</field>
+                                                                <field name="formula">203</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -502,7 +502,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_2_2_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2050</field>
+                                                                <field name="formula">205</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -515,7 +515,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_2_3_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2060</field>
+                                                                <field name="formula">206</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -528,7 +528,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_2_4_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2070</field>
+                                                                <field name="formula">207</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -541,7 +541,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_2_5_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2080</field>
+                                                                <field name="formula">208</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -554,7 +554,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_2_6_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2090</field>
+                                                                <field name="formula">209</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -567,7 +567,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_2_7_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2100</field>
+                                                                <field name="formula">210</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -580,7 +580,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_2_8_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2110</field>
+                                                                <field name="formula">211</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -593,7 +593,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_2_9_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2120</field>
+                                                                <field name="formula">212</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -606,7 +606,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_2_10_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2130</field>
+                                                                <field name="formula">213</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -619,7 +619,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_2_11_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2140</field>
+                                                                <field name="formula">214</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -632,7 +632,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_2_12_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2150</field>
+                                                                <field name="formula">215</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -645,7 +645,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_2_13_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2160</field>
+                                                                <field name="formula">216</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -658,7 +658,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_2_14_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2170</field>
+                                                                <field name="formula">217</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -671,7 +671,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_2_15_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2180</field>
+                                                                <field name="formula">218</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -684,7 +684,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_2_16_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2190</field>
+                                                                <field name="formula">219</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -697,7 +697,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_2_17_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2200</field>
+                                                                <field name="formula">220</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -717,7 +717,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_1_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2230</field>
+                                                                <field name="formula">223</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -730,7 +730,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_2_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2240</field>
+                                                                <field name="formula">224</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -743,7 +743,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_3_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2250</field>
+                                                                <field name="formula">225</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -756,7 +756,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_4_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2260</field>
+                                                                <field name="formula">226</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -769,7 +769,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_5_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2270</field>
+                                                                <field name="formula">227</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -782,7 +782,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_6_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2280</field>
+                                                                <field name="formula">228</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -795,7 +795,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_7_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2290</field>
+                                                                <field name="formula">229</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -808,7 +808,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_8_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2300</field>
+                                                                <field name="formula">230</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -821,7 +821,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_9_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2310</field>
+                                                                <field name="formula">231</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -834,7 +834,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_10_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2330</field>
+                                                                <field name="formula">233</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -847,7 +847,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_11_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2350</field>
+                                                                <field name="formula">235</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -860,7 +860,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_12_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2370</field>
+                                                                <field name="formula">237</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -873,7 +873,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_13_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2380</field>
+                                                                <field name="formula">238</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -886,7 +886,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_14_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2390</field>
+                                                                <field name="formula">239</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -899,7 +899,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_15_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2410</field>
+                                                                <field name="formula">241</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -912,7 +912,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_16_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2420</field>
+                                                                <field name="formula">242</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -925,7 +925,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_17_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2450</field>
+                                                                <field name="formula">245</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -938,7 +938,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_18_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2460</field>
+                                                                <field name="formula">246</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -951,7 +951,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_19_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2470</field>
+                                                                <field name="formula">247</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -964,7 +964,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_20_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2480</field>
+                                                                <field name="formula">248</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -977,7 +977,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_21_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2510</field>
+                                                                <field name="formula">251</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -990,7 +990,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_22_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2520</field>
+                                                                <field name="formula">252</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1003,7 +1003,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_23_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2530</field>
+                                                                <field name="formula">253</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1016,7 +1016,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_24_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2540</field>
+                                                                <field name="formula">254</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1029,7 +1029,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_25_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2560</field>
+                                                                <field name="formula">256</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1042,7 +1042,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_26_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2620</field>
+                                                                <field name="formula">262</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1055,7 +1055,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_27_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2630</field>
+                                                                <field name="formula">263</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1068,7 +1068,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_28_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2640</field>
+                                                                <field name="formula">264</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1081,7 +1081,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_29_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2650</field>
+                                                                <field name="formula">265</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1094,7 +1094,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_30_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2660</field>
+                                                                <field name="formula">266</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1107,7 +1107,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_31_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2670</field>
+                                                                <field name="formula">267</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1120,7 +1120,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_32_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2680</field>
+                                                                <field name="formula">268</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1133,7 +1133,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_33_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2690</field>
+                                                                <field name="formula">269</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1146,7 +1146,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_34_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2700</field>
+                                                                <field name="formula">270</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1159,7 +1159,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_35_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2710</field>
+                                                                <field name="formula">271</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1172,7 +1172,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_36_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2720</field>
+                                                                <field name="formula">272</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1185,7 +1185,7 @@
                                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3_37_balance" model="account.report.expression">
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
-                                                                <field name="formula">2810</field>
+                                                                <field name="formula">281</field>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1209,7 +1209,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_2_1_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">2850</field>
+                                                <field name="formula">285</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1222,7 +1222,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_2_2_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">2860</field>
+                                                <field name="formula">286</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1235,7 +1235,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_2_3_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">2870</field>
+                                                <field name="formula">287</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1248,7 +1248,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_2_4_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">2880</field>
+                                                <field name="formula">288</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1261,7 +1261,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_2_5_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">2890</field>
+                                                <field name="formula">289</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1274,7 +1274,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_2_6_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">2900</field>
+                                                <field name="formula">290</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1287,7 +1287,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_2_7_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">2910</field>
+                                                <field name="formula">291</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1300,7 +1300,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_2_8_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">2920</field>
+                                                <field name="formula">292</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1313,7 +1313,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_2_9_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">2930</field>
+                                                <field name="formula">293</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1326,7 +1326,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_2_10_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">2940</field>
+                                                <field name="formula">294</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1339,7 +1339,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_2_11_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">2950</field>
+                                                <field name="formula">295</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1352,7 +1352,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_2_12_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">2960</field>
+                                                <field name="formula">296</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1391,7 +1391,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_2_15_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">2970</field>
+                                                <field name="formula">297</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1404,7 +1404,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_2_16_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">2980</field>
+                                                <field name="formula">298</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1424,7 +1424,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_3_1_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3000</field>
+                                                <field name="formula">300</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1437,7 +1437,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_3_2_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3010</field>
+                                                <field name="formula">301</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1450,7 +1450,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_3_3_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3020</field>
+                                                <field name="formula">302</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1463,7 +1463,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_3_4_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3030</field>
+                                                <field name="formula">303</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1476,7 +1476,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_3_5_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3040</field>
+                                                <field name="formula">304</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1489,7 +1489,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_3_6_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3050</field>
+                                                <field name="formula">305</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1502,7 +1502,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_3_7_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3060</field>
+                                                <field name="formula">306</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1515,7 +1515,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_3_8_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3070</field>
+                                                <field name="formula">307</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1528,7 +1528,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_3_9_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3080</field>
+                                                <field name="formula">308</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1541,7 +1541,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_3_10_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3090</field>
+                                                <field name="formula">309</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1556,7 +1556,7 @@
                                     <record id="account_pnl_report_l10n_dk_1_1_4_balance" model="account.report.expression">
                                         <field name="label">balance</field>
                                         <field name="engine">account_codes</field>
-                                        <field name="formula">3130</field>
+                                        <field name="formula">313</field>
                                     </record>
                                 </field>
                             </record>
@@ -1574,7 +1574,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_5_1_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3160</field>
+                                                <field name="formula">316</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1587,7 +1587,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_5_2_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3170</field>
+                                                <field name="formula">317</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1620,7 +1620,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_6_1_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">-3200</field>
+                                                <field name="formula">-320</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1633,7 +1633,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_6_2_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">-3230</field>
+                                                <field name="formula">-323</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1653,7 +1653,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_7_1_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">-3380</field>
+                                                <field name="formula">-338</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1666,7 +1666,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_7_2_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">-3400</field>
+                                                <field name="formula">-340</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1681,7 +1681,7 @@
                                     <record id="account_pnl_report_l10n_dk_1_1_8_balance" model="account.report.expression">
                                         <field name="label">balance</field>
                                         <field name="engine">account_codes</field>
-                                        <field name="formula">-3440</field>
+                                        <field name="formula">-344</field>
                                     </record>
                                 </field>
                             </record>
@@ -1699,7 +1699,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_9_1_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">-3470</field>
+                                                <field name="formula">-347</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1712,7 +1712,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_9_2_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">-3490</field>
+                                                <field name="formula">-349</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1725,7 +1725,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_9_3_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">-3510</field>
+                                                <field name="formula">-351</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1753,7 +1753,7 @@
                                     <record id="account_pnl_report_l10n_dk_1_1_10_balance" model="account.report.expression">
                                         <field name="label">balance</field>
                                         <field name="engine">account_codes</field>
-                                        <field name="formula">-3560</field>
+                                        <field name="formula">-356</field>
                                     </record>
                                 </field>
                             </record>
@@ -1766,7 +1766,7 @@
                                     <record id="account_pnl_report_l10n_dk_1_1_11_balance" model="account.report.expression">
                                         <field name="label">balance</field>
                                         <field name="engine">account_codes</field>
-                                        <field name="formula">3590</field>
+                                        <field name="formula">359</field>
                                     </record>
                                 </field>
                             </record>
@@ -1784,7 +1784,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_12_1_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3610</field>
+                                                <field name="formula">361</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1797,7 +1797,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_12_2_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3620</field>
+                                                <field name="formula">362</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1810,7 +1810,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_12_3_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3630</field>
+                                                <field name="formula">363</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1823,7 +1823,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_12_4_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3640</field>
+                                                <field name="formula">364</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1836,7 +1836,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_12_5_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3650</field>
+                                                <field name="formula">365</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1849,7 +1849,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_12_6_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3670</field>
+                                                <field name="formula">367</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1875,7 +1875,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_12_8_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3680</field>
+                                                <field name="formula">368</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1888,7 +1888,7 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_12_9_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">3690</field>
+                                                <field name="formula">369</field>
                                             </record>
                                         </field>
                                     </record>
@@ -1910,7 +1910,7 @@
                                     <record id="account_pnl_report_l10n_dk_1_2_1_balance" model="account.report.expression">
                                         <field name="label">balance</field>
                                         <field name="engine">account_codes</field>
-                                        <field name="formula">3740</field>
+                                        <field name="formula">374</field>
                                     </record>
                                 </field>
                             </record>
@@ -1923,7 +1923,7 @@
                                     <record id="account_pnl_report_l10n_dk_1_2_2_balance" model="account.report.expression">
                                         <field name="label">balance</field>
                                         <field name="engine">account_codes</field>
-                                        <field name="formula">3760</field>
+                                        <field name="formula">376</field>
                                     </record>
                                 </field>
                             </record>
@@ -1936,7 +1936,7 @@
                                     <record id="account_pnl_report_l10n_dk_1_2_3_balance" model="account.report.expression">
                                         <field name="label">balance</field>
                                         <field name="engine">account_codes</field>
-                                        <field name="formula">3780</field>
+                                        <field name="formula">378</field>
                                     </record>
                                 </field>
                             </record>
@@ -1951,7 +1951,7 @@
                             <record id="account_pnl_report_l10n_dk_1_3_balance" model="account.report.expression">
                                 <field name="label">balance</field>
                                 <field name="engine">account_codes</field>
-                                <field name="formula">3810</field>
+                                <field name="formula">381</field>
                             </record>
                         </field>
                     </record>

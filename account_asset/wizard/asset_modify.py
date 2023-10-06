@@ -6,6 +6,8 @@ from odoo.exceptions import UserError
 from odoo.tools.misc import format_date
 from odoo.tools import float_compare
 
+from dateutil.relativedelta import relativedelta
+
 
 class AssetModify(models.TransientModel):
     _name = 'asset.modify'
@@ -263,6 +265,9 @@ class AssetModify(models.TransientModel):
         residual_increase = max(0, self.value_residual - new_residual)
         salvage_increase = max(0, self.salvage_value - new_salvage)
 
+        if not self.env.context.get('resume_after_pause'):
+            self.asset_id._create_move_before_date(self.date)
+
         # Check for residual/salvage increase while rounding with the company currency precision to prevent float precision issues.
         if self.currency_id.round(residual_increase + salvage_increase) > 0:
             move = self.env['account.move'].create({
@@ -292,11 +297,12 @@ class AssetModify(models.TransientModel):
                 'method': self.asset_id.method,
                 'method_number': self.method_number,
                 'method_period': self.method_period,
-                'acquisition_date': self.asset_id.acquisition_date,
+                'method_progress_factor': self.asset_id.method_progress_factor,
+                'acquisition_date': self.date + relativedelta(days=1),
                 'value_residual': residual_increase,
                 'salvage_value': salvage_increase,
-                'prorata_date': self.asset_id.prorata_date,
-                'prorata_computation_type': self.asset_id.prorata_computation_type,
+                'prorata_date': self.date + relativedelta(days=1),
+                'prorata_computation_type': 'daily_computation' if self.asset_id.prorata_computation_type == 'daily_computation' else 'constant_periods',
                 'original_value': residual_increase + salvage_increase,
                 'account_asset_id': self.account_asset_id.id,
                 'account_depreciation_id': self.account_depreciation_id.id,
@@ -310,8 +316,6 @@ class AssetModify(models.TransientModel):
             subject = _('A gross increase has been created: ') + asset_increase._get_html_link()
             self.asset_id.message_post(body=subject)
 
-        if not self.env.context.get('resume_after_pause'):
-            self.asset_id._create_move_before_date(self.date)
         if increase < 0:
             if self.env['account.move'].search([('asset_id', '=', self.asset_id.id), ('state', '=', 'draft'), ('date', '<=', self.date)]):
                 raise UserError(_('There are unposted depreciations prior to the selected operation date, please deal with them first.'))
@@ -337,10 +341,7 @@ class AssetModify(models.TransientModel):
         self.asset_id.children_ids.write({
             'method_number': asset_vals['method_number'],
             'method_period': asset_vals['method_period'],
-            'acquisition_date': self.asset_id.acquisition_date,
             'asset_paused_days': self.asset_id.asset_paused_days,
-            'prorata_date': self.asset_id.prorata_date,
-            'prorata_computation_type': self.asset_id.prorata_computation_type,
         })
 
         for child in self.asset_id.children_ids:

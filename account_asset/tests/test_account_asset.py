@@ -933,7 +933,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         }).modify()
         self.assertEqual(self.truck.value_residual, 3000)
         self.assertEqual(self.truck.salvage_value, 2500)
-        self.assertEqual(self.truck.children_ids.value_residual, 400)
+        self.assertEqual(self.truck.children_ids.value_residual, 1000)
         self.assertEqual(self.truck.children_ids.salvage_value, 500)
 
     def test_asset_modify_value_01(self):
@@ -994,7 +994,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         }).modify()
         self.assertEqual(self.truck.value_residual, 3500)
         self.assertEqual(self.truck.salvage_value, 2000)
-        self.assertEqual(self.truck.children_ids.value_residual, 200)
+        self.assertEqual(self.truck.children_ids.value_residual, 500)
         self.assertEqual(self.truck.children_ids.salvage_value, 0)
 
     def test_asset_modify_report(self):
@@ -1040,23 +1040,23 @@ class TestAccountAsset(TestAccountReportsCommon):
         #   -4   10000     0   0  10000  1500   750    0  2250      7750
         #   -3   10000     0   0  10000  2250   750    0  3000      7000
         #   -2   10000     0   0  10000  3000   750    0  3750      6250
-        #   -1   10000     0   0  10000  3750   750    0  4500      5500
-        #    0   10000  1500   0  11500  4500  1000    0  5500      6000  <--  today
-        #    1   11500     0   0  11500  5500  1000    0  6500      5000
-        #    2   11500     0   0  11500  6500  1000    0  7500      4000
-        #    3   11500     0   0  11500  7500  1000    0  8500      3000
+        #   -1   10000  1500   0  10000  3750   950    0  4700      6800
+        #    0   10000     0   0  11500  4700   950    0  5650      5850  <--  today
+        #    1   11500     0   0  11500  5650   950    0  6600      4900
+        #    2   11500     0   0  11500  6600   950    0  7550      3950
+        #    3   11500     0   0  11500  7550   950    0  8500      3000
         self.assertEqual(self.truck.value_residual, 3000)
         self.assertEqual(self.truck.salvage_value, 2500)
         self.env['asset.modify'].create({
             'name': 'New beautiful sticker :D',
             'asset_id': self.truck.id,
-            'date': fields.Date.today() + relativedelta(months=-6, days=-1),
+            'date': fields.Date.today() + relativedelta(years=-1, months=-6, days=-1),
             'value_residual': 4000,
             'salvage_value': 3000,
             "account_asset_counterpart_id": self.assert_counterpart_account_id,
         }).modify()
 
-        self.assertEqual(self.truck.value_residual + sum(self.truck.children_ids.mapped('value_residual')), 3400)
+        self.assertEqual(self.truck.value_residual + sum(self.truck.children_ids.mapped('value_residual')), 3800)
         self.assertEqual(self.truck.salvage_value + sum(self.truck.children_ids.mapped('salvage_value')), 3000)
 
         # look at all period, with unposted entries
@@ -1069,7 +1069,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         # look only at this period
         options = self._generate_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
-        self.assertListEqual([11500.0, 0.0, 0.0, 11500.0, 5100.0, 850.0, 0.0, 5950.0, 5550.0],
+        self.assertListEqual([11500.0, 0.0, 0.0, 11500.0, 4700.0, 950.0, 0.0, 5650.0, 5850.0],
                              [x['no_format'] for x in lines[0]['columns'][4:]])
 
         # test value decrease
@@ -1101,7 +1101,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         # look only at previous period
         options = self._generate_options(report, today + relativedelta(years=-1, month=1, day=1), today + relativedelta(years=-1, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
-        self.assertListEqual([11500.0, 0.0, 0.0, 11500.0, 4250.0, 3250.0, 0.0, 7500.0, 4000.0],
+        self.assertListEqual([10000.0, 1500.0, 0.0, 11500.0, 3750.0, 3750.0, 0.0, 7500.0, 4000.0],
                              [x['no_format'] for x in lines[0]['columns'][4:]])
 
     def test_asset_pause_resume(self):
@@ -2414,3 +2414,55 @@ class TestAccountAsset(TestAccountReportsCommon):
         asset_form.model_id = asset_model
 
         self.assertEqual(asset_form.account_asset_id, other_account_on_bill, "We keep the account from the bill")
+
+    def test_asset_reevaluation_degressive_linear(self):
+        """ Tests the reevaluation of an asset in degressive_then_linear with a gross increase"""
+        asset = self.env['account.asset'].create({
+            'method_period': '12',
+            'method_number': 5,
+            'name': "Car with purple sticker",
+            'original_value': 10000.0,
+            'acquisition_date': fields.Date.today() - relativedelta(years=2),
+            'account_asset_id': self.company_data['default_account_assets'].id,
+            'account_depreciation_id': self.company_data['default_account_assets'].copy().id,
+            'account_depreciation_expense_id': self.company_data['default_account_expense'].id,
+            'journal_id': self.company_data['default_journal_misc'].id,
+            'prorata_computation_type': 'none',
+            'method': 'degressive_then_linear',
+            'method_progress_factor': 0.4,
+        })
+        asset.validate()
+        self.assertRecordValues(asset.depreciation_move_ids, [{
+            'depreciation_value': 4000,
+            'asset_remaining_value': 6000,
+            'state': 'posted',
+        }, {
+            'depreciation_value': 2400,
+            'asset_remaining_value': 3600,
+            'state': 'posted',
+        }, {
+            'depreciation_value': 2000,
+            'asset_remaining_value': 1600,
+            'state': 'draft',
+        }, {
+            'depreciation_value': 1600,
+            'asset_remaining_value': 0,
+            'state': 'draft',
+        }])
+        self.env['asset.modify'].create({
+            'name': "Inflation made it take 20%!",
+            'date': fields.Date.today() + relativedelta(months=-6, days=-1),
+            'asset_id': asset.id,
+            'value_residual': 5600,
+            "account_asset_counterpart_id": self.assert_counterpart_account_id,
+        }).modify()
+        self.assertRecordValues(asset.children_ids[0].depreciation_move_ids.sorted(lambda mv: (mv.date, mv.id)), [{
+            # (2000 + 2000*6400/3600) / 5
+            'depreciation_value': 1111.11,
+            'asset_remaining_value': 888.89,
+            'state': 'draft',
+        }, {
+            'depreciation_value': 888.89,
+            'asset_remaining_value': 0,
+            'state': 'draft',
+        }])

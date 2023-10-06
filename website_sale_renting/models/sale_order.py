@@ -38,10 +38,9 @@ class SaleOrder(models.Model):
 
         return new_qty, warning
 
-    def _is_valid_renting_dates(self, start_date=None, end_date=None):
+    def _is_valid_renting_dates(self):
         """ Check if the pickup and return dates are valid.
-        :param datetime start_date: the selected pickup date for the product to rent.
-        :param datetime end_date: the selected return date for the product to rent.
+
         :return: Whether the pickup and return dates are valid.
         :rtype: bool
         """
@@ -49,15 +48,12 @@ class SaleOrder(models.Model):
         if not self.has_rented_products:
             return True
         days_forbidden = self.company_id._get_renting_forbidden_days()
-        start_date = start_date or self.rental_start_date
-        end_date = end_date or self.rental_return_date
-        info = self._get_renting_dates_info(start_date, end_date)
         return (
             # 15 minutes of allowed time between adding the product to cart and paying it.
-            start_date >= fields.Datetime.now() - timedelta(minutes=15)
-            and info['pickup_day'] not in days_forbidden
-            and info['return_day'] not in days_forbidden
-            and info['duration'] >= self.company_id.renting_minimal_time_duration
+            self.rental_start_date >= fields.Datetime.now() - timedelta(minutes=15)
+            and self.rental_start_date.isoweekday() not in days_forbidden
+            and self.rental_return_date.isoweekday() not in days_forbidden
+            and self._get_renting_duration() >= self.company_id.renting_minimal_time_duration
         )
 
     def _cart_update_order_line(self, *args, start_date=None, end_date=None, **kwargs):
@@ -90,8 +86,9 @@ class SaleOrder(models.Model):
         """
         self.ensure_one()
         company = self.company_id
-        info = self._get_renting_dates_info(self.rental_start_date, self.rental_return_date)
         days_forbidden = company._get_renting_forbidden_days()
+        pickup_forbidden = self.rental_start_date.isoweekday() in days_forbidden
+        return_forbidden = self.rental_return_date.isoweekday() in days_forbidden
         message = _("""
             Some of your rental products (%(product)s) cannot be rented during the
             selected period and your cart must be updated. We're sorry for the
@@ -99,24 +96,24 @@ class SaleOrder(models.Model):
         """, product=product.name)
         if self.rental_start_date < fields.Datetime.now():
             message += _("""Your rental product cannot be pickedup in the past.""")
-        elif info['pickup_day'] in days_forbidden and info['return_day'] in days_forbidden:
+        elif pickup_forbidden and return_forbidden:
             message += _("""
                 Your rental product had invalid dates of pickup (%(start_date)s) and
                 return (%(end_date)s). Unfortunately, we do not process pickups nor
                 returns on those weekdays.
             """, start_date=self.rental_start_date, end_date=self.rental_return_date)
-        elif info['pickup_day'] in days_forbidden:
+        elif pickup_forbidden:
             message += _("""
                 Your rental product had invalid date of pickup (%(start_date)s).
                 Unfortunately, we do not process pickups on that weekday.
             """, start_date=self.rental_start_date)
-        elif info['return_day'] in days_forbidden:
+        elif return_forbidden:
             message += _("""
                 Your rental product had invalid date of return (%(end_date)s).
                 Unfortunately, we do not process returns on that weekday.
             """, end_date=self.rental_return_date)
         minimal_duration = company.renting_minimal_time_duration
-        if info['duration'] < minimal_duration:
+        if self._get_renting_duration() < minimal_duration:
             message += _("""
                 Your rental duration was too short. Unfortunately, we do not process
                 rentals that last less than %(duration)s %(unit)s.
@@ -124,20 +121,11 @@ class SaleOrder(models.Model):
 
         return message
 
-    def _get_renting_dates_info(self, start_date, end_date):
-        """ Get basic information in order to validate the renting days and duration
-
-        :param datetime start_date: the selected pickup date for the product to rent.
-        :param datetime end_date: the selected return date for the product to rent.
-        :return: Information about pickup/return dates and the duration.
-        :rtype: dict
-        """
-        duration_vals = self.env['product.pricing']._compute_duration_vals(start_date, end_date)
-        return {
-            'pickup_day': start_date.isoweekday(),
-            'return_day': end_date.isoweekday(),
-            'duration': duration_vals[self.company_id.renting_minimal_time_unit],
-        }
+    def _get_renting_duration(self):
+        """ Return the renting rounded-up duration. """
+        return self.env['product.pricing']._compute_duration_vals(
+            self.rental_start_date, self.rental_return_date
+        )[self.company_id.renting_minimal_time_unit]
 
     def _is_renting_possible_in_hours(self):
         """ Whether all products in the cart can be rented in a period computed in hours. """
@@ -168,6 +156,4 @@ class SaleOrder(models.Model):
 
     def _available_dates_for_renting(self):
         """Hook to override with the stock availability"""
-        return self._is_valid_renting_dates(
-            start_date=self.rental_start_date, end_date=self.rental_return_date
-        )
+        return self._is_valid_renting_dates()

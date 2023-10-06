@@ -2145,13 +2145,13 @@ class Article(models.Model):
     # MAILING
     # ------------------------------------------------------------
 
-    def _mail_track(self, tracked_fields, initial):
-        changes, tracking_value_ids = super(Article, self)._mail_track(tracked_fields, initial)
+    def _mail_track(self, tracked_fields, initial_values):
+        changes, tracking_value_ids = super()._mail_track(tracked_fields, initial_values)
         if {'parent_id', 'root_article_id'} & changes and not self.user_has_write_access:
             partner_name = self.env.user.partner_id.display_name
             message_body = _("Logging changes from %(partner_name)s without write access on article %(article_name)s due to hierarchy tree update",
                 partner_name=partner_name, article_name=self.display_name)
-            self._track_set_log_message("<p>%s</p>" % message_body)
+            self._track_set_log_message(Markup("<p>%s</p>") % message_body)
         return changes, tracking_value_ids
 
     def _send_invite_mail(self, partners, permission, message=None):

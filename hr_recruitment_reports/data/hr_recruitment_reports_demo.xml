@@ -8,11 +8,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_salesman0_mtv1" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">Initial Qualification</field>
         <field name="new_value_char">First Interview</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job1')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job2')"/>
         <field name="mail_message_id" ref="hr_case_salesman0_mm"/>
@@ -26,11 +24,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_traineemca0_mtv1" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">Initial Qualification</field>
         <field name="new_value_char">First Interview</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job1')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job2')"/>
         <field name="mail_message_id" ref="hr_case_traineemca0_mm1"/>
@@ -43,11 +39,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_traineemca0_mtv2" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">First Interview</field>
         <field name="new_value_char">Second Interview</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job2')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job3')"/>
         <field name="mail_message_id" ref="hr_case_traineemca0_mm2"/>
@@ -60,11 +54,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_traineemca0_mtv3" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">Second Interview</field>
         <field name="new_value_char">Contract Proposal</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job3')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job4')"/>
         <field name="mail_message_id" ref="hr_case_traineemca0_mm3"/>
@@ -78,11 +70,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_traineemca1_mtv1" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">Initial Qualification</field>
         <field name="new_value_char">First Interview</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job1')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job2')"/>
         <field name="mail_message_id" ref="hr_case_traineemca1_mm1"/>
@@ -95,11 +85,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_traineemca1_mtv2" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">First Interview</field>
         <field name="new_value_char">Second Interview</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job2')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job3')"/>
         <field name="mail_message_id" ref="hr_case_traineemca1_mm2"/>
@@ -112,11 +100,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_traineemca1_mtv3" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">Second Interview</field>
         <field name="new_value_char">Contract Proposal</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job3')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job4')"/>
         <field name="mail_message_id" ref="hr_case_traineemca1_mm3"/>
@@ -130,11 +116,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_programmer_mtv1" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">Initial Qualification</field>
         <field name="new_value_char">First Interview</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job1')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job2')"/>
         <field name="mail_message_id" ref="hr_case_programmer_mm1"/>
@@ -147,11 +131,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_programmer_mtv2" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">First Interview</field>
         <field name="new_value_char">Second Interview</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job2')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job3')"/>
         <field name="mail_message_id" ref="hr_case_programmer_mm2"/>
@@ -164,11 +146,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_programmer_mtv3" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">Second Interview</field>
         <field name="new_value_char">Contract Proposal</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job3')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job4')"/>
         <field name="mail_message_id" ref="hr_case_programmer_mm3"/>
@@ -182,11 +162,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_marketingjob0_mtv1" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">Initial Qualification</field>
         <field name="new_value_char">First Interview</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job1')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job2')"/>
         <field name="mail_message_id" ref="hr_case_marketingjob0_mm1"/>
@@ -199,11 +177,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_marketingjob0_mtv2" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">First Interview</field>
         <field name="new_value_char">Second Interview</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job2')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job3')"/>
         <field name="mail_message_id" ref="hr_case_marketingjob0_mm2"/>
@@ -216,11 +192,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_marketingjob0_mtv3" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">Second Interview</field>
         <field name="new_value_char">Contract Proposal</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job3')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job4')"/>
         <field name="mail_message_id" ref="hr_case_marketingjob0_mm3"/>
@@ -233,11 +207,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_marketingjob0_mtv3" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">Contract Proposal</field>
         <field name="new_value_char">Contract Signed</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job4')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job5')"/>
         <field name="mail_message_id" ref="hr_case_marketingjob0_mm4"/>
@@ -251,11 +223,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_financejob1_mtv1" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">Initial Qualification</field>
         <field name="new_value_char">First Interview</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job1')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job2')"/>
         <field name="mail_message_id" ref="hr_case_financejob1_mm1"/>
@@ -269,11 +239,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_advertisement_mtv1" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">Initial Qualification</field>
         <field name="new_value_char">First Interview</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job1')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job2')"/>
         <field name="mail_message_id" ref="hr_case_advertisement_mm1"/>
@@ -287,11 +255,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_yrsexperienceinphp0_mtv1" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">Initial Qualification</field>
         <field name="new_value_char">First Interview</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job1')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job2')"/>
         <field name="mail_message_id" ref="hr_case_yrsexperienceinphp0_mm1"/>
@@ -304,11 +270,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_yrsexperienceinphp0_mtv2" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">First Interview</field>
         <field name="new_value_char">Second Interview</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job2')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job3')"/>
         <field name="mail_message_id" ref="hr_case_yrsexperienceinphp0_mm2"/>
@@ -321,11 +285,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_yrsexperienceinphp0_mtv3" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">Second Interview</field>
         <field name="new_value_char">Contract Proposal</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job3')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job4')"/>
         <field name="mail_message_id" ref="hr_case_yrsexperienceinphp0_mm3"/>
@@ -338,11 +300,9 @@
         <field name="author_id" ref="base.partner_admin"/>
     </record>
     <record id="hr_case_yrsexperienceinphp0_mtv3" model="mail.tracking.value">
-        <field name="field" ref="hr_recruitment.field_hr_applicant__stage_id" />
-        <field name="field_desc">Stage</field>
+        <field name="field_id" ref="hr_recruitment.field_hr_applicant__stage_id" />
         <field name="old_value_char">Contract Proposal</field>
         <field name="new_value_char">Contract Signed</field>
-        <field name="field_type">many2one</field>
         <field name="old_value_integer" eval="ref('hr_recruitment.stage_job4')"/>
         <field name="new_value_integer" eval="ref('hr_recruitment.stage_job5')"/>
         <field name="mail_message_id" ref="hr_case_yrsexperienceinphp0_mm4"/>

@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.mail.tests.mail_tracking_duration_testing import TestMailTrackingDurationMixin
+from odoo.addons.mail.tests.mail_tracking_duration_mixin_case import MailTrackingDurationMixinCase
 
 
-class TestHelpdeskTicketMailTrackingDuration(TestMailTrackingDurationMixin):
+class TestHelpdeskTicketMailTrackingDuration(MailTrackingDurationMixinCase):
 
     @classmethod
     def setUpClass(cls):

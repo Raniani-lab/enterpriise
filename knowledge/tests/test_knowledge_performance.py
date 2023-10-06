@@ -13,13 +13,6 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
         super().setUp()
         # patch registry to simulate a ready environment
         self.patch(self.env.registry, 'ready', True)
-        self._flush_tracking()
-
-    def _flush_tracking(self):
-        """ Force the creation of tracking values notably, and ensure tests are
-        reproducible. """
-        self.env.flush_all()
-        self.cr.flush()
 
     @users('admin')
     @warmup

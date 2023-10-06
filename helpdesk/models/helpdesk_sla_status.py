@@ -126,7 +126,7 @@ class HelpdeskSLAStatus(models.Model):
 
         field_stage = self.env['ir.model.fields']._get(self.ticket_id._name, "stage_id")
         freeze_stages = self.sla_id.exclude_stage_ids.ids
-        tracking_lines = self.ticket_id.message_ids.tracking_value_ids.filtered(lambda tv: tv.field == field_stage).sorted(key="create_date")
+        tracking_lines = self.ticket_id.message_ids.tracking_value_ids.filtered(lambda tv: tv.field_id == field_stage).sorted(key="create_date")
 
         if not tracking_lines:
             return 0

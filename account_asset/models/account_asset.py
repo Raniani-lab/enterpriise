@@ -216,6 +216,12 @@ class AccountAsset(models.Model):
                 asset.asset_lifetime_days = (asset.prorata_date + relativedelta(months=int(asset.method_period) * asset.method_number) - asset.prorata_date).days
             else:
                 asset.asset_lifetime_days = int(asset.method_period) * asset.method_number * DAYS_PER_MONTH
+            if asset.parent_id:
+                # if it has a parent, we want the asset to only depreciate on the remaining days left of the parent
+                posted = asset.parent_id.depreciation_move_ids.filtered(
+                    lambda mv: mv.state == 'posted' and not mv.asset_value_change and mv.date <= asset.prorata_date
+                )
+                asset.asset_lifetime_days -= sum(posted.mapped('asset_number_days'))
 
     @api.depends('acquisition_date', 'company_id', 'prorata_computation_type')
     def _compute_prorata_date(self):
@@ -537,7 +543,23 @@ class AccountAsset(models.Model):
                 amount = min(linear_amount, 0)
 
         if self.method == 'degressive_then_linear' and days_left_to_depreciated != 0:
-            linear_amount = number_days * self.total_depreciable_value / self.asset_lifetime_days
+            if not self.parent_id:
+                linear_amount = number_days * self.total_depreciable_value / self.asset_lifetime_days
+            else:
+                # we want to know the amount before the reeval for the parent so the child can follow the same curve,
+                # so it transitions from degressive to linear at the same moment
+                parent_moves = self.parent_id.depreciation_move_ids.filtered(lambda mv: mv.date <= self.prorata_date).sorted(key=lambda mv: (mv.date, mv.id))
+                parent_cumulative_depreciation = parent_moves[-1].asset_depreciated_value if parent_moves else self.parent_id.already_depreciated_amount_import
+                parent_depreciable_value = parent_moves[-1].asset_remaining_value if parent_moves else self.parent_id.total_depreciable_value
+                if self.currency_id.is_zero(parent_depreciable_value):
+                    linear_amount = number_days * self.total_depreciable_value / self.asset_lifetime_days
+                else:
+                    # To have the same curve as the parent, we need to have the equivalent amount before the reeval.
+                    # The child's depreciable value corresponds to the amount that is left to depreciate for the parent.
+                    # So, we use the proportion between them to compute the equivalent child's total to depreciate.
+                    # We use it then with the duration of the parent to compute the depreciation amount
+                    depreciable_value = self.total_depreciable_value * (1 + parent_cumulative_depreciation/parent_depreciable_value)
+                    linear_amount = number_days * depreciable_value/self.parent_id.asset_lifetime_days
             amount = max(linear_amount, amount, key=abs)
 
         # if self.method == 'degressif_chelou' and days_left_to_depreciated != 0:
@@ -585,12 +607,19 @@ class AccountAsset(models.Model):
         # Days already depreciated
         days_already_depreciated = sum(posted_depreciation_move_ids.mapped('asset_number_days'))
         days_left_to_depreciated = self.asset_lifetime_days - days_already_depreciated
-        days_already_added = sum([(mv.date - mv.asset_depreciation_beginning_date).days + 1 for mv in posted_depreciation_move_ids])
 
-        start_depreciation_date = self.paused_prorata_date + relativedelta(days=days_already_added)
-        final_depreciation_date = self.paused_prorata_date + relativedelta(months=int(self.method_period) * self.method_number, days=-1)
+        if not self.parent_id:
+            days_already_added = sum([(mv.date - mv.asset_depreciation_beginning_date).days + 1 for mv in posted_depreciation_move_ids])
+            start_depreciation_date = self.paused_prorata_date + relativedelta(days=days_already_added)
+            final_depreciation_date = self.paused_prorata_date + relativedelta(months=int(self.method_period) * self.method_number, days=-1)
+        else:
+            # If it has a parent, we want the increase only for the remaining days the parent has
+            posted = self.parent_id.depreciation_move_ids.filtered(lambda mv: mv.state == 'posted' and not mv.asset_value_change)
+            days_already_added = sum([(mv.date - mv.asset_depreciation_beginning_date).days + 1 for mv in posted])
+            start_depreciation_date = self.parent_id.paused_prorata_date + relativedelta(days=days_already_added)
+            final_depreciation_date = self.parent_id.paused_prorata_date + relativedelta(months=int(self.parent_id.method_period) * self.parent_id.method_number, days=-1)
+
         final_depreciation_date = self._get_end_period_date(final_depreciation_date)
-
         depreciation_move_values = []
         if not float_is_zero(self.value_residual, precision_rounding=self.currency_id.rounding):
             while days_already_depreciated < self.asset_lifetime_days:

@@ -26,13 +26,13 @@
         <div t-if="!isReadonly" class="o_side_panel_section">
             <div class="o_add_filter">Add a new filter...</div>
             <div class="o-sidePanelButtons">
-                <button t-on-click="newDate" class="o-sidePanelButton o_global_filter_new_time">
+                <button t-on-click="newDate" class="o-button o_global_filter_new_time">
                     <span>Date</span>
                 </button>
-                <button t-if="hasDataSources()" t-on-click="newRelation" class="o-sidePanelButton o_global_filter_new_relation">
+                <button t-if="hasDataSources()" t-on-click="newRelation" class="o-button o_global_filter_new_relation">
                     <span>Relation</span>
                 </button>
-                <button t-on-click="newText" class="o-sidePanelButton o_global_filter_new_text">
+                <button t-on-click="newText" class="o-button o_global_filter_new_text">
                     <span>Text</span>
                 </button>
             </div>

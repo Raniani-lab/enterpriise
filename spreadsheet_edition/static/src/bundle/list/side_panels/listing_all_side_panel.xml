@@ -5,8 +5,8 @@
         <t t-if="listId">
             <ListingDetailsSidePanel listId="listId"/>
             <div class="o-sidePanelButtons">
-                <button t-on-click="() => this.delete(listId)" class="o-sidePanelButton o_delete_element">Delete</button>
-                <button t-on-click="resetListingSelection" class="o-sidePanelButton o_pivot_cancel">Back</button>
+                <button t-on-click="() => this.delete(listId)" class="o-button o_delete_element">Delete</button>
+                <button t-on-click="resetListingSelection" class="o-button o_pivot_cancel">Back</button>
             </div>
         </t>
         <t t-else="1">

@@ -107,7 +107,7 @@ QUnit.module(
             assert.containsOnce(target, ".o_spreadsheet_global_filters_side_panel");
 
             const buttons = target.querySelectorAll(
-                ".o_spreadsheet_global_filters_side_panel .o-sidePanelButton"
+                ".o_spreadsheet_global_filters_side_panel .o-button"
             );
             assert.strictEqual(buttons.length, 3);
             assert.hasClass(buttons[0], "o_global_filter_new_time");

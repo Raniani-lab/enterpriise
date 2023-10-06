@@ -53,7 +53,9 @@ export class ArticleTemplatePickerDialog extends Component {
 
         useEffect(() => {
             const { el } = this.scrollView;
-            el.style.visibility = "visible";
+            if (el) {
+                el.style.visibility = "visible";
+            }
         }, () => [this.state.resId]);
     }
 

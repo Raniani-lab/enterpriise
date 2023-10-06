@@ -67,7 +67,7 @@ class AppointmentHrTest(AppointmentHrCommon):
         apt_type = self.env['appointment.type'].create({
             'appointment_duration': 1,
             'appointment_tz': 'UTC',
-            'category': 'website',
+            'category': 'recurring',
             'name': 'Midnight Test',
             'max_schedule_days': 4,
             'min_cancellation_hours': 1,

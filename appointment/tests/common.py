@@ -85,7 +85,7 @@ class AppointmentCommon(MailCommon, common.HttpCase):
             'appointment_tz': 'Europe/Brussels',
             'appointment_duration': 1,
             'assign_method': 'time_auto_assign',
-            'category': 'website',
+            'category': 'recurring',
             'location_id': cls.staff_user_bxls.partner_id.id,
             'name': 'Bxls Appt Type',
             'max_schedule_days': 15,

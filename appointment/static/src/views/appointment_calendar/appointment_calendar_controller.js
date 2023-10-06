@@ -14,12 +14,12 @@ patch(AttendeeCalendarController.prototype, {
     setup() {
         super.setup(...arguments);
         this.rpc = useService("rpc");
-        this.popover = usePopover(Tooltip, { position: "left" });
+        this.popover = usePopover(Tooltip, { position: "bottom" });
         this.copyLinkRef = useRef("copyLinkRef");
 
         this.appointmentState = useState({
             data: {},
-            lastAppointmentUrl: false,
+            lastAppointment: false,
         });
 
         useSubEnv({
@@ -35,6 +35,29 @@ patch(AttendeeCalendarController.prototype, {
         });
     },
 
+    async _createCustomAppointmentType() {
+        const slots = Object.values(this.model.data.slots).map(slot => ({
+            start: serializeDateTime(slot.start),
+            end: serializeDateTime(slot.start === slot.end ? slot.end.plus({ days: 1 }) : slot.end), //TODO: check if necessary
+            allday: slot.isAllDay,
+        }));
+        const customAppointment = await this.rpc(
+            "/appointment/appointment_type/create_custom",
+            {
+                slots: slots,
+                context: this.props.context, // This allows to propagate keys like default_opportunity_id / default_applicant_id
+            },
+        );
+        if (customAppointment.appointment_type_id) {
+            this.appointmentState.lastAppointment = {
+                'id': customAppointment.appointment_type_id,
+                'url': customAppointment.invite_url,
+            }
+        }
+        this.env.calendarState.mode = "default";
+        this.model.clearSlots();
+    },
+
     /**
      * Returns whether we have slot events.
      */
@@ -43,10 +66,10 @@ patch(AttendeeCalendarController.prototype, {
     },
 
     _writeUrlToClipboard() {
-        if (!this.appointmentState.lastAppointmentUrl) {
+        if (!this.appointmentState.lastAppointment) {
             return;
         }
-        setTimeout(async () => await navigator.clipboard.writeText(this.appointmentState.lastAppointmentUrl));
+        setTimeout(async () => await navigator.clipboard.writeText(this.appointmentState.lastAppointment.url));
     },
 
     onClickCustomLink() {
@@ -68,24 +91,8 @@ patch(AttendeeCalendarController.prototype, {
     },
 
     async onClickGetShareLink() {
-        if (!this.appointmentState.lastAppointmentUrl) {
-            const slots = Object.values(this.model.data.slots).map(slot => ({
-                start: serializeDateTime(slot.start),
-                end: serializeDateTime(slot.start === slot.end ? slot.end.plus({ days: 1 }) : slot.end), //TODO: check if necessary
-                allday: slot.isAllDay,
-            }));
-            const customAppointment = await this.rpc(
-                "/appointment/appointment_type/create_custom",
-                {
-                    slots: slots,
-                    context: this.props.context, // This allows to propagate keys like default_opportunity_id / default_applicant_id
-                },
-            );
-            if (customAppointment.appointment_type_id) {
-                this.appointmentState.lastAppointmentUrl = customAppointment.invite_url;
-            }
-            this.env.calendarState.mode = "default";
-            this.model.clearSlots();
+        if (!this.appointmentState.lastAppointment) {
+            await this._createCustomAppointmentType();
         }
         this._writeUrlToClipboard();
         if (!this.copyLinkRef.el) {
@@ -95,12 +102,25 @@ patch(AttendeeCalendarController.prototype, {
         browser.setTimeout(this.popover.close, 800);
     },
 
+    async onClickOpenForm() {
+        if (!this.appointmentState.lastAppointment) {
+            await this._createCustomAppointmentType();
+        }
+        this.actionService.doAction({
+            name: "Open Appointment Type Form",
+            type: 'ir.actions.act_window',
+            res_model: 'appointment.type',
+            views: [[false, 'form']],
+            res_id: this.appointmentState.lastAppointment.id,
+        });
+    },
+
     onClickDiscard() {
         if (this.env.calendarState.mode === "slots-creation") {
             this.model.clearSlots();
         }
         this.env.calendarState.mode = "default";
-        this.appointmentState.lastAppointmentUrl = undefined;
+        this.appointmentState.lastAppointment = false;
     },
 
     async onClickSearchCreateAnytimeAppointment() {
@@ -108,7 +128,10 @@ patch(AttendeeCalendarController.prototype, {
             context: this.props.context,
         });
         if (anytimeAppointment.appointment_type_id) {
-            this.appointmentState.lastAppointmentUrl = anytimeAppointment.invite_url;
+            this.appointmentState.lastAppointment = {
+                'id': anytimeAppointment.appointment_type_id,
+                'url': anytimeAppointment.invite_url,
+            }
             this._writeUrlToClipboard();
         }
     },
@@ -118,7 +141,10 @@ patch(AttendeeCalendarController.prototype, {
             appointment_type_id: appointmentTypeId,
             context: this.props.context,
         });
-        this.appointmentState.lastAppointmentUrl = appointment.invite_url;
+        this.appointmentState.lastAppointment = {
+            'id': appointment.appointment_type_id,
+            'url': appointment.invite_url,
+        }
         this._writeUrlToClipboard();
     },
 });

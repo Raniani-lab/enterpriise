@@ -79,7 +79,7 @@ class AppointmentCalendarView(http.Controller):
     @route('/appointment/appointment_type/get_staff_user_appointment_types', type='json', auth='user')
     def appointment_get_user_appointment_types(self):
         appointment_types_info = []
-        domain = [('staff_user_ids', 'in', [request.env.user.id]), ('category', '=', 'website')]
+        domain = [('staff_user_ids', 'in', [request.env.user.id]), ('category', 'in', ['punctual', 'recurring'])]
         appointment_types_info = request.env['appointment.type'].search_read(domain, ['name', 'category'])
         return {
             'appointment_types_info': appointment_types_info,
@@ -116,7 +116,6 @@ class AppointmentCalendarView(http.Controller):
         return {
             'max_schedule_days': 15,
             'category': 'anytime',
-            'slot_ids': request.env['appointment.type']._get_default_slots('anytime'),
         }
 
     def _get_staff_user_appointment_invite_info(self, appointment_type):

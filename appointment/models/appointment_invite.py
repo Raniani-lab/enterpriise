@@ -30,7 +30,7 @@ class AppointmentShare(models.Model):
     # In case the appointment type is archived, we still want old links to work and display with a message telling
     # that it's no longer available.
     appointment_type_ids = fields.Many2many('appointment.type', string='Appointment Types',
-        domain="[('category', '=', 'website')]", context={"active_test": False})
+        domain="[('category', 'in', ['punctual', 'recurring'])]", context={"active_test": False})
     appointment_type_info_msg = fields.Html('No User Assigned Message', compute='_compute_appointment_type_info_msg')
     appointment_type_count = fields.Integer('Selected Appointments Count', compute='_compute_appointment_type_count', store=True)
     schedule_based_on = fields.Char('Schedule Based On', compute="_compute_schedule_based_on")
@@ -52,6 +52,7 @@ class AppointmentShare(models.Model):
         compute='_compute_staff_user_ids', store=True, readonly=False)
 
     calendar_event_ids = fields.One2many('calendar.event', 'appointment_invite_id', string="Booked Appointments", readonly=True)
+    calendar_event_count = fields.Integer('# Bookings', compute="_compute_calendar_event_count")
 
     _sql_constraints = [
         ('short_code_uniq', 'UNIQUE (short_code)', 'The URL is already taken, please pick another code.')
@@ -112,6 +113,17 @@ class AppointmentShare(models.Model):
     def _compute_base_book_url(self):
         for invite in self:
             invite.base_book_url = url_join(invite.get_base_url(), '/book/')
+
+    @api.depends('calendar_event_ids')
+    def _compute_calendar_event_count(self):
+        appointment_invite_data = self.env['calendar.event']._read_group(
+            [('appointment_invite_id', 'in', self.ids)],
+            ['appointment_invite_id'],
+            ['__count'],
+        )
+        mapped_data = {invite.id: count for invite, count in appointment_invite_data}
+        for invite in self:
+            invite.calendar_event_count = mapped_data.get(invite.id, 0)
 
     @api.depends('short_code')
     def _compute_short_code_warning(self):

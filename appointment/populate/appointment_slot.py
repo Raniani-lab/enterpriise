@@ -89,7 +89,7 @@ class AppointmentSlot(models.Model):
 
         appointment_type_ids = self.env['appointment.type'].browse(
             self.env.registry.populated_models['appointment.type']).filtered_domain([
-                '|', ('category', '=', 'website'), ('category', '=', 'custom')]).ids
+                ('category', 'in', ['punctual', 'recurring', 'custom'])]).ids
 
         # We need values for 5-6 days for each appointment_type_id.
         # We populate 7 days then later randomly drop one or more

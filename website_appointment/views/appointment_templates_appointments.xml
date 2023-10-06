@@ -37,7 +37,7 @@
         <xpath expr="//div[hasclass('o_appointment')]" position="before">
             <nav class="o_wappointment_navbar navbar border-top shadow-sm d-print-none py-0">
                 <div class="container">
-                    <a t-if="appointment_type.category == 'website' and len(available_appointments) != 1"
+                    <a t-if="appointment_type.category in ['punctual', 'recurring'] and len(available_appointments) != 1"
                        class="o_wappointment_navbar_link navbar-brand btn px-0 h4 my-0 me-auto"
                        t-attf-href="/appointment?#{keep_query('filter_appointment_type_ids', 'filter_staff_user_ids', 'invite_token')}">
                         <i class="fa fa-long-arrow-left me-2"/>All Appointments
@@ -71,7 +71,7 @@
         <t t-set="no_breadcrumbs" t-value="True"/>
         <t t-call="website.layout">
             <div id="wrap" class="o_wappointment_wrap">
-                <nav t-if="appointment_type.category == 'website'" class="o_wappointment_navbar navbar border-top shadow-sm d-print-none py-0">
+                <nav t-if="appointment_type.category in ['punctual', 'recurring']" class="o_wappointment_navbar navbar border-top shadow-sm d-print-none py-0">
                     <div class="container">
                         <a t-if="len(available_appointments) != 1" class="o_wappointment_navbar_link navbar-brand btn px-0 h4 my-0 me-auto"
                             t-attf-href="/appointment?#{keep_query('filter_appointment_type_ids', 'filter_staff_user_ids', 'invite_token')}">

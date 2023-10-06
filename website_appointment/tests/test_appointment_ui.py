@@ -12,7 +12,7 @@ class WebsiteAppointmentUITest(AppointmentCommon):
         super()._create_invite_test_data()
         self.all_apts += self.env['appointment.type'].create({
             'name': 'Unpublished',
-            'category': 'website',
+            'category': 'recurring',
             'is_published': False,
         })
 

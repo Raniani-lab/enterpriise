@@ -116,7 +116,7 @@ QUnit.module('appointment.appointment_link', {
                         slot_ids: {type: 'one2many', relation: 'appointment.slot'},
                         category: {
                             type: 'selection',
-                            selection: [['website', 'Website'], ['custom', 'Custom']]
+                            selection: [['recurring', 'Recurring'], ['custom', 'Custom']]
                         },
                     },
                     records: [{
@@ -125,14 +125,14 @@ QUnit.module('appointment.appointment_link', {
                         website_url: '/appointment/1',
                         website_published: true,
                         staff_user_ids: [214],
-                        category: 'website',
+                        category: 'recurring',
                     }, {
                         id: 2,
                         name: 'Test Appointment',
                         website_url: '/appointment/2',
                         website_published: true,
                         staff_user_ids: [uid],
-                        category: 'website',
+                        category: 'recurring',
                     }],
                 },
                 'appointment.slot': {

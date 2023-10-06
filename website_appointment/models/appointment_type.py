@@ -37,6 +37,9 @@ class AppointmentType(models.Model):
 
     @api.depends('category')
     def _compute_is_published(self):
+        if self._context.get('default_is_published'):
+            self.is_published = True
+            return
         for appointment_type in self:
             if appointment_type.category in ['custom', 'anytime']:
                 appointment_type.is_published = True

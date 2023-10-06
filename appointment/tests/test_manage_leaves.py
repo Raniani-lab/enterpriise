@@ -38,7 +38,7 @@ class AppointmentManageLeaveTest(AppointmentCommon):
             'resource_calendar_id': calendar.id,
         } for res_id in range(1, 4)])
         appt_type = self.env['appointment.type'].create({
-            'category': 'website',
+            'category': 'recurring',
             'name': 'Book a tennis court',
             'max_schedule_days': 1,
             'appointment_duration': 1,

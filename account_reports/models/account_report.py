@@ -140,9 +140,10 @@ class AccountReport(models.Model):
         all_journal_ids = set(all_journals.ids)
 
         report_company_ids = self.get_report_company_ids(options)
+        report_companies = self.env['res.company'].browse(report_company_ids)
         per_company_map = {}
-        for company_id in report_company_ids:
-            per_company_map[company_id] = ({
+        for company in report_companies.parent_ids:
+            per_company_map[company.id] = ({
                 'available_journals': self.env['account.journal'],
                 'available_journal_groups': self.env['account.journal.group'],
                 'selected_journals': self.env['account.journal'],
@@ -150,11 +151,9 @@ class AccountReport(models.Model):
             })
 
         for journal in all_journals:
-            for branch in journal.company_id._accessible_branches():
-                per_company_map[branch.id]['available_journals'] |= journal
+            per_company_map[journal.company_id.id]['available_journals'] |= journal
         for journal_group in all_journal_groups:
-            for branch in journal_group.company_id._accessible_branches():
-                per_company_map[branch.id]['available_journal_groups'] |= journal_group
+            per_company_map[journal_group.company_id.id]['available_journal_groups'] |= journal_group
 
         # Adapt the code from previous options.
         journal_group_action = None

@@ -1,6 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
+from odoo.tools import format_amount
 
 
 class ProductTemplate(models.Model):
@@ -10,25 +11,23 @@ class ProductTemplate(models.Model):
         string="Can be Rented",
         help="Allow renting of this product.")
     qty_in_rent = fields.Float("Quantity currently in rent", compute='_get_qty_in_rent')
+    product_pricing_ids = fields.One2many('product.pricing', 'product_template_id', string="Custom Pricings", auto_join=True, copy=True)
+    display_price = fields.Char("Leasing price", help="First leasing pricing of the product", compute="_compute_display_price")
 
     # Delays pricing
 
     extra_hourly = fields.Float("Extra Hour", help="Fine by hour overdue", company_dependent=True)
     extra_daily = fields.Float("Extra Day", help="Fine by day overdue", company_dependent=True)
 
-    @api.model
-    def _get_incompatible_types(self):
-        return ['rent_ok'] + super()._get_incompatible_types()
-
-    @api.constrains('rent_ok')
-    def _prevent_renting_incompability(self):
-        """ Some boolean fields are incompatibles """
-        self._check_incompatible_types()
-
-    @api.depends('rent_ok')
-    def _compute_is_temporal(self):
-        super()._compute_is_temporal()
-        self.filtered('rent_ok').is_temporal = True
+    def _compute_display_price(self):
+        temporal_products = self.filtered('rent_ok')
+        temporal_priced_products = temporal_products.filtered('product_pricing_ids')
+        (self - temporal_products).display_price = ""
+        for product in (temporal_products - temporal_priced_products):
+            product.display_price = _("%(amount)s (fixed)", amount=format_amount(self.env, product.list_price, product.currency_id))
+        # No temporal pricing defined, fallback on list price
+        for product in temporal_priced_products:
+            product.display_price = product.product_pricing_ids[0].description
 
     def _get_qty_in_rent(self):
         rentable = self.filtered('rent_ok')
@@ -62,6 +61,52 @@ class ProductTemplate(models.Model):
         for template in self:
             if template.rent_ok:
                 template.display_name = _("%s (Rental)", template.display_name)
+
+    def _get_best_pricing_rule(
+        self, product=False, start_date=False, end_date=False, duration=False, unit='', **kwargs
+    ):
+        """ Return the best pricing rule for the given duration.
+
+        :param ProductProduct product: a product recordset (containing at most one record)
+        :param float duration: duration, in unit uom
+        :param str unit: duration unit (hour, day, week)
+        :param datetime start_date: start date of leasing period
+        :param datetime end_date: end date of leasing period
+        :return: least expensive pricing rule for given duration
+        """
+        self.ensure_one()
+        best_pricing_rule = self.env['product.pricing']
+        if not self.product_pricing_ids:
+            return best_pricing_rule
+        # Two possibilities: start_date and end_date are provided or the duration with its unit.
+        pricelist = kwargs.get('pricelist', self.env['product.pricelist'])
+        currency = kwargs.get('currency', self.currency_id)
+        company = kwargs.get('company', self.env.company)
+        duration_dict = {}
+        if start_date and end_date:
+            duration_dict = self.env['product.pricing']._compute_duration_vals(start_date, end_date)
+        elif not (duration and unit):
+            return best_pricing_rule  # no valid input to compute duration.
+        min_price = float("inf")  # positive infinity
+        Pricing = self.env['product.pricing']
+        available_pricings = Pricing._get_suitable_pricings(product or self, pricelist=pricelist)
+        for pricing in available_pricings:
+            if duration and unit:
+                price = pricing._compute_price(duration, unit)
+            else:
+                price = pricing._compute_price(duration_dict[pricing.recurrence_id.unit], pricing.recurrence_id.unit)
+            if pricing.currency_id != currency:
+                price = pricing.currency_id._convert(
+                    from_amount=price,
+                    to_currency=currency,
+                    company=company,
+                    date=fields.Date.today(),
+                )
+            # We compare the abs of prices because negative pricing (as a promotion) would trigger the
+            # highest discount without it.
+            if abs(price) < abs(min_price):
+                min_price, best_pricing_rule = price, pricing
+        return best_pricing_rule
 
     def _get_contextual_price(self, product=None):
         self.ensure_one()

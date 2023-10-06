@@ -61,7 +61,6 @@
                 </div>
             </field>
             <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='product_uom_qty']" position='after'>
-                <field name="temporal_type" column_invisible="True"/>
                 <field name="is_rental" column_invisible="True"/>
                 <field name="is_product_rentable" column_invisible="True"/>
             </xpath>

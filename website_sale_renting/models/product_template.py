@@ -8,7 +8,7 @@ from odoo.exceptions import UserError
 from odoo.http import request
 from odoo.tools import format_amount
 
-from odoo.addons.sale_temporal.models.product_pricing import PERIOD_RATIO
+from odoo.addons.sale_renting.models.product_pricing import PERIOD_RATIO
 
 
 class ProductTemplate(models.Model):

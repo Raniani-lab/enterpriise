@@ -16,7 +16,7 @@ Manage user and manager notifications
     'sequence': 160,
     'version': '1.0',
 
-    'depends': ['sale_temporal'],
+    'depends': ['sale'],
 
     'data': [
         'security/ir.model.access.csv',
@@ -24,8 +24,11 @@ Manage user and manager notifications
 
         'data/rental_data.xml',
 
+        'views/product_pricelist_views.xml',
+        'views/product_pricing_views.xml',
         'views/product_template_views.xml',
         'views/sale_order_views.xml',
+        'views/sale_temporal_recurrence_views.xml',
         'views/res_config_settings_views.xml',
 
         'report/rental_order_report_templates.xml',

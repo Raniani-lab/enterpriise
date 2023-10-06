@@ -47,6 +47,14 @@ class ProductProduct(models.Model):
         hours = duration.seconds // 3600
         return days * self.extra_daily + hours * self.extra_hourly
 
+    def _get_best_pricing_rule(self, **kwargs):
+        """Return the best pricing rule for the given duration.
+
+        :return: least expensive pricing rule for given duration
+        :rtype: product.pricing
+        """
+        return self.product_tmpl_id._get_best_pricing_rule(product=self, **kwargs)
+
     def action_view_rentals(self):
         """Access Gantt view of rentals (sale.rental.schedule), filtered on variants of the current template."""
         return {

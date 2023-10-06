@@ -29,11 +29,11 @@
       <field name="price" eval="5.0"/>
   </record>
   <record id="rental_stock_pricing_2" model="product.pricing">
-      <field name="recurrence_id" ref="sale_temporal.recurrence_daily"/>
+      <field name="recurrence_id" ref="sale_renting.recurrence_daily"/>
       <field name="price" eval="20.0"/>
   </record>
   <record id="rental_stock_pricing_3" model="product.pricing">
-      <field name="recurrence_id" ref="sale_temporal.recurrence_weekly"/>
+      <field name="recurrence_id" ref="sale_renting.recurrence_weekly"/>
       <field name="price" eval="100.0"/>
   </record>
 

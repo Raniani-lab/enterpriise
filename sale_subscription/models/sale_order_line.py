@@ -368,16 +368,6 @@ class SaleOrderLine(models.Model):
 
     # === PRICE COMPUTING HOOKS === #
 
-    def _get_price_computing_kwargs(self):
-        """ Override to add the pricing duration or the start and end date of temporal line """
-        price_computing_kwargs = super()._get_price_computing_kwargs()
-        if not self.recurring_invoice:
-            return price_computing_kwargs
-        if self.order_id.plan_id:
-            price_computing_kwargs['duration'] = self.order_id.plan_id.billing_period_value
-            price_computing_kwargs['unit'] = self.order_id.plan_id.billing_period_unit
-        return price_computing_kwargs
-
     def _get_pricelist_price(self):
         if pricing := self.recurring_invoice and \
                       self.env['sale.subscription.pricing']._get_first_suitable_recurring_pricing(self.product_id, self.order_id.plan_id, self.order_id.pricelist_id):

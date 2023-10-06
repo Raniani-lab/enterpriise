@@ -67,7 +67,7 @@
 
             <menuitem id="menu_sale_renting_periods"
                 name="Rental periods"
-                action="sale_temporal.sale_temporal_recurrence_action"
+                action="sale_temporal_recurrence_action"
                 sequence="20"/>
 
         </menuitem>

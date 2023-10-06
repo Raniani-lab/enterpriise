@@ -19,7 +19,7 @@ class Pricelist(models.Model):
     @api.constrains('product_pricing_ids')
     def _check_pricing_product_temporal(self):
         for pricing in self.product_pricing_ids:
-            if not pricing.product_template_id.is_temporal:
+            if not pricing.product_template_id.rent_ok:
                 raise UserError(_('You can not have a time-based rule for products that are not recurring or rentable.'))
 
     def _compute_price_rule(
@@ -45,7 +45,7 @@ class Pricelist(models.Model):
 
         results = {}
         if self._enable_temporal_price(start_date, end_date, duration, unit):
-            temporal_products = products.filtered('is_temporal')
+            temporal_products = products.filtered('rent_ok')
             Pricing = self.env['product.pricing']
             for product in temporal_products:
                 if (start_date and end_date) or (duration is not None and unit):

@@ -21,17 +21,6 @@ class SaleOrderLine(models.Model):
         string="Pickup date - padding time", compute='_compute_reservation_begin', store=True)
 
     is_product_rentable = fields.Boolean(related='product_id.rent_ok', depends=['product_id'])
-    temporal_type = fields.Selection(selection_add=[('rental', 'Rental')])
-
-    @api.depends('product_template_id', 'is_rental')
-    def _compute_temporal_type(self):
-        super()._compute_temporal_type()
-        for line in self:
-            # We only rely on the is_rental stored boolean because after migration, product could be migrated
-            # with rent_ok = False It will ensure that rental line are still considered rental even if the product change
-            # To compare with subscription where temporal type depends on recurrency and recurring_invoice
-            if line.is_rental:
-                line.temporal_type = 'rental'
 
     @api.depends('order_id.rental_start_date')
     def _compute_reservation_begin(self):
@@ -65,6 +54,21 @@ class SaleOrderLine(models.Model):
     def _compute_is_rental(self):
         for line in self:
             line.is_rental = line.is_product_rentable and line.env.context.get('in_rental_app')
+
+    @api.depends('is_rental')
+    def _compute_product_updatable(self):
+        rental_lines = self.filtered('is_rental')
+        super(SaleOrderLine, self - rental_lines)._compute_product_updatable()
+        rental_lines.product_updatable = True
+
+    def _compute_pricelist_item_id(self):
+        """Discard pricelist item computation for rental lines.
+
+        This will disable the standard discount computation because no pricelist rule was found.
+        """
+        rental_lines = self.filtered('is_rental')
+        super(SaleOrderLine, self - rental_lines)._compute_pricelist_item_id()
+        rental_lines.pricelist_item_id = False
 
     _sql_constraints = [
         ('rental_stock_coherence',
@@ -178,13 +182,29 @@ class SaleOrderLine(models.Model):
     def _get_tz(self):
         return self.env.context.get('tz') or self.env.user.tz or 'UTC'
 
+    def _get_pricelist_price(self):
+        """ Custom price computation for rental lines.
+
+        The displayed price will only be the price given by the product.pricing rules matching the
+        given line information (product, period, pricelist, ...).
+        """
+        self.ensure_one()
+        if self.is_rental:
+            return self.order_id.pricelist_id._get_product_price(
+                self.product_id.with_context(**self._get_product_price_context()),
+                self.product_uom_qty or 1.0,
+                currency=self.currency_id,
+                uom=self.product_uom,
+                date=self.order_id.date_order or fields.Date.today(),
+                **self._get_price_computing_kwargs()
+            )
+        return super()._get_pricelist_price()
+
     # === PRICE COMPUTING HOOKS === #
 
     def _get_price_computing_kwargs(self):
         """ Override to add the pricing duration or the start and end date of temporal line """
-        price_computing_kwargs = super()._get_price_computing_kwargs()
-        if self.temporal_type != 'rental':
-            return price_computing_kwargs
+        price_computing_kwargs = {}
         self.order_id._rental_set_dates()
         start_date = self.order_id.rental_start_date
         return_date = self.order_id.rental_return_date

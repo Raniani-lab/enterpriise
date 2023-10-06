@@ -30,11 +30,10 @@ class SaleOrder(models.Model):
         new_qty, warning = super()._verify_updated_quantity(
             order_line, product_id, new_qty, **kwargs
         )
-        if new_qty > 0 and not self._is_valid_renting_dates():
-            product = self.env['product.product'].browse(product_id)
-            if product.rent_ok:
-                self.shop_warning = self._build_warning_renting(product)
-                return 0, self.shop_warning
+        product = self.env['product.product'].browse(product_id)
+        if new_qty > 0 and product.rent_ok and not self._is_valid_renting_dates():
+            self.shop_warning = self._build_warning_renting(product)
+            return 0, self.shop_warning
 
         return new_qty, warning
 

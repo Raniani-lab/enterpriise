@@ -56,6 +56,19 @@ class SaleOrder(models.Model):
 
         return message
 
+    def _verify_updated_quantity(self, order_line, product_id, new_qty, **kwargs):
+        """ Override to ensure the cart has dates before checking the stock validity. """
+        product = self.env['product.product'].browse(product_id)
+        if product.rent_ok and not self.has_rented_products:
+            if kwargs.get('start_date') and kwargs.get('end_date'):
+                self.update({
+                    'rental_start_date': kwargs.get('start_date'),
+                    'rental_return_date': kwargs.get('end_date'),
+                })
+            else:
+                self._rental_set_dates()
+        return super()._verify_updated_quantity(order_line, product_id, new_qty, **kwargs)
+
     def _is_valid_renting_dates(self):
         """ Override to take into account the preparation time."""
         res = super()._is_valid_renting_dates()

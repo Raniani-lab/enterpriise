@@ -249,7 +249,8 @@
             <record id="account_financial_html_report_line_bs_lt_credit" model="account.report.line">
                 <field name="name">TOTAL EQUITY AND LIABILITIES</field>
                 <field name="code">BS_CREDIT</field>
-                <field name="foldable" eval="True"/>
+                <field name="foldable" eval="False"/>
+                <field name="hierarchy_level">0</field>
                 <field name="aggregation_formula">BS_D_.balance + BS_E_.balance + BS_F_.balance + BS_G_.balance + BS_H_.balance</field>
                 <field name="hierarchy_level">0</field>
                 <field name="children_ids">
@@ -597,8 +598,9 @@
                     <record id="account_financial_html_report_line_bs_lt_a" model="account.report.line">
                         <field name="name">FIXED ASSETS</field>
                         <field name="code">BS_A_</field>
-                        <field name="foldable" eval="True"/>
+                        <field name="foldable" eval="False"/>
                         <field name="aggregation_formula">BS_A_1_.balance + BS_A_2_.balance + BS_A_3_.balance + BS_A_4_.balance</field>
+                        <field name="hierarchy_level">0</field>
                         <field name="children_ids">
                             <record id="account_financial_html_report_line_bs_lt_a_1" model="account.report.line">
                                 <field name="name">INTANGIBLE ASSETS</field>

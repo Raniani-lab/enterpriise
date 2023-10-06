@@ -168,10 +168,10 @@
     <template id="navbar" name="Search Bar">
         <nav class="navbar navbar-light border-top shadow-sm d-print-none">
             <div class="container">
-                <div class="d-flex flex-column flex-sm-row justify-content-between w-100 align-items-center">
-                    <span class="navbar-brand h4 my-0 me-auto">Help Center</span>
+                <div class="d-flex flex-column flex-wrap flex-md-row justify-content-between gap-2 w-100">
+                    <h4 class="navbar-brand align-self-center w-lg-auto my-0 me-auto">Help Center</h4>
                     <ul class="o_whelpdesk_topbar_filters nav"/>
-                    <div class="d-flex align-items-center flex-wrap ps-sm-3 pe-0">
+                    <div class="d-flex align-items-center flex-wrap w-100 w-lg-auto pe-0 ms-lg-2">
                         <t t-call="website_helpdesk.search_box">
                             <t t-set="search" t-value="search" />
                             <t t-set="display_detail" t-value="'false'" />
@@ -232,7 +232,7 @@
 
     <template id="navbar_search_tag" inherit_id="website_helpdesk.navbar" name="Filter by Tags" active="True">
         <xpath expr="//ul[hasclass('o_whelpdesk_topbar_filters')]" position="inside">
-            <li class="nav-item dropdown me-2 my-1 border rounded" t-if="len(available_tags) > 1">
+            <li class="nav-item dropdown my-1 border rounded" t-if="len(available_tags) > 1">
                 <a href="#" role="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
                     <i class="fa fa-tag text-primary me-2"/>
                     <t t-if="current_tag" t-out="current_tag" />
@@ -258,28 +258,27 @@
         <t t-call="website.layout">
             <t t-set="additional_title"><t t-out="team.name" /></t>
             <div id="wrap" class="oe_structure oe_empty">
-                <div class="oe_structure oe_empty"><section class="s_cover o_colored_level pb96 pt96 s_parallax_no_overflow_hidden position-relative" data-scroll-background-ratio="0" data-snippet="s_cover" data-name="Cover" data-oe-shape-data="{'shape': 'web_editor/Origins/18','flip':[]}">
-                        <div class="o_we_shape o_web_editor_Origins_18"/>
-                        <div class="container s_allow_columns">
-                            <div class="row">
-                                <div class="col-lg-8 offset-lg-2 o_colored_level text-center;">
-                                    <span class="display-1-fs" style="line-height:55px;">How can we help you?</span>
-                                </div>
+                <section class="o_editable mt48 mb32">
+                    <div class="container s_allow_columns">
+                        <div class="row">
+                            <div class="col-lg-8 offset-lg-2 o_colored_level text-center">
+                                <h1 class="mb-3 text-center fw-bold">How can we help you?</h1>
                             </div>
                         </div>
-                    </section></div><!-- IMPORTANT: Do not add space/newline between section and div tag on this line (empty pseudo class is does not yet take whitespace into account)-->
-                <div class="container mt16 position-relative align-items-center justify-content-center o_helpcenter_home_search">
-                    <nav class="navbar navbar-light shadow-sm  justify-content-center">
-                        <t t-call="website_helpdesk.search_box">
-                            <t t-set="placeholder">Search for articles, best practices and more...</t>
-                            <t t-set="autocomplete" t-value="1" />
-                        </t>
-                    </nav>
+                    </div>
+                </section>
+                <div class="container mb64">
+                    <t t-call="website_helpdesk.search_box">
+                        <t t-set="_classes" t-valuef="justify-content-center mw-lg-50 mx-auto"/>
+                        <t t-set="_input_classes" t-valuef="form-control-lg"/>
+                        <t t-set="placeholder">Search for articles, best practices and more...</t>
+                        <t t-set="autocomplete" t-value="1" />
+                    </t>
                 </div>
                 <div class="oe_structure" id="o_structure_website_helpdesk_kb_1"/>
-                <section class="s_features pb32 o_colored_level" data-snippet="s_features" data-name="Features">
+                <section class="s_features o_colored_level" data-snippet="s_features" data-name="Features">
                     <div class="container">
-                        <div id="o_knowledge_base_sections" class="row justify-content-center gx-3"/>
+                        <div id="o_knowledge_base_sections" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center"/>
                     </div>
                 </section>
                 <div class="oe_structure" id="o_structure_website_helpdesk_kb_2"/>
@@ -325,17 +324,17 @@
     </template>
 
     <template id="footer" name="Knowledge Base: Footer">
-        <section class="s_call_to_action o_cc o_cc3 pb24 o_colored_level pt32" data-snippet="s_call_to_action" data-name="Call to Action">
+        <section class="s_call_to_action o_cc o_cc3 o_colored_level py-4 mt64" data-snippet="s_call_to_action" data-name="Call to Action">
             <div class="container">
-                <div class="row">
-                    <div class="o_colored_level pb0 pt16 col-lg-8">
+                <div class="row align-items-center">
+                    <div class="o_colored_level pb0 pt16 col-lg-8 justify-content-center">
                         <h3>
                             <span class="h4-fs">Can't find your answer? Our support team is here to help.</span>
                         </h3>
                     </div>
-                    <div class="pt8 o_colored_level col-lg-4">
-                        <p style="text-align: center;" id="footer_buttons">
-                            <a class="btn btn-primary btn-lg mb-2" t-attf-href="{{team.website_url}}?contact_form=1">Contact Us</a>
+                    <div class="o_colored_level col-lg-4 align-items-center">
+                        <p class="mb-0 text-center text-lg-end" id="footer_buttons">
+                            <a class="btn btn-primary btn-lg my-1" t-attf-href="{{team.website_url}}?contact_form=1">Contact Us</a>
                         </p>
                     </div>
                 </div>

@@ -7,7 +7,7 @@
                 <i class="fa fa-fw fa-2x fa-comments" title="Forum Post"/>
             </p>
             <div class="w-100 ms-3">
-                <h5>
+                <h5 class="mb-1">
                     <a t-att-href="url" target="_blank" t-out="record.name" class="fw-bold"/>
                     <i t-if="record.has_validated_answer" class="fa fa-check-circle text-success" title="Solved"/>
                 </h5>
@@ -25,7 +25,7 @@
                     | <t t-out="record.views"/> Views
                 </small>
                 <div class="whelpdesk_search_description mt-3 text-break text-muted overflow-hidden" t-if="not is_html_empty(record.content)" t-out="record.content"/>
-                <p class="mt-3 mb-0" t-if="record.tag_ids">
+                <p class="d-flex gap-1 flex-wrap mt-3 mb-0" t-if="record.tag_ids">
                     <a t-foreach="record.tag_ids" t-as="tag" t-attf-href="/forum/#{slug(tag.forum_id)}/tag/#{slug(tag)}/questions?filters=tag" class="btn btn-sm btn-outline-secondary" t-out="tag.name"/>
                 </p>
             </div>

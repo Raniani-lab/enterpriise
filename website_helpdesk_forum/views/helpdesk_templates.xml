@@ -3,29 +3,43 @@
     <template id="knowledge_base_forum_card" inherit_id="website_helpdesk.knowledge_base">
         <xpath expr="//div[@id='o_knowledge_base_sections']" position="inside">
             <t t-set="hide_community_button" t-value="True"/>
-            <div class="col" style="display: grid;" t-if="team.show_knowledge_base_forum">
-                <div class="pt16 pb16 text-center o_colored_level help-section">
-                    <i class="fa fa-3x rounded bg-secondary m-3 fa-comments fa-3x rounded bg-secondary m-3 help-icon">​</i>
-                    <h3 class="h5-fs help-title">Community</h3>
-                    <p class="h5-fs help-description">Ask questions and discuss tips with fellow members in a forum</p>
-                    <div t-if="team.top_forum_posts" class="top-item-list-container">
-                        <h3 class="item-list-title">
-                            <t t-if="len(team.top_forum_posts) &gt; 4">
-                                Most Voted
-                            </t>
-                            <t t-else="">
-                                Quick Links
-                            </t>
-                        </h3>
-                        <div class="item-list">
-                            <t t-foreach="team.top_forum_posts" t-as="post">
-                                <a t-attf-href="/forum/#{slug(post.forum_id)}/#{slug(post)}" t-attf-title="{{post.name}}" target="_blank" class="list-item">
-                                    <t t-out="post.name"/>
-                                </a>
-                            </t>
+
+            <div class="col" t-if="team.show_knowledge_base_forum">
+                <div class="card position-relative h-100 overflow-visible">
+                    <div class="card-body d-flex align-items-start">
+                        <img src="/website_helpdesk/static/src/img/speech.svg"
+                             class="position-md-absolute top-0 end-0 translate-middle order-1 order-md-0 ms-3 ms-md-0"/>
+                        <div class="d-flex flex-wrap">
+                            <h5 class="h5-fs card-title">Community</h5>
+                            <p class="mb-0">Ask questions and discuss tips with fellow members in a forum</p>
                         </div>
                     </div>
-                    <a t-attf-href="/helpdesk/{{ slug(team) }}/forums" class="btn btn-outline-primary item-button" target="_blank" data-bs-original-title="" title="">Ask the Community</a>
+                    <div class="card-body h-100">
+                        <t t-if="team.top_forum_posts" class="card-title">
+                            <small class="text-muted text-uppercase">
+                                <t t-if="len(team.top_forum_posts) &gt; 4">Most voted</t>
+                                <t t-else="">Quick Links</t>
+                            </small>
+                            <ul class="nav flex-column gap-1 mt-2">
+                                <t t-foreach="team.top_forum_posts" t-as="article">
+                                    <li class="nav-item">
+                                        <a class="nav-link rounded py-2 bg-100"
+                                            t-attf-href="/forum/{{ slug(article.forum_id) }}/{{ slug(article) }}"
+                                            target="_blank"
+                                            t-att-title="article.name"
+                                        >
+                                            <t t-esc="article.name"/>
+                                        </a>
+                                    </li>
+                                </t>
+                            </ul>
+                        </t>
+                    </div>
+                    <div class="card-body d-flex justify-content-center">
+                        <a class="btn btn-secondary flex-grow-1" t-attf-href="/forum/{{ slug(team) }}" target="_blank">
+                            Ask the community
+                        </a>
+                    </div>
                 </div>
             </div>
         </xpath>
@@ -33,7 +47,7 @@
 
     <template id="footer" inherit_id="website_helpdesk.footer">
         <xpath expr="//p[@id='footer_buttons']" position="inside">
-            <a class="btn btn-secondary btn-lg mb-2" href="/forum" t-if="team.use_website_helpdesk_forum and not hide_community_button">Ask the Community</a>
+            <a class="btn btn-secondary btn-lg" href="/forum" t-if="team.use_website_helpdesk_forum and not hide_community_button">Ask the Community</a>
         </xpath>
     </template>
 </odoo>

@@ -10,4 +10,6 @@ class PosSession(models.Model):
     @api.model
     def _load_onboarding_data(self):
         super()._load_onboarding_data()
-        convert.convert_file(self.env, 'pos_restaurant_preparation_display', 'data/pos_restaurant_preparation_display_onboarding.xml', None, mode='init', kind='data')
+        restaurant_config = self.env.ref('pos_restaurant.pos_config_main_restaurant', raise_if_not_found=False)
+        if restaurant_config:
+            convert.convert_file(self.env, 'pos_restaurant_preparation_display', 'data/pos_restaurant_preparation_display_onboarding.xml', None, mode='init', kind='data')

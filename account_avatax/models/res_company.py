@@ -1,6 +1,6 @@
-from datetime import timedelta
-from pprint import pformat
+import json
 import logging
+from datetime import timedelta
 
 from odoo import fields, models, _
 from odoo.exceptions import UserError
@@ -122,10 +122,15 @@ class ResConfigSettings(models.TransientModel):
         """Test the connexion and the credentials."""
         client = self.env['account.avatax']._get_client(self.company_id)
         query_result = client.ping()
-        raise UserError(_(
-            "Server Response:\n%s",
-            pformat(query_result)
-        ))
+
+        return {
+            'name': _('Test Result'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'avatax.connection.test.result',
+            'res_id': self.env['avatax.connection.test.result'].create({'server_response': json.dumps(query_result)}).id,
+            'target': 'new',
+            'views': [(False, 'form')],
+        }
 
     def avatax_log(self):
         """Start logging all requests done to Avatax, for 30 minutes."""

@@ -711,6 +711,7 @@ QUnit.module("documents", {}, function () {
                 await legacyClick(
                     target.querySelectorAll(".o_field_widget[name=is_editable_attachment] input")[4]
                 );
+                await nextTick();
                 assert.containsN(
                     target,
                     ".o_field_widget[name=is_editable_attachment] input:checked",

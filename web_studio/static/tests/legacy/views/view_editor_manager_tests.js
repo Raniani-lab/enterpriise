@@ -4640,7 +4640,6 @@ QUnit.module('ViewEditorManager', {
     QUnit.module('Graph');
 
     QUnit.test('empty graph editor', async function (assert) {
-        var done = assert.async();
         assert.expect(3);
 
         this.data.coucou.records = [{
@@ -4655,12 +4654,11 @@ QUnit.module('ViewEditorManager', {
 
         assert.strictEqual(vem.view_type, 'graph',
             "view type should be graph");
-        return concurrency.delay(0).then(function () {
-            assert.containsOnce(vem, '.o_web_studio_view_renderer .o_graph_renderer');
-            assert.containsOnce(vem, '.o_web_studio_view_renderer .o_graph_renderer .o_graph_canvas_container canvas',
-                "the graph should be a child of its container");
-            done();
-        });
+        await testUtils.nextTick();
+        assert.containsOnce(vem, '.o_web_studio_view_renderer .o_graph_renderer');
+        assert.containsOnce(vem, '.o_web_studio_view_renderer .o_graph_renderer .o_graph_canvas_container canvas',
+            "the graph should be a child of its container");
+        vem.destroy();
     });
 
     QUnit.test('switching chart types in graph editor', async function (assert) {

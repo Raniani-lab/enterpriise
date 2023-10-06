@@ -314,9 +314,11 @@ class TestReportEditorUIUnit(HttpCase):
     def test_basic_report_edition_without_datas(self):
         passed_in_rendering_context = False
 
-        def _get_rendering_context_mock(self, report, docids, data):
+        def _get_rendering_context_mock(self_model, report, docids, data):
             nonlocal passed_in_rendering_context
             passed_in_rendering_context = True
+            self.assertTrue(self_model.env.context.get("studio"))
+            self.assertTrue(data.get("studio"))
             return {'reason': 'Something went wrong.'}
         self.patch(IrActionsReport, '_get_rendering_context', _get_rendering_context_mock)
 

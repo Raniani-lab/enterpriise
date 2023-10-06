@@ -348,6 +348,7 @@ class WebStudioReportController(main.WebStudioController):
 
     def _get_report_qweb(self, report):
         loaded = {}
+        report = report.with_context(studio=True)
         report_name = report.report_name
         IrQweb = request.env["ir.qweb"].with_context(studio=True, inherit_branding=True, lang=None)
 
@@ -403,7 +404,7 @@ class WebStudioReportController(main.WebStudioController):
 
         main_qweb = _html_to_client_compliant(load_arch(report_name))
 
-        render_context = report._get_rendering_context(report, [0], None)
+        render_context = report._get_rendering_context(report, [0], {"studio": True})
         render_context['report_type'] = "pdf"
         main_qweb = _guess_qweb_variables(main_qweb, report, render_context)
 
@@ -416,7 +417,7 @@ class WebStudioReportController(main.WebStudioController):
         return html.tostring(html_container)
 
     def _render_report(self, report, record_id):
-        return request.env['ir.actions.report'].with_context(studio=True)._render_qweb_html(report, [record_id] if record_id else [])
+        return request.env['ir.actions.report'].with_context(studio=True)._render_qweb_html(report, [record_id] if record_id else [], {"studio": True})
 
     @http.route("/web_studio/save_report", type="json", auth="user")
     def save_report(self, report_id, report_changes=None, html_parts=None, xml_verbatim=None, record_id=None, context=None):

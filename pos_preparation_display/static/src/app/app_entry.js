@@ -4,7 +4,6 @@ import { makeEnv, startServices } from "@web/env";
 import { App, whenReady } from "@odoo/owl";
 import { templates } from "@web/core/assets";
 import { session } from "@web/session";
-import { renderToString } from "@web/core/utils/render";
 import { _t } from "@web/core/l10n/translation";
 
 (async function setup() {
@@ -28,8 +27,6 @@ import { _t } from "@web/core/l10n/translation";
         translatableAttributes: ["data-tooltip"],
         translateFn: _t,
     });
-
-    renderToString.app = app;
     const root = await app.mount(document.body);
 
     odoo.__WOWL_DEBUG__ = { root };

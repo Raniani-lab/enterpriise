@@ -5,7 +5,6 @@ import { MainComponentsContainer } from "@web/core/main_components_container";
 import { useService } from "@web/core/utils/hooks";
 import { templates } from "@web/core/assets";
 import { makeEnv, startServices } from "@web/env";
-import { renderToString } from "@web/core/utils/render";
 import { SignRefusalDialog } from "@sign/dialogs/dialogs";
 import { SignablePDFIframe } from "./signable_PDF_iframe";
 import { buildPDFViewerURL } from "@sign/components/sign_request/utils";
@@ -238,6 +237,5 @@ export async function initDocumentToSign(parent) {
         translatableAttributes: ["data-tooltip"],
         translateFn: _t,
     });
-    renderToString.app = app;
     await app.mount(parent.body);
 }

@@ -817,7 +817,7 @@ msgstr "Vynutit cenu včetně daně"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_account_id
 msgid "Form Account"
-msgstr ""
+msgstr "Od účtu"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_amount_currency

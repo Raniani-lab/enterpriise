@@ -34,12 +34,12 @@ msgstr "分析帳戶"
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_helpdesk_ticket_convert_wizard
 msgid "Convert Helpdesk Tickets to Tasks"
-msgstr ""
+msgstr "將技術支援請求轉換為任務"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_project_task_convert_wizard
 msgid "Convert Project Tasks to Tickets"
-msgstr ""
+msgstr "將專案任務轉換為支援請求"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet

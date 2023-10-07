@@ -9,7 +9,6 @@
 # Stjepan Lovasić <stjepan.lovasic@gmail.com>, 2022
 # Milan Tribuson <one.mile.code@gmail.com>, 2022
 # KRISTINA PALAŠ <kristina.palas@storm.hr>, 2022
-# Ivan Marijanović <ivanm101@yahoo.com>, 2022
 # Tina Milas, 2022
 # Davor Bojkić <davor.bojkic@storm.hr>, 2022
 # Đurđica Žarković <durdica.zarkovic@storm.hr>, 2022
@@ -716,7 +715,7 @@ msgstr ""
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "Mark as done"
-msgstr "Označi kao izvršeno"
+msgstr "Označi kao Riješeno"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_ir_ui_menu

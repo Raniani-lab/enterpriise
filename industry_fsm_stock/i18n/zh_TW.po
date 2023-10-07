@@ -169,7 +169,7 @@ msgstr "任務"
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__fsm_done
 msgid "Task Done"
-msgstr ""
+msgstr "任務完成"
 
 #. module: industry_fsm_stock
 #: code:addons/industry_fsm_stock/models/product.py:0

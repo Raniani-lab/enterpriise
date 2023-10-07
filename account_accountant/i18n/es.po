@@ -10,6 +10,7 @@
 # Martin Trigaux, 2023
 # Iran Villalobos López, 2023
 # Pedro M. Baeza <pedro.baeza@tecnativa.com>, 2023
+# Loida Vilaplana, 2023
 # 
 msgid ""
 msgstr ""
@@ -17,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Pedro M. Baeza <pedro.baeza@tecnativa.com>, 2023\n"
+"Last-Translator: Loida Vilaplana, 2023\n"
 "Language-Team: Spanish (https://app.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1258,7 +1259,7 @@ msgstr "Operaciones manuales"
 #: code:addons/account_accountant/static/src/components/matching_link_widget/matching_link_widget.xml:0
 #, python-format
 msgid "Match"
-msgstr "Combinar"
+msgstr "Conciliar"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1380,6 +1381,7 @@ msgid "Not Matched"
 msgstr ""
 
 #. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_tree_bank_rec_widget
 msgid "Notes"
@@ -1955,6 +1957,11 @@ msgstr "Transacción"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__transaction_currency_id
 msgid "Transaction Currency"
+msgstr ""
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
+msgid "Transaction Details"
 msgstr ""
 
 #. module: account_accountant

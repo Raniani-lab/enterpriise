@@ -873,7 +873,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__live_posts_by_media
 msgid "Live Posts by Social Media"
-msgstr "Live posts via soiale media"
+msgstr "Live posts via sociale media"
 
 #. module: social
 #. odoo-javascript

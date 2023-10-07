@@ -33,7 +33,7 @@ msgstr "Funcionário"
 #. module: timesheet_grid_holidays
 #: model:ir.model,name:timesheet_grid_holidays.model_hr_timesheet_merge_wizard
 msgid "Merge Timesheets"
-msgstr ""
+msgstr "Mesclar planilhas de horas"
 
 #. module: timesheet_grid_holidays
 #. odoo-python

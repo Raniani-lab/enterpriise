@@ -1223,8 +1223,8 @@ msgstr "Numero di messaggi con errore di consegna"
 msgid ""
 "Only one entry by account should be created for a generated journal entry !"
 msgstr ""
-"Per una voce di giornale generata deve essere creata una sola voce per "
-"conto!"
+"Per ogni registrazione contabile generata deve essere creata una sola "
+"registrazione per conto!"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
@@ -1335,7 +1335,7 @@ msgstr "Errore di consegna SMS"
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_step
 msgid "Scope of Consolidation defined !"
-msgstr "Ambito di consolidamento definito."
+msgstr "Area di consolidamento definita!"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__sequence
@@ -1486,7 +1486,7 @@ msgstr ""
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_step
 msgid "The Scope of Consolidation"
-msgstr "Ambito di consolidamento"
+msgstr "Area di consolidamento"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_company_period_form

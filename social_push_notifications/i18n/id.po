@@ -37,7 +37,7 @@ msgstr ""
 #: code:addons/social_push_notifications/static/src/xml/social_push_notifications_templates.xml:0
 #, python-format
 msgid "Allow"
-msgstr ""
+msgstr "Izinkan"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
@@ -59,7 +59,7 @@ msgstr "Tunda"
 #: code:addons/social_push_notifications/static/src/xml/social_push_notifications_templates.xml:0
 #, python-format
 msgid "Deny"
-msgstr ""
+msgstr "Tola"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor_push_subscription__display_name

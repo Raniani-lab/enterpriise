@@ -28,7 +28,7 @@ msgstr "公司"
 #. module: helpdesk_fsm
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_ticket_convert_wizard
 msgid "Convert Helpdesk Tickets to Tasks"
-msgstr ""
+msgstr "將技術支援請求轉換為任務"
 
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.create_fsm_task_view_form
@@ -159,7 +159,7 @@ msgstr "任務"
 #: model:mail.message.subtype,name:helpdesk_fsm.mt_team_ticket_task_done
 #: model:mail.message.subtype,name:helpdesk_fsm.mt_ticket_task_done
 msgid "Task Done"
-msgstr ""
+msgstr "任務完成"
 
 #. module: helpdesk_fsm
 #. odoo-python

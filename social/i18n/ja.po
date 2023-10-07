@@ -221,7 +221,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_post__calendar_date
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_search
 msgid "Calendar Date"
-msgstr ""
+msgstr "カレンダ日付"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
@@ -1338,7 +1338,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_post__post_method__now
 msgid "Send now"
-msgstr ""
+msgstr "今すぐ送信"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream__sequence

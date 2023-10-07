@@ -1120,7 +1120,7 @@ msgid ""
 "            The tablet provides worksheets for your workers and allow them to scrap products, track time,\n"
 "            launch a maintenance request, perform quality tests, etc."
 msgstr ""
-"Utilice el panel de control de la tableta del centro de trabajo para registrar operaciones en el piso de la tienda directamente.\n"
+"Utilice el panel de control de la tableta del centro de trabajo para registrar operaciones en el taller directamente.\n"
 "            La tableta proporciona hojas de trabajo para sus trabajadores y les permite desechar productos, registrar tiempo,\n"
 "            realizar solicitudes de mantenimiento, realizar pruebas de calidad, etc."
 

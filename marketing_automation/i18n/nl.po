@@ -197,7 +197,7 @@ msgstr "Activiteit"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__activity_domain
 msgid "Activity Filter"
-msgstr "Activiteitsfilter"
+msgstr "Activiteitenfilter"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
@@ -217,7 +217,7 @@ msgid ""
 "from the combination of the activity filter and its inherited filter"
 msgstr ""
 "Activiteit wordt alleen uitgevoegd als het record voldoet aan het domein, "
-"opgehaald vanuit de combinatie van de activiteitsfilter en de overgeërfde "
+"opgehaald vanuit de combinatie van de activiteitenfilter en de overgeërfde "
 "filter"
 
 #. module: marketing_automation
@@ -336,7 +336,7 @@ msgstr "Annuleren"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Cancel after"
-msgstr "Annuleer na"
+msgstr "Annuleren na"
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_trace__state__canceled
@@ -592,7 +592,7 @@ msgstr "Activiteiten uitvoeren"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Expiry Duration"
-msgstr "Vervalduur"
+msgstr "Aflooptijd"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_filter_id
@@ -718,7 +718,7 @@ msgstr "Link statistieken"
 #. module: marketing_automation
 #: model:ir.ui.menu,name:marketing_automation.link_tracker_menu_reporting_marketing_automation
 msgid "Link Tracker"
-msgstr "Opvolging links"
+msgstr "Link Tracker"
 
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.link_tracker_action_marketing_campaign
@@ -836,24 +836,24 @@ msgstr "Marketingactiviteit"
 #: model:ir.module.category,name:marketing_automation.module_marketing_automation_category
 #: model:ir.ui.menu,name:marketing_automation.marketing_automation_menu
 msgid "Marketing Automation"
-msgstr "Marketing"
+msgstr "Marketing Automation"
 
 #. module: marketing_automation
 #: model:ir.actions.act_window,name:marketing_automation.mail_mass_mailing_action_marketing_automation
 msgid "Marketing Automation Mailings"
-msgstr "Marketing automatisering mailings"
+msgstr "Marketing Automation mailings"
 
 #. module: marketing_automation
 #: model:ir.actions.server,name:marketing_automation.ir_cron_campaign_execute_activities_ir_actions_server
 #: model:ir.cron,cron_name:marketing_automation.ir_cron_campaign_execute_activities
 msgid "Marketing Automation: execute activities"
-msgstr "Marketing Automatisering: activiteiten uitvoeren"
+msgstr "Marketing Automation: activiteiten uitvoeren"
 
 #. module: marketing_automation
 #: model:ir.actions.server,name:marketing_automation.ir_cron_campaign_sync_participants_ir_actions_server
 #: model:ir.cron,cron_name:marketing_automation.ir_cron_campaign_sync_participants
 msgid "Marketing Automation: sync participants"
-msgstr "Marketing Automatisering: deelnemers synchroniseren"
+msgstr "Marketing Automation: deelnemers synchroniseren"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_marketing_campaign
@@ -1187,12 +1187,12 @@ msgstr "Afgewezen"
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Rejected by activity filter or record deleted / archived"
-msgstr "Afgewezen door activiteitsfilter of record verwijderd / gearchiveerd"
+msgstr "Afgewezen door activiteitenfilter of record verwijderd / gearchiveerd"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Reload a favorite filter"
-msgstr "Een favoriet filter opnieuw laden"
+msgstr "Een favoriete filter opnieuw laden"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
@@ -1296,7 +1296,7 @@ msgstr "Selectie om te bepalen welke winnaarsmailing verstuurd wordt."
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_schedule_datetime
 msgid "Send Final On"
-msgstr "Finale verzenden op"
+msgstr "Finale versie verzenden op"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__interval_number
@@ -1487,7 +1487,7 @@ msgid ""
 "marketing automation group."
 msgstr ""
 "Om deze feature te gebruiken moet je een administrator zijn of toebehoren "
-"aan de marketing automatisering groep."
+"aan de marketing automation groep."
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_total_pc
@@ -1530,7 +1530,7 @@ msgstr "Traceringen"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Trigger"
-msgstr "Activeer"
+msgstr "Trigger"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__trigger_category
@@ -1624,7 +1624,7 @@ msgstr "Weken"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_winner_selection
 msgid "Winner Selection"
-msgstr "Winnaar Selectie"
+msgstr "Selectie winnaar"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form

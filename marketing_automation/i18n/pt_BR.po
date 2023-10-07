@@ -6,6 +6,7 @@
 # Martin Trigaux, 2022
 # Kevilyn Rosa, 2023
 # Layna Nascimento, 2023
+# Maitê Dietze, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Layna Nascimento, 2023\n"
+"Last-Translator: Maitê Dietze, 2023\n"
 "Language-Team: Portuguese (Brazil) (https://app.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -82,6 +83,8 @@ msgid ""
 "<i class=\"fa fa-clock-o pe-1\" role=\"img\" aria-label=\"Select time\" "
 "title=\"Select time\"/>"
 msgstr ""
+"<i class=\"fa fa-clock-o pe-1\" role=\"img\" aria-label=\"Select time\" "
+"title=\"Select time\"/>"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -200,7 +203,7 @@ msgstr "Filtro de atividade"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Activity Name"
-msgstr ""
+msgstr "Nome da atividade"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__activity_type
@@ -225,7 +228,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Add new activity"
-msgstr ""
+msgstr "Adicionar uma nova atividade"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
@@ -235,7 +238,7 @@ msgstr "Adicionar a modelos"
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_activity__allowed_parent_ids
 msgid "All activities which can be the parent of this one"
-msgstr ""
+msgstr "Todas as possíveis atividades pai desta atividade"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__social_post_ids
@@ -245,12 +248,12 @@ msgstr "Todas as postagens relacionadas a mídia social"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__allowed_parent_ids
 msgid "Allowed parents"
-msgstr ""
+msgstr "Pais permitidos"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_campaign__is_auto_campaign
 msgid "Allows us to filter relevant Campaigns"
-msgstr ""
+msgstr "Permitir a filtragem de campanhas relevantes"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__domain
@@ -276,7 +279,7 @@ msgstr "Anexar um arquivo"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__is_auto_campaign
 msgid "Automatically Generated Campaign"
-msgstr ""
+msgstr "Campanha gerada automaticamente"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -311,7 +314,7 @@ msgstr "Campanha"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__name
 msgid "Campaign Identifier"
-msgstr ""
+msgstr "Identificador da campanha"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__title
@@ -383,6 +386,8 @@ msgid ""
 "Come back later once your campaigns are running to overview your "
 "participants."
 msgstr ""
+"Volte quando suas campanhas estiverem em execução para ter uma visão geral "
+"dos participantes."
 
 #. module: marketing_automation
 #: model:utm.campaign,title:marketing_automation.marketing_campaign_1_utm_campaign
@@ -409,7 +414,7 @@ msgstr "Continuar"
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
 msgid "Create a Marketing Automation Campaign"
-msgstr ""
+msgstr "Criar uma campanha de automação de marketing"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__create_uid
@@ -448,6 +453,8 @@ msgstr "Dias"
 msgid ""
 "Define workflows by chaining up activities and let Odoo handle the rest."
 msgstr ""
+"Defina fluxos de trabalho encadeando atividades e deixe que o Odoo cuide do "
+"resto."
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__interval_type
@@ -467,11 +474,13 @@ msgid ""
 "Deleting this activity will delete ALL its children activities. Are you "
 "sure?"
 msgstr ""
+"Excluir esta atividade excluirá TODAS as atividades filho dela. Você tem "
+"certeza?"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__child_ids
 msgid "Direct child traces"
-msgstr ""
+msgstr "Direcionar rastreios de filhos"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__display_name
@@ -520,7 +529,7 @@ msgstr "E-mail"
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Email canceled"
-msgstr ""
+msgstr "E-mail cancelado"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_mail_compose_message
@@ -549,7 +558,7 @@ msgstr "Mensagem de erro"
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Error! You can't create recursive hierarchy of Activity."
-msgstr ""
+msgstr "Erro! Você não pode criar uma hierarquia recorrente de atividades."
 
 #. module: marketing_automation
 #. odoo-python
@@ -618,6 +627,8 @@ msgid ""
 "Here you will be able to check the results of your mailings from all "
 "Marketing Automation Campaigns."
 msgstr ""
+"Aqui você poderá conferir os resultados dos envios de todas das suas "
+"campanhas de automação de marketing."
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__hours
@@ -711,6 +722,8 @@ msgid ""
 "Link Trackers are created when mailings with links are sent to track how "
 "many clicks they get."
 msgstr ""
+"Os rastreadores de links são criados ao enviar comunicações com links para "
+"rastrear quantos cliques elas recebem."
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_category__email
@@ -944,7 +957,7 @@ msgstr "Nenhuma atividade"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "No activity for this campaign."
-msgstr ""
+msgstr "Nenhuma atividade para esta campanha."
 
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.link_tracker_action_marketing_campaign
@@ -971,7 +984,7 @@ msgstr "Não respondido"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Not bounced yet"
-msgstr ""
+msgstr "Ainda não foi rejeitado"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -1102,17 +1115,17 @@ msgstr "Participantes de %s (%s)"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Pick a Server Action"
-msgstr ""
+msgstr "Escolher uma ação do servidor"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Pick a Template"
-msgstr ""
+msgstr "Escolher um modelo"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 msgid "Pick or create a/an"
-msgstr ""
+msgstr "Escolher ou criar um"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__processed
@@ -1397,6 +1410,9 @@ msgid ""
 "Switching Target Model invalidates the existing activities. Either update "
 "your activity actions to match the new Target Model or delete them."
 msgstr ""
+"Alternar o modelo de destino invalida as atividades existentes. Exclua ou "
+"atualize suas ações de atividade para corresponder ao novo modelo de "
+"destino."
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__require_sync
@@ -1453,6 +1469,8 @@ msgid ""
 "The saved filter targets different model and is incompatible with this "
 "campaign."
 msgstr ""
+"O filtro salvo aponta a um modelo diferente e é incompatível com esta "
+"campanha."
 
 #. module: marketing_automation
 #. odoo-python
@@ -1572,7 +1590,7 @@ msgstr "Usuário"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__validity_duration_number
 msgid "Valid during"
-msgstr ""
+msgstr "Válido durante"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__validity_duration
@@ -1582,7 +1600,7 @@ msgstr "Duração da Validade"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__validity_duration_type
 msgid "Validity Duration Type"
-msgstr ""
+msgstr "Tipo de duração da validade"
 
 #. module: marketing_automation
 #. odoo-python
@@ -1611,7 +1629,7 @@ msgstr "Fluxo de trabalho"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Workflow Started On"
-msgstr ""
+msgstr "Fluxo de trabalho iniciado em"
 
 #. module: marketing_automation
 #. odoo-python
@@ -1621,6 +1639,8 @@ msgid ""
 "You are trying to set the activity \"%s\" as \"%s\" while its child \"%s\" has the trigger type \"%s\"\n"
 "Please modify one of those activities before saving."
 msgstr ""
+"Você está tentando definir a atividade \"%s\" como \"%s\" mas a atividade filho \"%s\" tem o tipo de disparo \"%s\"\n"
+"Modifique uma das atividades antes de salvar."
 
 #. module: marketing_automation
 #. odoo-python
@@ -1630,6 +1650,8 @@ msgid ""
 "You cannot delete these UTM Campaigns as they are linked to the following marketing campaigns in Marketing Automation:\n"
 "%(campaign_names)s"
 msgstr ""
+"Você não pode excluir essas campanhas UTM pois elas estão vinculadas às seguintes campanhas de marketing em Automação de marketing:\n"
+"%(campaign_names)s"
 
 #. module: marketing_automation
 #. odoo-python
@@ -1639,6 +1661,8 @@ msgid ""
 "You cannot delete these UTM Sources as they are linked to the following marketing activities in Marketing Automation:\n"
 "%(activities_names)s"
 msgstr ""
+"Você não pode excluir essas origens de UTM pois elas estão vinculadas às seguintes atividades de marketing em Automação de marketing:\n"
+"%(activities_names)s"
 
 #. module: marketing_automation
 #. odoo-python
@@ -1646,28 +1670,29 @@ msgstr ""
 #, python-format
 msgid "You must set up at least one activity to start this campaign."
 msgstr ""
+"Você deve definir pelo menos uma atividade para iniciar esta campanha."
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_type__activity
 msgid "another activity"
-msgstr ""
+msgstr "outra atividade"
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_type__begin
 msgid "beginning of workflow"
-msgstr ""
+msgstr "início do fluxo de trabalho"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "e.g. eCommerce Offers"
-msgstr ""
+msgstr "ex: Ofertas de eCommerce"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "e.g. eCommerce Offers Plan"
-msgstr ""
+msgstr "ex: Planos de ofertas do eCommerce"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 msgid "to generate a Test Participant"
-msgstr ""
+msgstr "para gerar um participante de teste"

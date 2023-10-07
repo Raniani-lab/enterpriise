@@ -1674,6 +1674,7 @@ msgstr "Jenis dari aktivitas pengecualian pada rekaman data."
 #, python-format
 msgid "Unable to post message, please configure the sender's email address."
 msgstr ""
+"Tidak dapat memposting pesan, mohon konfigurasi alamat email pengirim."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__uncomplete_goals_count

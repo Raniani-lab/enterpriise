@@ -3705,6 +3705,8 @@ msgid ""
 "Unable to sign the document due to missing required data. Please contact an "
 "administrator."
 msgstr ""
+"Não foi possível assinar o documento devido à falta de alguns dados "
+"obrigatórios. Entre em contato com um administrador."
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_role__auth_method__sms

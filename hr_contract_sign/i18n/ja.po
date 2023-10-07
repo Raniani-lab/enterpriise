@@ -73,7 +73,7 @@ msgstr "契約履歴"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__cc_partner_ids
 msgid "Copy to"
-msgstr ""
+msgstr "以下へコピー"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__create_uid
@@ -243,7 +243,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_history__sign_request_ids
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_employee__sign_request_ids
 msgid "Requested Signatures"
-msgstr ""
+msgstr "要求された署名"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__responsible_id
@@ -253,7 +253,7 @@ msgstr "担当者"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__responsible_count
 msgid "Responsible Count"
-msgstr ""
+msgstr "責任者数"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
@@ -299,7 +299,7 @@ msgstr "署名依頼"
 #: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
 #, python-format
 msgid "Signature Request - %s"
-msgstr ""
+msgstr "署名ようきゅう - %s"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__subject

@@ -148,7 +148,7 @@ msgstr "ผู้ดูแลระบบ"
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_all_tasks_root
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_all_tasks_todo
 msgid "All Tasks"
-msgstr ""
+msgstr "งานทั้งหมด"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_user_action_report_fsm
@@ -175,7 +175,7 @@ msgstr "เก็บถาวรแล้ว"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Assignees"
-msgstr ""
+msgstr "ผู้รับมอบหมาย"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__date_assign
@@ -292,7 +292,7 @@ msgstr "วันที่สร้าง"
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.open_create_project_fsm
 msgid "Create a Project"
-msgstr ""
+msgstr "สร้างโปรเจกต์"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.res_config_settings_view_form
@@ -315,6 +315,7 @@ msgid ""
 "Create projects to organize your tasks and define a different workflow for "
 "each project."
 msgstr ""
+"สร้างโปรเจกต์เพื่อจัดระเบียบงานของคุณและกำหนดขั้นตอนการทำงานที่แตกต่างกันสำหรับแต่ละโปรเจกต์"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_view_form_inherit
@@ -372,7 +373,7 @@ msgstr "วันที่ใช้ไป"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__delay_endings_days
 msgid "Days to Deadline"
-msgstr ""
+msgstr "วันถึงกำหนด"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__date_deadline
@@ -448,7 +449,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Dissatisfied"
-msgstr ""
+msgstr "ไม่พอใจ"
 
 #. module: industry_fsm
 #. odoo-python
@@ -957,7 +958,7 @@ msgstr "การรายงาน"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Satisfied"
-msgstr ""
+msgstr "พึงพอใจ"
 
 #. module: industry_fsm
 #. odoo-javascript
@@ -1004,6 +1005,7 @@ msgid ""
 "Set this template on a project's stage to automate email when tasks reach "
 "stages"
 msgstr ""
+"ตั้งค่าเทมเพลตนี้บนขั้นตอนของโปรเจกต์เพื่อส่งอีเมลอัตโนมัติเมื่องานถึงขั้นตอนนั้น"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.res_config_settings_action_fsm
@@ -1207,7 +1209,7 @@ msgstr "เวลา"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.timesheet_view_form
 msgid "Time Spent"
-msgstr ""
+msgstr "เวลาที่ใช้ไป"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_res_config_settings__module_industry_fsm_sale
@@ -1324,12 +1326,12 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__working_hours_open
 msgid "Working Hours to Assign"
-msgstr ""
+msgstr "ชั่วโมงการทำงานที่จะกำหนด"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__working_hours_close
 msgid "Working Hours to Close"
-msgstr ""
+msgstr "ชั่วโมงการทำงานเพื่อปิด"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_task

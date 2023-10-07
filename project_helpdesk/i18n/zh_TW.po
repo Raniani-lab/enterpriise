@@ -36,12 +36,12 @@ msgstr "轉換"
 #. module: project_helpdesk
 #: model:ir.model,name:project_helpdesk.model_helpdesk_ticket_convert_wizard
 msgid "Convert Helpdesk Tickets to Tasks"
-msgstr ""
+msgstr "將技術支援請求轉換為任務"
 
 #. module: project_helpdesk
 #: model:ir.model,name:project_helpdesk.model_project_task_convert_wizard
 msgid "Convert Project Tasks to Tickets"
-msgstr ""
+msgstr "將專案任務轉換為支援請求"
 
 #. module: project_helpdesk
 #. odoo-python
@@ -66,14 +66,14 @@ msgstr "轉換為支援請求"
 #: code:addons/project_helpdesk/wizard/helpdesk_ticket_convert_wizard.py:0
 #, python-format
 msgid "Converted Tasks"
-msgstr ""
+msgstr "已轉換任務"
 
 #. module: project_helpdesk
 #. odoo-python
 #: code:addons/project_helpdesk/wizard/project_task_convert_wizard.py:0
 #, python-format
 msgid "Converted Tickets"
-msgstr ""
+msgstr "已轉換支援請求"
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_helpdesk_ticket_convert_wizard__create_uid
@@ -132,7 +132,7 @@ msgstr "專案"
 #: code:addons/project_helpdesk/models/project.py:0
 #, python-format
 msgid "Recurring tasks cannot be converted into tickets."
-msgstr ""
+msgstr "重複任務不可轉換為支援請求。"
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_helpdesk_ticket_convert_wizard__stage_id
@@ -150,7 +150,7 @@ msgstr "任務"
 #: code:addons/project_helpdesk/wizard/project_task_convert_wizard.py:0
 #, python-format
 msgid "Task converted into ticket %s"
-msgstr ""
+msgstr "任務已轉換為支援請求 %s"
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_project_task_convert_wizard__team_id
@@ -162,4 +162,4 @@ msgstr "團隊"
 #: code:addons/project_helpdesk/wizard/helpdesk_ticket_convert_wizard.py:0
 #, python-format
 msgid "Ticket converted into task %s"
-msgstr ""
+msgstr "支援請求已轉換為任務 %s"

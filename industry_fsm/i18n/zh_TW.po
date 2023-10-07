@@ -24,7 +24,7 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__nbr
 msgid "# of Tasks"
-msgstr "#  任務"
+msgstr "任務數目"
 
 #. module: industry_fsm
 #: model:ir.actions.report,print_report_name:industry_fsm.task_custom_report
@@ -336,7 +336,7 @@ msgstr ""
 msgid ""
 "Create projects to organize your tasks and define a different workflow for "
 "each project."
-msgstr ""
+msgstr "建立專案，以整理你的任務，並為每個專案定義不同的工作流程。"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_view_form_inherit
@@ -877,7 +877,7 @@ msgstr "過去"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__personal_stage_type_ids
 msgid "Personal Stage"
-msgstr ""
+msgstr "個人階段"
 
 #. module: industry_fsm
 #: model:project.task.type,name:industry_fsm.planning_project_stage_1
@@ -897,7 +897,7 @@ msgstr "計劃"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__planning_overlap
 msgid "Planning Overlap"
-msgstr ""
+msgstr "規劃重疊"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.project_task_action_fsm_planning_groupby_project
@@ -1025,7 +1025,7 @@ msgstr ""
 msgid ""
 "Set this template on a project's stage to automate email when tasks reach "
 "stages"
-msgstr ""
+msgstr "在專案的階段上設置此範本，以便在任務到達指定階段時，自動發送電子郵件"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.res_config_settings_action_fsm
@@ -1119,7 +1119,7 @@ msgstr "子任務"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_tree
 msgid "Sum of Effective Hours"
-msgstr ""
+msgstr "有效時數總和"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__tag_ids
@@ -1143,7 +1143,7 @@ msgstr "任務依賴"
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__fsm_done
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__fsm_done
 msgid "Task Done"
-msgstr ""
+msgstr "任務完成"
 
 #. module: industry_fsm
 #: model:ir.actions.report,name:industry_fsm.task_custom_report

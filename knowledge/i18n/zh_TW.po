@@ -270,6 +270,10 @@ msgid ""
 "                    (/<span style=\"font-style: italic;\">checklist</span>)\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    新增檢查清單\n"
+"                    （/<span style=\"font-style: italic;\">checklist</span>）\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -279,6 +283,10 @@ msgid ""
 "                    (/<span style=\"font-style: italic;\">separator</span>)\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    加入分隔\n"
+"                    （/<span style=\"font-style: italic;\">separator</span>）\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -289,6 +297,11 @@ msgid ""
 "                    to convert a text into a title\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    使用\n"
+"                    /<span style=\"font-style: normal;\">heading</span>\n"
+"                    將文字轉換為標題\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -367,6 +380,15 @@ msgid ""
 "            \"<span style=\"font-weight: bolder;\">/</span>\"\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            在此清單下方，試試使用\n"
+"            <span style=\"font-weight: bolder;\">指令</span>\n"
+"            ，你只需\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">鍵入</font>\n"
+"            </span>\n"
+"            「<span style=\"font-weight: bolder;\">/</span>」（斜線）\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -407,6 +429,14 @@ msgid ""
 "            <span style=\"font-style: italic; text-decoration-line: underline;\">it</span>\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            選取文字以作\n"
+"            <font class=\"bg-o-color-2\">醒目提示</font>、\n"
+"            <span style=\"text-decoration-line: line-through;\">加上刪除線</span>\n"
+"            ，或套用\n"
+"            <span style=\"font-weight: bolder;\">不同</span>\n"
+"            <span style=\"font-style: italic; text-decoration-line: underline;\">格式</span>\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -572,14 +602,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid ""
 "<span style=\"font-size: 14px;\">Check this box to indicate it's done</span>"
-msgstr ""
+msgstr "<span style=\"font-size: 14px;\">勾選此方塊以表示完成</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid ""
 "<span style=\"font-size: 14px;\">Click anywhere, and just start "
 "typing</span>"
-msgstr ""
+msgstr "<span style=\"font-size: 14px;\">只需按一下任何位置，然後開始輸入</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -617,7 +647,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "<span style=\"font-size: 14px;\">Press Ctrl-Z to undo any change</span>"
-msgstr ""
+msgstr "<span style=\"font-size: 14px;\">按 Ctrl-Z 以復原任何變更</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -630,7 +660,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "<span style=\"font-size: 14px;\">Try the following</span>"
-msgstr ""
+msgstr "<span style=\"font-size: 14px;\">試試以下操作</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -2526,7 +2556,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Who has access to what?"
-msgstr ""
+msgstr "誰有權存取什麼？"
 
 #. module: knowledge
 #. odoo-javascript

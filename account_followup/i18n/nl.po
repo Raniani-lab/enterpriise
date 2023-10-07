@@ -1006,7 +1006,7 @@ msgstr "Sms-inhoud"
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__sms_template_id
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__sms_template_id
 msgid "Sms Template"
-msgstr "SMS sjabloon"
+msgstr "SMS-sjabloon"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__subject

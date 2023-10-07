@@ -201,7 +201,7 @@ msgstr "การเชื่อมต่อกับกล่องไอโอ
 #: code:addons/iot/static/src/views/iot_device_form.js:0
 #, python-format
 msgid "Connection to device failed"
-msgstr ""
+msgstr "การเชื่อมต่อกับอุปกรณ์ล้มเหลว"
 
 #. module: iot
 #. odoo-javascript

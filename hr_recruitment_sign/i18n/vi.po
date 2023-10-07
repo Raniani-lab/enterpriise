@@ -186,7 +186,7 @@ msgstr ""
 #. module: hr_recruitment_sign
 #: model:ir.actions.server,name:hr_recruitment_sign.action_request_signature
 msgid "Request Signature"
-msgstr ""
+msgstr "Yêu cầu chữ ký"
 
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__responsible_id

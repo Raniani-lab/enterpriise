@@ -4027,7 +4027,7 @@ msgstr "チームの検索"
 #: code:addons/helpdesk/models/helpdesk_ticket.py:0
 #, python-format
 msgid "ticket"
-msgstr ""
+msgstr "チケット"
 
 #. module: helpdesk
 #: model:mail.template,subject:helpdesk.rating_ticket_request_email_template

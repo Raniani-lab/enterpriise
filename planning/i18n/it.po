@@ -1428,7 +1428,8 @@ msgstr "Consenti annullamento assegnazione ai dipendenti"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.res_config_settings_view_form
 msgid "Let employees unassign themselves from shifts"
-msgstr "Permetterei ai dipendenti di disassegnarsi dai turni"
+msgstr ""
+"Permetti ai dipendenti di annullare l'assegnazione dei turni in autonomia"
 
 #. module: planning
 #. odoo-javascript

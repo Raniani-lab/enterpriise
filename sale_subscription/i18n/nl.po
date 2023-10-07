@@ -2945,7 +2945,7 @@ msgstr "Lopende abonnementen"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__sms_template_id
 msgid "SMS Template"
-msgstr "SMS sjabloon"
+msgstr "SMS-sjabloon"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
@@ -3074,12 +3074,12 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_act_window_sms_composer_multi
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_act_window_sms_composer_single
 msgid "Send an SMS Text Message"
-msgstr "Verzend een SMS tekstbericht"
+msgstr "Verzend een SMS bericht"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__action__sms
 msgid "Send an SMS Text Message to the customer"
-msgstr "Verzend een SMS tekstbericht naar de klant"
+msgstr "Verzend een SMS bericht naar de klant"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__action__email
@@ -3870,7 +3870,7 @@ msgstr ""
 "- 'Stuur e-mail': plaats een bericht, een notitie of stuur een e-mail (Bespreek)\n"
 "- 'Volgers toevoegen': volgers toevoegen aan een record (Chat)\n"
 "- 'Maak een volgende activiteit': maak een activiteit aan (Chat)\n"
-"- 'Stuur SMS-tekstbericht': stuur sms, log in op documenten (SMS)"
+"- 'Stuur SMS-bericht': stuur sms, log in op documenten (SMS)"
 
 #. module: sale_subscription
 #. odoo-python

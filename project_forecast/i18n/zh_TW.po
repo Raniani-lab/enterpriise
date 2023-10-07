@@ -99,7 +99,7 @@ msgstr "按專案進度"
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_schedule_by_employee
 msgid "Schedule by Resource"
-msgstr ""
+msgstr "按資源安排"
 
 #. module: project_forecast
 #: model_terms:ir.actions.act_window,help:project_forecast.planning_action_schedule_by_project
@@ -124,7 +124,7 @@ msgstr "排班範本"
 #. module: project_forecast
 #: model:planning.role,name:project_forecast.planning_role_tester
 msgid "Tester"
-msgstr ""
+msgstr "測試人員"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_project__total_forecast_time

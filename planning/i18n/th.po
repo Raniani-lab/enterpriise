@@ -2154,7 +2154,7 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.resource_resource_kanban_view
 msgid "Timezone:"
-msgstr ""
+msgstr "เขตเวลา:"
 
 #. module: planning
 #: model:digest.tip,name:planning.digest_tip_planning_0

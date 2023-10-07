@@ -13,8 +13,8 @@
 # Jiří Podhorecký, 2022
 # Rastislav Brencic <rastislav.brencic@azet.sk>, 2023
 # Aleš Fiala <f.ales1@seznam.cz>, 2023
-# Tomáš Píšek, 2023
 # Ivana Bartonkova, 2023
+# Tomáš Píšek, 2023
 # Jakub Smolka, 2023
 # 
 msgid ""
@@ -117,7 +117,7 @@ msgstr ") má různou měnu a společnost je konsolidována v"
 #: code:addons/account_consolidation/static/src/components/move_line_list/move_line_list.xml:0
 #, python-format
 msgid ") have different currencies."
-msgstr ") má různou měnu."
+msgstr ") mají různé měny."
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.cell_template_consolidation_report
@@ -131,14 +131,12 @@ msgid ""
 "title=\"Unfolded\"/>"
 msgstr ""
 "<i class=\"fa fa-caret-down\" role=\"img\" aria-label=\"Unfolded\" "
-"title=\"Rozvinuto\"/>"
+"title=\"Unfolded\"/>"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.line_template_consolidation_report
 msgid "<i class=\"fa fa-caret-right\" role=\"img\" aria-label=\"Folded\" title=\"Folded\"/>"
-msgstr ""
-"<i class=\"fa fa-caret-right\" role=\"img\" aria-label=\"Folded\" "
-"title=\"Skládané\"/>"
+msgstr "<i class=\"fa fa-caret-right\" role=\"img\" aria-label=\"Folded\" title=\"Folded\"/>"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_kanban
@@ -1038,7 +1036,7 @@ msgstr "V minulosti"
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__invert_sign
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_group__invert_sign
 msgid "Invert Balance Sign"
-msgstr "Invertovat znaménko zůstatku"
+msgstr "Obrátit znaménko zůstatku"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_is_follower
@@ -1230,7 +1228,8 @@ msgstr "Počet zpráv s chybou při doručení"
 msgid ""
 "Only one entry by account should be created for a generated journal entry !"
 msgstr ""
-"Pouze jeden záznam účtu by měl být vytvořen pro generovaný účetní deník !"
+"Pro vytvořený účetní pohyb by měl být vytvořen jen jeden záznam za jeden "
+"účet!"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
@@ -1391,7 +1390,7 @@ msgstr "Zobrazit účty s nulovým zůstatkem"
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__sign
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_group__sign
 msgid "Sign"
-msgstr "e-podpis"
+msgstr "Znaménko"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__date_company_begin
@@ -1413,12 +1412,12 @@ msgstr "Stav"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_res_company__consolidation_dashboard_onboarding_state
 msgid "State Of The Account Consolidation Dashboard Onboarding Panel"
-msgstr "Stav zaškolování na dashboard konsolidace účtu"
+msgstr "Panel počátečního nastavení - Stav přehledu účetní konsolidace"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_res_company__consolidation_setup_ccoa_state
 msgid "State Of The Onboarding Consolidated Chart Of Account Step"
-msgstr "Stav připojeného konsolidovaného grafu kroku účtu"
+msgstr "Stav kroku počátečního nastavení - Konsolidovaná účtová osnova"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_res_company__consolidation_setup_consolidation_state
@@ -1532,7 +1531,7 @@ msgstr "Hlavní kniha"
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_consolidation_trial_balance_report_handler
 msgid "Trial Balance Custom Handler"
-msgstr "Vlastní manipulátor zkušebního zůstatku"
+msgstr "Vlastní 'handler' hlavní knihy"
 
 #. module: account_consolidation
 #. odoo-python

@@ -9,6 +9,7 @@
 # Rastislav Brencic <rastislav.brencic@azet.sk>, 2023
 # Martin Trigaux, 2023
 # Jakub Smolka, 2023
+# Tomáš Píšek, 2023
 # 
 msgid ""
 msgstr ""
@@ -16,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Jakub Smolka, 2023\n"
+"Last-Translator: Tomáš Píšek, 2023\n"
 "Language-Team: Czech (https://app.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -89,7 +90,7 @@ msgstr "Aktuální kurz"
 #. module: account_disallowed_expenses
 #: model:ir.model.fields,field_description:account_disallowed_expenses.field_account_disallowed_expenses_rate__rate
 msgid "Disallowed %"
-msgstr ""
+msgstr "Neuznatelné %"
 
 #. module: account_disallowed_expenses
 #: model:account.report.column,name:account_disallowed_expenses.disallowed_expenses_report_disallowed_amount
@@ -117,7 +118,7 @@ msgstr "Kategorie nepovolených výdajů"
 #. module: account_disallowed_expenses
 #: model:ir.model,name:account_disallowed_expenses.model_account_disallowed_expenses_report_handler
 msgid "Disallowed Expenses Custom Handler"
-msgstr "Vlastní zpracování nepovolených výdajů"
+msgstr "Vlastní zpracování neuznatelných nákladů"
 
 #. module: account_disallowed_expenses
 #: model:ir.model,name:account_disallowed_expenses.model_account_disallowed_expenses_rate
@@ -207,12 +208,12 @@ msgstr "Kurzy"
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses.view_account_disallowed_expenses_category_form
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses.view_account_disallowed_expenses_category_tree
 msgid "Related Account(s)"
-msgstr ""
+msgstr "Odpovídající účty"
 
 #. module: account_disallowed_expenses
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses.view_account_disallowed_expenses_category_tree
 msgid "Set Rates"
-msgstr ""
+msgstr "Nastavit podíly"
 
 #. module: account_disallowed_expenses
 #: model:ir.model.fields,help:account_disallowed_expenses.field_account_disallowed_expenses_category__active
@@ -241,9 +242,9 @@ msgstr "Celková částka"
 #. module: account_disallowed_expenses
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses.view_account_disallowed_expenses_category_form
 msgid "e.g. 1201"
-msgstr ""
+msgstr "např. 1201"
 
 #. module: account_disallowed_expenses
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses.view_account_disallowed_expenses_category_form
 msgid "e.g. Non-Deductible Tax"
-msgstr ""
+msgstr "např. Neodpočitatelná daň"

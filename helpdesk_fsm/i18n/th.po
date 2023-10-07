@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Wichanon Jamwutthipreecha, 2022
+# Rasareeyar Lappiam, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Wichanon Jamwutthipreecha, 2022\n"
+"Last-Translator: Rasareeyar Lappiam, 2023\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,7 +29,7 @@ msgstr "บริษัทเดียว"
 #. module: helpdesk_fsm
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_ticket_convert_wizard
 msgid "Convert Helpdesk Tickets to Tasks"
-msgstr ""
+msgstr "แปลงทิกเก็ต Helpdesk เป็นงาน"
 
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.create_fsm_task_view_form
@@ -77,7 +78,7 @@ msgstr "แสดงชื่อ"
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__display_helpdesk_ticket_button
 msgid "Display Ticket"
-msgstr ""
+msgstr "แสดงทิกเก็ต"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_team__fsm_project_id
@@ -127,7 +128,7 @@ msgstr "อัปเดตครั้งล่าสุดเมื่อ"
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__helpdesk_ticket_id
 msgid "Original Ticket"
-msgstr ""
+msgstr "ทิกเก็ตเดิม"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__project_id
@@ -166,7 +167,7 @@ msgstr "งานเสร็จสิ้น"
 #: code:addons/helpdesk_fsm/wizard/create_task.py:0
 #, python-format
 msgid "Task created"
-msgstr ""
+msgstr "สร้างงานแล้ว"
 
 #. module: helpdesk_fsm
 #. odoo-python

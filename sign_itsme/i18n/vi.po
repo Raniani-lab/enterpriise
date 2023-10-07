@@ -41,12 +41,12 @@ msgstr ""
 #. module: sign_itsme
 #: model:ir.model.fields,field_description:sign_itsme.field_sign_item_role__auth_method
 msgid "Extra Authentication Step"
-msgstr ""
+msgstr "Bước xác thực bổ sung"
 
 #. module: sign_itsme
 #: model:ir.model.fields,help:sign_itsme.field_sign_item_role__auth_method
 msgid "Force the signatory to identify using a second authentication method"
-msgstr ""
+msgstr "Buộc người ký tên xác nhận bằng phương thức xác thực thứ hai"
 
 #. module: sign_itsme
 #. odoo-javascript
@@ -91,12 +91,12 @@ msgstr ""
 #. module: sign_itsme
 #: model:ir.model,name:sign_itsme.model_sign_item_role
 msgid "Signature Item Party"
-msgstr ""
+msgstr "Mục chữ ký Bên"
 
 #. module: sign_itsme
 #: model:ir.model,name:sign_itsme.model_sign_request_item
 msgid "Signature Request Item"
-msgstr ""
+msgstr "Mục yêu cầu chữ ký"
 
 #. module: sign_itsme
 #. odoo-javascript

@@ -47,12 +47,12 @@ msgstr "ยืนยันเวลาที่ใช้ไป"
 #. module: helpdesk_timesheet
 #: model:ir.model,name:helpdesk_timesheet.model_helpdesk_ticket_convert_wizard
 msgid "Convert Helpdesk Tickets to Tasks"
-msgstr ""
+msgstr "แปลงทิกเก็ต Helpdesk เป็นงาน"
 
 #. module: helpdesk_timesheet
 #: model:ir.model,name:helpdesk_timesheet.model_project_task_convert_wizard
 msgid "Convert Project Tasks to Tickets"
-msgstr ""
+msgstr "แปลงงานโปรเจกต์เป็นทิกเก็ต"
 
 #. module: helpdesk_timesheet
 #: model:ir.model,name:helpdesk_timesheet.model_helpdesk_ticket_create_timesheet
@@ -115,7 +115,7 @@ msgstr "แสดงชื่อ"
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_account_analytic_line__display_task
 msgid "Display Task"
-msgstr ""
+msgstr "แสดงงาน"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__display_timer
@@ -279,7 +279,7 @@ msgstr "โปรเจกต์"
 msgid ""
 "Project to which the timesheets of this helpdesk team's tickets will be "
 "linked."
-msgstr ""
+msgstr "โปรเจกต์ที่จะเชื่อมโยงระบบบันทึกเวลาของทิกเก็ตในทีม Helpdesk นี้"
 
 #. module: helpdesk_timesheet
 #: model_terms:ir.actions.act_window,help:helpdesk_timesheet.act_hr_timesheet_line_helpdesk
@@ -361,7 +361,7 @@ msgstr "ทิกเก็ตที่เรากำลังสร้างค
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.report_timesheet_ticket
 msgid "Ticket:"
-msgstr ""
+msgstr "mbdgdH9:"
 
 #. module: helpdesk_timesheet
 #: code:addons/helpdesk_timesheet/models/project.py:0
@@ -383,6 +383,8 @@ msgid ""
 "Time spent on this ticket. By default, your timesheets will be linked to the sales order item of your ticket.\n"
 "Remove the sales order item to make your timesheet entries non billable."
 msgstr ""
+"เวลาที่ใช้ไปในทิกเก็ตใบนี้ ตามค่าเริ่มต้น ใบบันทึกเวลาของคุณจะเชื่อมโยงกับรายการใบสั่งขายของทิกเก็ตของคุณ\n"
+"ลบรายการในใบสั่งขาย เพื่อทำให้รายการใบบันทึกเวลาของคุณไม่สามารถเรียกเก็บเงินได้"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__timer_pause
@@ -454,6 +456,7 @@ msgstr "การสนับสนุนวีไอพี"
 msgid ""
 "You cannot link a timesheet entry to a task and a ticket at the same time."
 msgstr ""
+"คุณไม่สามารถเชื่อมโยงรายการใบบันทึกเวลากับงานและทิกเก็ตในเวลาเดียวกันได้"
 
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.report_timesheet_ticket

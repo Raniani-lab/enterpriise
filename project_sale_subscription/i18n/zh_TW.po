@@ -33,10 +33,10 @@ msgstr "專案"
 #. module: project_sale_subscription
 #: model:ir.model,name:project_sale_subscription.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "銷售訂單明細"
+msgstr "銷售訂單資料行"
 
 #. module: project_sale_subscription
 #: code:addons/project_sale_subscription/models/project.py:0
 #, python-format
 msgid "Subscriptions"
-msgstr "訂閱"
+msgstr "定期訂購"

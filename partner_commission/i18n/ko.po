@@ -395,6 +395,15 @@ msgid "Takes precedence over the Referrer's commission plan."
 msgstr "추천인의 수수료 계획보다 우선합니다."
 
 #. module: partner_commission
+#. odoo-python
+#: code:addons/partner_commission/models/account_move.py:0
+#, python-format
+msgid ""
+"The commission partner order %s must be checked manually (especially refund "
+"lines which can be duplicated)."
+msgstr "협력사 수수료 %s 주문건은 반드시 수기로 확인해야 합니다 (특히 환불 항목에서 중복 가능)."
+
+#. module: partner_commission
 #: model:ir.model.fields,help:partner_commission.field_res_partner_grade__default_commission_plan_id
 msgid ""
 "The default commission plan used for this grade. Can be overwritten on the "

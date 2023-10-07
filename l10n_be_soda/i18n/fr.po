@@ -40,6 +40,8 @@ msgid ""
 "The SODA Entry could not be created: \n"
 "The company VAT number found in at least one document doesn't seem to correspond to this company's VAT number nor company id"
 msgstr ""
+"Impossible de créer l'entrée SODA :\n"
+"Le numéro de TVA de la société trouvé dans au moins un document ne correspond pas au numéro de TVA de la société ou à l'ID de la société"
 
 #. module: l10n_be_soda
 #. odoo-python
@@ -49,6 +51,8 @@ msgid ""
 "The Soda Entry could not be created: \n"
 "The imported document doesn't seem to correspond to this company's VAT number nor company id"
 msgstr ""
+"Impossible de créer l'entrée SODA :\n"
+"Le document importé ne correspond pas au numéro de TVA de la société ou à l'ID de la société"
 
 #. module: l10n_be_soda
 #. odoo-python

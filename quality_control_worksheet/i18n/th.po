@@ -24,17 +24,17 @@ msgstr ""
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_inherit_worksheet
 msgid "Check Worksheet"
-msgstr ""
+msgstr "ตรวจสอบแผ่นงาน"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_failure_worksheet
 msgid "Confirm Worksheet"
-msgstr ""
+msgstr "ยืนยันแผ่นงาน"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_failure_worksheet
 msgid "Correct Worksheet"
-msgstr ""
+msgstr "แผ่นงานที่ถูกต้อง"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.x_quality_check_worksheet_template_1_ir_ui_view_3
@@ -61,7 +61,7 @@ msgstr "ชื่อโมเดล"
 #: code:addons/quality_control_worksheet/models/quality.py:0
 #, python-format
 msgid "Please fill in the worksheet."
-msgstr ""
+msgstr "กรุณากรอกแผ่นงาน"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
@@ -89,24 +89,24 @@ msgstr "จุดควบคุมคุณภาพ"
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.x_quality_check_worksheet_template_1_ir_model_1
 msgid "Quality Issues"
-msgstr ""
+msgstr "ปัญหาด้านคุณภาพ"
 
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check__worksheet_template_id
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check_wizard__worksheet_template_id
 msgid "Quality Template"
-msgstr ""
+msgstr "เทมเพลตการจัดการคุณภาพ"
 
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_report_quality_control_quality_worksheet
 msgid "Quality Worksheet Report"
-msgstr ""
+msgstr "รายงานแผ่นงานการจัดการคุณภาพ"
 
 #. module: quality_control_worksheet
 #: model:ir.actions.act_window,name:quality_control_worksheet.quality_control_worksheet_template_action_settings
 #: model:ir.ui.menu,name:quality_control_worksheet.settings_worksheet_template
 msgid "Quality Worksheet Templates"
-msgstr ""
+msgstr "เทมเพลตแผ่นงานการจัดการคุณภาพ"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
@@ -116,7 +116,7 @@ msgstr "รับผิดชอบ"
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_point__worksheet_success_conditions
 msgid "Success Conditions"
-msgstr ""
+msgstr "เงื่อนไขความสำเร็จ"
 
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_point__worksheet_template_id
@@ -126,12 +126,12 @@ msgstr "เทมเพลต"
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_quality_check_wizard
 msgid "Wizard for Quality Check Pop Up"
-msgstr ""
+msgstr "โปรแกรมสำหรับป๊อปอัปการตรวจสอบคุณภาพ"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
 msgid "Wood Texture"
-msgstr ""
+msgstr "พื้นผิวไม้"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_inherit_worksheet
@@ -143,7 +143,7 @@ msgstr "แผ่นงาน"
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_inherit_worksheet
 msgid "Worksheet Completed"
-msgstr ""
+msgstr "แผ่นงานเสร็จแล้ว"
 
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check__worksheet_count

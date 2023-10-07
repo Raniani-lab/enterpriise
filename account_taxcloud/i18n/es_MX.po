@@ -247,7 +247,7 @@ msgstr "Categorías de TaxCloud"
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.product_category_view_form_inherit_account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.product_template_taxcloud_inherit_form
 msgid "TaxCloud Category"
-msgstr "Categoría TaxCloud"
+msgstr "Categoría de TaxCloud"
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_fiscal_position_template

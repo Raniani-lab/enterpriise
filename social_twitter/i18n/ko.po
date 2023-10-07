@@ -109,6 +109,8 @@ msgid ""
 "Can not like / unlike the tweet\n"
 "%s."
 msgstr ""
+"트윗에 좋아요/싫어요 표시를 할 수 없습니다\n"
+"%s."
 
 #. module: social_twitter
 #. odoo-javascript
@@ -195,25 +197,27 @@ msgid ""
 "Failed to delete the Tweet\n"
 "%s."
 msgstr ""
+"트윗을 삭제하지 못했습니다\n"
+"%s."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Failed to fetch the conversation id: '%s' using the account %s."
-msgstr ""
+msgstr "%s 계정으로 '%s' 대화 ID를 가져오는 데 실패했습니다."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid ""
 "Failed to fetch the tweets in the same thread: '%s' using the account %s."
-msgstr ""
+msgstr "동일한 스레드의 트윗을 가져오는 데 실패했습니다: %s 계정으로 '%s'"
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Failed to post comment: %s with the account %s."
-msgstr ""
+msgstr "댓글을 달지 못했습니다: %s 계정 %s."
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_likes
@@ -301,7 +305,7 @@ msgstr "이름"
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Oops! Couldn't find this tweet on Twitter.com"
-msgstr ""
+msgstr "죄송합니다. Twitter에서 트윗을 찾을 수 없습니다."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream.py:0
@@ -379,7 +383,7 @@ msgstr "리트윗"
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Replies from Tweets older than 7 days must be accessed on Twitter.com"
-msgstr ""
+msgstr "7일 이전에 포스팅된 트윗 답글은 Twitter.com에서 확인하세요."
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream__twitter_searched_keyword
@@ -466,7 +470,7 @@ msgstr "이 서비스가 요청한 URL이 오류를 반환했습니다. 앱 작
 #: code:addons/social_twitter/controllers/main.py:0
 #, python-format
 msgid "This Tweet has been deleted."
-msgstr ""
+msgstr "삭제된 트윗입니다."
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_follow

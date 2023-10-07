@@ -35,7 +35,7 @@ msgstr "ชุดที่เกี่ยวข้องกับการโอ
 #. module: quality_control_picking_batch
 #: model_terms:ir.ui.view,arch_db:quality_control_picking_batch.view_move_line_tree
 msgid "Check Quality"
-msgstr ""
+msgstr "การตรวจสอบคุณภาพ"
 
 #. module: quality_control_picking_batch
 #: model:ir.model,name:quality_control_picking_batch.model_stock_move_line

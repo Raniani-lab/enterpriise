@@ -233,7 +233,7 @@ msgstr "<span class=\"bg-secondary\">Annullato</span>"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_goal_view_kanban
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "<span class=\"bg-success\">Done</span>"
-msgstr "<span class=\"bg-success\">Erledigt</span>"
+msgstr "<span class=\"bg-success\">Completato</span>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -1415,7 +1415,7 @@ msgstr "Nome utente legato alla risorsa per gestirne l'accesso."
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__render_model
 msgid "Rendering Model"
-msgstr "Rendering Model"
+msgstr "Modello di rendering"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form

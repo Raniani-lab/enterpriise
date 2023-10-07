@@ -2209,7 +2209,7 @@ msgstr "แชร์"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__share_link_ids
 msgid "Share Links"
-msgstr ""
+msgstr "แชร์ลิงค์"
 
 #. module: documents
 #. odoo-python

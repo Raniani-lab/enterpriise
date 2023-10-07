@@ -5,8 +5,8 @@
 # Translators:
 # Benson <Benson.Dr@Gmail.com>, 2023
 # Martin Trigaux, 2023
-# 敬雲 林 <chingyun@yuanchih-consult.com>, 2023
 # Wil Odoo, 2023
+# 敬雲 林 <chingyun@yuanchih-consult.com>, 2023
 # Tony Ng, 2023
 # 
 msgid ""
@@ -395,6 +395,8 @@ msgid ""
 "<span>Please note that the report may include some rounding differences "
 "towards the bookings.</span>"
 msgstr ""
+"<span>Please note that the report may include some rounding differences "
+"towards the bookings.</span>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_tax_report
@@ -1389,7 +1391,7 @@ msgstr "歐盟銷售清單"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_ec_sales_report_handler
 msgid "EC Sales Report Custom Handler"
-msgstr ""
+msgstr "EC銷售報告自訂處理程式"
 
 #. module: account_reports
 #. odoo-python

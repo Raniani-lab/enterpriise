@@ -259,7 +259,7 @@ msgstr "Phụ trách"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__responsible_count
 msgid "Responsible Count"
-msgstr ""
+msgstr "Số người phụ trách"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign

@@ -273,7 +273,7 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/controllers/main.py:0
 #, python-format
 msgid "Missing or invalid IBAN."
-msgstr ""
+msgstr "IBAN bị thiếu hoặc không hợp lệ."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -323,14 +323,14 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/static/src/js/payment_form.js:0
 #, python-format
 msgid "Re-send SMS"
-msgstr ""
+msgstr "Gửi lại SMS"
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
 #: code:addons/payment_sepa_direct_debit/models/payment_provider.py:0
 #, python-format
 msgid "Restricted to countries in the SEPA zone. Forbidden countries: %s"
-msgstr ""
+msgstr "Hạn chế cho các quốc gia trong khu vực SEPA. Các quốc gia bị cấm: %s"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model,name:payment_sepa_direct_debit.model_sdd_mandate
@@ -345,7 +345,7 @@ msgstr "SEPA Direct Debit"
 #. module: payment_sepa_direct_debit
 #: model:account.payment.method,name:payment_sepa_direct_debit.payment_method_sepa_direct_debit
 msgid "SEPA Direct Debit (provider)"
-msgstr ""
+msgstr "Ghi nợ trực tiếp SEPA (nhà cung cấp)"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_payment_token__sdd_mandate_id
@@ -356,12 +356,12 @@ msgstr "SEPA Direct Debit Mandate"
 #: model:mail.template,name:payment_sepa_direct_debit.mail_template_sepa_notify_debit
 #: model:mail.template,subject:payment_sepa_direct_debit.mail_template_sepa_notify_debit
 msgid "SEPA Direct Debit: Charge Notification"
-msgstr ""
+msgstr "Ghi nợ trực tiếp SEPA: Thông báo trừ tiền"
 
 #. module: payment_sepa_direct_debit
 #: model:mail.template,name:payment_sepa_direct_debit.mail_template_sepa_notify_validation
 msgid "SEPA Direct Debit: Validation Notification"
-msgstr ""
+msgstr "Ghi nợ trực tiếp SEPA: Thông báo xác thực"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_payment_provider__sdd_sms_credits
@@ -373,7 +373,7 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/static/src/js/payment_form.js:0
 #, python-format
 msgid "SMS Sent"
-msgstr ""
+msgstr "Đã gửi SMS"
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -399,11 +399,12 @@ msgstr "Send SMS"
 msgid ""
 "Send the SEPA mandate in attachement, to partners who signed a new mandate"
 msgstr ""
+"Gửi ủy nhiệm SEPA, trong tệp đính kèm, cho các đối tác đã ký ủy nhiệm mới"
 
 #. module: payment_sepa_direct_debit
 #: model:mail.template,description:payment_sepa_direct_debit.mail_template_sepa_notify_debit
 msgid "Sent to the customer to indicate their account will be charged"
-msgstr ""
+msgstr "Gửi cho khách hàng để thông báo tài khoản của họ sẽ bị trừ tiền"
 
 #. module: payment_sepa_direct_debit
 #. odoo-javascript
@@ -439,7 +440,7 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/models/payment_provider.py:0
 #, python-format
 msgid "The bank account of the journal is not a valid IBAN."
-msgstr ""
+msgstr "Tài khoản ngân hàng của sổ nhật ký không phải là IBAN hợp lệ."
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_sdd_mandate__signed_on
@@ -451,14 +452,14 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/models/payment_transaction.py:0
 #, python-format
 msgid "The mandate is invalid."
-msgstr ""
+msgstr "Uỷ nhiệm không hợp lệ."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
 #: code:addons/payment_sepa_direct_debit/models/payment_provider.py:0
 #, python-format
 msgid "The mandate owner and customer do not match."
-msgstr ""
+msgstr "Chủ sở hữu ủy nhiệm và khách hàng không khớp."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -523,7 +524,7 @@ msgstr "Mã kỹ thuật của nhà cung cấp dịch vụ thanh toán này."
 #: code:addons/payment_sepa_direct_debit/models/payment_transaction.py:0
 #, python-format
 msgid "The token is not linked to a mandate."
-msgstr ""
+msgstr "Token không được liên kết với uỷ nhiệm nào."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -594,6 +595,8 @@ msgid ""
 "Your SEPA Direct Debit Mandate with {{ "
 "object.payment_journal_id.company_id.name }}"
 msgstr ""
+"Ủy nhiệm ghi nợ trực tiếp SEPA của bạn với {{ "
+"object.payment_journal_id.company_id.name }}"
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -603,13 +606,15 @@ msgid ""
 "Your company must have a creditor identifier in order to issue a SEPA Direct"
 " Debit payment request. It can be set in Accounting settings."
 msgstr ""
+"Công ty của bạn phải có số định danh chủ nợ để tạo yêu cầu thanh toán ghi nợ"
+" trực tiếp SEPA. Bạn có thể thiết lập trong cài đặt Kế toán."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
 #: code:addons/payment_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid "Your confirmation code is %s"
-msgstr ""
+msgstr "Mã xác nhận của bạn là %s"
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.inline_form

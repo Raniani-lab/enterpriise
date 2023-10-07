@@ -685,17 +685,17 @@ msgstr "研究領域"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__fixed_value
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_resume__value_type__fixed
 msgid "Fixed Value"
-msgstr ""
+msgstr "固定值"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__fold_field
 msgid "Fold Field Name"
-msgstr ""
+msgstr "摺疊欄位名稱"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__fold_label
 msgid "Fold Label"
-msgstr ""
+msgstr "摺疊標籤"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__fold_res_field_id

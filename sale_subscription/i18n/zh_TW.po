@@ -3655,7 +3655,7 @@ msgstr "定時條件"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "To Invoice"
-msgstr "待開立應收憑單"
+msgstr "待開立發票"
 
 #. module: sale_subscription
 #. odoo-python

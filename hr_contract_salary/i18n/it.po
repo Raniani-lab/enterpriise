@@ -364,7 +364,7 @@ msgstr "Data inizio contratto"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history__default_contract_id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_job__default_contract_id
 msgid "Contract Template"
-msgstr "Modello abbonamento"
+msgstr "Modello contratto"
 
 #. module: hr_contract_salary
 #: model:ir.actions.act_window,name:hr_contract_salary.action_hr_contract_templates

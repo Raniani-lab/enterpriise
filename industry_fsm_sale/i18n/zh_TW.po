@@ -290,14 +290,14 @@ msgstr "進行中"
 #: code:addons/industry_fsm_sale/models/product_product.py:0
 #, python-format
 msgid "Invalid operator: %s"
-msgstr ""
+msgstr "運算符無效： %s"
 
 #. module: industry_fsm_sale
 #. odoo-python
 #: code:addons/industry_fsm_sale/models/product_product.py:0
 #, python-format
 msgid "Invalid value: %s"
-msgstr ""
+msgstr "該值無效： %s"
 
 #. module: industry_fsm_sale
 #. odoo-python
@@ -615,7 +615,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_search_fsm_inherit_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.report_project_task_user_fsm_view_search_inherit_sale
 msgid "To Invoice"
-msgstr "待開立應收憑單"
+msgstr "待開立發票"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material

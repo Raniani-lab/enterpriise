@@ -13,8 +13,8 @@
 # karolína schusterová <karolina.schusterova@vdp.sk>, 2022
 # Rastislav Brencic <rastislav.brencic@azet.sk>, 2023
 # Aleš Fiala <f.ales1@seznam.cz>, 2023
-# Tomáš Píšek, 2023
 # Jakub Smolka, 2023
+# Tomáš Píšek, 2023
 # 
 msgid ""
 msgstr ""
@@ -22,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-26 10:06+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Jakub Smolka, 2023\n"
+"Last-Translator: Tomáš Píšek, 2023\n"
 "Language-Team: Czech (https://app.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -750,22 +750,22 @@ msgstr "Vytvořit nový model majetku"
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_expense_form
 msgid "Create new deferred expense"
-msgstr "Vytvořit nový odložený náklad"
+msgstr "Vytvořit nový náklad příštích období"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_expense_model_form
 msgid "Create new deferred expense model"
-msgstr "Vytvořit nový model odložených nákladů"
+msgstr "Vytvořit nový model nákladů příštích období"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_revenue_form
 msgid "Create new deferred revenue"
-msgstr "Vytvořit nový odložený výnos"
+msgstr "Vytvořit nový výnos příštích období"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_revenue_model_form
 msgid "Create new deferred revenue model"
-msgstr "Vytvořit nový model odložených výnosů"
+msgstr "Vytvořit nový model výnosů příštích období"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__create_uid
@@ -884,7 +884,7 @@ msgstr "Účet nákladu příštích období"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Deferred Expense Amount"
-msgstr "Hodnota nákladu příštích období"
+msgstr "Částka nákladu příštích období"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -895,7 +895,7 @@ msgstr "Model nákladu příštích období"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Deferred Expense Model name"
-msgstr "Název modelu nákladu příštích období"
+msgstr "Název modelu nákladů příštích období"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_expense_model_form
@@ -943,7 +943,7 @@ msgstr "Účet výnosu příštích období"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Deferred Revenue Amount"
-msgstr "Hodnota výnosu příštích období"
+msgstr "Částka výnosu příštích období"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
@@ -1081,7 +1081,7 @@ msgstr "Plán odpisů majetku"
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Depreciation board modified %s"
-msgstr ""
+msgstr "Přehled odpisů byl upraven %s"
 
 #. module: account_asset
 #. odoo-python
@@ -1165,7 +1165,7 @@ msgstr "Trvání"
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_duration_rate
 msgid "Duration / Rate"
-msgstr ""
+msgstr "Trvání / četnost"
 
 #. module: account_asset
 #. odoo-python
@@ -1279,7 +1279,7 @@ msgstr "Hrubý nárůst"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_asset_id
 msgid "Gross Increase Account"
-msgstr ""
+msgstr "Účet celkového nárustu"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__gross_increase_value
@@ -1289,7 +1289,7 @@ msgstr "Hrubé zvýšení hodnoty"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.assets_search_template_extra_options
 msgid "Group By Account"
-msgstr ""
+msgstr "Seskupit podle účtu"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
@@ -1354,7 +1354,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__informational_text
 msgid "Informational Text"
-msgstr ""
+msgstr "Informativní text"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__invoice_line_ids
@@ -1450,7 +1450,7 @@ msgstr "Lineární"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__linked_asset_type
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__linked_asset_type
 msgid "Linked Asset Type"
-msgstr ""
+msgstr "Typ souvisejícího majetku"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__gain_or_loss__loss
@@ -1594,13 +1594,13 @@ msgstr "Ne"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__none
 msgid "No Prorata"
-msgstr ""
+msgstr "Bez prorata"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__non_deductible_tax_value
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__non_deductible_tax_value
 msgid "Non Deductible Tax Value"
-msgstr ""
+msgstr "Neuplatitelná částka daně"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__salvage_value
@@ -1657,7 +1657,7 @@ msgstr "Počet aktiv vytvořených ke zvýšení hodnoty majetku"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_number_days
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_number_days
 msgid "Number of days"
-msgstr ""
+msgstr "Počet dnů"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__total_depreciation_entries_count
@@ -1713,7 +1713,7 @@ msgstr "Pozastavit"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__paused_prorata_date
 msgid "Paused Prorata Date"
-msgstr ""
+msgstr "Pozastavené prorata datum"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
@@ -1737,7 +1737,7 @@ msgstr "Prorata datum"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Prorata Date can not be empty"
-msgstr ""
+msgstr "Prorata datum nemůže být prázdné"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__purchase
@@ -1750,19 +1750,19 @@ msgstr "Nákup: Aktivum"
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Re-evaluate"
-msgstr ""
+msgstr "Změna hodnoty"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Recognition Values"
-msgstr ""
+msgstr "Uplatněné hodnoty"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_ids
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_line_form_asset_inherit
 msgid "Related Assets"
-msgstr ""
+msgstr "Související majetek"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1772,7 +1772,7 @@ msgstr "Související výdaje"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__related_purchase_value
 msgid "Related Purchase Value"
-msgstr ""
+msgstr "Související hodnota nákupu"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
@@ -1885,7 +1885,7 @@ msgstr "Prodej: uznání výnosů"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Save as Model"
-msgstr ""
+msgstr "Uložit jako model"
 
 #. module: account_asset
 #. odoo-python
@@ -1983,6 +1983,8 @@ msgid ""
 "The amount you have entered (%s) does not match the Related Purchase's value"
 " (%s). Please make sure this is what you want."
 msgstr ""
+"Částka, kterou jste zadali (%s) neodpovidá hodnotě souvisejícího nákupu "
+"(%s). Prosím ujistěte se, že je to takto správně."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__asset_id
@@ -2027,6 +2029,8 @@ msgid ""
 "There are unposted depreciations prior to the selected operation date, "
 "please deal with them first."
 msgstr ""
+"Existují nezaúčtované odpisy datové před vybranout operací. Prosím, vyřešte "
+"nejdříve tyto záznamy."
 
 #. module: account_asset
 #. odoo-javascript
@@ -2050,7 +2054,7 @@ msgstr "Celkem"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__total_depreciable_value
 msgid "Total Depreciable Value"
-msgstr ""
+msgstr "Celková částka k odpisu"
 
 #. module: account_asset
 #. odoo-python
@@ -2086,7 +2090,7 @@ msgstr "Typ zaznamenané výjimečné aktivity."
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Value at Import"
-msgstr ""
+msgstr "Hodnota při importu"
 
 #. module: account_asset
 #. odoo-python
@@ -2108,7 +2112,7 @@ msgstr "Zvýšení hodnoty pro: %(asset)s"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Warning for the Original Value of %s"
-msgstr ""
+msgstr "Varování pro původní hodnonu %s"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__website_message_ids
@@ -2129,6 +2133,11 @@ msgid ""
 "You can manually close an asset when the depreciation is over.\n"
 "By cancelling an asset, all depreciation entries will be reversed"
 msgstr ""
+"Nově vytvořený majetek má stav 'Návrh'.\n"
+"V případě potvrzení se stav změní na 'Běží', řádky odpisů mohou být zaúčtovány.\n"
+"Stav 'pozastaveno' může být nastaven ručně pro případy, kdy chcete po nějakou dobu zastavit odepisování.\n"
+"Když je odepisování dokončeno, můžete majetek ručně uzavřít.\n"
+"Zrušením majetku, budou všechny účetní pohyby stornovány"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method_period__12
@@ -2144,13 +2153,15 @@ msgid ""
 "You can't post an entry related to a draft asset. Please post the asset "
 "before."
 msgstr ""
+"Pro majetek ve stavu 'Návrh' nelze odpisy zaúčtovat. Prosím, nejdříve "
+"majetek potvrďte."
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "You can't re-evaluate the asset before the lock date."
-msgstr ""
+msgstr "Nemůžete změnit hodnotu majetku k datu v uzavřeném období."
 
 #. module: account_asset
 #. odoo-python
@@ -2205,7 +2216,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "You cannot dispose of an asset before the lock date."
-msgstr ""
+msgstr "Nelze vyřadit majetek k datu v uzavřeném účetním období."
 
 #. module: account_asset
 #. odoo-python
@@ -2213,6 +2224,7 @@ msgstr ""
 #, python-format
 msgid "You cannot reset to draft an entry related to a posted asset"
 msgstr ""
+"Pohyb, který je svázán s potvrzeným majetkem, nelze vrátit do stavu Návrh."
 
 #. module: account_asset
 #. odoo-python
@@ -2220,35 +2232,36 @@ msgstr ""
 #, python-format
 msgid "You cannot resume at a date equal to or before the pause date"
 msgstr ""
+"Nelze pokračovat od data, které je rovno nebo dřívější než datum pozastavení"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "You cannot select the same account as the Depreciation Account"
-msgstr ""
+msgstr "Nelze vybrat stejný účet jako je odpisový účet"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_balance
 msgid "book_value"
-msgstr ""
+msgstr "book_value"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_date_from
 #: model:account.report.column,name:account_asset.assets_report_depre_date_from
 msgid "date from"
-msgstr ""
+msgstr "datum od"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_assets_date_to
 #: model:account.report.column,name:account_asset.assets_report_depre_date_to
 msgid "date to"
-msgstr ""
+msgstr "datum do"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "depreciable)"
-msgstr ""
+msgstr "odepisovatelné)"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
@@ -2270,11 +2283,11 @@ msgstr "např. notebook iBook"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "entries"
-msgstr ""
+msgstr "pohyby"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "entry"
-msgstr ""
+msgstr "pohyb"

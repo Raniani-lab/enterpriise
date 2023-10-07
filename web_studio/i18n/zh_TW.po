@@ -1746,7 +1746,7 @@ msgstr "匯出"
 #: code:addons/web_studio/static/src/legacy/js/reports/report_kanban_view.js:0
 #, python-format
 msgid "External"
-msgstr ""
+msgstr "外部"
 
 #. module: web_studio
 #. odoo-javascript

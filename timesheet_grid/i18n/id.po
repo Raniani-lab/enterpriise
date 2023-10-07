@@ -541,7 +541,7 @@ msgstr "Encoding Satuan Ukuran"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "Enter"
-msgstr ""
+msgstr "Enter"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form

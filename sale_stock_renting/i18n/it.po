@@ -134,7 +134,7 @@ msgstr "È disponibile"
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_order_wizard_line__is_product_storable
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__is_product_storable
 msgid "Is Product Storable"
-msgstr "Il prodotto è immagazzinabile"
+msgstr "Il prodotto è stoccabile"
 
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_account_move

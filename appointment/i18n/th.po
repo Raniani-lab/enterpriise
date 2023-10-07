@@ -1075,7 +1075,7 @@ msgstr "ข้อความเพิ่มเติมในการยืน
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_confirmation
 msgid "Extra information provided once the appointment is booked."
-msgstr ""
+msgstr "ข้อมูลเพิ่มเติมที่ให้ไว้เมื่อจองการนัดหมายแล้ว"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_follower_ids
@@ -1096,7 +1096,7 @@ msgstr "จาก"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__avatars_display
 msgid "Front-End Display"
-msgstr ""
+msgstr "จอแสดงผลส่วนหน้า"
 
 #. module: appointment
 #. odoo-javascript
@@ -1112,7 +1112,7 @@ msgstr "รับการแชร์ลิงก์"
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_onboarding_link_view_form
 #, python-format
 msgid "Get Your Link"
-msgstr ""
+msgstr "รับลิงค์ของคุณ"
 
 #. module: appointment
 #: model_terms:appointment.type,message_intro:appointment.appointment_type_1
@@ -1126,7 +1126,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_onboarding_link
 msgid "Get a link to an appointment type during the onboarding"
-msgstr ""
+msgstr "รับลิงก์ไปยังประเภทการนัดหมายระหว่างการเริ่มต้นใช้งาน"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_invite__suggested_staff_user_ids
@@ -1134,16 +1134,18 @@ msgid ""
 "Get the users linked to the appointment type selected to apply a domain on "
 "the users that can be selected"
 msgstr ""
+"ให้ผู้ใช้เชื่อมโยงกับประเภทการนัดหมายที่เลือก "
+"เพื่อใช้โดเมนกับผู้ใช้ที่สามารถเลือกได้"
 
 #. module: appointment
 #: model:onboarding.onboarding.step,title:appointment.appointment_onboarding_preview_invite_step
 msgid "Get your link"
-msgstr ""
+msgstr "รับลิงค์ของคุณ"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Google Agenda"
-msgstr ""
+msgstr "Google Agenda"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_search
@@ -1159,7 +1161,7 @@ msgstr "มีข้อความ"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "How to Join:"
-msgstr ""
+msgstr "วิธีการเข้าร่วม:"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__assign_method
@@ -1194,13 +1196,15 @@ msgid ""
 "If empty, all users are considered to be available.\n"
 "If set, only the selected users will be taken into account for this slot."
 msgstr ""
+"หากว่างเปล่า จะถือว่าผู้ใช้ทุกคนว่าง\n"
+"หากตั้งค่าไว้ ระบบจะพิจารณาเฉพาะผู้ใช้ที่เลือกสำหรับช่องนี้"
 
 #. module: appointment
 #. odoo-javascript
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Insert Appointment Link"
-msgstr ""
+msgstr "ใส่ลิงค์การนัดหมาย"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form_insert_link
@@ -1217,7 +1221,7 @@ msgstr "ข้อความแนะนำ"
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__appointment_invite_ids
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_tree
 msgid "Invitation Links"
-msgstr ""
+msgstr "ลิงค์คำเชิญ"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_is_follower
@@ -1241,17 +1245,17 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "John Smith"
-msgstr ""
+msgstr "John Smith"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Join at"
-msgstr ""
+msgstr "เข้าร่วมได้ที่"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Join with Odoo Discuss"
-msgstr ""
+msgstr "เข้าร่วม Odoo แชท"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__country_ids
@@ -1265,7 +1269,7 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Keep it empty if the meeting takes place online"
-msgstr ""
+msgstr "เว้นว่างไว้หากการประชุมเกิดขึ้นทางออนไลน์"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer____last_update
@@ -1323,7 +1327,7 @@ msgstr "ลิงก์ URL"
 #: code:addons/appointment/static/src/js/appointment_invite_form_renderer.js:0
 #, python-format
 msgid "Link copied to clipboard!"
-msgstr ""
+msgstr "คัดลอกลิงก์ไปยังคลิปบอร์ดแล้ว!"
 
 #. module: appointment
 #. odoo-javascript
@@ -1340,12 +1344,12 @@ msgstr "สถานที่"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__location
 msgid "Location formatted"
-msgstr ""
+msgstr "จัดรูปแบบตำแหน่งแล้ว"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__location
 msgid "Location formatted for one line uses"
-msgstr ""
+msgstr "ตำแหน่งที่จัดรูปแบบสำหรับการใช้งานหนึ่งรายการ"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
@@ -1373,7 +1377,7 @@ msgstr "ฉัน"
 #: code:addons/appointment/models/onboarding_onboarding_step.py:0
 #, python-format
 msgid "Meet With Me"
-msgstr ""
+msgstr "พบกับฉัน"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
@@ -1416,7 +1420,7 @@ msgstr "การนัดหมายของฉัน"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_search
 msgid "My Links"
-msgstr ""
+msgstr "ลิงค์ของฉัน"
 
 #. module: appointment
 #. odoo-python
@@ -1432,27 +1436,27 @@ msgstr "ชื่อ"
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Navigation"
-msgstr ""
+msgstr "การนำทาง"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_calendar_alarm__default_for_new_appointment_type
 msgid "New Appointments Default"
-msgstr ""
+msgstr "การนัดหมายใหม่เป็นค่าเริ่มต้น"
 
 #. module: appointment
 #: model_terms:ir.actions.act_window,help:appointment.appointment_type_action
 msgid "No Appointment Configured"
-msgstr ""
+msgstr "ไม่มีการกำหนดค่าการนัดหมาย"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__avatars_display__hide
 msgid "No Picture"
-msgstr ""
+msgstr "ไม่มีรูปภาพ"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__appointment_type_info_msg
 msgid "No User Assigned Message"
-msgstr ""
+msgstr "ไม่มีข้อความที่กำหนดโดยผู้ใช้"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
@@ -1552,7 +1556,7 @@ msgstr "การนัดหมายออนไลน์"
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form
 msgid ""
 "Only letters, numbers, underscores and dashes are allowed in your links."
-msgstr ""
+msgstr "อนุญาตให้ใช้เฉพาะตัวอักษร ตัวเลข ขีดล่าง และขีดกลางในลิงก์ของคุณ"
 
 #. module: appointment
 #. odoo-python
@@ -1562,13 +1566,15 @@ msgid ""
 "Only letters, numbers, underscores and dashes are allowed in your links. You"
 " need to adapt %s."
 msgstr ""
+"อนุญาตให้ใช้เฉพาะตัวอักษร ตัวเลข ขีดล่าง และขีดกลางในลิงก์ของคุณ คุณต้องปรับ"
+" %s"
 
 #. module: appointment
 #. odoo-python
 #: code:addons/appointment/models/appointment_type.py:0
 #, python-format
 msgid "Only one anytime appointment type is allowed for a specific user."
-msgstr ""
+msgstr "อนุญาตประเภทการนัดหมายเพียงประเภทเดียวเท่านั้นสำหรับผู้ใช้เฉพาะราย"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -1587,7 +1593,7 @@ msgstr ""
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Our first availability is"
-msgstr ""
+msgstr "ความพร้อมแรกของเราคือ"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
@@ -1614,7 +1620,7 @@ msgstr "โปรดเลือกวันที่อื่น"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__suggested_staff_user_ids
 msgid "Possible users"
-msgstr ""
+msgstr "ผู้ใช้ที่เป็นไปได้"
 
 #. module: appointment
 #: model:onboarding.onboarding.step,button_text:appointment.appointment_onboarding_preview_invite_step
@@ -1667,7 +1673,7 @@ msgstr "เกิดซ้ำ"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__redirect_url
 msgid "Redirect URL"
-msgstr ""
+msgstr "URL เปลี่ยนเส้นทาง"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__reminder_ids
@@ -1695,7 +1701,7 @@ msgstr "รับผิดชอบ"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__restrict_to_user_ids
 msgid "Restrict to Users"
-msgstr ""
+msgstr "จำกัดเฉพาะผู้ใช้"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
@@ -1787,12 +1793,12 @@ msgstr "ค้นหาในความรับผิดชอบ"
 #: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Select Dates"
-msgstr ""
+msgstr "เลือกวันที่"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__value_answer_id
 msgid "Selected Answer"
-msgstr ""
+msgstr "คำตอบที่เลือก"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__appointment_type_count
@@ -1802,12 +1808,12 @@ msgstr "จำนวนการนัดหมายที่เลือก"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_search
 msgid "Selection Questions"
-msgstr ""
+msgstr "คำถามคัดเลือก"
 
 #. module: appointment
 #: model:mail.template,description:appointment.appointment_canceled_mail_template
 msgid "Sent to all attendees when an appointment is cancelled"
-msgstr ""
+msgstr "ส่งถึงผู้เข้าร่วมทุกคนเมื่อการนัดหมายถูกยกเลิก"
 
 #. module: appointment
 #: model:mail.template,description:appointment.appointment_booked_mail_template
@@ -1824,7 +1830,7 @@ msgstr "ลำดับ"
 #. module: appointment
 #: model:onboarding.onboarding.step,title:appointment.appointment_onboarding_create_appointment_type_step
 msgid "Set your availabilities"
-msgstr ""
+msgstr "ตั้งค่าความพร้อมของคุณ"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -1853,7 +1859,7 @@ msgstr "แชร์ลิงก์"
 #: model:ir.actions.act_window,name:appointment.appointment_invite_action
 #: model:ir.ui.menu,name:appointment.menu_appointment_invite
 msgid "Share Links"
-msgstr ""
+msgstr "แชร์ลิงค์"
 
 #. module: appointment
 #: model_terms:ir.actions.act_window,help:appointment.appointment_type_action
@@ -1875,12 +1881,12 @@ msgstr "รหัส"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__short_code_format_warning
 msgid "Short Code Format Warning"
-msgstr ""
+msgstr "คำเตือนรูปแบบรหัสแบบสั้น"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__short_code_unique_warning
 msgid "Short Code Unique Warning"
-msgstr ""
+msgstr "คำแจ้งเตือนเฉพาะรหัสแบบสั้น"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__avatars_display__show
@@ -1900,7 +1906,7 @@ msgstr "ประเภทช่วง"
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_intro
 msgid "Small description of the appointment type."
-msgstr ""
+msgstr "คำอธิบายแบบสังเขปของประเภทการนัดหมาย"
 
 #. module: appointment
 #. odoo-javascript
@@ -1908,21 +1914,21 @@ msgstr ""
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Sorry,"
-msgstr ""
+msgstr "ขออภัย"
 
 #. module: appointment
 #. odoo-javascript
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Sorry, we have no availability for an appointment."
-msgstr ""
+msgstr "ขออภัย เราไม่ว่างสำหรับการนัดหมาย"
 
 #. module: appointment
 #. odoo-javascript
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Sorry, we have no more slots available for this month."
-msgstr ""
+msgstr "ขออภัย เราไม่มีการนัดหมายที่ว่างอีกต่อไปสำหรับเดือนนี้"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_invite__staff_users_choice__specific_users
@@ -1948,7 +1954,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_question__answer_input_ids
 msgid "Submitted Answers"
-msgstr ""
+msgstr "คำตอบที่ส่งแล้ว"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__7
@@ -1968,23 +1974,23 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__value_text_box
 msgid "Text Answer"
-msgstr ""
+msgstr "คำตอบข้อความ"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_search
 msgid "Text Questions"
-msgstr ""
+msgstr "ข้อความคำถาม"
 
 #. module: appointment
 #: model:ir.model.constraint,message:appointment.constraint_appointment_invite_short_code_uniq
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form
 msgid "The URL is already taken, please pick another code."
-msgstr ""
+msgstr "URL ถูกใช้ไปแล้ว โปรดเลือกรหัสอื่น"
 
 #. module: appointment
 #: model:ir.model.constraint,message:appointment.constraint_appointment_slot_check_start_and_end_hour
 msgid "The end time must be later than the start time."
-msgstr ""
+msgstr "เวลาสิ้นสุดต้องอยู่หลังเวลาเริ่มต้น"
 
 #. module: appointment
 #. odoo-python
@@ -1998,14 +2004,14 @@ msgstr "ฟิลด์ '%s' ไม่มีอยู่ในโมเดลเ
 #: code:addons/appointment/models/appointment_invite.py:0
 #, python-format
 msgid "The following appointment type(s) have no staff assigned: %s."
-msgstr ""
+msgstr "ประเภทการนัดหมายต่อไปนี้ไม่มีการกำหนดพนักงาน: %s"
 
 #. module: appointment
 #. odoo-python
 #: code:addons/appointment/models/appointment_question.py:0
 #, python-format
 msgid "The following question(s) do not have any selectable answers : %s"
-msgstr ""
+msgstr "คำถามต่อไปนี้ไม่มีคำตอบให้เลือก: %s"
 
 #. module: appointment
 #. odoo-python
@@ -2015,13 +2021,14 @@ msgid ""
 "The following users are in restricted slots but they are not part of the "
 "available staff: %s"
 msgstr ""
+"ผู้ใช้ต่อไปนี้อยู่ในช่องที่จำกัดแต่ไม่ได้เป็นส่วนหนึ่งของเจ้าหน้าที่ที่มีอยู่:%s"
 
 #. module: appointment
 #. odoo-javascript
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Their first availability is"
-msgstr ""
+msgstr "ความพร้อมใช้งานครั้งแรกของพวกเขาคือ"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_appointments
@@ -2033,13 +2040,13 @@ msgstr "ไม่มีการนัดหมายที่เชื่อม
 msgid ""
 "This appointment type has no availabilities because it does not have any "
 "opening hours configured"
-msgstr ""
+msgstr "ประเภทการนัดหมายนี้ไม่ว่าง เนื่องจากไม่ได้กำหนดค่าเวลาเปิดทำการ"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
 msgid ""
 "This appointment type has no availabilities because it has no staff assigned"
-msgstr ""
+msgstr "ประเภทการนัดหมายนี้ไม่ว่าง เนื่องจากไม่มีการกำหนดพนักงาน"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
@@ -2047,6 +2054,8 @@ msgid ""
 "This appointment type has no availabilities because it has no staff assigned"
 " and does not have any opening hours configured"
 msgstr ""
+"ประเภทการนัดหมายนี้ไม่ว่าง "
+"เนื่องจากไม่มีการกำหนดพนักงานและไม่มีการกำหนดค่าเวลาเปิดทำการ"
 
 #. module: appointment
 #. odoo-python
@@ -2054,7 +2063,7 @@ msgstr ""
 #, python-format
 msgid ""
 "This category of appointment type should only have one user but got %s users"
-msgstr ""
+msgstr "การนัดหมายประเภทนี้ควรมีผู้ใช้เพียงคนเดียว แต่มีผู้ใช้ %s คน"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_edit_in_backend
@@ -2088,7 +2097,7 @@ msgstr "โซนเวลาที่ทำการนัดหมาย"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
 msgid "Timezone:"
-msgstr ""
+msgstr "เขตเวลา:"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__end_datetime
@@ -2131,7 +2140,7 @@ msgstr "กำลังจะมาถึง"
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_calendar_alarm__default_for_new_appointment_type
 msgid "Use as default for new Appointment Types"
-msgstr ""
+msgstr "ใช้เป็นค่าเริ่มต้นสำหรับประเภทการนัดหมายใหม่"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__category
@@ -2146,6 +2155,15 @@ msgid ""
 "\n"
 "            - Anytime: the user will create and share to another user an appointment type covering all their time slots"
 msgstr ""
+"ใช้เพื่อกำหนดประเภทของการนัดหมายนี้\n"
+"\n"
+"             สามารถเป็นหนึ่งใน:\n"
+"\n"
+"             - เว็บไซต์: หมวดหมู่เริ่มต้น บุคคลสามารถเข้าถึงและกำหนดเวลาการนัดหมายกับผู้ใช้ได้จากเว็บไซต์\n"
+"\n"
+"             - กำหนดเอง: ผู้ใช้จะสร้างและแบ่งปันประเภทการนัดหมายแบบกำหนดเองกับผู้ใช้รายอื่นพร้อมช่วงเวลาที่เลือกเอง\n"
+"\n"
+"             - ทุกเวลา: ผู้ใช้จะสร้างและแบ่งปันประเภทการนัดหมายที่ครอบคลุมช่วงเวลาทั้งหมดให้กับผู้ใช้รายอื่น"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__staff_user_ids
@@ -2200,22 +2218,22 @@ msgstr "กับ"
 #. module: appointment
 #: model:onboarding.onboarding.step,description:appointment.appointment_onboarding_configure_calendar_provider_step
 msgid "With Outlook or Google"
-msgstr ""
+msgstr "ด้วย Outlook หรือ Google"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Your Email*"
-msgstr ""
+msgstr "อีเมลของคุณ*"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Your Name*"
-msgstr ""
+msgstr "ชื่อของคุณ*"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Your Phone Number*"
-msgstr ""
+msgstr "หมายเลขโทรศัพท์ของคุณ*"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
@@ -2225,7 +2243,7 @@ msgstr "การนัดหมายของคุณน้อยกว่า
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "and not after"
-msgstr ""
+msgstr "และไม่ใช่หลังจาก"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
@@ -2235,7 +2253,7 @@ msgstr "ที่"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "at least"
-msgstr ""
+msgstr "อย่างน้อย"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -2245,22 +2263,22 @@ msgstr "วัน"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "e.g. \"During this meeting, we will...\""
-msgstr ""
+msgstr "เช่น \"ในระหว่างการประชุมครั้งนี้ เราจะ...\""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "e.g. \"I feel nauseous...\""
-msgstr ""
+msgstr "เช่น \"ฉันรู้สึกคลื่นไส้...\""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "e.g. \"Technical Demo\""
-msgstr ""
+msgstr "เช่น \"การสาธิตทางเทคนิค\""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "e.g. \"Thank you for your trust, we look forward to meeting you!\""
-msgstr ""
+msgstr "เช่น \"ขอบคุณสำหรับความไว้วางใจ เราหวังว่าจะได้พบกับคุณเร็วๆนี้!\""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -2272,19 +2290,19 @@ msgstr ""
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "has no availability for an appointment."
-msgstr ""
+msgstr "ไม่มีที่ว่างสำหรับการนัดหมาย"
 
 #. module: appointment
 #. odoo-javascript
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "has no more slots available for this month."
-msgstr ""
+msgstr "ไม่มีช่องว่างเพิ่มเติมสำหรับเดือนนี้"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "hours before"
-msgstr ""
+msgstr "ชั่วโมงก่อน"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
@@ -2294,22 +2312,22 @@ msgstr "ชั่วโมงจากนี้!"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "john.smith@example.com"
-msgstr ""
+msgstr "john.smith@example.com"
 
 #. module: appointment
 #: model:onboarding.onboarding.step,description:appointment.appointment_onboarding_create_appointment_type_step
 msgid "to automate appointments"
-msgstr ""
+msgstr "เพื่อทำการนัดหมายอัตโนมัติ"
 
 #. module: appointment
 #: model:onboarding.onboarding.step,description:appointment.appointment_onboarding_preview_invite_step
 msgid "to schedule appointments"
-msgstr ""
+msgstr "เพื่อกำหนดเวลาการนัดหมาย"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "until"
-msgstr ""
+msgstr "จนถึง"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form

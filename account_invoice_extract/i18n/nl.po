@@ -47,7 +47,7 @@ msgid ""
 "                        Buy credits"
 msgstr ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
-"                        Koop credits"
+"                        Credits kopen"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr

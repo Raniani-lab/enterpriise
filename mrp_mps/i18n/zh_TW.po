@@ -41,7 +41,7 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "Actual"
-msgstr ""
+msgstr "實際"
 
 #. module: mrp_mps
 #. odoo-javascript

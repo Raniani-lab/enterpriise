@@ -49,7 +49,7 @@ msgstr "\" を次の記事の下へ移動："
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__favorite_count
 msgid "#Is Favorite"
-msgstr ""
+msgstr "#お気に入りか"
 
 #. module: knowledge
 #. odoo-python
@@ -76,7 +76,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
 msgid "<i class=\"fa fa-circle-o-notch fa-2x fa-spin\" title=\"loader\" role=\"img\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-circle-o-notch fa-2x fa-spin\" title=\"loader\" role=\"img\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -335,6 +335,17 @@ msgid ""
 "            (<span style=\"font-style: italic;\">Drafts, Todo lists, ...</span>)\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">未公開</font>\n"
+"            </span>\n"
+"        </span>\n"
+"        <span style=\"font-size: 14px;\">\n"
+"            — これは\n"
+"            <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">あなたのものです</font></span>、\n"
+"            ご自分用にしておきましょう。\n"
+"            (<span style=\"font-style: italic;\">下書き、 Todoリスト..</span>)\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -351,6 +362,17 @@ msgid ""
 "            </span>\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">シェア済</font>\n"
+"            </span>\n"
+"        </span>\n"
+"        <span style=\"font-size: 14px;\">\n"
+"            — これらはあなたが\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">以下に誰かを招待したか、招待されたかです:</font>\n"
+"            </span>\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -367,6 +389,17 @@ msgid ""
 "        </span>\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">作業スペース</font>\n"
+"            </span>\n"
+"        </span>\n"
+"        <span style=\"font-size: 14px;\">\n"
+"            — 記事にアクセスできるのは以下だけです:\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">あなたのチーム</font>\n"
+"        </span>\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -402,6 +435,13 @@ msgid ""
 "            (<span style=\"font-style: italic;\">documentation, tips, reports, ...</span>)\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            コンテンツ — クリックして\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">入力を開始して下さい</font>\n"
+"            </span>\n"
+"            (<span style=\"font-style: italic;\">ドキュメント、ヒント、レポート ...</span>)\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -417,6 +457,16 @@ msgid ""
 "            (<span style=\"font-style: italic;\">per team, topic, project, ...</span>)\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            フォルダ —\n"
+"        </span>\n"
+"        <span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">他の記事をネスト</font>\n"
+"            </span>\n"
+"            して、それらを再グループ化\n"
+"            (<span style=\"font-style: italic;\">チーム、トピック、プロジェクトごと ...</span>)\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -448,6 +498,11 @@ msgid ""
 "            to share documents that are frequently needed\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            使用\n"
+"            /<span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">ファイル</font></span>\n"
+"            して、頻繁に必要であるドキュメントを共有します。\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -474,6 +529,13 @@ msgid ""
 "        <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">Sections</font></span>:\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">記事</font>\n"
+"        </span>\n"
+"        は様々な\n"
+"        <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">セクション</font></span>に保管されています:\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -494,6 +556,21 @@ msgid ""
 "        to share it with everyone.\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        良いワークフローはドラフトを\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">未公開</font>\n"
+"        </span>\n"
+"        に書き、終了したらそれを\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">未公開</font>\n"
+"        </span>\n"
+"        から\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">ワークスペース</font>\n"
+"        </span>\n"
+"        に移動して皆に共有します。\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -514,6 +591,21 @@ msgid ""
 "        it.\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        そして再度、\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">記事</font>\n"
+"        </span>\n"
+"        を\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">部門</font>\n"
+"        </span>\n"
+"        から別の部門へ移動するには\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">ドラッグ &amp; ドロップ</font>\n"
+"        </span>\n"
+"        して下さい。\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -545,6 +637,10 @@ msgid ""
 "        <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">Articles</font></span>.\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        これらはあなたの\n"
+"        <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">記事</font></span>です。\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -561,6 +657,17 @@ msgid ""
 "        them\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        \n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">記事</font>\n"
+"        </span>\n"
+"        を整理する方法を変えるには\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">ドラッグ &amp; ドロップ</font>\n"
+"        </span>\n"
+"        して下さい。\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -588,7 +695,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "<span style=\"font-size: 14px;\">And voilà, it is that simple.</span>"
-msgstr ""
+msgstr "<span style=\"font-size: 14px;\">ほら、簡単でしょう</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -606,7 +713,7 @@ msgstr "<span style=\"font-size: 14px;\">任意の場所をクリックし、入
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "<span style=\"font-size: 14px;\">Each of them can be used both as:</span>"
-msgstr ""
+msgstr "<span style=\"font-size: 14px;\">それぞれ、次のような使い方ができます:</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -648,6 +755,9 @@ msgid ""
 "    <br/>\n"
 "    <span style=\"font-size: 14px;\">Ready to give it a spin?</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">この非公開ページで自由に遊んでみましょう。</span>\n"
+"    <br/>\n"
+"    <span style=\"font-size: 14px;\">試してみますか？</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -668,6 +778,9 @@ msgid ""
 "            <font class=\"text-o-color-1\">YouTube</font>\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-1\">YouTube</font>\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -675,6 +788,8 @@ msgid ""
 "<span style=\"font-weight: bolder;\"><font class=\"text-o-"
 "color-1\">Facebook</font></span>"
 msgstr ""
+"<span style=\"font-weight: bolder;\"><font class=\"text-o-"
+"color-1\">Facebook</font></span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -682,13 +797,15 @@ msgid ""
 "<span style=\"font-weight: bolder;\"><font class=\"text-o-"
 "color-1\">Twitter</font></span>"
 msgstr ""
+"<span style=\"font-weight: bolder;\"><font class=\"text-o-"
+"color-1\">Twitter</font></span>"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Access Restricted. May not be shared with everyone from"
-msgstr ""
+msgstr "アクセスが制限されています。以下の全員とは共有されない可能性があります:"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_needaction
@@ -739,14 +856,14 @@ msgstr ""
 msgid ""
 "Add articles in your list of favorites by clicking on the <i class=\"fa fa-"
 "star-o\"></i> next to the article name."
-msgstr ""
+msgstr "記事名の横にある<i class=\"fa fa-star-o\"></i>をクリックして、お気に入りリストに記事を追加して下さい。"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/table_of_content_behavior/table_of_content_behavior.xml:0
 #, python-format
 msgid "Add headings in this Article to create a Table of Content"
-msgstr ""
+msgstr "記事にヘッダーを追加して目次を作成"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
@@ -756,14 +873,14 @@ msgstr "人またはメールアドレスを追加..."
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "Add people or email addresses..."
-msgstr ""
+msgstr "人またはメールアドレスを追加..."
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_member_action
 msgid ""
 "Adding members allows you to share Articles while granting specific access "
 "rights<br>(can write, can read, ...)."
-msgstr ""
+msgstr "会員を追加することで、特定のアクセス権<br>（書き込み可能、読み取り可能、...）を付与しながら記事を共有することができます。"
 
 #. module: knowledge
 #. odoo-javascript
@@ -850,7 +967,7 @@ msgstr ""
 msgid ""
 "Are you sure you want to remove your member? By leaving an article, you may "
 "lose access to it."
-msgstr ""
+msgstr "本当にメンバを削除しますか？記事を残すことで、その記事へのアクセスを失う可能性があります。"
 
 #. module: knowledge
 #. odoo-javascript
@@ -866,7 +983,7 @@ msgstr ""
 msgid ""
 "Are you sure you want to restore access? This means this article will now "
 "inherit any access set on its parent articles."
-msgstr ""
+msgstr "本当にアクセスを元に戻しますか？これは、この記事が親記事に設定されたアクセスを継承することを意味します。"
 
 #. module: knowledge
 #. odoo-javascript
@@ -893,7 +1010,7 @@ msgstr ""
 msgid ""
 "Are you sure you want to set your permission to \"none\"? If you do, you "
 "will no longer have access to the article."
-msgstr ""
+msgstr "自分の許可を \"なし\"に設定してよろしいですか？その場合、その記事にアクセスできなくなります。"
 
 #. module: knowledge
 #. odoo-javascript
@@ -914,23 +1031,23 @@ msgstr "記事"
 msgid ""
 "Article '%s' should always have a writer: inherit write permission, or have "
 "a member with write access"
-msgstr ""
+msgstr "記事 '%s' には常に筆者が必要です。執筆権限を継承するか、執筆権限を持つメンバが必要です。"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_properties_definition
 msgid "Article Item Properties"
-msgstr ""
+msgstr "記事アイテムプロパティ"
 
 #. module: knowledge
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_item_action
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
 msgid "Article Items"
-msgstr ""
+msgstr "記事項目"
 
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_article_member
 msgid "Article Member"
-msgstr ""
+msgstr "記事メンバ"
 
 #. module: knowledge
 #. odoo-javascript
@@ -942,22 +1059,22 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_url
 msgid "Article URL"
-msgstr ""
+msgstr "記事URL"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__cover_image_id
 msgid "Article cover"
-msgstr ""
+msgstr "記事表紙"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_article_item_parent
 msgid "Article items must have a parent."
-msgstr ""
+msgstr "記事項目には親が必要です"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
 msgid "Article not found"
-msgstr ""
+msgstr "記事がみつかりません"
 
 #. module: knowledge
 #. odoo-javascript
@@ -978,19 +1095,19 @@ msgstr "記事"
 #, python-format
 msgid ""
 "Articles %s cannot be updated as this would create a recursive hierarchy."
-msgstr ""
+msgstr "記事%sはアップデートすることはできません。なぜなら再帰的な階層を作ることになるからです。"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__article_ids
 msgid "Articles using cover"
-msgstr ""
+msgstr "表紙を使用する記事"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "As a reader, you can't leave a Workspace article"
-msgstr ""
+msgstr "読者として、ワークスペースの記事から離れることはできません。"
 
 #. module: knowledge
 #. odoo-javascript
@@ -998,7 +1115,7 @@ msgstr ""
 #, python-format
 msgid ""
 "As an administrator, you can always modify this article and its members."
-msgstr ""
+msgstr "管理者として、いつでもこの記事とそのメンバを修正することができます。"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_attachment_count
@@ -1026,7 +1143,7 @@ msgstr "表示文"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_can_read
 msgid "Can Read"
-msgstr ""
+msgstr "読取可"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_can_write
@@ -1038,14 +1155,14 @@ msgstr "書ける"
 #: code:addons/knowledge/models/knowledge_article_member.py:0
 #, python-format
 msgid "Can not update the article or partner of a member."
-msgstr ""
+msgstr "メンバの記事またはパートナーを更新できません。"
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/models/knowledge_article_favorite.py:0
 #, python-format
 msgid "Can not update the article or user of a favorite."
-msgstr ""
+msgstr "お気に入りの記事またはユーザを更新できません。"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__inherited_permission__read
@@ -1079,7 +1196,7 @@ msgstr "取消"
 msgid ""
 "Cannot create an article under article %(parent_name)s which is a non-"
 "private parent"
-msgstr ""
+msgstr "非公開でない親である記事 %(parent_name)sの下に記事を作成することはできません。 "
 
 #. module: knowledge
 #. odoo-python
@@ -1089,6 +1206,7 @@ msgid ""
 "Cannot move %(article_name)s as a root of the 'shared' section since access "
 "rights can not be inferred without a parent."
 msgstr ""
+"親がいないとアクセス権が推測できないため、 '共有済' セクションのルートとして%(article_name)sを移動することはできません。"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1102,12 +1220,12 @@ msgstr "カテゴリ"
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Change Permission"
-msgstr ""
+msgstr "許可を変える"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__child_ids
 msgid "Child Articles and Items"
-msgstr ""
+msgstr "子記事と項目"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1151,35 +1269,35 @@ msgstr "クリップボードにコピーする"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__attachment_url
 msgid "Cover URL"
-msgstr ""
+msgstr "表紙url"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__attachment_id
 msgid "Cover attachment"
-msgstr ""
+msgstr "表紙添付"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__cover_image_url
 msgid "Cover url"
-msgstr ""
+msgstr "表紙URL"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/xml/knowledge_command_palette.xml:0
 #, python-format
 msgid "Create \""
-msgstr ""
+msgstr "作成 \""
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_item_action
 msgid "Create a new article item"
-msgstr ""
+msgstr "新規記事項目を作成"
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_action
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "Create an article"
-msgstr ""
+msgstr "記事を作成"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
@@ -1224,7 +1342,7 @@ msgstr "Dear"
 msgid ""
 "Default permission for all internal users. (External users can still have "
 "access to this article if they are added to its members)"
-msgstr ""
+msgstr "すべての内部ユーザに対するデフォルト権限。(外部ユーザはメンバに追加された場合、この記事にアクセスすることができます)"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__deletion_date
@@ -1234,12 +1352,12 @@ msgstr "削除日"
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_permission_on_desync
 msgid "Desynchronized articles must have internal permission."
-msgstr ""
+msgstr "非同期の記事には内部許可が必要です。"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_desynchronized
 msgid "Desyncronized with parents"
-msgstr ""
+msgstr "親と非同期しました"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1261,7 +1379,7 @@ msgstr "表示名"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Diving in"
-msgstr ""
+msgstr "集中して取り掛かる"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1283,7 +1401,7 @@ msgstr "複製"
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Embed a View"
-msgstr ""
+msgstr "埋込ビュー"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1313,7 +1431,7 @@ msgstr "エラー"
 msgid ""
 "Error: The given action is not an act_window. This action can not be used to"
 " create an embedded view or a view link"
-msgstr ""
+msgstr "エラー: 指定された活動は act_windowではありません。この活動は埋め込みビューまたはビューリンクの作成には使用できません。"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1331,12 +1449,12 @@ msgstr "お気に入り"
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_article_favorite
 msgid "Favorite Article"
-msgstr ""
+msgstr "お気に入り記事"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__favorite_ids
 msgid "Favorite Articles"
-msgstr ""
+msgstr "お気に入り記事"
 
 #. module: knowledge
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_favorite_action
@@ -1395,7 +1513,7 @@ msgstr "ゲスト"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_has_access
 msgid "Has Access"
-msgstr ""
+msgstr "アクセス権があるか"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__has_message
@@ -1405,27 +1523,27 @@ msgstr "メッセージあり"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_has_write_access
 msgid "Has Write Access"
-msgstr ""
+msgstr "執筆アクセス権があるか"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__has_item_children
 msgid "Has article item children?"
-msgstr ""
+msgstr "記事項目子があるか"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__has_article_children
 msgid "Has normal article children?"
-msgstr ""
+msgstr "通常記事子があるか？"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__have_share_partners
 msgid "Have Share Partners"
-msgstr ""
+msgstr "共有取引先を所有"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Hello there"
-msgstr ""
+msgstr "こんにちは"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -1476,7 +1594,7 @@ msgstr "チェックした場合、一部のメッセージで配信エラーが
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__is_desynchronized
 msgid ""
 "If set, this article won't inherit access rules from its parents anymore."
-msgstr ""
+msgstr "設定された場合、この記事は親のアクセスルールを継承しなくなります。"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1489,12 +1607,12 @@ msgstr "インデックス"
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__inherited_permission
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__article_permission
 msgid "Inherited Permission"
-msgstr ""
+msgstr "継承された許可"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__inherited_permission_parent_id
 msgid "Inherited Permission Parent Article"
-msgstr ""
+msgstr "継承された許可 親記事"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1515,28 +1633,28 @@ msgstr "リンクの挿入"
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Insert a Kanban View"
-msgstr ""
+msgstr "かんばんビューを挿入"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Insert a Kanban view of article items"
-msgstr ""
+msgstr "記事項目のかんばんビューを挿入"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Insert a List View"
-msgstr ""
+msgstr "リストビューを挿入"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Insert a List view of article items"
-msgstr ""
+msgstr "記事項目のリストビューを挿入"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1565,7 +1683,7 @@ msgstr "内部メンバー"
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__internal_permission
 #, python-format
 msgid "Internal Permission"
-msgstr ""
+msgstr "内部許可"
 
 #. module: knowledge
 #. odoo-python
@@ -1588,12 +1706,12 @@ msgstr "人を招待する"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_favorite__is_article_active
 msgid "Is Article Active"
-msgstr ""
+msgstr "記事が有効化"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_user_favorite
 msgid "Is Favorited"
-msgstr ""
+msgstr "お気に入りか"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_is_follower
@@ -1603,7 +1721,7 @@ msgstr "フォロー中　"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_article_item
 msgid "Is Item?"
-msgstr ""
+msgstr "項目か？"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_properties_is_empty
@@ -1615,14 +1733,14 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Item Kanban"
-msgstr ""
+msgstr "項目かんばん"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Item List"
-msgstr ""
+msgstr "項目リスト"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1674,7 +1792,7 @@ msgstr "最終編集："
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__last_edition_date
 msgid "Last Edited on"
-msgstr ""
+msgstr "最終編集日"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article____last_update
@@ -1710,14 +1828,14 @@ msgstr "最終更新日"
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Leave Article"
-msgstr ""
+msgstr "記事から移動"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg/knowledge_article_link.js:0
 #, python-format
 msgid "Link an Article"
-msgstr ""
+msgstr "記事のリンク"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1751,6 +1869,7 @@ msgid ""
 "Logging changes from %(partner_name)s without write access on article "
 "%(article_name)s due to hierarchy tree update"
 msgstr ""
+"階層ツリーの更新により、%(partner_name)sが記事%(article_name)sに執筆アクセスなしで変更をログに記録しています。"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_main_attachment_id
@@ -1780,7 +1899,7 @@ msgstr "メンバー"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_member_ids
 msgid "Members Information"
-msgstr ""
+msgstr "メンバ情報"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__root_article_id
@@ -1802,7 +1921,7 @@ msgstr "メッセージ"
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.js:0
 #, python-format
 msgid "Missing File"
-msgstr ""
+msgstr "ファイルが見つかりません"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1832,7 +1951,7 @@ msgstr "記事を移動"
 msgid ""
 "Move to target of %(article_name)s is ambiguous, you should specify the "
 "category."
-msgstr ""
+msgstr "%(article_name)sのターゲットへの移動が曖昧なので、カテゴリを指定する必要があります。"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__my_activity_date_deadline
@@ -1861,7 +1980,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/xml/knowledge_editor.xml:0
 #, python-format
 msgid "Nest articles under this one to generate a structure"
-msgstr ""
+msgstr "この記事の下に記事をネストして構造を作る"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_calendar_event_id
@@ -1888,14 +2007,14 @@ msgstr "次の活動タイプ"
 #: code:addons/knowledge/static/src/xml/knowledge_command_palette.xml:0
 #, python-format
 msgid "No Article found."
-msgstr ""
+msgstr "記事が見つかりません。"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "No Article found. Create \"%s\""
-msgstr ""
+msgstr "記事が見つかりません。\"%s\"を作成して下さい。"
 
 #. module: knowledge
 #. odoo-python
@@ -1907,12 +2026,12 @@ msgstr "ゴミ箱の中に記事はありません"
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_favorite_action
 msgid "No Favorites yet!"
-msgstr ""
+msgstr "まだお気に入りがありません！"
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_member_action
 msgid "No Members yet!"
-msgstr ""
+msgstr "メンバがまだいません！"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__inherited_permission__none
@@ -1925,7 +2044,7 @@ msgstr "アクセス権なし"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree_frontend
 msgid "No article found"
-msgstr ""
+msgstr "記事が見つかりません"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1937,7 +2056,7 @@ msgstr "記事が見つかりません。"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "No article yet."
-msgstr ""
+msgstr "記事がまだありません"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_needaction_counter
@@ -1962,7 +2081,7 @@ msgstr "配信エラーのメッセージ数"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Odoo Survival Guide"
-msgstr ""
+msgstr "Odooサバイバルガイド"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1975,7 +2094,7 @@ msgstr "OK"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Onboarding.pdf"
-msgstr ""
+msgstr "Onboarding.pdf"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1984,7 +2103,7 @@ msgstr ""
 msgid ""
 "Oops, the file %s could not be found. Please replace this file box by a new "
 "one to re-upload the file."
-msgstr ""
+msgstr "おっと、ファイル%sが見つかりません。ファイルを再アップロードするには、このファイルボックスを新しいものに置き換えて下さい。"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2089,24 +2208,24 @@ msgstr "リストア"
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Restore Access"
-msgstr ""
+msgstr "アクセスの復元"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Restrict Access"
-msgstr ""
+msgstr "アクセスを制限"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_desync_on_root
 msgid "Root articles cannot be desynchronized."
-msgstr ""
+msgstr "ルート記事は非同期化できません。"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_permission_on_root
 msgid "Root articles must have internal permission."
-msgstr ""
+msgstr "ルート記事には内部許可が必要です。"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_has_sms_error
@@ -2221,14 +2340,14 @@ msgstr ""
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Some articles have been sent to Trash"
-msgstr ""
+msgstr "いくつかの記事がゴミ箱に送られました"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0
 #, python-format
 msgid "Something went wrong!"
-msgstr ""
+msgstr "何かの問題が発生しました！"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__activity_state
@@ -2271,21 +2390,21 @@ msgstr ""
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "The Article you are trying to access has been deleted"
-msgstr ""
+msgstr "アクセスしようとしている記事は削除されました。"
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "The article '%s' needs at least one member with 'Write' access."
-msgstr ""
+msgstr "記事'%s'には、'執筆'アクセス権を持つメンバが少なくとも一人必要です。"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
 msgid ""
 "The article you are trying the read has either been removed or you do not "
 "have access to it."
-msgstr ""
+msgstr "あなたが読もうとしている記事は削除されているか、アクセス権がありません。"
 
 #. module: knowledge
 #. odoo-python
@@ -2303,7 +2422,7 @@ msgstr ""
 msgid ""
 "The operation was interrupted because the page or the record changed. Please"
 " try again later."
-msgstr ""
+msgstr "ページまたはレコードが変更されたため、操作が中断されました。後でもう一度やり直して下さい。"
 
 #. module: knowledge
 #. odoo-python
@@ -2311,19 +2430,19 @@ msgstr ""
 #: code:addons/knowledge/controllers/main.py:0
 #, python-format
 msgid "The selected member does not exists or has been already deleted."
-msgstr ""
+msgstr "選択したメンバが存在しないか、既に削除されています。"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__sequence
 msgid ""
 "The sequence is computed only among the articles that have the same parent."
-msgstr ""
+msgstr "付番は、同じ親を持つ記事の間でのみ計算されます。"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__root_article_id
 msgid ""
 "The subject is the title of the highest parent in the article hierarchy."
-msgstr ""
+msgstr "議題は、記事の階層で最も上位の親のタイトルです。"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2339,7 +2458,7 @@ msgstr "ビューが存在しないか、アクセス権限がありません。
 msgid ""
 "This Article cannot be unfolded. Either you lost access to it or it has been"
 " deleted."
-msgstr ""
+msgstr "この記事は展開できません。アクセスできなくなったか、削除されたかのどちらかです。"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -2363,7 +2482,7 @@ msgstr "この記事は削除されたか、アクセス権限がありません
 #: code:addons/knowledge/static/src/xml/knowledge_frontend.xml:0
 #, python-format
 msgid "This view is only available for internal users"
-msgstr ""
+msgstr "このビューは内部ユーザのみ利用可能です。"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__name
@@ -2373,7 +2492,7 @@ msgstr "タイトル"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "To be sure to stay updated, follow us on"
-msgstr ""
+msgstr "最新情報を入手するには、以下をフォローして下さい:"
 
 #. module: knowledge
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_action_trashed
@@ -2390,7 +2509,7 @@ msgstr "ゴミ箱"
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_trash
 msgid "Trashed articles must be archived."
-msgstr ""
+msgstr "ゴミになった記事はアーカイブされる必要があります。"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
@@ -2402,7 +2521,7 @@ msgstr ""
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Trying to remove wrong member."
-msgstr ""
+msgstr "間違ったメンバーを削除しようとしています。"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__activity_exception_decoration
@@ -2463,7 +2582,7 @@ msgstr ""
 msgid ""
 "Used to categozie articles in UI, depending on their main permission "
 "definitions."
-msgstr ""
+msgstr "主な許可の定義に応じて、UIで記事を分類するために使用されます。"
 
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_res_users
@@ -2475,14 +2594,14 @@ msgstr "ユーザ"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_favorite_sequence
 msgid "User Favorite Sequence"
-msgstr ""
+msgstr "ユーザお気に入り付番"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "User Permission"
-msgstr ""
+msgstr "ユーザ許可"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_favorite_unique_article_user
@@ -2492,7 +2611,7 @@ msgstr "ユーザはすでにこの記事をお気に入りに入れています
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_permission
 msgid "User permission"
-msgstr ""
+msgstr "ユーザ許可"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__website_message_ids
@@ -2509,14 +2628,14 @@ msgstr "ウェブサイトコミュニケーション履歴"
 #: code:addons/knowledge/models/res_users.py:0
 #, python-format
 msgid "Welcome %s"
-msgstr ""
+msgstr "ようこそ%s"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.xml:0
 #, python-format
 msgid "What do you want to manage?"
-msgstr ""
+msgstr "何を管理したいですか？"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__is_locked
@@ -2543,7 +2662,7 @@ msgstr ""
 msgid ""
 "When set, the article body will take the full width available on the article"
 " page. Otherwise, the body will have large horizontal margins."
-msgstr ""
+msgstr "設定されている場合、記事本文は記事ページで利用可能な幅いっぱいに表示されます。そうでなければ、本文は大きな水平方向の余白を持ちます。"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -2590,14 +2709,14 @@ msgstr "'%(article_name)s' を '%(parent_name)s'の下に移動する権限が�
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "You can't leave an article for which you are the last writer"
-msgstr ""
+msgstr "自分が最後の執筆者である記事を残すことはできません。"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "You can't remove the last writer of the article"
-msgstr ""
+msgstr "記事の最後の執筆者を削除することはできません。"
 
 #. module: knowledge
 #. odoo-python
@@ -2625,7 +2744,7 @@ msgstr "このメンバーの許可を変更することはできません。"
 #: code:addons/knowledge/models/knowledge_cover.py:0
 #, python-format
 msgid "You cannot create a new Knowledge Cover from here."
-msgstr ""
+msgstr "ここから新しいナレッジカバーを作成することはできません。"
 
 #. module: knowledge
 #. odoo-python
@@ -2673,6 +2792,7 @@ msgid ""
 "You have to be editor on %(article_name)s to remove or exclude member "
 "%(member_name)s."
 msgstr ""
+"あなたは %(article_name)s上の編集者である必要があります。(メンバ %(member_name)sを削除、除外するためには)"
 
 #. module: knowledge
 #. odoo-python
@@ -2684,7 +2804,7 @@ msgstr "%(article_name)s をリストアするためには編集者である必�
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "and the following child article(s) have"
-msgstr ""
+msgstr "そして以下の子記事は以下を持っています:"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2696,7 +2816,7 @@ msgstr "記事"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "been sent to Trash.<br/><br/>"
-msgstr ""
+msgstr "ゴミ箱に移されました。<br/><br/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -2708,24 +2828,24 @@ msgstr "カバー"
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "e.g. Buildings"
-msgstr ""
+msgstr "例: ビル"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "e.g. Todos"
-msgstr ""
+msgstr "例: To Do"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "has"
-msgstr ""
+msgstr "持つ"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "have"
-msgstr ""
+msgstr "持つ"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite
@@ -2740,7 +2860,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "loader"
-msgstr ""
+msgstr "ローだ"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__none
@@ -2755,19 +2875,19 @@ msgstr "または"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "pdf"
-msgstr ""
+msgstr "pdf"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__read
 msgid "read"
-msgstr ""
+msgstr "読む"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "to unleash the power of Knowledge !"
-msgstr ""
+msgstr "ナレッジの力を解き放ちましょう！"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__write
 msgid "write"
-msgstr ""
+msgstr "書く"

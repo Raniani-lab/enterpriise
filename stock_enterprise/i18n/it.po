@@ -129,7 +129,7 @@ msgstr "In ritardo"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__is_backorder
 msgid "Is a Backorder"
-msgstr "È un ordine arretrato"
+msgstr "È un ordine residuo"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report____last_update

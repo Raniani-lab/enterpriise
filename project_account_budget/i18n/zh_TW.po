@@ -25,14 +25,14 @@ msgstr ""
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Actual"
-msgstr ""
+msgstr "實際"
 
 #. module: project_account_budget
 #. odoo-javascript
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Add Budget"
-msgstr ""
+msgstr "新增預算"
 
 #. module: project_account_budget
 #: model:ir.model.fields,field_description:project_account_budget.field_crossovered_budget_lines__analytic_account_id
@@ -54,7 +54,7 @@ msgstr "預算項"
 #. module: project_account_budget
 #: model:ir.model,name:project_account_budget.model_crossovered_budget_lines
 msgid "Budget Line"
-msgstr "預算明細"
+msgstr "預算資料行"
 
 #. module: project_account_budget
 #. odoo-javascript
@@ -94,14 +94,14 @@ msgstr "預測"
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.js:0
 #, python-format
 msgid "New Budget"
-msgstr ""
+msgstr "新預算"
 
 #. module: project_account_budget
 #. odoo-javascript
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "No Budgetary Position"
-msgstr ""
+msgstr "沒有預算規則"
 
 #. module: project_account_budget
 #: model:ir.model,name:project_account_budget.model_project_project

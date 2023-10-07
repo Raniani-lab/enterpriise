@@ -30,7 +30,7 @@ msgstr "Conta Analítica"
 msgid ""
 "Define an 'hourly cost' on the employee to track the cost of their time."
 msgstr ""
-"Defina um \"custo por hora\" no funcionário para monitorar o custo de seu "
+"Defina um 'custo por hora' no funcionário para registrar o custo de seu "
 "tempo."
 
 #. module: mrp_workorder_hr_account

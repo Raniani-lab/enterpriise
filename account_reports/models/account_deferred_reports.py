@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from collections import defaultdict
 from dateutil.relativedelta import relativedelta
+
 from odoo import models, fields, _, api, Command
 from odoo.exceptions import UserError
 from odoo.tools import groupby
@@ -64,7 +65,6 @@ class DeferredReportCustomHandler(models.AbstractModel):
         if not move_lines:
             raise UserError(_("No entry to generate."))
 
-        original_moves = self.env['account.move'].browse(original_move_ids)
         deferred_move = self.env['account.move'].create({
             'move_type': 'entry',
             'deferred_original_move_ids': [Command.set(original_move_ids)],
@@ -83,7 +83,18 @@ class DeferredReportCustomHandler(models.AbstractModel):
         })
         reverse_move.line_ids.name = ref_rev
         new_deferred_moves = deferred_move + reverse_move
-        original_moves.deferred_move_ids |= new_deferred_moves
+        # We create the relation (original deferred move, deferral entry)
+        # using SQL. This avoids a MemoryError using the ORM which will
+        # load huge amounts of moves in memory for nothing
+        self.env.cr.execute_values("""
+            INSERT INTO account_move_deferred_rel(original_move_id, deferred_move_id)
+                 VALUES %s
+            ON CONFLICT DO NOTHING
+        """, [
+            (original_move_id, deferral_move.id)
+            for original_move_id in original_move_ids
+            for deferral_move in new_deferred_moves
+        ])
         (deferred_move + reverse_move)._post(soft=True)
         return new_deferred_moves
 

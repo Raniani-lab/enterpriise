@@ -1,23 +1,22 @@
 /** @odoo-module **/
 
-import { Component, markup } from '@odoo/owl';
+import { Component } from '@odoo/owl';
 import { renderToElement } from "@web/core/utils/render";
 import { Wysiwyg } from '@web_editor/js/wysiwyg/wysiwyg';
 import { PromptEmbeddedViewNameDialog } from '@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog';
 import {
+    isSelectionInSelectors,
     preserveCursor,
     setCursorEnd,
-} from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
+} from "@web_editor/js/editor/odoo-editor/src/utils/utils";
 import { VideoSelectorDialog } from '@knowledge/components/video_selector_dialog/video_selector_dialog';
 import { ArticleSelectionBehaviorDialog } from '@knowledge/components/behaviors/article_behavior_dialog/article_behavior_dialog';
 import {
     encodeDataBehaviorProps,
 } from "@knowledge/js/knowledge_utils";
-import {
-    isSelectionInSelectors
-} from '@web_editor/js/editor/odoo-editor/src/utils/utils';
 import { patch } from "@web/core/utils/patch";
 import { _t } from "@web/core/l10n/translation";
+import { KnowledgeMediaDialog } from '@knowledge/components/media_dialog/knowledge_media_dialog';
 
 patch(Wysiwyg.prototype, {
     /**
@@ -83,7 +82,7 @@ patch(Wysiwyg.prototype, {
                         noImages: true,
                         noIcons: true,
                         noDocuments: true,
-                        knowledgeDocuments: true,
+                        MediaDialog: KnowledgeMediaDialog,
                     });
                 }
             }, {
@@ -373,31 +372,18 @@ patch(Wysiwyg.prototype, {
         });
     },
     /**
-     * Notify the @see FieldHtmlInjector when a /file block is inserted from a
+     * Notify a new @see FileBehavior when selecting a file in a
      * @see MediaDialog
+     * @see KnowledgeMediaDialog
      *
-     * @private
      * @override
      */
     _onMediaDialogSave(params, element) {
-        if (element.classList.contains('o_is_knowledge_file')) {
-            element.classList.remove('o_is_knowledge_file');
-            element.classList.add('o_image');
-            const extension = (element.title && element.title.split('.').pop()) || element.dataset.mimetype;
-            const fileBlock = renderToElement('knowledge.FileBehaviorBlueprint', {
-                fileName: element.title,
-                fileImage: markup(element.outerHTML),
-                behaviorProps: encodeDataBehaviorProps({
-                    fileName: element.title,
-                    fileExtension: extension,
-                }),
-                fileExtension: extension,
-            });
-            this._notifyNewBehavior(fileBlock, params.restoreSelection);
-            // need to set cursor (anchor.sibling)
-        } else {
+        if (!element?.querySelector('.o_knowledge_behavior_anchor')) {
             return super._onMediaDialogSave(...arguments);
         }
+        params.restoreSelection();
+        this._notifyNewBehavior(element, params.restoreSelection);
     },
     /**
      * Inserts the dialog allowing the user to specify name for the embedded view.

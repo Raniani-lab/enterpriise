@@ -45,6 +45,13 @@ export class KnowledgePlugin {
             }
             anchor.append(a);
         }
+        // Remove the `d-none` class of the fileName element in case the
+        // html_field is being saved while the user is editing the name of the
+        // file (The input is removed by default because it is the child of a
+        // data-oe-transient-content="true" node).
+        for (const fileNameEl of editable.querySelectorAll('.o_knowledge_behavior_type_file .o_knowledge_file_name')) {
+            fileNameEl.classList.remove("d-none");
+        }
     }
 }
 

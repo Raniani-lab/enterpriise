@@ -9,6 +9,14 @@
     padding: 5px;
 }
 
+.odoo-editor-editable .o_knowledge_behavior_type_file {
+    .o_knowledge_file_name {
+        &:hover i {
+            visibility: visible !important;
+        }
+    }
+}
+
 .o_knowledge_behavior_type_template {
     margin-bottom: 1rem;
     border-radius: 5px;
@@ -114,6 +122,20 @@
         .o_knowledge_embedded_view_placeholder_cover {
             @include o-position-absolute(0, 0, 0, 0);
             background: radial-gradient($white, transparent);
+        }
+    }
+}
+
+// Knowledge Toolbars
+
+.o_knowledge_toolbar {
+    button {
+        font-family: $font-family-base !important;
+        font-weight: $font-weight-bold;
+        @media screen and (max-width: 1024px) {
+            .o_knowledge_toolbar_button_text {
+                display: none;
+            }
         }
     }
 }

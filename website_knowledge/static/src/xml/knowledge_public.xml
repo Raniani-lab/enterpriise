@@ -20,4 +20,13 @@
             </div>
         </div>
     </t>
+    <t t-name="website_knowledge.file_behavior_toolbar_content">
+        <div class="btn-group d-flex flex-wrap">
+            <button title="Download" name="download"
+                class="btn btn-primary btn-link btn-sm border-0 text-break text-start text-o-color-2 text-capitalize fw-bold border-transparent bg-transparent">
+                <i class="fa fa-download me-1"/>
+                <span class="o_knowledge_toolbar_button_text">Download</span>
+            </button>
+        </div>
+    </t>
 </templates>

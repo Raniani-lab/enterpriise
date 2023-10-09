@@ -126,6 +126,7 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
                 }]
             );
             await this.refreshCache(data.records);
+            this.selectedPickings = [];
             this.config = data.config || {}; // Get the picking type's scan restrictions configuration.
             this.trigger('update');
         }
@@ -153,6 +154,10 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
             class: 'o_print_picking_batch',
             method: 'action_print',
         }];
+    }
+
+    get reloadingMoveLines() {
+        return super.reloadingMoveLines && !this.selectedPickings?.length;
     }
 
     selectOption(id) {

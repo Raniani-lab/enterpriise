@@ -29,7 +29,7 @@ export default class BarcodePickingModel extends BarcodeModel {
 
     setData(data) {
         super.setData(...arguments);
-        this._useReservation = this.initialState.lines.some(line => line.reserved_uom_qty);
+        this._useReservation = this.initialState.lines.some(line => !line.picked);
         this.config = data.data.config || {}; // Picking type's scan restrictions configuration.
         if (!this.displayDestinationLocation) {
             this.config.restrict_scan_dest_location = 'no';
@@ -41,7 +41,7 @@ export default class BarcodePickingModel extends BarcodeModel {
     }
 
     askBeforeNewLinesCreation(product) {
-        return !this.record.immediate_transfer && product &&
+        return this._useReservation && product &&
             !this.currentState.lines.some(line => line.product_id.id === product.id);
     }
 
@@ -102,11 +102,7 @@ export default class BarcodePickingModel extends BarcodeModel {
     }
 
     getQtyDemand(line) {
-        return line.reserved_uom_qty;
-    }
-
-    getEditedLineParams(line) {
-        return Object.assign(super.getEditedLineParams(...arguments), { canBeDeleted: !line.reserved_uom_qty });
+        return line.reserved_uom_qty || 0;
     }
 
     getDisplayIncrementPackagingBtn(line) {
@@ -165,7 +161,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         // If source location's scan is mandatory, the source should be confirmed (scanned once
         // again) to confirm we want to take this product from the current location.
         if (res && this.config.restrict_scan_source_location &&
-            line.location_id.id !== this.location.id && line.reserved_uom_qty) {
+            line.location_id.id !== this.location.id && this.lineIsReserved(line)) {
             if (this.needSourceConfirmation[this.location.id] === undefined) {
                 this.needSourceConfirmation[this.location.id] = {};
             }
@@ -177,6 +173,10 @@ export default class BarcodePickingModel extends BarcodeModel {
             this.needSourceConfirmation[this.location.id][line.product_id.id] = false;
         }
         return res;
+    }
+
+    lineIsReserved(line) {
+        return !line.picked && line.quantity;
     }
 
     async updateLine(line, args) {
@@ -439,7 +439,7 @@ export default class BarcodePickingModel extends BarcodeModel {
      * @returns {boolean}
      */
     get canBeValidate() {
-        if (this.record.immediate_transfer) {
+        if (!this._useReservation) {
             return super.canBeValidate; // For immediate transfers, doesn't care about any special condition.
         } else if (!this.config.barcode_validation_full && !this.currentState.lines.some(line => line.qty_done)) {
             return false; // Can't be validate because "full validation" is forbidden and nothing was processed yet.
@@ -637,7 +637,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         const packageLines = [];
         for (const key in groupedLines) {
             // Check if the package is reserved.
-            const reservedPackage = groupedLines[key].every(line => line.reserved_uom_qty);
+            const reservedPackage = groupedLines[key].every(line => this.lineIsReserved(line));
             groupedLines[key][0].reservedPackage = reservedPackage;
             const packageLine = Object.assign({}, groupedLines[key][0], {
                 lines: groupedLines[key],
@@ -718,6 +718,10 @@ export default class BarcodePickingModel extends BarcodeModel {
         return buttons;
     }
 
+    get reloadingMoveLines() {
+        return this.currentState !== undefined;
+    }
+
     async save() {
         await this._setUser(); // Set current user as picking's responsible.
         return super.save();
@@ -747,7 +751,7 @@ export default class BarcodePickingModel extends BarcodeModel {
             let atLeastOneLinePartiallyProcessed = false;
             for (let line of this.currentState.lines) {
                 line = this._getParentLine(line) || line;
-                if (alreadyChecked.includes(line.virtual_id) || !line.reserved_uom_qty) {
+                if (alreadyChecked.includes(line.virtual_id) || !this.lineIsReserved(line)) {
                     continue;
                 }
                 // Keeps track of already checked lines to avoid to check multiple times grouped lines.
@@ -804,6 +808,7 @@ export default class BarcodePickingModel extends BarcodeModel {
             default_picking_id: this.resId,
             default_qty_done: 1,
             display_default_code: false,
+            hide_unlink_button: !this.selectedLine || this.selectedLine.reserved_uom_qty,
         };
     }
 
@@ -945,12 +950,12 @@ export default class BarcodePickingModel extends BarcodeModel {
             lot_id: line.lot_id,
             package_id: line.package_id,
             picking_id: line.picking_id,
+            picked: true,
             product_id: line.product_id,
             product_uom_id: line.product_uom_id,
             owner_id: line.owner_id,
-            qty_done: line.qty_done,
+            quantity: line.qty_done,
             result_package_id: line.result_package_id,
-            reserved_uom_qty: line.reserved_uom_qty,
             state: 'assigned',
         };
         for (const [key, value] of Object.entries(values)) {
@@ -961,11 +966,14 @@ export default class BarcodePickingModel extends BarcodeModel {
 
     _getMoveLineData(id){
         const smlData = this.cache.getRecord('stock.move.line', id);
+        smlData.dummy_id = smlData.dummy_id && Number(smlData.dummy_id);
         // Checks if this line is already in the picking's state to get back
         // its `virtual_id` (and so, avoid to set a new `virtual_id`).
-        const prevLine = this.currentState && this.currentState.lines.find(l => l.id === id);
+        let prevLine = this.currentState?.lines.find(line => line.id === id);
+        if (!prevLine && smlData.dummy_id) {
+            prevLine = this.currentState?.lines.find(line => line.virtual_id === smlData.dummy_id);
+        }
         const previousVirtualId = prevLine && prevLine.virtual_id;
-        smlData.dummy_id = smlData.dummy_id && Number(smlData.dummy_id);
         smlData.virtual_id = smlData.dummy_id || previousVirtualId || this._uniqueVirtualId;
         smlData.product_id = this.cache.getRecord('product.product', smlData.product_id);
         smlData.product_uom_id = this.cache.getRecord('uom.uom', smlData.product_uom_id);
@@ -975,6 +983,23 @@ export default class BarcodePickingModel extends BarcodeModel {
         smlData.owner_id = smlData.owner_id && this.cache.getRecord('res.partner', smlData.owner_id);
         smlData.package_id = smlData.package_id && this.cache.getRecord('stock.quant.package', smlData.package_id);
         smlData.product_packaging_id = smlData.product_packaging_id && this.cache.getRecord('product.packaging', smlData.product_packaging_id);
+
+        if (this.reloadingMoveLines) {
+            if (prevLine) {
+                // The reservation of this line is already known.
+                smlData.reserved_uom_qty = prevLine.reserved_uom_qty;
+            } else {
+                // This line was created in the Barcode App, so it has no reservation.
+                smlData.qty_done = smlData.quantity;
+                smlData.reserved_uom_qty = 0;
+            }
+        } else {
+            // First loading: `reserved_uom_qty` keeps in memory what is the
+            // initial reservation for this move line clientside only, this
+            // information is lost once the user closes the operation.
+            smlData.reserved_uom_qty = smlData.quantity;
+        }
+
         const resultPackage = smlData.result_package_id && this.cache.getRecord('stock.quant.package', smlData.result_package_id);
         if (resultPackage) { // Fetch the package type if needed.
             smlData.result_package_id = resultPackage;
@@ -1036,7 +1061,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         }
         return Object.assign(defaultValues, {
             location_dest_id: this._defaultDestLocation(),
-            reserved_uom_qty: false,
+            reserved_uom_qty: 0,
             qty_done: 0,
             picking_id: this.resId,
         });
@@ -1052,7 +1077,6 @@ export default class BarcodePickingModel extends BarcodeModel {
             'owner_id',
             'qty_done',
             'result_package_id',
-            'reserved_uom_qty',
         ];
     }
 

@@ -613,8 +613,8 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         self.start_tour(url, 'test_pack_and_same_product_several_sml', login='admin', timeout=180)
 
         self.assertRecordValues(pickings.move_ids, [
-            {'picking_id': pickings[0].id, 'product_id': self.product1.id, 'state': 'done', 'quantity_done': 3},
-            {'picking_id': pickings[0].id, 'product_id': self.product2.id, 'state': 'done', 'quantity_done': 70},
-            {'picking_id': pickings[1].id, 'product_id': self.product1.id, 'state': 'done', 'quantity_done': 7},
-            {'picking_id': pickings[1].id, 'product_id': self.product2.id, 'state': 'done', 'quantity_done': 30},
+            {'picking_id': pickings[0].id, 'product_id': self.product1.id, 'state': 'done', 'quantity': 3, 'picked': True},
+            {'picking_id': pickings[0].id, 'product_id': self.product2.id, 'state': 'done', 'quantity': 70, 'picked': True},
+            {'picking_id': pickings[1].id, 'product_id': self.product1.id, 'state': 'done', 'quantity': 7, 'picked': True},
+            {'picking_id': pickings[1].id, 'product_id': self.product2.id, 'state': 'done', 'quantity': 30, 'picked': True},
         ])

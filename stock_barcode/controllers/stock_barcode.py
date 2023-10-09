@@ -3,7 +3,7 @@
 
 from collections import defaultdict
 
-from odoo import Command, http, _
+from odoo import http, _
 from odoo.http import request
 from odoo.exceptions import UserError
 from odoo.osv import expression
@@ -70,24 +70,6 @@ class StockBarcodeController(http.Controller):
         if not res_id:
             return request.env[model].barcode_write(write_vals)
         target_record = request.env[model].browse(res_id)
-        # check if a new move line is created
-        if write_field == 'move_line_ids':
-            for command, _id, vals in write_vals:
-                if command == Command.CREATE and 'reserved_uom_qty' in vals:
-                    location_id = request.env['stock.location'].browse(vals.get('location_id'))
-                    if location_id.should_bypass_reservation():
-                        continue
-                    product_id = request.env['product.product'].browse(vals.get('product_id'))
-                    lot_id = request.env['stock.lot'].browse(vals.get('lot_id'))
-                    package_id = request.env['stock.quant.package'].browse(vals.get('package_id'))
-                    owner_id = request.env['res.partner'].browse(vals.get('owner_id'))
-                    available_qty = request.env['stock.quant']._get_available_quantity(product_id, location_id)
-                    if available_qty <= 0:
-                        vals.pop('reserved_uom_qty')
-                        continue
-                    vals['reserved_uom_qty'] = min(available_qty, vals.get('reserved_uom_qty'))
-                    request.env['stock.quant']._update_reserved_quantity(product_id, location_id, vals['reserved_uom_qty'], lot_id=lot_id,
-                                                                         package_id=package_id, owner_id=owner_id, strict=True)
         target_record.write({write_field: write_vals})
         return target_record._get_stock_barcode_data()
 

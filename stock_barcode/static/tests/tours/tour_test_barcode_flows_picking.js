@@ -523,20 +523,9 @@ registry.category("web_tour.tours").add('test_receipt_reserved_1', {test: true, 
 
 registry.category("web_tour.tours").add('test_receipt_product_not_consecutively', {test: true, steps: () => [
     // Scan two products (product1 - product2 - product1)
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product1',
-    },
-    stepUtils.confirmAddingUnreservedProduct(),
-    {
-        trigger: '.o_barcode_line',
-        run: 'scan product2',
-    },
-    stepUtils.confirmAddingUnreservedProduct(),
-    {
-        trigger: '.o_barcode_line:contains("product2")',
-        run: 'scan product1',
-    },
+    { trigger: '.o_barcode_client_action', run: 'scan product1' },
+    { trigger: '.o_barcode_line', run: 'scan product2' },
+    { trigger: '.o_barcode_line:contains("product2")', run: 'scan product1' },
     {
         trigger: '.o_barcode_line[data-barcode="product1"] .qty-done:contains("2")',
         run: 'scan O-BTN.validate',
@@ -1028,7 +1017,7 @@ registry.category("web_tour.tours").add('test_remaining_decimal_accuracy', {test
     // Goes on the form view and add 2.2 .
     { trigger: '.o_barcode_line:first-child .o_edit' },
     {
-        trigger: 'input.o_input[id=qty_done_1]',
+        trigger: 'div[name=qty_done] input',
         run: 'text 2.2',
     },
     { trigger: '.o_save' },
@@ -1273,11 +1262,7 @@ registry.category("web_tour.tours").add('test_delivery_from_scratch_with_lots_1'
 ]});
 
 registry.category("web_tour.tours").add('test_delivery_from_scratch_with_incompatible_lot', {test: true, steps: () => [
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan 0000000001',
-    },
-    stepUtils.confirmAddingUnreservedProduct(),
+    { trigger: '.o_barcode_client_action', run: 'scan 0000000001' },
     { trigger: '.o_barcode_line:first-child .o_edit' },
     ...stepUtils.discardBarcodeForm(),
 ]});
@@ -1322,11 +1307,7 @@ registry.category("web_tour.tours").add('test_delivery_from_scratch_with_common_
 ]});
 
 registry.category("web_tour.tours").add('test_receipt_with_sn_1', {test: true, steps: () => [
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan sn1',
-    },
-    stepUtils.confirmAddingUnreservedProduct(),
+    { trigger: '.o_barcode_client_action', run: 'scan sn1' },
     ...stepUtils.validateBarcodeOperation(),
 ]});
 
@@ -3500,12 +3481,13 @@ registry.category("web_tour.tours").add('test_split_line_reservation', {test: tr
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(true);
             helper.assertValidateEnabled(true);
-            // check reserved qty was changed to available qty
+            // Check lines' quantity didn't change.
             let lines = helper.getLines({ barcode: 'product1' });
-            [0, 1].map(i => helper.assertLineQty(lines[i], ["2 / 2", "2 / 1"][i]));
-            // check reserved qty was removed since no available qty
+            [0, 1].map(i => helper.assertLineQty(lines[i], ["2 / 2", "2 / 2"][i]));
             lines = helper.getLines({ barcode: 'product2' });
-            [0, 1].map(i => helper.assertLineQty(lines[i], ["1", "2 / 2"][i]));
+            [0, 1].map(i => helper.assertLineQty(lines[i], ["2 / 2", "1 / 1"][i]));
+            lines = helper.getLines({ barcode: 'productlot1' });
+            [0, 1, 2].map(i => helper.assertLineQty(lines[i], ["2 / 2", "2 / 2", "1 / 1"][i]));
         },
     },
 ]});

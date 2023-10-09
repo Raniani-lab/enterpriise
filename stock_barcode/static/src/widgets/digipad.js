@@ -60,7 +60,7 @@ export class Digipad extends Component {
      */
     async _fetchPackagingButtons() {
         const record = this.props.record.data;
-        const demandQty = record.reserved_uom_qty;
+        const demandQty = record.quantity;
         const domain = [['product_id', '=', record.product_id[0]]];
         if (demandQty) { // Doesn't fetch packaging with a too high quantity.
             domain.push(['qty', '<=', demandQty]);

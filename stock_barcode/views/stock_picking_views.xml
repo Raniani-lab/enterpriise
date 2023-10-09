@@ -9,7 +9,7 @@
                 <field name="product_barcode" column_invisible="True"/>
                 <field name="location_processed" column_invisible="True"/>
             </xpath>
-            <xpath expr="//field[@name='qty_done']" position="attributes">
+            <xpath expr="//field[@name='quantity']" position="attributes">
                 <attribute name="options">{'barcode_events': True}</attribute>
                 <attribute name="widget">field_float_scannable</attribute>
             </xpath>
@@ -21,7 +21,7 @@
         <field name="model">stock.move.line</field>
         <field name="inherit_id" ref="stock.view_stock_move_line_kanban"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='qty_done']" position="after">
+            <xpath expr="//field[@name='quantity']" position="after">
                 <field name="product_barcode" invisible="1"/>
                 <field name="location_processed" invisible="1"/>
                 <field name="result_package_id" invisible="1"/>

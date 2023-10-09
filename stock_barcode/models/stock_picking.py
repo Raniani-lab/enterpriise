@@ -186,7 +186,6 @@ class StockPicking(models.Model):
             'state',
             'picking_type_code',
             'company_id',
-            'immediate_transfer',
             'note',
             'picking_type_entire_packs',
             'use_create_lots',

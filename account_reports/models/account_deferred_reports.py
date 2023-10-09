@@ -326,7 +326,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
         if not move_lines:
             raise UserError(_("No entry to generate."))
 
-        deferred_move = self.env['account.move'].create({
+        deferred_move = self.env['account.move'].with_context(skip_account_deprecation_check=True).create({
             'move_type': 'entry',
             'deferred_original_move_ids': [Command.set(original_move_ids)],
             'journal_id': journal.id,

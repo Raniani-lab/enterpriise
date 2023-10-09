@@ -32,16 +32,13 @@
             <t t-set="source_action_id" t-value="task.env.ref('industry_fsm.project_task_action_fsm').id if source == 'fsm' else task.env.ref('project.action_view_all_task').id"/>
             <t t-set="backend_url" t-value="'/web#model=project.task&amp;id=%s&amp;action=%s&amp;view_type=form' % (task.id, source_action_id)"/>
         </xpath>
-        <xpath expr="//div/a[@t-if='task.partner_id.email']" position="after">
-            <div t-if="task.is_fsm" t-field="task.partner_id" t-options='{"widget": "contact", "fields": ["address"]}'/>
-        </xpath>
-        <xpath expr="//li[@id='nav-report']" position="attributes">
+        <xpath expr="//div[@id='nav-report']" position="attributes">
             <attribute name="t-if">not task.is_fsm and timesheets and allow_timesheets</attribute>
         </xpath>
-        <xpath expr="//li[@id='nav-report']" position="before">
-            <li t-if="task.is_fsm and (task.display_sign_report_primary or task.display_sign_report_secondary)" class="list-group-item d-grid flex-grow-1 align-items-center">
+        <xpath expr="//div[@id='nav-report']" position="before">
+            <div t-if="task.is_fsm and (task.display_sign_report_primary or task.display_sign_report_secondary)" class="d-grid flex-grow-1 align-items-center mb-2">
                 <t t-call="industry_fsm.portal_task_sign_button"/>
-            </li>
+            </div>
         </xpath>
         <xpath expr="//a[@t-field='task.project_id']" position="after">
             <div t-if="task.planned_date_begin">

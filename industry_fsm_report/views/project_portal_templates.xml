@@ -2,9 +2,9 @@
 <odoo>
 
     <template id="portal_my_task" inherit_id="industry_fsm.portal_my_task">
-        <xpath expr="//li[@t-if='timesheets and allow_timesheets']" position="after">
+        <xpath expr="//div[@t-if='timesheets and allow_timesheets']" position="after">
             <li t-if="task.worksheet_count and task.worksheet_template_id.report_view_id and worksheet_map.get(task.id) and task.allow_worksheets" class="nav-item">
-                <a class="nav-link ps-3" href="#task_worksheet">Worksheet</a>
+                <a class="nav-link p-0" href="#task_worksheet">Worksheet</a>
             </li>
         </xpath>
         <xpath expr="//div[@id='card_body']" position="inside">
@@ -22,7 +22,7 @@
                 <span t-field="task.worksheet_signed_by"/>
             </div>
         </xpath>
-        <xpath expr="//li[@id='nav-report']" position="attributes">
+        <xpath expr="//div[@id='nav-report']" position="attributes">
             <attribute name="t-if">(not task.is_fsm and timesheets and allow_timesheets) or (task.is_fsm and task.allow_worksheets and task.worksheet_count)</attribute>
         </xpath>
     </template>

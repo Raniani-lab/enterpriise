@@ -4,7 +4,7 @@
     <template id="tickets_followup_timesheet" name="Helpdesk tickets timesheet" inherit_id="helpdesk.tickets_followup" priority="50">
         <xpath expr="//li[@id='nav-header']" position="after">
             <li t-if="timesheets" class="nav-item">
-                <a class="nav-link ps-3" href="#details">
+                <a class="nav-link p-0" href="#details">
                     Timesheets
                 </a>
             </li>

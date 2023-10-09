@@ -32,9 +32,9 @@
         </xpath>
     </template>
     <template id="documents_project.portal_my_task" inherit_id="project.portal_my_task">
-        <xpath expr="//li[@id='task-nav']/ul" position="inside">
+        <xpath expr="//div[@id='task-nav']/ul" position="inside">
             <li class="nav-item" id="nav-chat" t-if="task.project_use_documents and task.shared_document_ids">
-                <a class="nav-link ps-3" target="_blank" t-attf-href="/{{ 'my/projects/' + str(project_id) + '/task' if project_id else 'my/tasks' }}/{{ task.id }}/documents?{{ keep_query() }}">
+                <a class="nav-link p-0" target="_blank" t-attf-href="/{{ 'my/projects/' + str(project_id) + '/task' if project_id else 'my/tasks' }}/{{ task.id }}/documents?{{ keep_query() }}">
                     Documents
                 </a>
             </li>

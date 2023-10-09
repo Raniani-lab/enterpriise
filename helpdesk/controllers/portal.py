@@ -141,7 +141,9 @@ class CustomerPortal(portal.CustomerPortal):
         tickets = request.env['helpdesk.ticket'].search(domain, order=order, limit=self._items_per_page, offset=pager['offset'])
         request.session['my_tickets_history'] = tickets.ids[:100]
 
-        if groupby != 'none':
+        if not tickets:
+            grouped_tickets = []
+        elif groupby != 'none':
             grouped_tickets = [request.env['helpdesk.ticket'].concat(*g) for k, g in groupbyelem(tickets, itemgetter(searchbar_groupby[groupby]['input']))]
         else:
             grouped_tickets = [tickets]

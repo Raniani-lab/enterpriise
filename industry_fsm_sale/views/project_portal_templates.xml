@@ -163,7 +163,7 @@
     <template id="portal_my_task" inherit_id="hr_timesheet.portal_my_task">
         <xpath expr="//li[@id='nav-header']" position="after">
             <li t-if="task._show_time_and_material()" class="nav-item">
-                <a class="nav-link ps-3" href="#time_and_material">
+                <a class="nav-link p-0" href="#time_and_material">
                     Time &amp; Material
                 </a>
             </li>

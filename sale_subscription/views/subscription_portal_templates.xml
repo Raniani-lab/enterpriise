@@ -16,13 +16,15 @@
 
                 <!-- ====== Sidebar  ====== -->
                 <t t-call="portal.portal_record_sidebar">
-                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+                    <t t-set="classes" t-value="'col-lg-3 col-xl-4 d-print-none'"/>
 
                     <t t-set="entries">
-                        <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
-                            <li class="list-group-item flex-grow-1">
-                                <div><strong>Next Invoice: <span t-field="subscription.next_invoice_date"/></strong></div>
-                                <div><strong>Amount: <span t-field="subscription.amount_untaxed" t-options='{"widget": "monetary","display_currency": subscription.currency_id}'/></strong></div>
+                        <div class="d-flex flex-wrap flex-column gap-4">
+                            <div>
+                                <div class="fw-bold">Next Invoice: </div>
+                                <span t-field="subscription.next_invoice_date"/>
+                                <div class="fw-bold">Amount: </div>
+                                <span t-field="subscription.amount_untaxed" t-options='{"widget": "monetary","display_currency": subscription.currency_id}' class="mb-3"/>
                                 <a t-if="subscription.subscription_state == '3_progress' and subscription.sale_order_template_id and display_change_plan"
                                     role="button" class="mt8 btn btn-primary" t-att-href="subscription.get_portal_url()">
                                         Change plan
@@ -60,50 +62,51 @@
                                 <!-- Download -->
                                 <div class="o_download_pdf btn-toolbar flex-sm-nowrap mt-2">
                                     <div class="btn-group flex-grow-1 mb-1">
-                                        <a class="btn btn-secondary btn-block o_print_btn o_portal_invoice_print" t-att-href="subscription.get_portal_url(report_type='pdf')" id="print_invoice_report" title="View Details" target="_blank"><i class="fa fa-print"/> View Details</a>
+                                        <a class="btn btn-secondary o_print_btn o_portal_invoice_print" t-att-href="subscription.get_portal_url(report_type='pdf')" id="print_invoice_report" title="View Details" target="_blank"><i class="fa fa-print"/> View Details</a>
                                     </div>
                                 </div>
-                            </li>
-                            <li t-if="display_close" class="list-group-item flex-grow-1">
+                            </div>
+                            <div t-if="display_close" class="align-self-center">
                                 <a role="button" data-bs-toggle="modal" data-bs-target="#wc-modal-close-init" href="#">Close Subscription</a>
-                            </li>
-                            <li t-if="subscription.user_id" class="list-group-item flex-grow-1">
-                                <div class="small mb-1"><strong class="text-muted">Subscription Manager:</strong></div>
-                                <div class="row flex-nowrap">
-                                    <div class="col flex-grow-0 pe-2">
-                                        <img class="rounded-circle mr4 float-start o_portal_contact_img" t-attf-src="#{image_data_uri(subscription.user_id.avatar_1024)}" alt="Contact"/>
+                            </div>
+                            <div t-if="subscription.user_id">
+                                <h6><small class="text-muted">Your contact</small></h6>
+                                <div class="o_portal_contact_details d-flex flex-column gap-2">
+                                    <div class="d-flex justify-content-start align-items-center gap-2">
+                                        <img class="o_avatar o_portal_contact_img rounded" t-attf-src="#{image_data_uri(subscription.user_id.avatar_1024)}" alt="Contact"/>
+                                        <div>
+                                            <h6 class="mb-0" t-out="subscription.user_id.name"/>
+                                            <a t-if="is_follower" href="#discussion" class="d-flex align-items-center gap-2 small fw-bold">
+                                            Send message
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div class="col ps-0" style="min-width: 150px">
-                                        <span t-field="subscription.user_id" t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True}'/>
-                                        <div><a t-if="is_follower" href="#discussion" class="small"><i class="fa fa-comment"></i> Send message</a></div>
-                                    </div>
+                                    <div t-out="subscription.user_id" t-options='{"widget": "contact", "fields": ["phone"]}'/>
                                 </div>
-                            </li>
-                        </ul>
+                            </div>
+                        </div>
                     </t>
                 </t>
 
                 <!-- ====== Page Content  ====== -->
-                <div class="col-12 col-lg">
-                    <div class="card oe_website_contract">
-                        <div class="card-header bg-white pb-2 pt-3">
+                <div class="col-12 col-lg-9 col-xl-8">
+                    <div class="oe_website_contract border-0 mb-5">
+                        <div class="pb-2 pt-3">
                             <div class="row">
                                 <div class="alert alert-danger text-center" role="alert" t-if="subscription.subscription_state in ['3_progress', '4_paused'] and subscription.next_invoice_date &lt; datetime.date.today()">
                                     Your subscription is expired, will be closed soon. <a t-if="(payment_methods_sudo or tokens_sudo) and subscription.amount_total> 0" href="#payment_message">Pay now to renew</a> <t t-else="">Pay now to renew</t>
                                 </div>
-                                <div class="col-12 col-lg flex-grow-1 mb-1 mb-lg-0">
+                                <div class="d-flex gap-2 align-items-center">
                                     <h4 class="mb-0"><small class="text-muted">Subscription -</small> <span t-field="subscription.display_name"/></h4>
-                                </div>
-                                <div class="col-12 col-lg flex-grow-0 text-lg-end mb-1 mb-lg-0">
                                     <span t-if="subscription.subscription_state in ['3_progress', '4_paused'] and subscription.next_invoice_date &lt; datetime.date.today()" class="badge rounded-pill text-bg-danger"><i class="fa fa-fw fa-repeat"/> To Renew</span>
-                                    <span t-elif="subscription.subscription_state == '3_progress'" class="badge rounded-pill text-bg-success"><i class="fa fa-fw fa-check"/> In Progress</span>
+                                    <span t-elif="subscription.subscription_state == '3_progress'" class="badge rounded-pill text-bg-success fw-normal"><i class="fa fa-fw fa-check"/> In Progress</span>
                                     <span t-if="subscription.subscription_state in ['6_churn', '5_renewed']" class="badge rounded-pill text-bg-dark"><i class="fa fa-fw fa-remove"/> Closed</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
+                        <div>
                             <div t-if="message and message_class" t-att-class="'alert ' + message_class" role="alert">
-                                <p t-esc="message"/>
+                                <span t-esc="message"/>
                             </div>
 
                             <div t-if="subscription.get_portal_last_transaction().state == 'pending'">
@@ -116,41 +119,39 @@
                                 </div>
                             </div>
 
-                            <div id="information" class="row mt-4">
+                            <div id="information" class="d-flex flex-column flex-md-row gap-3">
                                 <!-- ======  Plan Overview ====== -->
-                                <div id="sub_info" class="col-12 col-lg-5  mb-3 mb-lg-0">
-                                    <h5 class="mb-1">Your Subscription</h5>
-                                    <hr class="my-0"/>
-                                    <table class="table table-borderless table-sm">
-                                        <tbody style="white-space:nowrap">
-                                            <tr>
-                                                <th class="text-end pb-0">Recurring Plan:</th>
-                                                <td class="w-100 pb-0 text-wrap"><span t-field="subscription.sudo().plan_id.name"/></td>
-                                            </tr>
-                                            <tr t-if="subscription.client_order_ref">
-                                                <th class="text-end pb-0">Reference:</th>
-                                                <td class="w-100 pb-0 text-wrap"><span t-field="subscription.client_order_ref"/></td>
-                                            </tr>
-                                            <tr t-if="subscription.end_date">
-                                                <th class="text-end pb-0">Valid Until:</th>
-                                                <td class="w-100 pb-0"><span t-field="subscription.end_date"/></td>
-                                            </tr>
-                                            <tr t-if="subscription.start_date">
-                                                <th class="text-end pb-0">Start Date:</th>
-                                                <td class="w-100 pb-0"><span t-field="subscription.start_date"/></td>
-                                            </tr>
-                                            <tr>
-                                                <th class="text-end pb-0">Next Billing Date:</th>
-                                                <td class="w-100 pb-0"><span t-field="subscription.next_invoice_date"/></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div id="sub_info" class="flex-basis-75 border rounded-3 px-3 py-2">
+                                    <h4>Your Subscription</h4>
+                                    <div>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <div>
+                                                <span>Recurring Plan:</span>
+                                                <span t-field="subscription.sudo().plan_id.name"/>
+                                            </div>
+                                            <div t-if="subscription.client_order_ref" class="d-flex flex-basis-50 gap-1">
+                                                <span>Reference:</span>
+                                                <span t-field="subscription.client_order_ref"/>
+                                            </div>
+                                            <div t-if="subscription.end_date" class="d-flex flex-grow-1 gap-1">
+                                                <span>Valid Until:</span>
+                                                <span t-field="subscription.end_date"/>
+                                            </div>
+                                            <div t-if="subscription.start_date" class="d-flex flex-basis-50 gap-1">
+                                                <span>Start Date:</span>
+                                                <span t-field="subscription.start_date"/>
+                                            </div>
+                                            <div class="d-flex flex-grow-1 gap-1">
+                                                <span>Next Billing Date:</span>
+                                                <span t-field="subscription.next_invoice_date"/>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- ======  Customer Informations  ====== -->
-                                <div id="customer_info" class="col-12 col-lg-5 offset-lg-1">
-                                    <h5 class="mb-1">Your Details</h5>
-                                    <hr class="my-0"/>
+                                <div id="customer_info" class="border rounded-3 px-3 py-2">
+                                    <h4>Your Details</h4>
                                     <div t-field="subscription.partner_id" t-options='{ "widget": "contact", "fields": [ "name", "address", "phone", "email"]}'/>
                                     <a t-if="user.partner_id == subscription.partner_id"
                                         class="small" t-attf-href="/my/account?redirect={{subscription.get_portal_url()}}">
@@ -163,7 +164,7 @@
                             <t t-set="display_discount" t-value="True in [line.discount > 0 for line in subscription.order_line]"/>
                             <div class="row">
                                 <div class="col-12 mt-4">
-                                    <h3 class="mb-1">Plan Details</h3>
+                                    <h3>Plan Details</h3>
                                     <table class="table table-sm">
                                         <thead class="bg-100">
                                             <tr>
@@ -309,7 +310,8 @@
 
                     <!-- ======  Chatter ====== -->
                     <div t-if="is_follower" id="discussion">
-                        <h3 class="mt-4">History</h3>
+                        <hr/>
+                        <h4>History</h4>
                         <t t-call="portal.message_thread">
                             <t t-set="chatter_mode" t-value="'json'"/>
                         </t>
@@ -412,13 +414,18 @@
     </template>
 
     <template id="portal_my_home_subscription" name="Show Subscriptions" customize_show="True" inherit_id="portal.portal_my_home" priority="90">
-        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="portal_client_client_enable" t-value="True"/>
+        </xpath>
+        <div id="portal_client_category" position="inside">
             <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/sale_subscription/static/src/img/subscription.svg'"/>
                 <t t-set="title">Subscriptions</t>
+                <t t-set="text">Manage your subscriptions</t>
                 <t t-set="url" t-value="'/my/subscription'"/>
                 <t t-set="placeholder_count" t-value="'subscription_count'"/>
             </t>
-        </xpath>
+        </div>
     </template>
 
     <template id="portal_my_subscriptions" name="My Subscriptions">
@@ -429,7 +436,7 @@
                 <t t-set="title">Subscriptions</t>
             </t>
             <t t-if="not subscriptions">
-                <p>You don't have any subscriptions yet.</p>
+                <p class="alert alert-warning">You don't have any subscriptions yet.</p>
             </t>
             <t t-if="subscriptions" t-call="portal.portal_table">
                 <thead>
@@ -494,7 +501,7 @@
         <div id="informations" position="before">
             <div class="card-body">
                 <div t-if="sale_order.pending_transaction" class="alert alert-warning" role="alert">
-                    <p>This quote has a pending payment transaction. It will be confirmed once it is validated</p>
+                    <span>This quote has a pending payment transaction. It will be confirmed once it is validated</span>
                 </div>
             </div>
         </div>

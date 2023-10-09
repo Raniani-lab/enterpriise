@@ -15,7 +15,7 @@ class CalendarEvent(models.Model):
             'start',
             'duration',
             'stop',
-            'display_name',
+            'name',
             'appointment_type_id',
             'appointment_resource_ids',
             'resource_total_capacity_reserved',

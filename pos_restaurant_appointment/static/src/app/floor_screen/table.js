@@ -18,7 +18,7 @@ patch(Table.prototype, {
                     start_ts: dateTimeStart.ts,
                     stop: dateTimeStop.toFormat("HH:mm"),
                     stop_ts: dateTimeStop.ts,
-                    customer_name: appointment.display_name.split("with ")[1],
+                    customer_name: appointment.name,
                 };
             })
             .filter(

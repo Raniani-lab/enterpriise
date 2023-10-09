@@ -20,6 +20,7 @@
             'website_knowledge/static/src/client_actions/website_preview/website_preview.js',
             'website_knowledge/static/src/js/components/**/*.xml',
             'website_knowledge/static/src/js/components/**/*.js',
+            'website_knowledge/static/src/components/**/*',
         ],
         'web.assets_frontend': [
             'website_knowledge/static/src/js/knowledge_public.js',

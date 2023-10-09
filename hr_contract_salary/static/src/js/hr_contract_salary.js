@@ -252,15 +252,15 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     },
 
     onkeydownInput(event) {
-        const disallowedKeys = {
-            69: "KEY_E",
-            109: "KEY_MINUS_KEYPAD",
-            110: "KEY_DOT_KEYPAD",
-            189: "KEY_MINUS",
-            190: "KEY_DOT"
-        };
+        const disallowedKeys = [
+            "KeyE",
+            "NumpadSubtract",
+            "NumpadDecimal",
+            "Minus",
+            "Period"
+        ];
         // Only allow numbers to be written in the input fields with type="number"
-        return !(event.keyCode in disallowedKeys);
+        return !(event.code in disallowedKeys);
     },
 
     _isInvalidInput() {

@@ -271,7 +271,7 @@ export class SignTemplateIframe extends EditablePDFIframeMixin(PDFIframe) {
     }
 
     handleKeyUp(e) {
-        if (e.keyCode === 46 && Object.keys(this.closePopoverFns)) {
+        if (e.key === "Delete" && Object.keys(this.closePopoverFns)) {
             //delete any element that has its popover open
             for (const id in this.closePopoverFns) {
                 const { close, signItem } = this.closePopoverFns[id];

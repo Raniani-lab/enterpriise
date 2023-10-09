@@ -1054,7 +1054,7 @@ export class PdfManager extends Component {
             ev.target.closest(".o_main_navbar") ||
             ev.target.closest(".o_documents_pdf_page_preview") ||
             ev.target.closest(".o_pdf_group_name_block") ||
-            ev.which !== 1
+            ev.button !== 0 // Main button pressed, usually the left button or the un-initialized state
         ) {
             return;
         }

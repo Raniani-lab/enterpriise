@@ -438,7 +438,7 @@ export class SignablePDFIframe extends PDFIframe {
         });
 
         this.root.querySelector("#viewerContainer").addEventListener("keydown", (e) => {
-            if (e.keyCode !== 13) {
+            if (e.key !== "Enter") {
                 return;
             }
             this.navigator.goToNextSignItem();

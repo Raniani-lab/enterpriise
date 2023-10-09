@@ -599,7 +599,7 @@ QUnit.module('Facebook Comments', (hooks) => {
         await testUtils.fields.editInput(
             target.querySelector('.o_social_write_reply .o_social_add_comment'), 'New Comment');
         await testUtils.fields.triggerKeydown(
-            target.querySelector('.o_social_write_reply .o_social_add_comment'), 'enter');
+            target.querySelector('.o_social_write_reply .o_social_add_comment'), 'Enter');
 
         assert.containsOnce(body,
             ".o_social_comment_wrapper .o_social_comment_message div.o_social_comment_text:contains('New Comment')",
@@ -614,7 +614,7 @@ QUnit.module('Facebook Comments', (hooks) => {
         await testUtils.fields.editInput(
             target.querySelector(".o_social_comment .o_social_add_comment"), 'New Reply');
         await testUtils.fields.triggerKeydown(
-            target.querySelector(".o_social_comment .o_social_add_comment"), 'enter');
+            target.querySelector(".o_social_comment .o_social_add_comment"), 'Enter');
 
         assert.containsOnce(body,
             ".o_social_comment_wrapper .o_social_comment_message div.o_social_comment_text:contains('New Reply')",

@@ -89,15 +89,15 @@ publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
      * @private
      */
     _onKeydown: function (ev) {
-        switch (ev.which) {
-            case $.ui.keyCode.ESCAPE:
+        switch (ev.key) {
+            case "Escape":
                 this._render();
                 break;
-            case $.ui.keyCode.UP:
-            case $.ui.keyCode.DOWN:
+            case "ArrowUp":
+            case "ArrowDown":
                 ev.preventDefault();
                 if (this.$menu) {
-                    let $element = ev.which === $.ui.keyCode.UP ? this.$menu.children().last() : this.$menu.children().first();
+                    let $element = ev.key === "ArrowUp" ? this.$menu.children().last() : this.$menu.children().first();
                     $element.focus();
                 }
                 break;

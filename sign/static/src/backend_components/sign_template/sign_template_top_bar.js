@@ -59,7 +59,7 @@ export class SignTemplateTopBar extends Component {
     }
 
     onKeyDown(e) {
-        if (e.keyCode === 13) {
+        if (e.key === "Enter") {
             this.displayNameInput.el.blur();
         }
     }

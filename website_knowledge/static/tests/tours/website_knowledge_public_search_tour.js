@@ -36,7 +36,7 @@ registry.category("web_tour.tours").add('website_knowledge_public_search_tour', 
     content: "Trigger keyup event to start the search",
     trigger: '.knowledge_search_bar',
     run() {
-        $('.knowledge_search_bar').trigger($.Event("keyup", { keyCode: 13 }));
+        $('.knowledge_search_bar').trigger($.Event("keyup", { key: "Enter" }));
     },
 }, { // Check tree rendering with matching articles
     content: "Check that search tree contains 'My Article'",

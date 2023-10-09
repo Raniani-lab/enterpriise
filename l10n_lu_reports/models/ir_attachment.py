@@ -11,7 +11,7 @@ XSD_INFO = {
         'prefix': 'l10n_lu_reports',
     },
     'saft': {
-        'name': 'FAIA_v_2_01_reduced_version_A.xsd',
+        'name': 'FAIA_v_2.01_reduced_version_A.xsd',
         'url': 'https://pfi.public.lu/dam-assets/backup/FAIA/FAIA/XSD_Files.zip',
         'prefix': 'l10n_lu_reports',
     }
@@ -37,4 +37,4 @@ class IrAttachment(models.Model):
 
     @api.model
     def l10n_lu_reports_validate_xml_from_attachment(self, xml_content, document_type):
-        return tools.validate_xml_from_attachment(self.env, xml_content, XSD_INFO[document_type]['name'])
+        return tools.validate_xml_from_attachment(self.env, xml_content, XSD_INFO[document_type]['name'], prefix=XSD_INFO[document_type]['prefix'])

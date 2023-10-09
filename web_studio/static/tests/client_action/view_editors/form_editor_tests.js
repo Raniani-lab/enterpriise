@@ -3087,6 +3087,37 @@ QUnit.module("View Editors", (hooks) => {
         assert.containsN(target, ".o_field_widget", 2);
         assert.verifySteps(["web_read"]);
     });
+
+    QUnit.test("Auto save: don't auto-save a form editor", async function (assert) {
+        await createViewEditor({
+            type: "form",
+            resModel: "partner",
+            serverData,
+            arch: `
+                <form>
+                    <group>
+                        <field name="display_name"/>
+                    </group>
+                </form>`,
+            mockRPC(route, { args, method, model }) {
+                if (method === "web_save" && model === "partner") {
+                    assert.step("save"); // should be called
+                    assert.deepEqual(args, [[1], { display_name: "test" }]);
+                }
+            },
+        });
+
+        assert.notStrictEqual(
+            target.querySelector('.o_field_widget[name="display_name"]').value,
+            "test"
+        );
+
+        const evnt = new Event("beforeunload");
+        evnt.preventDefault = () => assert.step("prevented");
+        window.dispatchEvent(evnt);
+        await nextTick();
+        assert.verifySteps([], "we should not save a form editor");
+    });
 });
 
 QUnit.module("View Editors", (hooks) => {

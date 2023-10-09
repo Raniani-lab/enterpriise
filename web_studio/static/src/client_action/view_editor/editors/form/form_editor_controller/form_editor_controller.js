@@ -68,6 +68,8 @@ export class FormEditorController extends formView.Controller {
             }
         });
     }
+
+    beforeUnload() {}
 }
 FormEditorController.props = {
     ...formView.Controller.props,

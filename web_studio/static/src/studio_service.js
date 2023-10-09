@@ -40,8 +40,8 @@ export function viewTypeToString(vType) {
 }
 
 export const studioService = {
-    dependencies: ["action", "color_scheme", "home_menu", "router", "user", "rpc", "menu"],
-    async start(env, { user, color_scheme, rpc, menu }) {
+    dependencies: ["action", "color_scheme", "home_menu", "router", "rpc", "menu"],
+    async start(env, { color_scheme, rpc, menu }) {
         const supportedViewTypes = Object.keys(SUPPORTED_VIEW_TYPES);
 
         function _getCurrentAction() {
@@ -110,9 +110,7 @@ export const studioService = {
 
         async function _loadParamsFromURL() {
             const currentHash = env.services.router.current.hash;
-            user.removeFromContext("studio");
             if (currentHash.action === "studio") {
-                user.updateContext({ studio: 1 });
                 state.studioMode = currentHash[URL_MODE_KEY];
                 state.editedViewType = currentHash[URL_VIEW_KEY] || null;
                 const editorTab = currentHash[URL_TAB_KEY] || null;
@@ -190,13 +188,11 @@ export const studioService = {
                 options.stackPosition = "replaceCurrentAction";
             }
             state.studioMode = targetMode;
-            user.updateContext({ studio: 1 });
 
             let res;
             try {
                 res = await env.services.action.doAction("studio", options);
             } catch (e) {
-                user.removeFromContext("studio");
                 Object.assign(state, previousState);
                 throw e;
             }
@@ -245,7 +241,6 @@ export const studioService = {
             } else {
                 actionId = "menu";
             }
-            user.removeFromContext("studio");
             await env.services.action.doAction(actionId, options);
             // force rendering of the main navbar to allow adaptation of the size
             env.bus.trigger("MENUS:APP-CHANGED");

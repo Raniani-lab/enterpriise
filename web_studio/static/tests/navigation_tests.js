@@ -32,6 +32,7 @@ import { ViewEditor } from "@web_studio/client_action/view_editor/view_editor";
 import { StudioClientAction } from "@web_studio/client_action/studio_client_action";
 import { ListEditorRenderer } from "@web_studio/client_action/view_editor/editors/list/list_editor_renderer";
 import { onMounted } from "@odoo/owl";
+import { selectorContains } from "@web_studio/../tests/client_action/view_editors/view_editor_tests_utils";
 
 // -----------------------------------------------------------------------------
 // Tests
@@ -465,7 +466,11 @@ QUnit.module("Studio", (hooks) => {
 
         const mockRPC = (route, args) => {
             if (route === "/web/dataset/call_kw/partner/get_views") {
-                assert.step(`get_views, context studio: "${args.kwargs.context.studio}"`);
+                const context = args.kwargs.context;
+                const options = args.kwargs.options;
+                assert.step(
+                    `get_views, context studio: "${context.studio}", option studio: "${options.studio}"`
+                );
             }
         };
         await createEnterpriseWebClient({
@@ -475,7 +480,7 @@ QUnit.module("Studio", (hooks) => {
         // open app Partners (act window action)
         await click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
         await nextTick(); // BlankComponent, first, wait for the real action
-        assert.verifySteps([`get_views, context studio: "undefined"`]);
+        assert.verifySteps([`get_views, context studio: "undefined", option studio: "undefined"`]);
 
         assert.containsOnce(target, ".o_kanban_view");
 
@@ -488,7 +493,68 @@ QUnit.module("Studio", (hooks) => {
         await click(target.querySelector(".o_menu_sections a[data-menu-xmlid=menu_12]"));
         await nextTick();
         assert.containsOnce(target, ".o_list_view");
-        assert.verifySteps([`get_views, context studio: "undefined"`]);
+        assert.verifySteps([`get_views, context studio: "undefined", option studio: "undefined"`]);
+    });
+
+    QUnit.test("user context is not polluted when getting views", async (assert) => {
+        const mockRPC = (route, args) => {
+            if (route === "/web/dataset/call_kw/partner/get_views") {
+                const context = args.kwargs.context;
+                const options = args.kwargs.options;
+                assert.step(
+                    `get_views, context studio: "${context.studio}", option studio: "${options.studio}"`
+                );
+            }
+            if (route === "/web_studio/get_studio_action") {
+                assert.step("get_studio_action");
+                return {
+                    type: "ir.actions.act_window",
+                    res_model: "partner",
+                    views: [[false, "list"]],
+                };
+            }
+            if (args.method === "web_search_read") {
+                assert.step(`web_search_read, context studio: "${args.kwargs.context.studio}"`);
+            }
+        };
+        await createEnterpriseWebClient({
+            serverData,
+            mockRPC,
+        });
+        // open app Partners (act window action)
+        await click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
+        await nextTick(); // BlankComponent, first, wait for the real action
+        assert.verifySteps([
+            `get_views, context studio: "undefined", option studio: "undefined"`,
+            `web_search_read, context studio: "undefined"`,
+        ]);
+
+        assert.containsOnce(target, ".o_kanban_view");
+
+        await openStudio(target);
+        assert.verifySteps([
+            `get_views, context studio: "undefined", option studio: "true"`,
+            `web_search_read, context studio: "1"`,
+        ]);
+        assert.containsOnce(target, ".o_web_studio_kanban_view_editor");
+
+        await click(target.querySelector(".o_menu_sections a[data-menu-xmlid=menu_12]"));
+        await nextTick();
+        assert.containsOnce(target, ".o_list_view");
+        assert.verifySteps([
+            `get_views, context studio: "undefined", option studio: "true"`,
+            `web_search_read, context studio: "1"`,
+        ]);
+
+        await click(
+            selectorContains(target, ".o_web_studio_menu .o_menu_sections a", "Automations")
+        );
+        await contains(".o_web_studio_editor  :not(.o_web_studio_view_renderer) .o_list_view");
+        assert.verifySteps([
+            "get_studio_action",
+            `get_views, context studio: "undefined", option studio: "undefined"`,
+            `web_search_read, context studio: "1"`,
+        ]);
     });
 
     QUnit.test("error bubbles up if first rendering", async (assert) => {

@@ -12,7 +12,7 @@ import { AppMenuEditor } from "./app_menu_editor/app_menu_editor";
 import { NewModelItem } from "./new_model_item/new_model_item";
 import { EditionFlow } from "./edition_flow";
 import { useStudioServiceAsReactive } from "@web_studio/studio_service";
-import { useSubEnvAndServices } from "@web_studio/client_action/utils";
+import { useSubEnvAndServices, useServicesOverrides } from "@web_studio/client_action/utils";
 import { omit } from "@web/core/utils/objects";
 
 class DialogWithEnv extends Component {
@@ -29,6 +29,7 @@ class DialogWithEnv extends Component {
     }
 }
 const dialogService = {
+    dependencies: ["dialog"],
     start(env, { dialog }) {
         function addDialog(Component, _props, options) {
             const props = { env, Component, componentProps: _props };
@@ -39,7 +40,7 @@ const dialogService = {
 };
 
 const actionServiceStudio = {
-    dependencies: ["studio"],
+    dependencies: ["studio", "dialog"],
     start(env, { studio }) {
         const action = actionService.start(env);
         const _doAction = action.doAction;
@@ -57,31 +58,33 @@ const actionServiceStudio = {
     },
 };
 
+const routerService = {
+    start() {
+        return {
+            current: { hash: {} },
+            pushState() {},
+        };
+    },
+};
+
 const menuButtonsRegistry = registry.category("studio_navbar_menubuttons");
 export class Editor extends Component {
     static menuButtonsId = 1;
     setup() {
-        const services = Object.create(this.env.services);
-
         const globalBus = this.env.bus;
         const newBus = new EventBus();
         newBus.addEventListener("CLEAR-CACHES", () => globalBus.trigger("CLEAR-CACHES"));
 
         useSubEnv({
             bus: newBus,
-            services,
         });
 
-        // Assuming synchronousness for all services instanciation
-        services.router = {
-            current: { hash: {} },
-            pushState() {},
-        };
+        useServicesOverrides({
+            router: routerService,
+            dialog: dialogService,
+            action: actionServiceStudio,
+        });
         this.studio = useService("studio");
-
-        const originalDialog = services.dialog;
-        services.dialog = dialogService.start(this.env, { dialog: originalDialog });
-        services.action = actionServiceStudio.start(this.env, { studio: this.studio });
 
         const editionFlow = new EditionFlow(this.env, {
             rpc: useService("rpc"),

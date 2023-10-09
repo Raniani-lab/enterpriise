@@ -88,3 +88,56 @@ export function useSubEnvAndServices(env) {
     useSubEnv(env);
     useSubEnv({ services, bus });
 }
+
+/**
+ * Sorts a list topologically, each element's dependencies should be defined
+ * with the getDependencies callback.
+ * This is a copy of what is done in python: odoo.tools.misc.py:def topological_sort
+ * @params [Array] elems
+ * @params [Function] getDependencies
+ */
+function topologicalSort(elems, getDependencies) {
+    const result = [];
+    const visited = new Set();
+    function visit(n) {
+        if (visited.has(n)) {
+            return;
+        }
+        visited.add(n);
+        if (!elems.includes(n)) {
+            return;
+        }
+        // first visit all dependencies of n, then append n to result
+        for (const dep of getDependencies(n)) {
+            visit(dep);
+        }
+        result.push(n);
+    }
+
+    for (const el of elems) {
+        visit(el);
+    }
+
+    return result;
+}
+
+/**
+ * Allows to override the services defined in the env with a new instance
+ * of each one defined in "overrides".
+ * This function assumes all services in overrides start synchronously
+ * @params [Object] overrides: new instances of services to create
+ *     the key is the service's name, the value is the service definition
+ */
+export function useServicesOverrides(overrides) {
+    let env = useEnv();
+    const services = Object.create(env.services);
+
+    useSubEnv({ services });
+    env = useEnv();
+    const getDependencies = (name) => overrides[name]?.dependencies || [];
+    const topoSorted = topologicalSort(Object.keys(overrides), getDependencies);
+
+    for (const servName of topoSorted) {
+        services[servName] = overrides[servName].start(env, services);
+    }
+}

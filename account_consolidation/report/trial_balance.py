@@ -77,7 +77,8 @@ class TrialBalanceCustomHandler(models.AbstractModel):
         if len(selected_periods) == 1:
             columns += self._get_journals_headers(options)
         else:
-            periods_columns = [{'name': period.display_name, 'class': 'number'} for period in selected_periods]
+            periods_columns = [
+                {'name': f'{period.display_name} ({period.display_dates})', 'class': 'number'} for period in selected_periods]
             # Add the percentage column
             if len(selected_periods) == 2:
                 columns += periods_columns + [{'name': '%', 'class': 'number'}]

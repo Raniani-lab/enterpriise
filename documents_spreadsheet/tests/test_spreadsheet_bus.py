@@ -79,7 +79,7 @@ class TestSpreadsheetBus(SpreadsheetTestCommon, MailCase):
         current_revision_id = spreadsheet.server_revision_id
         self.snapshot(
             spreadsheet,
-            current_revision_id, "snapshot-revision-id", {"sheets": []},
+            current_revision_id, "snapshot-revision-id", {"sheets": [], "revisionId": "snapshot-revision-id"},
         )
         self.assertEqual(
             self.poll_spreadsheet(spreadsheet.id),

@@ -116,6 +116,15 @@ class SpreadsheetCollaborative(SpreadsheetTestCommon):
             "It should have updated the snapshot revision"
         )
 
+    def test_snapshot_inconsistent_revision_id(self):
+        spreadsheet = self.create_spreadsheet()
+        with self.assertRaises(ValueError):
+            self.snapshot(
+                spreadsheet,
+                spreadsheet.server_revision_id, "snapshot-revision-id", {"sheets": [], "revisionId": "another-revision-id"},
+            )
+
+
     def test_snapshot_spreadsheet_with_invalid_revision(self):
         spreadsheet = self.create_spreadsheet()
         spreadsheet.join_spreadsheet_session()
@@ -126,7 +135,7 @@ class SpreadsheetCollaborative(SpreadsheetTestCommon):
         self.assertEqual(
             len(spreadsheet.spreadsheet_revision_ids), 1, "It should have 1 revision"
         )
-        is_accepted = self.snapshot(spreadsheet, first_revision, "snapshot-revision-id", "new data")
+        is_accepted = self.snapshot(spreadsheet, first_revision, "snapshot-revision-id", {"revisionId": "snapshot-revision-id"})
         self.assertFalse(is_accepted, "It should not have accepted the snapshot")
         self.assertEqual(spreadsheet.spreadsheet_snapshot, current_data, "It should not have saved the data")
         self.assertEqual(
@@ -151,7 +160,7 @@ class SpreadsheetCollaborative(SpreadsheetTestCommon):
         )
         self.snapshot(
             spreadsheet,
-            spreadsheet.server_revision_id, "snapshot-id", "{}",
+            spreadsheet.server_revision_id, "snapshot-id", {"revisionId": "snapshot-id"},
         )
         revisions = spreadsheet.with_context(active_test=False).spreadsheet_revision_ids
         self.assertTrue(revisions)
@@ -348,7 +357,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
         with self.assertRaises(AccessError):
             self.snapshot(
                 self.spreadsheet.with_user(self.user),
-                self.spreadsheet.server_revision_id, "snapshot-id", "{}",
+                self.spreadsheet.server_revision_id, "snapshot-id", {"revisionId": "snapshot-id"},
             )
 
     def test_snapshot_user_with_doc_access(self):
@@ -360,7 +369,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
         self.env.invalidate_all()
         self.snapshot(
             self.spreadsheet.with_user(self.user),
-            self.spreadsheet.server_revision_id, "snapshot-id", "{}",
+            self.spreadsheet.server_revision_id, "snapshot-id", {"revisionId": "snapshot-id"},
         )
         self.assertEqual(len(self.spreadsheet.spreadsheet_revision_ids), 0)
 

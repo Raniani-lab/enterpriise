@@ -52,7 +52,7 @@ class SpreadsheetDashboardAccess(TransactionCase):
             "type": "SNAPSHOT",
             "serverRevisionId": "rev-2-id",
             "nextRevisionId": "rev-3-id",
-            "data": {},
+            "data": {"revisionId": "rev-3-id"},
         })
         revisions = dashboard.with_context(active_test=False).spreadsheet_revision_ids
         self.assertEqual(len(revisions.exists()), 2)

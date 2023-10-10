@@ -152,7 +152,7 @@ class SpreadsheetSharing(SpreadsheetTestCommon):
                 "type": "SNAPSHOT",
                 "serverRevisionId": document.sudo().server_revision_id,
                 "nextRevisionId": "snapshot-revision-id",
-                "data": r"{}",
+                "data": {"revisionId": "snapshot-revision-id"},
             }
             with self.assertRaises(AccessError):
                 document.dispatch_spreadsheet_message(snapshot_revision)
@@ -162,7 +162,7 @@ class SpreadsheetSharing(SpreadsheetTestCommon):
                 "type": "SNAPSHOT",
                 "serverRevisionId": document.sudo().server_revision_id,
                 "nextRevisionId": "snapshot-revision-id",
-                "data": r"{}",
+                "data": {"revisionId": "snapshot-revision-id"},
             }
             with self.assertRaises(AccessError):
                 document.dispatch_spreadsheet_message(
@@ -174,7 +174,7 @@ class SpreadsheetSharing(SpreadsheetTestCommon):
                 "type": "SNAPSHOT",
                 "serverRevisionId": document.sudo().server_revision_id,
                 "nextRevisionId": "snapshot-revision-id",
-                "data": r"{}",
+                "data": {"revisionId": "snapshot-revision-id"},
             }
             accepted = document.dispatch_spreadsheet_message(
                 snapshot_revision, share.id, token

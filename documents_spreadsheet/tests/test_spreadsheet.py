@@ -596,7 +596,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         spreadsheet.dispatch_spreadsheet_message(self.new_revision_data(spreadsheet))
         self.snapshot(
             spreadsheet,
-            spreadsheet.server_revision_id, "snapshot-revision-id", {"sheets": []},
+            spreadsheet.server_revision_id, "snapshot-revision-id", {"sheets": [], "revisionId": "snapshot-revision-id"},
         )
         copy = spreadsheet.copy()
         self.assertEqual(

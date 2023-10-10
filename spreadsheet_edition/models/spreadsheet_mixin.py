@@ -164,6 +164,9 @@ class SpreadsheetMixin(models.AbstractModel):
         :param spreadsheet_snapshot: spreadsheet data
         :return: True if the snapshot was saved, False otherwise
         """
+        if snapshot_revision_id != spreadsheet_snapshot.get("revisionId"):
+            raise ValueError("The snapshot revision id does not match the revision id")
+
         is_accepted = self._save_concurrent_revision(
             snapshot_revision_id,
             revision_id,

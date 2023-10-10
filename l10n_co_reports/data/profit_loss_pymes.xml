@@ -32,7 +32,7 @@
                         <field name="code">L10N_CO_PNL_INO</field>
                         <field name="name">Non-operational</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">-42 - 999002</field>
+                        <field name="account_codes_formula">-42</field>
                         <field name="groupby">account_id</field>
                     </record>
                 </field>
@@ -106,7 +106,7 @@
                             <record id="l10n_co_pl_account_report_expenses_non_operational_balance" model="account.report.expression">
                                 <field name="label">balance</field>
                                 <field name="engine">account_codes</field>
-                                <field name="formula">53 + 999001</field>
+                                <field name="formula">53</field>
                                 <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>

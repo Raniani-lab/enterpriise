@@ -39,7 +39,8 @@ class PosOrder(models.Model):
         if self.company_id.country_id.code == 'MX':
             vals.update({
                 'l10n_mx_edi_cfdi_to_public': self.l10n_mx_edi_cfdi_to_public,
-                'l10n_mx_edi_usage': self.l10n_mx_edi_usage,
+                # If the invoice was created through the QRCode on the ticket we take the usage from the filled form
+                'l10n_mx_edi_usage': self.env.context.get('default_l10n_mx_edi_usage') or self.l10n_mx_edi_usage,
                 # In case of several pos.payment.method, pick the one with the highest amount
                 'l10n_mx_edi_payment_method_id': self.payment_ids.sorted(
                     lambda p: -p.amount)[:1].payment_method_id.l10n_mx_edi_payment_method_id.id,

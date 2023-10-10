@@ -44,6 +44,7 @@ class TestMxEdiCommon(AccountTestInvoicingCommon):
             'l10n_mx_edi_pac': 'solfact',
             'l10n_mx_edi_pac_test_env': True,
             'l10n_mx_edi_fiscal_regime': '601',
+            'account_fiscal_country_id': cls.env.ref('base.mx').id,
         })
 
         with freeze_time(cls.frozen_today):

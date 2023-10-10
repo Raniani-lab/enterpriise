@@ -25,7 +25,6 @@ class TestMailGateway(MailCommon):
         })
         cls.alias = cls.env['mail.alias'].create({
             'alias_name': 'inbox-test',
-            'alias_user_id': False,
             'alias_model_id': cls.env['ir.model']._get('documents.document').id,
             'alias_parent_model_id': cls.env['ir.model']._get('documents.share').id,
             'alias_parent_thread_id': cls.share_link.id,

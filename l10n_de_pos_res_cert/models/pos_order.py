@@ -97,11 +97,11 @@ class PosOrder(models.Model):
         keys = itemgetter('product_id', 'price_unit', 'discount')
         for k, g in groupby(sorted(order_lines, key=keys), key=keys):
             group = list(g)
-            unit_price = str(group[0]['price_subtotal_incl']/group[0]['qty'])
+            unit_price = group[0]['price_subtotal_incl']/group[0]['qty']
             line_dict[k] = {
                 'quantity': sum(line['qty'] for line in group),
                 'text': group[0]['full_product_name'],
-                'price_per_unit': unit_price + '0' if len(unit_price.split('.')[1]) < 2 else unit_price
+                'price_per_unit': unit_price
             }
 
         return line_dict

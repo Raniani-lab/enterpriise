@@ -230,6 +230,9 @@ export class AccountReportFilters extends Component {
     }
 
     async filterTaxUnit(taxUnit) {
+        await this.controller.updateOption('tax_unit', taxUnit.id);
+        this.controller.saveSessionOptions(this.controller.options);
+
         // force the company to those impacted by the tax units
         this.companyService.nextAvailableCompanies.splice(0, this.companyService.nextAvailableCompanies.length);
         taxUnit.company_ids.forEach((company_id) => this.companyService.setCompanies("toggle", company_id))

@@ -1347,3 +1347,13 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
             </xpath>
         </data>
         '''.format(binary_field=binary_field))
+
+    def test_undo_new_field(self):
+        self.testView.arch = '''
+        <form>
+            <group>
+                <field name="name" />
+            </group>
+        </form>
+        '''
+        self.start_tour("/web?debug=tests", "web_studio_test_undo_new_field", login="admin", timeout=200)

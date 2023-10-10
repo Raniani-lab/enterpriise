@@ -68,8 +68,9 @@ export class StudioView extends Component {
         const config = {
             ...this.env.config,
             onNodeClicked: (xpath) => {
-                this.updateActiveNode({ xpath });
-                this.viewEditorModel.activeNodeXpath = xpath;
+                if (this.updateActiveNode({ xpath })) {
+                    this.viewEditorModel.activeNodeXpath = xpath;
+                }
             },
         };
 
@@ -97,15 +98,17 @@ export class StudioView extends Component {
             if (resetSidebarOnNotFound) {
                 vem.resetSidebar();
             }
-            return;
+            return false;
         }
         if (vem.editorInfo.editor.styleClickedElement) {
-            return vem.editorInfo.editor.styleClickedElement(this.viewRenderer, { xpath });
+            vem.editorInfo.editor.styleClickedElement(this.viewRenderer, { xpath });
+            return true;
         }
         const clickable = el.closest(".o-web-studio-editor--element-clickable");
         if (clickable) {
             clickable.classList.add("o-web-studio-editor--element-clicked");
         }
+        return true;
     }
 }
 StudioView.components = { WithSearch };

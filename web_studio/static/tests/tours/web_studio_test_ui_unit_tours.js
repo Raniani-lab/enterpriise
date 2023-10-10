@@ -947,3 +947,29 @@ registry.category("web_tour.tours").add("web_studio_test_related_file", {
         },
     ],
 });
+
+registry.category("web_tour.tours").add("web_studio_test_undo_new_field", {
+    test: true,
+    steps: () => [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            trigger: ".o_form_view .o_form_editable",
+        },
+        {
+            trigger: ".o_web_studio_navbar_item button",
+        },
+        {
+            trigger: ".o_web_studio_sidebar .o_web_studio_new_fields .o_web_studio_field_integer",
+            run: "drag_and_drop_native (.o_web_studio_form_view_editor .o_web_studio_hook:eq(1))",
+        },
+        {
+            trigger: "button.o_web_studio_undo.o_web_studio_active",
+        },
+        {
+            trigger: ".o_web_studio_leave",
+            isCheck: true,
+        }
+    ]
+});

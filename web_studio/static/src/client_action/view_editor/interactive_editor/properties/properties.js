@@ -33,6 +33,6 @@ export class Properties extends Component {
     }
 
     get nodeType() {
-        return this.node.arch.tagName;
+        return this.node?.arch.tagName;
     }
 }

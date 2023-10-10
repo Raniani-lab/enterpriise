@@ -23,6 +23,9 @@ def _account_accountant_post_init(env):
             module_list.append('account_bank_statement_import_camt')
         if country_code in ('AU', 'CA', 'US'):
             module_list.append('account_reports_cash_basis')
+        # The customer statement is customary in Australia and New Zealand.
+        if country_code in ('AU', 'NZ'):
+            module_list.append('l10n_account_customer_statements')
 
         module_ids = env['ir.module.module'].search([('name', 'in', module_list), ('state', '=', 'uninstalled')])
         if module_ids:

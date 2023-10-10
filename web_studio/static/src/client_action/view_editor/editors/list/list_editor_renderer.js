@@ -181,14 +181,14 @@ export class ListEditorRenderer extends listView.Renderer {
         this.env.config.onNodeClicked(colEl.dataset.studioXpath);
     }
 
-    makeTooltip(button) {
+    makeTooltipButton(button) {
         return JSON.stringify({
             button: {
                 string: button.string,
                 type: button.clickParams?.type,
                 name: button.clickParams?.name,
             },
-            debug: true, 
+            debug: true,
         });
     }
 }

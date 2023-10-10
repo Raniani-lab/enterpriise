@@ -12,7 +12,7 @@
               t-att-studioxpath="button.studioXpath"
               t-att-data-studio-xpath="button.studioXpath"
               t-att-data-tooltip-template="this.env.debug ? 'views.ViewButtonTooltip' : false"
-              t-att-data-tooltip-info="this.env.debug ? makeTooltip(button) : false"
+              t-att-data-tooltip-info="this.env.debug ? makeTooltipButton(button) : false"
               data-tooltip-delay="1000"
               t-on-click="() => this.env.config.onNodeClicked(button.studioXpath)">
               <t t-esc="button.string"></t>

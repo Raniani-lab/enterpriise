@@ -17,6 +17,9 @@ class AppointmentResource(models.Model):
         help="""The sequence dictates if the resource is going to be picked in higher priority against another resource
         (e.g. for 2 tables of 4, the lowest sequence will be picked first)""")
     resource_id = fields.Many2one(copy=False)
+    resource_calendar_id = fields.Many2one(default=False,
+        help="""When set, only the time slots that match both the appointment type configuration and the work schedule
+        will appear as available""")
     capacity = fields.Integer("Capacity", default=1, required=True,
         help="""Maximum amount of people for this resource (e.g. Table for 6 persons, ...)""")
     shareable = fields.Boolean("Shareable",

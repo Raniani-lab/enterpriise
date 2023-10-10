@@ -43,7 +43,12 @@
                             <field name="shareable" invisible="capacity &lt;= 1"/>
                             <field name="linked_resource_ids" widget="many2many_tags" options="{'no_create': True}"
                                 domain="[('id', '!=', id)]"/>
-                            <field name="resource_calendar_id" string="Default Opening Hours"/>
+                        </group>
+                    </group>
+                    <group col="4" class="px-3">
+                        <group colspan="3">
+                            <field name="resource_calendar_id" string="Opening Hours"
+                                placeholder="Pick a work schedule to further restrict opening hours."/>
                         </group>
                     </group>
                     <notebook>

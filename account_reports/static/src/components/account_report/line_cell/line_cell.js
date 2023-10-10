@@ -76,10 +76,11 @@ export class AccountReportLineCell extends Component {
     async audit() {
         const auditAction = await this.orm.call(
             "account.report",
-            "action_audit_cell",
+            "dispatch_report_action",
             [
                 this.controller.options.report_id,
                 this.controller.options,
+                "action_audit_cell",
                 {
                     report_line_id: this.props.cell.report_line_id,
                     expression_label: this.props.cell.expression_label,

@@ -8,6 +8,10 @@ from odoo.exceptions import UserError
 from odoo.tools import groupby
 
 
+DEFERRED_DATE_MIN = '1900-01-01'
+DEFERRED_DATE_MAX = '9999-12-31'
+
+
 class DeferredReportCustomHandler(models.AbstractModel):
     _name = 'account.deferred.report.handler'
     _inherit = 'account.report.custom.handler'
@@ -23,6 +27,33 @@ class DeferredReportCustomHandler(models.AbstractModel):
     def _get_deferred_report_type(self):
         raise NotImplementedError("This method is not implemented in the deferred report handler.")
 
+    def _get_domain(self, report, options, filter_already_generated):
+        domain = report._get_options_domain(options, "from_beginning")
+        account_types = ('expense', 'expense_depreciation', 'expense_direct_cost') if self._get_deferred_report_type() == 'expense' else ('income', 'income_other')
+        domain += [
+            ('account_id.account_type', 'in', account_types),
+            ('deferred_start_date', '!=', False),
+            ('deferred_end_date', '!=', False),
+            ('deferred_end_date', '>=', options['date']['date_from']),
+            ('move_id.date', '<=', options['date']['date_to']),
+        ]
+        domain += [  # Exclude if entirely inside the period
+            '!', '&', '&', '&',
+            ('deferred_start_date', '>=', options['date']['date_from']),
+            ('deferred_start_date', '<=', options['date']['date_to']),
+            ('deferred_end_date', '>=', options['date']['date_from']),
+            ('deferred_end_date', '<=', options['date']['date_to']),
+        ]
+        if filter_already_generated:
+            domain += [
+                ('deferred_end_date', '>=', options['date']['date_from']),
+                '!',
+                    '&',
+                    ('move_id.deferred_move_ids.date', '=', options['date']['date_to']),
+                    ('move_id.deferred_move_ids.state', '=', 'posted'),
+            ]
+        return domain
+
     def _custom_options_initializer(self, report, options, previous_options=None):
         super()._custom_options_initializer(report, options, previous_options=previous_options)
         options['columns'][0]['name'] = options['date']['string']
@@ -37,20 +68,23 @@ class DeferredReportCustomHandler(models.AbstractModel):
         total_column = [{
             **options['columns'][0],
             'name': _('Total'),
-            'date_from': '1900-01-01',
-            'date_to': '9999-12-31',
+            'expression_label': 'total',
+            'date_from': DEFERRED_DATE_MIN,
+            'date_to': DEFERRED_DATE_MAX,
         }]
         before_column = [{
             **options['columns'][0],
             'name': _('Before'),
-            'date_from': '1900-01-01',
+            'expression_label': 'before',
+            'date_from': DEFERRED_DATE_MIN,
             'date_to': options['columns'][0]['date_from'],
         }]
         later_column = [{
             **options['columns'][0],
             'name': _('Later'),
+            'expression_label': 'later',
             'date_from': options['columns'][-1]['date_to'],
-            'date_to': '9999-12-31',
+            'date_to': DEFERRED_DATE_MAX,
         }]
         options['columns'] = total_column + before_column + options['columns'] + later_column
         options['column_headers'] = []
@@ -67,7 +101,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
             raise UserError(_("Please set the deferred journal in the accounting settings."))
         options['all_entries'] = False  # We only want to create deferrals for posted moves
         lines = self._get_lines(options, filter_already_generated=True)
-        period = (fields.Date.from_string('1900-01-01'), fields.Date.from_string(options['date']['date_to']))
+        period = (fields.Date.to_date(DEFERRED_DATE_MIN), fields.Date.to_date(options['date']['date_to']))
         deferral_entry_period = self.env['account.report']._get_dates_period(*period, 'range', period_type='month')
         ref = _("Grouped Deferral Entry of %s", deferral_entry_period['string'])
         ref_rev = _("Reversal of Grouped Deferral Entry of %s", deferral_entry_period['string'])
@@ -122,6 +156,78 @@ class DeferredReportCustomHandler(models.AbstractModel):
                 'expand': True,
             },
             'target': 'current',
+        }
+
+    def action_audit_cell(self, options, params):
+        """ Open a list of invoices/bills and/or deferral entries for the clicked cell in a deferred report
+
+        :param dict options: the report's `options`
+        :param dict params:  a dict containing:
+                                 `calling_line_dict_id`: line id containing the optional account of the cell
+                                 `column_group_id`: the column group id of the cell
+                                 `expression_label`: the expression label of the cell
+        """
+        report = self.env['account.report'].browse(options['report_id'])
+        column_values = next(
+            (column for column in options['columns'] if (
+                column['column_group_key'] == params.get('column_group_key')
+                and column['expression_label'] == params.get('expression_label')
+            )),
+            None
+        )
+        if not column_values:
+            return
+
+        column_date_from = fields.Date.to_date(column_values['date_from'])
+        column_date_to = fields.Date.to_date(column_values['date_to'])
+        report_date_from = fields.Date.to_date(options['date']['date_from'])
+        report_date_to = fields.Date.to_date(options['date']['date_to'])
+        deferred_date_min = fields.Date.to_date(DEFERRED_DATE_MIN)
+        deferred_date_max = fields.Date.to_date(DEFERRED_DATE_MAX)
+
+        # Corrections for comparisons
+        if column_date_to == deferred_date_max and column_date_from != deferred_date_min:
+            # Later period starts one day after `report_date_to`
+            column_date_from = report_date_to + relativedelta(days=1)
+        if column_date_from == deferred_date_min and column_date_to != deferred_date_max:
+            # Before period ends one day before `report_date_from`
+            column_date_to = report_date_from - relativedelta(days=1)
+
+        # calling_line_dict_id is of the format `~account.report~15|~account.account~25`
+        model, account_id = report._get_model_info_from_id(params.get('calling_line_dict_id'))
+        if model != 'account.account':
+            account_id = None
+
+        # Find the original lines to be deferred in the report period
+        original_move_lines_domain = self._get_domain(report, options, False)
+        if account_id:
+            # We're auditing a specific account, so we only want moves containing this account
+            original_move_lines_domain.append(('account_id', '=', account_id))
+        # We're getting all lines from the concerned moves. They are filtered later for flexibility.
+        original_move = self.env['account.move.line'].search(original_move_lines_domain).move_id
+
+        # For the Total period only show the original move lines
+        line_ids = original_move.line_ids.ids
+
+        # Show both the original move lines and deferral move lines for all other periods
+        if not (column_date_from == deferred_date_min and column_date_to == deferred_date_max):
+            line_ids += original_move.deferred_move_ids.line_ids.ids
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Deferred Entries'),
+            'res_model': 'account.move.line',
+            'domain': [('id', 'in', line_ids)],
+            'views': [(False, 'tree'), (False, 'form')],
+            # Most filters are set here to allow auditing flexibility to the user
+            'context': {
+                'search_default_pl_accounts': True,
+                'search_default_account_id': account_id,
+                'date_from': column_date_from,
+                'date_to': column_date_to,
+                'search_default_date_between': True,
+                'expand': True,
+            }
         }
 
     def _get_lines(self, options, filter_already_generated=False):
@@ -263,16 +369,16 @@ class DeferredReportCustomHandler(models.AbstractModel):
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         def get_columns(totals):
             return [
-                report._build_column_dict(
-                    totals[period],
-                    {
-                        'figure_type': 'monetary',
-                        'expression_label': 'total',
-                    },
-                    options=options,
-                    currency=self.env.company.currency_id,
-                )
-                for period in periods
+                {
+                    **report._build_column_dict(
+                        totals[(fields.Date.to_date(column['date_from']), fields.Date.to_date(column['date_to']))],
+                        column,
+                        options=options,
+                        currency=self.env.company.currency_id,
+                    ),
+                    'auditable': True,
+                }
+                for column in options['columns']
             ]
 
         if warnings is not None:

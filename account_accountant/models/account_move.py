@@ -11,6 +11,8 @@ from odoo.exceptions import UserError
 from odoo.osv import expression
 from odoo.tools import SQL
 
+from odoo.addons.account_reports.models.account_deferred_reports import DEFERRED_DATE_MAX
+
 _logger = logging.getLogger(__name__)
 
 
@@ -144,7 +146,7 @@ class AccountMove(models.Model):
         for line in lines:
             line_start = fields.Date.to_date(line['deferred_start_date'])
             line_end = fields.Date.to_date(line['deferred_end_date'])
-            later_date = fields.Date.to_date('9999-12-31')
+            later_date = fields.Date.to_date(DEFERRED_DATE_MAX)
             if line_end < line_start:
                 # This normally shouldn't happen, but if it does, would cause calculation errors later on.
                 # To not make the reports crash, we just set both dates to the same day.

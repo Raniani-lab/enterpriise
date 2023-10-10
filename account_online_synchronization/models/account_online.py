@@ -55,8 +55,9 @@ class AccountOnlineAccount(models.Model):
 
     @api.constrains('journal_ids')
     def _check_journal_ids(self):
-        if len(self.journal_ids) > 1:
-            raise ValidationError(_('You cannot have two journals associated with the same Online Account.'))
+        for online_account in self:
+            if len(online_account.journal_ids) > 1:
+                raise ValidationError(_('You cannot have two journals associated with the same Online Account.'))
 
     def _assign_journal(self):
         """

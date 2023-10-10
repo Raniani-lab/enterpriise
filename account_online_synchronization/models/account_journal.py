@@ -54,8 +54,9 @@ class AccountJournal(models.Model):
 
     @api.constrains('account_online_account_id')
     def _check_account_online_account_id(self):
-        if len(self.account_online_account_id.journal_ids) > 1:
-            raise ValidationError(_('You cannot have two journals associated with the same Online Account.'))
+        for journal in self:
+            if len(journal.account_online_account_id.journal_ids) > 1:
+                raise ValidationError(_('You cannot have two journals associated with the same Online Account.'))
 
     @api.model
     def _cron_fetch_online_transactions(self):

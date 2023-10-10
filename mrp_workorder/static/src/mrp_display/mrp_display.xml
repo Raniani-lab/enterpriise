@@ -23,7 +23,7 @@
                 </t>
                 <t t-set-slot="control-panel-navigation-additional">
                     <SearchBar/>
-                    <button class="btn btn-light fa fa-refresh" t-on-click="env.reload"/>
+                    <button class="btn btn-light fa fa-refresh" t-on-click="onClickRefresh"/>
                     <button class="o_home_menu btn btn-light text-nowrap" t-on-click="close">
                         <i class="fa fa-lg fa-sign-out me-md-1"/><span class="d-none d-md-inline">Close</span>
                     </button>
@@ -33,7 +33,7 @@
                     popupAddEmployee.bind="useEmployee.popupAddEmployee"
                     logout.bind="useEmployee.logout"/>
                 <div class="o_mrp_display_records flex-grow-1 m-2">
-                    <t t-foreach="relevantRecords" t-as="record" t-key="record.id">
+                    <t t-foreach="relevantSortedRecords" t-as="record" t-key="record.id">
                         <MrpDisplayRecord
                             addToValidationStack.bind="addToValidationStack"
                             groups="groups"

@@ -98,6 +98,7 @@ export class MrpDisplay extends Component {
         );
         this.notification = useService("notification");
         this.orm = useService("orm");
+        this.sortOrderCache = { ids: [] };
 
         onWillStart(async () => {
             this.groups = {
@@ -210,21 +211,7 @@ export class MrpDisplay extends Component {
     }
 
     get productions() {
-        const productions = this.model.root.records;
-        // Should be in active fields
-        const statesComparativeValues = {
-            progress: 0,
-            to_close: 1,
-            confirmed: 2,
-        };
-        productions.sort((p1, p2) => {
-            const v1 = statesComparativeValues[p1.data.state];
-            const v2 = statesComparativeValues[p2.data.state];
-            const d1 = p1.data.date_start;
-            const d2 = p2.data.date_start;
-            return v1 - v2 || d1 - d2;
-        });
-        return productions;
+        return this.model.root.records;
     }
 
     get workorders() {
@@ -328,12 +315,12 @@ export class MrpDisplay extends Component {
             if (action && typeof action === "object") {
                 return this.actionService.doAction(action);
             }
-            this.env.reload();
             this.validationStack = {
                 "mrp.production": [],
                 "mrp.workorder": [],
             };
         }
+        this.env.reload();
         return { success: true };
     }
 
@@ -341,6 +328,11 @@ export class MrpDisplay extends Component {
         if (this.state.activeResModel === "mrp.workorder") {
             if (this.state.activeWorkcenter === -1) {
                 // 'My' workcenter selected -> return the ones where the current employee is working on.
+                if (this.sortOrderCache.ids.length) {
+                    return this.workorders.filter((wo) =>
+                        this.sortOrderCache.ids.includes(wo.resId)
+                    );
+                }
                 return this.workorders.filter((wo) => this.adminWorkorderIds.includes(wo.resId));
             }
             return this.workorders.filter(
@@ -350,6 +342,23 @@ export class MrpDisplay extends Component {
             );
         }
         return this.model.root.records;
+    }
+
+    get relevantSortedRecords() {
+        const records = this.relevantRecords;
+        if (!this.sortOrderCache.ids.length) {
+            this.sortOrderCache.ids = records.map((r) => r.resId);
+            return records;
+        }
+        for (const record of records) {
+            if (!this.sortOrderCache.ids.includes(record.resId)){
+                this.sortOrderCache.ids.push(record.resId);
+            }
+        }
+        return records.sort(
+            (a, b) =>
+                this.sortOrderCache.ids.indexOf(a.resId) - this.sortOrderCache.ids.indexOf(b.resId)
+        );
     }
 
     get adminWorkorderIds() {
@@ -368,6 +377,7 @@ export class MrpDisplay extends Component {
         // Waits all the MO under validation are actually validated before to change the WC.
         const result = await this.processValidationStack();
         if (result.success) {
+            this.sortOrderCache.ids = [];
             this.state.activeWorkcenter = Number(workcenterId);
             this.state.activeResModel = this.state.activeWorkcenter
                 ? "mrp.workorder"
@@ -446,6 +456,11 @@ export class MrpDisplay extends Component {
             activeFields: checkFields,
         };
         return params;
+    }
+
+    onClickRefresh() {
+        this.env.reload();
+        this.sortOrderCache.ids = [];
     }
 
     demoMORecords = [

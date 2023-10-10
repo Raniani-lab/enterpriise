@@ -528,9 +528,9 @@ class SaleOrder(models.Model):
         res = super()._mail_track(tracked_fields, initial_values)
         if not self.is_subscription:
             return res
-        # Take into account negative MRR who shoult not create any logs.
+        # When the mrr is < 0, the contract is considered free, it does not invoice and therefore we should not consider that amount in the logs
         mrr = max(self.recurring_monthly, 0) if self.subscription_state in SUBSCRIPTION_PROGRESS_STATE else 0
-        initial_mrr = initial_values.get('recurring_monthly', mrr) if initial_values.get('subscription_state', self.subscription_state) in SUBSCRIPTION_PROGRESS_STATE else 0
+        initial_mrr = max(initial_values.get('recurring_monthly', mrr), 0) if initial_values.get('subscription_state', self.subscription_state) in SUBSCRIPTION_PROGRESS_STATE else 0
         values = {'event_date': fields.Date.context_today(self),
                   'order_id': self.id,
                   'currency_id': self.currency_id.id,

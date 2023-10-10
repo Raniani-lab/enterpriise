@@ -75,7 +75,8 @@ class SaleOrderLog(models.Model):
         sub = self.env['sale.order'].browse(values['order_id'])
         new_currency = sub.currency_id
         parent_currency = sub.subscription_id.currency_id
-        parent_mrr = parent_currency._convert(sub.subscription_id.recurring_monthly,
+        parent_recurring_monthly = max(sub.subscription_id.recurring_monthly, 0)
+        parent_mrr = parent_currency._convert(parent_recurring_monthly,
                                               to_currency=new_currency,
                                               company=sub.env.company,
                                               date=event_date, round=False)
@@ -83,18 +84,19 @@ class SaleOrderLog(models.Model):
             lambda l: l.subscription_state == '5_renewed')
         transfer_date = parent_transfer_log and parent_transfer_log.sorted('event_date')[-1].event_date or event_date
         # Creation of renewal: transfer and MRR change
-        values.update({
+        transfer_values = values.copy()
+        transfer_values.update({
             'event_type': '3_transfer',
             'amount_signed': parent_mrr,
             'recurring_monthly': parent_mrr,
             'event_date': transfer_date,
         })
-        log = self.sudo().create(values)
-        if not float_is_zero(sub.recurring_monthly - parent_mrr, precision_rounding=new_currency.rounding):
+        log = self.sudo().create(transfer_values)
+        if not float_is_zero(values['recurring_monthly'] - parent_mrr, precision_rounding=new_currency.rounding):
             values.update({
                 'event_type': self._get_change_event_type(new_currency, sub.recurring_monthly - parent_mrr),
-                'recurring_monthly': sub.recurring_monthly,
-                'amount_signed': sub.recurring_monthly - parent_mrr,
+                'recurring_monthly': values['recurring_monthly'],
+                'amount_signed': values['recurring_monthly'] - parent_mrr,
                 'event_date': transfer_date,
             })
             self.sudo().create(values)
@@ -110,7 +112,7 @@ class SaleOrderLog(models.Model):
         if churn_log:
             previous_mrr = - churn_log.amount_signed
             churn_log.unlink()
-        mrr_difference = sub.recurring_monthly - previous_mrr
+        mrr_difference = values['recurring_monthly']  - previous_mrr # arj todo reopen with negative values
         if not float_is_zero(mrr_difference, precision_rounding=sub.currency_id.rounding):
             values.update({
                 'event_type': self._get_change_event_type(sub.currency_id, mrr_difference),
@@ -131,7 +133,7 @@ class SaleOrderLog(models.Model):
 
         if not float_is_zero(mrr_difference, precision_rounding=sub.currency_id.rounding):
             values.update({'amount_signed': mrr_difference,
-                           'recurring_monthly': sub.recurring_monthly})
+                           'recurring_monthly': values['recurring_monthly']})
             if sub.order_log_ids:
                 # Simple contraction or extension
                 values['event_type'] = self._get_change_event_type(sub.currency_id, mrr_difference)
@@ -174,11 +176,10 @@ class SaleOrderLog(models.Model):
 
     @api.model
     def _create_log(self, values, initial_values):
-        values = values.copy()
         log = None
         initial_state = initial_values.get('subscription_state')
         if initial_state and initial_state != values.get('subscription_state'):
-            log = self._create_stage_log(values, initial_values)
+            log = self._create_stage_log(values.copy(), initial_values)
         if not log and values.get('amount_signed') and initial_state != '6_churn':  # If we reopen, we don't want addition mrr log
-            log = self._create_mrr_log(values, initial_values)
+            log = self._create_mrr_log(values.copy(), initial_values)
         return log

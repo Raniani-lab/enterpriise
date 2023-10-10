@@ -2655,10 +2655,10 @@ class TestSubscription(TestSubscriptionCommon):
             renew_logs = renewal_so.order_log_ids.sorted(key=lambda log: (log.event_date, log.id))
             renew_data = [(log.event_type, log.event_date, log.amount_signed, log.recurring_monthly, log.currency_id)
                           for log in renew_logs]
-            self.assertEqual(renew_data,
-                             [('3_transfer', datetime.date(2023, 4, 29), 200, 200, other_currency),
-                              ('1_expansion', datetime.date(2023, 4, 29), 400, 600, other_currency)
-                              ])
+            self.assertEqual(renew_data, [
+                ('3_transfer', datetime.date(2023, 4, 29), 200, 200, other_currency),
+                ('1_expansion', datetime.date(2023, 4, 29), 400, 600, other_currency)
+            ])
 
     def test_protected_close_reason(self):
         close_reason = self.env['sale.order.close.reason'].create({
@@ -3131,3 +3131,120 @@ class TestSubscription(TestSubscriptionCommon):
         new_move = self.env['account.move'].browse(reversal['res_id'])
         new_move.action_post()
         self.assertEqual(self.subscription.order_line.qty_invoiced, 2.0, "Invoiced quantity on the order line is not correct")
+
+    def test_negative_subscription(self):
+        nr_product = self.env['product.template'].create({
+                'name': 'Non recurring product',
+                'type': 'service',
+                'uom_id': self.product.uom_id.id,
+                'list_price': 25,
+                'invoice_policy': 'order',
+            })
+            # nr_product.taxes_id = False # we avoid using taxes in this example
+        self.pricing_year.unlink()
+        self.pricing_month.price = 25
+        self.product2.list_price = -25.0
+        self.product.product_subscription_pricing_ids.unlink()
+        self.sub_product_tmpl.list_price = -30
+        self.product_tmpl_2.list_price = -10
+        self.product2.product_subscription_pricing_ids.unlink()
+        sub_negative_recurring = self.env['sale.order'].create({
+            'name': 'sub_negative_recurring (1)',
+            'partner_id': self.partner.id,
+            'plan_id': self.plan_month.id,
+            'order_line': [
+                (0, 0, {
+                    'name': self.product.name,
+                    'product_id': self.product.id,
+                    'product_uom_qty': 2.0,
+                    'product_uom': self.product.uom_id.id,
+                }),
+                (0, 0, {
+                    'name': self.product.name,
+                    'product_id': self.product2.id,
+                    'product_uom_qty': 2.0,
+                    'product_uom': self.product2.uom_id.id,
+                }),
+            ],
+        })
+        negative_nonrecurring_sub = self.env['sale.order'].create({
+            'name': 'negative_nonrecurring_sub (2)',
+            'partner_id': self.partner.id,
+            'plan_id': self.plan_month.id,
+            'order_line': [
+                (0, 0, {
+                    'name': self.product.name,
+                    'product_id': self.product.id,
+                    'product_uom_qty': 2.0,
+                    'product_uom': self.product.uom_id.id,
+                }),
+                (0, 0, {
+                    'name': self.product.name,
+                    'product_id': self.product2.id,
+                    'product_uom_qty': 2.0,
+                    'product_uom': self.product2.uom_id.id,
+                }),
+                (0, 0, {
+                    'name': nr_product.name,
+                    'product_id': nr_product.product_variant_id.id,
+                    'product_uom_qty': 4.0,
+                    'product_uom': nr_product.uom_id.id,
+                }),
+            ],
+        })
+        all_subs = sub_negative_recurring | negative_nonrecurring_sub
+        with freeze_time("2023-01-01"):
+            self.flush_tracking()
+            all_subs.write({'start_date': False, 'next_invoice_date': False})
+            all_subs.action_confirm()
+            self.flush_tracking()
+            all_subs.next_invoice_date = datetime.datetime(2023, 2, 1)
+            self.flush_tracking()
+        with freeze_time("2023-02-01"):
+            sub_negative_recurring.order_line.product_uom_qty = 6 # update quantity
+            negative_nonrecurring_sub.order_line[1].product_uom_qty = 4
+            self.flush_tracking()
+            all_subs._create_recurring_invoice() # should not create any invoice because negative
+            self.flush_tracking()
+
+        with freeze_time("2023-02-15"):
+            action = sub_negative_recurring.prepare_renewal_order()
+            renewal_so1 = self.env['sale.order'].browse(action['res_id'])
+            renewal_so1.name = 'renewal_so1'
+            renewal_so1.order_line.product_uom_qty = 12
+            action = negative_nonrecurring_sub.prepare_renewal_order()
+            renewal_so2 = self.env['sale.order'].browse(action['res_id'])
+            renewal_so2.name = 'renewal_so2'
+            renewal_so2.order_line[1].product_uom_qty = 8
+            self.flush_tracking()
+            all_subs |= renewal_so1|renewal_so2
+            (renewal_so1|renewal_so2).action_confirm()
+            self.flush_tracking()
+        with freeze_time("2023-03-01"):
+            (all_subs)._create_recurring_invoice()
+            self.flush_tracking()
+        with freeze_time("2023-04-01"):
+            self.flush_tracking()
+            self.assertFalse(renewal_so2.invoice_ids, "no invoice should have been created")
+            close_reason_id = self.env.ref('sale_subscription.close_reason_1').id
+            renewal_so2.set_close(close_reason_id=close_reason_id)
+            self.flush_tracking()
+            renewal_so2.reopen_order()
+            self.flush_tracking()
+
+
+        order_log_ids = self.env['sale.order.log'].search([('order_id', 'in', (sub_negative_recurring|renewal_so1).ids)], order='id')
+        sub_data1 = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly)
+                    for log in order_log_ids]
+        self.assertEqual(sub_data1, [('0_creation', datetime.date(2023, 1, 1), '3_progress', 0, 0),
+                                     ('3_transfer', datetime.date(2023, 2, 15), '3_progress', 0, 0),
+                                     ('3_transfer', datetime.date(2023, 2, 15), '5_renewed', 0, 0)])
+
+        order_log_ids = self.env['sale.order.log'].search([('order_id', 'in', (negative_nonrecurring_sub|renewal_so2).ids)], order='id')
+        sub_data2 = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly)
+                    for log in order_log_ids]
+        self.assertEqual(sub_data2, [('0_creation', datetime.date(2023, 1, 1), '3_progress', 0, 0),
+                                     ('3_transfer', datetime.date(2023, 2, 15), '3_progress', 0, 0),
+                                     ('3_transfer', datetime.date(2023, 2, 15), '5_renewed', 0, 0)])
+        self.assertEqual(renewal_so1.recurring_monthly, -480, "The MRR field is negative but it does not produce logs")
+        self.assertEqual(renewal_so2.recurring_monthly, -140, "The MRR field is negative but it does not produce logs")

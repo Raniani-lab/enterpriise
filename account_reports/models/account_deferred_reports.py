@@ -112,11 +112,15 @@ class DeferredReportCustomHandler(models.AbstractModel):
     def action_generate_entry(self, options):
         new_deferred_moves = self._generate_deferral_entry(options)
         return {
-            'name': _('Deferred Entry'),
+            'name': _('Deferred Entries'),
             'type': 'ir.actions.act_window',
             'views': [(False, "tree"), (False, "form")],
-            'domain': [('id', 'in', new_deferred_moves.ids)],
-            'res_model': 'account.move',
+            'domain': [('id', 'in', new_deferred_moves.line_ids.ids)],
+            'res_model': 'account.move.line',
+            'context': {
+                'search_default_group_by_move': True,
+                'expand': True,
+            },
             'target': 'current',
         }
 

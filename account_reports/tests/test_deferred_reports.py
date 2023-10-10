@@ -731,7 +731,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
 
         # JANUARY
         res = handler.action_generate_entry(self.get_options('2023-01-01', '2023-01-31'))
-        generated_entries_january = self.env['account.move'].search(res['domain'], order='date')
+        generated_entries_january = self.env['account.move.line'].search(res['domain'], order='date').move_id
 
         # January Deferral
         deferred_move_january = generated_entries_january[0]
@@ -761,7 +761,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
 
         # FEBRUARY
         res = handler.action_generate_entry(self.get_options('2023-02-01', '2023-02-28'))
-        generated_entries_february = self.env['account.move'].search(res['domain'], order='date')
+        generated_entries_february = self.env['account.move.line'].search(res['domain'], order='date').move_id
 
         # February Deferral
         deferred_move_february = generated_entries_february[0]
@@ -791,7 +791,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
 
         # MARCH
         res = handler.action_generate_entry(self.get_options('2023-03-01', '2023-03-31'))
-        generated_entries_march = self.env['account.move'].search(res['domain'], order='date')
+        generated_entries_march = self.env['account.move.line'].search(res['domain'], order='date').move_id
 
         # March Deferral
         deferred_move_march = generated_entries_march[0]
@@ -949,7 +949,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         options = self.get_options('2023-01-01', '2023-01-31')
         res = handler.action_generate_entry(options)
 
-        generated_entries_jan = self.env['account.move'].search(res['domain'], order='date')
+        generated_entries_jan = self.env['account.move.line'].search(res['domain'], order='date').move_id
 
         deferred_move_jan = generated_entries_jan[0]
         self.assertRecordValues(deferred_move_jan, [{
@@ -1182,7 +1182,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         # Generate the grouped deferred entries
         handler = self.env['account.deferred.expense.report.handler']
         res = handler.action_generate_entry(self.get_options('2023-01-01', '2023-08-31'))
-        generated_entries = self.env['account.move'].search(res['domain'], order='date')
+        generated_entries = self.env['account.move.line'].search(res['domain'], order='date').move_id
 
         # Details of the computation:
         #    Total Amount (Deferral Account): 1200 + 2400 + 1200 + 1200 = 6000

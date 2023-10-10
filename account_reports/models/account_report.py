@@ -3865,6 +3865,7 @@ class AccountReport(models.Model):
             'views': [(False, 'tree'), (False, 'form')],
             'context': {
                 'search_default_group_by_move': True,
+                'expand': True,
             }
         }
 

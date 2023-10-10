@@ -290,6 +290,7 @@ class AccountMove(models.Model):
             'views': [(False, 'tree'), (False, 'form')],
             'context': {
                 'search_default_group_by_move': True,
+                'expand': True,
             }
         }
 
@@ -303,6 +304,7 @@ class AccountMove(models.Model):
             'views': [(False, 'tree'), (False, 'form')],
             'context': {
                 'search_default_group_by_move': True,
+                'expand': True,
             }
         }
         if len(self.deferred_original_move_ids) == 1:

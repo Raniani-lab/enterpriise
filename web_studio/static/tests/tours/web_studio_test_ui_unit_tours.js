@@ -612,9 +612,7 @@ registry.category("web_tour.tours").add("web_studio_test_create_model_with_click
             trigger: ".o_arrow_button:contains(In Progress)",
         },
         {
-            trigger: ".o_arrow_button_current:contains(In Progress)",
-        },
-        {
+            extra_trigger: ".o_arrow_button_current:contains(In Progress)",
             trigger: ".o_form_button_save",
         },
         {
@@ -937,14 +935,15 @@ registry.category("web_tour.tours").add("web_studio_test_related_file", {
         },
         {
             in_modal: false,
-            trigger: ".o_model_field_selector_popover_item_name:contains(New File):not(:contains(filename))",
+            trigger:
+                ".o_model_field_selector_popover_item_name:contains(New File):not(:contains(filename))",
         },
         {
             trigger: ".modal-footer .btn-primary:first",
         },
         {
             trigger: ".o_web_studio_leave",
-            run() { },
+            run() {},
         },
-    ]
+    ],
 });

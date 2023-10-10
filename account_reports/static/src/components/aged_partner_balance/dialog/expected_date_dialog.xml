@@ -3,7 +3,7 @@
     <t t-name="account_reports.ExpectedDateDialog">
         <Dialog title="props.title" size="'sm'">
             <form>
-                <DateTimeInput type="'date'" onChange="(date) => this.onDateTimeChanged(date)"/>
+                <DateTimeInput value="props.default_date" type="'date'" onChange="(date) => this.onDateTimeChanged(date)"/>
             </form>
 
             <t t-set-slot="footer">

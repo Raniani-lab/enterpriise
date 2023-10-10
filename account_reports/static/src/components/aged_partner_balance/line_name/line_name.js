@@ -9,6 +9,8 @@ import { ExpectedDateDialog } from "@account_reports/components/aged_partner_bal
 
 import { formatDate } from "@web/core/l10n/dates";
 
+const { DateTime } = luxon;
+
 export class AgedPartnerBalanceLineName extends AccountReportLineName {
     static template = "account_reports.AgedPartnerBalanceLineName";
 
@@ -22,9 +24,11 @@ export class AgedPartnerBalanceLineName extends AccountReportLineName {
     // Dialog
     // -----------------------------------------------------------------------------------------------------------------
     async openExpectedDateDialog() {
+        const date = DateTime.fromISO(this.props.line.columns.find(column => column.expression_label === 'expected_date')?.no_format);
         this.dialog.add(ExpectedDateDialog, {
             title: _t("Change expected date"),
             size: "md",
+            default_date: date.invalid ? null : date,
             save: this.saveExpectedDate.bind(this),
         });
     }

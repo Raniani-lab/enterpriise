@@ -3721,6 +3721,7 @@ QUnit.module("View Editors", (hooks) => {
                 "/web/webclient/load_menus",
                 "/mail/init_messaging",
                 "/mail/load_message_failures",
+                "/hr_attendance/attendance_user_data",
                 "/web/dataset/call_kw/res.users/systray_get_activities",
             ]);
 

@@ -2,6 +2,7 @@
 <odoo>
     <record id="mod_349" model="account.report">
         <field name="name">Tax Report (Mod 349)</field>
+        <field name="sequence">349</field>
         <field name="filter_analytic" eval="False"/>
         <field name="filter_date_range" eval="True"/>
         <field name="filter_period_comparison" eval="True"/>

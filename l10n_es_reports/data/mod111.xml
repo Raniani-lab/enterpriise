@@ -2,6 +2,7 @@
 <odoo>
     <data>
         <record id="l10n_es.mod_111" model="account.report">
+            <field name="sequence">111</field>
             <field name="custom_handler_model_id" ref="model_l10n_es_mod111_tax_report_handler"/>
         </record>
     </data>

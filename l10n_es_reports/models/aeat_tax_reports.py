@@ -110,9 +110,14 @@ class SpanishTaxReportCustomHandler(models.AbstractModel):
     _description = 'Spanish Tax Report Custom Handler'
 
     def _append_boe_button(self, options, boe_number):
-        options.setdefault('buttons', []).append(
-            {'name': _('BOE'), 'sequence': 0, 'action': 'open_boe_wizard', 'action_param': boe_number, 'file_export_type': _('BOE')},
-        )
+        options['buttons'].append(
+            {
+                'name': _('BOE'),
+                'sequence': 0,
+                'action': 'open_boe_wizard',
+                'action_param': boe_number,
+                'file_export_type': _('BOE'),
+            })
 
     def open_boe_wizard(self, options, boe_number):
         """ Triggers the generation of the BOE file for the current mod report.
@@ -120,22 +125,26 @@ class SpanishTaxReportCustomHandler(models.AbstractModel):
         the user, it show instead a wizard prompting for them, which will, once
         validated and closed, trigger the generation of the BOE itself.
         """
-        report = self.env['account.report'].browse(options['report_id'])
-        boe_wizard_model = self.env[f'l10n_es_reports.aeat.boe.mod{boe_number}.export.wizard']
-        boe_wizard = boe_wizard_model.create({'report_id': report.id})
-
-        context = self.env.context.copy()
-        context.update({'l10n_es_reports_report_options': options})
+        period, _year = self._get_mod_period_and_year(options)
+        if boe_number == 390:
+            # period will be falsy if a whole year is selected
+            if period and not options.get('_running_export_test'):
+                raise UserError(_("Wrong report dates for BOE generation : please select a range of a year."))
+        elif boe_number != 347 and not period:
+            raise UserError(_("Wrong report dates for BOE generation : please select a range of one month or a trimester."))
 
         return {
             'name': _('Print BOE'),
             'view_mode': 'form',
             'views': [(False, 'form')],
-            'res_model': boe_wizard_model._name,
+            'res_model': f'l10n_es_reports.aeat.boe.mod{boe_number}.export.wizard',
             'type': 'ir.actions.act_window',
-            'res_id': boe_wizard.id,
             'target': 'new',
-            'context': context,
+            'context': {
+                **self.env.context,
+                'l10n_es_reports_report_options': options,
+                'default_report_id': options['sections_source_id'],
+            },
         }
 
     def _get_mod_period_and_year(self, options):
@@ -277,7 +286,7 @@ class SpanishTaxReportCustomHandler(models.AbstractModel):
 
     def _get_bic_and_iban(self, res_partner_bank):
         """ Convenience method returning (bic,iban) of the given account if
-        this account exists, or a tuple of empty strings otherwize.
+        this account exists, or a tuple of empty strings otherwise.
         """
         if res_partner_bank:
             return res_partner_bank.bank_bic or "", res_partner_bank.sanitized_acc_number
@@ -406,9 +415,6 @@ class SpanishMod111TaxReportCustomHandler(models.AbstractModel):
     def export_boe(self, options):
         period, year = self._get_mod_period_and_year(options)
 
-        if not period:
-            raise UserError(_("Wrong report dates for BOE generation : please select a range of one month or a trimester."))
-
         rslt = self._generate_111_115_common_header(options, period, year, 111)
         report = self.env['account.report'].browse(options['report_id'])
         report_lines = report._get_lines(options)
@@ -480,9 +486,6 @@ class SpanishMod115TaxReportCustomHandler(models.AbstractModel):
     def export_boe(self, options):
         period, year = self._get_mod_period_and_year(options)
 
-        if not period:
-            raise UserError(_("Wrong report dates for BOE generation : please select a range of one month or a trimester."))
-
         rslt = self._generate_111_115_common_header(options, period, year, 115)
         report = self.env['account.report'].browse(options['report_id'])
         report_lines = report._get_lines(options)
@@ -527,9 +530,6 @@ class SpanishMod303TaxReportCustomHandler(models.AbstractModel):
 
     def export_boe(self, options):
         period, year = self._get_mod_period_and_year(options)
-
-        if not period:
-            raise UserError(_("Wrong report dates for BOE generation : please select a range of one month or a trimester."))
 
         report = self.env['account.report'].browse(options['report_id'])
         report_lines = report._get_lines(options)
@@ -819,6 +819,7 @@ class SpanishMod303TaxReportCustomHandler(models.AbstractModel):
         rslt += self._l10n_es_boe_format_string('</T303DID00>')
 
         return rslt
+
 
 class SpanishMod347TaxReportCustomHandler(models.AbstractModel):
     _name = 'l10n_es.mod347.tax.report.handler'
@@ -1249,9 +1250,6 @@ class SpanishMod349TaxReportCustomHandler(models.AbstractModel):
         period, year = self._get_mod_period_and_year(options)
         current_company = self.env.company
 
-        if not period:
-            raise UserError(_("Wrong report dates for BOE generation : please select a range of one month or a trimester."))
-
         # Wizard with manually-entered data
         boe_wizard = self._retrieve_boe_manual_wizard(options, 349)
 
@@ -1291,3 +1289,388 @@ class SpanishMod349TaxReportCustomHandler(models.AbstractModel):
             'file_content': rslt,
             'file_type': 'txt',
         }
+
+
+class SpanishMod390TaxReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_es.mod390.tax.report.handler'
+    _inherit = 'l10n_es.tax.report.handler'
+    _description = 'Spanish Tax Report Custom Handler (Mod390)'
+
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
+        super()._append_boe_button(options, 390)
+
+    def export_boe(self, options):
+        _period, year = self._get_mod_period_and_year(options)
+        boe_wizard = self._retrieve_boe_manual_wizard(options, 390)
+        current_company = self.env.company
+        casilla_lines_map = {}
+        for section in options['sections']:
+            section_report = self.env['account.report'].browse(section['id'])
+            report_lines = section_report._get_lines(section_report.get_options())
+            casilla_lines_map.update(self._retrieve_casilla_lines(report_lines))
+
+        # Header
+        rslt = self._l10n_es_boe_format_string('<T3900' + year + '0A0000>')
+        rslt += self._l10n_es_boe_format_string('<AUX>')
+        rslt += self._l10n_es_boe_format_string(' ' * 70)
+        odoo_version = odoo.release.version.split('.')
+        rslt += self._l10n_es_boe_format_string(str(odoo_version[0]) + str(odoo_version[1]), length=4)
+        rslt += self._l10n_es_boe_format_string(' ' * 4)
+        rslt += self._l10n_es_boe_format_string(self._extract_spanish_tin(current_company.partner_id), length=9)
+        rslt += self._l10n_es_boe_format_string(' ' * 213)
+        rslt += self._l10n_es_boe_format_string('</AUX>')
+
+        rslt += self._generate_mod_390_page1(options, current_company, year, boe_wizard)
+        rslt += self._generate_mod_390_page2(options, casilla_lines_map)
+        rslt += self._generate_mod_390_page3(options, casilla_lines_map)
+        rslt += self._generate_mod_390_page4(options, casilla_lines_map)
+        # We don't handle page 5 for now (Simplified regime operations, including agricultural, livestock and forestry)
+        rslt += self._generate_mod_390_page6(options, casilla_lines_map)
+        rslt += self._generate_mod_390_page7(options, casilla_lines_map)
+        rslt += self._generate_mod_390_page8(options, casilla_lines_map)
+
+        rslt += self._l10n_es_boe_format_string('</T3900' + year + '0A0000>')
+
+        return {
+            'file_name': f'Modelo390 - {year}',
+            'file_content': rslt,
+            'file_type': 'txt',
+        }
+
+    def _generate_mod_390_page1(self, options, current_company, year, boe_wizard):
+        # Main info regarding the company, the representant, the dates and the report itself
+        # Header
+        rslt = self._l10n_es_boe_format_string('<T39001000>  ')
+        rslt += self._l10n_es_boe_format_string(self._extract_spanish_tin(current_company.partner_id), length=9)
+        rslt += self._l10n_es_boe_format_string(current_company.name, length=60)
+        rslt += self._l10n_es_boe_format_string(boe_wizard.physical_person_name, length=20)
+
+        rslt += self._l10n_es_boe_format_string(year)
+        rslt += self._l10n_es_boe_format_string('  ')
+
+        rslt += self._l10n_es_boe_format_string('1' if boe_wizard.monthly_return else '0')
+
+        tax_unit_option = options.get('tax_unit')
+        group_of_entities = True if tax_unit_option and tax_unit_option != 'company_only' else False
+
+        rslt += self._l10n_es_boe_format_string('1' if group_of_entities else '0')# Part of a group of entities
+        rslt += self._l10n_es_boe_format_string(boe_wizard.group_number, length=7) if boe_wizard.group_number else self._l10n_es_boe_format_string(' ' * 7)
+        rslt += self._l10n_es_boe_format_string('1' if group_of_entities else '0')# Dominant --> True if we're in a tax unit
+        rslt += self._l10n_es_boe_format_string('0')# Dependant --> always False
+        rslt += self._l10n_es_boe_format_string('1' if boe_wizard.special_regime_applicable_163 else '0')
+        # "NIF de la entidad dominante" must only be filled if the declarant is not the dominant entity
+        # see official documentation : https://sede.agenciatributaria.gob.es/static_files/Sede/Procedimiento_ayuda/G412/instr390.pdf
+        rslt += self._l10n_es_boe_format_string(' ' * 9)
+        rslt += self._l10n_es_boe_format_string('2')# Bankrupcy
+        rslt += self._l10n_es_boe_format_string('1' if boe_wizard.special_cash_basis else '2')
+        rslt += self._l10n_es_boe_format_string('1' if boe_wizard.special_cash_basis_beneficiary else '2')
+        rslt += self._l10n_es_boe_format_string('1' if boe_wizard.is_substitute_declaration else '0')
+        rslt += self._l10n_es_boe_format_string('1' if boe_wizard.is_substitute_decl_by_rectif_of_quotas else '0')
+        rslt += self._l10n_es_boe_format_string(boe_wizard.previous_decl_number, length=13) if boe_wizard.previous_decl_number else self._l10n_es_boe_format_string(' ' * 13)
+        rslt += self._l10n_es_boe_format_string(boe_wizard.principal_activity, length=40)
+        rslt += self._l10n_es_boe_format_string(boe_wizard.principal_code_activity, length=3)
+        rslt += self._l10n_es_boe_format_string(boe_wizard.principal_iae_epigrafe, length=4)
+
+        # Other Activities
+        for _i in range(0, 5):
+            # Activity name (40), activity code (3) & activity epigrafe (4)
+            rslt += self._l10n_es_boe_format_string(' ' * (40 + 3 + 4))
+
+        # Joint Declaration
+        rslt += self._l10n_es_boe_format_string('0')
+        rslt += self._l10n_es_boe_format_string(' ' * (9 + 37))
+
+        # Representant
+        rslt += self._l10n_es_boe_format_string(' ' * (9 + 80 + 2 + 17 + 5 + 2 + 2 + 2 + 9 + 20 + 15 + 5))
+
+        # Personas Jurídicas
+        # Only one persona juridica is mandatory, the others are left blank
+        rslt += self._l10n_es_boe_format_string(boe_wizard.judicial_person_name, length=80)
+        rslt += self._l10n_es_boe_format_string(boe_wizard.judicial_person_nif, length=9)
+        rslt += self._l10n_es_boe_format_string(datetime.strftime(boe_wizard.judicial_person_procuration_date, "%d%m%Y"), length=8)
+        rslt += self._l10n_es_boe_format_string(boe_wizard.judicial_person_notary, length=12)
+        rslt += self._l10n_es_boe_format_string(((' ' * (80 + 9)) + '00000000' + (' ' * 12))*2)
+
+        # Footer of page 1
+        rslt += self._l10n_es_boe_format_string(' ' * (21 + 13 + 20 + 150))  # Reserved for AEAT
+        rslt += self._l10n_es_boe_format_string('</T39001000>')
+
+        return rslt
+
+    def _generate_mod_390_page2(self, options, casilla_lines_map):
+        # Operations carried out under the general regime : accrued VAT
+        # Header
+        rslt = self._l10n_es_boe_format_string('<T39002000> ')
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['01'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['02'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        for casilla in range(3, 7):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['0%s' % casilla], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['500'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['501'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        for casilla in range(502, 506):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['643'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['644'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        for casilla in range(645, 649):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['07'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['08'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['09'], length=17, decimal_places=2, in_currency=True)
+        for casilla in range(10, 15):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['21'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['22'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        for casilla in range(23, 27):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['545'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['546'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['547'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['548'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['551'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['552'], length=17, decimal_places=2, in_currency=True)
+        for casilla in range(27, 31):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['649'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['650'], length=17, decimal_places=2, in_currency=True)
+        for casilla in range(31, 37):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        for casilla in range(599, 603):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        for casilla in range(41, 48):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        # Blank space for AEAT
+        rslt += self._l10n_es_boe_format_string(' ' * 150)
+        # Footer
+        rslt += self._l10n_es_boe_format_string('</T39002000>')
+
+        return rslt
+
+    def _generate_mod_390_page3(self, options, casilla_lines_map):
+        # Operations carried out under the general regime : VAT deductible
+        # Header
+        rslt = self._l10n_es_boe_format_string('<T39003000> ')
+
+        # Casillas
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['190'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['191'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        for casilla in range(603, 607):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['48'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['49'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['506'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['507'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        for casilla in range(607, 611):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['512'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['513'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['196'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['197'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        for casilla in range(611, 615):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['50'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['51'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['514'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['515'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        for casilla in range(615, 619):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['520'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['521'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['202'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['203'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        for casilla in range(619, 623):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['52'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['53'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['208'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['209'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        for casilla in range(623, 627):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['54'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['55'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['214'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['215'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        for casilla in range(627, 631):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['56'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['57'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['220'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['221'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        for casilla in range(631, 635):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['58'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['59'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['587'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['588'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 2)
+        for casilla in range(635, 639):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['597'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['598'], length=17, decimal_places=2, in_currency=True)
+
+        # Blank space for AEAT
+        rslt += self._l10n_es_boe_format_string(' ' * 150)
+        # Footer
+        rslt += self._l10n_es_boe_format_string('</T39003000>')
+
+        return rslt
+
+    def _generate_mod_390_page4(self, options, casilla_lines_map):
+        #Header
+        rslt = self._l10n_es_boe_format_string('<T39004000> ')
+
+        # Casillas
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['60'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['61'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['660'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['661'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['639'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['62'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['651'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['652'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['63'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['522'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['64'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['65'], length=17, decimal_places=2, in_currency=True)
+
+        # Blank space for AEAT
+        rslt += self._l10n_es_boe_format_string(' ' * 150)
+        # Footer
+        rslt += self._l10n_es_boe_format_string('</T39004000>')
+
+        return rslt
+
+    def _generate_mod_390_page6(self, options, casilla_lines_map):
+        # Header
+        rslt = self._l10n_es_boe_format_string('<T39006000> ')
+        # Section 7  : Annual settlement result (Only for taxpayers who are taxed exclusively in common territory)
+        # Casillas
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['658'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['84'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['659'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['85'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['86'], length=17, decimal_places=2, in_currency=True)
+        # We don't cover the section 8 of the modelo 390, the casillas are replaced by zeros.
+        # 87 --> 91: Administraciones : Territorio commùn (5), Álava (5), Guipúzcoa(5), Vizcaya(5), Navarra(5)
+        rslt += self._l10n_es_boe_format_string('0' * 5 * 5)
+        # 658 : Administraciones - Regularización cuotas art. 80.Cinco.5ª LIVA (17)
+        # 84 : Administraciones - Suma de resultados (17)
+        # 92 : Administraciones - Resultado atribuible a territorio común (17)
+        # 659 : Administraciones -IVA a la importación liquidado por la Aduana (17)
+        # 93 : Administraciones - Compens. cuotas ej. anterior atrib. territ. com. (17)
+        # 94 : Administraciones -Resultado liq. anual atribuible territ. comun (17)
+        rslt += self._l10n_es_boe_format_string('0' * 17 * 6)
+        # Section 9 : Result of settlements
+        #   Periods that are not taxed under the Special Regime of the group of entities
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['95'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['96'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['524'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['97'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['98'], length=17, decimal_places=2, in_currency=True)
+        #   Periods that are taxed under the Special Regime of the group of entities
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['662'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['525'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['526'], length=17, decimal_places=2, in_currency=True)
+        # Section 10 : Trading volume
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['99'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['653'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['103'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['104'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['105'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['110'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['125'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['126'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['127'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['128'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['100'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['101'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['102'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['227'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['228'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['106'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['107'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['108'], length=17, decimal_places=2, in_currency=True)
+
+        # Blank space for AEAT
+        rslt += self._l10n_es_boe_format_string(' ' * 150)
+        # Footer
+        rslt += self._l10n_es_boe_format_string('</T39006000>')
+
+        return rslt
+
+    def _generate_mod_390_page7(self, options, casilla_lines_map):
+        # Header
+        rslt = self._l10n_es_boe_format_string('<T39007000> ')
+
+        # Casillas
+        # Section 11: Specific operations in the carried out during the year
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['230'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['109'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['231'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['232'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['111'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['113'], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['523'], length=17, decimal_places=2, in_currency=True)
+        for casilla in range(654, 658):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        # We don't cover the section 12 of the modelo 390, the casillas are replaced by blank spaces
+        for _i in range(0, 5):
+            rslt += self._l10n_es_boe_format_string(' ' * 40)  # Prorratas - Actividad desarrollada
+            rslt += self._l10n_es_boe_format_string(' ' * 3)  # 12. Prorratas - Código CNAE [114]
+            rslt += self._l10n_es_boe_format_string('0' * 17)  # 12. Prorratas - Importe de operaciones [115]
+            rslt += self._l10n_es_boe_format_string('0' * 17)  # 12. Prorratas - Importe de operaciones con derecho a deducción [116]
+            rslt += self._l10n_es_boe_format_string(' ')  # 12. Prorratas - Tipo de prorrata [117]
+            rslt += self._l10n_es_boe_format_string('0' * 5)  # 12. Prorratas - % de prorrata [118]
+
+        # Blank space for AEAT
+        rslt += self._l10n_es_boe_format_string(' ' * 150)
+        # Footer
+        rslt += self._l10n_es_boe_format_string('</T39007000>')
+
+        return rslt
+
+    def _generate_mod_390_page8(self, options, casilla_lines_map):
+        # Activities with differentiated deduction regimes
+        # Header
+        rslt = self._l10n_es_boe_format_string('<T39008000> ')
+
+        # Casillas
+        for casilla in range(139, 153):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['640'], length=17, decimal_places=2, in_currency=True)
+        for casilla in range(153, 170):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['641'], length=17, decimal_places=2, in_currency=True)
+        for casilla in range(170, 187):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['642'], length=17, decimal_places=2, in_currency=True)
+        for casilla in range(187, 190):
+            rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[str(casilla)], length=17, decimal_places=2, in_currency=True)
+
+        # Blank space for AEAT
+        rslt += self._l10n_es_boe_format_string(' ' * 150)
+        # Footer
+        rslt += self._l10n_es_boe_format_string('</T39008000>')
+
+        return rslt

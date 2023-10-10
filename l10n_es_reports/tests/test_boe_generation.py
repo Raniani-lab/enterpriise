@@ -69,10 +69,14 @@ class TestBOEGeneration(TestAccountReportsCommon):
 
         cls.env.company.vat = "ESA12345674"
 
-    def _check_boe_export(self, report, options, modelo_number):
-        wizard_action = self.env[report.custom_handler_model_name].open_boe_wizard(options, modelo_number)
+    def _check_boe_export(self, report, options, modelo_number, additional_context=None):
+        wizard_model = self.env[report.custom_handler_model_name]
+        if additional_context:
+            wizard_model = wizard_model.with_context(**additional_context)
+        wizard_action = wizard_model.open_boe_wizard(options, modelo_number)
         self.assertEqual(f'l10n_es_reports.aeat.boe.mod{modelo_number}.export.wizard', wizard_action['res_model'], "Wrong BOE export wizard returned")
-        options['l10n_es_reports_boe_wizard_id'] = wizard_action['res_id']
+        wizard = self.env[wizard_action['res_model']].with_context(wizard_action['context']).create({})
+        options['l10n_es_reports_boe_wizard_id'] = wizard.id
         self.assertTrue(self.env[report.custom_handler_model_name].export_boe(options), "Empty BOE")
 
     def _check_boe_111_to_303(self, modelo_number):
@@ -120,3 +124,18 @@ class TestBOEGeneration(TestAccountReportsCommon):
         if 'multi_company' in options:
             del options['multi_company']
         self._check_boe_export(report, options, 349)
+
+    @freeze_time('2020-12-22')
+    def test_boe_mod_390(self):
+        report = self.env.ref('l10n_es.mod_390')
+        options = self._generate_options(report, '2020-01-01', '2020-12-31')
+        self._check_boe_export(report, options, 390, additional_context={
+            'default_physical_person_name': "Bernard Gagnant",
+            'default_principal_activity': "Selling",
+            'default_principal_iae_epigrafe': "EAAA",
+            'default_principal_code_activity': "AAA",
+            'default_judicial_person_name': "Bebert",
+            'default_judicial_person_nif': "123",
+            'default_judicial_person_procuration_date': '2020-01-01',
+            'default_judicial_person_notary': "Maître Gagnant",
+        })

@@ -150,7 +150,7 @@ class SpreadsheetSharing(SpreadsheetTestCommon):
             # snapshot without token
             snapshot_revision = {
                 "type": "SNAPSHOT",
-                "serverRevisionId": self.get_revision(document.sudo()),
+                "serverRevisionId": document.sudo().server_revision_id,
                 "nextRevisionId": "snapshot-revision-id",
                 "data": r"{}",
             }
@@ -160,7 +160,7 @@ class SpreadsheetSharing(SpreadsheetTestCommon):
             # snapshot with wrong token
             snapshot_revision = {
                 "type": "SNAPSHOT",
-                "serverRevisionId": self.get_revision(document.sudo()),
+                "serverRevisionId": document.sudo().server_revision_id,
                 "nextRevisionId": "snapshot-revision-id",
                 "data": r"{}",
             }
@@ -172,7 +172,7 @@ class SpreadsheetSharing(SpreadsheetTestCommon):
             # snapshot with token
             snapshot_revision = {
                 "type": "SNAPSHOT",
-                "serverRevisionId": self.get_revision(document.sudo()),
+                "serverRevisionId": document.sudo().server_revision_id,
                 "nextRevisionId": "snapshot-revision-id",
                 "data": r"{}",
             }
@@ -221,7 +221,7 @@ class SpreadsheetSharing(SpreadsheetTestCommon):
             # snapshot without token
             snapshot_revision = {
                 "type": "SNAPSHOT",
-                "serverRevisionId": self.get_revision(document.sudo()),
+                "serverRevisionId": document.sudo().server_revision_id,
                 "nextRevisionId": "snapshot-revision-id",
                 "data": r"{}",
             }
@@ -231,7 +231,7 @@ class SpreadsheetSharing(SpreadsheetTestCommon):
             # snapshot with token
             snapshot_revision = {
                 "type": "SNAPSHOT",
-                "serverRevisionId": self.get_revision(document.sudo()),
+                "serverRevisionId": document.sudo().server_revision_id,
                 "nextRevisionId": "snapshot-revision-id",
                 "data": r"{}",
             }

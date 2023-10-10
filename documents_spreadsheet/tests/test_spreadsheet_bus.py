@@ -76,7 +76,7 @@ class TestSpreadsheetBus(SpreadsheetTestCommon, MailCase):
 
     def test_snapshot(self):
         spreadsheet = self.create_spreadsheet()
-        current_revision_id = self.get_revision(spreadsheet)
+        current_revision_id = spreadsheet.server_revision_id
         self.snapshot(
             spreadsheet,
             current_revision_id, "snapshot-revision-id", {"sheets": []},

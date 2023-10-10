@@ -12,8 +12,11 @@
     <xpath expr="//div[hasclass('o_apps')]/div/a[hasclass('o_app')][hasclass('o_menuitem')]" position="attributes">
         <attribute name="t-att-class">{
             o_focused: appIndex === app_index,
-            'o_web_studio_new_app order-first': app.isNewAppButton
+            'o_web_studio_new_app': app.isNewAppButton
         }</attribute>
+    </xpath>
+    <xpath expr="//div[hasclass('o_draggable')]" position="attributes">
+        <attribute name="t-attf-class" add="{{ app.isNewAppButton ? 'order-first' : '' }}" />
     </xpath>
     <!-- Edit icons -->
     <xpath expr="//div[hasclass('o_apps')]/div/a[hasclass('o_app')][hasclass('o_menuitem')]" position="inside">

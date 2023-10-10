@@ -84,9 +84,6 @@
         }
     }
 
-    &:not(.o_ios_app) .o_caption {
-        height: ($font-size-base * $line-height-sm) * 2;
-    }
     .o_dragged_app {
         transition: transform 0.5s;
         transform: rotate(6deg);

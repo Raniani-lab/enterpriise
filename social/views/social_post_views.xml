@@ -141,7 +141,7 @@
         <field name="name">social.post.view.calendar</field>
         <field name="model">social.post</field>
         <field name="arch" type="xml">
-            <calendar string="Social Posts" date_start="calendar_date" color="utm_campaign_id" quick_add="false" mode="month">
+            <calendar string="Social Posts" date_start="calendar_date" color="utm_campaign_id" quick_create="0" mode="month">
                 <field name="message"/>
                 <field name="is_hatched" invisible="1"/>
                 <field name="utm_campaign_id" filters="1" invisible="1"/>

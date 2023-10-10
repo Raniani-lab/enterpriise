@@ -339,7 +339,7 @@
         <field name="name">planning.slot.calendar</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <calendar string="Planning" date_start="start_datetime" date_stop="end_datetime" color="color" form_view_id="%(planning_view_form_in_gantt)d" event_open_popup="true" quick_add="False" js_class="planning_calendar" mode="month" show_unusual_days="True">
+            <calendar string="Planning" date_start="start_datetime" date_stop="end_datetime" color="color" form_view_id="%(planning_view_form_in_gantt)d" event_open_popup="true" quick_create="0" js_class="planning_calendar" mode="month" show_unusual_days="True">
                 <field name="resource_id" avatar_field="avatar_128" widget="many2one_avatar_resource"/>
                 <field name="resource_type" invisible="1"/>
                 <field name="is_hatched" invisible="1" />
@@ -383,7 +383,7 @@
         <field name="model">planning.slot</field>
         <field name="priority">25</field>
         <field name="arch" type="xml">
-            <calendar string="Planning" date_start="start_datetime" date_stop="end_datetime" color="color" form_view_id="%(planning_view_form_in_gantt)d" event_open_popup="true" show_unusual_days="True" quick_add="False" js_class="planning_calendar" mode="month">
+            <calendar string="Planning" date_start="start_datetime" date_stop="end_datetime" color="color" form_view_id="%(planning_view_form_in_gantt)d" event_open_popup="true" show_unusual_days="True" quick_create="0" js_class="planning_calendar" mode="month">
                 <field name="name"/>
                 <field name="resource_id" avatar_field="avatar_128" widget="many2one_avatar_resource"/>
                 <field name="resource_type" invisible="1"/>

@@ -4,7 +4,7 @@
         <InteractiveEditorSidebar>
             <t t-set-slot="view">
                 <Property
-                    name="'quick_add'"
+                    name="'quick_create'"
                     type="'boolean'"
                     value="archInfo.hasQuickCreate"
                     onChange.bind="onViewAttributeChanged"

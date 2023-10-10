@@ -338,7 +338,7 @@
         <field name="name">hr.appraisal.calendar</field>
         <field name="model">hr.appraisal</field>
         <field name="arch" type="xml">
-            <calendar date_start="date_close" date_stop="date_close" mode="month" color="employee_id" quick_add="False">
+            <calendar date_start="date_close" date_stop="date_close" mode="month" color="employee_id" quick_create="0">
                 <field name="display_name"/>
                 <field name="employee_id" filters="1" invisible="1"/>
             </calendar>

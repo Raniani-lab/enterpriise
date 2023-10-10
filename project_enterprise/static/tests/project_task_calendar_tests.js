@@ -31,8 +31,8 @@ QUnit.module("Views", ({ beforeEach }) => {
                     methods: {
                         check_access_rights: function () {
                             return Promise.resolve(true);
-                        }
-                    }
+                        },
+                    },
                 },
             },
             views: {
@@ -45,31 +45,39 @@ QUnit.module("Views", ({ beforeEach }) => {
                         </group>
                     </sheet>
                 </form>
-            `},
+            `,
+            },
         };
     });
 
     QUnit.module("CalendarView");
 
-    QUnit.test(`Planned Date Begin Should Not Be Set When Selecting A Single Day`, async (assert) => {
-        await makeView({
-            type: "calendar",
-            resModel: "project.task",
-            serverData,
-            arch: `
+    QUnit.test(
+        `Planned Date Begin Should Not Be Set When Selecting A Single Day`,
+        async (assert) => {
+            await makeView({
+                type: "calendar",
+                resModel: "project.task",
+                serverData,
+                arch: `
                 <calendar date_start="planned_date_start"
                     date_stop="date_deadline"
                     mode="month"
                     js_class="project_enterprise_task_calendar"
                     event_open_popup="true"
-                    quick_add="false"/>
+                    quick_create="0"/>
             `,
-        });
+            });
 
-        await clickDate(target, "2016-12-13")
-        assert.strictEqual(target.querySelector(".modal-title").textContent, "New Task");
-        assert.containsOnce(target, "button.o_add_start_date", "the planned date begin should not be set when selecting a single day");
-    });
+            await clickDate(target, "2016-12-13");
+            assert.strictEqual(target.querySelector(".modal-title").textContent, "New Task");
+            assert.containsOnce(
+                target,
+                "button.o_add_start_date",
+                "the planned date begin should not be set when selecting a single day"
+            );
+        }
+    );
 
     QUnit.test(`Planned Date Begin Should Be Set When Selecting Multiple Days`, async (assert) => {
         await makeView({
@@ -82,12 +90,16 @@ QUnit.module("Views", ({ beforeEach }) => {
                     mode="month"
                     js_class="project_enterprise_task_calendar"
                     event_open_popup="true"
-                    quick_add="false"/>
+                    quick_create="0"/>
             `,
         });
 
-        await selectDateRange(target, "2016-12-13", "2016-12-16")
+        await selectDateRange(target, "2016-12-13", "2016-12-16");
         assert.strictEqual(target.querySelector(".modal-title").textContent, "New Task");
-        assert.containsNone(target, "button.o_add_start_date", "the planned date begin should not be set when selecting a single day");
+        assert.containsNone(
+            target,
+            "button.o_add_start_date",
+            "the planned date begin should not be set when selecting a single day"
+        );
     });
 });

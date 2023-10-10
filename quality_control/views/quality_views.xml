@@ -170,7 +170,7 @@
         <field name="model">quality.alert</field>
         <field name="priority" eval="2"/>
         <field name="arch" type="xml">
-            <calendar string="Quality Alert" date_start="date_assign" color="user_id" quick_add="false" event_limit="5">
+            <calendar string="Quality Alert" date_start="date_assign" color="user_id" quick_create="0" event_limit="5">
                 <field name="user_id" filters="1"/>
                 <field name="product_id"/>
                 <field name="team_id"/>

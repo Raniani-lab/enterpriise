@@ -10,10 +10,26 @@
             />
         </div>
         <div class="o_side_panel_section">
+            <label class="o-checkbox">
+                <input type="checkbox" class="o_input restrict_to_range" t-model="textState.restrictValuesToRange"/>
+                Restrict values to a range
+            </label>
+            <SelectionInput
+                t-if="textState.restrictValuesToRange"
+                ranges="() => this.rangesForSelectionInput"
+                hasSingleRange="true"
+                required="true"
+                onSelectionChanged.bind="this.onRangeChanged"
+                onSelectionConfirmed.bind="this.onRangeConfirmed"
+            />
+        </div>
+        <div class="o_side_panel_section">
             <div class="o_side_panel_title">Default value</div>
-            <input type="text"
-                class="o_input o_global_filter_default_value"
-                t-model="textState.defaultValue" />
+            <TextFilterValue
+                value="textState.defaultValue"
+                options="textOptionsFromRange"
+                onValueChanged="(value) => (this.textState.defaultValue = value)"
+            />
         </div>
         <t t-if="shouldDisplayFieldMatching()">
             <div class="o_side_panel_section">

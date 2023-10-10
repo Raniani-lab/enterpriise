@@ -1,16 +1,22 @@
 /** @odoo-module */
 
 import {
+    addColumns,
     addGlobalFilter,
+    deleteColumns,
     editGlobalFilter,
     setGlobalFilterValue,
 } from "@spreadsheet/../tests/utils/commands";
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { getCellValue } from "@spreadsheet/../tests/utils/getters";
+import { toRangeData } from "@spreadsheet/../tests/utils/zones";
 import { nextTick } from "@web/../tests/helpers/utils";
 import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 import { insertPivot } from "../../pivot/model/pivot_collaborative_test";
 import { setupCollaborativeEnv } from "../../utils/collaborative_helpers";
+import { helpers } from "@odoo/o-spreadsheet";
+
+const { toZone } = helpers;
 
 let alice, bob, charlie, network;
 
@@ -202,4 +208,108 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
         assert.equal(bob.getters.getActiveFilterCount(), 1);
         assert.equal(charlie.getters.getActiveFilterCount(), 0);
     });
+
+    QUnit.test("add column concurrently to adding a text filter with a range", async (assert) => {
+        const sheetId = alice.getters.getActiveSheetId();
+        const filter = {
+            id: "41",
+            type: "text",
+            label: "text filter",
+            rangeOfAllowedValues: toRangeData(sheetId, "A1:A2"),
+        };
+        await network.concurrent(async () => {
+            await addGlobalFilter(alice, filter);
+            addColumns(bob, "before", "A", 1);
+        });
+        assert.deepEqual(
+            alice.getters.getGlobalFilter("41").rangeOfAllowedValues.zone,
+            toZone("B1:B2")
+        );
+        assert.deepEqual(
+            bob.getters.getGlobalFilter("41").rangeOfAllowedValues.zone,
+            toZone("B1:B2")
+        );
+        assert.deepEqual(
+            charlie.getters.getGlobalFilter("41").rangeOfAllowedValues.zone,
+            toZone("B1:B2")
+        );
+    });
+
+    QUnit.test(
+        "delete entirely range concurrently to adding a text filter with a range",
+        async (assert) => {
+            const sheetId = alice.getters.getActiveSheetId();
+            const filter = {
+                id: "41",
+                type: "text",
+                label: "text filter",
+                rangeOfAllowedValues: toRangeData(sheetId, "A1:A2"),
+            };
+            await network.concurrent(async () => {
+                await addGlobalFilter(alice, filter);
+                deleteColumns(bob, ["A"]);
+            });
+            assert.strictEqual(alice.getters.getGlobalFilter("41").rangeOfAllowedValues, undefined);
+            assert.strictEqual(bob.getters.getGlobalFilter("41").rangeOfAllowedValues, undefined);
+            assert.strictEqual(
+                charlie.getters.getGlobalFilter("41").rangeOfAllowedValues,
+                undefined
+            );
+        }
+    );
+    QUnit.test("add column concurrently to editing a text filter with a range", async (assert) => {
+        const sheetId = alice.getters.getActiveSheetId();
+        const filter = {
+            id: "41",
+            type: "text",
+            label: "text filter",
+        };
+        await addGlobalFilter(alice, filter);
+        await network.concurrent(() => {
+            editGlobalFilter(charlie, {
+                ...filter,
+                rangeOfAllowedValues: toRangeData(sheetId, "A1:A2"),
+            });
+            addColumns(bob, "before", "A", 1);
+        });
+        assert.deepEqual(
+            alice.getters.getGlobalFilter("41").rangeOfAllowedValues.zone,
+            toZone("B1:B2")
+        );
+        assert.deepEqual(
+            bob.getters.getGlobalFilter("41").rangeOfAllowedValues.zone,
+            toZone("B1:B2")
+        );
+        assert.deepEqual(
+            charlie.getters.getGlobalFilter("41").rangeOfAllowedValues.zone,
+            toZone("B1:B2")
+        );
+    });
+
+    QUnit.test(
+        "delete entirely range concurrently to editing a text filter with a range",
+        async (assert) => {
+            const sheetId = alice.getters.getActiveSheetId();
+            const filter = {
+                id: "41",
+                type: "text",
+                label: "text filter",
+                rangeOfAllowedValues: toRangeData(sheetId, "A1:A2"),
+            };
+            await addGlobalFilter(alice, filter);
+            await network.concurrent(() => {
+                editGlobalFilter(charlie, {
+                    ...filter,
+                    rangeOfAllowedValues: toRangeData(sheetId, "A1:A2"),
+                });
+                deleteColumns(bob, ["A"]);
+            });
+            assert.strictEqual(alice.getters.getGlobalFilter("41").rangeOfAllowedValues, undefined);
+            assert.strictEqual(bob.getters.getGlobalFilter("41").rangeOfAllowedValues, undefined);
+            assert.strictEqual(
+                charlie.getters.getGlobalFilter("41").rangeOfAllowedValues,
+                undefined
+            );
+        }
+    );
 });

@@ -17,11 +17,12 @@ import {
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { createSpreadsheetFromPivotView } from "../utils/pivot_helpers";
 import { registry } from "@web/core/registry";
-import { addGlobalFilter } from "@spreadsheet/../tests/utils/commands";
+import { addGlobalFilter, selectCell, setCellContent } from "@spreadsheet/../tests/utils/commands";
 import { insertPivotInSpreadsheet } from "@spreadsheet/../tests/utils/pivot";
 import { insertListInSpreadsheet } from "@spreadsheet/../tests/utils/list";
 import { insertChartInSpreadsheet } from "@spreadsheet/../tests/utils/chart";
 import { assertDateDomainEqual } from "@spreadsheet/../tests/utils/date_domain";
+import { toRangeData } from "@spreadsheet/../tests/utils/zones";
 import { getCellValue } from "@spreadsheet/../tests/utils/getters";
 import { createSpreadsheetFromListView } from "../utils/list_helpers";
 import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
@@ -32,6 +33,9 @@ import {
     THIS_YEAR_GLOBAL_FILTER,
     LAST_YEAR_GLOBAL_FILTER,
 } from "@spreadsheet/../tests/utils/global_filter";
+import { helpers } from "@odoo/o-spreadsheet";
+
+const { toZone } = helpers;
 
 let target;
 
@@ -75,7 +79,7 @@ async function editGlobalFilterLabel(label) {
 }
 
 async function editGlobalFilterDefaultValue(defaultValue) {
-    await editInput(target, ".o_global_filter_default_value", defaultValue);
+    await editInput(target, ".o-global-filter-text-value", defaultValue);
 }
 
 async function selectYear(yearString) {
@@ -171,7 +175,7 @@ QUnit.module(
             assert.strictEqual(name, "Hello");
         });
 
-        QUnit.test("Create a new global filter", async function (assert) {
+        QUnit.test("Create a new text global filter", async function (assert) {
             const { model } = await createSpreadsheetFromPivotView();
             await openGlobalFilterSidePanel();
             await clickCreateFilter("text");
@@ -186,6 +190,123 @@ QUnit.module(
             const [globalFilter] = model.getters.getGlobalFilters();
             assert.equal(globalFilter.label, "My Label");
             assert.equal(globalFilter.defaultValue, "Default Value");
+            assert.strictEqual(globalFilter.rangeOfAllowedValues, undefined);
+        });
+
+        QUnit.test("Create a new text global filter with a range", async function (assert) {
+            const { model } = await createSpreadsheet();
+            await openGlobalFilterSidePanel();
+            await clickCreateFilter("text");
+            await editGlobalFilterLabel("My Label");
+            await click(target, "input[type=checkbox].restrict_to_range");
+            selectCell(model, "B1");
+            await nextTick();
+            assert.strictEqual(target.querySelector(".o-selection-input input").value, "B1");
+            await saveGlobalFilter();
+            const [globalFilter] = model.getters.getGlobalFilters();
+            assert.deepEqual(globalFilter.rangeOfAllowedValues.zone, toZone("B1"));
+        });
+
+        QUnit.test(
+            "Create a new text global filter with a default value from a range",
+            async function (assert) {
+                const { model } = await createSpreadsheet();
+                setCellContent(model, "B1", "hello");
+                await openGlobalFilterSidePanel();
+                await clickCreateFilter("text");
+                await editGlobalFilterLabel("My Label");
+                await click(target, "input[type=checkbox].restrict_to_range");
+                selectCell(model, "B1");
+                await nextTick();
+                await nextTick(); // SelectionInput component needs an extra tick to update
+                const options = [...target.querySelectorAll("select option")].map(
+                    (el) => el.textContent
+                );
+                assert.deepEqual(options, ["Choose a value...", "hello"]);
+                await editSelect(target, "select", "hello");
+                await saveGlobalFilter();
+                const [globalFilter] = model.getters.getGlobalFilters();
+                assert.deepEqual(globalFilter.defaultValue, "hello");
+            }
+        );
+
+        QUnit.test(
+            "Create a new text global filter, set a default value ,then restrict values to range",
+            async function (assert) {
+                const { model } = await createSpreadsheet();
+                setCellContent(model, "B1", "hello");
+                await openGlobalFilterSidePanel();
+                await clickCreateFilter("text");
+                await editGlobalFilterLabel("My Label");
+                await editGlobalFilterDefaultValue("hi");
+                await click(target, "input[type=checkbox].restrict_to_range");
+                selectCell(model, "B1");
+                await nextTick();
+                await nextTick(); // SelectionInput component needs an extra tick to update
+                const options = [...target.querySelectorAll("select option")].map(
+                    (el) => el.textContent
+                );
+                assert.deepEqual(options, ["Choose a value...", "hello", "hi"]);
+                await saveGlobalFilter();
+                const [globalFilter] = model.getters.getGlobalFilters();
+                assert.deepEqual(globalFilter.defaultValue, "hi");
+            }
+        );
+
+        QUnit.test(
+            "edit a text global filter with a default value not from the range",
+            async function (assert) {
+                const { model } = await createSpreadsheet();
+                const sheetId = model.getters.getActiveSheetId();
+                addGlobalFilter(model, {
+                    id: "42",
+                    type: "text",
+                    label: "a filter",
+                    defaultValue: "Hi",
+                    rangeOfAllowedValues: toRangeData(sheetId, "B2"),
+                });
+                setCellContent(model, "B2", "hello"); // the range does not contain the default value
+                await nextTick();
+                await openGlobalFilterSidePanel();
+                // open edition panel
+                await click(target, ".pivot_filter_input .fa-cog");
+                const options = [...target.querySelectorAll("select option")].map(
+                    (el) => el.textContent
+                );
+                assert.deepEqual(target.querySelector("select").value, "Hi");
+                assert.deepEqual(options, ["Choose a value...", "hello", "Hi"]);
+                await saveGlobalFilter(); // save without changing anything
+                const [globalFilter] = model.getters.getGlobalFilters();
+                assert.deepEqual(globalFilter.defaultValue, "Hi");
+            }
+        );
+
+        QUnit.test("check range text filter but don't select any range", async function (assert) {
+            const { model } = await createSpreadsheet();
+            await openGlobalFilterSidePanel();
+            await clickCreateFilter("text");
+            await editGlobalFilterLabel("My Label");
+            await click(target, "input[type=checkbox].restrict_to_range");
+            await nextTick();
+            assert.strictEqual(target.querySelector(".o-selection-input input").value, "");
+            await saveGlobalFilter();
+            const [globalFilter] = model.getters.getGlobalFilters();
+            assert.strictEqual(globalFilter.rangeOfAllowedValues, undefined);
+        });
+
+        QUnit.test("check and uncheck range for text filter", async function (assert) {
+            const { model } = await createSpreadsheet();
+            await openGlobalFilterSidePanel();
+            await clickCreateFilter("text");
+            await editGlobalFilterLabel("My Label");
+            await click(target, "input[type=checkbox].restrict_to_range");
+            selectCell(model, "B1");
+            await nextTick();
+            assert.strictEqual(target.querySelector(".o-selection-input input").value, "B1");
+            await click(target, "input[type=checkbox].restrict_to_range");
+            await saveGlobalFilter();
+            const [globalFilter] = model.getters.getGlobalFilters();
+            assert.strictEqual(globalFilter.rangeOfAllowedValues, undefined);
         });
 
         QUnit.test("Create a new relational global filter", async function (assert) {
@@ -548,10 +669,7 @@ QUnit.module(
             await click(target, ".o_side_panel_filter_icon.fa-cog");
             assert.containsOnce(target, ".o-sidePanel");
             assert.equal(target.querySelector(".o_global_filter_label").value, label);
-            assert.equal(
-                target.querySelector(".o_global_filter_default_value").value,
-                defaultValue
-            );
+            assert.equal(target.querySelector(".o-global-filter-text-value").value, defaultValue);
             await editGlobalFilterLabel("New Label");
             await selectFieldMatching("name");
             await saveGlobalFilter();

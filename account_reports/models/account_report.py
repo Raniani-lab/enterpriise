@@ -888,7 +888,7 @@ class AccountReport(models.Model):
             to_treat = [(current_level, parent_line_id, group) for group in account_groups.sorted()]
 
             if None in hierarchy and not skip_no_group:
-                to_treat.append((current_level, None, None))
+                to_treat.append((current_level, parent_line_id, None))
 
             while to_treat:
                 level_to_apply, parent_id, group = to_treat.pop(0)

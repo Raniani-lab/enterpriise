@@ -241,3 +241,36 @@ class TestSynchStatementCreation(AccountOnlineSynchronizationCommon):
                 self.assertEqual(test_link_account.message_ids[0].body, message_body)
         finally:
             self.env.registry.leave_test_mode()
+
+    def test_account_online_link_having_journal_ids(self):
+        """ This test verifies that the account online link object
+            has all the journal in the field journal_ids.
+            It's important to handle these journals because we need
+            them to add the consent expiring date.
+        """
+        # Create a bank sync connection having 2 online accounts (with one journal connected for each account)
+        online_link = self.env['account.online.link'].create({
+            'name': 'My New Bank connection',
+        })
+        online_accounts = self.env['account.online.account'].create([
+            {
+                'name': 'Account 1',
+                'account_online_link_id': online_link.id,
+                'journal_ids': [Command.create({
+                    'name': 'Account 1',
+                    'code': 'BK1',
+                    'type': 'bank',
+                })],
+            },
+            {
+                'name': 'Account 2',
+                'account_online_link_id': online_link.id,
+                'journal_ids': [Command.create({
+                    'name': 'Account 2',
+                    'code': 'BK2',
+                    'type': 'bank',
+                })],
+            },
+        ])
+        self.assertEqual(online_link.account_online_account_ids, online_accounts)
+        self.assertEqual(len(online_link.journal_ids), 2)  # Our online link connections should have 2 journals.

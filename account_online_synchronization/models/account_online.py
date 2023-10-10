@@ -272,8 +272,17 @@ class AccountOnlineLink(models.Model):
     provider_data = fields.Char(help="Information needed to interact with third party provider", readonly=True)
     expiring_synchronization_date = fields.Date(help="Date when the consent for this connection expires",
                                                 readonly=True)
-    journal_ids = fields.One2many(related='account_online_account_ids.journal_ids')
+    journal_ids = fields.One2many('account.journal', compute='_compute_journal_ids')
     provider_type = fields.Char(help="Third Party Provider", readonly=True)
+
+    ###################
+    # Compute methods #
+    ###################
+
+    @api.depends('account_online_account_ids')
+    def _compute_journal_ids(self):
+        for online_link in self:
+            online_link.journal_ids = online_link.account_online_account_ids.journal_ids
 
     ##########################
     # Wizard opening actions #

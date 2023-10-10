@@ -167,19 +167,6 @@
                     }
                 }
 
-                .bank_rec_widget_manual_operations_anchor{
-
-                    .o_bank_rec_widget_form_suggest_button{
-                        @extend .btn;
-                        @extend .btn-secondary;
-                        @extend .fst-italic;
-                        padding: 0px;
-                        text-transform: none !important;
-                    }
-
-                }
-
-
                 .bank_rec_widget_form_discuss_anchor, .bank_rec_widget_form_transaction_details_anchor{
                     padding: 0 20px;
                 }

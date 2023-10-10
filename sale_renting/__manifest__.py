@@ -5,9 +5,9 @@
     'summary': "Manage rental contracts, deliveries and returns",
 
     'description': """
-        Specify rentals of products (products, quotations, invoices, ...)
-        Manage status of products, rentals, delays
-        Manage user and manager notifications
+Specify rentals of products (products, quotations, invoices, ...)
+Manage status of products, rentals, delays
+Manage user and manager notifications
     """,
 
     'website': "https://www.odoo.com/app/rental",

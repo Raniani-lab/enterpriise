@@ -5,7 +5,7 @@
     'name': "Planning",
     'summary': """Manage your employees' schedule""",
     'description': """
-    Schedule your teams and employees with shift.
+Schedule your teams and employees with shift.
     """,
     'category': 'Human Resources/Planning',
     'sequence': 130,

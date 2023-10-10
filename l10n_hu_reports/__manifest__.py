@@ -6,7 +6,7 @@
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """
-        Accounting reports for Hungary
+Accounting reports for Hungary
     """,
     'depends': [
         'l10n_hu',

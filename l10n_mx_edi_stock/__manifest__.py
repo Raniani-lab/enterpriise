@@ -6,11 +6,11 @@
     'version': '1.0',
     'category': 'Accounting/Localizations/EDI',
     'description': """
-    The delivery guide (Complemento XML Carta de Porte) is needed as a proof
-    that you are sending goods between A and B.
+The delivery guide (Complemento XML Carta de Porte) is needed as a proof
+that you are sending goods between A and B.
 
-    It is only when a delivery order is validated that you can create the delivery
-    guide.
+It is only when a delivery order is validated that you can create the delivery
+guide.
     """,
     'depends': [
         'stock_delivery',

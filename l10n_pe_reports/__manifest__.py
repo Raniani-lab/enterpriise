@@ -3,11 +3,12 @@
 {
     'name': 'Peru - Accounting Reports',
     'countries': ['pe'],
-    "summary": """
-        Electronic accounting reports
-            - Sales report
-            - Purchase report
-        P&L + balance Sheet
+    "description": """
+Electronic accounting reports
+    - Sales report
+    - Purchase report
+
+P&L + balance Sheet
     """,
     "version": "1.0",
     "author": "Vauxoo, Odoo SA",

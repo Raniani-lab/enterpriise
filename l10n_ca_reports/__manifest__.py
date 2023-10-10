@@ -5,7 +5,7 @@
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """
-        Accounting reports for Canada
+Accounting reports for Canada
     """,
     'depends': [
         'l10n_ca',

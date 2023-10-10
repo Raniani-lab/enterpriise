@@ -3,7 +3,7 @@
     'name': "Time off - Contract Gantt",
     'summary': """Bridge module linking Holidays Gantt and Contracts modules""",
     'description': """
-    Gantt view for Time Off Dashboard with Contracts
+Gantt view for Time Off Dashboard with Contracts
     """,
     'category': 'Human Resources',
     'version': '1.0',

@@ -70,7 +70,7 @@
     'version': '1.5',
     'category': 'Accounting/Localizations/Reporting',
     'description': """
-        Accounting reports for Netherlands
+Accounting reports for Netherlands
     """,
     'author': 'Veritos - Jan Verlaan',
     'website': 'http://www.veritos.nl',

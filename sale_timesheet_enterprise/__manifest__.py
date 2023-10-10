@@ -6,8 +6,8 @@
     'summary': "Configure timesheet invoicing",
 
     'description': """
-        When invoicing timesheets, allows invoicing either all timesheets
-        linked to an SO, or only the validated timesheets
+When invoicing timesheets, allows invoicing either all timesheets
+linked to an SO, or only the validated timesheets
     """,
 
     'category': 'Hidden',

@@ -3,9 +3,7 @@
 {
     'name': "Chilean module for Point of Sale",
 
-    'summary': """
-Chilean module for Point of Sale
-""",
+    'summary': "Chilean module for Point of Sale",
 
     'description': """
 This module brings the technical requirement for the Chilean regulation.

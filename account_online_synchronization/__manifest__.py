@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Online Bank Statement Synchronization",
-    'summary': """
-        This module is used for Online bank synchronization.""",
+    'summary': "This module is used for Online bank synchronization.",
 
     'description': """
 With this module, users will be able to link bank journals to their

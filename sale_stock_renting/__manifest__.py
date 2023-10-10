@@ -2,9 +2,7 @@
 {
     'name': "Rental Stock Management",
 
-    'summary': """
-Allows use of stock application to manage rentals inventory
-        """,
+    'summary': "Allows use of stock application to manage rentals inventory",
 
     'description': """
 

@@ -6,7 +6,7 @@
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """
-        Base module for Bolivian reports
+Base module for Bolivian reports
     """,
     'depends': [
         'l10n_bo',

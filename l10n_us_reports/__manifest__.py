@@ -5,7 +5,7 @@
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """
-        Accounting reports for US
+Accounting reports for US
     """,
     'website': 'https://www.odoo.com/app/accounting',
     'depends': [

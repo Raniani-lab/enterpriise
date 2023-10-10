@@ -7,7 +7,7 @@
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """
-        Accounting reports for Romania
+Accounting reports for Romania
     """,
     'depends': [
         'l10n_ro', 'account_reports'

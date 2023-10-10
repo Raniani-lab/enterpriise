@@ -9,7 +9,7 @@
     'summary': 'Allow people to book meetings in your agenda',
     'website': 'https://www.odoo.com/app/appointments',
     'description': """
-        Allow clients to Schedule Appointments through the Portal
+Allow clients to Schedule Appointments through the Portal
     """,
     'depends': ['calendar', 'onboarding', 'portal', 'resource', 'web_gantt'],
     'data': [

@@ -9,10 +9,10 @@
     'version': '1.1',
     'category': 'Accounting/Localizations/Reporting',
     'description': """
-        Accounting reports for UK
+Accounting reports for UK
 
-        Allows to send the tax report via the
-        MTD-VAT API to HMRC.
+Allows to send the tax report via the
+MTD-VAT API to HMRC.
     """,
     'author': 'SmartMode LTD',
     'website': 'https://www.odoo.com/app/accounting',

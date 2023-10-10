@@ -7,7 +7,7 @@
     'version': '1.0',
     'category': 'Accounting/Accounting',
     'description': """
-        Disallowed Expenses Fleet Data for Belgium
+Disallowed Expenses Fleet Data for Belgium
     """,
     'depends': ['account_disallowed_expenses_fleet', 'l10n_be_hr_payroll_fleet'],
     'data': ['views/fleet_vehicle_views.xml'],

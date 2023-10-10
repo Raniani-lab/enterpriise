@@ -7,7 +7,7 @@
     'version': '1.1',
     'category': 'Accounting/Localizations/Reporting',
     'description': """
-        Accounting reports for Switzerland
+Accounting reports for Switzerland
     """,
     'depends': [
         'l10n_ch', 'account_reports'

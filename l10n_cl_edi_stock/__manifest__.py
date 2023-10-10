@@ -6,16 +6,16 @@
     'sequence': 12,
     'author':  'Blanco Martín & Asociados',
     'description': """
-    The delivery guide (guia de despacho) is needed as a proof
-    that you are sending goods between A and B.
+The delivery guide (guia de despacho) is needed as a proof
+that you are sending goods between A and B.
 
-    It is configurable on the partner if prices are needed on the
-    delivery guide and if they need to come from the sale order
-    or the product itself.
+It is configurable on the partner if prices are needed on the
+delivery guide and if they need to come from the sale order
+or the product itself.
 
-    It is only when a delivery order is validated that you can create the delivery
-    guide.  Then it will follow the same flow as for the invoices, sending it to
-    the SII.
+It is only when a delivery order is validated that you can create the delivery
+guide.  Then it will follow the same flow as for the invoices, sending it to
+the SII.
     """,
     'website': 'http://blancomartin.cl',
     'depends': [

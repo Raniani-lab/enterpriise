@@ -6,7 +6,7 @@
     'countries': ['do'],
     'version': '1.0',
     'description': """
-        Accounting reports for Dominican Republic
+Accounting reports for Dominican Republic
     """,
     'category': 'Accounting/Localizations/Reporting',
     'depends': [

@@ -6,9 +6,9 @@
     'countries': ['lt'],
     'version': '1.0.0',
     'description': """
-        Accounting reports for Lithuania
+Accounting reports for Lithuania
 
-        Contains Balance Sheet, Profit/Loss reports
+Contains Balance Sheet, Profit/Loss reports
     """,
     'license': 'OEEL-1',
     'author': "Focusate",

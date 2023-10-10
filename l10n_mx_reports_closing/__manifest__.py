@@ -4,9 +4,7 @@
 {
     "name": "Mexico - Month 13 Trial Balance",
     'countries': ['mx'],
-    "summary": """
-        Mexico Month 13 Trial Balance Report
-    """,
+    "summary": "Mexico Month 13 Trial Balance Report",
     "version": "1.0",
     "author": "Vauxoo / Odoo",
     "category": "Accounting/Localizations/Reporting",

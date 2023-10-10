@@ -6,9 +6,9 @@
     'version': '1.0',
     'category': 'Accounting/Localizations/EDI',
     'description': """
-    Bridge module to extend the delivery guide (Complemento XML Carta de Porte)
-    - exported goods (COMEX)
-    - extended address fields
+Bridge module to extend the delivery guide (Complemento XML Carta de Porte)
+- exported goods (COMEX)
+- extended address fields
     """,
     'depends': [
         'l10n_mx_edi_extended',

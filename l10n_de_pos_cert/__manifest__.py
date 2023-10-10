@@ -3,9 +3,7 @@
 {
     'name': "Germany - Certification for Point of Sale",
     'countries': ['de'],
-    'summary': """
-Germany TSS Regulation
-""",
+    'summary': "Germany TSS Regulation",
 
     'description': """
 This module brings the technical requirement for the new Germany regulation with the Technical Security System by using a cloud-based solution with Fiskaly.

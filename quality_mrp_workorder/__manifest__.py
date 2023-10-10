@@ -9,7 +9,7 @@
     'summary': 'Quality Management with MRP',
     'depends': ['quality_control', 'mrp_workorder', 'barcodes'],
     'description': """
-    Adds Quality Control to workorders.
+Adds Quality Control to workorders.
 """,
     "data": [
         'views/quality_views.xml',

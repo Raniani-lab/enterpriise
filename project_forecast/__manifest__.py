@@ -4,7 +4,7 @@
     'name': "Project Planning",
     'summary': """Plan your resources on project tasks""",
     'description': """
-    Schedule your teams across projects and estimate deadlines more accurately.
+Schedule your teams across projects and estimate deadlines more accurately.
     """,
     'category': 'Services/Project',
     'version': '1.0',

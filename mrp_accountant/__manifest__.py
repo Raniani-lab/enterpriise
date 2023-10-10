@@ -7,7 +7,7 @@
     'category': 'Inventory/Inventory',
     'summary': "Bridge between Mrp and Accounting",
     'description': """
-        Automatic accounting for MRP
+Automatic accounting for MRP
     """,
     'depends': ['mrp_account', 'stock_accountant'],
     'data': [

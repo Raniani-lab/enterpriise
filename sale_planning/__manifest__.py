@@ -5,13 +5,13 @@
     'name': 'Sale Planning',
     'category': 'Hidden',
     'description': """
-        This module allows you to schedule your Sales Order based on the product configuration.
+This module allows you to schedule your Sales Order based on the product configuration.
 
-        For products on which the "Plan Services" option is enabled, you will have the opportunity
-        to automatically plan the shifts for employees whom are able to take the shift
-        (i.e. employees who have the same role as the one configured on the product).
+For products on which the "Plan Services" option is enabled, you will have the opportunity
+to automatically plan the shifts for employees whom are able to take the shift
+(i.e. employees who have the same role as the one configured on the product).
 
-        Plan shifts and keep an eye on the hours consumed on your plannable products.
+Plan shifts and keep an eye on the hours consumed on your plannable products.
     """,
     'depends': ['sale_management', 'sale_service', 'planning'],
     'auto_install': ['sale_management', 'planning'],

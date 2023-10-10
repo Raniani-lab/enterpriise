@@ -5,7 +5,7 @@
     'summary': "Document management",
 
     'description': """
-        App to upload and manage your documents.
+App to upload and manage your documents.
     """,
 
     'author': "Odoo",

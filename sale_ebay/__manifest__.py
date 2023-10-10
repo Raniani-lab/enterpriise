@@ -4,8 +4,7 @@
 {
   'name': "eBay Connector",
 
-  'summary': """
-  Publish your products on eBay""",
+  'summary': "Publish your products on eBay",
 
   'description': """
 Publish your products on eBay

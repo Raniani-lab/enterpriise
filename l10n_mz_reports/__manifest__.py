@@ -6,7 +6,7 @@
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """
-        Base module for Mozambican reports
+Base module for Mozambican reports
     """,
     'depends': [
         'l10n_mz',

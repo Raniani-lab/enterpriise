@@ -7,7 +7,7 @@
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """
-        Enable the VAT wizard when posting a tax return journal entry
+Enable the VAT wizard when posting a tax return journal entry
     """,
     'depends': [
         'l10n_be_reports'

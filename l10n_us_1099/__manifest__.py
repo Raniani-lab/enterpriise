@@ -6,7 +6,7 @@
     "summary": """Easily export 1099 data for e-filing with a 3rd party.""",
     "category": "Accounting/Accounting",
     "description": """
-        Allows users to easily export accounting data that can be imported to a 3rd party that does 1099 e-filing.
+Allows users to easily export accounting data that can be imported to a 3rd party that does 1099 e-filing.
     """,
     "version": "1.0",
     "depends": [

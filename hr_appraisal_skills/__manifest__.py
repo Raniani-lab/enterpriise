@@ -9,7 +9,7 @@
     'summary': 'Manage skills of your employees during an appraisal process',
 
     'description': """
-        This module makes it possible to manage employee skills during an appraisal process.
+This module makes it possible to manage employee skills during an appraisal process.
     """,
     'depends': ['hr_appraisal', 'hr_skills'],
     'data': [

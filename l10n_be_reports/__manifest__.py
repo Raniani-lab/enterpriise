@@ -7,7 +7,7 @@
     'version': '1.1',
     'category': 'Accounting/Localizations/Reporting',
     'description': """
-        Accounting reports for Belgium
+Accounting reports for Belgium
     """,
     'depends': [
         'l10n_be', 'account_reports'

@@ -17,7 +17,7 @@
     'website': 'https://launchpad.net/openerp-spain',
     'category': 'Accounting/Localizations/Reporting',
     'description': """
-        Accounting reports for Spain
+Accounting reports for Spain
     """,
     'depends': [
         'l10n_es', 'account_reports',

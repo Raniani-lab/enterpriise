@@ -8,9 +8,9 @@
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': '''
-        This module enables generating the D.406 declaration from within Odoo.
-        The D.406 declaration is an XML file in the SAF-T format which Romanian companies
-        must submit monthly or quarterly, depending on their tax reporting period.
+This module enables generating the D.406 declaration from within Odoo.
+The D.406 declaration is an XML file in the SAF-T format which Romanian companies
+must submit monthly or quarterly, depending on their tax reporting period.
     ''',
     'depends': [
         'l10n_ro', 'account_saft',

@@ -11,8 +11,8 @@
     ],
     'version': '1.0',
     'description': """
-        Employment Hero Payroll Integration
-        This Module will synchronise all payrun journals from Employment Hero to Odoo.
+Employment Hero Payroll Integration
+This Module will synchronise all payrun journals from Employment Hero to Odoo.
     """,
     'author': 'Odoo S.A.,Inspired Software Pty Limited',
     'contributors': [

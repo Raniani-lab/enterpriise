@@ -4,11 +4,12 @@
 {
     "name": "Odoo Mexican Localization Reports",
     'countries': ['mx'],
-    "summary": """
-        Electronic accounting reports
-            - COA
-            - Trial Balance
-        DIOT Report
+    "description": """
+Electronic accounting reports
+    - COA
+    - Trial Balance
+
+DIOT Report
     """,
     "version": "1.0",
     "author": "Vauxoo",

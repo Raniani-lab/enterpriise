@@ -7,9 +7,9 @@
     'version': '1.1',
     'category': 'Accounting/Localizations/Reporting',
     'description': """
-        Accounting reports for Germany
-        Contains Balance sheet, Profit and Loss, VAT and Partner VAT reports
-        Also adds DATEV export options to general ledger
+Accounting reports for Germany
+Contains Balance sheet, Profit and Loss, VAT and Partner VAT reports
+Also adds DATEV export options to general ledger
     """,
     'depends': [
         'l10n_de', 'account_reports'

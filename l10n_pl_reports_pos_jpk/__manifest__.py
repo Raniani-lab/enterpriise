@@ -4,7 +4,7 @@
     'name': 'Poland - JPK_VAT PoS Enterprise',
     'version': '1.0',
     'description': """
-        This module provides the information from PoS for the JPK of Poland
+This module provides the information from PoS for the JPK of Poland
     """,
     'category': 'Accounting/Localizations/Reporting',
     'depends': [

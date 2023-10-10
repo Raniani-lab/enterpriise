@@ -7,7 +7,7 @@
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """
-        Accounting reports for Croatia
+Accounting reports for Croatia
     """,
     'depends': [
         'l10n_hr', 'account_reports'

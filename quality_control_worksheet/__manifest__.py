@@ -8,7 +8,7 @@
     'summary': 'Create custom worksheet for quality control',
     'depends': ['quality_control', 'worksheet'],
     'description': """
-    Create customizable worksheet for Quality Control.
+Create customizable worksheet for Quality Control.
 """,
     "data": [
         'security/quality_control_security.xml',

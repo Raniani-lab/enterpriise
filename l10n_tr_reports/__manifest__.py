@@ -7,7 +7,7 @@
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """
-        Accounting reports for Turkey
+Accounting reports for Turkey
     """,
     'depends': [
         'l10n_tr', 'account_reports'

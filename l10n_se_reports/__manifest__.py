@@ -8,7 +8,7 @@
     'category': 'Accounting/Localizations/Reporting',
     'author': "XCLUDE, Linserv, Odoo SA",
     'description': """
-        Accounting reports for Sweden
+Accounting reports for Sweden
     """,
     'depends': [
         'l10n_se', 'account_reports'

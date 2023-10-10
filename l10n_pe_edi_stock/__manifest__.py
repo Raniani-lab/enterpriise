@@ -9,11 +9,11 @@
     'author': 'Vauxoo',
     'license': 'OEEL-1',
     'description': """
-    The delivery guide (Guía de Remisión) is needed as a proof
-    that you are sending goods between A and B.
+The delivery guide (Guía de Remisión) is needed as a proof
+that you are sending goods between A and B.
 
-    It is only when a delivery order is validated that you can create the delivery
-    guide.
+It is only when a delivery order is validated that you can create the delivery
+guide.
     """,
     'depends': [
         'stock_delivery',

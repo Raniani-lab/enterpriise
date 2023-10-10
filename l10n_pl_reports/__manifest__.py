@@ -5,7 +5,7 @@
     'countries': ['pl'],
     'version': '1.0',
     'description': """
-        Accounting reports for Poland
+Accounting reports for Poland
         
         This module also provides the possibility to generate the JPK_VAT in xml, for Poland.
         

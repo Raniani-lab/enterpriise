@@ -7,7 +7,7 @@
     'version': '1.1',
     'category': 'Accounting/Accounting',
     'description': """
-        Disallowed Expenses Data for Belgium
+Disallowed Expenses Data for Belgium
     """,
     'depends': [
         'l10n_be',

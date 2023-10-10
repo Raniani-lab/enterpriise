@@ -3,9 +3,7 @@
 {
     'name': "Germany - Certification for Point of Sale of type restaurant",
     'countries': ['de'],
-    'summary': """
-Germany TSS Regulation for restaurant
-""",
+    'summary': "Germany TSS Regulation for restaurant",
 
     'description': """
 This module brings the technical requirements for the new Germany regulation regarding the restaurant.

@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Sale Lease",
-    'summary': """
-        Extend sale flow to sell/lease/rent a product depending on duration, quantity, price list""",
+    'summary': "Extend sale flow to sell/lease/rent a product depending on duration, quantity, price list",
 
     'description': """This technical module allows to define lease prices on a product template and use them in sale order according to a duration, a quantity, a price list.""",
     'category': 'Sales/Sales',

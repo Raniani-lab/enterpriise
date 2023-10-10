@@ -7,7 +7,7 @@
     'category': 'Productivity/Documents',
     'summary': 'Store expense documents in the Document app',
     'description': """
-        expense documents will be automatically integrated to the Document app.
+Expense documents will be automatically integrated to the Document app.
     """,
     'depends': ['documents', 'hr_expense_extract'],
     'data': [

@@ -6,7 +6,7 @@
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """
-        Base module for Bulgarian reports
+Base module for Bulgarian reports
     """,
     'depends': [
         'l10n_bg',

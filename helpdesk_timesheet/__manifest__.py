@@ -7,8 +7,8 @@
     'summary': 'Project, Tasks, Timesheet',
     'depends': ['timesheet_grid', 'project_helpdesk'],
     'description': """
-        - Allow to set project for Helpdesk team
-        - Track timesheet for a task from a ticket
+- Allow to set project for Helpdesk team
+- Track timesheet for a task from a ticket
     """,
     'data': [
         'security/ir.model.access.csv',

@@ -7,7 +7,7 @@
     'category': 'Accounting/Localizations/Reporting',
     'author': 'CubicERP, Blanco Martin y Asociados',
     'description': """
-        Accounting reports for Chile
+Accounting reports for Chile
     """,
     'depends': [
         'l10n_cl', 'account_reports',

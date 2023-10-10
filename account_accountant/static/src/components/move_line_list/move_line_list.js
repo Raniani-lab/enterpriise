@@ -79,7 +79,7 @@ AccountMoveLineListController.components = {
     AttachmentView,
 };
 
-class AccountMoveLineListRenderer extends ListRenderer {
+export class AccountMoveLineListRenderer extends ListRenderer {
     onCellClicked(record, column, ev) {
         this.props.setSelectedRecord(record);
         super.onCellClicked(record, column, ev);

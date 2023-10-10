@@ -218,3 +218,27 @@ class TestAccountAutoReconcileWizard(AccountTestInvoicingCommon):
         })
         reconciled_amls = wizard._auto_reconcile_zero_balance()
         self.assertTrue(reconciled_amls.full_reconcile_id)
+
+    def test_preset_wizard(self):
+        """ Tests that giving lines_ids to wizard presets correctly values. """
+        line_1 = self.create_line_for_reconciliation(1000.0, 1000.0, self.comp_curr, '2016-01-30', partner=self.partner_a)
+        line_2 = self.create_line_for_reconciliation(-1000.0, -1000.0, self.comp_curr, '2016-01-31', partner=self.partner_a)
+        wizard = self.env['account.auto.reconcile.wizard'].with_context(domain=[('id', 'in', (line_1 + line_2).ids)]).create({})
+        self.assertRecordValues(wizard, [{
+            'account_ids': self.receivable_account.ids,
+            'partner_ids': self.partner_a.ids,
+            'from_date': fields.Date.from_string('2016-01-30'),
+            'to_date': fields.Date.from_string('2016-01-31'),
+            'search_mode': 'zero_balance',
+        }])
+
+        line_3 = self.create_line_for_reconciliation(1000.0, 1000.0, self.comp_curr, '2016-01-31', partner=self.partner_a)
+        line_4 = self.create_line_for_reconciliation(-500.0, -500.0, self.comp_curr, '2016-02-28', partner=None)
+        wizard = self.env['account.auto.reconcile.wizard'].with_context(domain=[('id', 'in', (line_3 + line_4).ids)]).create({})
+        self.assertRecordValues(wizard, [{
+            'account_ids': self.receivable_account.ids,
+            'partner_ids': [],
+            'from_date': fields.Date.from_string('2016-01-31'),
+            'to_date': fields.Date.from_string('2016-02-28'),
+            'search_mode': 'one_to_one',
+        }])

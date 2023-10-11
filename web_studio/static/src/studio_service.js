@@ -2,6 +2,7 @@
 import { registry } from "@web/core/registry";
 import { delay } from "web.concurrency";
 import legacyBus from "web_studio.bus";
+import { _t } from "@web/core/l10n/translation";
 import { resetViewCompilerCache } from "@web/views/view_compiler";
 
 import { EventBus } from "@odoo/owl";
@@ -34,8 +35,8 @@ export const SUPPORTED_VIEW_TYPES = [
 ];
 
 export const studioService = {
-    dependencies: ["action", "cookie", "color_scheme", "home_menu", "router", "user", "menu"],
-    async start(env, { user, cookie, color_scheme, menu }) {
+    dependencies: ["action", "cookie", "color_scheme", "home_menu", "router", "user", "menu", "notification"],
+    async start(env, { user, cookie, color_scheme, menu, notification }) {
         function _getCurrentAction() {
             const currentController = env.services.action.currentController;
             return currentController ? currentController.action : null;
@@ -85,9 +86,17 @@ export const studioService = {
             if (!inStudio) {
                 return menuSelectMenu.call(menu, argMenu)
             } else {
-                argMenu = typeof argMenu === "number" ? menu.getMenu(argMenu) : argMenu;
-                await open(MODES.EDITOR, argMenu.actionID);
-                menu.setCurrentMenu(argMenu);
+                try {
+                    argMenu = typeof argMenu === "number" ? menu.getMenu(argMenu) : argMenu;
+                    await open(MODES.EDITOR, argMenu.actionID);
+                    menu.setCurrentMenu(argMenu);
+                } catch (e) {
+                    if (e instanceof NotEditableActionError) {
+                        notification.add(_t("This action is not editable by Studio"), { type: "danger" });
+                        return;
+                    }
+                    throw e;
+                }
             }
         }
 

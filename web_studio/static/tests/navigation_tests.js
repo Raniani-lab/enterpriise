@@ -861,4 +861,45 @@ QUnit.module("Studio", (hooks) => {
         assert.containsNone(target, ".o_studio_home_menu");
         assert.containsOnce(target, ".o_studio .o_web_studio_kanban_view_editor");
     });
+
+    QUnit.test("command palette inside studio with error", async (assert) => {
+        serverData.menus.root.children.push(99);
+        serverData.menus[99] = {
+            id: 99,
+            children: [],
+            actionID: 99,
+            xmlid: "testMenu",
+            name: "On Error",
+            appID: 99,
+        };
+        serverData.actions[99] = {
+            id: 99,
+            type: "ir.actions.act_window",
+            res_model: "partner",
+            views: [[false, "list"]],
+            name: "test action",
+            groups_id: [],
+        };
+
+        registry.category("services").add("command", commandService);
+        await createEnterpriseWebClient({ serverData });
+        await openStudio(target);
+
+        // disable opacity: 0 in tests
+        // doesn't have any effect on the test itself
+        document.body.classList.add("debug");
+        registerCleanup(() => document.body.classList.remove("debug"));
+        target.classList.add("debug");
+
+        assert.containsOnce(target, ".o_studio_home_menu");
+        const hiddenInput = target.querySelector("input.o_search_hidden");
+        hiddenInput.value = "On Error";
+
+        await triggerEvents(hiddenInput, null, ["input"]);
+        assert.containsOnce(target, ".o_command_palette");
+
+        await click(target.querySelector(".o_command_palette .o_command"));
+        await nextTick();
+        assert.containsOnce(target, "div.o_notification[role=alert]");
+    });
 });

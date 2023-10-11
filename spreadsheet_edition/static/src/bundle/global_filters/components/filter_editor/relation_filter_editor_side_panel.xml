@@ -22,12 +22,12 @@
         <div class="o_side_panel_section" t-if="relationState.relatedModel.technical">
             <div class="o_side_panel_title">Default value</div>
             <div class="pivot_filter_input" t-if="!(relationState.relatedModel.technical === 'res.users' and relationState.defaultValue === 'current_user')">
-                <RecordsSelector
+                <MultiRecordSelector
                     resModel="relationState.relatedModel.technical"
                     resIds="relationState.defaultValue"
                     t-key="relationState.relatedModel.technical"
                     placeholder="''"
-                    onValueChanged.bind="onValuesSelected"
+                    update.bind="onValuesSelected"
                 />
             </div>
             <div t-if="relationState.relatedModel.technical === 'res.users'" class="o-checkbox mt-2">

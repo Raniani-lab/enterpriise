@@ -1159,7 +1159,7 @@ QUnit.module(
         });
 
         QUnit.test("Readonly user can update relation filter values", async function (assert) {
-            const tagSelector = ".o_field_many2many_tags .badge";
+            const tagSelector = ".o_multi_record_selector .badge";
             const { model } = await createSpreadsheetFromPivotView();
             await addGlobalFilter(model, {
                 id: "42",
@@ -1282,7 +1282,7 @@ QUnit.module(
         });
 
         QUnit.test("Can clear a relation filter values", async function (assert) {
-            const tagSelector = ".o_field_many2many_tags .badge";
+            const tagSelector = ".o_multi_record_selector .badge";
             const { model } = await createSpreadsheetFromPivotView();
             await addGlobalFilter(
                 model,
@@ -1342,7 +1342,7 @@ QUnit.module(
         QUnit.test(
             "Can clear automatic default user with the global clear button",
             async function (assert) {
-                const tagSelector = ".o_field_many2many_tags .badge";
+                const tagSelector = ".o_multi_record_selector .badge";
                 const { model } = await createSpreadsheetFromPivotView();
                 await addGlobalFilter(
                     model,
@@ -1400,7 +1400,7 @@ QUnit.module(
                     ["user_ids", "in", [7]],
                 ]);
                 // clear filter
-                const tagClearButton = target.querySelector(".o_field_many2many_tags .o_delete");
+                const tagClearButton = target.querySelector(".o_multi_record_selector .o_delete");
                 await click(tagClearButton);
                 assert.deepEqual(model.getters.getPivotComputedDomain("1"), []);
             }

@@ -1,9 +1,10 @@
 /** @odoo-module */
 
-import { RecordsSelector } from "@spreadsheet/global_filters/components/records_selector/records_selector";
 import { ModelSelector } from "@web/core/model_selector/model_selector";
 import AbstractFilterEditorSidePanel from "./filter_editor_side_panel";
 import FilterEditorFieldMatching from "./filter_editor_field_matching";
+import { useService } from "@web/core/utils/hooks";
+import { MultiRecordSelector } from "@web/core/record_selectors/multi_record_selector";
 
 import { useState } from "@odoo/owl";
 
@@ -35,6 +36,7 @@ export default class RelationFilterEditorSidePanel extends AbstractFilterEditorS
                 technical: undefined,
             },
         });
+        this.nameService = useService("name");
 
         this.ALLOWED_FIELD_TYPES = ["many2one", "many2many", "one2many"];
     }
@@ -157,11 +159,15 @@ export default class RelationFilterEditorSidePanel extends AbstractFilterEditorS
     }
 
     /**
-     * @param {{id: number, display_name: string}[]} value
+     * @param {Number[]} value
      */
-    onValuesSelected(value) {
-        this.relationState.defaultValue = value.map((record) => record.id);
-        this.relationState.displayNames = value.map((record) => record.display_name);
+    async onValuesSelected(resIds) {
+        const displayNames = await this.nameService.loadDisplayNames(
+            this.relationState.relatedModel.technical,
+            resIds
+        );
+        this.relationState.defaultValue = resIds;
+        this.relationState.displayNames = Object.values(displayNames);
     }
 
     toggleDefaultsToCurrentUser(ev) {
@@ -173,6 +179,6 @@ RelationFilterEditorSidePanel.template = "spreadsheet_edition.RelationFilterEdit
 RelationFilterEditorSidePanel.components = {
     ...AbstractFilterEditorSidePanel.components,
     ModelSelector,
-    RecordsSelector,
+    MultiRecordSelector,
     FilterEditorFieldMatching,
 };

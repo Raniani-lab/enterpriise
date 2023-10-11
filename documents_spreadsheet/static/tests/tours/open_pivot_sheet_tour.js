@@ -57,7 +57,7 @@ registry.category("web_tour.tours").add("spreadsheet_open_pivot_sheet", {
                 assert(
                     Boolean(
                         pivot.querySelector(
-                            'div.o_field_many2many_tags span.badge[title="Azure Interior"]'
+                            'div.o_multi_record_selector span.badge[title="Azure Interior"]'
                         )
                     ),
                     true,
@@ -71,7 +71,7 @@ registry.category("web_tour.tours").add("spreadsheet_open_pivot_sheet", {
             content: "Check filter values",
             run: function () {
                 const defaultFilterValue = document.querySelectorAll(
-                    'div.o_field_many2many_tags span.badge[title="Azure Interior"]'
+                    'div.o_multi_record_selector span.badge[title="Azure Interior"]'
                 );
                 assert(
                     defaultFilterValue.length,

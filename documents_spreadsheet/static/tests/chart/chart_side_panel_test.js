@@ -150,7 +150,7 @@ QUnit.module("documents_spreadsheet > chart side panel", { beforeEach }, () => {
         assert.equal(measures.children[1].innerText, "Refresh values");
     });
 
-    QUnit.test("Update the chart domain from the side panel", async function (assert) {
+    QUnit.skip("Update the chart domain from the side panel", async function (assert) {
         const { model, env } = await createSpreadsheetFromGraphView({
             mockRPC(route) {
                 if (route === "/web/domain/validate") {

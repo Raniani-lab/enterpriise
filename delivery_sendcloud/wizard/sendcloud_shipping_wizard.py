@@ -26,7 +26,7 @@ class SendCloudShippingWizard(models.TransientModel):
         return [(ship_id, ship['name']) for ship_id, ship in shipping_products.items()]
 
     def _compute_return_products(self):
-        return_products = self.env.context.get('return_products', [])
+        return_products = self.env.context.get('return_products', {})
         return [(ship_id, ship['name']) for ship_id, ship in return_products.items()]
 
     @api.depends('shipping_product')

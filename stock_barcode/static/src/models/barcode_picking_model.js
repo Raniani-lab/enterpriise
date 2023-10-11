@@ -779,6 +779,9 @@ export default class BarcodePickingModel extends BarcodeModel {
                 });
             }
         }
+        if (this.record.return_id) {
+            this.validateContext = {...this.validateContext, picking_ids_not_to_backorder: this.resId};
+        }
         return await super.validate();
     }
 

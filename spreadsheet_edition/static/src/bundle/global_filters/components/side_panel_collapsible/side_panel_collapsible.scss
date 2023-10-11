@@ -5,12 +5,13 @@
     font-weight: bold;
     cursor: pointer;
 
-    i{
+    .fa-angle-down{
         font-size: 20px;
-        transition: transform 0.2s ease-in-out;
+        transition: transform 0.35s ease-in-out;
         transform: rotate(0);
-        &.collapsed{
-            transform: rotate(-90deg);
-        }
+    }
+
+    &[aria-expanded="false"] .fa-angle-down{
+        transform: rotate(-90deg);
     }
 }

@@ -1,36 +1,20 @@
 /** @odoo-module */
 
-import { Component, useState, useRef, useEffect } from "@odoo/owl";
+import { Component, useRef, onMounted } from "@odoo/owl";
 
 export class SidePanelCollapsible extends Component {
     setup() {
-        this.state = useState({ collapsed: this.props.collapsedAtInit ?? true });
-        this.collapsibleRef = useRef("collapsible");
+        const collapsibleRef = useRef("collapsible");
+        const collapsibleButtonRef = useRef("collapsibleButton");
+        onMounted(() => {
 
-        useEffect(
-            () => {
-                // Set max-height value and animate the transition
-                // Do it in a useEffect to wait for collapsibleRef.el.scrollHeight to be computed
-                // First set max-height to undefined to have the correct scrollHeight measurement. That means that
-                // we cannot use CSS transition and have to animate using JS.
-                const startMaxHeight = this.collapsibleRef.el.style.maxHeight;
-                this.collapsibleRef.el.style.maxHeight = "";
-                const maxHeight = this.state.collapsed ? 0 : this.collapsibleRef.el.scrollHeight;
-                this.collapsibleRef.el.style.maxHeight = `${maxHeight}px`;
+            if(!this.props.collapsedAtInit) {
+                collapsibleRef.el.classList.add("show");
+            }
 
-                const keyFrames = [
-                    { maxHeight: startMaxHeight },
-                    { maxHeight: `${maxHeight}px` },
-                ];
-
-                this.collapsibleRef.el.animate(keyFrames, 200);
-            },
-            () => [this.state.collapsed, this.collapsibleRef.el]
-        );
-    }
-
-    toggle() {
-        this.state.collapsed = !this.state.collapsed;
+            // Set aria-expanded at init to have the correct arrow icon rotation. It'll be managed by bootstrap afterwards.
+            collapsibleButtonRef.el.setAttribute("aria-expanded", !this.props.collapsedAtInit);
+        });
     }
 }
 

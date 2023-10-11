@@ -60,9 +60,12 @@ async function selectModelForRelation(relation) {
 }
 
 async function selectFieldMatching(fieldName, fieldMatching = target) {
-    await click(fieldMatching, ".o_model_field_selector");
+    // skipVisibilityCheck because the section is collapsible, which we don't care about in the tests
+    await click(fieldMatching, ".o_model_field_selector", { skipVisibilityCheck: true });
     // We use `target` here because the popover is not in fieldMatching
-    await click(target, `.o_model_field_selector_popover_item[data-name='${fieldName}'] button`);
+    await click(target, `.o_model_field_selector_popover_item[data-name='${fieldName}'] button`, {
+        skipVisibilityCheck: true,
+    });
 }
 
 async function saveGlobalFilter() {
@@ -291,13 +294,11 @@ QUnit.module(
                 await nextTick();
                 const collapsible = target.querySelector(".o_side_panel_collapsible");
                 assert.ok(collapsible.querySelector(".o_spreadsheet_field_matching"));
-                assert.equal(parseInt(collapsible.style["max-height"]), collapsible.scrollHeight);
+                assert.hasClass(collapsible, "show");
 
                 await click(target, ".o_side_panel_collapsible_title");
-                assert.equal(parseInt(collapsible.style["max-height"]), 0);
-
-                await click(target, ".o_side_panel_collapsible_title");
-                assert.equal(parseInt(collapsible.style["max-height"]), collapsible.scrollHeight);
+                assert.doesNotHaveClass(collapsible, "show");
+                assert.hasClass(collapsible, "collapsing");
             }
         );
 
@@ -306,20 +307,13 @@ QUnit.module(
             async function (assert) {
                 const { model } = await createSpreadsheetFromPivotView();
                 await openGlobalFilterSidePanel();
-                const filter = {
-                    id: "42",
-                    type: "date",
-                    label: "This Year",
-                    rangeType: "year",
-                    defaultValue: { yearOffset: 0 },
-                };
-                await addGlobalFilter(model, filter, {
+                await addGlobalFilter(model, THIS_YEAR_GLOBAL_FILTER, {
                     pivot: { 1: { type: "date", chain: "date" } },
                 });
 
                 await click(target.querySelector(".o_side_panel_filter_icon.fa-cog"));
                 const collapsible = target.querySelector(".o_side_panel_collapsible");
-                assert.equal(parseInt(collapsible.style["max-height"]), 0);
+                assert.doesNotHaveClass(collapsible, "show");
             }
         );
 

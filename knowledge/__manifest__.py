@@ -97,7 +97,6 @@
             # knowledge webclient overrides
             'knowledge/static/src/portal_webclient/**/*',
             'web/static/src/start.js',
-            'web/static/src/legacy/legacy_setup.js',
         ],
         'knowledge.assets_knowledge_print': [
             'knowledge/static/src/scss/knowledge_print.scss',

@@ -16,8 +16,6 @@ import {
     nextTick,
 } from "@web/../tests/helpers/utils";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { mapLegacyEnvToWowlEnv } from "@web/legacy/utils";
-import makeTestEnvironment from "@web/../tests/legacy/helpers/test_env";
 
 import { setupViewRegistries } from "@web/../tests/views/helpers";
 
@@ -30,17 +28,7 @@ QUnit.module("Studio Navbar > AppMenuEditor", (hooks) => {
     }
 
     async function createAppMenuEditor(config = {}) {
-        const hasLegacyEnv = config.hasLegacyEnv;
-        delete config.hasLegacyEnv;
-
         const env = await makeTestEnv({ ...config, serverData });
-
-        if (hasLegacyEnv) {
-            const legacyEnv = makeTestEnvironment();
-            mapLegacyEnvToWowlEnv(legacyEnv, env);
-            Component.env = legacyEnv;
-        }
-
         await mount(Parent, target, { env });
         await env.services.menu.setCurrentMenu(2);
         return nextTick();
@@ -272,7 +260,6 @@ QUnit.module("Studio Navbar > AppMenuEditor", (hooks) => {
 
     QUnit.test("edit/delete menus", async (assert) => {
         await createAppMenuEditor({
-            hasLegacyEnv: true,
             mockRPC: (route, args) => {
                 assert.step(route);
                 if (route === "/web/dataset/call_kw/ir.ui.menu/customize") {

@@ -21,7 +21,6 @@ import { spreadsheetLinkMenuCellService } from "@spreadsheet/ir_ui_menu/index";
 
 import { loadJS } from "@web/core/assets";
 import { makeFakeSpreadsheetService } from "@spreadsheet_edition/../tests/utils/collaborative_helpers";
-import { Component } from "@odoo/owl";
 
 const serviceRegistry = registry.category("services");
 const favoriteMenuRegistry = registry.category("favoriteMenu");
@@ -47,8 +46,6 @@ async function openView(viewType, options = {}) {
         serverData,
         mockRPC: options.mockRPC,
     });
-    const legacyEnv = Component.env;
-    legacyEnv.services.spreadsheet = webClient.env.services.spreadsheet;
     await doAction(webClient, 1, { viewType, additionalContext: options.additionalContext });
     return webClient;
 }

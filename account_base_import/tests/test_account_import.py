@@ -63,7 +63,7 @@ class TestXLSXImport(AccountTestInvoicingCommon):
         result = self._create_save_import("account.move.line", self.journal_items_file_content)
 
         account_move_lines = self.env["account.move.line"].browse(result["ids"])
-        self.assertEqual(len(account_move_lines.mapped("move_id").ids), 2, "2 moves should have been created")
+        self.assertEqual(len(account_move_lines.mapped("move_id").ids), 3, "3 moves should have been created")
         self.assertEqual(account_move_lines.mapped("journal_id.code"), ["MISC", "SAL"], "The journals should be set correctly")
         self.assertEqual(account_move_lines.mapped("account_id.code"), ["700200", "400000", "455000", "620200"], "The accounts should be set correctly")
 

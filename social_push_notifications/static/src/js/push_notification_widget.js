@@ -12,6 +12,7 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
     init() {
         this._super(...arguments);
         this.rpc = this.bindService("rpc");
+        this.notification = this.bindService("notification");
     },
 
     /**
@@ -67,18 +68,17 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
             if (window.Notification && Notification.permission === "granted") {
                 const notificationData = payload.data;
                 const options = {
-                    message: notificationData.body,
                     title: notificationData.title,
                     type: 'success',
                 };
                 const targetUrl = notificationData.target_url;
                 if (targetUrl) {
                     options.buttons = [{
-                        text: 'Open',
-                        click: () => window.open(targetUrl, '_blank'),
+                        name: 'Open',
+                        onClick: () => window.open(targetUrl, '_blank'),
                     }];
                 }
-                this.displayNotification(options);
+                this.notification.add(notificationData.body, options);
             }
         };
         messaging = messaging || this._initializeFirebaseApp(config);

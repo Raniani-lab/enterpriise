@@ -83,12 +83,13 @@ class L10nMXTrialBalanceCustomHandler(models.AbstractModel):
         '''
         report_date_to = fields.Date.to_date(options['date']['date_to'])
         first_day_of_fiscalyear = self.env.company.compute_fiscalyear_dates(report_date_to)['date_from']
+        first_day_of_fiscalyear_str = fields.Date.to_string(first_day_of_fiscalyear)
 
         forced_domain = options.setdefault('forced_domain', [])
         forced_domain += [
             '|',
             ('move_id.l10n_mx_closing_move', '=', False),
-            '&', ('move_id.l10n_mx_closing_move', '=', True), ('date', '<', first_day_of_fiscalyear),
+            '&', ('move_id.l10n_mx_closing_move', '=', True), ('date', '<', first_day_of_fiscalyear_str),
         ]
 
     def _custom_options_initializer(self, report, options, previous_options=None):

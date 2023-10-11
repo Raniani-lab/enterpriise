@@ -40,8 +40,8 @@ export function viewTypeToString(vType) {
 }
 
 export const studioService = {
-    dependencies: ["action", "color_scheme", "home_menu", "router", "rpc", "menu"],
-    async start(env, { color_scheme, rpc, menu }) {
+    dependencies: ["action", "color_scheme", "home_menu", "router", "rpc", "menu", "notification"],
+    async start(env, { color_scheme, rpc, menu, notification }) {
         const supportedViewTypes = Object.keys(SUPPORTED_VIEW_TYPES);
 
         function _getCurrentAction() {
@@ -93,9 +93,17 @@ export const studioService = {
             if (!inStudio) {
                 return menuSelectMenu.call(menu, argMenu);
             } else {
-                argMenu = typeof argMenu === "number" ? menu.getMenu(argMenu) : argMenu;
-                await open(MODES.EDITOR, argMenu.actionID);
-                menu.setCurrentMenu(argMenu);
+                try {
+                    argMenu = typeof argMenu === "number" ? menu.getMenu(argMenu) : argMenu;
+                    await open(MODES.EDITOR, argMenu.actionID);
+                    menu.setCurrentMenu(argMenu);
+                } catch (e) {
+                    if (e instanceof NotEditableActionError) {
+                        notification.add(_t("This action is not editable by Studio"), { type: "danger" });
+                        return;
+                    }
+                    throw e;
+                }
             }
         };
 

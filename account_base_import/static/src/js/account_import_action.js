@@ -1,30 +1,26 @@
 /** @odoo-module **/
 
+import { registry } from "@web/core/registry";
 import { ImportAction } from "@base_import/import_action/import_action";
-import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
+import { useAccountMoveLineImportModel } from "./account_import_model";
 
-patch(ImportAction.prototype, {
+export class AccountImportAction extends ImportAction {
     setup() {
         super.setup();
         this.actionService = useService("action");
-    },
 
-    get importOptions() {
-        const options = super.importOptions;
-        if (this.resModel === "account.move.line") {
-            Object.assign(options.name_create_enabled_fields, {
-                journal_id: true,
-                account_id: true,
-                partner_id: true,
-            });
-        }
-        return options;
-    },
+        this.model = useAccountMoveLineImportModel({
+            env: this.env,
+            resModel: this.resModel,
+            context: this.props.action.params.context || {},
+            orm: this.orm,
+        });
+    }
 
-    exit() {
-        if (this.current === "imported" && ["account.move.line", "account.account", "res.partner"].includes(this.resModel)) {
+    exit(resIds = null) {
+        if (resIds && ["account.move.line", "account.account", "res.partner"].includes(this.resModel)) {
             const names = {
                 "account.move.line": _t("Journal Items"),
                 "account.account": _t("Chart of Accounts"),
@@ -36,6 +32,7 @@ patch(ImportAction.prototype, {
                 type: "ir.actions.act_window",
                 views: [[false, "list"], [false, "form"]],
                 view_mode: "list",
+                domain: [["id", "in", resIds]],
             }
             if (this.resModel == "account.move.line") {
                 action.context = { "search_default_posted": 0 };
@@ -44,4 +41,6 @@ patch(ImportAction.prototype, {
         }
         super.exit();
     }
-});
+};
+
+registry.category("actions").add("account_import_action", AccountImportAction);

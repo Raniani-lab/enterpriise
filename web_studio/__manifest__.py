@@ -34,7 +34,6 @@ Note: Only the admin user is allowed to make those customizations.
     'data': [
         'views/assets.xml',
         'views/actions.xml',
-        'views/base_import_module_view.xml',
         'views/ir_actions_report_xml.xml',
         'views/ir_model_data.xml',
         'views/studio_approval_views.xml',

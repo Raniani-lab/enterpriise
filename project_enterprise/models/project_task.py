@@ -1104,6 +1104,9 @@ class Task(models.Model):
             ('planned_date_begin', '<=', stop_naive),
             ('date_deadline', '>=', start_naive),
         ])
+        project_tasks = project_tasks.with_context(prefetch_fields=False)
+        # Prefetch fields from database to avoid doing one query by __get__.
+        project_tasks.fetch(['planned_date_begin', 'date_deadline', 'user_ids'])
 
         allocated_hours_mapped = defaultdict(float)
         user_work_intervals, _dummy = users.sudo()._get_valid_work_intervals(start, stop)

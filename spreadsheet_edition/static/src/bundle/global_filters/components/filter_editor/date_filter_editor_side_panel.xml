@@ -35,7 +35,8 @@
                 </t>
             </select>
         </div>
-        <div class="o_side_panel_section">
+        <div class="o_side_panel_section"
+             t-if="dateState.type !== 'from_to'">
             <div class="o_side_panel_title">Default value</div>
             <div t-if="dateState.type !== 'relative'" class="d-flex align-items-center mt-2">
                 <input

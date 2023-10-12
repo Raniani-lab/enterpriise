@@ -1024,6 +1024,28 @@ QUnit.module(
             assert.deepEqual(pivotDomain, []);
         });
 
+        QUnit.test("Create a new from_to date filter", async function (assert) {
+            const { model } = await createSpreadsheetFromPivotView();
+            insertListInSpreadsheet(model, {
+                model: "partner",
+                columns: ["foo", "bar", "date", "product_id"],
+            });
+            insertChartInSpreadsheet(model);
+            await nextTick();
+            await openGlobalFilterSidePanel();
+            await clickCreateFilter("date");
+            await editGlobalFilterLabel("My Label");
+
+            const range = target.querySelector(".o_input:nth-child(2)");
+            await editSelect(range, null, "from_to");
+            await saveGlobalFilter();
+            const [globalFilter] = model.getters.getGlobalFilters();
+            assert.strictEqual(globalFilter.label, "My Label");
+            assert.strictEqual(globalFilter.rangeType, "from_to");
+            assert.strictEqual(globalFilter.type, "date");
+            assert.strictEqual(globalFilter.defaultValue, undefined);
+        });
+
         QUnit.test("Choose any year in a year picker", async function (assert) {
             const { model } = await createSpreadsheetFromPivotView();
             await addGlobalFilter(model, THIS_YEAR_GLOBAL_FILTER);

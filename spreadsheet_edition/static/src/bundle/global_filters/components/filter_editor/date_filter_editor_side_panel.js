@@ -11,6 +11,7 @@ import { useState } from "@odoo/owl";
 const RANGE_TYPES = [
     { type: "fixedPeriod", description: _t("Month / Quarter") },
     { type: "relative", description: _t("Relative Period") },
+    { type: "from_to", description: _t("From / To") },
 ];
 
 /**
@@ -21,7 +22,7 @@ const RANGE_TYPES = [
  * @typedef DateState
  * @property {Object} defaultValue
  * @property {boolean} automaticDefaultValue
- * @property {"fixedPeriod" | "relative"} type type of the filter
+ * @property {"fixedPeriod" | "relative" | "from_to"} type type of the filter
  */
 
 class DateFilterEditorFieldMatching extends FilterEditorFieldMatching {}

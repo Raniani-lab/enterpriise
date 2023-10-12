@@ -253,6 +253,7 @@ class CalendarEvent(models.Model):
         if not self.appointment_type_id:
             return res
 
+        appointment_type_sudo = self.appointment_type_id.sudo()
         # Replace Public User with OdooBot
         author = {'author_id': self.env.ref('base.partner_root').id} if self.env.user._is_public() else {}
 
@@ -268,18 +269,16 @@ class CalendarEvent(models.Model):
                     'subtype_id': self.env['ir.model.data']._xmlid_to_res_id('appointment.mt_calendar_event_booked'),
                     'email_layout_xmlid': 'mail.mail_notification_light'
                 })
-        if 'active' in changes and not self.active and self.start > fields.Datetime.now():
-            try:
-                canceled_template = self.env.ref('appointment.appointment_canceled_mail_template')
-            except ValueError as e:
-                _logger.warning("Mail could not be sent, as mail template is not found : %s", e)
-            else:
-                res['active'] = (canceled_template.sudo(), {
-                    **author,
-                    'auto_delete_keep_log': False,
-                    'subtype_id': self.env['ir.model.data']._xmlid_to_res_id('appointment.mt_calendar_event_canceled'),
-                    'email_layout_xmlid': 'mail.mail_notification_light'
-                })
+        if (
+            'active' in changes and not self.active and self.start > fields.Datetime.now()
+            and appointment_type_sudo.canceled_mail_template_id
+        ):
+            res['active'] = (appointment_type_sudo.canceled_mail_template_id, {
+                **author,
+                'auto_delete_keep_log': False,
+                'subtype_id': self.env['ir.model.data']._xmlid_to_res_id('appointment.mt_calendar_event_canceled'),
+                'email_layout_xmlid': 'mail.mail_notification_light'
+            })
         return res
 
     def _track_subtype(self, init_values):

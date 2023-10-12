@@ -34,6 +34,12 @@ class AppointmentType(models.Model):
                 result['staff_user_ids'] = [Command.set(self.env.user.ids)]
         return result
 
+    def _default_booked_mail_template_id(self):
+        return self.env['ir.model.data']._xmlid_to_res_id('appointment.attendee_invitation_mail_template')
+
+    def _default_canceled_mail_template_id(self):
+        return self.env['ir.model.data']._xmlid_to_res_id('appointment.appointment_canceled_mail_template')
+
     # Global Settings
     sequence = fields.Integer('Sequence', default=10)
     name = fields.Char('Appointment Title', required=True, translate=True)
@@ -57,6 +63,17 @@ class AppointmentType(models.Model):
     # 'punctual' types are time-bound
     start_datetime = fields.Datetime('Start Datetime')
     end_datetime = fields.Datetime('End Datetime')
+    # mail templates
+    booked_mail_template_id = fields.Many2one(
+        'mail.template', string='Confirmation Email', ondelete='restrict',
+        domain=[('model', '=', 'calendar.attendee')],
+        default=_default_booked_mail_template_id,
+        help="If set an email will be sent to the customer when the appointment is confirmed.")
+    canceled_mail_template_id = fields.Many2one(
+        'mail.template', string='Cancelation Email', ondelete='restrict',
+        domain=[('model', '=', 'calendar.event')],
+        default=_default_canceled_mail_template_id,
+        help="If set an email will be sent to the customer when the appointment is canceled.")
 
     # Assign Configuration
     assign_method = fields.Selection([

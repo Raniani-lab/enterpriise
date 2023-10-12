@@ -196,3 +196,21 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
             self.expense.action_submit_expenses()
 
         self.assertEqual(self.expense.extract_state, 'done')
+
+    def test_no_digitisation_for_posted_entries(self):
+        # Tests that if a move is created from an expense, it is not digitised again.
+        self.env.company.expense_extract_show_ocr_option_selection = 'auto_send'
+
+        self.expense.message_post(attachment_ids=[self.attachment.id])
+
+        expense_sheet = self.env['hr.expense.sheet'].create({
+            'name': self.expense.name,
+            'employee_id': self.expense.employee_id.id,
+            'expense_line_ids': self.expense.ids,
+        })
+        expense_sheet.action_submit_sheet()
+        expense_sheet.action_approve_expense_sheets()
+        expense_sheet.action_sheet_move_create()
+
+        move = expense_sheet.account_move_ids
+        self.assertFalse(move._needs_auto_extract())

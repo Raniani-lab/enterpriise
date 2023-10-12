@@ -356,10 +356,10 @@
 // Colors
 // ------------------------------------------------------------------
 .o_ma_text_canceled {
-    @extend .text-warning;
+    color: map-get($o-theme-text-colors, 'warning');
 }
 .o_ma_text_error {
-    @extend .text-muted;
+    color: $text-muted;
 }
 .o_ma_processed {
     background-color: $o-brand-primary;

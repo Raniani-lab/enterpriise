@@ -44,6 +44,7 @@ Features:
         'views/subscription_portal_templates.xml',
         'views/subscription_templates.xml',
         'views/payment_form_templates.xml',
+        'views/mail_activity_plan_views.xml',
         'views/mail_activity_views.xml',
         'data/mail_template_data.xml',
         'data/sale_subscription_data.xml',

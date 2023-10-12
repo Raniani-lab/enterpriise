@@ -968,7 +968,7 @@ registry.category("web_tour.tours").add("hr_contract_salary_tour_2", {
         {
             content: "Save Employee",
             trigger: ".o_form_button_save",
-            extra_trigger: '.o_form_statusbar .o_statusbar_buttons:contains("Launch Plan")',
+            extra_trigger: '.o-mail-Message-body a[href*="/web#action=hr.plan_wizard_action"]',
             run: "click",
         },
         {

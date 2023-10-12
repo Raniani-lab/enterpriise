@@ -3,4 +3,4 @@
 from . import hr_contract
 from . import hr_employee
 from . import res_users
-from . import hr_plan_activity_type
+from . import mail_activity_plan_template

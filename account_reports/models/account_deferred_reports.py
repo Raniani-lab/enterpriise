@@ -314,15 +314,18 @@ class DeferredReportCustomHandler(models.AbstractModel):
         journal = self.env.company.deferred_journal_id
         if not journal:
             raise UserError(_("Please set the deferred journal in the accounting settings."))
+        date_from = fields.Date.to_date(DEFERRED_DATE_MIN)
+        date_to = fields.Date.from_string(options['date']['date_to'])
+        if self.env.company._get_violated_lock_dates(date_to, False):
+            raise UserError(_("You cannot generate entries for a period that is locked."))
         options['all_entries'] = False  # We only want to create deferrals for posted moves
         report = self.env["account.report"].browse(options["report_id"])
         lines = self._get_lines(report, options, filter_already_generated=True)
-        period = (fields.Date.from_string(DEFERRED_DATE_MIN), fields.Date.from_string(options['date']['date_to']))
-        deferral_entry_period = self.env['account.report']._get_dates_period(*period, 'range', period_type='month')
+        deferral_entry_period = self.env['account.report']._get_dates_period(date_from, date_to, 'range', period_type='month')
         ref = _("Grouped Deferral Entry of %s", deferral_entry_period['string'])
         ref_rev = _("Reversal of Grouped Deferral Entry of %s", deferral_entry_period['string'])
         deferred_account = self.env.company.deferred_expense_account_id if self._get_deferred_report_type() == 'expense' else self.env.company.deferred_revenue_account_id
-        move_lines, original_move_ids = self._get_deferred_lines(lines, deferred_account, period, self._get_deferred_report_type() == 'expense', ref)
+        move_lines, original_move_ids = self._get_deferred_lines(lines, deferred_account, (date_from, date_to), self._get_deferred_report_type() == 'expense', ref)
         if not move_lines:
             raise UserError(_("No entry to generate."))
 
@@ -330,7 +333,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
             'move_type': 'entry',
             'deferred_original_move_ids': [Command.set(original_move_ids)],
             'journal_id': journal.id,
-            'date': period[1],
+            'date': date_to,
             'auto_post': 'at_date',
             'ref': ref,
         })

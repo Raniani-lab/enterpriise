@@ -1117,6 +1117,20 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         self.handler._generate_deferral_entry(self.get_options('2023-01-01', '2023-01-31'))
         self.assertEqual(self.env['account.move.line'].search_count([('account_id', '=', self.deferral_account.id)]), 2)
 
+    def test_deferred_expense_generation_lock_date(self):
+        """
+        Test that we cannot generate entries for a period that is locked.
+        """
+        self.company.deferred_amount_computation_method = 'month'
+        self.company.generate_deferred_expense_entries_method = 'manual'
+
+        move = self.create_invoice([[self.expense_accounts[0], 1000, '2023-01-01', '2023-04-30']])
+
+        move.company_id.fiscalyear_lock_date = fields.Date.to_date('2023-02-28')
+
+        with self.assertRaisesRegex(UserError, 'You cannot generate entries for a period that is locked.'):
+            self.handler._generate_deferral_entry(self.get_options('2023-01-01', '2023-01-31'))
+
     def test_deferred_expense_manual_generation_reset_to_draft(self):
         """Test that the deferred entries cannot be deleted in the manual mode"""
 

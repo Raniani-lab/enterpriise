@@ -42,14 +42,14 @@
                         </group>
                         <group>
                             <label for="interval_number" string="Trigger"/>
-                            <div class="container ps-0">
-                                <div class="row ms-0">
-                                    <field name="interval_number" nolabel="1" class="col-2 px-0"/>
-                                    <field name="interval_type" nolabel="1" class="col-10 pe-1"/>
+                            <div>
+                                <div>
+                                    <field name="interval_number" nolabel="1" class="w-25"/>
+                                    <field name="interval_type" nolabel="1" class="w-75"/>
                                 </div>
-                                <div class="row ms-0">
-                                    <span class="col-2 px-0 pt-1">after</span>
-                                    <field name="trigger_type" class="col-10 pt-1 pe-1"/>
+                                <div>
+                                    <span class="d-inline-block w-25">after</span>
+                                    <field name="trigger_type" class="w-75"/>
                                 </div>
                             </div>
                             <label for="parent_id" invisible="trigger_type == 'begin'"/>
@@ -62,11 +62,9 @@
                             </div>
                             <field name="validity_duration" string="Expiry Duration"/>
                             <label for="validity_duration_number" string="Cancel after" invisible="not validity_duration"/>
-                            <div invisible="not validity_duration" class="container ps-0">
-                                <div class="row ms-0">
-                                    <field name="validity_duration_number" nolabel="1" class="col-2 px-0"/>
-                                    <field name="validity_duration_type" nolabel="1" class="col-10 pe-1"/>
-                                </div>
+                            <div invisible="not validity_duration">
+                                <field name="validity_duration_number" nolabel="1" class="w-25"/>
+                                <field name="validity_duration_type" nolabel="1" class="w-75"/>
                             </div>
                             <field name="model_id" invisible="1"/>
                             <field name="model_name" invisible="1"/>

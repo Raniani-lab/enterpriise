@@ -377,22 +377,27 @@ class AccountMoveLine(models.Model):
     )
     has_deferred_moves = fields.Boolean(compute='_compute_has_deferred_moves')
 
-    @api.model
-    def _generate_order_by(self, order_spec, query):
-        # EXTENDS base
-        default_order_by_clause = super()._generate_order_by(order_spec, query)
+    def _order_to_sql(self, order, query, alias=None, reverse=False):
+        sql_order = super()._order_to_sql(order, query, alias, reverse)
         preferred_aml_residual_value = self._context.get('preferred_aml_value')
         preferred_aml_currency_id = self._context.get('preferred_aml_currency_id')
-        if preferred_aml_residual_value and preferred_aml_currency_id and order_spec == self._order:
+        if preferred_aml_residual_value and preferred_aml_currency_id and order == self._order:
             currency = self.env['res.currency'].browse(preferred_aml_currency_id)
             # using round since currency.round(55.55) = 55.550000000000004
             preferred_aml_residual_value = round(preferred_aml_residual_value, currency.decimal_places)
-            return f'''
-                ORDER BY ROUND({self._table}.amount_residual_currency, {currency.decimal_places})={preferred_aml_residual_value}
-                         and {self._table}.currency_id={currency.id} DESC,
-                         {default_order_by_clause.split("ORDER BY ")[1]}
-            '''
-        return default_order_by_clause
+            sql_residual_currency = self._field_to_sql(alias or self._table, 'amount_residual_currency', query)
+            sql_currency = self._field_to_sql(alias or self._table, 'currency_id', query)
+            return SQL(
+                "ROUND(%(residual_currency)s, %(decimal_places)s) = %(value)s "
+                "AND %(currency)s = %(currency_id)s DESC, %(order)s",
+                residual_currency=sql_residual_currency,
+                decimal_places=currency.decimal_places,
+                value=preferred_aml_residual_value,
+                currency=sql_currency,
+                currency_id=currency.id,
+                order=sql_order,
+            )
+        return sql_order
 
     def copy_data(self, default=None):
         data_list = super().copy_data(default=default)

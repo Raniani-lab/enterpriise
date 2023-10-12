@@ -15,7 +15,10 @@ class Task(models.Model):
     @api.depends_context('lang')
     @api.depends('planned_date_begin', 'planned_date_end', 'user_ids')
     def _compute_leave_warning(self):
-        assigned_tasks = self.filtered(
+        # Avoid NewIds issue by browsing for self.ids.
+        tasks = self.with_context(prefetch_fields=False).browse(self.ids)
+        tasks._read(['user_ids', 'project_id', 'planned_date_begin', 'planned_date_end', 'is_closed'])
+        assigned_tasks = tasks.filtered(
             lambda t: t.user_ids.employee_id
             and t.project_id
             and t.planned_date_begin

@@ -234,8 +234,6 @@ export class AccountReportFilters extends Component {
         this.controller.saveSessionOptions(this.controller.options);
 
         // force the company to those impacted by the tax units
-        this.companyService.nextAvailableCompanies.splice(0, this.companyService.nextAvailableCompanies.length);
-        taxUnit.company_ids.forEach((company_id) => this.companyService.setCompanies("toggle", company_id))
-        this.companyService.logNextCompanies()
+        this.companyService.setCompanies(taxUnit.company_ids);
     }
 }

@@ -138,8 +138,8 @@ export class StreamPostKanbanController extends KanbanController {
      * @param {Array} [{id: company_id, name: company_name}, ...]
      */
     _getCompanies() {
-        const companies = this.company.availableCompanies;
-        return this.company.allowedCompanyIds.map(companyId => companies[companyId]);
+        const companies = this.company.allowedCompanies;
+        return this.company.activeCompanyIds.map(companyId => companies[companyId]);
     }
 
 }

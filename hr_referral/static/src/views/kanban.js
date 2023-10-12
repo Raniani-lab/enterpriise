@@ -22,7 +22,7 @@ export class ReferralKanbanRenderer extends KanbanRenderer {
     }
 
     get companyId() {
-        return this.company.allowedCompanyIds[0];
+        return this.company.activeCompanyIds[0];
     }
 }
 ReferralKanbanRenderer.template = 'hr_referral.KanbanRenderer';

@@ -32,7 +32,7 @@ export class HrReferralWelcome extends Component {
                 'hr.applicant',
                 'retrieve_referral_welcome_screen'
             ));
-            this.dashboardData.company_id = this.company.allowedCompanyIds[0];
+            this.dashboardData.company_id = this.company.activeCompanyIds[0];
         });
     }
 

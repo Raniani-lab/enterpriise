@@ -132,11 +132,11 @@ class ProductTemplate(models.Model):
             'is_rental': True,
             'rental_duration': recurrence.duration,
             'rental_duration_unit': recurrence.unit,
-            'rental_unit': pricing._get_unit_label(recurrence.duration),
+            'rental_unit': recurrence._get_unit_label(recurrence.duration),
             'default_start_date': default_start_date,
             'default_end_date': default_end_date,
             'current_rental_duration': ceil(current_duration),
-            'current_rental_unit': current_pricing._get_unit_label(current_duration),
+            'current_rental_unit': current_pricing.recurrence_id._get_unit_label(current_duration),
             'current_rental_price': current_price,
             'current_rental_price_per_unit': current_price / (ratio or 1),
             'base_unit_price': 0,
@@ -223,8 +223,9 @@ class ProductTemplate(models.Model):
                 continue
             pricing = self.env['product.pricing']._get_first_suitable_pricing(template, pricelist)
             if pricing:
-                prices[template.id]['rental_duration'] = pricing.recurrence_id.duration
-                prices[template.id]['rental_unit'] = pricing._get_unit_label(pricing.recurrence_id.duration)
+                recurrence = pricing.recurrence_id
+                prices[template.id]['rental_duration'] = recurrence.duration
+                prices[template.id]['rental_unit'] = recurrence._get_unit_label(recurrence.duration)
             else:
                 prices[template.id]['rental_duration'] = 0
                 prices[template.id]['rental_unit'] = False

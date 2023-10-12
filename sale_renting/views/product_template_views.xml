@@ -41,6 +41,9 @@
                     <label for="rent_ok"/>
                 </span>
             </xpath>
+            <xpath expr="//notebook/page[@name='sales']" position="attributes">
+                <attribute name="invisible" add="not rent_ok" separator=" and "/>
+            </xpath>
         </field>
     </record>
 

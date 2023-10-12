@@ -9,7 +9,7 @@ from odoo.exceptions import ValidationError
 
 class RentalProcessing(models.TransientModel):
     _name = 'rental.order.wizard'
-    _description = 'Pick-up/Return products'
+    _description = "Pick-up/Return products"
 
     order_id = fields.Many2one('sale.order', required=True, ondelete='cascade')
     rental_wizard_line_ids = fields.One2many('rental.order.wizard.line', 'rental_order_wizard_id')
@@ -56,7 +56,7 @@ class RentalProcessing(models.TransientModel):
 
 class RentalProcessingLine(models.TransientModel):
     _name = 'rental.order.wizard.line'
-    _description = 'RentalOrderLine transient representation'
+    _description = "RentalOrderLine transient representation"
 
     @api.model
     def _default_wizard_line_vals(self, line, status):

@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
 import math
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models, _, _lt
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
-from odoo.tools import format_amount, float_compare, float_is_zero
+from odoo.tools import format_amount
 
 # For our use case: pricing depending on the duration, the values should be sufficiently different from one plan to
 # another to not suffer from the approcimation that all months are 31 longs.
@@ -22,29 +21,34 @@ PERIOD_RATIO = {
 
 
 class ProductPricing(models.Model):
-    """Temporal pricing rules."""
-
     _name = 'product.pricing'
-    _description = 'Pricing rule of temporal products'
+    _description = "Pricing rule of rental products"
     _order = 'product_template_id,price,pricelist_id,recurrence_id'
 
-    name = fields.Char(compute='_compute_name')
+    name = fields.Char(related='recurrence_id.duration_display')
     description = fields.Char(compute='_compute_description')
-    recurrence_id = fields.Many2one('sale.temporal.recurrence', string='Recurrency', required=True)
-    price = fields.Monetary(string="Price", required=True, default=1.0)
-    currency_id = fields.Many2one('res.currency', 'Currency', compute='_compute_currency_id', store=True)
-    product_template_id = fields.Many2one('product.template', string="Product Templates", ondelete='cascade',
-                                          help="Select products on which this pricing will be applied.")
-    product_variant_ids = fields.Many2many('product.product', string="Product Variants",
-                                           help="Select Variants of the Product for which this rule applies. Leave empty if this rule applies for any variant of this template.")
+    recurrence_id = fields.Many2one(
+        comodel_name='sale.temporal.recurrence', string="Renting Period", required=True)
+    price = fields.Monetary(required=True, default=1.0)
+    currency_id = fields.Many2one('res.currency', compute='_compute_currency_id', store=True)
+    product_template_id = fields.Many2one(
+        comodel_name='product.template',
+        ondelete='cascade',
+        help="Select products on which this pricing will be applied.",
+    )
+    product_variant_ids = fields.Many2many(
+        comodel_name='product.product',
+        help="Select Variants of the Product for which this rule applies."
+            "Leave empty if this rule applies for any variant of this template.",
+    )
     pricelist_id = fields.Many2one('product.pricelist', ondelete='cascade')
-    company_id = fields.Many2one('res.company', related='pricelist_id.company_id')
+    company_id = fields.Many2one(related='pricelist_id.company_id')
 
     @api.constrains('product_template_id', 'pricelist_id', 'recurrence_id', 'product_variant_ids')
     def _check_unique_parameters(self):
-        """ We want to avoid having several lines that applies for the same conditions.
-        The pricing must differ by at least one parameter among
-        the template, the variants, the pricelist (if defined or not), the duration and the time unit.
+        """ We want to avoid having several lines that apply for the same conditions.
+        The pricing must differ by at least one parameter among the template, the variants, the
+        pricelist (defined or not), the duration and the time unit.
         """
         conflict_counter = defaultdict(int)
         for price in self.product_template_id.product_pricing_ids:
@@ -54,7 +58,9 @@ class ProductPricing(models.Model):
                 price.recurrence_id,
             ]
             variants = price.product_variant_ids.ids or [_('all variants')]
-            pricing_has_all_variants = price.product_template_id.product_variant_count == len(price.product_variant_ids)
+            pricing_has_all_variants = price.product_template_id.product_variant_count == len(
+                price.product_variant_ids
+            )
             variants = [_('all variants')] if pricing_has_all_variants else variants
             for v in variants:
                 key_list.append(v)
@@ -62,17 +68,9 @@ class ProductPricing(models.Model):
                 conflict_counter[key_val] += 1
         pricing_issues = [k for k, v in conflict_counter.items() if v > 1]
         if pricing_issues:
-            raise ValidationError(_("You cannot have multiple pricing for the same variant, recurrence and pricelist"))
-
-    @api.depends_context('lang')
-    @api.depends('recurrence_id')
-    def _compute_name(self):
-        for pricing in self:
-            # TODO in master: use pricing.recurrence_id.duration_display
-            pricing.name = _(
-                "%s %s",
-                pricing.recurrence_id.duration,
-                pricing._get_unit_label(pricing.recurrence_id.duration))
+            raise ValidationError(_(
+                "You cannot have multiple pricing for the same variant, recurrence and pricelist"
+            ))
 
     def _compute_description(self):
         for pricing in self:
@@ -85,10 +83,7 @@ class ProductPricing(models.Model):
     @api.depends('pricelist_id', 'pricelist_id.currency_id')
     def _compute_currency_id(self):
         for pricing in self:
-            if pricing.pricelist_id:
-                pricing.currency_id = pricing.pricelist_id.currency_id
-            else:
-                pricing.currency_id = self.env.company.currency_id
+            pricing.currency_id = pricing.pricelist_id.currency_id or self.env.company.currency_id
 
     def _compute_price(self, duration, unit):
         """Compute the price for a specified duration of the current pricing rule.
@@ -143,10 +138,14 @@ class ProductPricing(models.Model):
         """ Get the pricing matching each type of periodicity.
         :returns: recordset containing one pricing per periodicity type
         """
-        available_periodicities = set(self.mapped(lambda p: (p.recurrence_id.duration, p.recurrence_id.unit)))
+        available_periodicities = set(
+            self.mapped(lambda p: (p.recurrence_id.duration, p.recurrence_id.unit))
+        )
         result = self.env['product.pricing']
-        for period in available_periodicities:
-            result |= self.filtered(lambda p: p.recurrence_id.duration == period[0] and p.recurrence_id.unit == period[1])[:1]
+        for (duration, unit) in available_periodicities:
+            result |= self.filtered(
+                lambda p: p.recurrence_id.duration == duration and p.recurrence_id.unit == unit
+            )[:1]
         return result
 
     @api.model
@@ -180,23 +179,3 @@ class ProductPricing(models.Model):
                 available_pricings |= pricing
 
         return available_pricings
-
-    def _get_unit_label(self, duration):
-        """ Get the translated product pricing unit label. """
-        # TODO in master: remove in favor of env['sale.temporal.recurrence']_get_unit_label
-        if duration is None:
-            return ""
-        if float_compare(duration, 1.0, precision_digits=2) < 1\
-           and not float_is_zero(duration, precision_digits=2):
-            singular_labels = {
-                'hour': _lt("Hour"),
-                'day': _lt("Day"),
-                'week': _lt("Week"),
-                'month': _lt("Month"),
-                'year': _lt("Year"),
-            }
-            if self.recurrence_id.unit in singular_labels:
-                return singular_labels[self.recurrence_id.unit]
-        return dict(
-            self.env['sale.temporal.recurrence']._fields['unit']._description_selection(self.env)
-        )[self.recurrence_id.unit]

@@ -98,7 +98,6 @@
                 <attribute name="options">{
                     'no_open': True,
                     'rent': True,
-                    'temporal': True,
                 }</attribute>
             </xpath>
             <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='product_template_id']" position='attributes'>
@@ -121,7 +120,6 @@
                 <attribute name="options">{
                     'no_open': True,
                     'rent': True,
-                    'temporal': True,
                 }</attribute>
             </xpath>
             <xpath expr="//field[@name='order_line']//form//field[@name='product_id']" position='attributes'>

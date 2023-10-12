@@ -58,29 +58,40 @@ class TestRentalCommon(TransactionCase):
 
     def test_pricing(self):
         # check pricing returned = expected
+        now = fields.Datetime.now()
         self.assertEqual(
-            self.product_id._get_best_pricing_rule(duration=9.0, unit='hour')._compute_price(9.0, 'hour'),
-            30.0
+            self.product_id._get_best_pricing_rule(
+                start_date=now, end_date=now + relativedelta(hours=9)
+            )._compute_price(9.0, 'hour'),
+            30.0,
         )
 
         self.assertEqual(
-            self.product_id._get_best_pricing_rule(duration=11.0, unit='hour')._compute_price(11.0, 'hour'),
-            38.5
+            self.product_id._get_best_pricing_rule(
+                start_date=now, end_date=now + relativedelta(hours=1)
+            )._compute_price(11.0, 'hour'),
+            38.5,
         )
 
         self.assertEqual(
-            self.product_id._get_best_pricing_rule(duration=16.0, unit='hour')._compute_price(16.0, 'hour'),
-            56.0
+            self.product_id._get_best_pricing_rule(
+                start_date=now, end_date=now + relativedelta(hours=16)
+            )._compute_price(16.0, 'hour'),
+            56.0,
         )
 
         self.assertEqual(
-            self.product_id._get_best_pricing_rule(duration=20, unit='hour')._compute_price(20.0, 'hour'),
-            60.0
+            self.product_id._get_best_pricing_rule(
+                start_date=now, end_date=now + relativedelta(hours=20)
+            )._compute_price(20.0, 'hour'),
+            60.0,
         )
 
         self.assertEqual(
-            self.product_id._get_best_pricing_rule(duration=24.0, unit='hour')._compute_price(24.0, 'hour'),
-            60.0
+            self.product_id._get_best_pricing_rule(
+                start_date=now, end_date=now + relativedelta(hours=24)
+            )._compute_price(24.0, 'hour'),
+            60.0,
         )
 
     def test_pricing_advanced(self):

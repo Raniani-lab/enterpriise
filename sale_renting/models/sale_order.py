@@ -35,7 +35,7 @@ class SaleOrder(models.Model):
         store=True, precompute=True, readonly=False,
         # By default, all orders created in rental app are Rental Orders
         default=lambda self: self.env.context.get('in_rental_app'))
-    has_rented_products = fields.Boolean(compute="_compute_has_rented_products")
+    has_rented_products = fields.Boolean(compute='_compute_has_rented_products')
     rental_start_date = fields.Datetime(string="Rental Start Date", tracking=True)
     rental_return_date = fields.Datetime(string="Rental Return Date", tracking=True)
     duration_days = fields.Integer(
@@ -59,8 +59,8 @@ class SaleOrder(models.Model):
     next_action_date = fields.Datetime(
         string="Next Action", compute='_compute_rental_status', store=True)
 
-    has_pickable_lines = fields.Boolean(compute="_compute_has_action_lines")
-    has_returnable_lines = fields.Boolean(compute="_compute_has_action_lines")
+    has_pickable_lines = fields.Boolean(compute='_compute_has_action_lines')
+    has_returnable_lines = fields.Boolean(compute='_compute_has_action_lines')
 
     is_late = fields.Boolean(
         string="Is overdue",

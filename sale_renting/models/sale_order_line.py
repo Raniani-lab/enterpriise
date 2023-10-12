@@ -190,28 +190,19 @@ class SaleOrderLine(models.Model):
         """
         self.ensure_one()
         if self.is_rental:
+            self.order_id._rental_set_dates()
             return self.order_id.pricelist_id._get_product_price(
                 self.product_id.with_context(**self._get_product_price_context()),
                 self.product_uom_qty or 1.0,
                 currency=self.currency_id,
                 uom=self.product_uom,
                 date=self.order_id.date_order or fields.Date.today(),
-                **self._get_price_computing_kwargs()
+                start_date=self.start_date,
+                end_date=self.return_date,
             )
         return super()._get_pricelist_price()
 
     # === PRICE COMPUTING HOOKS === #
-
-    def _get_price_computing_kwargs(self):
-        """ Override to add the pricing duration or the start and end date of temporal line """
-        price_computing_kwargs = {}
-        self.order_id._rental_set_dates()
-        start_date = self.order_id.rental_start_date
-        return_date = self.order_id.rental_return_date
-        if start_date and return_date:
-            price_computing_kwargs['start_date'] = start_date
-            price_computing_kwargs['end_date'] = return_date
-        return price_computing_kwargs
 
     def _lines_without_price_recomputation(self):
         """ Override to filter out rental lines and allow the recomputation for these SOL. """

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="sale_temporal_product_pricing_tree" model="ir.ui.view">
+    <record id="product_pricing_tree" model="ir.ui.view">
         <field name="name">product.pricing.tree</field>
         <field name="model">product.pricing</field>
         <field name="arch" type="xml">

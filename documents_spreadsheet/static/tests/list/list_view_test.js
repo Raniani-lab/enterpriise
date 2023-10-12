@@ -110,6 +110,43 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         assert.containsOnce(target, ".o_side_panel_select");
     });
 
+    QUnit.test("Deleting the list closes the side panel", async function (assert) {
+        const { model, env } = await createSpreadsheetFromListView();
+        const [listId] = model.getters.getListIds();
+        model.dispatch("SELECT_ODOO_LIST", { listId });
+        env.openSidePanel("LIST_PROPERTIES_PANEL", {
+            listId,
+        });
+        await nextTick();
+        const fixture = getFixture();
+        const titleSelector = ".o-sidePanelTitle";
+        assert.equal(fixture.querySelector(titleSelector).innerText, "List properties");
+
+        model.dispatch("REMOVE_ODOO_LIST", { listId });
+        await nextTick();
+        assert.equal(fixture.querySelector(titleSelector), null);
+        assert.equal(model.getters.getSelectedListId(), undefined);
+    });
+
+    QUnit.test("Undo a list insertion closes the side panel", async function (assert) {
+        const { model, env } = await createSpreadsheetFromListView();
+        const [listId] = model.getters.getListIds();
+        model.dispatch("SELECT_ODOO_LIST", { listId });
+        env.openSidePanel("LIST_PROPERTIES_PANEL", {
+            listId,
+        });
+        await nextTick();
+        const fixture = getFixture();
+        const titleSelector = ".o-sidePanelTitle";
+        assert.equal(fixture.querySelector(titleSelector).innerText, "List properties");
+
+        model.dispatch("REQUEST_UNDO");
+        model.dispatch("REQUEST_UNDO");
+        await nextTick();
+        assert.equal(fixture.querySelector(titleSelector), null);
+        assert.equal(model.getters.getSelectedListId(), undefined);
+    });
+
     QUnit.test("Add list in an existing spreadsheet", async (assert) => {
         const { model } = await createSpreadsheetFromListView();
         const list = model.getters.getListDefinition("1");

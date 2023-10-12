@@ -3,9 +3,17 @@
 import { _t } from "@web/core/l10n/translation";
 import PivotDetailsSidePanel from "./pivot_details_side_panel";
 
-const { Component } = owl;
+import { Component, onWillUpdateProps } from "@odoo/owl";
 
 export default class PivotSidePanel extends Component {
+    setup() {
+        onWillUpdateProps(() => {
+            if (!this.env.model.getters.getPivotIds().length) {
+                this.props.onCloseSidePanel();
+            }
+        });
+    }
+
     selectPivot(pivotId) {
         this.env.model.dispatch("SELECT_PIVOT", { pivotId });
     }

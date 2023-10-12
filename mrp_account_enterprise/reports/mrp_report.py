@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, api
+from odoo.tools import SQL
 
 
 class MrpReport(models.Model):
@@ -238,13 +239,13 @@ class MrpReport(models.Model):
         if aggregate_spec in ('unit_cost:avg', 'unit_component_cost:avg', 'unit_operation_cost:avg', 'unit_duration:avg'):
             # Make a weigthed average instead of simple average for these fields
             fname, *__ = models.parse_read_group_spec(aggregate_spec)
-            field_expression = self._inherits_join_calc(self._table, fname, query)
-            qty_produced_expression = self._inherits_join_calc(self._table, 'qty_produced', query)
-            sql_expression = f'SUM({field_expression} * {qty_produced_expression}) / SUM({qty_produced_expression})'
-            return sql_expression, [fname, 'qty_produced']
+            sql_field = self._field_to_sql(self._table, fname, query)
+            sql_qty_produced = self._field_to_sql(self._table, 'qty_produced', query)
+            sql_expr = SQL("SUM(%s * %s) / SUM(%s)", sql_field, sql_qty_produced, sql_qty_produced)
+            return sql_expr, [fname, 'qty_produced']
         if aggregate_spec == 'yield_rate:sum':
-            qty_produced_expression = self._inherits_join_calc(self._table, 'qty_produced', query)
-            qty_demanded_expression = self._inherits_join_calc(self._table, 'qty_demanded', query)
-            sql_expression = f'SUM({qty_produced_expression}) / SUM({qty_demanded_expression}) * 100'
-            return sql_expression, ['yield_rate', 'qty_produced', 'qty_demanded']
+            sql_qty_produced = self._field_to_sql(self._table, 'qty_produced', query)
+            sql_qty_demanded = self._field_to_sql(self._table, 'qty_demanded', query)
+            sql_expr = SQL("SUM(%s) / SUM(%s) * 100", sql_qty_produced, sql_qty_demanded)
+            return sql_expr, ['yield_rate', 'qty_produced', 'qty_demanded']
         return super()._read_group_select(aggregate_spec, query)

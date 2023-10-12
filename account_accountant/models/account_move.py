@@ -680,28 +680,35 @@ class AccountMoveLine(models.Model):
                         self.tax_ids = self.env['account.tax'].browse(predicted_tax_ids)
 
     def _read_group_groupby(self, groupby_spec, query):
-        """ EXTENDS 'base'
-        Allows to set :abs method on fields, useful when trying to match positive and negative amounts.
-        """
+        # enable grouping by :abs_rounded on fields, which is useful when trying
+        # to match positive and negative amounts
         if ':' in groupby_spec:
-            field, method = groupby_spec.split(':')
-            if field in self and method == 'abs_rounded':  # field in self avoids possible injections
+            fname, method = groupby_spec.split(':')
+            if fname in self and method == 'abs_rounded':  # field in self avoids possible injections
                 # rounds with the used currency settings
-                currency_alias = query.left_join('account_move_line', 'currency_id', 'res_currency', 'id', 'currency_id')
-                return f'ROUND(ABS("account_move_line"."{field}"), "{currency_alias}"."decimal_places")', [field]
+                sql_field = self._field_to_sql(self._table, fname, query)
+                currency_alias = query.left_join(self._table, 'currency_id', 'res_currency', 'id', 'currency_id')
+                sql_decimal = self.env['res.currency']._field_to_sql(currency_alias, 'decimal_places', query)
+                sql_group = SQL('ROUND(ABS(%s), %s)', sql_field, sql_decimal)
+                return sql_group, [fname, 'currency_id']
+
         return super()._read_group_groupby(groupby_spec, query)
 
     def _read_group_having(self, having_domain, query):
-        """ EXTENDS 'base'
-        Allows to use HAVING clause that sum rounded values depending on the currency precision settings.
-        We only handle a having clause of one element with that specific method :sum_rounded.
-        """
-        if having_domain and 'sum_rounded' in str(having_domain):
+        # Enable to use HAVING clause that sum rounded values depending on the
+        # currency precision settings. Limitation: we only handle a having
+        # clause of one element with that specific method :sum_rounded.
+        if len(having_domain) == 1:
             left, operator, right = having_domain[0]
-            if ':' in left:
-                fname, func = left.split(':')
-                if fname in self and func == 'sum_rounded':  # fname in self avoids possible injections
-                    field_expression = self._inherits_join_calc(self._table, fname, query)
-                    query.left_join('account_move_line', 'currency_id', 'res_currency', 'id', 'currency_id')
-                    return f'SUM(ROUND({field_expression}, "account_move_line__currency_id"."decimal_places")) {operator} %s', [right], [fname]
+            fname, *funcs = left.split(':')
+            if fname in self and funcs == ['sum_rounded']:  # fname in self avoids possible injections
+                sql_field = self._field_to_sql(self._table, fname, query)
+                currency_alias = query.left_join(self._table, 'currency_id', 'res_currency', 'id', 'currency_id')
+                sql_decimal = self.env['res.currency']._field_to_sql(currency_alias, 'decimal_places', query)
+                sql_operator = expression.SQL_OPERATORS[operator]
+                sql_expr = SQL(
+                    'SUM(ROUND(%s, %s)) %s %s',
+                    sql_field, sql_decimal, sql_operator, right,
+                )
+                return sql_expr, [fname]
         return super()._read_group_having(having_domain, query)

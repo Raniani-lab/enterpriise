@@ -5,9 +5,6 @@
         <field name="name">stock.picking.edi.form</field>
         <field name="inherit_id" ref="stock.view_picking_form" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='origin']" position="after">
-                <field name="country_code" invisible="1"/>
-            </xpath>
             <xpath expr="//header//button[@name='action_cancel']" position="after">
                 <field name="l10n_cl_sii_send_file" invisible="1"/>
                 <button name="create_delivery_guide" string="Create Delivery Guide" type="object" invisible="state != 'done' or l10n_cl_dte_status in ['accepted', 'objected', 'ask_for_status', 'rejected', 'cancelled'] or picking_type_code != 'outgoing' or l10n_cl_draft_status or country_code != 'CL'"/>

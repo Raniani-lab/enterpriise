@@ -82,7 +82,7 @@
         <field name="inherit_id" ref="quality_control.quality_check_view_tree"/>
         <field name="arch" type="xml">
             <field name="lot_name" position="after">
-                <field name="finished_lot_id" optional="show" groups="stock.group_production_lot"/>
+                <field name="finished_lot_id" optional="hide" groups="stock.group_production_lot"/>
             </field>
             <xpath expr="//field[@name='measure_on']" position="after">
                 <field name="operation_id" optional="hide" string="Work Order Operation" groups="mrp.group_mrp_routings"/>

@@ -20,12 +20,12 @@
                             <field name="product_category_ids" widget="many2many_tags"/>
                             <field name="picking_type_ids" string="Operations" widget="many2many_tags"/>
                             <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="user_id"/>
                         </group>
                         <group>
                             <field name="test_type" invisible="1"/>
                             <field string="Type" name="test_type_id" options="{'no_open': True, 'no_create': True}"/>
                             <field name="team_id" options="{'no_open': True, 'no_create': True}"/>
-                            <field name="user_id"/>
                         </group>
                     </group>
                     <notebook>

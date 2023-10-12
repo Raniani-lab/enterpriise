@@ -157,7 +157,6 @@ class TestQualityCheck(TestQualityCommon):
             'product_ids': [product_tracked_by_lot.id],
             'picking_type_ids': [self.picking_type_id],
             'test_type_id': self.env.ref('quality_control.test_type_measure').id,
-            'is_lot_tested_fractionally': True,
             'testing_percentage_within_lot': 10.02,
             'measure_on': 'move_line',
             'norm': 5.,

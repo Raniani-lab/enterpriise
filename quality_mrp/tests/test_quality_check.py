@@ -77,7 +77,6 @@ class TestQualityCheck(TestQualityMrpCommon):
             'product_ids': [self.product_id],
             'picking_type_ids': [self.picking_type_id],
             'measure_on': 'move_line',
-            'is_lot_tested_fractionally': True,
             'testing_percentage_within_lot': 50,
         })
         # Create Quality Point for component Drawer Case Black with Manufacturing Operation Type.

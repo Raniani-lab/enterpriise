@@ -33,14 +33,20 @@ class QualityPoint(models.Model):
         ('day', 'Days'),
         ('week', 'Weeks'),
         ('month', 'Months')], default="day")  # TDE RENAME ?
-    is_lot_tested_fractionally = fields.Boolean(string="Lot Tested Fractionally", help="Determines if only a fraction of the lot should be tested")
-    testing_percentage_within_lot = fields.Float(help="Defines the percentage within a lot that should be tested")
+    is_lot_tested_fractionally = fields.Boolean(string="Lot Tested Fractionally", help="Determines if only a fraction of the lot should be tested",
+                                                compute="_compute_is_lot_tested_fractionally")
+    testing_percentage_within_lot = fields.Float(help="Defines the percentage within a lot that should be tested", default=100)
     norm = fields.Float('Norm', digits='Quality Tests')  # TDE RENAME ?
     tolerance_min = fields.Float('Min Tolerance', digits='Quality Tests')
     tolerance_max = fields.Float('Max Tolerance', digits='Quality Tests')
     norm_unit = fields.Char('Norm Unit', default=lambda self: 'mm')  # TDE RENAME ?
     average = fields.Float(compute="_compute_standard_deviation_and_average")
     standard_deviation = fields.Float(compute="_compute_standard_deviation_and_average")
+
+    @api.depends('testing_percentage_within_lot')
+    def _compute_is_lot_tested_fractionally(self):
+        for point in self:
+            point.is_lot_tested_fractionally = point.testing_percentage_within_lot < 100
 
     def _compute_standard_deviation_and_average(self):
         # The variance and mean are computed by the Welford’s method and used the Bessel's

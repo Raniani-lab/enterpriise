@@ -1827,6 +1827,34 @@ class TestSubscription(TestSubscriptionCommon):
             renew_so.plan_id = self.plan_year
             self.assertFalse(renew_so.order_line.parent_line_id, "The lines should not have parent lines anymore")
 
+    # test the general behavior of so when the compute_price_unit is called
+        self.product_tmpl_4.recurring_invoice = False
+        order = self.env['sale.order'].create({
+            'partner_id': self.partner.id,
+            'sale_order_template_id': self.subscription_tmpl.id,
+            'plan_id': self.plan_month.id,
+            'order_line': [
+                (0, 0, {
+                    'name': self.product.name,
+                    'product_id': self.product.id,
+                    'product_uom_qty': 1.0,
+                    'product_uom': self.product.uom_id.id,
+                    'price_unit': 12,
+                }),
+                (0, 0, {
+                    'name': self.product5.name, # non recurring product
+                    'product_id': self.product5.id,
+                    'product_uom_qty': 1.0,
+                    'product_uom': self.product5.uom_id.id,
+                    'price_unit': 12,
+                })
+            ],
+        })
+        self.assertTrue(order.is_subscription)
+        self.assertEqual(order.order_line[1].price_unit, 12)
+        order.order_line[1].product_id = self.product_tmpl_4.product_variant_id
+        self.assertEqual(order.order_line[1].price_unit, 15, "The price should be updated")
+
     def test_subscription_constraint(self):
         self.subscription.plan_id = False
         with self.assertRaisesRegex(UserError, 'You cannot save a sale order with recurring product and no subscription plan.'):

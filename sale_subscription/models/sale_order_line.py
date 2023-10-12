@@ -105,15 +105,14 @@ class SaleOrderLine(models.Model):
     def _compute_price_unit(self):
         line_to_recompute = self.env['sale.order.line']
         for line in self:
-            # Recompute order lines if part of a regular sale order.
+            # Recompute order lines if part of a regular sale order. (not is_subscription or upsells)
             # This check avoids breaking other module's tests which trigger this function.
-            if not line.order_id.is_subscription:
+            if not line.order_id.subscription_state:
                 line_to_recompute |= line
-                continue
-            if line.parent_line_id:
+            elif line.parent_line_id:
                 # Carry custom price of recurring products from previous subscription after renewal.
                 line.price_unit = line.parent_line_id.price_unit
-            elif line.product_id.recurring_invoice or not line.price_unit:
+            elif line.order_id.state in ['draft', 'sent'] or line.product_id.recurring_invoice or not line.price_unit:
                 # Recompute prices for subscription products or regular products when these are first inserted.
                 line_to_recompute |= line
         super(SaleOrderLine, line_to_recompute)._compute_price_unit()

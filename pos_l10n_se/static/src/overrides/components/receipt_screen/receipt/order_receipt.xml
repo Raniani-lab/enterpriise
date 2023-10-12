@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="pos_l10n_se.OrderReceipt" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension">
+    <!-- <t t-name="pos_l10n_se.OrderReceipt" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension">
         <xpath expr="//div[hasclass('pos-receipt-contact')]" position="inside">
             <t t-if="receiptData.receipt.useBlackBoxSweden">
                 <br/>
@@ -61,5 +61,5 @@
                 <t t-set="receiptData.receipt.orderlines" t-value="all_lines"/>
             </div>
         </xpath>
-    </t>
+    </t> -->
 </templates>

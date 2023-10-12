@@ -66,4 +66,10 @@ patch(Order.prototype, {
         }
         return true;
     },
+    export_for_printing() {
+        return {
+            ...super.export_for_printing(...arguments),
+            voucherNumber: this.voucherNumber,
+        };
+    },
 });

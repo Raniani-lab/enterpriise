@@ -1,7 +1,5 @@
 /** @odoo-module */
 
-import { OfflineErrorPopup } from "@point_of_sale/app/errors/popups/offline_error_popup";
-import { BasePrinter } from "@point_of_sale/app/printer/base_printer";
 import { ReceiptScreen } from "@point_of_sale/app/screens/receipt_screen/receipt_screen";
 import { _t } from "@web/core/l10n/translation";
 import { patch } from "@web/core/utils/patch";
@@ -72,30 +70,11 @@ patch(ReceiptScreen.prototype, {
     },
 
     async _sendWhatsappReceiptToCustomer() {
-        const printer = new BasePrinter();
-        const ticketImage = await printer.htmlToImg(this.orderReceipt.el.firstChild);
-        const order = this.currentOrder;
-        const partner = order.get_partner();
-        const orderName = order.get_name();
+        const partner = this.currentOrder.get_partner();
         const orderPartner = {
             name: partner ? partner.name : this.whatsappState.inputWhatsapp,
             whatsapp: this.whatsappState.inputWhatsapp,
         };
-        const orderServerId = this.pos.validated_orders_name_server_id_map[orderName];
-        if (!orderServerId) {
-            this.popup.add(OfflineErrorPopup, {
-                title: _t("Unsynced order"),
-                body: _t(
-                    "This order is not yet synced to server. Make sure it is synced then try again."
-                ),
-            });
-            return Promise.reject();
-        }
-        await this.orm.call("pos.order", "action_sent_receipt_on_whatsapp", [
-            [orderServerId],
-            orderName,
-            orderPartner,
-            ticketImage,
-        ]);
+        await this.sendToCustomer(orderPartner, "action_sent_receipt_on_whatsapp");
     },
 });

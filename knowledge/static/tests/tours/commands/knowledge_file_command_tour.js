@@ -22,9 +22,28 @@ registry.category("web_tour.tours").add('knowledge_file_command_tour', {
 }, { // wait for the media dialog to open
     trigger: '.o_select_media_dialog',
 }, { // click on the first item of the modal
-    trigger: '.o_existing_attachment_cell:first-child',
+    trigger: '.o_existing_attachment_cell:contains(Onboarding)',
     run: 'click'
 }, { // wait for the block to appear in the editor
-    trigger: '.o_knowledge_behavior_type_file',
+    trigger: '.o_knowledge_behavior_type_file a.o_image',
+    run: 'click',
+}, {
+    trigger: '.o-FileViewer-headerButton[aria-label="Close"]',
+    extra_trigger: 'iframe.o-FileViewer-view body:contains(Content)',
+    run: 'click',
+}, {
+    trigger: '.o_knowledge_file_name:contains(Onboarding)',
+    run: function() {
+        this.$anchor[0].dispatchEvent(new Event('focus'));
+    }
+}, {
+    trigger: 'input[placeholder="Onboarding.txt"]',
+    run: function (helpers) {
+        helpers.text("Renamed");
+        this.$anchor[0].dispatchEvent(new Event('blur'));
+    }
+}, {
+    trigger: '.o_knowledge_file_name > div:contains(Renamed)',
+    run: () => {},
 }, ...endKnowledgeTour()
 ]});

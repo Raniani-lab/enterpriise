@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import base64
 from markupsafe import Markup
 
 from odoo.tests.common import tagged, users, HttpCase
@@ -42,7 +43,14 @@ class TestKnowledgeEditorCommands(HttpCase):
 
     def test_knowledge_file_command_tour(self):
         """Test the /file command in the editor"""
-        self.start_tour('/web', 'knowledge_file_command_tour', login='admin', step_delay=100)
+        self.env['ir.attachment'].create({
+            'datas': base64.b64encode(b'Content'),
+            'name': 'Onboarding.txt',
+            'mimetype': 'text/plain',
+            'res_id': self.article.id,
+            'res_model': 'knowledge.article',
+        })
+        self.start_tour('/web', 'knowledge_file_command_tour', login='admin')
 
     def test_knowledge_index_command_tour(self):
         """Test the /index command in the editor"""

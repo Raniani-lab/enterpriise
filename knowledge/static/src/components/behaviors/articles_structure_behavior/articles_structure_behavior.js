@@ -5,16 +5,15 @@ import { useService } from "@web/core/utils/hooks";
 import { renderToMarkup } from "@web/core/utils/render";
 import {
     useEffect,
-    useRef,
     useState,
     onMounted,
     onWillStart,
-    onWillDestroy,
 } from "@odoo/owl";
 import {
     BehaviorToolbar,
     BehaviorToolbarButton,
 } from "@knowledge/components/behaviors/behavior_toolbar/behavior_toolbar";
+import { useRefWithSingleCollaborativeChild } from "@knowledge/js/knowledge_utils";
 
 
 /**
@@ -40,7 +39,6 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
         this.orm = useService('orm');
         this.actionService = useService('action');
         this.childrenSelector = 'o_knowledge_articles_structure_children_only';
-        this.articlesStructureContent = useRef('articlesStructureContent');
         this.state = useState({
             // Used for the loading animation on the refresh button
             refreshing: false,
@@ -54,39 +52,21 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
         this.showAllChildren = this.state.showAllChildren;
         // Register changes in Elements of the content, the purpose is to
         // maintain maximum one OL element as the only child of content.
-        this.contentObserver = new MutationObserver(mutationList => {
-            const addedOls = new Set();
-            mutationList.forEach(mutation => {
-                mutation.addedNodes.forEach(node => {
-                    if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'OL') {
-                        addedOls.add(node);
-                    }
-                });
-            });
-            const currentOls = Array.from(this.observedContent.querySelectorAll(':scope > ol'));
-            if (currentOls.length > 1) {
-                // There can be more than one OL element if multiple
-                // collaborator refresh the content successively, then undo
-                // their changes (because the user can never undo a step from a
-                // collaborator, so the collaborator content will stay, while
-                // the previous content of the user is added, resulting in 2 OL.
-                // In that case, only the content of the collaborator is kept,
-                // and the undo is prevented).
-                const previousOl = currentOls.find(ol => !addedOls.has(ol)) || currentOls[0];
-                this.editor.observerUnactive('knowledge_update_article_structure');
-                this.observedContent.replaceChildren(previousOl);
-                this.editor.observerActive('knowledge_update_article_structure');
-            } else if (currentOls.length === 1) {
-                // The content OL element has the class which tells if it
-                // contains articles sub-children or not, update the state in
-                // consequence.
-                this.state.showAllChildren = !currentOls[0].classList.contains(this.childrenSelector);
-            } else {
-                // The default state when the content is empty is to show
-                // all articles sub-children.
-                this.state.showAllChildren = true;
+        this.articlesStructureContent = useRefWithSingleCollaborativeChild(
+            "articlesStructureContent",
+            (element) => {
+                if (element) {
+                    // The content OL element has the class which tells if it
+                    // contains articles sub-children or not, update the state in
+                    // consequence.
+                    this.state.showAllChildren = !element.classList.contains(this.childrenSelector);
+                } else {
+                    // The default state when the content is empty is to show
+                    // all articles sub-children.
+                    this.state.showAllChildren = true;
+                }
             }
-        });
+        );
 
         onWillStart(async () => {
             // Populate content with the prop coming from the blueprint if
@@ -95,14 +75,6 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
         });
 
         if (!this.props.readonly) {
-            useEffect(() => {
-                // Update the observer when OWL changes the instance Element of
-                // the articlesStructureContent
-                if (this.articlesStructureContent.el) {
-                    this.contentObserver.disconnect();
-                    this._observeContent();
-                }
-            }, () => [this.articlesStructureContent.el]);
             let mounted = false;
             useEffect(() => {
                 // Nothing to do onMounted
@@ -142,10 +114,6 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
                 this.props.anchor.removeEventListener('drop', onDrop);
             };
         });
-
-        onWillDestroy(() => {
-            this.contentObserver.disconnect();
-        })
     }
 
     //--------------------------------------------------------------------------
@@ -157,7 +125,6 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
      */
     extraRender() {
         super.extraRender();
-        this._observeContent();
         this._appendArticlesStructureContent();
         // Migration to the new system (the childrenSelector class is
         // used on the content node instead of the anchor).
@@ -167,16 +134,6 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
                 ol.classList.toggle(this.childrenSelector);
             });
         }
-    }
-
-    /**
-     * Start the observer to check OL elements in the content
-     */
-    _observeContent() {
-        this.observedContent = this.articlesStructureContent.el
-        this.contentObserver.observe(this.observedContent, {
-            childList: true,
-        });
     }
 
     //--------------------------------------------------------------------------

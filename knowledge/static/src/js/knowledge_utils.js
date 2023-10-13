@@ -1,6 +1,12 @@
 /** @odoo-module **/
 
 import { loadEmoji } from "@web/core/emoji_picker/emoji_picker";
+import {
+    useComponent,
+    useEffect,
+    useRef,
+} from "@odoo/owl";
+
 
 // List of icons that should be avoided when adding a random icon
 const iconsBlocklist = ["💩", "💀", "☠️", "🤮", "🖕", "🤢", "😒"];
@@ -194,4 +200,91 @@ export function setIntersectionObserver (element, callback) {
     }, options);
     observer.observe(element);
     return observer;
+}
+
+/**
+ * This hook can be used on a Behavior template 'ref' (provided name) to
+ * restrict its content to a single Element. The use case is the following:
+ * - The template contains a `data-oe-protected="false"` element which content
+ *   is determined programmatically (contenteditable="false") that can change
+ *   during edition and which changes should be shared in collaboration.
+ * - A collaborative change creates an history step that can be undone with
+ *   the `undo` feature of the editor. Here, since the uniqueness of the
+ *   child nodes has to be guaranteed, this hook adds a control feature to
+ *   ensure this is the case: a mutation can only be undone if the last change
+ *   was made by the user that is doing the undo. If the last change is an
+ *   external collaborative step, undo will be prevented (because in that
+ *   case the content would be 2 nodes, one per user, and that would be an
+ *   inconsistent state for the element).
+ *
+ * Warning: Can only be used on a Component which implements AbstractBehavior.
+ *
+ * @param {string} name of the `t-ref` element in the Behavior template
+ * @param {(element | undefined) => void} onChanged callback when the contents
+ *        of the ref changed. If there is currently an element, it is provided
+ *        as the argument, if there is no element, `undefined` is provided.
+ * @returns
+ */
+export function useRefWithSingleCollaborativeChild(name, onChanged) {
+    const component = useComponent();
+    const ref = useRef(name);
+    if (component.props.readonly) {
+        // static content if readonly, no need for the observer.
+        return ref;
+    }
+    let observedContent;
+    const contentObserver = new MutationObserver(mutationList => {
+        const newEls = new Set();
+        const newNodes = new Set();
+        for (const mutation of mutationList) {
+            for (const node of mutation.addedNodes) {
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                    newEls.add(node);
+                } else {
+                    newNodes.add(node);
+                }
+            }
+        }
+        if (newNodes.size) {
+            // Clean up direct children that are not instances of Element, as
+            // the only child (if any) should be an Element.
+            component.editor.observerUnactive('knowledge_useRefWithSingleCollaborativeChild');
+            for (const node of newNodes) {
+                node.remove();
+            }
+            component.editor.observerActive('knowledge_useRefWithSingleCollaborativeChild');
+        }
+        const currentEls = Array.from(observedContent.querySelectorAll(':scope > *'));
+        if (currentEls.length > 1) {
+            // This use case occurs if multiple collaborators provide a mutation
+            // adding a child element then undo their changes in the editor.
+            // A user can never remove a node added by a collaborator using
+            // `undo`, so if the last collaborator step was replacing a node
+            // from the current user by one of his own, when the current user
+            // triggers `undo`, his node is added back, but the collaborator
+            // node is not removed, resulting in 2 children elements, which is
+            // not desirable.
+            // The rule imposed here is that if such a case occurs, the last
+            // added element is kept, and the one recovered by `undo` is
+            // discarded (resulting in virtually "no change").
+            const previousEl = currentEls.find(el => !newEls.has(el)) || currentEls[0];
+            component.editor.observerUnactive('knowledge_useRefWithSingleCollaborativeChild');
+            observedContent.replaceChildren(previousEl);
+            component.editor.observerActive('knowledge_useRefWithSingleCollaborativeChild');
+        } else {
+            onChanged(currentEls.at(0));
+        }
+    });
+    useEffect(() => {
+        // Update the observer when OWL changes the instance Element of
+        // the `ref`
+        if (ref.el) {
+            observedContent = ref.el;
+            contentObserver.observe(observedContent, {
+                childList: true,
+            });
+        }
+        return () => contentObserver.disconnect();
+    }, () => [ref.el]);
+    return ref;
 }

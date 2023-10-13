@@ -5,6 +5,11 @@ import { fetchValidHeadings } from '@knowledge/js/tools/knowledge_tools';
 import publicWidget from '@web/legacy/js/public/public_widget';
 import { renderToElement } from "@web/core/utils/render";
 import { debounce, throttleForAnimation } from "@web/core/utils/timing";
+import { registry } from "@web/core/registry";
+import { FileViewer } from "@web/core/file_viewer/file_viewer";
+import { FileModel } from "@web/core/file_viewer/file_model";
+import { uniqueId } from "@web/core/utils/functions";
+
 
 publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
     selector: '.o_knowledge_public_view',
@@ -13,6 +18,8 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
         'click .o_article_caret': '_onFold',
         'click .o_knowledge_toc_link': '_onTocLinkClick',
         'click .o_knowledge_article_load_more': '_loadMoreArticles',
+        'click .o_knowledge_file_image a.o_image': 'onFileImageClick',
+        'click .o_knowledge_behavior_type_file button[name="download"]': 'onFileDownloadClick',
     },
 
     init() {
@@ -33,31 +40,10 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
             this._setResizeListener();
             // Debounce the search articles method to reduce the number of rpcs
             this._searchArticles = debounce(this._searchArticles, 500);
-            /**
-             * The embedded views are currently not supported in the frontend due
-             * to some technical limitations. Instead of showing an empty div, we
-             * will render a placeholder inviting the user to log in. Once logged
-             * in, the user will be redirected to the backend and should be able
-             * to load the embedded view.
-             */
-            const placeholder = renderToElement('website_knowledge.embedded_view_placeholder', {
-                url: `/knowledge/article/${this.$id}`,
-            });
-            const $container = $('.o_knowledge_behavior_type_embedded_view');
-            $container.empty();
-            $container.append(placeholder);
 
-            // Load the video iframes:
-            for (const anchor of this.el.querySelectorAll(".o_knowledge_behavior_type_video")) {
-                const props = decodeDataBehaviorProps(anchor.dataset.behaviorProps);
-                const url = getVideoUrl(props.platform, props.videoId, props.params);
-                const iframe = document.createElement("iframe");
-                iframe.src = url.toString();
-                iframe.frameborder = "0";
-                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-                anchor.replaceChildren();
-                anchor.append(iframe);
-            }
+            this.renderEmbeddedViews();
+            this.renderVideoIframes();
+            this.renderFileDownloadButtons();
         });
     },
 
@@ -141,6 +127,33 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
     },
 
     /**
+     * The embedded views are currently not supported in the frontend due
+     * to some technical limitations. Instead of showing an empty div, we
+     * will render a placeholder inviting the user to log in. Once logged
+     * in, the user will be redirected to the backend and should be able
+     * to load the embedded view.
+     */
+    renderEmbeddedViews: function () {
+        for (const embeddedView of this.el.querySelectorAll('.o_knowledge_behavior_type_embedded_view')) {
+            const placeholder = renderToElement('website_knowledge.embedded_view_placeholder', {
+                url: `/knowledge/article/${this.$id}`,
+            });
+            embeddedView.replaceChildren(placeholder);
+        }
+    },
+
+    /**
+     * Behavior toolbars and buttons are not saved (since the button tag is
+     * sanitized in backend anyway), they have to be added back
+     */
+    renderFileDownloadButtons: function () {
+        for (const toolbar of this.el.querySelectorAll(".o_knowledge_behavior_type_file .o_knowledge_toolbar")) {
+            const toolbarContent = renderToElement('website_knowledge.file_behavior_toolbar_content', {});
+            toolbar.replaceChildren(toolbarContent);
+        }
+    },
+
+    /**
      * Renders the tree listing all articles.
      * To minimize loading time, the function will initially load the root articles.
      * The other articles will be loaded lazily: The user will have to click on
@@ -162,6 +175,22 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
             container.innerHTML = htmlTree;
         } catch {
             container.innerHTML = "";
+        }
+    },
+
+    /**
+     * Load the video iframes
+     */
+    renderVideoIframes: function () {
+        for (const anchor of this.el.querySelectorAll(".o_knowledge_behavior_type_video")) {
+            const props = decodeDataBehaviorProps(anchor.dataset.behaviorProps);
+            const url = getVideoUrl(props.platform, props.videoId, props.params);
+            const iframe = document.createElement("iframe");
+            iframe.src = url.toString();
+            iframe.frameborder = "0";
+            iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+            anchor.replaceChildren();
+            anchor.append(iframe);
         }
     },
 
@@ -218,6 +247,58 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
         }
         localStorage.setItem(this.storageKey, this.unfoldedArticlesIds.join(";"),
         );
+    },
+
+    /**
+     * Download a file
+     *
+     * @param {Event} event
+     */
+    onFileDownloadClick: function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const behaviorAnchor = event.target.closest(".o_knowledge_behavior_type_file");
+        const link = behaviorAnchor.querySelector(".o_knowledge_file_image a.o_image");
+        if (!link?.href) {
+            return;
+        }
+        window.open(link.href, "_blank");
+    },
+
+    /**
+     * Open the FileViewer.
+     *
+     * How to mount components alongside public widgets @see createPublicRoot :
+     * For public views like this one, the @see RootWidget is attached to the
+     * document body alongside an Owl App @see MainComponentsContainer .
+     * The latter will simply loop over components added to the
+     * @see main_components registry and render them, which is what is done
+     * here to mount and unmount the FileViewer.
+     *
+     * @param {Event} event
+     */
+    onFileImageClick: function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (!event.target?.href) {
+            return;
+        }
+        const viewerId = uniqueId('web.file_viewer');
+        const behaviorAnchor = event.target.closest(".o_knowledge_behavior_type_file");
+        const props = decodeDataBehaviorProps(behaviorAnchor.dataset.behaviorProps);
+        const fileModel = Object.assign(new FileModel(), props.fileData);
+        if (fileModel.isViewable) {
+            registry.category("main_components").add(viewerId, {
+                Component: FileViewer,
+                props: {
+                    files: [fileModel],
+                    startIndex: 0,
+                    close: () => {
+                        registry.category('main_components').remove(viewerId);
+                    },
+                },
+            });
+        }
     },
 
     /**

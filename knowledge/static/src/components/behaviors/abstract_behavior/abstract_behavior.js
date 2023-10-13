@@ -95,6 +95,22 @@ export class AbstractBehavior extends Component {
      * templating system (i.e. because they will be altered by the editor),
      * before being observed by the editor and/or assigned an oid.
      * @see ArticlesStructureBehavior for an example.
+     *
+     * Why should this hook be used:
+     * - Some non-editable HTML content managed by the Behavior has to be
+     *   shared in collaboration. This means that the content can be updated by
+     *   a mutation received through the collaboration (and which is the result
+     *   of a collaborator using a feature of the Behavior which changes its
+     *   content, i.e. a refresh for the ArticlesStructureBehavior). Owl will
+     *   crash if nodes it rendered are not replaced by an Owl patch, so that's
+     *   why one should use this this hook to render that content and insert
+     *   it where it belong inside the nodes already rendered by Owl for the
+     *   first time.
+     * - Ensure that the Behavior has a fully coherent state before being
+     *   inserted in the editor and shared in collaboration as a single
+     *   mutation.
+     * - Avoid creating multiple "partial" steps that can mess up the history
+     *   system (can Undo/Redo each step).
      */
     extraRender() {}
 
@@ -114,6 +130,17 @@ export class AbstractBehavior extends Component {
     }
 
     /**
+     * Every node in the editor has a unique oid in collaboration. This is to
+     * identify to which node apply a mutation received from a collaborator.
+     * This method reapplies the oids from the blueprint of the Behavior (nodes
+     * present before it was mounted by Owl) to collaborative elements
+     * (=elements under a node with data-oe-protected="false" in a Behavior),
+     * after they were rendered by Owl.
+     *
+     * By default, only html props nodes (data-prop-name) are synchronized,
+     * for other collaborative content, this method should be overridden to
+     * specify which nodes need to be synchronized.
+     *
      * @param {Element} blueprint node containing all original DOM nodes
      *                  from this.props.blueprintNodes.
      */

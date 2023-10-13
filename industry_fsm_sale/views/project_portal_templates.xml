@@ -13,14 +13,12 @@
             <t t-set="use_qty_delivered" t-value="is_task and line.product_id.service_policy != 'ordered_prepaid'"/>
             <t t-if="use_qty_delivered">
                 <t t-set="final_subtotal" t-value="final_subtotal + line.delivered_price_subtotal"/>
-                <t t-set="final_total" t-value="final_total + line.delivered_price_total" t-if="order.tax_calculation_rounding_method == 'round_per_line'"/>
                 <t t-set="final_tax" t-value="final_tax + line.delivered_price_tax"/>
                 <t t-set="amount_due" t-value="amount_due + line.delivered_price_total - sum(line.invoice_lines.mapped('price_total'))"/>
                 <t t-set="is_any_total_discount_line" t-value="is_any_total_discount_line or (line.discount and line.price_unit != 0 and line.delivered_price_total == 0)"/>
             </t>
             <t t-else="">
                 <t t-set="final_subtotal" t-value="final_subtotal + line.price_subtotal"/>
-                <t t-set="final_total" t-value="final_total + line.price_total" t-if="order.tax_calculation_rounding_method == 'round_per_line'"/>
                 <t t-set="final_tax" t-value="final_tax + line.price_tax"/>
                 <t t-set="amount_due" t-value="amount_due + line.price_total - sum(line.invoice_lines.mapped('price_total'))"/>
                 <t t-set="is_any_total_discount_line" t-value="is_any_total_discount_line or (line.discount and line.price_unit != 0 and line.price_total == 0)"/>
@@ -40,10 +38,7 @@
                                 <span>Disc.%</span>
                             </th>
                             <th class="text-end">
-                                <span t-if="final_subtotal != 0 or is_any_total_discount_line">Tax excl.</span>
-                            </th>
-                            <th class="text-end" t-if="order.tax_calculation_rounding_method == 'round_per_line'">
-                                <span t-if="final_total != 0 or is_any_total_discount_line">Tax incl.</span>
+                                <span t-if="final_subtotal != 0 or is_any_total_discount_line">Amount</span>
                             </th>
                         </tr>
                     </thead>
@@ -66,12 +61,6 @@
                                 </t>
                                 <t t-else="">
                                     <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal"/>
-                                </t>
-                                <t t-if="use_qty_delivered">
-                                    <t t-set="current_total" t-value="current_subtotal + line.delivered_price_total" t-if="order.tax_calculation_rounding_method == 'round_per_line'"/>
-                                </t>
-                                <t t-else="">
-                                    <t t-set="current_total" t-value="current_subtotal + line.price_total" t-if="order.tax_calculation_rounding_method == 'round_per_line'"/>
                                 </t>
 
                                 <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''" t-att-style="'background-color: #F1F1F1;' if line_index % 2 == 0 else ''">
@@ -97,14 +86,6 @@
                                             </t>
                                             <t t-else="">
                                                 <span t-if="line.price_subtotal != 0 or is_total_discount" t-field="line.price_subtotal"/>
-                                            </t>
-                                        </td>
-                                        <td class="text-end o_price_total">
-                                            <t t-if="use_qty_delivered">
-                                                <span t-if="line.delivered_price_total != 0 or is_total_discount and order.tax_calculation_rounding_method == 'round_per_line'" t-field="line.delivered_price_total" />
-                                            </t>
-                                            <t t-else="">
-                                                <span t-if="line.price_total != 0 or is_total_discount and order.tax_calculation_rounding_method == 'round_per_line'"  t-field="line.price_total"/>
                                             </t>
                                         </td>
                                     </t>

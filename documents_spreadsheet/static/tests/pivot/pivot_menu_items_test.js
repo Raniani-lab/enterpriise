@@ -53,6 +53,29 @@ QUnit.module(
             );
         });
 
+        QUnit.test("Reinsert a pivot with a contextual search domain", async function (assert) {
+            const uid = 7;
+            const serverData = getBasicServerData();
+            serverData.models.partner.records = [{ id: 1, probability: 0.5, foo: uid }];
+            serverData.views["partner,false,search"] = /* xml */ `
+                <search>
+                    <filter string="Filter" name="filter" domain="[('foo', '=', uid)]"/>
+                </search>
+            `;
+            const { model, env } = await createSpreadsheetFromPivotView({
+                serverData,
+                additionalContext: { search_default_filter: 1 },
+            });
+
+            selectCell(model, "D8");
+            await doMenuAction(topbarMenuRegistry, reinsertPivotPath, env);
+            assert.equal(
+                getCellFormula(model, "E10"),
+                `=ODOO.PIVOT(1,"probability","bar","false","foo",7)`,
+                "It should contain a pivot formula"
+            );
+        });
+
         QUnit.test("Reinsert a pivot in a too small sheet", async function (assert) {
             const { model, env } = await createSpreadsheetWithPivot();
             const sheetId = model.getters.getActiveSheetId();

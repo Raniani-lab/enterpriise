@@ -5,13 +5,13 @@
         }
         .fc-day.fc-past.o_calendar_slot_selection, .fc-week .fc-day.fc-today.o_calendar_slot_selection {
             border-color: #AAA;
-            @extend .bg-300;
+            background-color: $gray-300;
             cursor: not-allowed;
         }
         .fc-day.fc-today.o_calendar_slot_selection {
             border-color: #AAA !important;
             div.o_calendar_slot_selection_now {
-                @extend .bg-300;
+                background-color: $gray-300;
                 cursor: not-allowed;
             }
         }

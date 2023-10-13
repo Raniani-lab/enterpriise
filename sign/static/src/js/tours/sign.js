@@ -50,7 +50,7 @@ registry.category("web_tour.tours").add("sign_tour", {
             position: "bottom",
         },
         {
-            trigger: ".o_sign_flat_o2m",
+            trigger: ".o_field_signer_x2many",
             content: markup(
                 _t(
                     "Select the contact who should sign, according to their role.<br>In this example, select your own contact to sign the document yourself."

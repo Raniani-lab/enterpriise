@@ -1,5 +1,6 @@
 /** @odoo-module **/
 import { Reactive } from "@web/core/utils/reactive";
+import { deserializeDateTime } from "@web/core/l10n/dates";
 
 export class Order extends Reactive {
     constructor({
@@ -35,5 +36,13 @@ export class Order extends Reactive {
     clearChangeTimeout() {
         clearTimeout(this.changeStageTimeout);
         this.changeStageTimeout = null;
+    }
+
+    computeDuration() {
+        const timeDiff = (
+            (luxon.DateTime.now().ts - deserializeDateTime(this.lastStageChange).ts) /
+            1000
+        ).toFixed(0);
+        return Math.round(timeDiff / 60);
     }
 }

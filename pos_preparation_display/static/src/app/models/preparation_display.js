@@ -114,46 +114,49 @@ export class PreparationDisplay extends Reactive {
             [orders.map((order) => order.id), this.id],
             {}
         );
+        this.clearPreviousStageHistory(orders.map((order) => order.id));
         this.filterOrders();
     }
 
-    orderNextStage(order) {
-        if (order.stageId === this.lastStage.id) {
+    clearPreviousStageHistory(orderIds) {
+        for (const stage of this.stages.values()) {
+            stage.recallIdsHistory = stage.recallIdsHistory.filter(
+                (orderId) => !orderIds.includes(orderId)
+            );
+        }
+    }
+
+    orderNextStage(stageId, direction = 1) {
+        if (stageId === this.lastStage.id && direction === 1) {
             return this.firstStage;
         }
 
         const stages = [...this.stages.values()];
-        const currentStagesIdx = stages.findIndex((stage) => stage.id === order.stageId);
+        const currentStagesIdx = stages.findIndex((stage) => stage.id === stageId);
 
-        return stages[currentStagesIdx + 1] ?? false;
+        return stages[currentStagesIdx + direction] ?? false;
     }
 
-    async changeOrderStage(order, force = false) {
+    async changeOrderStage(order, force = false, direction = 1, animationTime = 250) {
         const linesVisibility = this.getOrderlinesVisibility(order);
 
         if (force) {
-            if (linesVisibility.visibleTodo === 0 || order.changeStageTimeout) {
-                this.resetOrderlineStatus(order, true);
-                order.clearChangeTimeout();
-                return;
-            }
-
             for (const orderline of linesVisibility.visible) {
-                if (force) {
-                    orderline.todo = false;
-                }
+                orderline.todo = false;
             }
         }
 
-        this.syncOrderlinesStatus(order);
-        if (order.changeStageTimeout) {
-            order.clearChangeTimeout();
-            return;
+        for (const orderline of order.orderlines) {
+            if (orderline.todo) {
+                this.syncOrderlinesStatus(order);
+                break;
+            }
         }
 
         const allOrderlineDone = order.orderlines.every((orderline) => !orderline.todo);
         if (allOrderlineDone) {
-            let nextStage = this.orderNextStage(order);
+            const currentStage = this.stages.get(order.stageId);
+            let nextStage = this.orderNextStage(order.stageId, direction);
 
             const allOrderlineCancelled = order.orderlines.every(
                 (orderline) => orderline.productQuantity - orderline.productCancelled === 0
@@ -164,18 +167,20 @@ export class PreparationDisplay extends Reactive {
             }
 
             order.changeStageTimeout = setTimeout(async () => {
-                order.stageId = nextStage.id;
                 order.lastStageChange = await this.orm.call(
                     "pos_preparation_display.order",
                     "change_order_stage",
-                    [[order.id], order.stageId, this.id],
+                    [[order.id], nextStage.id, this.id],
                     {}
                 );
-
+                order.stageId = nextStage.id;
+                if (direction === 1) {
+                    currentStage.addOrderToRecallHistory(order);
+                }
                 this.resetOrderlineStatus(order, false, true);
                 order.clearChangeTimeout();
                 this.filterOrders();
-            }, 10000);
+            }, animationTime);
         }
     }
 
@@ -251,10 +256,6 @@ export class PreparationDisplay extends Reactive {
             }
 
             this.orderlines[status.id].todo = status.todo;
-
-            if (status.todo) {
-                this.orderlines[status.id].order.clearChangeTimeout();
-            }
         }
     }
 

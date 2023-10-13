@@ -46,8 +46,30 @@ export class PreparationDisplay extends Component {
     toggleCategoryFilter() {
         this.preparationDisplay.showCategoryFilter = !this.preparationDisplay.showCategoryFilter;
     }
-    createNewProducts() {
-        window.open("/web#action=point_of_sale.action_client_product_menu", "_self");
+    recallLastChange() {
+        const stageId = this.preparationDisplay.selectedStageId;
+        const stage = this.preparationDisplay.stages.get(stageId);
+        const recallHistory = stage.recallIdsHistory;
+        if (recallHistory.length === 0) {
+            return;
+        } else if (stage.isLastHistoryOld()) {
+            recallHistory.length = 0;
+            return;
+        }
+        const lastIdChange = recallHistory.pop();
+        const order = this.preparationDisplay.orders[lastIdChange];
+        const nextStage = this.preparationDisplay.orderNextStage(stageId);
+        if (order.stageId === nextStage.id) {
+            this.preparationDisplay.changeOrderStage(order, true, -1, 0);
+        } else {
+            this.recallLastChange();
+        }
+    }
+    isHistoryEmpty() {
+        return (
+            this.preparationDisplay.stages.get(this.preparationDisplay.selectedStageId)
+                .recallIdsHistory.length == 0
+        );
     }
 }
 

@@ -2,7 +2,6 @@
 import { Component, useState, onWillUnmount, useRef } from "@odoo/owl";
 import { usePreparationDisplay } from "@pos_preparation_display/app/preparation_display_service";
 import { Orderline } from "@pos_preparation_display/app/components/orderline/orderline";
-import { deserializeDateTime } from "@web/core/l10n/dates";
 import { computeFontColor } from "@pos_preparation_display/app/utils";
 
 export class Order extends Component {
@@ -37,18 +36,15 @@ export class Order extends Component {
     }
 
     _computeDuration() {
-        const timeDiff = (
-            (luxon.DateTime.now().ts - deserializeDateTime(this.props.order.lastStageChange).ts) /
-            1000
-        ).toFixed(0);
+        const timeDiff = this.props.order.computeDuration();
 
-        if (timeDiff > this.stage.alertTimer * 60) {
+        if (timeDiff > this.stage.alertTimer) {
             this.isAlert = true;
         } else {
             this.isAlert = false;
         }
 
-        return Math.round(timeDiff / 60);
+        return timeDiff;
     }
 
     async doneOrder() {

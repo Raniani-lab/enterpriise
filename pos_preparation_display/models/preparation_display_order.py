@@ -128,13 +128,18 @@ class PosPreparationDisplayOrder(models.Model):
         last_stage = preparation_display.stage_ids[-1]
 
         for order in self:
-            current_order_stage = order.order_stage_ids.filtered(lambda order_stage:
+            p_dis_order_stage_ids = order.order_stage_ids.filtered(lambda order_stage:
+                order_stage.preparation_display_id == preparation_display
+            )
+            current_order_stage = p_dis_order_stage_ids.filtered(lambda order_stage:
                 order_stage.preparation_display_id == preparation_display and
                 order_stage.stage_id == last_stage
             )
 
             if current_order_stage:
-                current_order_stage.done = True
+                p_dis_order_stage_ids.unlink()
+                if not order.order_stage_ids:
+                    order.unlink()
 
         preparation_display._send_load_orders_message()
 

@@ -4,7 +4,7 @@
         <record id="preparation_display_main_restaurant_to_prepare_stage"
             model="pos_preparation_display.stage">
             <field name="name">To cook</field>
-            <field name="color">#F6F7FA</field>
+            <field name="color">#C8C9CB</field>
             <field name="alert_timer">10</field>
         </record>
         <record id="preparation_display_main_restaurant_ready_stage"

@@ -65,6 +65,13 @@ class RentalOrderLine(models.Model):
                 )
         ((self - non_rental) - rented_product_lines).update(line_default_values)
 
+    @api.depends('is_rental')
+    def _compute_qty_delivered_method(self):
+        """Allow modification of delivered qty without depending on stock moves."""
+        rental_lines = self.filtered('is_rental')
+        super(RentalOrderLine, self - rental_lines)._compute_qty_delivered_method()
+        rental_lines.qty_delivered_method = 'manual'
+
     def write(self, vals):
         """Move product quantities on pickup/return in case of rental orders.
 

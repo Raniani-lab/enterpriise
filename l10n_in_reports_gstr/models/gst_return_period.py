@@ -193,11 +193,11 @@ class L10nInGSTReturnPeriod(models.Model):
                 ("invoice_date", "<=", record.end_date),
                 ("state", "=", "posted"),
             ]
-            total_by_companies = AccountMove._read_group(domain, ['amount_total_in_currency_signed'], ['company_id'])
+            total_by_companies = AccountMove._read_group(domain, ['amount_total_signed'], ['company_id'])
             total = 0.00
             for total_by_company in total_by_companies:
                 if total_by_company['company_id'][0] in (record.company_ids or record.company_id).ids:
-                    total += total_by_company['amount_total_in_currency_signed']
+                    total += total_by_company['amount_total_signed']
             record.invoice_amount = total
 
     @api.depends("company_ids", "company_id")
@@ -235,11 +235,11 @@ class L10nInGSTReturnPeriod(models.Model):
                 ("invoice_date", "<=", record.end_date),
                 ("state", "=", "posted")
             ]
-            total_by_companies = AccountMove._read_group(domain, ['amount_total_in_currency_signed'], ['company_id'])
+            total_by_companies = AccountMove._read_group(domain, ['amount_total_signed'], ['company_id'])
             total = 0.00
             for total_by_company in total_by_companies:
                 if total_by_company['company_id'][0] in (record.company_ids or record.company_id).ids:
-                    total += total_by_company['amount_total_in_currency_signed'] * -1
+                    total += total_by_company['amount_total_signed'] * -1
             record.bill_amount = total
 
     @api.depends('month', 'quarter', 'year')

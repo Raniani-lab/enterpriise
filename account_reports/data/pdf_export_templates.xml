@@ -54,10 +54,7 @@
     <template id="company_information">
         <t t-set="company_names" t-value="[company['name'] for company in options['companies']]"/>
         <div class="row">
-            <t t-if="len(company_names) &gt;= 2">
-                <div class="col-2">Companies:</div>
-            </t>
-            <div class="col-10 o_text_muted" t-out="', '.join(company_names)"/>
+            <div class="col-10" t-out="', '.join(company_names)"/>
         </div>
 
         <address class="mb-0 o_text_muted" t-field="env.company.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}'/>

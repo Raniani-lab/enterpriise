@@ -4,6 +4,11 @@ import { _t } from "@web/core/l10n/translation";
 
 import * as spreadsheet from "@odoo/o-spreadsheet";
 
+import {
+    SET_FILTER_MATCHING,
+    SET_FILTER_MATCHING_CONDITION,
+} from "@spreadsheet/pivot/pivot_actions";
+
 import { GlobalFiltersSidePanel } from "./global_filters_side_panel";
 import { FilterComponent } from "./filter_component";
 
@@ -46,18 +51,11 @@ cellMenuRegistry.add("use_global_filter", {
     sequence: 175,
     execute(env) {
         const position = env.model.getters.getActivePosition();
-        const cell = env.model.getters.getCell(position);
-        const filters = env.model.getters.getFiltersMatchingPivot(cell.content);
-        env.model.dispatch("SET_MANY_GLOBAL_FILTER_VALUE", { filters });
+        SET_FILTER_MATCHING(position, env);
     },
     isVisible: (env) => {
         const position = env.model.getters.getActivePosition();
-        const cell = env.model.getters.getCell(position);
-        if (!cell) {
-            return false;
-        }
-        const filters = env.model.getters.getFiltersMatchingPivot(cell.content);
-        return filters.length > 0;
+        return SET_FILTER_MATCHING_CONDITION(position, env);
     },
     icon: "o-spreadsheet-Icon.FIND_AND_REPLACE",
 });

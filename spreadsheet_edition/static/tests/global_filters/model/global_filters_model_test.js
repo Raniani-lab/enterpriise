@@ -2,7 +2,7 @@
 
 import { nextTick } from "@web/../tests/helpers/utils";
 import { registries } from "@odoo/o-spreadsheet";
-import { getCellValue } from "@spreadsheet/../tests/utils/getters";
+import { getCellValue, getCell, getEvaluatedGrid } from "@spreadsheet/../tests/utils/getters";
 import { addGlobalFilter, selectCell, setCellContent } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/utils/pivot";
 import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
@@ -34,6 +34,11 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
         assert.strictEqual(getCellValue(model, "B3"), "");
         assert.strictEqual(getCellValue(model, "B4"), 121);
         selectCell(model, "A3");
+        assert.strictEqual(
+            getCell(model, "B3").content,
+            '=ODOO.PIVOT(1,"probability","product_id",37)',
+            "the formula field matches the filter"
+        );
         const root = cellMenuRegistry
             .getMenuItems()
             .find((item) => item.id === "use_global_filter");
@@ -46,6 +51,30 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
         await nextTick();
         assert.strictEqual(getCellValue(model, "B3"), 10);
         assert.strictEqual(getCellValue(model, "B4"), 121);
+
+        model.dispatch("CREATE_SHEET", { sheetId: "42" });
+        setCellContent(model, "A1", `=ODOO.PIVOT.TABLE("1")`, "42");
+        selectCell(model, "A3", "42");
+        assert.strictEqual(root.isVisible(env), true);
+        await root.execute(env);
+        await nextTick();
+        // prettier-ignore
+        assert.deepEqual(getEvaluatedGrid(model, "A1:B4"), [
+            ["Pivot #1",    "Total"],
+            ["",            "Probability"],
+            ["xphone",      10],
+            ["Total",       10],
+        ])
+        await root.execute(env);
+        await nextTick();
+        // prettier-ignore
+        assert.deepEqual(getEvaluatedGrid(model, "A1:B5"), [
+            ["Pivot #1",    "Total"],
+            ["",            "Probability"],
+            ["xphone",      10],
+            ["xpad",        121],
+            ["Total",       131],
+        ])
     });
 
     QUnit.test(
@@ -106,10 +135,10 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
             arch: /*xml*/ `
                 <pivot>
                     <field name="product_id" type="row"/>
-                    <field name="__count" type="measure"/>
+                    <field name="probability" type="measure"/>
                 </pivot>`,
         });
-        setCellContent(model, "B3", '=ODOO.PIVOT(1, "probability")');
+        assert.strictEqual(getCell(model, "B5").content, '=ODOO.PIVOT(1,"probability")');
         await addGlobalFilter(
             model,
             {
@@ -119,10 +148,15 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
             },
             { pivot: { 1: { chain: "product_id", type: "many2one" } } }
         );
-        selectCell(model, "B3");
+        selectCell(model, "B5");
         const root = cellMenuRegistry
             .getMenuItems()
             .find((item) => item.id === "use_global_filter");
+        assert.strictEqual(root.isVisible(env), false);
+
+        model.dispatch("CREATE_SHEET", { sheetId: "42" });
+        setCellContent(model, "A1", `=ODOO.PIVOT.TABLE("1")`, "42");
+        selectCell(model, "B5", "42");
         assert.strictEqual(root.isVisible(env), false);
     });
 
@@ -146,6 +180,11 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
                 .getMenuItems()
                 .find((item) => item.id === "use_global_filter");
             assert.strictEqual(root.isVisible(env), false);
+
+            model.dispatch("CREATE_SHEET", { sheetId: "42" });
+            setCellContent(model, "A1", `=ODOO.PIVOT.TABLE("1")`, "42");
+            selectCell(model, "B3", "42");
+            assert.strictEqual(root.isVisible(env), false);
         }
     );
 
@@ -158,6 +197,22 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
             const root = cellMenuRegistry
                 .getMenuItems()
                 .find((item) => item.id === "use_global_filter");
+            assert.strictEqual(root.isVisible(env), false);
+        }
+    );
+
+    QUnit.test(
+        "Set as filter is not visible on empty cells of ODOO.PIVOT.TABLE",
+        async function (assert) {
+            const { env, model } = await createSpreadsheetWithPivot();
+            const root = cellMenuRegistry
+                .getMenuItems()
+                .find((item) => item.id === "use_global_filter");
+            model.dispatch("CREATE_SHEET", { sheetId: "42" });
+            setCellContent(model, "A1", `=ODOO.PIVOT.TABLE("1")`, "42");
+            selectCell(model, "A1", "42");
+            assert.strictEqual(root.isVisible(env), false);
+            selectCell(model, "A2", "42");
             assert.strictEqual(root.isVisible(env), false);
         }
     );

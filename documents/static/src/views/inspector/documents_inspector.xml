@@ -284,9 +284,9 @@
     <t t-name="documents.DocumentsInspector.attachmentHistory">
         <t t-foreach="state.previousAttachmentData" t-as="attachment" t-key="attachment.id">
             <div class="o_inspector_history_line">
-                <t t-set="createDate" t-value="str_to_datetime(attachment.create_date)"/>
-                <t t-set="fullDate" t-value="createDate.toLocaleString()"/>
-                <t t-set="date" t-value="createDate.toLocaleDateString()"/>
+                <t t-set="createDate" t-value="deserializeDateTime(attachment.create_date)"/>
+                <t t-set="fullDate" t-value="createDate.toString()"/>
+                <t t-set="date" t-value="createDate.toLocaleString()"/>
                 <t t-set="createUserName" t-value="attachment.create_uid[1]"/>
                 <div class="o_inspector_history_title">
                     <span class="o_inspector_history_name" t-att-aria-label="attachment.name" t-att-tile="attachment.name" t-esc="attachment.name"/>

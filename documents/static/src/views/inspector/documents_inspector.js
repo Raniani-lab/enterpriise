@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { _t } from "@web/core/l10n/translation";
-import { str_to_datetime } from "@web/legacy/js/core/time";
 import { session } from "@web/session";
 import { KeepLast } from "@web/core/utils/concurrency";
 import { intersection } from "@web/core/utils/arrays";
@@ -17,7 +16,7 @@ import { download } from "@web/core/network/download";
 import { onNewPdfThumbnail } from "../helper/documents_pdf_thumbnail_service";
 import dUtils from "@documents/views/helper/documents_utils";
 import { useTriggerRule, toggleArchive } from "@documents/views/hooks";
-import { serializeDate } from "@web/core/l10n/dates";
+import { deserializeDateTime, serializeDate } from "@web/core/l10n/dates";
 import { utils as uiUtils } from "@web/core/ui/ui_service";
 import {
     Component,
@@ -87,7 +86,7 @@ export class DocumentsInspector extends Component {
         this.chatterContainer = useRef("chatterContainer");
         this.keepLast = new KeepLast();
         this.previewLockCount = 0;
-        this.str_to_datetime = str_to_datetime;
+        this.deserializeDateTime = deserializeDateTime;
         const { triggerRule } = useTriggerRule();
         this._triggerRule = triggerRule;
         const { bus: fileUploadBus } = useService("file_upload");

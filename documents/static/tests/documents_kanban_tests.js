@@ -26,10 +26,7 @@ import {
     pagerNext,
     pagerPrevious,
 } from "@web/../tests/search/helpers";
-import {
-    createWebClient,
-    loadState,
-} from "@web/../tests/webclient/helpers";
+import { createWebClient, loadState } from "@web/../tests/webclient/helpers";
 import testUtils from "@web/../tests/legacy/helpers/test_utils";
 import {
     click as legacyClick,
@@ -42,7 +39,6 @@ import {
     patchWithCleanup,
     triggerEvent,
 } from "@web/../tests/helpers/utils";
-import { str_to_datetime } from "@web/legacy/js/core/time";
 import { session } from "@web/session";
 import { browser, makeRAMLocalStorage } from "@web/core/browser/browser";
 import { serializeDate } from "@web/core/l10n/dates";
@@ -4171,8 +4167,7 @@ QUnit.module("documents", {}, function () {
 
             QUnit.test("SearchPanel: update route updates active folder", async function (assert) {
                 const views = {
-                    "documents.document,false,kanban":
-                    `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    "documents.document,false,kanban": `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                         <div draggable="true" class="oe_kanban_global_area">
                             <i class="fa fa-circle-thin o_record_selector"/>
                             <field name="name"/>
@@ -4187,18 +4182,24 @@ QUnit.module("documents", {}, function () {
                         res_model: "documents.document",
                         type: "ir.actions.act_window",
                         views: [[false, "kanban"]],
-                    }
-                }
-                const webClient = await createWebClient({ serverData : { views, actions } });
+                    },
+                };
+                const webClient = await createWebClient({ serverData: { views, actions } });
                 await loadState(webClient, { action: "documents.document_kanban_view" });
                 await nextTick();
 
                 assert.strictEqual(webClient.router.current.hash.folder_id, 1);
-                await loadState(webClient, Object.assign({}, webClient.router.current.hash, { folder_id: 2 }));
+                await loadState(
+                    webClient,
+                    Object.assign({}, webClient.router.current.hash, { folder_id: 2 })
+                );
                 await nextTick();
 
                 assert.strictEqual(webClient.router.current.hash.folder_id, 2);
-                assert.containsOnce(target, ".o_search_panel_category_value[title='Workspace2'] > header.active");
+                assert.containsOnce(
+                    target,
+                    ".o_search_panel_category_value[title='Workspace2'] > header.active"
+                );
             });
 
             QUnit.module("Upload");
@@ -4752,7 +4753,7 @@ QUnit.module("documents", {}, function () {
                 );
                 assert.strictEqual(
                     target.querySelector(".o_inspector_history_info_date").textContent,
-                    str_to_datetime("2019-12-09 14:13:21").toLocaleDateString(),
+                    "12/9/2019",
                     "should display the correct date"
                 );
 

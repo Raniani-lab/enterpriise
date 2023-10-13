@@ -3,7 +3,7 @@
 import "@mail/../tests/helpers/mock_server/models/mail_activity"; // ensure mail overrides are applied first
 
 import { patch } from "@web/core/utils/patch";
-import { date_to_str } from "@web/legacy/js/core/time";
+import { serializeDate, today } from "@web/core/l10n/dates";
 import { MockServer } from "@web/../tests/helpers/mock_server";
 
 patch(MockServer.prototype, {
@@ -29,7 +29,7 @@ patch(MockServer.prototype, {
             this.getRecords("mail.activity", [
                 ["activity_type_id", "in", activityTypeIds],
                 ["user_id", "=", this.pyEnv.currentUserId],
-                ["date_deadline", "<=", date_to_str(new Date())],
+                ["date_deadline", "<=", serializeDate(today())],
             ])
         );
     },
@@ -38,10 +38,10 @@ patch(MockServer.prototype, {
         for (const activity of activities) {
             const [user] = this.pyEnv["res.users"].searchRead([["id", "=", activity.user_id]]);
             const state = (() => {
-                const today = date_to_str(new Date());
-                if (activity.date_deadline === today) {
+                const now = serializeDate(today());
+                if (activity.date_deadline === now) {
                     return "today";
-                } else if (activity.date_deadline < today) {
+                } else if (activity.date_deadline < now) {
                     return "overdue";
                 } else {
                     return "planned";

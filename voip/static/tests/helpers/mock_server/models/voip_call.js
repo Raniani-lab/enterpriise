@@ -1,7 +1,7 @@
 /* @odoo-module */
 
 import { patch } from "@web/core/utils/patch";
-import { date_to_str } from "@web/legacy/js/core/time";
+import { serializeDate, today } from "@web/core/l10n/dates";
 import { MockServer } from "@web/../tests/helpers/mock_server";
 
 /**
@@ -60,7 +60,7 @@ patch(MockServer.prototype, {
      */
     _mockVoipCallEndCall(ids, activity_name) {
         this.pyEnv["voip.call"].write(ids, {
-            end_date: date_to_str(new Date()),
+            end_date: serializeDate(today()),
             state: "terminated",
         });
         if (activity_name) {
@@ -74,7 +74,7 @@ patch(MockServer.prototype, {
      */
     _mockVoipCallStartCall(ids) {
         this.pyEnv["voip.call"].write(ids, {
-            start_date: date_to_str(new Date()),
+            start_date: serializeDate(today()),
             state: "ongoing",
         });
         return this._mockVoipCall_FormatCalls(ids);

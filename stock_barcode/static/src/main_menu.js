@@ -6,7 +6,7 @@ import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_d
 import { registry } from "@web/core/registry";
 import { useBus, useService } from "@web/core/utils/hooks";
 import { session } from "@web/session";
-import { date_to_str } from "@web/legacy/js/core/time";
+import { serializeDate, today } from "@web/core/l10n/dates";
 import { Component, onWillStart, useState } from "@odoo/owl";
 
 export class MainMenu extends Component {
@@ -31,7 +31,7 @@ export class MainMenu extends Component {
             const args = [
                 ["user_id", "=?", session.uid],
                 ["location_id.usage", "in", ["internal", "transit"]],
-                ["inventory_date", "<=", date_to_str(new Date())],
+                ["inventory_date", "<=", serializeDate(today())],
             ]
             this.quantCount = await orm.searchCount("stock.quant", args);
         });

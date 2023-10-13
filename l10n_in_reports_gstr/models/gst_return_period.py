@@ -194,7 +194,7 @@ class L10nInGSTReturnPeriod(models.Model):
                 ("invoice_date", "<=", record.end_date),
                 ("state", "=", "posted"),
             ]
-            total_by_companies = AccountMove._read_group(domain, [], ['amount_total_in_currency_signed:sum'])
+            total_by_companies = AccountMove._read_group(domain, [], ['amount_total_signed:sum'])
             record.invoice_amount = total_by_companies[0][0]
 
     @api.depends("company_ids", "company_id")
@@ -232,7 +232,7 @@ class L10nInGSTReturnPeriod(models.Model):
                 ("invoice_date", "<=", record.end_date),
                 ("state", "=", "posted")
             ]
-            total_by_companies = AccountMove._read_group(domain, ['company_id'], ['amount_total_in_currency_signed:sum'])
+            total_by_companies = AccountMove._read_group(domain, ['company_id'], ['amount_total_signed:sum'])
             total = 0.00
             for total_by_company in total_by_companies:
                 if total_by_company[0].id in (record.company_ids or record.company_id).ids:

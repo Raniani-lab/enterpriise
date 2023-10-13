@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
     <t t-name="knowledge.BehaviorToolbar">
-        <div class="o_knowledge_toolbar d-flex justify-content-end align-items-end" data-oe-transient-content="true">
+        <div class="o_knowledge_toolbar d-flex justify-content-end align-items-center" data-oe-transient-content="true">
             <div t-attf-class="btn-group d-flex flex-wrap #{ props.buttonsGroupClass ? props.buttonsGroupClass : '' }">
                 <t t-slot="buttons"/>
             </div>

@@ -31,7 +31,7 @@
                         <ul role="menu" class="oe_kanban_colorpicker menu-item" data-field="color"/>
                     </div>
                     <div t-name="kanban-box" t-attf-class="o_sign_sticky_bottom oe_kanban_global_click {{kanban_color(record.color.raw_value)}}">
-                        <div class="oe_kanban_main">
+                        <div class="oe_kanban_main d-flex flex-column h-100">
                             <div class="o_kanban_record_top">
                                 <div class="o_kanban_record_headings">
                                     <div class="o_kanban_record_title">
@@ -47,7 +47,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="o_kanban_record_body">
+                            <div class="o_kanban_record_body flex-grow-1">
                                 <em><field name="create_date" widget="date"/></em>
                                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             </div>

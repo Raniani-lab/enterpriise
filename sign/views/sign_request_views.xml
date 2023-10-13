@@ -29,7 +29,7 @@
                         <ul class="oe_kanban_colorpicker" data-field="color"/>
                     </div>
                     <div t-name="kanban-box" t-attf-class="o_sign_sticky_bottom oe_kanban_global_click {{!selection_mode ? kanban_color(record.color.raw_value) : ''}}">
-                        <div class="oe_kanban_main">
+                        <div class="oe_kanban_main d-flex flex-column h-100">
                             <div class="o_kanban_record_top">
                                 <div class="o_kanban_record_headings">
                                     <div class="o_kanban_record_title">
@@ -45,7 +45,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="o_kanban_record_body">
+                            <div class="o_kanban_record_body flex-grow-1">
                                 <field name="template_tags" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                 <div class="o_signers container-fluid mt-2">
                                     <div t-foreach="record.request_item_infos.raw_value || []" t-as="request_item_info" t-key="request_item_info.id"

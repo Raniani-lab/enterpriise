@@ -247,19 +247,6 @@
                 overflow: auto;
             }
         }
-
-        &.o_sign_sticky_bottom {
-            .o_kanban_record_body {
-                margin-bottom: 2rem;
-            }
-
-            .o_kanban_record_bottom {
-                position: absolute;
-                bottom: 0.5rem;
-                width: 100%;
-                @extend .pe-4;
-            }
-        }
     }
 }
 
@@ -287,24 +274,6 @@
                 }
                 span {
                     margin-left: 1.3rem;
-                }
-            }
-        }
-    }
-}
-
-@include media-breakpoint-down(md) {
-    .o_kanban_view {
-        .o_kanban_record {
-            &.o_sign_sticky_bottom {
-                .o_kanban_record_body {
-                    margin-bottom: 3rem;
-                }
-                .o_kanban_record_bottom {
-                    position: absolute;
-                    bottom: 0.5rem;
-                    width: 100%;
-                    padding-right: 32px !important;
                 }
             }
         }

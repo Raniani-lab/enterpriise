@@ -2438,7 +2438,7 @@ msgstr "Andere Eintragszeile"
 #. module: hr_payroll
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_payslip_entry_type_view
 msgid "Other Input Types"
-msgstr "Andere Eintragsarten"
+msgstr "Andere Eingabetypen"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
@@ -2656,7 +2656,7 @@ msgstr "Eintragsname für Gehaltsabrechnung"
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_payslip_input_type
 msgid "Payslip Input Type"
-msgstr "Eintragsart für Gehaltsabrechnung"
+msgstr "Eingabetyp für Gehaltsabrechnung"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__input_line_ids
@@ -2690,7 +2690,7 @@ msgstr "Gehaltsabrechnungsname"
 #. module: hr_payroll
 #: model:ir.actions.act_window,name:hr_payroll.action_view_hr_payslip_input_type
 msgid "Payslip Other Input Types"
-msgstr "Andere Eintragsarten für die Gehaltsabrechnung"
+msgstr "Andere Eingabetypen für die Gehaltsabrechnung"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment_report__payslip_start_date
@@ -4300,7 +4300,7 @@ msgstr "z. B. Nettogehalt"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_employee_grade_form
 msgid "e.g. Regular Pay"
-msgstr "z. B. Reguläre Vergütung"
+msgstr "z. B. Reguläres Gehalt"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content

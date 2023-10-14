@@ -576,6 +576,8 @@ msgid ""
 "The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n"
 " %s"
 msgstr ""
+"以下のプロダクトの重量がないため、見積送料を計算できません: \n"
+" %s"
 
 #. module: delivery_ups
 #. odoo-python
@@ -591,7 +593,7 @@ msgstr "ユーザーのアクセス試行の最大数を超えました。後で
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "The name of the customer should be no more than 35 characters."
-msgstr ""
+msgstr "顧客名は35文字以内にして下さい。"
 
 #. module: delivery_ups
 #. odoo-python

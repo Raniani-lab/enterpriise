@@ -25,17 +25,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_project_sale.field_product_product__documents_allowed_company_id
 #: model:ir.model.fields,field_description:documents_project_sale.field_product_template__documents_allowed_company_id
 msgid "Documents Allowed Company"
-msgstr ""
+msgstr "ドキュメント許可済会社"
 
 #. module: documents_project_sale
 #: model:documents.tag,name:documents_project_sale.documents_folder_facet_1_tag_3
 msgid "Done/Archived"
-msgstr ""
+msgstr "完了/アーカイブ済"
 
 #. module: documents_project_sale
 #: model:documents.tag,name:documents_project_sale.documents_folder_facet_1_tag_2
 msgid "In Use"
-msgstr ""
+msgstr "使用中"
 
 #. module: documents_project_sale
 #: model:documents.folder,name:documents_project_sale.documents_folder_template_child_3
@@ -45,7 +45,7 @@ msgstr "その他"
 #. module: documents_project_sale
 #: model:documents.tag,name:documents_project_sale.documents_folder_facet_1_tag_1
 msgid "New/Unsorted"
-msgstr ""
+msgstr "新規/未ソート"
 
 #. module: documents_project_sale
 #: model:ir.model.fields,help:documents_project_sale.field_product_product__template_folder_id
@@ -53,7 +53,7 @@ msgstr ""
 msgid ""
 "On sales order confirmation, a workspace will be automatically generated for"
 " the project based on this template."
-msgstr ""
+msgstr "販売オーダの確認時に、このテンプレートに基づいてプロジェクト用の作業区が自動的に生成されます。"
 
 #. module: documents_project_sale
 #: model:documents.folder,name:documents_project_sale.documents_folder_template_child_2
@@ -73,7 +73,7 @@ msgstr "プロダクト"
 #. module: documents_project_sale
 #: model:product.template,name:documents_project_sale.product_1
 msgid "Renovation Architect (Workspace Template)"
-msgstr ""
+msgstr "リノベーション・アーキテクト(作業区テンプレート)"
 
 #. module: documents_project_sale
 #: model:documents.folder,name:documents_project_sale.documents_folder
@@ -99,4 +99,4 @@ msgstr "テンプレート"
 #: model:ir.model.fields,field_description:documents_project_sale.field_product_product__template_folder_id
 #: model:ir.model.fields,field_description:documents_project_sale.field_product_template__template_folder_id
 msgid "Workspace Template"
-msgstr ""
+msgstr "作業区テンプレート"

@@ -287,5 +287,5 @@ msgstr "لا يمكنك إرسال سيرة ذاتية لمتقدم لوظيفة
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
-msgid "You don't have enough credit to extract data from your CV."
-msgstr "ليس لديك الرصيد الكافي لاستخلاص البيانات من سيرتك الذاتية. "
+msgid "You don't have enough credit to extract data from your Resume."
+msgstr ""

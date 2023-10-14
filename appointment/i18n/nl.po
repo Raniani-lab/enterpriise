@@ -532,7 +532,7 @@ msgstr "Voeg hier een functie toe..."
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Add a specific appointment."
-msgstr "Voeg een specifieke afspraak toe."
+msgstr "Een specifieke afspraak toevoegen"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info

@@ -295,5 +295,5 @@ msgstr "Nie można wysłać CV aplikanta, który nie jest na pierwszym etapie!"
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
-msgid "You don't have enough credit to extract data from your CV."
-msgstr "Nie masz wystarczającego kredytu, aby wyodrębnić dane z CV."
+msgid "You don't have enough credit to extract data from your Resume."
+msgstr ""

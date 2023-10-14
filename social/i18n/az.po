@@ -584,7 +584,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_media__has_message
 #: model:ir.model.fields,field_description:social.field_social_post__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Mesajı Var"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__has_trends
@@ -981,7 +981,7 @@ msgstr "Növbəti"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr ""
+msgstr "Növbəti Fəaliyyət Təqvimi Tədbiri"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_date_deadline
@@ -1061,7 +1061,7 @@ msgstr ""
 #: model:ir.model.fields,help:social.field_social_media__message_needaction_counter
 #: model:ir.model.fields,help:social.field_social_post__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "Əməliyyat tələb edən mesajların sayı"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_has_error_counter

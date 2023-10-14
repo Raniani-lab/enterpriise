@@ -30,7 +30,7 @@ msgstr "会计科目表模版"
 #. module: hr_payroll_account
 #: model:account.account,name:hr_payroll_account.demo_account
 msgid "Account Payslip Houserental"
-msgstr ""
+msgstr "账户工资单 租房"
 
 #. module: hr_payroll_account
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_salary_rule_view_form

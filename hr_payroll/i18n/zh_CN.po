@@ -4048,7 +4048,7 @@ msgstr "您无法验证已取消的工资单。"
 msgid ""
 "You cannot delete %s as it is used in another module but you can archive it "
 "instead."
-msgstr ""
+msgstr "由于%s在另一个模块中使用，因此无法删除，但可以将其存档。"
 
 #. module: hr_payroll
 #. odoo-python

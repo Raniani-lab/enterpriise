@@ -6,7 +6,7 @@
 # douglas custodio <douglascstd@yahoo.com>, 2022
 # Hildeberto Abreu Magalhães <hildeberto@gmail.com>, 2022
 # Martin Trigaux, 2022
-# adrianojprado <adrianojprado@gmail.com>, 2023
+# Adriano Prado <adrianojprado@gmail.com>, 2023
 # Kevilyn Rosa, 2023
 # Éder Brito <britoederr@gmail.com>, 2023
 # Layna Nascimento, 2023
@@ -1734,7 +1734,7 @@ msgstr "Habilitar roteamento"
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Enable SMS"
-msgstr ""
+msgstr "Habilitar SMS"
 
 #. module: web_studio
 #. odoo-python
@@ -4634,7 +4634,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "right"
-msgstr ""
+msgstr "right"
 
 #. module: web_studio
 #. odoo-python

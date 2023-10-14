@@ -3100,6 +3100,15 @@ msgstr "Odoo的书余额日期为今天"
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
+msgid ""
+"The company's chart of account does not match the report's chart of "
+"accounts."
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
 msgid "The company's country does not match the report's country."
 msgstr "该公司的国家/地区与报告所在的国家/地区不匹配。"
 

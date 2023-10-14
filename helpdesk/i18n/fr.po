@@ -624,7 +624,7 @@ msgid ""
 " Awaiting Customer Feedback, etc.).</i>"
 msgstr ""
 "Adaptez votre <b>pipeline</b> à votre flux de travail en ajoutant des "
-"<b>étapes</b> <i>(par ex. en attente du retour du client, etc.).</i>"
+"<b>étapes</b> <i>(par ex. en attente du feedback du client, etc.).</i>"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_stage_action

@@ -69,7 +69,7 @@ msgstr "プロダクト"
 msgid ""
 "Product this ticket is about. If selected, only the sales orders, deliveries"
 " and invoices including this product will be visible."
-msgstr ""
+msgstr "このチケットが関連するプロダクト。選択された場合、このプロダクトを含む販売オーダ、配送、請求書のみ表示されます。"
 
 #. module: helpdesk_stock
 #: model_terms:ir.ui.view,arch_db:helpdesk_stock.helpdesk_ticket_view_form_inherit_stock_user
@@ -116,12 +116,12 @@ msgstr "適切なピッキング"
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_helpdesk_ticket__suitable_product_ids
 msgid "Suitable Product"
-msgstr ""
+msgstr "適切なプロダクト"
 
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_stock_return_picking__suitable_sale_order_ids
 msgid "Suitable Sale Order"
-msgstr ""
+msgstr "適切な販売オーダ"
 
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_stock_return_picking__ticket_id

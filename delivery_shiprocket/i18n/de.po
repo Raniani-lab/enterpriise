@@ -52,7 +52,7 @@ msgid ""
 msgstr ""
 "<b>Klicken Sie in der Odoo-Konfiguration auf das Symbol <i class=\"fa fa-"
 "refresh oe_inline\"/> neben dem Shiprocket-Kanal, um neu erstellte Kanäle zu"
-" synchronisieren..</b>"
+" synchronisieren.</b>"
 
 #. module: delivery_shiprocket
 #: model_terms:ir.ui.view,arch_db:delivery_shiprocket.view_delivery_carrier_form_inherit_delivery_shiprocket
@@ -96,9 +96,9 @@ msgid ""
 " pickup process.particularly when shipping out a high-volume of ecommerce "
 "orders."
 msgstr ""
-"Ein Manifest ist ein Dokument, das von einigen Transportunternehmen verlangt"
-" wird, um den Kommissionierprozess zu rationalisieren, insbesondere beim "
-"Versand einer großen Menge von E-Commerce-Bestellungen."
+"Eine Ladeliste ist ein Dokument, das von einigen Transportunternehmen "
+"verlangt wird, um den Kommissionierprozess zu rationalisieren, insbesondere "
+"beim Versand einer großen Menge von E-Commerce-Bestellungen."
 
 #. module: delivery_shiprocket
 #: model_terms:ir.ui.view,arch_db:delivery_shiprocket.view_delivery_carrier_form_inherit_delivery_shiprocket
@@ -140,7 +140,7 @@ msgstr ""
 #. module: delivery_shiprocket
 #: model:ir.model.fields.selection,name:delivery_shiprocket.selection__delivery_carrier__shiprocket_payment_method__cod
 msgid "COD"
-msgstr "CSB"
+msgstr "Nachnahme"
 
 #. module: delivery_shiprocket
 #: model:ir.model.fields,field_description:delivery_shiprocket.field_stock_package_type__package_carrier_type
@@ -301,7 +301,7 @@ msgstr ""
 #. module: delivery_shiprocket
 #: model:ir.model.fields,field_description:delivery_shiprocket.field_delivery_carrier__shiprocket_manifests_generate
 msgid "Generate Manifest"
-msgstr "Manifest generieren"
+msgstr "Ladeliste generieren"
 
 #. module: delivery_shiprocket
 #: model:ir.model.fields,help:delivery_shiprocket.field_delivery_carrier__shiprocket_access_token
@@ -391,7 +391,7 @@ msgstr "Länge, Breite und Höhe sind für das Shiprocket-Paket erforderlich."
 #: code:addons/delivery_shiprocket/models/delivery_carrier.py:0
 #, python-format
 msgid "Manifest generated of %s"
-msgstr "Manifest generiert von %s"
+msgstr "Ladeliste generiert von %s"
 
 #. module: delivery_shiprocket
 #. odoo-python
@@ -680,7 +680,7 @@ msgstr "Ablauf des Tokens"
 #. module: delivery_shiprocket
 #: model:ir.model,name:delivery_shiprocket.model_stock_picking
 msgid "Transfer"
-msgstr "Weiterleitung"
+msgstr "Transfer"
 
 #. module: delivery_shiprocket
 #. odoo-python

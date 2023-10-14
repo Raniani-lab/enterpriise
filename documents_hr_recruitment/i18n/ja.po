@@ -37,7 +37,7 @@ msgstr ""
 msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
-msgstr ""
+msgstr "条件に一致する全ての添付ファイルが利用できる、条件とアクションのセット。"
 
 #. module: documents_hr_recruitment
 #: model:ir.model,name:documents_hr_recruitment.model_hr_applicant
@@ -90,7 +90,7 @@ msgstr "ドキュメント"
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__documents_recruitment_settings
 msgid "Documents Recruitment Settings"
-msgstr ""
+msgstr "ドキュメント採用設定"
 
 #. module: documents_hr_recruitment
 #: model:documents.tag,name:documents_hr_recruitment.documents_recruitment_new_tag
@@ -116,22 +116,22 @@ msgstr "採用準備"
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__recruitment_tag_ids
 msgid "Recruitment Tag"
-msgstr ""
+msgstr "採用タグ"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_config_settings__recruitment_tag_ids
 msgid "Recruitment Tags"
-msgstr ""
+msgstr "採用タグ"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__recruitment_folder_id
 msgid "Recruitment Workspace"
-msgstr ""
+msgstr "採用作業区"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_config_settings__recruitment_folder_id
 msgid "Recruitment default workspace"
-msgstr ""
+msgstr "採用デフォルト作業区"
 
 #. module: documents_hr_recruitment
 #: model:documents.facet,name:documents_hr_recruitment.documents_recruitment_documents_facet

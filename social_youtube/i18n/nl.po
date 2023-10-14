@@ -412,7 +412,7 @@ msgstr "Social media post"
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_post_template
 msgid "Social Post Template"
-msgstr "Sjabloon voor sociale berichten"
+msgstr "Social media post sjabloon"
 
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_stream

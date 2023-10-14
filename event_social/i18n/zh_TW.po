@@ -27,7 +27,7 @@ msgstr ""
 msgid ""
 "As social posts have no recipients, they cannot be triggered by "
 "registrations."
-msgstr ""
+msgstr "由於社交貼文沒有收件人，因此無法透過登記觸發。"
 
 #. module: event_social
 #: model:ir.model,name:event_social.model_event_mail

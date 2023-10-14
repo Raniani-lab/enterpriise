@@ -1521,6 +1521,13 @@ msgid "Social: Publish Scheduled Posts"
 msgstr "Соцмережі: Опублікувати заплановані публікації"
 
 #. module: social
+#. openerp-web
+#: code:addons/social/static/src/js/stream_post_comments.js:0
+#, python-format
+msgid "Something went wrong while posting the comment."
+msgstr "Щось пішло не так під час публікації коментаря."
+
+#. module: social
 #. odoo-javascript
 #: code:addons/social/static/src/js/stream_post_kanban_dashboard.js:0
 #, python-format

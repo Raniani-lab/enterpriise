@@ -726,6 +726,9 @@ msgid ""
 "you need to schedule beyond this limit, please set the recurrence to repeat "
 "forever instead."
 msgstr ""
+"Toistuvia työvuoroja ei voi suunnitella yli 999 päivän päähän "
+"tulevaisuudesta. Jos haluat suunnitella tämän rajan ylittäviä vuoroja, aseta"
+" toistuvuus mieluummin ikuisesti."
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_report_action_analysis
@@ -1820,7 +1823,7 @@ msgstr "Aiheeseen liittyvät suunnittelumerkinnät"
 #. module: planning
 #: model:ir.model.fields,help:planning.field_planning_slot__user_id
 msgid "Related user name for the resource to manage its access."
-msgstr "Liittyvä käyttäjätunnus resurssille sen oikeuksien määrittämiseksi"
+msgstr "Liittyvä käyttäjätunnus resurssille sen oikeuksien määrittämiseksi."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt

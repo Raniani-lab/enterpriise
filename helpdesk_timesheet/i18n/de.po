@@ -439,8 +439,8 @@ msgid ""
 "Track your working hours by projects every day and invoice this time to your"
 " customers."
 msgstr ""
-"Erfassen Sie Ihre Zeiten jeden Tag nach Projekten und berechnen Sie sie an "
-"Ihre Kunden weiter."
+"Erfassen Sie täglich Ihre Arbeitsstunden nach Projekten und berechnen Sie "
+"sie an Ihre Kunden."
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__user_timer_id

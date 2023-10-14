@@ -137,14 +137,14 @@ msgstr ""
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Generated Applicant"
-msgstr ""
+msgstr "Candidato gerado"
 
 #. module: hr_recruitment_extract
 #. odoo-python
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Generated Applicants"
-msgstr ""
+msgstr "Candidatos gerados"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__is_first_stage
@@ -165,24 +165,24 @@ msgstr "Créditos insuficientes"
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_ocr_parse_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_ocr_parse
 msgid "Recruitment OCR: Parse CV"
-msgstr ""
+msgstr "OCR de recrutamento: analisar CV"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_update_ocr_status_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_update_ocr_status
 msgid "Recruitment OCR: Update All Status"
-msgstr ""
+msgstr "OCR de recrutamento: atualizar todos os status"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_ocr_validate_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_ocr_validate
 msgid "Recruitment OCR: Validate CV"
-msgstr ""
+msgstr "OCR de recrutamento:: validar CV"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_config_settings__recruitment_extract_show_ocr_option_selection
 msgid "Recruitment processing option"
-msgstr ""
+msgstr "Opção de processamento de recrutamento"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_remote_id
@@ -198,7 +198,7 @@ msgstr "Enviar para digitalização"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_company__recruitment_extract_show_ocr_option_selection
 msgid "Send mode on applicant attachments"
-msgstr ""
+msgstr "Modo de envio em anexos de candidatos"
 
 #. module: hr_recruitment_extract
 #. odoo-python
@@ -278,8 +278,10 @@ msgstr "Aguardando validação"
 #, python-format
 msgid "You cannot send a CV for an applicant who's not in first stage!"
 msgstr ""
+"Não é possível enviar um currículo para um candidato que não esteja na "
+"primeira fase."
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
-msgid "You don't have enough credit to extract data from your CV."
+msgid "You don't have enough credit to extract data from your Resume."
 msgstr ""

@@ -97,7 +97,7 @@ msgstr "全ての承認"
 msgid ""
 "Allows you to define which documents you would like to create once the "
 "request has been approved"
-msgstr ""
+msgstr "申請が承認された後に作成するドキュメントを定義できます。"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__amount

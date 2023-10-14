@@ -39,7 +39,7 @@ msgstr "SMSテンプレート"
 #: model:ir.model.fields,help:helpdesk_sms.field_helpdesk_stage__sms_template_id
 msgid ""
 "SMS automatically sent to the customer when the ticket reaches this stage."
-msgstr ""
+msgstr "チケットがこのステージに達したら顧客に自動的にSMSが送信されます。"
 
 #. module: helpdesk_sms
 #: model:ir.actions.act_window,name:helpdesk_sms.action_helpdesk_ticket_mass_mail_sms

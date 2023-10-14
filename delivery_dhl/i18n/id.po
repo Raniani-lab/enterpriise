@@ -365,7 +365,7 @@ msgstr ""
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_package_weight_unit__k
 msgid "Kilograms"
-msgstr ""
+msgstr "Kilogram"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__l
@@ -446,7 +446,7 @@ msgstr "Mohon sediakan setidaknya satu barang untuk dikirim."
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_package_weight_unit__l
 msgid "Pounds"
-msgstr ""
+msgstr "Pound"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__delivery_type

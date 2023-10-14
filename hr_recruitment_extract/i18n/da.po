@@ -289,5 +289,5 @@ msgstr "Du kan ikke sende et CV for en ansøger, der ikke er i første fase!"
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
-msgid "You don't have enough credit to extract data from your CV."
-msgstr "Du har ikke nok kredit til at udtrække data fra dit CV."
+msgid "You don't have enough credit to extract data from your Resume."
+msgstr ""

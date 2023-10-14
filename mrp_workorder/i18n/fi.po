@@ -221,12 +221,12 @@ msgstr "Muuta tuotantomäärää"
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__check_ids
 #: model:ir.model.fields,field_description:mrp_workorder.field_stock_move_line__quality_check_ids
 msgid "Check"
-msgstr "Sekki"
+msgstr "Tarkastus"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_production__check_ids
 msgid "Checks"
-msgstr "Shekit"
+msgstr "Tarkastukset"
 
 #. module: mrp_workorder
 #: model:product.attribute,name:mrp_workorder.product_attribute_color_radio
@@ -1248,6 +1248,8 @@ msgid ""
 "You need to complete Quality Checks using the Tablet View before marking "
 "Work Order as Done."
 msgstr ""
+"Laadunvalvontatarkastukset on tehtävä Tablet-näkymässä, ennen kuin "
+"työmääräys merkitään valmiiksi."
 
 #. module: mrp_workorder
 #. odoo-python

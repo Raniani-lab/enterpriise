@@ -291,7 +291,7 @@ msgstr "ID"
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/pivot.xml:0
 #, python-format
 msgid "Insert in Spreadsheet"
-msgstr "Invoegen in werkblad"
+msgstr "Invoegen in Spreadsheet"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

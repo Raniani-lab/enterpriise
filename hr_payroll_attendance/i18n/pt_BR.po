@@ -23,7 +23,7 @@ msgstr ""
 #. module: hr_payroll_attendance
 #: model:ir.model.fields,field_description:hr_payroll_attendance.field_hr_payslip__attendance_count
 msgid "Attendance Count"
-msgstr ""
+msgstr "Contagem de presenças"
 
 #. module: hr_payroll_attendance
 #: model_terms:ir.ui.view,arch_db:hr_payroll_attendance.view_hr_payslip_form_inherit_payroll_attendance

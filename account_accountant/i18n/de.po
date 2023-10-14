@@ -1040,7 +1040,7 @@ msgstr "Ungültig"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Invalid statements"
-msgstr "Ungültige Berichte"
+msgstr "Ungültige Kontoauszüge"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_bank_rec_widget__state

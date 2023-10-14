@@ -284,5 +284,5 @@ msgstr "您不能为不在第一阶段的申请人发送简历！"
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
-msgid "You don't have enough credit to extract data from your CV."
-msgstr "您没有足够的信用从简历中提取数据。"
+msgid "You don't have enough credit to extract data from your Resume."
+msgstr ""

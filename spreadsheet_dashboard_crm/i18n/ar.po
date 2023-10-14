@@ -415,7 +415,7 @@ msgstr "أعلى الفرص "
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Sales Teams"
-msgstr "فرق المبيعات الأعلى"
+msgstr "أعلى فريق المبيعات "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript

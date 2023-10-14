@@ -167,7 +167,7 @@ msgstr "Bloquer"
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
 msgid "BoM feedback %s (%s)"
-msgstr "Retour nomenclature %s(%s)"
+msgstr "Feedback nomenclature %s(%s)"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__bom_product_ids

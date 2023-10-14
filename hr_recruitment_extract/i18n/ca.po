@@ -9,7 +9,7 @@
 # marcescu, 2022
 # CristianCruzParra, 2022
 # Ivan Espinola, 2022
-# jabelchi, 2022
+# Josep Anton Belchi, 2022
 # jabiri7, 2022
 # 
 msgid ""
@@ -296,5 +296,5 @@ msgstr ""
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
-msgid "You don't have enough credit to extract data from your CV."
-msgstr "No teniu prou crèdit per extreure dades del vostre CV."
+msgid "You don't have enough credit to extract data from your Resume."
+msgstr ""

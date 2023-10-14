@@ -161,7 +161,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_weight_unit__kgs
 msgid "Kilograms"
-msgstr ""
+msgstr "Kilogram"
 
 #. module: delivery_ups
 #: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
@@ -394,7 +394,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_weight_unit__lbs
 msgid "Pounds"
-msgstr ""
+msgstr "Pound"
 
 #. module: delivery_ups
 #. odoo-python

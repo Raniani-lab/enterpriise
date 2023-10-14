@@ -1473,7 +1473,7 @@ msgstr "Verzenden"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Send by email"
-msgstr "Versturen via e-mail"
+msgstr "Verzenden per e-mail"
 
 #. module: hr_appraisal
 #: model:mail.template,description:hr_appraisal.mail_template_appraisal_confirm

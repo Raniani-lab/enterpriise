@@ -88,7 +88,7 @@ msgstr "Satış Planının Təhlili"
 #. module: crm_enterprise
 #: model_terms:ir.actions.act_window,help:crm_enterprise.crm_opportunity_action_dashboard
 msgid "Use this menu to have an overview of your Pipeline."
-msgstr ""
+msgstr "Məlumat bazanıza ümumi baxış üçün bu menyudan istifadə edin "
 
 #. module: crm_enterprise
 #: model:ir.model.fields.selection,name:crm_enterprise.selection__crm_activity_report__won_status__won

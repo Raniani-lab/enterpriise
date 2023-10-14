@@ -129,7 +129,7 @@ msgstr "إلغاء "
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid "Caution: some tasks have not been scheduled"
-msgstr "تحذير: بعض المهام لم يتم تحديد موعدها "
+msgstr "تحذير: بعض المهام لم تتم جدولتها "
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__create_uid
@@ -325,12 +325,12 @@ msgstr "حفظ"
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__schedule_task
 msgid "Schedule Task"
-msgstr "برنامج المهمة"
+msgstr "جدولة مهمة "
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.view_task_confirm_schedule_wizard_form
 msgid "Schedule Tasks"
-msgstr "برنامج المهام"
+msgstr "جدولة المهام "
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_wizard__selected_line_count

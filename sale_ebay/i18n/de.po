@@ -675,12 +675,12 @@ msgstr "Sandbox"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sandbox_app_id
 msgid "Sandbox App Key"
-msgstr "App-Schlüssel Sandbox"
+msgstr "Sandbox-App-Schlüssel"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sandbox_cert_id
 msgid "Sandbox Cert Key"
-msgstr "Zertifikatsschlüssel Sandbox"
+msgstr "Sandbox-Zertifikatsschlüssel"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sandbox_token

@@ -322,4 +322,4 @@ msgstr ""
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid "open"
-msgstr ""
+msgstr "open"

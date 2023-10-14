@@ -50,7 +50,7 @@ msgstr "แปลงงานโปรเจกต์เป็นทิกเก
 #: model_terms:ir.ui.view,arch_db:project_helpdesk.helpdesk_ticket_convert_to_task_wizard_view_form
 #, python-format
 msgid "Convert to Task"
-msgstr ""
+msgstr "แปลงเป็นงาน"
 
 #. module: project_helpdesk
 #. odoo-python
@@ -66,14 +66,14 @@ msgstr "แปลงเป็นทิกเก็ต"
 #: code:addons/project_helpdesk/wizard/helpdesk_ticket_convert_wizard.py:0
 #, python-format
 msgid "Converted Tasks"
-msgstr ""
+msgstr "แปลงงานแล้ว"
 
 #. module: project_helpdesk
 #. odoo-python
 #: code:addons/project_helpdesk/wizard/project_task_convert_wizard.py:0
 #, python-format
 msgid "Converted Tickets"
-msgstr ""
+msgstr "แปลงทิกเก็ตแล้ว"
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_helpdesk_ticket_convert_wizard__create_uid
@@ -132,7 +132,7 @@ msgstr "โปรเจกต์"
 #: code:addons/project_helpdesk/models/project.py:0
 #, python-format
 msgid "Recurring tasks cannot be converted into tickets."
-msgstr ""
+msgstr "งานที่เกิดซ้ำไม่สามารถแปลงเป็นทิกเก็ตได้"
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_helpdesk_ticket_convert_wizard__stage_id
@@ -150,7 +150,7 @@ msgstr "งาน"
 #: code:addons/project_helpdesk/wizard/project_task_convert_wizard.py:0
 #, python-format
 msgid "Task converted into ticket %s"
-msgstr ""
+msgstr "งานแปลงเป็นทิกเก็ต %s"
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_project_task_convert_wizard__team_id
@@ -162,4 +162,4 @@ msgstr "ทีม"
 #: code:addons/project_helpdesk/wizard/helpdesk_ticket_convert_wizard.py:0
 #, python-format
 msgid "Ticket converted into task %s"
-msgstr ""
+msgstr "ทิกเก็ตแปลงเป็นงาน %s"

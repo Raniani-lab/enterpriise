@@ -393,7 +393,7 @@ msgstr "Retweets"
 #, python-format
 msgid "Replies from Tweets older than 7 days must be accessed on Twitter.com"
 msgstr ""
-"Antworten ausTweets, die älter als 7 Tage sind, müssen auf Twitter.com "
+"Antworten aus Tweets, die älter als 7 Tage sind, müssen auf Twitter.com "
 "abgerufen werden"
 
 #. module: social_twitter

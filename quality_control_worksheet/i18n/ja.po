@@ -101,7 +101,7 @@ msgstr ""
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_report_quality_control_quality_worksheet
 msgid "Quality Worksheet Report"
-msgstr ""
+msgstr "品質ワークシートレポート"
 
 #. module: quality_control_worksheet
 #: model:ir.actions.act_window,name:quality_control_worksheet.quality_control_worksheet_template_action_settings
@@ -127,7 +127,7 @@ msgstr "テンプレート"
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_quality_check_wizard
 msgid "Wizard for Quality Check Pop Up"
-msgstr ""
+msgstr "品質チェックポップアップ用ウィザード"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1

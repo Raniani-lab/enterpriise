@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Thi Huong Nguyen, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Thi Huong Nguyen, 2023\n"
 "Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,14 +28,14 @@ msgstr "Nhóm truy cập"
 #. module: spreadsheet_dashboard_documents
 #: model_terms:ir.ui.view,arch_db:spreadsheet_dashboard_documents.spreadsheet_dashboard_view_list
 msgid "Add a spreadsheet"
-msgstr ""
+msgstr "Thêm một bảng tính"
 
 #. module: spreadsheet_dashboard_documents
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_documents/static/src/bundle/documents_spreadsheet_action.js:0
 #, python-format
 msgid "Add to dashboard"
-msgstr ""
+msgstr "Thêm vào trang tổng quan"
 
 #. module: spreadsheet_dashboard_documents
 #. odoo-javascript
@@ -59,7 +60,7 @@ msgstr "Tạo"
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model,name:spreadsheet_dashboard_documents.model_spreadsheet_document_to_dashboard
 msgid "Create a dashboard from a spreadsheet document"
-msgstr ""
+msgstr "Tạo một trang tổng quan từ tài liệu bảng tính"
 
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_documents.field_spreadsheet_document_to_dashboard__create_uid
@@ -74,12 +75,12 @@ msgstr "Được tạo vào"
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_documents.field_spreadsheet_document_to_dashboard__name
 msgid "Dashboard Name"
-msgstr ""
+msgstr "Tên trang tổng quan"
 
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_documents.field_spreadsheet_document_to_dashboard__dashboard_group_id
 msgid "Dashboard Section"
-msgstr ""
+msgstr "Phần trang tổng quan"
 
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_documents.field_spreadsheet_document_to_dashboard__display_name
@@ -116,9 +117,9 @@ msgstr "Cập nhật lần cuối vào"
 #: code:addons/spreadsheet_dashboard_documents/static/src/bundle/documents_spreadsheet_action.js:0
 #, python-format
 msgid "Name your dashboard and select its section"
-msgstr ""
+msgstr "Đặt tên cho trang tổng quan và chọn phần của trang tổng quan"
 
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model,name:spreadsheet_dashboard_documents.model_spreadsheet_dashboard
 msgid "Spreadsheet Dashboard"
-msgstr ""
+msgstr "Trang tổng quan bảng tính"

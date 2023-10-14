@@ -1354,7 +1354,7 @@ msgstr "Tag"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Day Precision"
-msgstr "Taggenauigkeit"
+msgstr "Tagesgenauigkeit"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1390,7 +1390,7 @@ msgstr "Standardmäßig gruppieren nach"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Default Scale"
-msgstr "Standard-Maßstab"
+msgstr "Standardskala"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1519,7 +1519,7 @@ msgstr "Anzeigename"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Display Total row"
-msgstr "Gesamtzahl Reihen anzeigen"
+msgstr "Summenzeile anzeigen"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1734,7 +1734,7 @@ msgstr "Massenbearbeitung erlauben"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Enable Routing"
-msgstr "Routing aktivieren"
+msgstr "Routenplanung aktivieren"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2545,7 +2545,7 @@ msgstr "Karte"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Margins"
-msgstr "Margen"
+msgstr "Rahmen"
 
 #. module: web_studio
 #. odoo-javascript

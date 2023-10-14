@@ -271,7 +271,7 @@ msgstr "OAuth Client ID"
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.res_config_settings_view_form
 msgid "OAuth Client Secret"
-msgstr "OAuth Client Secret"
+msgstr "OAuth segreto client"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_revoke_youtube_view_form
@@ -671,7 +671,7 @@ msgstr "YouTube OAuth Client ID"
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_res_config_settings__youtube_oauth_client_secret
 msgid "YouTube OAuth Client Secret"
-msgstr "YouTube OAuth Client Secret"
+msgstr "YouTube OAuth segreto client"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_post_view_form

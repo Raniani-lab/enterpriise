@@ -462,7 +462,7 @@ msgstr "Zusätzlicher Tag"
 #: model:ir.model.fields,field_description:sale_renting.field_product_product__extra_hourly
 #: model:ir.model.fields,field_description:sale_renting.field_product_template__extra_hourly
 msgid "Extra Hour"
-msgstr "Überstunde"
+msgstr "Zusätzliche Stunde"
 
 #. module: sale_renting
 #. odoo-python

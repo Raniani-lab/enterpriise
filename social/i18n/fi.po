@@ -20,8 +20,8 @@
 # Miku Laitinen <miku.laitinen@gmail.com>, 2022
 # Pekko Tuomisto <pekko.tuomisto@web-veistamo.fi>, 2022
 # Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2022
-# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
 # Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2023
+# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
 # 
 msgid ""
 msgstr ""
@@ -29,7 +29,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2023\n"
+"Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
 "Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1540,7 +1540,7 @@ msgstr "Sosiaalinen media: Julkaise ajastettuja julkaisuja"
 #: code:addons/social/static/src/js/stream_post_comments.js:0
 #, python-format
 msgid "Something went wrong while posting the comment."
-msgstr ""
+msgstr "Jokin meni pieleen kommenttia lähetettäessä."
 
 #. module: social
 #. odoo-javascript

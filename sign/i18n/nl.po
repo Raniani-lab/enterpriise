@@ -2128,12 +2128,12 @@ msgstr "Aantal acties"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Number of documents in progress for this template."
-msgstr "Aantal documenten in behandeling voor dit sjabloon."
+msgstr "Aantal documenten in behandeling voor deze sjabloon."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Number of documents signed for this template."
-msgstr "Aantal ondertekende documenten voor dit sjabloon."
+msgstr "Aantal ondertekende documenten voor deze sjabloon."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_has_error_counter
@@ -3117,7 +3117,7 @@ msgstr "Sommige niet-geautoriseerde items zijn gevuld"
 #, python-format
 msgid "Somebody is already filling a document which uses this template"
 msgstr ""
-"Iemand is dit document dat dit sjabloon gebruikt reeds aan het invullen"
+"Iemand is dit document dat deze sjabloon gebruikt reeds aan het invullen"
 
 #. module: sign
 #. odoo-javascript
@@ -3496,7 +3496,7 @@ msgstr "Het handtekeningsverzoek is aangepast door: %s."
 #: code:addons/sign/static/src/js/backend/sign_template.js:0
 #, python-format
 msgid "The template doesn't exist anymore."
-msgstr "Het sjabloon bestaat niet meer."
+msgstr "De sjabloon bestaat niet meer."
 
 #. module: sign
 #. odoo-python
@@ -3505,8 +3505,8 @@ msgstr "Het sjabloon bestaat niet meer."
 msgid ""
 "The template has more pages than the current file, it can't be applied."
 msgstr ""
-"Het sjabloon telt meer pagina's dan het huidige bestand, het kan niet worden"
-" toegepast."
+"De sjabloon telt meer pagina's dan het huidige bestand, het kan niet worden "
+"toegepast."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
@@ -3898,7 +3898,7 @@ msgstr ""
 #, python-format
 msgid "We will send you this document by email once everyone has signed."
 msgstr ""
-"We verzenden je dit document via e-mail eenmaal iedereen heeft getekend."
+"We verzenden je dit document per e-mail eenmaal iedereen heeft getekend."
 
 #. module: sign
 #. odoo-javascript
@@ -4276,7 +4276,7 @@ msgstr "labels"
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "this template to modify it."
-msgstr "dit sjabloon om het te wijzigen."
+msgstr "deze sjabloon om het te wijzigen."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user

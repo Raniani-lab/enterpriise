@@ -2002,8 +2002,8 @@ msgid ""
 "If set, subscriptions with this template will invoice in this journal; "
 "otherwise the sales journal with the lowest sequence is used."
 msgstr ""
-"Wanneer ingesteld, zullen abonnementen met dit sjabloon worden gefactureerd "
-"in dit dagboek; standaard wordt het verkoopdagboek met de laagste reeks "
+"Wanneer ingesteld, zullen abonnementen met deze sjabloon worden gefactureerd"
+" in dit dagboek; standaard wordt het verkoopdagboek met de laagste reeks "
 "gekozen."
 
 #. module: sale_subscription

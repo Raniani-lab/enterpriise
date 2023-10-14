@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2023
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-07-12 07:57+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -122,10 +123,10 @@ msgid ""
 "This status is defined automatically, but you can force it by ticking the 'Force Status' checkbox."
 msgstr ""
 "Dieses Feld kann die folgenden Werte annehmen:\n"
-"  * Ja: Sie sollten die Rechnung bezahlen, die Produkte sind angekommen.\n"
-"  * Nein: Sie sollten die Rechnung nicht bezahlen, die Produkte sind nicht angekommen.\n"
+"  * Ja: Sie sollten die Rechnung bezahlen, Sie haben die Produkte erhalten.\n"
+"  * Nein: Sie sollten die Rechnung nicht bezahlen, Sie haben die Produkte nicht erhalten.\n"
 "  * Ausnahme: Diskrepanz zwischen erhaltener und berechneter Menge.\n"
-"Dieser Status wird automatisch definiert, Sie können dies jedoch durch Aktivieren des Kontrollkästchens „Status erzwingen“ manuell setzen."
+"Dieser Status wird automatisch definiert, Sie können dies jedoch erzwingen, indem Sie des Kontrollkästchen „Status erzwingen“ aktivieren."
 
 #. module: account_3way_match
 #: model:ir.model.fields.selection,name:account_3way_match.selection__account_move__release_to_pay__yes

@@ -1208,7 +1208,7 @@ msgstr "صفحة ورقة العمل"
 #: code:addons/mrp_workorder/static/src/components/summary_step.xml:0
 #, python-format
 msgid "Wow, you made the Top 5!"
-msgstr "واو ، لقد صنعت أفضل 5!"
+msgstr "واو، لقد أصبحت ضمن أفضل 5! "
 
 #. module: mrp_workorder
 #. odoo-python

@@ -52,6 +52,9 @@ msgid ""
 "                    <i data-trigger-type=\"sms_not_click\" class=\"fa fa-hand-pointer-o o_ma_text_rejected o_add_child_activity\" title=\"Not Clicked\" role=\"img\" aria-label=\"Not Clicked\"/>\n"
 "                    <i data-trigger-type=\"sms_bounce\" class=\"fa fa fa-exclamation-circle o_ma_text_rejected o_add_child_activity\" title=\"Bounced\" role=\"img\" aria-label=\"Bounced\"/>"
 msgstr ""
+"<i data-trigger-type=\"sms_click\" class=\"fa fa-hand-pointer-o o_ma_text_processed o_add_child_activity\" title=\"已點擊開啟\" role=\"img\" aria-label=\"已點擊開啟\"/>\n"
+"                    <i data-trigger-type=\"sms_not_click\" class=\"fa fa-hand-pointer-o o_ma_text_rejected o_add_child_activity\" title=\"未有點擊開啟\" role=\"img\" aria-label=\"未有點擊開啟\"/>\n"
+"                    <i data-trigger-type=\"sms_bounce\" class=\"fa fa fa-exclamation-circle o_ma_text_rejected o_add_child_activity\" title=\"彈回\" role=\"img\" aria-label=\"彈回\"/>"
 
 #. module: marketing_automation_sms
 #: model:ir.model.fields,field_description:marketing_automation_sms.field_marketing_activity__activity_type

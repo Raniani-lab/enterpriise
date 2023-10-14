@@ -108,7 +108,7 @@ msgstr ""
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
 msgid "<b>Deselect this page</b> as we plan to process all bills first."
-msgstr ""
+msgstr "全ての請求書を先に処理する予定なので、<b>このページの選択を解除</b>して下さい。"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
@@ -334,7 +334,7 @@ msgstr "このエイリアスの新しいレコードを作成する時にデフ
 msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
-msgstr ""
+msgstr "条件に一致する全ての添付ファイルが利用できる、条件とアクションのセット。"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__parent_folder_id
@@ -615,7 +615,7 @@ msgstr "本当にこのレコードを削除しますか？"
 #, python-format
 msgid ""
 "As this PDF contains multiple documents, let's split and process in bulk."
-msgstr ""
+msgstr "このPDFには複数の文書が含まれているので、分割して一括処理しましょう。"
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_afv
@@ -745,14 +745,14 @@ msgstr ""
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
 msgid "Click on a card to <b>select the document</b>."
-msgstr ""
+msgstr "カードをクリックして<b>ドキュメントを選択</b>します。"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
 msgid "Click on a thumbnail to <b>preview the document</b>."
-msgstr ""
+msgstr "サムネイルをクリックして<b>ドキュメントをプレビュー</b>します。"
 
 #. module: documents
 #. odoo-javascript
@@ -761,7 +761,7 @@ msgstr ""
 msgid ""
 "Click on the <b>page separator</b>: we don't want to split these two pages "
 "as they belong to the same document."
-msgstr ""
+msgstr "<b>ページセパレータ</b>をクリック: この2つのページは同じ文書に属しているので、分割したくありません。"
 
 #. module: documents
 #. odoo-javascript
@@ -1425,7 +1425,7 @@ msgstr "フォロー中　"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__is_shared
 msgid "Is Shared"
-msgstr ""
+msgstr "共有済"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_internal_knowledge
@@ -1492,6 +1492,7 @@ msgid ""
 "Let's process documents in your Inbox.<br/><i>Tip: Use Tags to filter "
 "documents and structure your process.</i>"
 msgstr ""
+"受信トレイのドキュメントを処理しましょう。<br/><i>ヒント: タグを使用してドキュメントをフィルタリングし、プロセスを構造化します</i>"
 
 #. module: documents
 #. odoo-javascript
@@ -1505,7 +1506,7 @@ msgstr ""
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
 msgid "Let's process this document, coming from our scanner."
-msgstr ""
+msgstr "スキャナから来たこのドキュメントを処理しましょう。"
 
 #. module: documents
 #. odoo-javascript
@@ -1514,7 +1515,7 @@ msgstr ""
 msgid ""
 "Let's tag this mail as legal<br/> <i>Tips: actions can be tailored to your "
 "process, according to the workspace.</i>"
-msgstr ""
+msgstr "このメールに合法のタグを付けましょう。<br/> <i>ヒント: アクションは、作業区に応じて処理に合わせることができます</i>"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__user_specific
@@ -2133,7 +2134,7 @@ msgstr ""
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
 msgid "Send this letter to the legal department, by assigning the right tags."
-msgstr ""
+msgstr "適切なタグを付けて、この手紙を法務部に送ります。"
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_legal
@@ -2257,7 +2258,7 @@ msgstr "共有"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__document_ids
 msgid "Shared Documents"
-msgstr ""
+msgstr "共有済ドキュメント"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__tag_ids
@@ -2634,7 +2635,7 @@ msgstr "ビデオ"
 #, python-format
 msgid ""
 "Want to become a <b>paperless company</b>? Let's discover Odoo Documents."
-msgstr ""
+msgstr "<b>ペーパーレスな会社</b>を目指しますか？Odooドキュメントを試してみましょう。"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__website_message_ids
@@ -2695,6 +2696,7 @@ msgid ""
 "Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is "
 "complete. Try uploading your own documents now."
 msgstr ""
+"なんと数秒で6つのドキュメントが処理されました。素晴らしい。<br/>ツアーは終了です。今度はご自身のドキュメントをアップロードしてみましょう。"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form

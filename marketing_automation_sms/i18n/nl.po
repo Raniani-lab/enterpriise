@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Jolien De Paepe, 2023
 # 
 msgid ""
@@ -76,7 +75,7 @@ msgstr "Geklikt"
 #: code:addons/marketing_automation_sms/models/marketing_activity.py:0
 #, python-format
 msgid "Exception in SMS Marketing: %s"
-msgstr "Foutmelding in SMS marketing: %s"
+msgstr "Foutmelding in SMS-Marketing: %s"
 
 #. module: marketing_automation_sms
 #: model:ir.model,name:marketing_automation_sms.model_mailing_trace

@@ -1700,7 +1700,7 @@ msgstr "E-mail alias"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_mail_template
 msgid "Email Templates"
-msgstr "E-mail-sjablonen"
+msgstr "E-mailsjablonen"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_mail_thread

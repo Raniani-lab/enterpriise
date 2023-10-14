@@ -262,6 +262,10 @@ msgid ""
 "                    (/<span style=\"font-style: italic;\">checklist</span>)\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    เพิ่มเช็คลิสต์\n"
+"                    (/<span style=\"font-style: italic;\">เช็คลิสต์</span>)\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -271,6 +275,10 @@ msgid ""
 "                    (/<span style=\"font-style: italic;\">separator</span>)\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    เพิ่มตัวคั่น\n"
+"                    (/<span style=\"font-style: italic;\">ตัวคั่น</span>)\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -281,6 +289,11 @@ msgid ""
 "                    to convert a text into a title\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    ใช้\n"
+"                    /<span style=\"font-style: italic;\">หัวเรื่อง</span>\n"
+"                    เพื่อแปลงข้อความให้เป็นชื่อเรื่อง\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -359,6 +372,15 @@ msgid ""
 "            \"<span style=\"font-weight: bolder;\">/</span>\"\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            ด้านล่างรายการนี้ ให้ลองใช้\n"
+"            <span style=\"font-weight: bolder;\">commands</span>\n"
+"            โดย\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">การพิมพ์</font>\n"
+"            </span>\n"
+"            \"<span style=\"font-weight: bolder;\">/</span>\"\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -399,6 +421,14 @@ msgid ""
 "            <span style=\"font-style: italic; text-decoration-line: underline;\">it</span>\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            เลือกข้อความเพื่อ\n"
+"            <font class=\"bg-o-color-2\">ไฮไลท์</font>,\n"
+"            <span style=\"text-decoration-line: line-through;\">ขีดเส้น</span>\n"
+"            หรือ\n"
+"            <span style=\"font-weight: bolder;\">จัดรูปแบบ</span>\n"
+"            <span style=\"font-style: italic; text-decoration-line: underline;\">มัน</span>\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -556,13 +586,15 @@ msgstr ""
 msgid ""
 "<span style=\"font-size: 14px;\">Check this box to indicate it's done</span>"
 msgstr ""
+"<span style=\"font-size: "
+"14px;\">ทำเครื่องหมายที่ช่องนี้เพื่อระบุว่าเสร็จสิ้นแล้ว</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid ""
 "<span style=\"font-size: 14px;\">Click anywhere, and just start "
 "typing</span>"
-msgstr ""
+msgstr "<span style=\"font-size: 14px;\">คลิกที่ใดก็ได้แล้วเริ่มพิมพ์</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -601,6 +633,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "<span style=\"font-size: 14px;\">Press Ctrl-Z to undo any change</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">กด Ctrl-Z เพื่อยกเลิกการเปลี่ยนแปลง</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -613,7 +646,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "<span style=\"font-size: 14px;\">Try the following</span>"
-msgstr ""
+msgstr "<span style=\"font-size: 14px;\">ลองทำตามขั้นตอนต่อไปนี้</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -2505,7 +2538,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Who has access to what?"
-msgstr ""
+msgstr "ใครเข้าถึงอะไรได้บ้าง?"
 
 #. module: knowledge
 #. odoo-javascript

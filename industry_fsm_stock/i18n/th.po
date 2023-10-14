@@ -26,7 +26,7 @@ msgstr ""
 #. module: industry_fsm_stock
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.fsm_stock_tracking_line_view_form
 msgid "Already Delivered"
-msgstr ""
+msgstr "จัดส่งแล้ว"
 
 #. module: industry_fsm_stock
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.fsm_stock_tracking_line_view_form
@@ -66,7 +66,7 @@ msgstr "แสดงชื่อ"
 #: code:addons/industry_fsm_stock/wizard/fsm_stock_tracking.py:0
 #, python-format
 msgid "Each line needs a Lot/Serial Number"
-msgstr ""
+msgstr "แต่ละรายการต้องมีล็อต/หมายเลขซีเรียล"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,help:industry_fsm_stock.field_fsm_stock_tracking__tracking
@@ -76,7 +76,7 @@ msgstr "แน่ใจว่ามีการตรวจสอบย้อน
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_sale_order_line__fsm_lot_id
 msgid "Fsm Lot"
-msgstr ""
+msgstr "ล็อต Fsm"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__id
@@ -105,7 +105,7 @@ msgstr "อัปเดตครั้งล่าสุดเมื่อ"
 #. module: industry_fsm_stock
 #: model:ir.model,name:industry_fsm_stock.model_fsm_stock_tracking_line
 msgid "Lines for FSM Stock Tracking"
-msgstr ""
+msgstr "รายการสำหรับการติดตามสต็อก FSM"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking_line__lot_id
@@ -115,7 +115,7 @@ msgstr "ล็อต/หมายเลขซีเรียล"
 #. module: industry_fsm_stock
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.stock_product_product_kanban_material
 msgid "Lot/Serial number"
-msgstr ""
+msgstr "ล็อต/หมายเลขซีเรียล"
 
 #. module: industry_fsm_stock
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.stock_product_product_kanban_material
@@ -141,7 +141,7 @@ msgstr "ปริมาณ"
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_product_product__quantity_decreasable
 msgid "Quantity Decreasable"
-msgstr ""
+msgstr "ปริมาณลดลงได้"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking_line__sale_order_line_id
@@ -156,7 +156,7 @@ msgstr "ไลน์คำสั่งขาย"
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_product_product__serial_missing
 msgid "Serial Missing"
-msgstr ""
+msgstr "ซีเรียลหายไป"
 
 #. module: industry_fsm_stock
 #: model:ir.model,name:industry_fsm_stock.model_stock_move
@@ -189,7 +189,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.fsm_stock_tracking_line_line_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.fsm_stock_tracking_line_view_form
 msgid "Track Stock"
-msgstr ""
+msgstr "ติดตามสต็อก"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__tracking
@@ -205,7 +205,7 @@ msgstr "รายการการติดตาม"
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__tracking_validated_line_ids
 msgid "Tracking Validated Line"
-msgstr ""
+msgstr "การติดตามรายการที่ตรวจสอบแล้ว"
 
 #. module: industry_fsm_stock
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.fsm_stock_tracking_line_view_form
@@ -216,14 +216,14 @@ msgstr "ตรวจสอบ"
 #: code:addons/industry_fsm_stock/models/product.py:0
 #, python-format
 msgid "Validate Lot/Serial Number"
-msgstr ""
+msgstr "ตรวจสอบความถูกต้องของล็อต/หมายเลขซีเรียล"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking_line__wizard_tracking_line_valided
 msgid "Validated Tracking Line"
-msgstr ""
+msgstr "รายการติดตามที่ผ่านการตรวจสอบแล้ว"
 
 #. module: industry_fsm_stock
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.stock_product_product_kanban_material
 msgid "View Availability"
-msgstr ""
+msgstr "ดูความพร้อมใช้งาน"

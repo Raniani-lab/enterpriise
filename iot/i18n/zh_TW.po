@@ -543,7 +543,7 @@ msgstr "列印機報告"
 #. module: iot
 #: model:ir.model,name:iot.model_publisher_warranty_contract
 msgid "Publisher Warranty Contract For IoT Box"
-msgstr ""
+msgstr "IoT Box 發行商保證合約"
 
 #. module: iot
 #: model:ir.model,name:iot.model_ir_actions_report

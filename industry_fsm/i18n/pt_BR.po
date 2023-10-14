@@ -7,7 +7,7 @@
 # Luiz Fernando <lfpsgs@outlook.com>, 2022
 # Martin Trigaux, 2022
 # Kevilyn Rosa, 2023
-# adrianojprado <adrianojprado@gmail.com>, 2023
+# Adriano Prado <adrianojprado@gmail.com>, 2023
 # Layna Nascimento, 2023
 # 
 msgid ""
@@ -1284,7 +1284,7 @@ msgstr "Planilhas de Horas"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "To Do"
-msgstr "Lista de Tarefas"
+msgstr "A fazer"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.project_task_action_to_schedule_fsm

@@ -8,7 +8,7 @@
 # Murat Kaplan <muratk@projetgrup.com>, 2022
 # Halil, 2022
 # Ediz Duman <neps1192@gmail.com>, 2022
-# özgür yılmaz <ozgur980@gmail.com>, 2022
+# Özgür YILMAZ <ozgur980@gmail.com>, 2022
 # Umur Akın <umura@projetgrup.com>, 2022
 # Buket Şeker <buket_skr@hotmail.com>, 2022
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2023
@@ -293,5 +293,5 @@ msgstr "İlk aşamada olmayan bir başvuru sahibi için CV gönderemezsiniz!"
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
-msgid "You don't have enough credit to extract data from your CV."
-msgstr "CV'nizden veri çıkarmak için yeterli krediniz yok."
+msgid "You don't have enough credit to extract data from your Resume."
+msgstr ""

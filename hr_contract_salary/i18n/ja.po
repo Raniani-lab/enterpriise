@@ -376,7 +376,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_employee_report
 msgid "Contract and Employee Analysis Report"
-msgstr ""
+msgstr "連絡先と従業員分析レポート"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__res_field_id

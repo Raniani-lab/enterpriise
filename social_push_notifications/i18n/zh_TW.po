@@ -58,7 +58,7 @@ msgstr "延遲"
 #: code:addons/social_push_notifications/static/src/xml/social_push_notifications_templates.xml:0
 #, python-format
 msgid "Deny"
-msgstr ""
+msgstr "禁止"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor_push_subscription__display_name
@@ -289,7 +289,7 @@ msgstr ""
 #: model:social.media,name:social_push_notifications.social_media_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.utm_campaign_view_form
 msgid "Push Notifications"
-msgstr ""
+msgstr "推送通知"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor__has_push_notifications

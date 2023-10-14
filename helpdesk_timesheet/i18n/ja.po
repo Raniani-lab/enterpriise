@@ -56,7 +56,7 @@ msgstr "プロジェクトタスクをチケットに変換"
 #. module: helpdesk_timesheet
 #: model:ir.model,name:helpdesk_timesheet.model_helpdesk_ticket_create_timesheet
 msgid "Create Timesheet from ticket"
-msgstr ""
+msgstr "チケットからタイムシートを作成"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_create_timesheet__create_uid
@@ -114,7 +114,7 @@ msgstr "表示名"
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_account_analytic_line__display_task
 msgid "Display Task"
-msgstr ""
+msgstr "タスクを表示"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__display_timer
@@ -171,7 +171,7 @@ msgstr "日にちで単位をエンコード"
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_account_analytic_line__has_helpdesk_team
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_project_project__has_helpdesk_team
 msgid "Has Helpdesk Teams"
-msgstr ""
+msgstr "ヘルプデスクのチームがある"
 
 #. module: helpdesk_timesheet
 #: model:ir.model,name:helpdesk_timesheet.model_helpdesk_team
@@ -278,7 +278,7 @@ msgstr "プロジェクト"
 msgid ""
 "Project to which the timesheets of this helpdesk team's tickets will be "
 "linked."
-msgstr ""
+msgstr "このヘルプデスクチームのチケットのタイムシートがリンクされるプロジェクト"
 
 #. module: helpdesk_timesheet
 #: model_terms:ir.actions.act_window,help:helpdesk_timesheet.act_hr_timesheet_line_helpdesk
@@ -355,12 +355,12 @@ msgstr "チケット分析"
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_ticket_create_timesheet__ticket_id
 msgid "Ticket for which we are creating a sales order"
-msgstr ""
+msgstr "販売オーダを作成するチケット"
 
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.report_timesheet_ticket
 msgid "Ticket:"
-msgstr ""
+msgstr "チケット:"
 
 #. module: helpdesk_timesheet
 #: code:addons/helpdesk_timesheet/models/project.py:0
@@ -382,6 +382,8 @@ msgid ""
 "Time spent on this ticket. By default, your timesheets will be linked to the sales order item of your ticket.\n"
 "Remove the sales order item to make your timesheet entries non billable."
 msgstr ""
+"チケットに費やされた時間。デフォルトでは、タイムシートはチケットの販売オーダ項目にリンクされます。\n"
+"タイムシートを請求不可能にするには、販売オーダ項目を削除します。"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__timer_pause
@@ -450,7 +452,7 @@ msgstr "VIPサポート"
 #, python-format
 msgid ""
 "You cannot link a timesheet entry to a task and a ticket at the same time."
-msgstr ""
+msgstr "タイムシートエントリをタスクとチケットに同時にリンクすることはできません。"
 
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.report_timesheet_ticket

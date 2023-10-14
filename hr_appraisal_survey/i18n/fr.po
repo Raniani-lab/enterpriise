@@ -37,7 +37,7 @@ msgid ""
 "360 Degree Feedback is a system or process in which managers will ask feedback from the people who work around the employee.\n"
 "            This typically includes the employee's manager, peers, and direct reports."
 msgstr ""
-"Le feedback à 360 degrés est un système ou un processus dans lequel les managers demandent des retours aux personnes qui travaillent au contact de l'employé. \n"
+"Le feedback à 360 degrés est un système ou un processus dans lequel les managers demandent un feedback aux personnes qui travaillent au contact de l'employé. \n"
 "Ceci inclut généralement le manager de l'employé, ses pairs et ses subordonnés directs."
 
 #. module: hr_appraisal_survey
@@ -256,7 +256,7 @@ msgstr "Évaluation de "
 #. module: hr_appraisal_survey
 #: model:mail.template,name:hr_appraisal_survey.mail_template_appraisal_ask_feedback
 msgid "Appraisal: Ask Feedback"
-msgstr "Évaluation : Demander un retour"
+msgstr "Évaluation : Demander un feedback"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_1_5
@@ -561,8 +561,8 @@ msgid ""
 "customers, peers)."
 msgstr ""
 "Il est de la responsabilité première du superviseur de recueillir les "
-"informations nécessaires auprès des sources appropriées de retour "
-"d'information (clients internes et/ou externes, pairs)."
+"informations nécessaires auprès des sources appropriées de feedback (clients"
+" internes et/ou externes, pairs)."
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__lang
@@ -752,7 +752,7 @@ msgstr "Sondages envoyés"
 #. module: hr_appraisal_survey
 #: model:mail.template,description:hr_appraisal_survey.mail_template_appraisal_ask_feedback
 msgid "Sent to employees to gather appraisal feedback"
-msgstr "Envoyé aux employés pour recueillir un retour sur l'évaluation"
+msgstr "Envoyé aux employés pour recueillir un feedback sur l'évaluation"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_4
@@ -928,8 +928,8 @@ msgid ""
 "This survey allows you to give a feedback about your collaboration with an "
 "employee. Filling it helps us improving the appraisal process."
 msgstr ""
-"Ce sondage vous permet de donner un retour sur votre collaboration avec un "
-"employé. Le compléter nous aide à améliorer le processus d'évaluation."
+"Ce sondage vous permet de donner un feedback sur votre collaboration avec un"
+" employé. Le compléter nous aide à améliorer le processus d'évaluation."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_15

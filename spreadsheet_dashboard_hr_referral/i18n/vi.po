@@ -37,7 +37,7 @@ msgstr "Ứng viên"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Applications by Creation Date"
-msgstr ""
+msgstr "Đơn ứng tuyển theo ngày tạo"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -85,21 +85,21 @@ msgstr "Đã tuyển"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired Ratio"
-msgstr ""
+msgstr "Tỷ lệ đã tuyển"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired by referral"
-msgstr ""
+msgstr "Đã tuyển theo giới thiệu"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired ratio"
-msgstr ""
+msgstr "Tỷ lệ đã tuyển"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -122,7 +122,7 @@ msgstr "Kênh trung gian"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Most Hired Job Positions"
-msgstr ""
+msgstr "Chức vụ được tuyển nhiều nhất"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -144,14 +144,14 @@ msgstr "Ứng viên mới"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "New Hires"
-msgstr ""
+msgstr "Loạt tuyển dụng mới"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "New applicants"
-msgstr ""
+msgstr "Ứng viên mới"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -186,7 +186,7 @@ msgstr "Thời gian xử lý"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Process duration"
-msgstr ""
+msgstr "Thời gian xử lý"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -204,7 +204,7 @@ msgstr "Tỷ giá"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recent Applications"
-msgstr ""
+msgstr "Đơn ứng tuyển gần đây"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -221,35 +221,35 @@ msgstr "Recruiter"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Company"
-msgstr ""
+msgstr "Phân tích tuyển dụng theo công ty"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Job"
-msgstr ""
+msgstr "Phân tích tuyển dụng theo công việc"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Medium"
-msgstr ""
+msgstr "Phân tích tuyển dụng theo phương tiện"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Recruiter"
-msgstr ""
+msgstr "Phân tích tuyển dụng theo người tuyển dụng"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Source"
-msgstr ""
+msgstr "Phân tích tuyển dụng theo nguồn"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -263,7 +263,7 @@ msgstr "Tỷ lệ giới thiệu"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Referral rate"
-msgstr ""
+msgstr "Tỷ lệ giới thiệu"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -285,14 +285,14 @@ msgstr "Giai đoạn"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Companies"
-msgstr ""
+msgstr "Công ty tiêu biểu"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Job Positions"
-msgstr ""
+msgstr "Chức vụ tiêu biểu"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -306,7 +306,7 @@ msgstr "Phương tiện hàng đầu"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Recruiters"
-msgstr ""
+msgstr "Chuyên viên tuyển dụng tiêu biểu"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript

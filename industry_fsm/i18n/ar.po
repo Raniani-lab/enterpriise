@@ -5,7 +5,6 @@
 # Translators:
 # Mustafa Rawi <mustafa@cubexco.com>, 2022
 # Martin Trigaux, 2022
-# Niyas Raphy, 2022
 # Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
@@ -1253,7 +1252,7 @@ msgstr "الوقت المستغرق"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_res_config_settings__module_industry_fsm_sale
 msgid "Time and Material Invoicing"
-msgstr "الوقت والمواد الفواتير"
+msgstr "فوترة الوقت والمواد "
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit

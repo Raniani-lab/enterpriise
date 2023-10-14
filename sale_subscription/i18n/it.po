@@ -2595,7 +2595,7 @@ msgstr "Token di pagamento"
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_payment_transaction
 msgid "Payment Transaction"
-msgstr "Transazione di pagamento"
+msgstr "Operazione di pagamento"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription

@@ -7,7 +7,7 @@
 # Marcos Rodrigues, 2022
 # Éder Brito <britoederr@gmail.com>, 2022
 # Martin Trigaux, 2023
-# adrianojprado <adrianojprado@gmail.com>, 2023
+# Adriano Prado <adrianojprado@gmail.com>, 2023
 # Kevilyn Rosa, 2023
 # Layna Nascimento, 2023
 # 
@@ -3104,6 +3104,15 @@ msgstr ""
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "The Book balance in Odoo dated today"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid ""
+"The company's chart of account does not match the report's chart of "
+"accounts."
 msgstr ""
 
 #. module: account_reports

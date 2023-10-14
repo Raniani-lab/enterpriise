@@ -1698,4 +1698,5 @@ msgstr "z. B. E-Commerce-Angebotsplan"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 msgid "to generate a Test Participant"
-msgstr "aus oder erstellen Sie einen, um einen Testteilnehmer zu erzeugen."
+msgstr ""
+"aus oder erstellen Sie einen neuen, um einen Testteilnehmer zu generieren."

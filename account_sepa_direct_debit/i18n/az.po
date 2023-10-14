@@ -416,7 +416,7 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Mesajı Var"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__partner_bank_id
@@ -580,7 +580,7 @@ msgstr "Mənim Fəaliyyətlərimin Son Tarixi "
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr ""
+msgstr "Növbəti Fəaliyyət Təqvimi Tədbiri"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__activity_date_deadline
@@ -629,7 +629,7 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "Əməliyyat tələb edən mesajların sayı"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__message_has_error_counter

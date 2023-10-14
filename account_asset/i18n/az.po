@@ -1279,7 +1279,7 @@ msgstr "Aşağıdakılara görə Qrupla..."
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Mesajı Var"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__id
@@ -1644,7 +1644,7 @@ msgstr "Xətaların sayı"
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "Əməliyyat tələb edən mesajların sayı"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_has_error_counter

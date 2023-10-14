@@ -1641,6 +1641,10 @@ msgid ""
 "employees who are not part of your team or are not in a state that can be "
 "validated. This may be due to the fact that they are dated in the future."
 msgstr ""
+"Et voi vahvistaa valittuja työaikatauluja, koska ne joko kuuluvat "
+"työntekijöille, jotka eivät kuulu tiimiisi, tai ne eivät ole sellaisessa "
+"tilassa, että ne voidaan vahvistaa. Tämä voi johtua siitä, että ne on "
+"päivätty tulevaisuudessa."
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_employee_interval__months

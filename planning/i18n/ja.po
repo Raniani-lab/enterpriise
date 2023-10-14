@@ -1996,7 +1996,7 @@ msgstr ""
 #: code:addons/planning/models/planning_recurrency.py:0
 #, python-format
 msgid "The number of repetitions cannot be negative."
-msgstr ""
+msgstr "繰返し回数は負であることはできません。"
 
 #. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_recurrency_check_repeat_interval_positive

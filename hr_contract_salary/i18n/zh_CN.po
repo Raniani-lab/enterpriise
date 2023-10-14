@@ -525,7 +525,7 @@ msgstr "默认访问令牌的有效期限"
 msgid ""
 "Default contract used to generate an offer. If empty, advantages will be "
 "taken from current contract of the employee/nothing for an applicant."
-msgstr ""
+msgstr "默认合约，用于生成聘用通知。如果为空，将从员工当前的合约中获取福利，申请人则没有任何福利。"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__sign_template_id

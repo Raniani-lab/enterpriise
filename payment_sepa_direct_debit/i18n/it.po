@@ -466,7 +466,7 @@ msgstr "Token di pagamento"
 #. module: payment_sepa_direct_debit
 #: model:ir.model,name:payment_sepa_direct_debit.model_payment_transaction
 msgid "Payment Transaction"
-msgstr "Transazione di pagamento"
+msgstr "Operazione di pagamento"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_sdd_mandate__phone_number

@@ -29,7 +29,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "(Net sales - Total expenses) / Net sales"
-msgstr ""
+msgstr "（净销售额-总支出）/净销售额）"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -711,7 +711,7 @@ msgstr "应付"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Payables / Expenses * 30"
-msgstr ""
+msgstr "应付账款/支出 * 30"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -806,7 +806,7 @@ msgstr "应收"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Receivables / Income * 30"
-msgstr ""
+msgstr "应收账款/ 收入 * 30"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -850,14 +850,14 @@ msgstr "技术名称"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Total Current assets"
-msgstr ""
+msgstr "流动资产总额"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Total Current liabilities"
-msgstr ""
+msgstr "流动负债总计"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1007,7 +1007,7 @@ msgstr "应付款"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "payable + credit card + current liabilities"
-msgstr ""
+msgstr "应付款 + 信用卡 + 流动负责"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1096,14 +1096,14 @@ msgstr "应收账款+银行和现金+流动资产+非流动资产+预付款项+�
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "receivable + bank and cash + current assets + prepayments"
-msgstr ""
+msgstr "应收账款 + 银行和现金 + 流动资产 + 预付款项"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "receivable + bank and cash + prepayments"
-msgstr ""
+msgstr "应收账款 + 银行和现金 + 预付款项"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

@@ -1548,7 +1548,7 @@ msgstr "Yeniləyin"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__use_leads
 msgid "Use Leads"
-msgstr ""
+msgstr "Potensial Müştəriləri istifadə edin"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_campaign__unique_field_id

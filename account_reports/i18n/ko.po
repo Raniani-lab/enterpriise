@@ -3101,6 +3101,15 @@ msgstr "금일 기준 Odoo의 장부 잔액"
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
+msgid ""
+"The company's chart of account does not match the report's chart of "
+"accounts."
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
 msgid "The company's country does not match the report's country."
 msgstr "회사의 국가가 보고서의 국가와 일치하지 않습니다."
 

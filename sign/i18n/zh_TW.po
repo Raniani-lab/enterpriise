@@ -584,14 +584,14 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__group_ids
 msgid "Authorized Groups"
-msgstr "授權群組"
+msgstr "獲授權群組"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Authorized Groups:"
-msgstr ""
+msgstr "獲授權群組："
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__authorized_ids

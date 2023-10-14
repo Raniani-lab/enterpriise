@@ -211,7 +211,7 @@ msgstr ""
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post__use_leads
 msgid "Use Leads"
-msgstr ""
+msgstr "Potensial Müştəriləri istifadə edin"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__utm_campaign_id

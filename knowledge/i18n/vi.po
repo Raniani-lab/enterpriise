@@ -730,7 +730,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Admin"
-msgstr ""
+msgstr "Quản trị viên"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2657,7 +2657,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "cover"
-msgstr ""
+msgstr "bìa sách"
 
 #. module: knowledge
 #. odoo-javascript

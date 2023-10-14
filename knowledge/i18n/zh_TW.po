@@ -1928,7 +1928,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article_member__permission__none
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_invite__permission__none
 msgid "No access"
-msgstr ""
+msgstr "未能存取"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree_frontend

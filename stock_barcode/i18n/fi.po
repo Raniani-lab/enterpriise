@@ -913,7 +913,7 @@ msgstr "Siirretty määrä"
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_move_line__product_packaging_uom_qty
 msgid "Quantity of the Packaging in the UoM of the Stock Move Line."
-msgstr "Varastosiirron rivin pakkauksen mittayksikön määrä"
+msgstr "Varastosiirron rivin pakkauksen mittayksikön määrä."
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_quant
@@ -1505,7 +1505,7 @@ msgstr "Sinun odotetaan skannaavan yhden tai useamman tuotteen."
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "You are supposed to scan %s or another source location"
-msgstr "Sinun pitäisi skannata %s tai jokin muu lähdepaikka.."
+msgstr "Sinun pitää skannata %s tai jokin muu lähdepaikka"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1519,7 +1519,7 @@ msgstr "Et voi soveltaa pakettityyppiä. Skannaa ensin tuote tai valitse rivi"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "You can't register scrap at this state of the operation"
-msgstr ""
+msgstr "Et voi rekisteröidä romua tässä operaation tilassa"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation
@@ -1591,7 +1591,7 @@ msgstr "paketti"
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "product"
-msgstr "Tuote"
+msgstr "tuote"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation

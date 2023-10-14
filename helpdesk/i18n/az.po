@@ -822,7 +822,7 @@ msgstr "Bloklanıb"
 #. module: helpdesk
 #: model:helpdesk.tag,name:helpdesk.tag_crm
 msgid "CRM"
-msgstr ""
+msgstr "CRM"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__campaign_id
@@ -986,7 +986,7 @@ msgstr "Konfiqurasiya"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Configure a custom domain"
-msgstr ""
+msgstr "Fərdi domeni konfiqurasiya edin"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_confirmation_wizard
@@ -1102,7 +1102,7 @@ msgstr "Bu biletin cari mərhələsi"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_bounced_content
 msgid "Custom Bounced Message"
-msgstr ""
+msgstr "Fərdi Qaytarılmış Mesaj"
 
 #. module: helpdesk
 #. odoo-python
@@ -1575,7 +1575,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__has_message
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Mesajı Var"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__sla_reached
@@ -2207,7 +2207,7 @@ msgstr "Ən son"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr ""
+msgstr "Növbəti Fəaliyyət Təqvimi Tədbiri"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__activity_date_deadline
@@ -2338,7 +2338,7 @@ msgstr "Xətaların sayı"
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_needaction_counter
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "Əməliyyat tələb edən mesajların sayı"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_has_error_counter

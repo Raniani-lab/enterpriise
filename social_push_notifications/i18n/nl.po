@@ -356,7 +356,7 @@ msgstr "Pushmeldingen verzenden"
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_post__use_visitor_timezone
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_post_template__use_visitor_timezone
 msgid "Send at Visitors' Timezone"
-msgstr "Verzend in tijdzone van bezoeker"
+msgstr "Verzenden in tijdzone van bezoeker"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
@@ -395,7 +395,7 @@ msgstr "Social media post"
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_social_post_template
 msgid "Social Post Template"
-msgstr "Sjabloon voor sociale berichten"
+msgstr "Social media post sjabloon"
 
 #. module: social_push_notifications
 #. odoo-python

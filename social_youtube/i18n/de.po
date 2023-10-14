@@ -289,8 +289,8 @@ msgstr ""
 #: model:ir.model.fields,help:social_youtube.field_social_post__youtube_video_privacy
 msgid "Once posted, set the video as Public/Private/Unlisted"
 msgstr ""
-"Legen Sie das Video nach der Veröffentlichung als "
-"öffentlich/privat/ungelistet fest."
+"Legen Sie das Video nach der Veröffentlichung als öffentlich/privat/nicht "
+"gelistet fest."
 
 #. module: social_youtube
 #. odoo-python
@@ -499,7 +499,7 @@ msgstr "Unbekannt"
 #. module: social_youtube
 #: model:ir.model.fields.selection,name:social_youtube.selection__social_post__youtube_video_privacy__unlisted
 msgid "Unlisted"
-msgstr "Ungelistet"
+msgstr "Nicht gelistet"
 
 #. module: social_youtube
 #. odoo-javascript

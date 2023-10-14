@@ -1357,7 +1357,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Mesajı Var"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_has_write_access
@@ -1823,7 +1823,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr ""
+msgstr "Növbəti Fəaliyyət Təqvimi Tədbiri"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_date_deadline
@@ -1909,7 +1909,7 @@ msgstr "Xətaların sayı"
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "Əməliyyat tələb edən mesajların sayı"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_has_error_counter

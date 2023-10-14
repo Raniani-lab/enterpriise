@@ -461,7 +461,7 @@ msgstr "手動計測"
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__manual_measurement
 msgid "Manually read the measurement from the device"
-msgstr ""
+msgstr "デバイスから測定値を手動で読み込む"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__is_scanner

@@ -94,7 +94,7 @@ msgstr "Tapahtui virhe (%s)"
 #: code:addons/social_twitter/controllers/main.py:0
 #, python-format
 msgid "Authentication failed. Please enter valid credentials."
-msgstr ""
+msgstr "Tunnistautuminen epäonnistui. Syötä kelvolliset tunnukset."
 
 #. module: social_twitter
 #. openerp-web
@@ -111,6 +111,8 @@ msgid ""
 "Can not like / unlike the tweet\n"
 "%s."
 msgstr ""
+"Ei voi tykätä / olla tykkäämättä twiitistä\n"
+"%s."
 
 #. module: social_twitter
 #. odoo-javascript
@@ -199,25 +201,27 @@ msgid ""
 "Failed to delete the Tweet\n"
 "%s."
 msgstr ""
+"Twiitin poistaminen epäonnistui\n"
+"%s."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Failed to fetch the conversation id: '%s' using the account %s."
-msgstr ""
+msgstr "Keskustelun tunnuksen '%s' hakeminen tilillä %s epäonnistui."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid ""
 "Failed to fetch the tweets in the same thread: '%s' using the account %s."
-msgstr ""
+msgstr "Epäonnistuit noutamaan twiitit samassa säikeessä: '%s' tilillä %s."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Failed to post comment: %s with the account %s."
-msgstr ""
+msgstr "Kommentin lähettäminen epäonnistui: %s tilillä %s."
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_likes
@@ -309,7 +313,7 @@ msgstr "Nimi"
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Oops! Couldn't find this tweet on Twitter.com"
-msgstr ""
+msgstr "Hups! En löytänyt tätä twiittiä Twitter.comista"
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream.py:0
@@ -388,6 +392,8 @@ msgstr "Uudelleentviittaukset"
 #, python-format
 msgid "Replies from Tweets older than 7 days must be accessed on Twitter.com"
 msgstr ""
+"Vastaukset yli 7 päivää vanhoihin twiitteihin on haettava Twitter.com-"
+"sivustolta"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream__twitter_searched_keyword
@@ -478,7 +484,7 @@ msgstr ""
 #: code:addons/social_twitter/controllers/main.py:0
 #, python-format
 msgid "This Tweet has been deleted."
-msgstr ""
+msgstr "Tämä twiitti on poistettu."
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_follow
@@ -667,6 +673,8 @@ msgid ""
 "We could not upload your image, it may be corrupted, it may exceed size "
 "limit or API may have send improper response (error: %s)."
 msgstr ""
+"Emme pystyneet lataamaan kuvaa, se voi olla vioittunut, se voi ylittää "
+"kokorajan tai API on saattanut lähettää virheellisen vastauksen (virhe: %s)."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_account.py:0

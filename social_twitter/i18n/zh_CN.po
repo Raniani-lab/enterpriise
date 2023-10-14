@@ -193,6 +193,8 @@ msgid ""
 "Failed to delete the Tweet\n"
 "%s."
 msgstr ""
+"删除推文失败\n"
+"%s。"
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0

@@ -29,7 +29,7 @@ msgstr "<span class=\"o_form_label\">請求方針</span>"
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_form_so_line_inherit
 msgid "<span class=\"o_stat_text\">Invoice</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">請求書</span>"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_form_so_line_inherit

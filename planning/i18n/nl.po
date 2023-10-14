@@ -2011,7 +2011,7 @@ msgstr "Verzend planning"
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_send_action
 msgid "Send Planning By Email"
-msgstr "Verstuur planning via e-mail"
+msgstr "Verstuur planning per e-mail"
 
 #. module: planning
 #. odoo-javascript

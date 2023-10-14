@@ -3152,6 +3152,15 @@ msgstr "De boekbalans in Odoo is vandaag gedateerd"
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
+msgid ""
+"The company's chart of account does not match the report's chart of "
+"accounts."
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
 msgid "The company's country does not match the report's country."
 msgstr ""
 "Het land van het bedrijf komt niet overeen met het land op het rapport."

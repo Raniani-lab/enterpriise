@@ -293,5 +293,5 @@ msgstr ""
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
-msgid "You don't have enough credit to extract data from your CV."
-msgstr "No tiene crédito suficiente para extraer datos de su CV."
+msgid "You don't have enough credit to extract data from your Resume."
+msgstr ""

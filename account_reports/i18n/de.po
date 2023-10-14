@@ -3165,6 +3165,15 @@ msgstr "Der Buchsaldo in Odoo von heute"
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
+msgid ""
+"The company's chart of account does not match the report's chart of "
+"accounts."
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
 msgid "The company's country does not match the report's country."
 msgstr ""
 "Das Land des Unternehmen stimmt nicht mit dem Land des Berichts überein."

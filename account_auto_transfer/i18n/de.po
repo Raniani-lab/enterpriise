@@ -62,7 +62,7 @@ msgid ""
 "Adds a condition to only transfer the sum of the lines from the origin "
 "accounts that match these partners to the destination account"
 msgstr ""
-"Fügt eine Bedingung hinzu, um nur die Summe der Zeilen von den "
+"Fügt eine Bedingung hinzu, um nur die Summe der Zeilen aus den "
 "Ursprungskonten, die mit diesen Partnern übereinstimmen, auf das Zielkonto "
 "zu übertragen"
 

@@ -8,7 +8,7 @@
 # Marcel Savegnago <marcel.savegnago@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Kevilyn Rosa, 2023
-# adrianojprado <adrianojprado@gmail.com>, 2023
+# Adriano Prado <adrianojprado@gmail.com>, 2023
 # Éder Brito <britoederr@gmail.com>, 2023
 # Layna Nascimento, 2023
 # 
@@ -1119,7 +1119,7 @@ msgstr "Adicionar Seguidores"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Alert Name"
-msgstr ""
+msgstr "Nome do alerta"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_alert_action

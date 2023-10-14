@@ -522,7 +522,7 @@ msgstr "影片描述"
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_video_privacy
 msgid "Video Privacy"
-msgstr "影片隱私權"
+msgstr "影片私隱設定"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_post_view_form

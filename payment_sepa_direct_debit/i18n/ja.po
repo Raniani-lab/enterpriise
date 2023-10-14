@@ -565,14 +565,14 @@ msgstr "認証コード"
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_sdd_mandate__verified
 msgid "Verified"
-msgstr ""
+msgstr "検証済"
 
 #. module: payment_sepa_direct_debit
 #. odoo-javascript
 #: code:addons/payment_sepa_direct_debit/static/src/js/payment_form.js:0
 #, python-format
 msgid "We are not able to process your payment."
-msgstr ""
+msgstr "支払を処理することができません。"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_payment_provider__sdd_signature_required

@@ -6930,7 +6930,7 @@ msgstr "Student: Regelmäßige Bezahlung"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_security_certificate
 msgid "Students"
-msgstr ""
+msgstr "Studenten"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_security_certificate

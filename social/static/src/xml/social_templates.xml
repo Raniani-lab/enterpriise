@@ -397,7 +397,7 @@
 
     <t t-name="social.KanbanHeader" t-inherit="web.KanbanHeader">
         <xpath expr="//span[hasclass('o_column_title')]" position="before">
-            <img t-if="group.groupByField.name === 'stream_id'" width="16" t-attf-src="/web/image/social.stream/{{ group.value }}/media_image/16x16" class="o_kanbanheader_media_image mr8"/>
+            <img t-if="group.groupByField.name === 'stream_id'" height="20" t-attf-src="/web/image/social.stream/{{ group.value }}/media_image/20x20" class="o_kanbanheader_media_image mr8"/>
         </xpath>
     </t>
 
@@ -447,7 +447,7 @@
                  class="o_social_stream_stat_box flex-shrink-0 w-auto d-flex flex-column bg-view border-bottom border-end">
                 <div class="pt-3 pb-2 px-4 d-flex justify-content-between">
                     <div class="d-flex align-items-center">
-                        <img class="me-2" width="16" t-attf-src="/web/image/social.media/{{ socialAccount.media_id[0] }}/image/16x16" alt="Social Media"/>
+                        <img class="me-2" height="20" t-attf-src="/web/image/social.media/{{ socialAccount.media_id[0] }}/image/20x20" alt="Social Media"/>
                         <h5 class="o_social_stream_post_author_name d-block text-truncate m-0" t-esc="socialAccount.name" t-att-title="socialAccount.name"/>
                     </div>
                     <div class="d-flex align-items-center ms-4">

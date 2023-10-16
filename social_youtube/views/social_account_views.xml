@@ -16,7 +16,8 @@
                     <field name="media_type" invisible="1"/>
                     <div colspan="2" class="alert alert-info oe_inline" role="alert"
                         invisible="media_type != 'youtube'">
-                        By using our Social YouTube Application, you implicitly agree to the:
+                        Our YouTube Social application uses YouTube API Services.
+                        By using it, you implicitly agree to the:
                         <ul>
                             <li>
                                 <a href="https://www.youtube.com/t/terms" target="_blank">

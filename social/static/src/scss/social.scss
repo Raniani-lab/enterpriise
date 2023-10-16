@@ -167,6 +167,10 @@ $o-social-font-family-reset: $o-font-family-sans-serif;
     .o_kanbanheader_media_image {
         object-fit: contain;
     }
+
+    .o_kanban_header_title {
+        align-items: center;
+    }
 }
 
 .o_social_stream_post_author_name {

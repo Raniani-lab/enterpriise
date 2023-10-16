@@ -46,7 +46,7 @@
                                 <div class="o_social_post_media d-flex align-items-center">
                                     <t t-foreach="record.media_ids.raw_value" t-as="media_id" t-key="media_id_index">
                                         <t t-if="record.live_posts_by_media.raw_value"> <!-- unset in sample mode -->
-                                            <img class="img me-1" width="16" t-att-title="title" t-attf-src="/web/image/social.media/#{media_id}/image/16x16" alt="Media"/>
+                                            <img class="img me-1" height="20" t-att-title="title" t-attf-src="/web/image/social.media/#{media_id}/image/20x20" alt="Media"/>
                                         </t>
                                     </t>
                                 </div>
@@ -83,9 +83,12 @@
                                     </t>
                                 </div>
                             </div>
-                            <div id="post-stats" class="d-flex flex-column bg-100 px-3 py-1 border-bottom">
-                                <div class="d-flex justify-content-between py-1">
+                            <div id="post-stats" class="bg-100 px-3 py-1 border-bottom">
+                                <div class="d-flex justify-content-between py-1 m-0">
                                     <small class="pe-1">Clicks:</small> <small class="fw-bold d-inline-block ms-auto" t-esc="record.click_count.raw_value"/>
+                                </div>
+                                <div class="d-flex justify-content-between py-1 m-0 border-top">
+                                    <small class="pe-1">Engagement:</small> <small class="fw-bold d-inline-block ms-auto" t-esc="record.engagement.raw_value"/>
                                 </div>
                             </div>
                             <div class="d-flex flex-grow-0 align-items-center px-3 py-2">
@@ -100,10 +103,6 @@
                                         <t t-esc="record.scheduled_date.value"/>
                                     </t>
                                 </time>
-                                <div class="ms-2 me-3" title="Engagement">
-                                    <i class="fa fa-heart me-1" />
-                                    <span t-esc="record.engagement.raw_value"/>
-                                </div>
 
                                 <field name="create_uid" widget="many2one_avatar_user"/>
                             </div>

@@ -11,7 +11,6 @@
                 <field name="youtube_comments_count"/>
                 <field name="youtube_likes_count"/>
                 <field name="youtube_dislikes_count"/>
-                <field name="youtube_likes_ratio"/>
                 <field name="youtube_views_count"/>
                 <field name="youtube_thumbnail_url"/>
             </xpath>
@@ -44,15 +43,12 @@
                 <div class="o_social_stream_post_youtube_stats d-flex justify-content-around px-2" t-if="record.media_type.raw_value === 'youtube'">
                     <div class="d-flex justify-content-around">
                         <div class="o_social_subtle_btn_disabled ps-2">
-                            <i class="fa fa-thumbs-up me-1" title="Likes"/>
-                            <b>
-                                <field name="youtube_likes_ratio"/>
-                                %
-                            </b>
+                            <i class="fa fa-thumbs-o-up me-1" title="Likes"/>
+                            <b t-esc="record.youtube_likes_count.value"/>
                         </div>
                         <div class="o_social_youtube_comments o_social_comments o_social_subtle_btn ps-3">
-                            <i class="fa fa-comments me-1" title="Comments"/>
                             <b t-esc="record.youtube_comments_count.value"/>
+                            Comments
                         </div>
                     </div>
 

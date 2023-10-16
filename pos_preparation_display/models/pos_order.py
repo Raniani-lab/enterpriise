@@ -13,7 +13,7 @@ class PosOrder(models.Model):
             if not line.skip_change:
                 # This is a strange way of doing things but it is imposed by what was done in the frontend.
                 # as this method is a copy of the method updateLastOrderChanges in the frontend.
-                note = line.note
+                note = line.note or ''
                 line_key = f'{line.uuid} - {note}'
 
                 if line_key in changes:

@@ -25,3 +25,6 @@ class PosSelfOrderPreparationDisplayController(PosSelfOrderController):
             payment_methods = pos_config.self_order_online_payment_method_id
         if pos_config.self_ordering_pay_after == 'each' and len(payment_methods) == 0:
             pos_config.env['pos_preparation_display.order'].process_order(order_id.id)
+
+        if order_id.table_id:
+            order_id.send_table_count_notification(order_id.table_id)

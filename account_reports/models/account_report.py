@@ -3367,8 +3367,7 @@ class AccountReport(models.Model):
         # Hence we need to group the default expressions by report
         for expr in default_expressions:
             report = expr.report_line_id.report_id
-            if (is_tax_report and (report.root_report_id or report) == tax_report)\
-                    or (not is_tax_report and (report.root_report_id or report) != tax_report):
+            if is_tax_report == (tax_report in (report + report.root_report_id + report.section_main_report_ids.root_report_id)):
                 if report not in options_dict:
                     options = report.with_context(allowed_company_ids=[company.id]).get_options(previous_options)
                     options_dict[report] = options

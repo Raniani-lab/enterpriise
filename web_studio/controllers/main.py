@@ -277,7 +277,9 @@ class WebStudioController(http.Controller):
             raise UserError(_('The icon has not a correct format'))
 
     @http.route('/web_studio/set_background_image', type='json', auth='user')
-    def set_background_image(self, attachment_id):
+    def set_background_image(self, attachment_id, context=None):
+        if context:
+            request.update_context(**context)
         attachment = request.env['ir.attachment'].browse(attachment_id)
         if attachment:
             request.env.company.background_image = attachment.datas

@@ -35,7 +35,7 @@
                 <field name="figure_type">date</field>
             </record>
             <record id="partner_ledger_report_matching_number" model="account.report.column">
-                <field name="name">Matching Number</field>
+                <field name="name">Matching</field>
                 <field name="expression_label">matching_number</field>
                 <field name="figure_type">string</field>
             </record>

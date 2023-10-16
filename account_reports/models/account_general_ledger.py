@@ -414,7 +414,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                     {account_name}                          AS account_name,
                     journal.code                            AS journal_code,
                     {journal_name}                          AS journal_name,
-                    full_rec.name                           AS full_rec_name,
+                    full_rec.id                             AS full_rec_name,
                     %s                                      AS column_group_key
                 FROM {tables}
                 JOIN account_move move                      ON move.id = account_move_line.move_id

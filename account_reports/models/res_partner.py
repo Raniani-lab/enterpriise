@@ -11,9 +11,12 @@ class ResPartner(models.Model):
     account_represented_company_ids = fields.One2many('res.company', 'account_representative_id')
 
     def open_partner_ledger(self):
-        action = self.env["ir.actions.actions"]._for_xml_id("account_reports.action_account_report_partner_ledger")
-        action['params'] = {
-            'options': {'partner_ids': [self.id]},
-            'ignore_session': 'both',
+        action = self.env["ir.actions.actions"]._for_xml_id("account.action_account_moves_all_tree")
+        action['context'] = {
+            'search_default_partner_id': self.id,
+            'default_partner_id': self.id,
+            'search_default_posted': 1,
+            'search_default_trade_payable': 1,
+            'search_default_trade_receivable': 1,
         }
         return action

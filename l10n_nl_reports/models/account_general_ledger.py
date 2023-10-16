@@ -160,7 +160,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                            account.write_uid AS account_write_uid,
                            account.write_date AS account_write_date,
                            account.internal_group,
-                           reconcile.name AS line_reconcile_name,
+                           reconcile.id AS line_reconcile_name,
                            currency.id AS line_currency_id,
                            currency2.id AS line_company_currency_id,
                            currency.name AS line_currency_name,

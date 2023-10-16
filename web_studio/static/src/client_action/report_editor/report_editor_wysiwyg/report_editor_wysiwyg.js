@@ -54,6 +54,13 @@ class Record extends _Record {
 class FieldDynamicPlaceholder extends Component {
     static components = { StudioDynamicPlaceholderPopover };
     static template = "web_studio.FieldDynamicPlaceholder";
+    static props = {
+        resModel: String,
+        availableQwebVariables: Object,
+        close: Function,
+        validate: Function,
+        isEditingFooterHeader: Boolean,
+    };
 
     setup() {
         this.state = useState({ currentVar: this.getDefaultVariable() });
@@ -454,9 +461,9 @@ export class ReportEditorWysiwyg extends Component {
                 const docSelection = doc.getSelection();
                 const { anchorNode } = docSelection;
                 const isEditingFooterHeader =
-                    (doc.querySelector(".header") &&
+                    !!(doc.querySelector(".header") &&
                         doc.querySelector(".header").contains(anchorNode)) ||
-                    (doc.querySelector(".footer") &&
+                    !!(doc.querySelector(".footer") &&
                         doc.querySelector(".footer").contains(anchorNode));
 
                 const popoverAnchor =

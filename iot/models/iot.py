@@ -62,7 +62,7 @@ class IotDevice(models.Model):
         ('hdmi', 'Hdmi'),
         ], readonly=True, string="Connection",
         help="Type of connection.")
-    report_ids = fields.One2many('ir.actions.report', 'device_id', string='Reports')
+    report_ids = fields.Many2many('ir.actions.report', string='Reports')
     iot_ip = fields.Char(related="iot_id.ip")
     company_id = fields.Many2one('res.company', 'Company', related="iot_id.company_id")
     connected = fields.Boolean(string='Status', help='If device is connected to the IoT Box', readonly=True)

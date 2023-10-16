@@ -9,12 +9,12 @@ from odoo import fields, models
 class IrActionReport(models.Model):
     _inherit = 'ir.actions.report'
 
-    device_id = fields.Many2one('iot.device', string='IoT Device', domain="[('type', '=', 'printer')]",
+    device_ids = fields.Many2many('iot.device', string='IoT Devices', domain="[('type', '=', 'printer')]",
                                 help='When setting a device here, the report will be printed through this device on the IoT Box')
 
     def iot_render(self, res_ids, data=None):
-        if self.mapped('device_id'):
-            device = self.mapped('device_id')[0]
+        if self.device_ids:
+            device = self.device_ids[0]
         else:
             device = self.env['iot.device'].browse(data['device_id'])
         datas = self._render(self.report_name, res_ids, data=data)
@@ -26,7 +26,7 @@ class IrActionReport(models.Model):
         result = super(IrActionReport, self).report_action(docids, data, config)
         if result.get('type') != 'ir.actions.report':
             return result
-        device = self.device_id
+        device = self.device_ids and self.device_ids[0]
         if data and data.get('device_id'):
             device = self.env['iot.device'].browse(data['device_id'])
 

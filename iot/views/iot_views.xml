@@ -252,7 +252,7 @@
         <field name="inherit_id" ref="base.act_report_xml_view"/>
          <field name="arch" type="xml">
             <field name="report_type" position="after">
-                <field name="device_id"/>
+                <field name="device_ids" widget="many2many_tags"/>
             </field>
          </field>
     </record>

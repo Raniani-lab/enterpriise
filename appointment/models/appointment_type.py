@@ -976,10 +976,9 @@ class AppointmentType(models.Model):
         :return: boolean: is user available for an appointment for given slot
         """
         slot_start_dt_utc, slot_end_dt_utc = slot['UTC'][0], slot['UTC'][1]
-        slot_start_dt_user_timezone = slot_start_dt_utc.astimezone(
-            pytz.timezone(staff_user.tz) or pytz.utc)
-        slot_end_dt_user_timezone = slot_end_dt_utc.astimezone(
-            pytz.timezone(staff_user.tz) or pytz.utc)
+        staff_user_tz = pytz.timezone(staff_user.tz) if staff_user.tz else pytz.utc
+        slot_start_dt_user_timezone = slot_start_dt_utc.astimezone(staff_user_tz)
+        slot_end_dt_user_timezone = slot_end_dt_utc.astimezone(staff_user_tz)
 
         if slot['slot'].restrict_to_user_ids and staff_user not in slot['slot'].restrict_to_user_ids:
             return False

@@ -9,6 +9,7 @@ from werkzeug.urls import url_encode, url_join
 
 import odoo
 from odoo.addons.appointment.tests.common import AppointmentCommon
+from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.exceptions import ValidationError
 from odoo.tests import Form, tagged, users, HttpCase
 from odoo.tools import mute_logger
@@ -844,6 +845,16 @@ class AppointmentTest(AppointmentCommon, HttpCase):
             'start_hour': 9.0,  # 2 slots : Tuesday 09:00 -> 11:00
             'end_hour': 11.0,
         }]
+        staff_user_no_tz = mail_new_test_user(
+            self.env(su=True),
+            company_id=self.company_admin.id,
+            email='no_tz@test.example.com',
+            groups='base.group_user',
+            name='Employee Without Tz',
+            notification_type='email',
+            login='staff_user_no_tz',
+            tz=False,
+        )
         apt_type_UTC = self.env['appointment.type'].create({
             'appointment_tz': 'UTC',
             'assign_method': 'time_auto_assign',
@@ -855,7 +866,7 @@ class AppointmentTest(AppointmentCommon, HttpCase):
                 'start_hour': slot['start_hour'],
                 'end_hour': slot['end_hour'],
             }) for slot in reccuring_slots_utc],
-            'staff_user_ids': [self.staff_user_aust.id, self.staff_user_bxls.id],
+            'staff_user_ids': [self.staff_user_aust.id, self.staff_user_bxls.id, staff_user_no_tz.id],
         })
 
         exterior_staff_user = self.apt_manager
@@ -874,6 +885,18 @@ class AppointmentTest(AppointmentCommon, HttpCase):
               False
               )]
         )
+        # staff_user_no_tz is only available on Tue between 10 and 11 AM
+        self._create_meetings(
+            staff_user_no_tz,
+            [(
+                self.reference_monday,
+                self.reference_monday.replace(hour=9),
+                True
+            ), (
+                self.reference_monday + timedelta(days=1, hours=2),
+                self.reference_monday + timedelta(days=1, hours=3),
+                False
+            )])
 
         with freeze_time(self.reference_now):
             slots_no_user = apt_type_UTC._get_appointment_slots('UTC')
@@ -881,12 +904,14 @@ class AppointmentTest(AppointmentCommon, HttpCase):
             slots_user_aust = apt_type_UTC._get_appointment_slots('UTC', self.staff_user_aust)
             slots_user_all = apt_type_UTC._get_appointment_slots('UTC', self.staff_user_bxls | self.staff_user_aust)
             slots_user_bxls_exterior_user = apt_type_UTC._get_appointment_slots('UTC', self.staff_user_bxls | exterior_staff_user)
+            slots_user_no_tz = apt_type_UTC._get_appointment_slots('UTC', staff_user_no_tz)
 
         self.assertTrue(len(self._filter_appointment_slots(slots_no_user)) == 3)
         self.assertFalse(slots_exterior_user)
         self.assertTrue(len(self._filter_appointment_slots(slots_user_aust)) == 1)
         self.assertTrue(len(self._filter_appointment_slots(slots_user_all)) == 3)
         self.assertTrue(len(self._filter_appointment_slots(slots_user_bxls_exterior_user)) == 2)
+        self.assertTrue(len(self._filter_appointment_slots(slots_user_no_tz)) == 1)
 
     @users('apt_manager')
     def test_slots_for_today(self):

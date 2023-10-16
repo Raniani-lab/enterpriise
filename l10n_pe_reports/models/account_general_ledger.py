@@ -149,6 +149,20 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         for _move_id, line_vals in groupby(lines_data, lambda line: line["move_id"]):
             for count, line in enumerate(line_vals, start=1):
                 serie_folio = ple._get_serie_folio(line["move_name"]  or "")
+                serie = serie_folio["serie"].replace(" ", "").replace("/", "")
+                if (
+                    (
+                        line["document_type"]
+                        and line["document_type"] not in ["01", "03", "07", "08"]
+                    )
+                    or
+                    (
+                        len(serie) > 4
+                        and line["move_type"] in self.env["account.move"].get_purchase_types()
+                        and line["document_type"] in ["01", "03", "07", "08"]
+                    )
+                ):
+                    serie = serie[1:]
                 ple_journal_type = "M"
                 ple_document_type = _get_ple_document_type(line["move_type"], line["country_code"], line["document_type"])
                 data.append(
@@ -163,7 +177,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                         "partner_type": line["partner_document_type"] or "",
                         "partner_number": line["partner_vat"] or "",
                         "document_type": line["document_type"] if ple_document_type else "00",
-                        "serie": serie_folio["serie"].replace(" ", "").replace("/", ""),
+                        "serie": serie,
                         "folio": serie_folio["folio"].replace(" ", ""),
                         "date": line["date"].strftime("%d/%m/%Y") if line["move_date"] else "",
                         "due_date": line["move_date_due"].strftime("%d/%m/%Y") if line["move_date_due"] else "",
@@ -172,12 +186,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                         "glosa_ref": "",
                         "debit": float_repr(line["debit"], precision_digits=2),
                         "credit": float_repr(line["credit"], precision_digits=2),
-                        "book": "%s&%s&%s&%s" % (
-                            ple_document_type,
-                            "%s00" % period[:6],
-                            line["move_id"],
-                            "%s%s" % (ple_journal_type, count)
-                        ) if ple_document_type else "",
+                        "book": "",
                         "state": "1",
                     }
                 )

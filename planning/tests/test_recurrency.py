@@ -7,6 +7,7 @@ from .common import TestCommonPlanning
 
 import unittest
 from odoo.exceptions import UserError
+from odoo.tests import Form
 
 
 class TestRecurrencySlotGeneration(TestCommonPlanning):
@@ -251,6 +252,27 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
         with self._patch_now('2019-06-08 08:00:00'):
             self.env['planning.recurrency']._cron_schedule_next()
             self.assertEqual(len(self.get_by_employee(self.employee_joseph)), 28, 'second cron should only generate 1 more slot')
+
+    def test_repat_until_cancel_repeat(self):
+        with self._patch_now('2019-06-27 08:00:00'):
+            self.configure_recurrency_span(1)
+
+            self.assertFalse(self.get_by_employee(self.employee_joseph))
+
+            # since repeat span is 1 month, we should have 5 slots
+            planning_slot = self.env['planning.slot'].create({
+                'start_datetime': datetime(2019, 6, 27, 8, 0, 0),
+                'end_datetime': datetime(2019, 6, 27, 17, 0, 0),
+                'resource_id': self.resource_joseph.id,
+                'repeat': True,
+                'repeat_type': 'until',
+                'repeat_interval': 1,
+                'repeat_until': datetime(2019, 6, 29, 8, 0, 0),
+            })
+            planning_slot_form = Form(planning_slot)
+            planning_slot_form.repeat = False
+            planning_slot_form.save()
+            self.assertFalse(planning_slot.repeat)
 
     def test_repeat_forever(self):
         """ Since the recurrency cron is meant to run every week, make sure generation works accordingly when

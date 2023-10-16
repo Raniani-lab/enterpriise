@@ -541,13 +541,7 @@ class Planning(models.Model):
                 slot.recurrency_id._repeat_slot()
             # user wants to delete the recurrence
             # here we also check that we don't delete by mistake a slot of which the repeat parameters have been changed
-            elif not slot.repeat and slot.recurrency_id.id and (
-                slot.repeat_unit == slot.recurrency_id.repeat_unit and
-                slot.repeat_type == slot.recurrency_id.repeat_type and
-                slot.repeat_until == slot.recurrency_id.repeat_until and
-                slot.repeat_number == slot.recurrency_id.repeat_number and
-                slot.repeat_interval == slot.recurrency_id.repeat_interval
-            ):
+            elif not slot.repeat and slot.recurrency_id.id:
                 slot.recurrency_id._delete_slot(slot.end_datetime)
                 slot.recurrency_id.unlink()  # will set recurrency_id to NULL
 

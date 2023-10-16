@@ -118,6 +118,13 @@ class SaleOrder(models.Model):
                               default='normal', help="Show the health status")
 
     ###########
+    #  Notes  #
+    ###########
+    note_order = fields.Many2one('sale.order', compute='_compute_note_order', search='_search_note_order')
+    internal_note = fields.Html()
+    internal_note_display = fields.Html(compute='_compute_internal_note_display', inverse='_inverse_internal_note_display')
+
+    ###########
     # UI / UX #
     ###########
     recurring_details = fields.Html(compute='_compute_recurring_details')
@@ -479,6 +486,30 @@ class SaleOrder(models.Model):
         recurring_product_orders = self.order_line.filtered(lambda l: l.product_id.recurring_invoice).order_id
         recurring_product_orders.has_recurring_line = True
         (self - recurring_product_orders).has_recurring_line = False
+
+    @api.depends('subscription_id')
+    def _compute_note_order(self):
+        for order in self:
+            if order.internal_note or not order.subscription_id:
+                order.note_order = order
+            else:
+                order.note_order = order.subscription_id.note_order
+
+    def _search_note_order(self, operator, value):
+        if operator not in ['in', '=']:
+            return NotImplemented
+        ooids = self.search_read([('id', operator, value)], ['origin_order_id', 'id'])
+        ooids = [v['origin_order_id'] or v['id'] for v in ooids]
+        return [('origin_order_id', 'in', ooids), ('internal_note', '=', False)]
+
+    @api.depends('note_order.internal_note')
+    def _compute_internal_note_display(self):
+        for order in self:
+            order.internal_note_display = order.note_order.internal_note
+
+    def _inverse_internal_note_display(self):
+        for order in self:
+            order.note_order.internal_note = order.internal_note_display
 
     def _create_mrr_log(self, template_value, initial_values):
         self.ensure_one()

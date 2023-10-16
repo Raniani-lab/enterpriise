@@ -158,8 +158,11 @@
             <xpath expr="//field[@name='analytic_account_id']" position='attributes'>
                 <attribute name="readonly">invoice_count != 0 and state == 'sale' and not is_subscription</attribute>
             </xpath>
-            <xpath expr="//notebook/page[@name='optional_products']/field/tree/field[@name='name']" position='after'>
-            </xpath>
+            <page name="customer_signature" position="after">
+                <page string="Notes" name="notes">
+                    <field name="internal_note_display" nolabel="1" placeholder="Internal notes"/>
+                </page>
+            </page>
             <group name="sale_info" position='before'>
                 <group name="subscription_info" string="Subscription"
                     invisible="not is_subscription and subscription_state != '7_upsell'">

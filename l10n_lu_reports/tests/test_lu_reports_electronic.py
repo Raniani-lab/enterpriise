@@ -222,7 +222,7 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
         new_context = self.env.context.copy()
         new_context['report_generation_options'] = options
         wizard.with_context(new_context).get_xml()
-        declaration_to_compare = b64decode(wizard.report_data.decode("utf-8"))[9:]
+        declaration_to_compare = b64decode(wizard.report_data.decode("utf-8"))[38:]
 
         self.assertXmlTreeEqual(
             self.get_xml_tree_from_string(declaration_to_compare),

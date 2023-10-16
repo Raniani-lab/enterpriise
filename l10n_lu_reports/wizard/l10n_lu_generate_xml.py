@@ -135,7 +135,7 @@ class L10nLuGenerateXML(models.TransientModel):
         self.env['ir.attachment'].l10n_lu_reports_validate_xml_from_attachment(content, 'ecdf')
         self.env['l10n_lu.report.handler']._validate_ecdf_prefix()
         vals = {
-            'report_data': base64.b64encode(bytes(content, 'utf-8')),
+            'report_data': base64.b64encode(bytes("<?xml version='1.0' encoding='UTF-8'?>" + content, 'utf-8')),
             'filename': filename + '.xml'
         }
         if lu_annual_report:

@@ -58,7 +58,7 @@ export class QualityCheck extends MrpWorkorder {
                 }
                 parent.update({ qty_producing: this.props.quantityToProduce });
                 record.update({ qty_done: this.props.quantityToProduce });
-                await this.env.model.root.records.save();
+                await Promise.all(this.env.model.root.records.map(async (record) => record.save()));
                 await record.model.orm.call(record.resModel, "action_next", [record.resId]);
             }
             this.env.reload();

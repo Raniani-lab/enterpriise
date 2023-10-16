@@ -22,7 +22,7 @@ def _get_init_messaging_result(self):
         'mode': 'demo',
         'missedCalls': 0,
         'pbxAddress': "localhost",
-        'webSocketUrl': "wss://edge.sip.onsip.com",
+        'webSocketUrl': self.env["ir.config_parameter"].sudo().get_param("voip.wsServer", default="ws://localhost"),
     }
     res['hasDocumentsUserGroup'] = False
     res['helpdesk_livechat_active'] = False

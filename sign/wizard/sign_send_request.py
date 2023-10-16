@@ -34,10 +34,11 @@ class SignSendRequest(models.TransientModel):
                     'mail_sent_order': default_signing_order + 1 if self.set_sign_order else 1,
                 }) for default_signing_order, role in enumerate(roles)]
             if self.env.context.get('sign_directly_without_mail'):
+                default_signer = res.get("signer_id") or self.env.user.partner_id.id
                 if len(roles) == 1 and 'signer_ids' in fields and res.get('signer_ids'):
-                    res['signer_ids'][0][2]['partner_id'] = self.env.user.partner_id.id
+                    res['signer_ids'][0][2]['partner_id'] = default_signer
                 elif not roles and 'signer_id' in fields:
-                    res['signer_id'] = self.env.user.partner_id.id
+                    res['signer_id'] = default_signer
         return res
 
     activity_id = fields.Many2one('mail.activity', 'Linked Activity', readonly=True)
@@ -95,10 +96,11 @@ class SignSendRequest(models.TransientModel):
                 'mail_sent_order': default_signing_order + 1 if self.set_sign_order else 1
             }) for default_signing_order, role in enumerate(roles)]
         if self.env.context.get('sign_directly_without_mail'):
+            default_signer = self.env.context.get("default_signer_id", self.env.user.partner_id.id)
             if len(roles) == 1:
-                signer_ids[0][2]['partner_id'] = self.env.user.partner_id.id
+                signer_ids[0][2]['partner_id'] = default_signer
             elif not roles:
-                self.signer_id = self.env.user.partner_id.id
+                self.signer_id = default_signer
         self.signer_ids = [(5, 0, 0)] + signer_ids
         self.signers_count = len(roles)
 

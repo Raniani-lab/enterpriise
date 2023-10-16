@@ -142,6 +142,7 @@ QUnit.module(
             };
             patchWithCleanup(browser, {
                 navigator: {
+                    ...browser.navigator,
                     clipboard: {
                         writeText: (url) => {
                             assert.step("share url copied");

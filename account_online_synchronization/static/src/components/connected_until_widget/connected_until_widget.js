@@ -13,9 +13,12 @@ class ConnectedUntil extends Component {
         this.state = useState({
             isHovered: false,
         });
-        this.style = '';
+        this.style = "text-nowrap w-100";
         if (this.props.record.data.expiring_synchronization_due_day <= 7) {
-            this.style = this.props.record.data.expiring_synchronization_due_day <= 3 ? 'text-danger' : 'text-warning';
+            this.style +=
+                this.props.record.data.expiring_synchronization_due_day <= 3
+                    ? " text-danger"
+                    : " text-warning";
         }
         this.action = useService("action");
         this.orm = useService("orm");

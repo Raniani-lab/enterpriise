@@ -6,7 +6,7 @@
                 <i class="fa fa-warning" t-if="this.props.record.data.expiring_synchronization_due_day &lt;= 3"/>
                 Connected until <t t-out="this.props.record.data.expiring_synchronization_date.toFormat('MMM dd')"/>
             </t>
-            <t t-if="this.state.isHovered">
+            <t t-elif="this.state.isHovered">
                 <a class="oe_inline oe_kanban_action oe_kanban_action_a" href="#" t-on-click="extendConnection">Extend Connection</a>
             </t>
         </div>

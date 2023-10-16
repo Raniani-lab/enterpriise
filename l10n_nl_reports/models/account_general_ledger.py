@@ -106,7 +106,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             if count == 0:
                 raise UserError(_("There is no data to export."))
 
-            batch_size = self.env['ir.config_parameter'].sudo().get_param('l10n_nl_reports.general_ledger_batch_size', 10**4)
+            batch_size = int(self.env['ir.config_parameter'].sudo().get_param('l10n_nl_reports.general_ledger_batch_size', 10**4))
             # Create a list to store the query results during the batching
             res_list = []
             # Minimum row_number used to paginate query results. Row_Number is faster than using OFFSET for large databases.

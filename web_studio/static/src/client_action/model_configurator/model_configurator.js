@@ -35,7 +35,7 @@ function getModelOptions() {
             help: _t("Stage and visualize records in a custom pipeline"),
             value: false,
         },
-        use_ltags: {
+        use_tags: {
             label: _t("Tags"),
             help: _t("Categorize records with custom tags"),
             value: false,

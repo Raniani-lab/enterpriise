@@ -351,6 +351,23 @@ class TestCFDIInvoice(TestMxEdiCommon):
         self._assert_invoice_cfdi(invoice, 'test_invoice_company_branch')
 
     @freeze_time('2017-01-01')
+    def test_invoice_pos(self):
+        # Trigger an error when generating the CFDI
+        self.product.unspsc_code_id = False
+        invoice = self._create_invoice(
+            invoice_line_ids=[
+                Command.create({
+                    'product_id': self.product.id,
+                    'price_unit': 1000.0,
+                    'tax_ids': [Command.set(self.tax_0.ids)],
+                }),
+            ],
+        )
+        template = self.env.ref(invoice._get_mail_template())
+        invoice.with_context(skip_invoice_sync=True)._generate_pdf_and_send_invoice(template, from_cron=True, allow_fallback_pdf=True)
+        self.assertFalse(invoice.invoice_pdf_report_id, "invoice_pdf_report_id shouldn't be set with the proforma PDF.")
+
+    @freeze_time('2017-01-01')
     def test_import_invoice_cfdi(self):
         # Invoice with payment policy = PUE, otherwise 'FormaPago' (payment method) is set to '99' ('Por Definir')
         # and the initial payment method cannot be backtracked at import

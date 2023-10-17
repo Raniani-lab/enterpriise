@@ -50,8 +50,13 @@
           <button class="btn btn-danger g-col-6 p-2" name="report_reset_archs" t-on-click="resetReport">
             Reset report
           </button>
-          <button class="btn btn-secondary g-col-6 p-2" name="report_print_preview" t-on-click="printPreview">
-            <i class="fa fa-print me-2" />Print preview
+          <t t-set="printTooltip">
+            <t t-if="!reportEditorModel.recordToDisplay">There is no record to preview</t>
+          </t>
+          <button class="btn btn-secondary g-col-6 p-2" name="report_print_preview" t-on-click="printPreview" t-att-data-tooltip="printTooltip">
+            <i t-if="!reportEditorModel.recordToDisplay" class="fa fa-exclamation-triangle me-2" />
+            <i t-else="" class="fa fa-print me-2" />
+            Print preview
           </button>
           <button class="btn btn-secondary g-col-6 p-2" t-if="env.debug" t-on-click="openReportFormView">
             <i class="fa fa-cog me-2" />More

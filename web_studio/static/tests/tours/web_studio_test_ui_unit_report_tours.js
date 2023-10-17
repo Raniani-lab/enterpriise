@@ -494,17 +494,22 @@ registry.category("web_tour.tours").add("web_studio.test_add_field_blank_report"
         },
         {
             extra_trigger: ".o-web-studio-field-dynamic-placeholder",
-            trigger: ".o-web-studio-report-editor-wysiwyg div:has(> .o-web-studio-report-container)",
+            trigger:
+                ".o-web-studio-report-editor-wysiwyg div:has(> .o-web-studio-report-container)",
             async run() {
-                const placeholderBox = getBoundingClientRect.call(document.querySelector(".o-web-studio-field-dynamic-placeholder"));
+                const placeholderBox = getBoundingClientRect.call(
+                    document.querySelector(".o-web-studio-field-dynamic-placeholder")
+                );
                 assertEqual(this.$anchor[0].scrollTop, 0);
                 this.$anchor[0].scrollTop = 9999;
                 await new Promise(requestAnimationFrame);
-                const newPlaceholderbox = getBoundingClientRect.call(document.querySelector(".o-web-studio-field-dynamic-placeholder"));
+                const newPlaceholderbox = getBoundingClientRect.call(
+                    document.querySelector(".o-web-studio-field-dynamic-placeholder")
+                );
                 // The field placeholder should have followed its anchor, and it happens that the anchor's container
                 // has been scrolled, so the anchor has moved upwards (and is actually outside of the viewPort, to the top)
                 assertEqual(placeholderBox.top > newPlaceholderbox.top, true);
-            }
+            },
         },
         {
             trigger:
@@ -530,13 +535,13 @@ registry.category("web_tour.tours").add("web_studio.test_add_field_blank_report"
         },
         {
             // check that field was added successfully
-            trigger: "iframe .page > span:contains(some default value)"
+            trigger: "iframe .page > span:contains(some default value)",
         },
         {
             trigger: "iframe .page",
             run() {
-                insertText(this.$anchor[0], "Custo")
-            }
+                insertText(this.$anchor[0], "Custo");
+            },
         },
         {
             trigger: ".o-web-studio-save-report.btn-primary",
@@ -864,4 +869,57 @@ registry.category("web_tour.tours").add("web_studio.test_xml_and_form_diff", {
             },
         },
     ],
+});
+
+registry.category("web_tour.tours").add("web_studio.test_record_model_differs_from_action", {
+    test: true,
+    sequence: 260,
+    steps: () => {
+        const stepsToAssert = [];
+
+        return [
+            {
+                trigger: ".o_studio_report_kanban_view",
+                run() {
+                    const { ReportEditorModel } = odoo.loader.modules.get(
+                        "@web_studio/client_action/report_editor/report_editor_model"
+                    );
+
+                    patch(ReportEditorModel.prototype, {
+                        async loadReportEditor() {
+                            await super.loadReportEditor(...arguments);
+                            stepsToAssert.push(
+                                `report editor loaded. actionModel: "${this._services.studio.editedAction.res_model}". reportModel: "${this.reportResModel}"`
+                            );
+                        },
+                    });
+                },
+            },
+            {
+                trigger: ".o_studio_report_kanban_view .o_searchview input",
+                run: "text dummy test",
+            },
+            {
+                trigger:
+                    ".o_studio_report_kanban_view .o_searchview .o_menu_item:contains(Report):contains(dummy test)",
+            },
+            {
+                trigger: ".o_facet_remove",
+            },
+            {
+                trigger: ".o_kanban_record:contains(dummy test)",
+            },
+            {
+                trigger: ".o-web-studio-report-editor-wysiwyg",
+                run() {
+                    assertEqual(
+                        JSON.stringify(stepsToAssert),
+                        JSON.stringify([
+                            `report editor loaded. actionModel: "res.partner". reportModel: "x_dummy.test"`,
+                        ])
+                    );
+                },
+            },
+        ];
+    },
 });

@@ -1,5 +1,13 @@
 /** @odoo-module */
-import { Component, onWillStart, onMounted, onWillDestroy, onWillUnmount, reactive, useState } from "@odoo/owl";
+import {
+    Component,
+    onWillStart,
+    onMounted,
+    onWillDestroy,
+    onWillUnmount,
+    reactive,
+    useState,
+} from "@odoo/owl";
 import { loadBundle } from "@web/core/assets";
 import { _t } from "@web/core/l10n/translation";
 import { usePopover } from "@web/core/popover/popover_hook";
@@ -169,6 +177,7 @@ export class ReportEditorWysiwyg extends Component {
         this.action = useService("action");
         this.user = useService("user");
         this.addDialog = useOwnedDialogs();
+        this.notification = useService("notification");
 
         this._getReportQweb = memoizeOnce(() => {
             const tree = new DOMParser().parseFromString(
@@ -192,8 +201,13 @@ export class ReportEditorWysiwyg extends Component {
         });
 
         onWillStart(async () => {
-            await Promise.all([loadBundle('web_editor.backend_assets_wysiwyg'), this.reportEditorModel.loadReportQweb()])
-            this.Wysiwyg = (await odoo.loader.modules.get('@web_editor/js/wysiwyg/wysiwyg')).Wysiwyg;
+            await Promise.all([
+                loadBundle("web_editor.backend_assets_wysiwyg"),
+                this.reportEditorModel.loadReportQweb(),
+            ]);
+            this.Wysiwyg = (
+                await odoo.loader.modules.get("@web_editor/js/wysiwyg/wysiwyg")
+            ).Wysiwyg;
         });
 
         onWillUnmount(() => {
@@ -426,7 +440,20 @@ export class ReportEditorWysiwyg extends Component {
     async printPreview() {
         const model = this.reportEditorModel;
         await this.save();
-        const recordId = model.reportEnv.currentId || model.reportEnv.ids.find((i) => !!i);
+        const recordId = model.reportEnv.currentId || model.reportEnv.ids.find((i) => !!i) || false;
+        if (!recordId) {
+            this.notification.add(
+                _t(
+                    "There is no record on which this report can be previewed. Create at least one record to preview the report."
+                ),
+                {
+                    type: "danger",
+                    title: _t("Report preview not available"),
+                }
+            );
+            return;
+        }
+
         const action = await this.rpc("/web_studio/print_report", {
             record_id: recordId,
             report_id: model.editedReportId,

@@ -105,7 +105,11 @@ export class ReportEditorModel extends Reactive {
     }
 
     get reportResModel() {
-        return this._services.studio.editedAction.res_model;
+        return this._reportData.model;
+    }
+
+    get recordToDisplay() {
+        return this.reportEnv.currentId || this.reportEnv.ids.find((i) => !!i) || false;
     }
 
     get editedReportId() {
@@ -155,7 +159,8 @@ export class ReportEditorModel extends Reactive {
     }
 
     async loadReportEditor() {
-        return Promise.all([this.loadReportData(), this.loadModelEnv()]);
+        await this.loadReportData();
+        return this.loadModelEnv();
     }
 
     async loadReportData() {
@@ -308,7 +313,7 @@ export class ReportEditorModel extends Reactive {
 
         this.reportEnv = {
             ids: result,
-            currentId: result[0],
+            currentId: result[0] || false,
         };
     }
 

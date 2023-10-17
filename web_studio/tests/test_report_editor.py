@@ -662,3 +662,18 @@ class TestReportEditorUIUnit(HttpCase):
     def test_xml_and_form_diff(self):
         url = self.tour_url.replace("/web", "/web?debug=1")
         self.start_tour(url, "web_studio.test_xml_and_form_diff", login="admin")
+
+    def test_record_model_differs_from_action(self):
+        dummy = self.env["ir.model"].create({
+            "name": "dummy.test",
+            "model": "x_dummy.test"
+        })
+        self.env['ir.model.access'].create({
+            "name": "dummy",
+            "perm_read": True,
+            "model_id": dummy.id,
+        })
+
+        self.report.model = dummy.model
+        self.report.name = "dummy test"
+        self.start_tour(f"/web#action=studio&mode=editor&_action={self.testAction.id}&_tab=reports&menu_id={self.testMenu.id}", "web_studio.test_record_model_differs_from_action", login="admin")

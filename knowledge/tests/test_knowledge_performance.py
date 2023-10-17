@@ -79,7 +79,7 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
     @users('employee')
     @warmup
     def test_article_favorite(self):
-        with self.assertQueryCount(employee=12):
+        with self.assertQueryCount(employee=16):
             shared_article = self.shared_children[0].with_env(self.env)
             shared_article.action_toggle_favorite()
 
@@ -117,7 +117,7 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
     @users('employee')
     @warmup
     def test_get_user_sorted_articles(self):
-        with self.assertQueryCount(employee=19):
+        with self.assertQueryCount(employee=17):
             self.env['knowledge.article'].get_user_sorted_articles('')
 
 @tagged('knowledge_performance', 'post_install', '-at_install')

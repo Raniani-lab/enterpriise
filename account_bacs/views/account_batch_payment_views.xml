@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='name']" position="after">
                     <field name="bacs_submission_serial" invisible="payment_method_code not in ('bacs_dd', 'bacs_dc')" readonly="state != 'draft'" groups="base.group_no_one"/>
-                    <field name="bacs_processing_date" invisible="payment_method_code not in ('bacs_dd', 'bacs_dc')" readonly="state != 'draft'"/>
+                    <field name="bacs_processing_date" invisible="payment_method_code not in ('bacs_dd', 'bacs_dc') or bacs_multi_mode == True" readonly="state != 'draft'"/>
                     <field name="bacs_expiry_date" invisible="payment_method_code not in ('bacs_dd', 'bacs_dc')" readonly="state != 'draft'"/>
                     <field name="bacs_multi_mode" string="BACS Multi Mode" invisible="payment_method_code not in ('bacs_dd', 'bacs_dc')" readonly="state != 'draft'"/>
                 </xpath>

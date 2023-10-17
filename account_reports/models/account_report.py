@@ -1708,6 +1708,10 @@ class AccountReport(models.Model):
 
     def caret_option_open_general_ledger(self, options, params):
         record_id = None
+        # When coming from a specific account, the unfold must only be retained
+        # on the specified account. Better performance and more ergonomic
+        # as it opens what client asked. And "Unfold All" is 1 clic away.
+        options["unfold_all"] = False
         for dummy, model, model_id in reversed(self._parse_line_id(params['line_id'])):
             if model == 'account.account':
                 record_id = model_id

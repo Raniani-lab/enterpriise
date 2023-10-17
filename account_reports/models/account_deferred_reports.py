@@ -407,7 +407,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
         deferred_lines = []
         for key, line in deferred_amounts_by_key.items():
             for balance in (-line['amount_total'], line[period]):
-                if balance != 0:
+                if balance != 0 and line[period] != line['amount_total']:
                     deferred_lines.append(
                         Command.create(
                             self.env['account.move.line']._get_deferred_lines_values(

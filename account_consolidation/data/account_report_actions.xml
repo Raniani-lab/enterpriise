@@ -5,6 +5,7 @@
             <field name="name">Consolidated Balance</field>
             <field name="tag">account_report</field>
             <field name="context" eval="{'report_id': ref('account_consolidation.consolidated_balance_report')}"/>
+            <field name="params" eval="{'ignore_session': 'read'}"/>
         </record>
     </data>
 </odoo>

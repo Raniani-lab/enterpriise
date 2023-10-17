@@ -13,7 +13,7 @@ MAX_PAYMENT_AMOUNT = 999999999.99
 class AccountBatchPayment(models.Model):
     _inherit = 'account.batch.payment'
 
-    bacs_multi_mode = fields.Boolean(string="Choose wether you want all the payments to be processed on the same date or to be processed on their invidial days", states={'draft': [('readonly', False)]}, readonly=True)
+    bacs_multi_mode = fields.Boolean(string="BACS Multi Mode", help="Payments in batch get processed on their individual date.", states={'draft': [('readonly', False)]}, readonly=True)
     bacs_processing_date = fields.Date(string="BACS Processing Date", default=fields.Date.today(), help="The processing day of the BACS transaction.", states={'draft': [('readonly', False)]}, readonly=True)
     bacs_expiry_date = fields.Date(string="BACS Expiry Date", help="The date on which the file will expire.", states={'draft': [('readonly', False)]}, readonly=True)
     bacs_submission_serial = fields.Char(string="BACS Submission Serial", store=True, default=lambda self: self._default_bacs_submission_serial(), states={'draft': [('readonly', False)]}, readonly=True, groups="base.group_no_one")

@@ -485,10 +485,20 @@ class Article(models.Model):
         if self.env.user._is_public():
             self.is_user_favorite = False
             return
-        for article in self:
-            favorite = article.favorite_ids.filtered(lambda f: f.user_id == self.env.user)
-            article.is_user_favorite = bool(favorite)
-            article.user_favorite_sequence = favorite.sequence if favorite else -1
+        favorites = self.env['knowledge.article.favorite'].search([
+            ("article_id", "in", self.ids),
+            ("user_id", "=", self.env.user.id),
+        ])
+        not_fav_articles = self - favorites.article_id
+        fav_articles = self - not_fav_articles
+        fav_sequence_by_article = {f.article_id.id: f.sequence for f in favorites}
+        if not_fav_articles:
+            not_fav_articles.is_user_favorite = False
+            not_fav_articles.user_favorite_sequence = -1
+        if fav_articles:
+            fav_articles.is_user_favorite = True
+        for fav_article in fav_articles:
+            fav_article.user_favorite_sequence = fav_sequence_by_article[fav_article.id]
 
     def _inverse_is_user_favorite(self):
         """ Read access is sufficient for toggling its own favorite status.
@@ -1229,10 +1239,14 @@ class Article(models.Model):
         """
         search_query = search_query.casefold()
         search_domain = [
-            "&",
-                ('user_has_access', '=', True), # Admins won't see other's private articles.
-                "|", ("name", "ilike", search_query), ("root_article_id.name", "ilike", search_query)
+            ("user_has_access", "=", True), # Admins won't see other's private articles.
         ]
+        if search_query:
+            search_domain = expression.AND([search_domain, [
+                "|",
+                    ("name", "ilike", search_query),
+                    ("root_article_id.name", "ilike", search_query),
+            ]])
 
         matching_articles = self.search(search_domain)
         sorted_articles = matching_articles.sorted(

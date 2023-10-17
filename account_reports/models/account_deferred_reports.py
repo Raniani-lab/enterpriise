@@ -268,7 +268,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
             (fields.Date.from_string(column['date_from']), fields.Date.from_string(column['date_to']))
             for column in options['columns']
         ]
-        deferred_amounts_by_line, dummy = self.env['account.move']._get_deferred_amounts_by_line(lines, periods)
+        deferred_amounts_by_line = self.env['account.move']._get_deferred_amounts_by_line(lines, periods)
         totals_per_account, totals_all_accounts = self._group_deferred_amounts_by_account(deferred_amounts_by_line, periods, self._get_deferred_report_type() == 'expense')
 
         report_lines = []
@@ -367,6 +367,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
         return {
             'account_id': lines_per_key[0]['account_id'],
             'amount_total': sign * sum(line['balance'] for line in lines_per_key),
+            'move_ids': {line['move_id'] for line in lines_per_key},
         }
 
     @api.model
@@ -378,7 +379,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
         """
         if not deferred_account:
             raise UserError(_("Please set the deferred accounts in the accounting settings."))
-        deferred_amounts_by_line, original_move_ids = self.env['account.move']._get_deferred_amounts_by_line(lines, [period])
+        deferred_amounts_by_line = self.env['account.move']._get_deferred_amounts_by_line(lines, [period])
         deferred_amounts_by_key, deferred_amounts_totals = self._group_deferred_amounts_by_account(deferred_amounts_by_line, [period], is_reverse, filter_already_generated=True)
         if deferred_amounts_totals['totals_aggregated'] == deferred_amounts_totals[period]:
             return [], set()
@@ -405,9 +406,11 @@ class DeferredReportCustomHandler(models.AbstractModel):
                 deferred_anal_dist[self._group_by_deferral_keys(line)][account_id] += distribution * full_ratio
 
         deferred_lines = []
+        original_move_ids = set()
         for key, line in deferred_amounts_by_key.items():
             for balance in (-line['amount_total'], line[period]):
                 if balance != 0 and line[period] != line['amount_total']:
+                    original_move_ids |= line['move_ids']
                     deferred_lines.append(
                         Command.create(
                             self.env['account.move.line']._get_deferred_lines_values(

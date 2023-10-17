@@ -916,9 +916,10 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         with self.assertRaisesRegex(UserError, 'No entry to generate.'):
             self.handler._generate_deferral_entry(self.get_options('2023-04-01', '2023-04-30'))
 
-        self.create_invoice([[self.expense_accounts[1], 1000, '2023-01-01', '2023-05-31']])
+        move2 = self.create_invoice([[self.expense_accounts[1], 1000, '2023-01-01', '2023-05-31']])
         generated_entry = self.handler._generate_deferral_entry(self.get_options('2023-04-01', '2023-04-30'))[0]
         self.assertEqual(len(generated_entry.line_ids), 3)  # 3 lines, not 6 because move1 is totally deferred
+        self.assertEqual(generated_entry.deferred_original_move_ids, move2)  # not move1
 
     def test_deferred_expense_manual_generation_only_posted(self):
         """

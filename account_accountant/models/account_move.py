@@ -134,18 +134,15 @@ class AccountMove(models.Model):
     @api.model
     def _get_deferred_amounts_by_line(self, lines, periods):
         """
-        :return: a tuple containing:
-            a list of dictionaries containing the deferred amounts for each line and each period
-            a set of move_ids of the lines (to keep track of the original invoice in the deferred entries)
+        :return: a list of dictionaries containing the deferred amounts for each line and each period
         E.g. (where period1 = (date1, date2), period2 = (date2, date3), ...)
         [
             {'account_id': 1, period_1: 100, period_2: 200},
             {'account_id': 1, period_1: 100, period_2: 200},
             {'account_id': 2, period_1: 300, period_2: 400},
-        ], (1, 2, 3)
+        ]
         """
         values = []
-        original_move_ids = set()
         for line in lines:
             line_start = fields.Date.to_date(line['deferred_start_date'])
             line_end = fields.Date.to_date(line['deferred_end_date'])
@@ -184,15 +181,14 @@ class AccountMove(models.Model):
                 **self.env['account.move.line']._get_deferred_amounts_by_line_values(line),
                 **columns,
             })
-            original_move_ids.add(int(line['move_id']))
-        return values, tuple(original_move_ids)
+        return values
 
     @api.model
     def _get_deferred_lines(self, line, deferred_account, period, ref, force_balance=None):
         """
         :return: a list of Command objects to create the deferred lines of a single given period
         """
-        deferred_amounts = self._get_deferred_amounts_by_line(line, [period])[0][0]
+        deferred_amounts = self._get_deferred_amounts_by_line(line, [period])[0]
         balance = deferred_amounts[period] if force_balance is None else force_balance
         return [
             Command.create(
@@ -512,6 +508,7 @@ class AccountMoveLine(models.Model):
         return {
             'account_id': line['account_id'],
             'balance': line['balance'],
+            'move_id': line['move_id'],
         }
 
     @api.model

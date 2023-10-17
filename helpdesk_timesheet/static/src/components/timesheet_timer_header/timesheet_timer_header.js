@@ -36,6 +36,7 @@ patch(TimesheetTimerHeader.prototype, {
 
     get hasHelpdeskProject() {
         const project = this.props.timesheet?.data?.project_id;
-        return Boolean(project) && this.helpdeskTimerService.helpdeskProjects?.includes(project[0]);
+        const task = this.props.timesheet?.data?.task_id;
+        return !task && Boolean(project) && this.helpdeskTimerService.helpdeskProjects?.includes(project[0]);
     },
 });

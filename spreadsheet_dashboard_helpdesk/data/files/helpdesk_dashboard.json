@@ -953,6 +953,17 @@
         }
     },
     "revisionId": "START_REVISION",
+    "settings": {
+        "locale": {
+            "name": "English (US)",
+            "code": "en_US",
+            "thousandsSeparator": ",",
+            "decimalSeparator": ".",
+            "dateFormat": "mm/dd/yyyy",
+            "timeFormat": "hh:mm:ss",
+            "formulaArgSeparator": ","
+        }
+    },
     "chartOdooMenusReferences": {
         "f16a9ed2-bf56-4fcd-9fa7-262c3be1e441": "helpdesk.menu_helpdesk_root",
         "7c83311f-28a2-47b3-b27c-4ff69ad74d38": "helpdesk.menu_helpdesk_root",

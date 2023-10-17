@@ -1088,6 +1088,17 @@
         }
     },
     "revisionId": "START_REVISION",
+    "settings": {
+        "locale": {
+            "name": "English (US)",
+            "code": "en_US",
+            "thousandsSeparator": ",",
+            "decimalSeparator": ".",
+            "dateFormat": "mm/dd/yyyy",
+            "timeFormat": "hh:mm:ss",
+            "formulaArgSeparator": ","
+        }
+    },
     "chartOdooMenusReferences": {
         "2828f15d-9fe0-43c8-8ad7-a2b7fe7ff3c5": "mrp.menu_mrp_root",
         "6591ce4b-64ce-4630-943d-18570a18a4f2": "mrp.menu_mrp_root",

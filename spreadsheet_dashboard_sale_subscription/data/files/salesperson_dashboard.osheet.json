@@ -1407,6 +1407,17 @@
     }
   },
   "revisionId": "START_REVISION",
+  "settings": {
+    "locale": {
+        "name": "English (US)",
+        "code": "en_US",
+        "thousandsSeparator": ",",
+        "decimalSeparator": ".",
+        "dateFormat": "mm/dd/yyyy",
+        "timeFormat": "hh:mm:ss",
+        "formulaArgSeparator": ","
+    }
+},
   "uniqueFigureIds": true,
   "odooVersion": 5,
   "globalFilters": [

@@ -25,11 +25,6 @@ class ResPartner(models.Model):
                 raise ValidationError(_("You can't archive the partner as it is used in the following recurring orders: %s", contract_str))
         return res
 
-    @api.model
-    def _get_sale_order_domain_count(self):
-        domain = super()._get_sale_order_domain_count()
-        return expression.AND([domain, [('is_subscription', '=', False)]])
-
     def _subscription_count(self):
         # retrieve all children partners and prefetch 'parent_id' on them
         all_partners = self.with_context(active_test=False).search([('id', 'child_of', self.ids)])

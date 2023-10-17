@@ -25,10 +25,12 @@ Accounting reports for Spain
     'data': [
         'security/ir.model.access.csv',
         'views/account_invoice_views.xml',
+        'views/res_company_views.xml',
         'data/pymes_profit_and_loss_report_data.xml',
         'data/pymes_balance_sheet_report_data.xml',
         'data/full_balance_sheet_report_data.xml',
         'data/assoc_balance_sheet_report_data.xml',
+        'data/account_libros_registro_de_iva_export.xml',
         'data/account_report_ec_sales_list_report.xml',
         'data/account_tags.xml',
         'data/mod111.xml',

@@ -19,6 +19,10 @@ export const patchListRendererStudio = () => ({
     onSelectedAddCustomField() {
         this.studioService.open();
     },
+
+    get isStudioEditable() {
+        return !this.studioService.mode && super.isStudioEditable;
+    },
 });
 
 export const unpatchListRendererStudio = patch(ListRenderer.prototype, patchListRendererStudio());

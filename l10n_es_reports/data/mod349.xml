@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+<data auto_sequence="1">
     <record id="mod_349" model="account.report">
         <field name="name">Tax Report (Mod 349)</field>
         <field name="sequence">349</field>
@@ -194,4 +195,5 @@
             </record>
         </field>
     </record>
+</data>
 </odoo>

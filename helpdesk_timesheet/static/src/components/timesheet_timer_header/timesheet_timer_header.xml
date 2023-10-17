@@ -9,6 +9,7 @@
                 attrs="props.fields['helpdesk_ticket_id'].attrs"
                 placeholder="'Ticket'"
                 t-if="hasHelpdeskProject"
+                domain="getDomain('helpdesk_ticket_id')"
             />
         </xpath>
         <xpath expr='//Field[@name="&apos;task_id&apos;"]' position="attributes">

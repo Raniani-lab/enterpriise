@@ -553,7 +553,7 @@ class FetchmailServer(models.Model):
             if (dte_xml.findtext('.//ns0:TasaIVA', namespaces=XML_NAMESPACES) is not None and
                     dte_line.findtext('.//ns0:IndExe', namespaces=XML_NAMESPACES) is None):
                 values['default_tax'] = True
-                values['taxes'] = self._get_withholding_taxes(company_id, dte_line)
+                values['taxes'] = set(default_purchase_tax) | self._get_withholding_taxes(company_id, dte_line)
             if gross_amount:
                 # in case the tag MntBruto is included in the IdDoc section, and there are not
                 # additional taxes (withholdings)

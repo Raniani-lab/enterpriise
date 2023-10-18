@@ -2388,20 +2388,22 @@ class AccountReport(models.Model):
         other_reports_codes_map = {} # {forced_date_scope: {line_code: {expression_label: expression_id}}}
 
         for expression, expression_res in other_current_report_expr_totals.items():
+            current_report_eval_dict[expression.id] = self.env.company.currency_id.round(expression_res['value'])
             if expression.report_line_id.code:
                 current_report_codes_map.setdefault(expression.report_line_id.code, {})[expression.label] = expression.id
-                current_report_eval_dict[expression.id] = self.env.company.currency_id.round(expression_res['value'])
 
         for forced_date_scope, scope_expr_totals in other_cross_report_expr_totals_by_scope.items():
             for expression, expression_res in scope_expr_totals.items():
+                other_reports_eval_dict.setdefault(forced_date_scope, {})[expression.id] = self.env.company.currency_id.round(expression_res['value'])
                 if expression.report_line_id.code:
                     other_reports_codes_map.setdefault(forced_date_scope, {}).setdefault(expression.report_line_id.code, {})[expression.label] = expression.id
-                    other_reports_eval_dict.setdefault(forced_date_scope, {})[expression.id] = self.env.company.currency_id.round(expression_res['value'])
 
         # Complete current_report_eval_dict with the formulas of uncomputed aggregation lines
         aggregations_terms_to_evaluate = set() # Those terms are part of the formulas to evaluate; we know they will get a value eventually
         for (formula, forced_date_scope), expressions in formulas_dict.items():
             for expression in expressions:
+                aggregations_terms_to_evaluate.add(f"_expression:{expression.id}") # In case it needs to be called by sum_children
+
                 if expression.report_line_id.code:
                     if expression.report_line_id.report_id == self:
                         current_report_codes_map.setdefault(expression.report_line_id.code, {})[expression.label] = expression.id
@@ -2409,7 +2411,6 @@ class AccountReport(models.Model):
                         other_reports_codes_map.setdefault(forced_date_scope, {}).setdefault(expression.report_line_id.code, {})[expression.label] = expression.id
 
                     aggregations_terms_to_evaluate.add(f"{expression.report_line_id.code}.{expression.label}")
-                    aggregations_terms_to_evaluate.add(f"_expression:{expression.id}") # In case it needs to be called by sum_children
 
                     if not expression.subformula:
                         # Expressions with bounds cannot be replaced by their formula in formulas calling them (otherwize, bounds would be ignored).

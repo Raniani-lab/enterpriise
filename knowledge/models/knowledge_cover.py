@@ -11,7 +11,6 @@ class Cover(models.Model):
 
     attachment_id = fields.Many2one("ir.attachment", string="Cover attachment", required=True, ondelete="cascade")
     article_ids = fields.One2many("knowledge.article", "cover_image_id", string="Articles using cover")
-    article_template_ids = fields.One2many("knowledge.article.template", "cover_image_id", string="Article template using cover")
     attachment_url = fields.Char("Cover URL", compute="_compute_attachment_url", store=True)
 
     @api.depends('attachment_id')
@@ -41,7 +40,4 @@ class Cover(models.Model):
 
     @api.autovacuum
     def _gc_unused_covers(self):
-        return self.with_context(active_test=False).search([
-            ('article_ids', '=', False),
-            ('article_template_ids', '=', False)
-        ]).unlink()
+        return self.with_context(active_test=False).search([('article_ids', '=', False)]).unlink()

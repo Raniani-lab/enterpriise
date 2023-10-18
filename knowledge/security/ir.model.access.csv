@@ -19,9 +19,6 @@ access_knowledge_article_stage_all,access.knowledge.article.stage.all,knowledge.
 access_knowledge_article_stage_portal,access.knowledge.article.stage.portal,knowledge.model_knowledge_article_stage,base.group_portal,1,1,1,1
 access_knowledge_article_stage_user,access.knowledge.article.stage.user,knowledge.model_knowledge_article_stage,base.group_user,1,1,1,1
 access_knowledge_article_stage_system,access.knowledge.article.stage.system,knowledge.model_knowledge_article_stage,base.group_system,1,1,1,1
-access_knowledge_article_template_all,access.knowledge.article.template.all,knowledge.model_knowledge_article_template,,0,0,0,0
-access_knowledge_article_template_system,access.knowledge.article.template.system,knowledge.model_knowledge_article_template,base.group_system,1,1,1,1
-access_knowledge_article_template_user,access.knowledge.article.template.user,knowledge.model_knowledge_article_template,base.group_user,1,0,0,0
 access_knowledge_article_template_category_all,access.knowledge.article.template.category.all,knowledge.model_knowledge_article_template_category,,0,0,0,0
 access_knowledge_article_template_category_system,access.knowledge.article.template.category.system,knowledge.model_knowledge_article_template_category,base.group_system,1,1,1,1
 access_knowledge_article_template_category_user,access.knowledge.article.template.category.user,knowledge.model_knowledge_article_template_category,base.group_user,1,0,0,0

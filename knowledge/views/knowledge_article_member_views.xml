@@ -7,7 +7,7 @@
             <form string="Member">
                 <sheet>
                     <group>
-                        <field name="article_id"/>
+                        <field name="article_id" domain="[('is_template', '=', False)]"/>
                         <field name="partner_id"/>
                         <field name="permission"/>
                         <field name="article_permission"/>
@@ -50,6 +50,7 @@
         <field name="name">Members</field>
         <field name="res_model">knowledge.article.member</field>
         <field name="view_mode">tree,form</field>
+        <field name="domain">[('article_id.is_template', '=', False)]</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No Members yet!

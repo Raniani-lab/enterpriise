@@ -321,7 +321,7 @@ export class KnowledgeSidebar extends Component {
                 await this.actionService.doAction("knowledge.ir_actions_server_knowledge_home_page", {
                     stackPosition: "replaceCurrentAction",
                     additionalContext: {
-                        res_id: await this.orm.call("knowledge.article.template", "create_article", [
+                        res_id: await this.orm.call("knowledge.article", "create_article_from_template", [
                             articleTemplateId
                         ])
                     }

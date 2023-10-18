@@ -72,4 +72,11 @@
         parent="knowledge_menu_technical"
         groups="base.group_system"
         sequence="5"/>
+    <menuitem
+        id="knowledge_article_template_stage_menu"
+        name="Template Stages"
+        action="knowledge.knowledge_article_template_stage_action"
+        parent="knowledge_menu_technical"
+        groups="base.group_system"
+        sequence="6"/>
 </odoo>

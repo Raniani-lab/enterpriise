@@ -86,7 +86,7 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
     @users('employee')
     @warmup
     def test_article_get_valid_parent_options(self):
-        with self.assertQueryCount(employee=6):
+        with self.assertQueryCount(employee=9):
             child_writable_article = self.workspace_children[1].with_env(self.env)
             # don't check actual results, those are tested in ``TestKnowledgeArticleUtilities`` class
             _res = child_writable_article.get_valid_parent_options(search_term="")

@@ -10,7 +10,7 @@
                         <h1><field class="text-break" name="name" placeholder="e.g. Ongoing"/></h1>
                     </div>
                     <group>
-                        <field name="parent_id" options="{'no_open': True}"/>
+                        <field name="parent_id" options="{'no_open': True}" domain="[('is_template', '=', False)]"/>
                         <field name="sequence"/>
                         <field name="fold"/>
                     </group>
@@ -24,10 +24,10 @@
         <field name="model">knowledge.article.stage</field>
         <field name="arch" type="xml">
             <tree string="Stages" sample="1">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="parent_id" options="{'no_open': True}"/>
                 <field name="fold"/>
-                <field name="sequence"/>
             </tree>
         </field>
     </record>
@@ -51,6 +51,7 @@
         <field name="name">Stages</field>
         <field name="res_model">knowledge.article.stage</field>
         <field name="view_mode">tree,form</field>
+        <field name="domain">[('parent_id.is_template', '=', False)]</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No stage yet!
@@ -61,4 +62,52 @@
         </field>
     </record>
 
+    <record id="knowledge_article_stage_action_view_tree" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="knowledge_article_stage_view_tree"/>
+        <field name="act_window_id" ref="knowledge_article_stage_action"/>
+    </record>
+
+    <record id="knowledge_article_stage_action_view_form" model="ir.actions.act_window.view">
+        <field name="sequence">2</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="knowledge_article_stage_view_form"/>
+        <field name="act_window_id" ref="knowledge_article_stage_action"/>
+    </record>
+
+    <!-- Templates: -->
+
+    <record id="knowledge_article_template_stage_view_form" model="ir.ui.view">
+        <field name="name">knowledge.article.template.stage.view.form</field>
+        <field name="model">knowledge.article.stage</field>
+        <field name="inherit_id" ref="knowledge.knowledge_article_stage_view_form"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="attributes">
+                <attribute name="domain">[('is_template', '=', True)]</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="knowledge_article_template_stage_action" model="ir.actions.act_window">
+        <field name="name">Template Stages</field>
+        <field name="res_model">knowledge.article.stage</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('parent_id.is_template', '=', True)]</field>
+    </record>
+
+    <record id="knowledge_article_template_stage_action_view_tree" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="knowledge_article_stage_view_tree"/>
+        <field name="act_window_id" ref="knowledge_article_template_stage_action"/>
+    </record>
+
+    <record id="knowledge_article_template_stage_action_view_form" model="ir.actions.act_window.view">
+        <field name="sequence">2</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="knowledge_article_template_stage_view_form"/>
+        <field name="act_window_id" ref="knowledge_article_template_stage_action"/>
+    </record>
 </odoo>

@@ -1,17 +1,22 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import ast
+import json
 import re
 
 from collections import defaultdict
 from datetime import datetime, timedelta
+from lxml import html
 from markupsafe import Markup
+from urllib import parse
 from werkzeug.urls import url_join
 
 from odoo import api, Command, fields, models, _
 from odoo.exceptions import AccessError, ValidationError, UserError
 from odoo.osv import expression
 from odoo.tools import get_lang
+from odoo.tools.translate import html_translate
 
 ARTICLE_PERMISSION_LEVEL = {'none': 0, 'read': 1, 'write': 2}
 
@@ -153,6 +158,17 @@ class Article(models.Model):
     article_properties_definition = fields.PropertiesDefinition('Article Item Properties')
     article_properties = fields.Properties('Properties', definition="parent_id.article_properties_definition", copy=True)
 
+    # Templates
+    is_template = fields.Boolean(string="Is Template")
+    template_body = fields.Text(string="Template Body", translate=html_translate)
+    template_category_id = fields.Many2one("knowledge.article.template.category", string="Template Category",
+        compute="_compute_template_category_id", inverse="_inverse_template_category_id", store=True)
+    template_category_sequence = fields.Integer(string="Template Category Sequence", related="template_category_id.sequence")
+    template_description = fields.Char(string="Template Description", translate=True)
+    template_name = fields.Char(string="Template Title", translate=True)
+    template_preview = fields.Html(string="Template Preview", compute="_compute_template_preview")
+    template_sequence = fields.Integer(string="Template Sequence", help="It determines the display order of the template within its category")
+
     _sql_constraints = [
         ('check_permission_on_root',
          'check(parent_id IS NOT NULL OR internal_permission IS NOT NULL)',
@@ -173,6 +189,14 @@ class Article(models.Model):
         ('check_trash',
          'check(to_delete IS NOT TRUE or active IS NOT TRUE)',
          'Trashed articles must be archived.'
+        ),
+        ('check_template_category_on_root',
+         'check(is_template IS NOT TRUE OR parent_id IS NOT NULL OR template_category_id IS NOT NULL)',
+         'Root templates must have a category.'
+        ),
+        ('check_template_name_required',
+         'check(is_template IS NOT TRUE OR template_name IS NOT NULL)',
+         'Templates should have a name.'
         ),
     ]
 
@@ -204,6 +228,26 @@ class Article(models.Model):
                   ', '.join(self.mapped('name'))
                  )
             )
+
+    @api.constrains('is_template', 'parent_id')
+    def _check_template_hierarchy(self):
+        for article in self:
+            if not article.parent_id:
+                continue
+            if article.is_template and not article.parent_id.is_template:
+                raise ValidationError(
+                    _('"%(article_name)s" is a template and can not be a child of an article ("%(parent_article_name)s").',
+                        article_name=article.name,
+                        parent_article_name=article.parent_id.name
+                    )
+                )
+            if not article.is_template and article.parent_id.is_template:
+                raise ValidationError(
+                    _('"%(article_name)s" is an article and can not be a child of a template ("%(parent_article_name)s")."',
+                        article_name=article.name,
+                        parent_article_name=article.parent_id.name
+                    )
+                )
 
     # ------------------------------------------------------------
     # COMPUTED FIELDS
@@ -272,6 +316,29 @@ class Article(models.Model):
                 stages_by_parent_id[parent_id] = result['id']
         for item in items:
             item.stage_id = stages_by_parent_id.get(item.parent_id.id)
+
+    @api.depends('parent_id')
+    def _compute_template_category_id(self):
+        self._propagate_template_category_id()
+
+    def _inverse_template_category_id(self):
+        self._propagate_template_category_id()
+
+    def _propagate_template_category_id(self):
+        """ The templates inherit the category from their parents. This method will
+            ensure that the categories will be consistent over the whole template
+            hierarchy. To update the category of a template, the user will have to
+            update the category of the root template. """
+        for article in self:
+            if article.parent_id:
+                article.template_category_id = article.parent_id.template_category_id
+            for child in article.child_ids:
+                child.template_category_id = article.template_category_id
+
+    @api.depends('template_body')
+    def _compute_template_preview(self):
+        for template in self:
+            template.template_preview = template._render_template()
 
     @api.depends('parent_id', 'parent_id.inherited_permission_parent_id', 'internal_permission')
     def _compute_inherited_permission(self):
@@ -695,6 +762,9 @@ class Article(models.Model):
             manipulation to sudo only those and keep requested ordering based
             on vals_list;
         """
+        if any(vals.get('is_template', False) for vals in vals_list) and not self.env.user.has_group('base.group_system'):
+            raise ValidationError(_('You are not allowed to create a new template.'))
+
         defaults = self.default_get(['article_member_ids', 'internal_permission', 'parent_id'])
         vals_by_parent_id = {}
         vals_as_sudo = []
@@ -703,7 +773,7 @@ class Article(models.Model):
         for vals in vals_list:
             # Set body to match title if any, or prepare a void header to ease
             # article onboarding.
-            if "body" not in vals:
+            if not vals.get('is_template', False) and "body" not in vals:
                 vals["body"] = Markup('<h1>%s</h1>') % vals["name"] if vals.get("name") \
                                else Markup('<h1 class="oe-hint"><br></h1>')
 
@@ -809,6 +879,13 @@ class Article(models.Model):
         return articles
 
     def write(self, vals):
+        if any(article.is_template \
+            for article in self) and not self.env.user.has_group('base.group_system'):
+            raise ValidationError(_('You are not allowed to update a template.'))
+        if any(article.is_template != vals.get('is_template', False) \
+            for article in self) and not self.env.user.has_group('base.group_system'):
+            raise ValidationError(_('You are not allowed to update the type of a article or a template.'))
+
         # Move under a parent is considered as a write on it (permissions, ...)
         _resequence = False
         if not self.env.user._is_internal() and not self.env.su:
@@ -854,6 +931,11 @@ class Article(models.Model):
             self.sudo()._resequence()
 
         return result
+
+    def unlink(self):
+        if any(article.is_template for article in self) and not self.env.user.has_group('base.group_system'):
+            raise ValidationError(_('You are not allowed to delete a template.'))
+        return super().unlink()
 
     @api.returns('self', lambda value: value.id)
     def copy(self, default=None):
@@ -963,7 +1045,8 @@ class Article(models.Model):
     @api.depends('icon')
     def _compute_display_name(self):
         for rec in self:
-            rec.display_name = f"{rec.icon or self._get_no_icon_placeholder()} {rec.name or _('Untitled')}"
+            name = (rec.template_name if rec.is_template else rec.name) or _('Untitled')
+            rec.display_name = f"{rec.icon or self._get_no_icon_placeholder()} {name}"
 
     def _get_no_icon_placeholder(self):
         """ Emoji used in templates as a placeholder when icon is False. It's
@@ -1376,7 +1459,8 @@ class Article(models.Model):
         """
         search_query = search_query.casefold()
         search_domain = [
-            "&",
+            "&", "&",
+                ("is_template", "=", False),
                 ("is_article_visible", "!=", hidden_mode),
                 "&",
                     ("user_has_access", "=", True), # Admins won't see other's private articles.
@@ -2279,6 +2363,176 @@ class Article(models.Model):
     # BUSINESS METHODS
     # ------------------------------------------------------------
 
+    def create_article_from_template(self):
+        self.ensure_one()
+        article = self.env["knowledge.article"].article_create(is_private=True)
+        article.apply_template(self.id, skip_body_update=False)
+        return article.id
+
+    def apply_template(self, template_id, skip_body_update=False):
+        """Applies the given template on the current article
+        :param int template_id: Template id
+        :param boolean skip_body_update: Whether the method should skip writing
+          the body and return it for further management by the caller. Note that
+          this does to apply to child articles as they are not managed the same
+          way and are side records. Typically
+          - False: when creating a template based article from scratch;
+          - True: in other cases to avoid collaborative issues (write on
+            body should be done at client side);
+        :return str: body of the article, used notably client side for
+          collaborative mode
+        """
+        self.ensure_one()
+        template = self.env['knowledge.article'].browse(template_id)
+        template.ensure_one()
+
+        # The following algorithm will proceed in 3 steps:
+        # 1. In the first step, we will recursively create the articles and the
+        #    stages following the same structure as the templates. This will
+        #    ensure that the records exist in the database for the following steps.
+        # 2. In the second step, we will build a dict mapping the template
+        #    xml ids with the article ids created from it. The dict will be
+        #    used to convert the template xml ids mentionned in the templates
+        #    with the ids of the articles generated from them.
+        # 3. In the third step, we will populate the articles using the values
+        #    set on the associated templates.
+
+        # Step 1: Create the articles and the stages
+
+        template_to_article_pairs = []
+        stack = [(template, self)]
+
+        while stack:
+            (parent_template, parent_article) = stack.pop()
+            template_to_article_pairs.append((parent_template, parent_article))
+
+            # Create the stages:
+            parent_template_stages = self.env['knowledge.article.stage'].search([
+                ('parent_id', '=', parent_template.id)
+            ])
+            parent_article_stages = self.env['knowledge.article.stage'].create([{
+                'name': stage.name,
+                'sequence': stage.sequence,
+                'fold': stage.fold,
+                'parent_id': parent_article.id
+            } for stage in parent_template_stages])
+
+            # Create the child articles:
+            child_templates = parent_template.child_ids.sorted(
+                lambda template: (template.write_date, template.id))
+            if not child_templates:
+                continue
+
+            child_articles_values = []
+            for template in child_templates:
+                article_values = {
+                    'is_article_item': template.is_article_item,
+                    'parent_id': parent_article.id,
+                }
+                article_stage = next((article_stage for (article_stage, template_stage) in \
+                    zip(parent_article_stages, parent_template_stages) \
+                        if template_stage == template.stage_id), False)
+                if article_stage:
+                    article_values['stage_id'] = article_stage.id
+                child_articles_values.append(article_values)
+
+            child_articles = self.env['knowledge.article'].create(child_articles_values)
+            stack.extend(zip(child_templates, child_articles))
+
+        # Step 2: Build the dict mapping the template xml ids with the article ids
+
+        template_xml_id_to_article_id_mapping = {}
+        all_ir_model_data = self.env['ir.model.data'].sudo().search([
+            ('model', '=', 'knowledge.article'),
+            ('res_id', 'in', [template.id for (template, _) in template_to_article_pairs])
+        ])
+
+        for (template, article) in template_to_article_pairs:
+            ir_model_data = all_ir_model_data.filtered(
+                lambda ir_model_data: ir_model_data.res_id == template.id)
+
+            if ir_model_data:
+                template_xml_id = 'knowledge.' + ir_model_data.name
+                template_xml_id_to_article_id_mapping[template_xml_id] = article.id
+
+        # When rendering the template, the `ref` function should return the id
+        # of the article created from the template having the given xml id.
+        # This will ensure that the ids stored in the body of the newly created
+        # article will refer to the right article and not to the original template.
+
+        def ref(xml_id):
+            return template_xml_id_to_article_id_mapping[xml_id] \
+                if xml_id in template_xml_id_to_article_id_mapping \
+                    else self.env.ref(xml_id).id
+
+        # Step 3: Copy the template values to the new articles
+
+        (root_template, root_article) = template_to_article_pairs.pop(0)
+        for (template, article) in reversed(template_to_article_pairs):
+            article.write({
+                'article_properties': template.article_properties or {},
+                'article_properties_definition': template.article_properties_definition,
+                'body': template._render_template(ref),
+                'cover_image_id': template.cover_image_id.id,
+                'full_width': template.full_width,
+                'icon': template.icon,
+                'name': template.template_name,
+            })
+
+        values = {
+            'article_properties': root_template.article_properties or {},
+            'article_properties_definition': root_template.article_properties_definition,
+            'cover_image_id': root_template.cover_image_id.id,
+            'full_width': root_template.full_width,
+            'icon': root_template.icon,
+            'name': root_article.name or root_template.template_name,
+        }
+        body = root_template._render_template(ref)
+        if not skip_body_update:
+            values['body'] = body
+        root_article.write(values)
+
+        return body
+
+    def _render_template(self, ref=False):
+        """
+        Generates the HTML body based on the template content.
+        :param callable ref: The `ref` function will be used to refer to an
+          external record and integrate advanced elements such as embedded views
+          of article items and article links.
+        """
+        self.ensure_one()
+        if not self.is_template or not self.template_body:
+            return False
+
+        if not ref:
+            def ref(xml_id):
+                return self.env.ref(xml_id).id
+
+        def transform_xmlid_to_res_id(match):
+            return str(ref(match.group('xml_id')))
+
+        fragment = html.fragment_fromstring(self.template_body, create_parent='div')
+        for element in fragment.xpath('//*[@data-behavior-props]'):
+            # When encoding the "behavior props", we find and replace the function
+            # calls of `ref` with the ids returned by the given `ref` function for
+            # the given xml ids. The generated HTML will then only contain ids.
+            # Example:
+            # When the "behavior props" contains `ref('knowledge.article_template_1')`,
+            # we replace that string occurence with the id returned by the given
+            # `ref` function evaluated with the xml_id 'knowledge.article_template_1'.
+            behavior_props = ast.literal_eval(re.sub(
+                r'(?<![\w])ref\(\'(?P<xml_id>\w+\.\w+)\'\)',
+                transform_xmlid_to_res_id,
+                element.get('data-behavior-props')))
+            element.set('data-behavior-props',
+                parse.quote(json.dumps(behavior_props), safe="()*!'"))
+            if 'o_knowledge_behavior_type_article' in element.get('class'):
+                element.set('href', '/knowledge/article/%s' % (behavior_props.get('article_id')))
+
+        return b''.join(html.tostring(child, method='html') \
+            for child in fragment.getchildren()) # unwrap the elements from the parent node
+
     def create_default_item_stages(self):
         """ Need to create stages if this article has no stage yet. """
         stage_count = self.env['knowledge.article.stage'].search_count(
@@ -2349,7 +2603,7 @@ class Article(models.Model):
             # retrieve workspace articles first, then private/shared ones.
             article = self.search(
                 expression.AND([
-                    [('parent_id', '=', False, )],
+                    [('parent_id', '=', False), ('is_template', '=', False)],
                     self._get_read_domain(),
                 ]),
                 limit=1,
@@ -2362,7 +2616,8 @@ class Article(models.Model):
         current article (to avoid recursions) """
         return self.search_read(
             domain=[
-                '&', '&', '&',
+                '&', '&', '&', '&',
+                    ('is_template', '=', False),
                     ('name', 'ilike', search_term),
                     ('id', 'not in', self.ids),
                     '!', ('parent_id', 'child_of', self.ids),
@@ -2435,7 +2690,10 @@ class Article(models.Model):
             - a child article of any unfolded article that is shown
         """
 
-        root_articles_domain = [("parent_id", "=", False)]
+        root_articles_domain = [
+            ("parent_id", "=", False),
+            ("is_template", "=", False)
+        ]
         if self.env.user._is_internal():
             # Do not fetch articles that the user did not join (articles with
             # internal permissions may be set as visible to members only)

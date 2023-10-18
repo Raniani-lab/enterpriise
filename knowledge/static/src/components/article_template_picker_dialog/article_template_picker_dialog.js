@@ -37,15 +37,27 @@ export class ArticleTemplatePickerDialog extends Component {
 
         onWillStart(async () => {
             const templates = await this.orm.searchRead(
-                "knowledge.article.template",
-                [["parent_id", "=", false]],
-                ["id", "icon", "name", "category_id", "category_sequence"],
+                "knowledge.article",
+                [
+                    ["is_template", "=", true],
+                    ["parent_id", "=", false]
+                ],
+                [
+                    "id",
+                    "icon",
+                    "template_name",
+                    "template_category_id",
+                    "template_category_sequence",
+                    "template_sequence",
+                ],
                 {}
             );
-            const groups = groupBy(templates, template => template["category_id"][0]);
+            const groups = groupBy(templates, template => template["template_category_id"][0]);
             this.groups = Object.values(groups).sort((a, b) => {
-                return a[0]["category_sequence"] > b[0]["category_sequence"];
-            });
+                return a[0]["template_category_sequence"] > b[0]["template_category_sequence"];
+            }).map(group => group.sort((a, b) => {
+                return a["template_sequence"] > b["template_sequence"];
+            }));
             if (this.groups.length > 0) {
                 this.state.resId = this.groups[0][0].id;
             }
@@ -84,7 +96,7 @@ export class ArticleTemplatePickerDialog extends Component {
         return {
             record,
             readonly: true,
-            name: "body",
+            name: "template_preview",
             wysiwygOptions: {},
         };
     }
@@ -94,13 +106,13 @@ export class ArticleTemplatePickerDialog extends Component {
      */
     get articleTemplateFieldNames() {
         return [
-            "body",
             "cover_image_url",
-            "description",
             "icon",
             "id",
-            "name",
             "parent_id",
+            "template_name",
+            "template_preview",
+            "template_description",
         ];
     }
 }

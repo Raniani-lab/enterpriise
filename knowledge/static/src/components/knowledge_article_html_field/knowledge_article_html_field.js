@@ -80,8 +80,8 @@ export class KnowledgeArticleHtmlField extends HtmlField {
     onLoadTemplateBtnClick() {
         this.dialogService.add(ArticleTemplatePickerDialog, {
             onLoadTemplate: async articleTemplateId => {
-                const body = await this.orm.call("knowledge.article.template", "apply_template_on_article", [articleTemplateId], {
-                    article_id: this.props.record.resId,
+                const body = await this.orm.call("knowledge.article", "apply_template", [this.props.record.resId], {
+                    template_id: articleTemplateId,
                     skip_body_update: true
                 });
                 this.wysiwyg.setValue(body);

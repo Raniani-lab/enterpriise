@@ -20,8 +20,6 @@ class TestKnowledgeUICommon(HttpCase, MailCommon):
         super(TestKnowledgeUICommon, cls).setUpClass()
         # remove existing articles to ease tour management
         cls.env['knowledge.article'].with_context(active_test=False).search([]).unlink()
-        cls.env['knowledge.article.template'].search([]).unlink()
-        cls.env['knowledge.article.template.category'].search([]).unlink()
 
         cls.user_portal = mail_new_test_user(
             cls.env,
@@ -47,30 +45,31 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
         category = self.env['knowledge.article.template.category'].create({
             'name': 'Personal'
         })
-        template = self.env['knowledge.article.template'].create({
-            'name': 'My Template',
-            'body': Markup('<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>'),
-            'category_id': category.id,
+        template = self.env['knowledge.article'].create({
             'icon': '📚',
-            'template_properties_definition': [{
+            'article_properties_definition': [{
                 'name': '28db68689e91de10',
                 'type': 'char',
                 'string': 'My Text Field',
                 'default': ''
             }],
+            'is_template': True,
+            'template_name': 'My Template',
+            'template_category_id': category.id,
+            'template_body': Markup('<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>'),
         })
 
         self.start_tour('/web', 'knowledge_load_template', login='admin')
-        article = self.env['knowledge.article'].search([], limit=1)
+        article = self.env['knowledge.article'].search([('id', '!=', template.id)], limit=1)
         self.assertTrue(bool(article))
 
         # Strip collaborative steps ids from the body for content-only
         # comparison
         body = re.sub(r'\s*data-last-history-steps="[^"]*"', '', article.body)
 
-        self.assertEqual(template.body, body)
+        self.assertEqual(template.template_body, body)
         self.assertEqual(template.icon, article.icon)
-        self.assertEqual(template.template_properties_definition, article.article_properties_definition)
+        self.assertEqual(template.article_properties_definition, article.article_properties_definition)
 
     def test_knowledge_main_flow(self):
 

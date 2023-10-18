@@ -36,5 +36,5 @@ cellMenuRegistry.add("listing_properties", {
         const position = env.model.getters.getActivePosition();
         return env.model.getters.getListIdFromPosition(position) !== undefined;
     },
-    icon: "o-spreadsheet-Icon.SEE_RECORDS",
+    icon: "o-spreadsheet-Icon.ODOO_LIST",
 });

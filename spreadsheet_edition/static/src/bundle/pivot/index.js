@@ -36,5 +36,5 @@ cellMenuRegistry.add("pivot_properties", {
         const cell = env.model.getters.getActiveCell();
         return cell && cell.isFormula && cell.content.match(pivotFormulaRegex);
     },
-    icon: "o-spreadsheet-Icon.SEE_RECORDS",
+    icon: "o-spreadsheet-Icon.PIVOT",
 });

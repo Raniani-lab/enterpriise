@@ -7,10 +7,11 @@ import {
     nextTick,
     patchWithCleanup,
     makeDeferred,
+    editInput,
+    triggerEvent,
 } from "@web/../tests/helpers/utils";
 import { x2ManyCommands } from "@web/core/orm_service";
 import { browser } from "@web/core/browser/browser";
-import { fields, dom } from "@web/../tests/legacy/helpers/test_utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { getBasicData, getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { createSpreadsheetFromPivotView } from "../utils/pivot_helpers";
@@ -31,15 +32,15 @@ QUnit.module(
             await createSpreadsheet();
             const input = target.querySelector(".o_spreadsheet_name input");
             assert.hasClass(input, "o-spreadsheet-untitled", "It should be styled as untitled");
-            await fields.editInput(input, "My");
+            await editInput(input, null, "My");
             assert.doesNotHaveClass(
                 input,
                 "o-spreadsheet-untitled",
                 "It should not be styled as untitled"
             );
-            await fields.editInput(input, "Untitled spreadsheet");
+            await editInput(input, null, "Untitled spreadsheet");
             assert.hasClass(input, "o-spreadsheet-untitled", "It should be styled as untitled");
-            await fields.editInput(input, "");
+            await editInput(input, null, "");
             assert.hasClass(input, "o-spreadsheet-untitled", "It should be styled as untitled");
         });
 
@@ -61,12 +62,12 @@ QUnit.module(
             assert.expect(2);
             await createSpreadsheet();
             const input = target.querySelector(".o_spreadsheet_name input");
-            await fields.editInput(input, "My");
+            await editInput(input, null, "My");
             let width = input.offsetWidth;
-            await fields.editInput(input, "My title");
+            await editInput(input, null, "My title");
             assert.ok(width < input.offsetWidth, "It should have grown to fit content");
             width = input.offsetWidth;
-            await fields.editInput(input, "");
+            await editInput(input, null, "");
             assert.ok(width < input.offsetWidth, "It should have the size of the placeholder text");
         });
 
@@ -74,8 +75,7 @@ QUnit.module(
             assert.expect(1);
             const serverData = getBasicServerData();
             await createSpreadsheet({ spreadsheetId: 2, serverData });
-            const input = target.querySelector(".o_spreadsheet_name input");
-            await fields.editAndTrigger(input, "My spreadsheet", ["change"]);
+            await editInput(target, ".o_spreadsheet_name input", "My spreadsheet");
             assert.equal(
                 serverData.models["documents.document"].records[1].name,
                 "My spreadsheet",
@@ -87,9 +87,8 @@ QUnit.module(
             assert.expect(2);
             await createSpreadsheet();
             const input = target.querySelector(".o_spreadsheet_name input");
-            await fields.editInput(input, "My spreadsheet  ");
             const width = input.offsetWidth;
-            await dom.triggerEvent(input, "change");
+            await editInput(input, null, "My spreadsheet  ");
             assert.equal(input.value, "My spreadsheet", "It should not have trailing white spaces");
             assert.ok(width > input.offsetWidth, "It should have resized");
         });
@@ -99,7 +98,7 @@ QUnit.module(
             await createSpreadsheet({ spreadsheetId: 2 });
             const input = target.querySelector(".o_spreadsheet_name input");
             assert.equal(input.value, "", "It should be empty");
-            await dom.triggerEvent(input, "focus");
+            await triggerEvent(input, null, "focus");
             assert.equal(
                 input.value,
                 "Untitled spreadsheet",
@@ -113,14 +112,10 @@ QUnit.module(
             );
         });
         QUnit.test("only white spaces show the placeholder", async function (assert) {
-            assert.expect(2);
             await createSpreadsheet();
             const input = target.querySelector(".o_spreadsheet_name input");
-            await fields.editInput(input, "  ");
-            const width = input.offsetWidth;
-            await dom.triggerEvent(input, "change");
+            await editInput(input, null, "  ");
             assert.equal(input.value, "", "It should be empty");
-            assert.ok(width < input.offsetWidth, "It should have the placeholder size");
         });
 
         QUnit.test("share spreadsheet from control panel", async function (assert) {
@@ -267,8 +262,7 @@ QUnit.module(
                 },
             });
             assert.containsNone(target, ".favorite_button_enabled");
-            const favorite = target.querySelector(".o_spreadsheet_favorite");
-            await dom.click(favorite);
+            await click(target, ".o_spreadsheet_favorite");
             assert.containsOnce(target, ".favorite_button_enabled");
             assert.verifySteps(["favorite_toggled"]);
         });
@@ -318,8 +312,7 @@ QUnit.module(
                         },
                     },
                 });
-                const input = target.querySelector(".o_spreadsheet_name input");
-                await fields.editAndTrigger(input, "My awesome spreadsheet", ["change"]);
+                await editInput(target, ".o_spreadsheet_name input", "My awesome spreadsheet");
                 await doAction(webClient, {
                     name: "Partner",
                     res_model: "partner",

@@ -12,6 +12,7 @@ import {
     nextTick,
     patchWithCleanup,
     patchDate,
+    editInput,
 } from "@web/../tests/helpers/utils";
 import { toggleActionMenu } from "@web/../tests/search/helpers";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
@@ -19,7 +20,6 @@ import { registry } from "@web/core/registry";
 import { ListRenderer } from "@web/views/list/list_renderer";
 import { createSpreadsheetFromListView, toggleCogMenuSpreadsheet } from "../utils/list_helpers";
 import { createSpreadsheet } from "../spreadsheet_test_utils.js";
-import { dom } from "@web/../tests/legacy/helpers/test_utils";
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 import { session } from "@web/session";
 import * as dsHelpers from "@web/../tests/core/domain_selector_tests";
@@ -131,10 +131,10 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         await doMenuAction(topbarMenuRegistry, ["data", "item_list_1"], env);
         await nextTick();
         const target = getFixture();
-        let title = $(target).find(".o-sidePanelTitle")[0].innerText;
+        let title = target.querySelector(".o-sidePanelTitle").innerText;
         assert.equal(title, "List properties");
 
-        const sections = $(target).find(".o_side_panel_section");
+        const sections = target.querySelectorAll(".o_side_panel_section");
         assert.equal(sections.length, 4, "it should have 4 sections");
         const [pivotName, pivotModel, domain] = sections;
 
@@ -153,7 +153,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
             listId: undefined,
         });
         await nextTick();
-        title = $(target).find(".o-sidePanelTitle")[0].innerText;
+        title = target.querySelector(".o-sidePanelTitle").innerText;
         assert.equal(title, "List properties");
 
         assert.containsOnce(target, ".o_side_panel_select");
@@ -387,8 +387,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         });
         await nextTick();
         await click(document.body.querySelector(".o_sp_en_rename"));
-        document.body.querySelector(".o_sp_en_name").value = "new name";
-        await dom.triggerEvent(document.body.querySelector(".o_sp_en_name"), "input");
+        await editInput(document, ".o_sp_en_name", "new name");
         await click(document.body.querySelector(".o_sp_en_save"));
         assert.equal(model.getters.getListName(listA3), "new name");
     });

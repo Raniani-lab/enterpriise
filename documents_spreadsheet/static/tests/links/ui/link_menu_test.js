@@ -5,7 +5,13 @@ import { registries, components } from "@odoo/o-spreadsheet";
 import { spreadsheetLinkMenuCellService } from "@spreadsheet/ir_ui_menu/index";
 import { registry } from "@web/core/registry";
 import { createSpreadsheet } from "../../spreadsheet_test_utils";
-import { click, getFixture, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
+import {
+    click,
+    getFixture,
+    nextTick,
+    patchWithCleanup,
+    triggerEvent,
+} from "@web/../tests/helpers/utils";
 import { getCell } from "@spreadsheet/../tests/utils/getters";
 import { setCellContent, setSelection } from "@spreadsheet/../tests/utils/commands";
 import { getMenuServerData } from "@spreadsheet/../tests/links/menu_data_utils";
@@ -86,8 +92,7 @@ QUnit.module("spreadsheet > menu link ui", { beforeEach }, () => {
         await click(target, ".o-ir-menu-selector input");
         assert.ok(target.querySelector("button.o-confirm").disabled);
         const item1 = document.querySelectorAll(".ui-menu-item")[1];
-        // FIXME - drop jquery
-        $(item1).trigger("mouseenter");
+        triggerEvent(item1, null, "mouseenter");
         await click(item1);
         assert.equal(
             target.querySelector(".o-ir-menu-selector input").value,
@@ -96,8 +101,7 @@ QUnit.module("spreadsheet > menu link ui", { beforeEach }, () => {
         );
         await click(target, ".o-ir-menu-selector input");
         const item2 = document.querySelectorAll(".ui-menu-item")[0];
-        // FIXME - drop jquery
-        $(item2).trigger("mouseenter");
+        triggerEvent(item2, null, "mouseenter");
         await click(item2);
         assert.equal(
             target.querySelector(".o-ir-menu-selector input").value,
@@ -140,9 +144,7 @@ QUnit.module("spreadsheet > menu link ui", { beforeEach }, () => {
             await click(target, ".o-ir-menu-selector input");
             assert.ok(target.querySelector("button.o-confirm").disabled);
             const item = document.querySelectorAll(".ui-menu-item")[1];
-            // don't ask why it's needed and why it only works with a jquery event >:(
-            // FIXME - drop jquery
-            $(item).trigger("mouseenter");
+            triggerEvent(item, null, "mouseenter");
             await click(item);
             await click(target, "button.o-confirm");
             assert.equal(

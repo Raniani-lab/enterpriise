@@ -136,7 +136,7 @@ QUnit.module("documents_spreadsheet > chart side panel", { beforeEach }, () => {
         env.openSidePanel("ChartPanel");
         await nextTick();
 
-        const sections = $(target).find(".o-section");
+        const sections = target.querySelectorAll(".o-section");
         assert.equal(sections.length, 6, "it should have 6 sections");
         const [, , pivotModel, domain, , measures] = sections;
 

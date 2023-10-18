@@ -1,7 +1,5 @@
 /* @odoo-module */
 
-import testUtils from "@web/../tests/legacy/helpers/test_utils";
-
 import {
     getBasicData,
     getBasicPivotArch,
@@ -85,7 +83,7 @@ async function selectYear(yearString) {
     // open the YearPicker
     await click(input);
     // Change input value
-    await testUtils.fields.editAndTrigger(input, yearString, ["change"]);
+    await editInput(input, null, yearString);
     await nextTick();
 }
 
@@ -439,9 +437,7 @@ QUnit.module(
             assert.equal(sections.length, 2);
             const labelElement = sections[0].querySelector(".o_side_panel_filter_label");
             assert.equal(labelElement.innerText, label);
-            await testUtils.dom.click(
-                sections[0].querySelector(".o_side_panel_filter_icon.fa-cog")
-            );
+            await click(sections[0].querySelector(".o_side_panel_filter_icon.fa-cog"));
             assert.ok(target.querySelectorAll(".o_spreadsheet_filter_editor_side_panel"));
             assert.equal(target.querySelector(".o_global_filter_label").value, label);
             assert.equal(
@@ -469,10 +465,10 @@ QUnit.module(
                     defaultValue: [],
                 });
                 await openGlobalFilterSidePanel();
-                await testUtils.dom.click(target.querySelector(".o-autocomplete--input.o_input"));
+                await click(target.querySelector(".o-autocomplete--input.o_input"));
                 assert.ok(target.querySelector(".o-autocomplete--dropdown-menu"));
                 const item1 = target.querySelector(".o-autocomplete--dropdown-item");
-                await testUtils.dom.click(item1);
+                await click(item1);
                 assert.equal(model.getters.getFilterDisplayValue(label), item1.innerText);
             }
         );
@@ -744,8 +740,8 @@ QUnit.module(
             assert.containsOnce(target, ".o-sidePanel");
             await editGlobalFilterLabel("My Label");
 
-            const range = $(target).find(".o_input:nth-child(2)")[0];
-            await testUtils.fields.editAndTrigger(range, "fixedPeriod", ["change"]);
+            const range = target.querySelectorAll(".o_input:nth-child(2)")[0];
+            await editSelect(range, null, "fixedPeriod");
 
             await click(target, "input#date_automatic_filter");
 
@@ -792,8 +788,8 @@ QUnit.module(
             await clickCreateFilter("date");
             await editGlobalFilterLabel("My Label");
 
-            const range = $(target).find(".o_input:nth-child(2)")[0];
-            await testUtils.fields.editAndTrigger(range, "fixedPeriod", ["change"]);
+            const range = target.querySelectorAll(".o_input:nth-child(2)")[0];
+            await editSelect(range, null, "fixedPeriod");
 
             await click(target, "input#date_automatic_filter");
 
@@ -803,22 +799,14 @@ QUnit.module(
 
             // pivot
             await selectFieldMatching("date", pivotFieldMatching);
-            await testUtils.fields.editAndTrigger(
-                pivotFieldMatching.querySelector("select"),
-                "-1",
-                ["change"]
-            );
+            await editSelect(pivotFieldMatching, "select", "-1");
 
             //list
             await selectFieldMatching("date", listFieldMatching);
 
             // chart
             await selectFieldMatching("date", chartFieldMatching);
-            await testUtils.fields.editAndTrigger(
-                chartFieldMatching.querySelector("select"),
-                "-2",
-                ["change"]
-            );
+            await editSelect(chartFieldMatching, "select", "-2");
 
             await saveGlobalFilter();
 
@@ -878,7 +866,7 @@ QUnit.module(
                 await editGlobalFilterLabel("My Label");
 
                 const range = target.querySelector(".o_input:nth-child(2)");
-                await testUtils.fields.editAndTrigger(range, "relative", ["change"]);
+                await editSelect(range, null, "relative");
 
                 const relativeSelection = target.querySelector("select.o_relative_date_selection");
                 const values = relativeSelection.querySelectorAll("option");
@@ -886,7 +874,7 @@ QUnit.module(
                     [...values].map((val) => val.value),
                     ["", ...RELATIVE_DATE_RANGE_TYPES.map((item) => item.type)]
                 );
-                await testUtils.fields.editAndTrigger(relativeSelection, "", ["change"]);
+                await editSelect(relativeSelection, null, "");
 
                 const pivotFieldMatching = target.querySelectorAll(
                     ".o_spreadsheet_field_matching"
@@ -902,11 +890,7 @@ QUnit.module(
                 await selectFieldMatching("date", listFieldMatching);
                 await selectFieldMatching("date", graphFieldMatching);
 
-                await testUtils.fields.editAndTrigger(
-                    graphFieldMatching.querySelector("select"),
-                    "-2",
-                    ["change"]
-                );
+                await editSelect(graphFieldMatching, "select", "-2");
 
                 await saveGlobalFilter();
 
@@ -939,7 +923,7 @@ QUnit.module(
             await editGlobalFilterLabel("My Label");
 
             const range = target.querySelector(".o_input:nth-child(2)");
-            await testUtils.fields.editAndTrigger(range, "relative", ["change"]);
+            await editSelect(range, null, "relative");
 
             const relativeSelection = target.querySelector("select.o_relative_date_selection");
             const values = relativeSelection.querySelectorAll("option");
@@ -947,7 +931,7 @@ QUnit.module(
                 [...values].map((val) => val.value),
                 ["", ...RELATIVE_DATE_RANGE_TYPES.map((item) => item.type)]
             );
-            await testUtils.fields.editAndTrigger(relativeSelection, "last_month", ["change"]);
+            await editSelect(relativeSelection, null, "last_month");
 
             const pivotFieldMatching = target.querySelectorAll(".o_spreadsheet_field_matching")[0];
             const listFieldMatching = target.querySelectorAll(".o_spreadsheet_field_matching")[1];
@@ -957,11 +941,7 @@ QUnit.module(
             await selectFieldMatching("date", listFieldMatching);
             await selectFieldMatching("date", graphFieldMatching);
 
-            await testUtils.fields.editAndTrigger(
-                graphFieldMatching.querySelector("select"),
-                "-2",
-                ["change"]
-            );
+            await editSelect(graphFieldMatching, "select", "-2");
 
             await saveGlobalFilter();
 
@@ -1003,7 +983,7 @@ QUnit.module(
                 [...select.querySelectorAll("option")].map((val) => val.value),
                 ["", ...RELATIVE_DATE_RANGE_TYPES.map((item) => item.type)]
             );
-            await testUtils.fields.editAndTrigger(select, "last_year", ["change"]);
+            await editSelect(select, null, "last_year");
             await nextTick();
 
             assert.equal(model.getters.getGlobalFilterValue("42"), "last_year");
@@ -1035,7 +1015,7 @@ QUnit.module(
                 [...select.querySelectorAll("option")].map((val) => val.value),
                 ["", ...RELATIVE_DATE_RANGE_TYPES.map((item) => item.type)]
             );
-            await testUtils.fields.editAndTrigger(select, "", ["change"]);
+            await editSelect(select, null, "");
             await nextTick();
 
             assert.equal(model.getters.getGlobalFilterValue("42"), undefined);
@@ -1106,7 +1086,7 @@ QUnit.module(
             const input = pivots[0].querySelector(".pivot_filter_input input");
             assert.equal(input.value, "abc");
 
-            await testUtils.fields.editAndTrigger(input, "something", ["change"]);
+            await editInput(input, null, "something");
 
             assert.equal(model.getters.getGlobalFilterValue("42"), "something");
         });
@@ -1222,7 +1202,7 @@ QUnit.module(
             // no default value
             assert.containsNone(target, "i.o_side_panel_filter_icon.fa-times");
 
-            await testUtils.fields.editAndTrigger(input, "something", ["change"]);
+            await editInput(input, null, "something");
             assert.containsOnce(target, "i.o_side_panel_filter_icon.fa-times");
             assert.deepEqual(model.getters.getPivotComputedDomain("1"), [
                 ["name", "ilike", "something"],

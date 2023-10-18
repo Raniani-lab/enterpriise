@@ -1,8 +1,7 @@
 /** @odoo-module */
 
-import { nextTick, getFixture } from "@web/../tests/helpers/utils";
+import { nextTick, getFixture, editInput } from "@web/../tests/helpers/utils";
 import { registry } from "@web/core/registry";
-import { dom, fields } from "@web/../tests/legacy/helpers/test_utils";
 
 import { actionService } from "@web/webclient/actions/action_service";
 import { createSpreadsheet, createSpreadsheetTemplate } from "../spreadsheet_test_utils";
@@ -205,8 +204,7 @@ QUnit.module("documents_spreadsheet > template menu", {}, () => {
         });
         const target = getFixture();
         const input = target.querySelector(".o_spreadsheet_name input");
-        await fields.editInput(input, "My spreadsheet");
-        await dom.triggerEvent(input, "change");
+        await editInput(input, null, "My spreadsheet");
         await doMenuAction(topbarMenuRegistry, ["file", "save_as_template"], env);
         await nextTick();
         assert.verifySteps(["create_template_wizard"]);

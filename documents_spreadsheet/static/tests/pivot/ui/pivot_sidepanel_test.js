@@ -1,8 +1,7 @@
 /** @odoo-module */
 
 import * as spreadsheet from "@odoo/o-spreadsheet";
-import { click, getFixture, nextTick } from "@web/../tests/helpers/utils";
-import { dom } from "@web/../tests/legacy/helpers/test_utils";
+import { click, editInput, getFixture, nextTick } from "@web/../tests/helpers/utils";
 import {
     getBasicData,
     getBasicPivotArch,
@@ -51,10 +50,10 @@ QUnit.module(
                 pivot: pivotA3,
             });
             await nextTick();
-            let title = $(target).find(".o-sidePanelTitle")[0].innerText;
+            let title = target.querySelector(".o-sidePanelTitle").innerText;
             assert.equal(title, "Pivot properties");
 
-            const sections = $(target).find(".o_side_panel_section");
+            const sections = target.querySelectorAll(".o_side_panel_section");
             assert.equal(sections.length, 5, "it should have 5 sections");
             const [pivotName, pivotModel, domain, dimensions, measures] = sections;
 
@@ -85,7 +84,7 @@ QUnit.module(
                 pivot: pivotA1,
             });
             await nextTick();
-            title = $(target).find(".o-sidePanelTitle")[0].innerText;
+            title = target.querySelector(".o-sidePanelTitle").innerText;
             assert.equal(title, "Pivot properties");
 
             assert.containsOnce(target, ".o_side_panel_select");
@@ -178,17 +177,17 @@ QUnit.module(
             assert.notOk(model.getters.getSelectedPivotId(), "No pivot should be selected");
             await nextTick();
             assert.containsN(target, ".o_side_panel_select", 2);
-            await dom.click($(target).find(".o_side_panel_select")[0]);
+            await click(target.querySelectorAll(".o_side_panel_select")[0]);
             assert.strictEqual(
                 model.getters.getSelectedPivotId(),
                 "1",
                 "The selected pivot should be have the id 1"
             );
             await nextTick();
-            await dom.click($(target).find(".o_pivot_cancel"));
+            await click(target, ".o_pivot_cancel");
             assert.notOk(model.getters.getSelectedPivotId(), "No pivot should be selected anymore");
             assert.containsN(target, ".o_side_panel_select", 2);
-            await dom.click($(target).find(".o_side_panel_select")[1]);
+            await click(target.querySelectorAll(".o_side_panel_select")[1]);
             assert.strictEqual(
                 model.getters.getSelectedPivotId(),
                 "2",
@@ -227,7 +226,7 @@ QUnit.module(
                 model.dispatch("SELECT_PIVOT", { pivotId: pivotA3 });
                 env.openSidePanel("PIVOT_PROPERTIES_PANEL", {});
                 await nextTick();
-                await dom.click($(target).find(".o_refresh_measures")[0]);
+                await click(target.querySelectorAll(".o_refresh_measures")[0]);
                 await nextTick();
                 assert.equal(getCellValue(model, "D4"), 10 + 10);
             }
@@ -271,8 +270,7 @@ QUnit.module(
             });
             await nextTick();
             await click(document.body.querySelector(".o_sp_en_rename"));
-            document.body.querySelector(".o_sp_en_name").value = "new name";
-            await dom.triggerEvent(document.body.querySelector(".o_sp_en_name"), "input");
+            await editInput(document, ".o_sp_en_name", "new name");
             await click(document.body.querySelector(".o_sp_en_save"));
             assert.equal(model.getters.getPivotName(pivotA3), "new name");
         });

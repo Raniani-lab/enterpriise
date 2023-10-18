@@ -1,8 +1,7 @@
 /** @odoo-module */
 
 import * as spreadsheet from "@odoo/o-spreadsheet";
-import { nextTick } from "@web/../tests/helpers/utils";
-import { dom } from "@web/../tests/legacy/helpers/test_utils";
+import { nextTick, click } from "@web/../tests/helpers/utils";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";
 import { getCell, getCellFormula } from "@spreadsheet/../tests/utils/getters";
 import { selectCell } from "@spreadsheet/../tests/utils/commands";
@@ -22,7 +21,7 @@ QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
         await doMenuAction(topbarMenuRegistry, insertPivotCellPath, env);
         await nextTick();
         assert.containsOnce(document.body, ".o_pivot_table_dialog");
-        await dom.click(document.body.querySelectorAll(".o_pivot_table_dialog tr th")[1]);
+        await click(document.body.querySelectorAll(".o_pivot_table_dialog tr th")[1]);
         assert.equal(getCellFormula(model, "D8"), getCellFormula(model, "B1"));
         model.dispatch("REQUEST_UNDO");
         assert.equal(getCell(model, "D8"), undefined);
@@ -46,11 +45,11 @@ QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
             await doMenuAction(topbarMenuRegistry, insertPivotCellPath, env);
             await nextTick();
             assert.containsOnce(document.body, ".o_missing_value");
-            await dom.click(document.body.querySelector("input#missing_values"));
+            await click(document.body.querySelector("input#missing_values"));
             await nextTick();
             assert.containsOnce(document.body, ".o_missing_value");
             assert.containsN(document.body, ".o_pivot_table_dialog th", 4);
-            await dom.click(document.body.querySelector(".o_missing_value"));
+            await click(document.body.querySelector(".o_missing_value"));
             assert.equal(getCellFormula(model, "D8"), missingValue);
         }
     );
@@ -82,7 +81,7 @@ QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
         await doMenuAction(topbarMenuRegistry, insertPivotCellPath, env);
         await nextTick();
         assert.containsOnce(document.body, ".o_missing_value");
-        await dom.click(document.body.querySelector("input#missing_values"));
+        await click(document.body.querySelector("input#missing_values"));
         await nextTick();
         assert.containsOnce(document.body, ".o_missing_value");
         assert.containsN(document.body, ".o_pivot_table_dialog td", 1);
@@ -119,11 +118,11 @@ QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
             await doMenuAction(topbarMenuRegistry, insertPivotCellPath, env);
             await nextTick();
             assert.containsOnce(document.body, ".o_missing_value");
-            await dom.click(document.body.querySelector("input#missing_values"));
+            await click(document.body.querySelector("input#missing_values"));
             await nextTick();
             assert.containsOnce(document.body, ".o_missing_value");
             assert.containsN(document.body, ".o_pivot_table_dialog th", 5);
-            await dom.click(document.body.querySelector(".o_missing_value"));
+            await click(document.body.querySelector(".o_missing_value"));
             assert.equal(getCellFormula(model, "J10"), missingValue);
         }
     );
@@ -152,7 +151,7 @@ QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
             await doMenuAction(topbarMenuRegistry, insertPivotCellPath, env);
             await nextTick();
             assert.containsOnce(document.body, ".o_pivot_table_dialog");
-            await dom.click(document.body.querySelectorAll(".o_pivot_table_dialog tr th")[1]);
+            await click(document.body.querySelectorAll(".o_pivot_table_dialog tr th")[1]);
             assert.strictEqual(document.activeElement.tagName, "INPUT");
             assert.ok([...document.activeElement.parentElement.classList].includes("o-grid"));
         }
@@ -183,7 +182,7 @@ QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
         });
         await doMenuAction(topbarMenuRegistry, insertPivotCellPath, env);
         await nextTick();
-        await dom.click(document.body.querySelector("input#missing_values"));
+        await click(document.body.querySelector("input#missing_values"));
         await nextTick();
         assert.containsOnce(document.body, ".o_missing_value");
     });
@@ -213,7 +212,7 @@ QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
         });
         await doMenuAction(topbarMenuRegistry, insertPivotCellPath, env);
         await nextTick();
-        await dom.click(document.body.querySelector("input#missing_values"));
+        await click(document.body.querySelector("input#missing_values"));
         await nextTick();
         assert.containsOnce(document.body, ".o_missing_value");
     });
@@ -247,7 +246,7 @@ QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
             });
             await doMenuAction(topbarMenuRegistry, insertPivotCellPath, env);
             await nextTick();
-            await dom.click(document.body.querySelector("input#missing_values"));
+            await click(document.body.querySelector("input#missing_values"));
             await nextTick();
             assert.containsOnce(document.body, ".o_missing_value");
             assert.containsN(document.body, ".o_pivot_table_dialog th", 5);

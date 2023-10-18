@@ -484,7 +484,7 @@ if mailing_list:
                 'code':
 """
 for record in records:
-    record.message_post(body='%s is interested for becoming partner.' % record.name)
+    record.message_post(body='%s is interested in becoming partner.' % record.name)
 """
             }
         }

@@ -1,12 +1,8 @@
 /** @odoo-module */
 
 import { _t } from "@web/core/l10n/translation";
-import { astToFormula, UIPlugin } from "@odoo/o-spreadsheet";
-import {
-    getFirstPivotFunction,
-    getNumberOfPivotFormulas,
-    makePivotFormula,
-} from "@spreadsheet/pivot/pivot_helpers";
+import { UIPlugin } from "@odoo/o-spreadsheet";
+import { getNumberOfPivotFormulas, makePivotFormula } from "@spreadsheet/pivot/pivot_helpers";
 import { pivotTimeAdapter } from "@spreadsheet/pivot/pivot_time_adapters";
 
 /**
@@ -44,12 +40,8 @@ export class PivotAutofillPlugin extends UIPlugin {
         if (getNumberOfPivotFormulas(formula) !== 1) {
             return formula;
         }
-        const { functionName, args } = getFirstPivotFunction(formula);
-        const evaluatedArgs = args
-            .map(astToFormula)
-            .map((arg) =>
-                this.getters.evaluateFormula(this.getters.getActiveSheetId(), arg).toString()
-            );
+        const { functionName, args } = this.getters.getFirstPivotFunction(formula);
+        const evaluatedArgs = args.map((arg) => arg.toString());
         const pivotId = evaluatedArgs[0];
         if (!this.getters.isExistingPivot(pivotId)) {
             return formula;
@@ -114,18 +106,15 @@ export class PivotAutofillPlugin extends UIPlugin {
         if (getNumberOfPivotFormulas(formula) !== 1) {
             return [];
         }
-        const { functionName, args } = getFirstPivotFunction(formula);
-        const evaluatedArgs = args
-            .map(astToFormula)
-            .map((arg) => this.getters.evaluateFormula(this.getters.getActiveSheetId(), arg));
-        const pivotId = evaluatedArgs[0];
+        const { functionName, args } = this.getters.getFirstPivotFunction(formula);
+        const pivotId = args[0];
         if (!this.getters.isExistingPivot(pivotId)) {
             return [{ title: _t("Missing pivot"), value: _t("Missing pivot #%s", pivotId) }];
         }
         if (functionName === "ODOO.PIVOT") {
-            return this._tooltipFormatPivot(pivotId, evaluatedArgs, isColumn);
+            return this._tooltipFormatPivot(pivotId, args, isColumn);
         } else if (functionName === "ODOO.PIVOT.HEADER") {
-            return this._tooltipFormatPivotHeader(pivotId, evaluatedArgs);
+            return this._tooltipFormatPivotHeader(pivotId, args);
         }
         return [];
     }

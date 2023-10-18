@@ -951,6 +951,7 @@ class TestReportEngines(TestAccountReportsCommon):
         expected_amls_to_test = [
             ('9999', moves[1].line_ids[0] + moves[1].line_ids[2]),
             ('test7', moves[0].line_ids[0]),
+            ('test12_1', moves[1].line_ids[:3]),
         ]
         for report_line_name, expected_amls in expected_amls_to_test:
             report_line = report.line_ids.filtered(lambda x: x.name == report_line_name)

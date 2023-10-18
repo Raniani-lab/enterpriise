@@ -6,9 +6,11 @@ import { SpreadsheetName } from "./spreadsheet_name";
 import { SpreadsheetShareButton } from "@spreadsheet/components/share_button/share_button";
 import { session } from "@web/session";
 import { _t } from "@web/core/l10n/translation";
+import { Dropdown } from "@web/core/dropdown/dropdown";
+import { DropdownItem } from "@web/core/dropdown/dropdown_item";
+
 import { Component, onWillUnmount, useState } from "@odoo/owl";
 import { helpers } from "@odoo/o-spreadsheet";
-import { Dropdown } from "@web/core/dropdown/dropdown";
 
 /**
  * @typedef {import("@spreadsheet_edition/bundle/actions/spreadsheet_component").User} User
@@ -124,6 +126,7 @@ SpreadsheetControlPanel.template = "spreadsheet_edition.SpreadsheetControlPanel"
 SpreadsheetControlPanel.components = {
     ControlPanel,
     Dropdown,
+    DropdownItem,
     SpreadsheetName,
     SpreadsheetShareButton,
 };

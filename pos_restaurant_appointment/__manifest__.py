@@ -17,6 +17,7 @@
         'demo/pos_restaurant_appointment_demo.xml',
     ],
     'license': 'OEEL-1',
+    'post_init_hook': '_pos_restaurant_appointment_after_init',
     'assets': {
         'point_of_sale._assets_pos': [
             'pos_restaurant_appointment/static/src/app/**/*',

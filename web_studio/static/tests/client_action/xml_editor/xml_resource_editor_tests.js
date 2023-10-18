@@ -55,6 +55,89 @@ QUnit.module("Resizable Panel", (hooks) => {
         );
     });
 
+    QUnit.test("handles right-to-left", async (assert) => {
+        class Parent extends Component {
+            static components = { ResizablePanel };
+            static template = xml`
+                <div class="d-flex parent-el" style="direction: rtl;">
+                    <div style="width: 50px;" />
+                    <ResizablePanel minWidth="20" >
+                        <div style="width: 10px;" class="text-break">
+                            A cool paragraph
+                        </div>
+                    </ResizablePanel>
+                </div>
+            `;
+        }
+        await mount(Parent, target, { env });
+        const parentEl = target.querySelector(".parent-el");
+        const resizablePanelEl = target.querySelector(".o_resizable_panel");
+        let resizablePabelRect = resizablePanelEl.getBoundingClientRect();
+        assert.strictEqual(resizablePabelRect.width, 22.5);
+
+        const handle = resizablePanelEl.querySelector(".o_resizable_panel_handle");
+        await triggerEvents(handle, null, ["mousedown", ["mousemove", { clientX: 10 }], "mouseup"]);
+        resizablePabelRect = resizablePanelEl.getBoundingClientRect();
+        assert.ok(resizablePabelRect.width > parentEl.offsetWidth - 10 - 50);
+    });
+
+    QUnit.test("handles resize handle at start in fixed position", async (assert) => {
+        class Parent extends Component {
+            static components = { ResizablePanel };
+            static template = xml`
+                <div class="d-flex parent-el">
+                    <ResizablePanel minWidth="20" handleSide="'start'" class="'position-fixed'">
+                        <div style="width: 10px;" class="text-break">
+                            A cool paragraph
+                        </div>
+                    </ResizablePanel>
+                </div>
+            `;
+        }
+        await mount(Parent, target, { env });
+        const resizablePanelEl = target.querySelector(".o_resizable_panel");
+        resizablePanelEl.style.setProperty("right", "100px");
+        let resizablePabelRect = resizablePanelEl.getBoundingClientRect();
+        assert.strictEqual(resizablePabelRect.width, 22.5);
+
+        const handle = resizablePanelEl.querySelector(".o_resizable_panel_handle");
+        await triggerEvents(handle, null, [
+            "mousedown",
+            ["mousemove", { clientX: window.innerWidth - 200 }],
+            "mouseup",
+        ]);
+        resizablePabelRect = resizablePanelEl.getBoundingClientRect();
+        assert.strictEqual(resizablePabelRect.width, 100 + handle.offsetWidth / 2);
+    });
+
+    QUnit.test("resizing the window adapts the panel", async (assert) => {
+        class Parent extends Component {
+            static components = { ResizablePanel };
+            static template = xml`
+                <div style="width: 400px;" class="parent-el position-relative">
+                    <ResizablePanel>
+                        <p>A</p>
+                        <p>Cool</p>
+                        <p>Paragraph</p>
+                    </ResizablePanel>
+                </div>
+            `;
+        }
+        await mount(Parent, target, { env });
+        const resizablePanelEl = target.querySelector(".o_resizable_panel");
+        const handle = resizablePanelEl.querySelector(".o_resizable_panel_handle");
+        await triggerEvents(handle, null, [
+            "mousedown",
+            ["mousemove", { clientX: 99999 }],
+            "mouseup",
+        ]);
+        assert.strictEqual(resizablePanelEl.offsetWidth, 398);
+        target.querySelector(".parent-el").style.setProperty("width", "200px");
+        window.dispatchEvent(new Event("resize"));
+        await nextTick();
+        assert.strictEqual(resizablePanelEl.offsetWidth, 198);
+    });
+
     QUnit.test("minWidth props can be updated", async (assert) => {
         class Parent extends Component {
             static components = { ResizablePanel };

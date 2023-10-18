@@ -12,6 +12,7 @@ import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { createSpreadsheetFromGraphView, openChartSidePanel } from "../utils/chart_helpers";
 import { GraphRenderer } from "@web/views/graph/graph_renderer";
 import { patchGraphSpreadsheet } from "@spreadsheet_edition/assets/graph_view/graph_view";
+import * as dsHelpers from "@web/../tests/core/domain_selector_tests";
 
 function beforeEach() {
     patchWithCleanup(GraphRenderer.prototype, patchGraphSpreadsheet());
@@ -150,7 +151,7 @@ QUnit.module("documents_spreadsheet > chart side panel", { beforeEach }, () => {
         assert.equal(measures.children[1].innerText, "Refresh values");
     });
 
-    QUnit.skip("Update the chart domain from the side panel", async function (assert) {
+    QUnit.test("Update the chart domain from the side panel", async function (assert) {
         const { model, env } = await createSpreadsheetFromGraphView({
             mockRPC(route) {
                 if (route === "/web/domain/validate") {
@@ -165,12 +166,12 @@ QUnit.module("documents_spreadsheet > chart side panel", { beforeEach }, () => {
         await nextTick();
         const fixture = getFixture();
         await click(fixture.querySelector(".o_edit_domain"));
-        await click(fixture.querySelector(".o_domain_tree a[role=button]"));
+        await dsHelpers.addNewRule(fixture);
         await click(fixture.querySelector(".modal-footer .btn-primary"));
         assert.deepEqual(model.getters.getChartDefinition(chartId).searchParams.domain, [
             ["id", "=", 1],
         ]);
-        assert.equal(fixture.querySelector(".o_domain_selector_row").innerText, "ID\n= 1");
+        assert.equal(dsHelpers.getConditionText(fixture), "ID = 1");
     });
 
     QUnit.test("Cumulative line chart", async (assert) => {

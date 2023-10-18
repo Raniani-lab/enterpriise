@@ -1,10 +1,10 @@
 /** @odoo-module **/
 /* global firebase */
 
-import core from "@web/legacy/js/services/core";
 import publicWidget from "@web/legacy/js/public/public_widget";
 import { browser } from "@web/core/browser/browser";
 import NotificationRequestPopup from "@social_push_notifications/js/push_notification_request_popup";
+import { Component } from "@odoo/owl";
 
 publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
     selector: '#wrapwrap',
@@ -44,7 +44,7 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
         } else if (Notification.permission !== "denied") {
             this._askPermission();
         }
-        core.bus.on('open_notification_request', this, this._onNotificationRequest);
+        Component.env.bus.addEventListener('open_notification_request', (ev) => this._onNotificationRequest(...ev.detail));
 
         return superPromise;
     },

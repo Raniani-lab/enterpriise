@@ -5,7 +5,6 @@ import { Chatter } from "@mail/core/web/chatter";
 
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
 import BarcodeQuantModel from '@stock_barcode/models/barcode_quant_model';
-import { bus } from "@web/legacy/js/services/core";
 import GroupedLineComponent from '@stock_barcode/components/grouped_line';
 import LineComponent from '@stock_barcode/components/line';
 import PackageLineComponent from '@stock_barcode/components/package_line';
@@ -17,15 +16,9 @@ import { View } from "@web/views/view";
 import { ManualBarcodeScanner } from './manual_barcode';
 import { url } from '@web/core/utils/urls';
 import { utils as uiUtils } from "@web/core/ui/ui_service";
-import {
-    Component,
-    onMounted,
-    onPatched,
-    onWillStart,
-    onWillUnmount,
-    useState,
-    useSubEnv,
-} from "@odoo/owl";
+import { Component, EventBus, onPatched, onWillStart, useState, useSubEnv } from "@odoo/owl";
+
+const bus = new EventBus();
 
 class StockBarcodeUnlinkButton extends Component {
     static template = "stock_barcode.UnlinkButton";
@@ -74,6 +67,7 @@ class MainComponent extends Component {
 
         useBus(this.env.model, 'flash', this.flashScreen.bind(this));
         useBus(this.env.model, 'error', this.playErrorSound.bind(this));
+        useBus(bus, "refresh", (ev) => this._onRefreshState(ev.detail));
 
         onWillStart(async () => {
             const barcodeData = await this.rpc(
@@ -96,16 +90,6 @@ class MainComponent extends Component {
             this.env.model.addEventListener('refresh', (ev) => this._onRefreshState(ev.detail));
             this.env.model.addEventListener('update', () => this.render(true));
             this.env.model.addEventListener('history-back', () => this.env.config.historyBack());
-        });
-
-        onMounted(() => {
-            bus.on('refresh', this, this._onRefreshState);
-            bus.on('warning', this, this._onWarning);
-        });
-
-        onWillUnmount(() => {
-            bus.off('refresh', this, this._onRefreshState);
-            bus.off('warning', this, this._onWarning);
         });
 
         onPatched(() => {

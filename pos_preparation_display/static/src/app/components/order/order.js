@@ -59,6 +59,15 @@ export class Order extends Component {
     get cardColor() {
         return "o_pdis_card_color_0";
     }
+
+    clickOrder() {
+        const order = this.props.order;
+        if (order.stageId === this.preparationDisplay.lastStage.id) {
+            return;
+        } else {
+            this.preparationDisplay.changeOrderStage(this.props.order, true);
+        }
+    }
 }
 
 Order.components = { Orderline };

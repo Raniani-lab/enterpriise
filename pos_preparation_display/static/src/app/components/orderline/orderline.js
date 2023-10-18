@@ -43,7 +43,9 @@ export class Orderline extends Component {
         const order = this.props.orderline.order;
 
         orderline.todo = newState;
-        this.preparationDisplay.changeOrderStage(order);
+        if (order.stageId !== this.preparationDisplay.lastStage.id) {
+            this.preparationDisplay.changeOrderStage(order);
+        }
     }
 }
 

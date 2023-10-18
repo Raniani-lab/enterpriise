@@ -4,7 +4,7 @@
         <section
             class="o_pdis_order_card position-relative w-100 mx-auto mb-auto overflow-hidden rounded"
             t-attf-class="{{this.props.order.changeStageTimeout ? 'o_pdis_stage--animation' : ''}} {{this.cardColor}}">
-            <div class="o_pdis_order_card_header" t-on-click="() => this.preparationDisplay.changeOrderStage(this.props.order, true)">
+            <div class="o_pdis_order_card_header" t-on-click="clickOrder">
                 <div
                     class="o_pdis_order_card_header_top d-flex flex-nowrap align-items-center justify-content-between px-2 pb-1 fw-bold"
                     t-att-class="this.cardColor">

@@ -356,6 +356,9 @@ export class PreparationDisplay extends Reactive {
     }
 
     resetOrderlineStatus(order, sync = false, all = false) {
+        if (order.stageId === this.lastStage.id) {
+            return;
+        }
         for (const orderline of order.orderlines) {
             if (
                 orderline.productQuantity - orderline.productCancelled !== 0 &&

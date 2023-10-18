@@ -2,7 +2,7 @@
 <templates>
     <t t-name="appointment.CalendarController" t-inherit="calendar.AttendeeCalendarController" t-inherit-mode="extension">
         <xpath expr="//t[@t-set-slot='control-panel-additional-actions']" position="inside">
-            <div id="scheduling_box">
+            <div id="scheduling_box" class="position-fixed position-md-static start-0 bottom-0 w-100 p-3 p-lg-0">
                 <div t-if="env.calendarState.mode === 'slots-creation' || appointmentState.lastAppointment.url" class="o_appointment_scheduling_message_box alert-primary">
                     <span class="d-flex align-items-center py-0 rounded-1 lh-1">
                         <button t-attf-class="btn btn-link flex-grow-1 o_appointment_get_link ${this.appointmentState.lastAppointment.url || this.hasSlotEvents() ? '' : 'disabled pe-none'}" title="Get Share Link" aria-label="Get Share Link"

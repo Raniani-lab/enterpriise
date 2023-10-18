@@ -2,7 +2,7 @@
 import { registry } from "@web/core/registry";
 import { x2ManyCommands } from "@web/core/orm_service";
 
-import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
+import { SpreadsheetComponent } from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
 import { SpreadsheetName } from "@spreadsheet_edition/bundle/actions/control_panel/spreadsheet_name";
 
 import { Model } from "@odoo/o-spreadsheet";

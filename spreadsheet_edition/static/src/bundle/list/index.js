@@ -7,8 +7,8 @@ import { initCallbackRegistry } from "@spreadsheet/o_spreadsheet/init_callbacks"
 import "./autofill";
 import "./operational_transform";
 
-import ListingAllSidePanel from "./side_panels/listing_all_side_panel";
-import ListAutofillPlugin from "./plugins/list_autofill_plugin";
+import { ListingAllSidePanel } from "./side_panels/listing_all_side_panel";
+import { ListAutofillPlugin } from "./plugins/list_autofill_plugin";
 
 import { insertList } from "./list_init_callback";
 

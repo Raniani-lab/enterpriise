@@ -11,7 +11,7 @@ import {
 import { getCellValue } from "@spreadsheet/../tests/utils/getters";
 import { selectCell } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheetFromPivotView } from "../../utils/pivot_helpers";
-import PivotUIPlugin from "@spreadsheet/pivot/plugins/pivot_ui_plugin";
+import { PivotUIPlugin } from "@spreadsheet/pivot/plugins/pivot_ui_plugin";
 import { insertPivotInSpreadsheet } from "@spreadsheet/../tests/utils/pivot";
 import * as dsHelpers from "@web/../tests/core/domain_selector_tests";
 

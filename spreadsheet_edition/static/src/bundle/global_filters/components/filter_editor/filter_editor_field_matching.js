@@ -9,7 +9,7 @@ import { Component } from "@odoo/owl";
  * @typedef {import("@spreadsheet/data_sources/metadata_repository").Field} Field
  */
 
-export default class FilterEditorFieldMatching extends Component {
+export class FilterEditorFieldMatching extends Component {
     /**
      *
      * @param {FieldMatching} fieldMatch

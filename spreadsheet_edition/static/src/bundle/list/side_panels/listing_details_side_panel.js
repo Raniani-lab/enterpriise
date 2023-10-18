@@ -6,7 +6,7 @@ import { DomainSelectorDialog } from "@web/core/domain_selector_dialog/domain_se
 import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
 
-import EditableName from "../../o_spreadsheet/editable_name/editable_name";
+import { EditableName } from "../../o_spreadsheet/editable_name/editable_name";
 
 import { Component, onWillStart, onWillUpdateProps } from "@odoo/owl";
 

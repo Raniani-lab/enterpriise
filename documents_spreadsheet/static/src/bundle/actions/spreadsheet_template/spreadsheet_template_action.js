@@ -2,7 +2,7 @@
 import { registry } from "@web/core/registry";
 import { _t } from "@web/core/l10n/translation";
 
-import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
+import { SpreadsheetComponent } from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
 import { AbstractSpreadsheetAction } from "@spreadsheet_edition/bundle/actions/abstract_spreadsheet_action";
 import { DocumentsSpreadsheetControlPanel } from "@documents_spreadsheet/bundle/components/control_panel/spreadsheet_control_panel";
 import { useSubEnv } from "@odoo/owl";

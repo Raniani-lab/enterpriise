@@ -1,7 +1,7 @@
 /** @odoo-module */
 
-import AbstractFilterEditorSidePanel from "./filter_editor_side_panel";
-import FilterEditorFieldMatching from "./filter_editor_field_matching";
+import { AbstractFilterEditorSidePanel } from "./filter_editor_side_panel";
+import { FilterEditorFieldMatching } from "./filter_editor_field_matching";
 
 import { useState } from "@odoo/owl";
 
@@ -16,7 +16,7 @@ import { useState } from "@odoo/owl";
 /**
  * This is the side panel to define/edit a global filter of type "text".
  */
-export default class TextFilterEditorSidePanel extends AbstractFilterEditorSidePanel {
+export class TextFilterEditorSidePanel extends AbstractFilterEditorSidePanel {
     setup() {
         super.setup();
 

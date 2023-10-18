@@ -12,7 +12,7 @@ import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { setCellContent, selectCell, setSelection } from "@spreadsheet/../tests/utils/commands";
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 import { getCell, getCellContent, getCellValue } from "@spreadsheet/../tests/utils/getters";
-import MockSpreadsheetCollaborativeChannel from "@spreadsheet_edition/../tests/utils/mock_spreadsheet_collaborative_channel";
+import { MockSpreadsheetCollaborativeChannel } from "@spreadsheet_edition/../tests/utils/mock_spreadsheet_collaborative_channel";
 
 const { topbarMenuRegistry } = spreadsheet.registries;
 const { toZone } = spreadsheet.helpers;

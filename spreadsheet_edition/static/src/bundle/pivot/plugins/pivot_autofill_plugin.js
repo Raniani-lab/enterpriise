@@ -26,7 +26,7 @@ import { pivotTimeAdapter } from "@spreadsheet/pivot/pivot_time_adapters";
  * @property {string|undefined} group
  */
 
-export default class PivotAutofillPlugin extends UIPlugin {
+export class PivotAutofillPlugin extends UIPlugin {
     // ---------------------------------------------------------------------
     // Getters
     // ---------------------------------------------------------------------

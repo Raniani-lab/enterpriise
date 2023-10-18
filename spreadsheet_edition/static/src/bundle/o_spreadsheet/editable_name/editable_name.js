@@ -2,7 +2,7 @@
 
 import { Component, useState } from "@odoo/owl";
 
-export default class EditableName extends Component {
+export class EditableName extends Component {
     setup() {
         super.setup();
         this.state = useState({

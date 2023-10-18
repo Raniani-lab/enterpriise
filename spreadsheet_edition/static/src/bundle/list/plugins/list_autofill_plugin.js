@@ -5,7 +5,7 @@ import { astToFormula, UIPlugin } from "@odoo/o-spreadsheet";
 import { sprintf } from "@web/core/utils/strings";
 import { getFirstListFunction, getNumberOfListFormulas } from "@spreadsheet/list/list_helpers";
 
-export default class ListAutofillPlugin extends UIPlugin {
+export class ListAutofillPlugin extends UIPlugin {
     // ---------------------------------------------------------------------
     // Getters
     // ---------------------------------------------------------------------

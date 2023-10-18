@@ -9,7 +9,7 @@ import { hooks } from "@odoo/o-spreadsheet";
  * This is the side panel to define/edit a global filter.
  * It can be of 3 different type: text, date and relation.
  */
-export default class GlobalFiltersSidePanel extends Component {
+export class GlobalFiltersSidePanel extends Component {
     dnd = hooks.useDragAndDropListItems();
     filtersListRef = useRef("filtersList");
 

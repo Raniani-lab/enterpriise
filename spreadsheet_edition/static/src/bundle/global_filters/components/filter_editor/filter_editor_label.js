@@ -2,7 +2,7 @@
 
 import { Component, onMounted, useRef } from "@odoo/owl";
 
-export default class FilterEditorLabel extends Component {
+export class FilterEditorLabel extends Component {
     setup() {
         this.labelInput = useRef("labelInput");
         onMounted(this.onMounted);

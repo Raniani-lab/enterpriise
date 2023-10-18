@@ -3,8 +3,8 @@
 import { _t } from "@web/core/l10n/translation";
 import { FilterFieldOffset } from "../filter_field_offset";
 import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
-import AbstractFilterEditorSidePanel from "./filter_editor_side_panel";
-import FilterEditorFieldMatching from "./filter_editor_field_matching";
+import { AbstractFilterEditorSidePanel } from "./filter_editor_side_panel";
+import { FilterEditorFieldMatching } from "./filter_editor_field_matching";
 
 import { useState } from "@odoo/owl";
 
@@ -41,7 +41,7 @@ DateFilterEditorFieldMatching.props = {
 /**
  * This is the side panel to define/edit a global filter of type "date".
  */
-export default class DateFilterEditorSidePanel extends AbstractFilterEditorSidePanel {
+export class DateFilterEditorSidePanel extends AbstractFilterEditorSidePanel {
     /**
      * @constructor
      */

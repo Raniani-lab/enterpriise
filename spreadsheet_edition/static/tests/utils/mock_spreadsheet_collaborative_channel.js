@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-export default class MockSpreadsheetCollaborativeChannel {
+export class MockSpreadsheetCollaborativeChannel {
     constructor() {
         this.listeners = [];
         this.pendingMessages = [];
@@ -39,7 +39,7 @@ export default class MockSpreadsheetCollaborativeChannel {
     async concurrent(concurrentExecutionCallback) {
         this.isConcurrent = true;
         await concurrentExecutionCallback();
-        for (let message of this.pendingMessages) {
+        for (const message of this.pendingMessages) {
             this.notifyListeners(message);
         }
         this.isConcurrent = false;
@@ -47,7 +47,7 @@ export default class MockSpreadsheetCollaborativeChannel {
     }
 
     notifyListeners(message) {
-        for (let { callback } of this.listeners) {
+        for (const { callback } of this.listeners) {
             callback(JSON.parse(JSON.stringify(message)));
         }
     }

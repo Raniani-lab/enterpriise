@@ -5,11 +5,11 @@ import { DomainSelector } from "@web/core/domain_selector/domain_selector";
 import { DomainSelectorDialog } from "@web/core/domain_selector_dialog/domain_selector_dialog";
 import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
-import EditableName from "../../o_spreadsheet/editable_name/editable_name";
+import { EditableName } from "../../o_spreadsheet/editable_name/editable_name";
 
 import { Component, onWillStart, onWillUpdateProps } from "@odoo/owl";
 
-export default class PivotDetailsSidePanel extends Component {
+export class PivotDetailsSidePanel extends Component {
     setup() {
         this.dialog = useService("dialog");
         /** @type {import("@spreadsheet/pivot/pivot_data_source").default} */

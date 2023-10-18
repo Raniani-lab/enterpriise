@@ -1,11 +1,11 @@
 /** @odoo-module */
 
 import { _t } from "@web/core/l10n/translation";
-import PivotDetailsSidePanel from "./pivot_details_side_panel";
+import { PivotDetailsSidePanel } from "./pivot_details_side_panel";
 
 import { Component } from "@odoo/owl";
 
-export default class PivotSidePanel extends Component {
+export class PivotSidePanel extends Component {
     selectPivot(pivotId) {
         this.env.model.dispatch("SELECT_PIVOT", { pivotId });
     }

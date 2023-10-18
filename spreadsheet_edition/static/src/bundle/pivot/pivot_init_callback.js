@@ -1,6 +1,6 @@
 /** @odoo-module **/
 import * as spreadsheet from "@odoo/o-spreadsheet";
-import PivotDataSource from "@spreadsheet/pivot/pivot_data_source";
+import { PivotDataSource } from "@spreadsheet/pivot/pivot_data_source";
 import { Domain } from "@web/core/domain";
 
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();

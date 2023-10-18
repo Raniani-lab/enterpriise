@@ -4,8 +4,8 @@ import { _t } from "@web/core/l10n/translation";
 import * as spreadsheet from "@odoo/o-spreadsheet";
 import { initCallbackRegistry } from "@spreadsheet/o_spreadsheet/init_callbacks";
 
-import PivotAutofillPlugin from "./plugins/pivot_autofill_plugin";
-import PivotSidePanel from "./side_panels/pivot_list_side_panel";
+import { PivotAutofillPlugin } from "./plugins/pivot_autofill_plugin";
+import { PivotSidePanel } from "./side_panels/pivot_list_side_panel";
 
 import "./autofill";
 import "./operational_transform";

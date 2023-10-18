@@ -2,7 +2,7 @@
 
 import { Model } from "@odoo/o-spreadsheet";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel";
+import { MockSpreadsheetCollaborativeChannel } from "./mock_spreadsheet_collaborative_channel";
 import { ormService } from "@web/core/orm_service";
 import { uiService } from "@web/core/ui/ui_service";
 import { registry } from "@web/core/registry";

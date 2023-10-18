@@ -15,7 +15,7 @@ import { registry } from "@web/core/registry";
 import { uiService } from "@web/core/ui/ui_service";
 import { makeFakeSpreadsheetService } from "@spreadsheet_edition/../tests/utils/collaborative_helpers";
 import { Spreadsheet } from "@odoo/o-spreadsheet";
-import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
+import { SpreadsheetComponent } from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
 
 const serviceRegistry = registry.category("services");
 

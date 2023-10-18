@@ -5,7 +5,7 @@ import { ListingDetailsSidePanel } from "./listing_details_side_panel";
 
 import { Component } from "@odoo/owl";
 
-export default class ListingAllSidePanel extends Component {
+export class ListingAllSidePanel extends Component {
     constructor() {
         super(...arguments);
         this.getters = this.env.model.getters;

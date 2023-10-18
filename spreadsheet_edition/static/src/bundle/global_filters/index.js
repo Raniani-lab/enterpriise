@@ -4,13 +4,13 @@ import { _t } from "@web/core/l10n/translation";
 
 import * as spreadsheet from "@odoo/o-spreadsheet";
 
-import GlobalFiltersSidePanel from "./global_filters_side_panel";
+import { GlobalFiltersSidePanel } from "./global_filters_side_panel";
 import { FilterComponent } from "./filter_component";
 
 import "./operational_transform";
-import DateFilterEditorSidePanel from "./components/filter_editor/date_filter_editor_side_panel";
-import TextFilterEditorSidePanel from "./components/filter_editor/text_filter_editor_side_panel";
-import RelationFilterEditorSidePanel from "./components/filter_editor/relation_filter_editor_side_panel";
+import { DateFilterEditorSidePanel } from "./components/filter_editor/date_filter_editor_side_panel";
+import { TextFilterEditorSidePanel } from "./components/filter_editor/text_filter_editor_side_panel";
+import { RelationFilterEditorSidePanel } from "./components/filter_editor/relation_filter_editor_side_panel";
 
 const { sidePanelRegistry, topbarComponentRegistry, cellMenuRegistry } = spreadsheet.registries;
 

@@ -12,7 +12,7 @@
  * It uses the RPC protocol to send messages to the server which
  * push them in the long polling bus for other clients.
  */
-export default class SpreadsheetCollaborativeChannel {
+export class SpreadsheetCollaborativeChannel {
     static dependencies = ["bus_service", "orm"];
     /**
      * @param {Env} env

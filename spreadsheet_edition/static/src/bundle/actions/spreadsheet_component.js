@@ -22,7 +22,7 @@ import { useSubEnv, Component } from "@odoo/owl";
  * to add user interactions extensions from odoo such as notifications,
  * error dialogs, etc.
  */
-export default class SpreadsheetComponent extends Component {
+export class SpreadsheetComponent extends Component {
     get model() {
         return this.props.model;
     }

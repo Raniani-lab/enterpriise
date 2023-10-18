@@ -6,7 +6,7 @@ import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { getCellContent, getCellFormula, getCellValue } from "@spreadsheet/../tests/utils/getters";
 import { setCellContent } from "@spreadsheet/../tests/utils/commands";
 import { setupCollaborativeEnv } from "../../utils/collaborative_helpers";
-import ListDataSource from "@spreadsheet/list/list_data_source";
+import { ListDataSource } from "@spreadsheet/list/list_data_source";
 import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 
 /** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */

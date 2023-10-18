@@ -71,13 +71,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_mx_edi_40.field_res_partner__l10n_mx_edi_fiscal_regime
 #: model:ir.model.fields,field_description:l10n_mx_edi_40.field_res_users__l10n_mx_edi_fiscal_regime
 msgid "Fiscal Regime"
-msgstr ""
+msgstr "Régimen Fiscal"
 
 #. module: l10n_mx_edi_40
 #: model:ir.model.fields,help:l10n_mx_edi_40.field_res_partner__l10n_mx_edi_fiscal_regime
 #: model:ir.model.fields,help:l10n_mx_edi_40.field_res_users__l10n_mx_edi_fiscal_regime
 msgid "Fiscal Regime is required for all partners (used in CFDI)"
-msgstr ""
+msgstr "El Régimen Fiscal es requerido para todos los contactos (utilizados para el CFDI)"
+
+#. module: l10n_mx_edi_40
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi_40.l10n_mx_fiscal_regime_receptor
+msgid "Fiscal Regime:"
+msgstr "Régimen Fiscal:"
 
 #. module: l10n_mx_edi_40
 #: model:ir.model.fields.selection,name:l10n_mx_edi_40.selection__res_partner__l10n_mx_edi_fiscal_regime__601

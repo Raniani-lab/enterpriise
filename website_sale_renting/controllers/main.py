@@ -24,6 +24,7 @@ class WebsiteSaleRenting(WebsiteSale):
         order_sudo._cart_update_renting_period(start_date, end_date)
 
         values = {}
+        values['cart_ready'] = order_sudo._is_cart_ready()
         values['website_sale.cart_lines'] = request.env['ir.ui.view']._render_template(
             'website_sale.cart_lines', {
                 'website_sale_order': order_sudo,

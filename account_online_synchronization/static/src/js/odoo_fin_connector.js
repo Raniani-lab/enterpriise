@@ -3,6 +3,7 @@
 import { registry } from "@web/core/registry";
 import { loadJS } from "@web/core/assets";
 import { cookie } from "@web/core/browser/cookie";
+import { markup } from "@odoo/owl";
 const actionRegistry = registry.category('actions');
 /* global OdooFin, debugMode */
 
@@ -48,9 +49,11 @@ function OdooFinConnector(parent, action) {
                         case 'success':
                             mode = data.mode || mode;
                             actionResult = await orm.call('account.online.link', 'success', [[id], mode, data], {context: action.context});
+                            actionResult.help = markup(actionResult.help)
                             return actionService.doAction(actionResult);
                         case 'connect_existing_account':
                             actionResult = await orm.call('account.online.link', 'connect_existing_account', [data], {context: action.context});
+                            actionResult.help = markup(actionResult.help)
                             return actionService.doAction(actionResult);
                         default:
                             return;
@@ -60,6 +63,7 @@ function OdooFinConnector(parent, action) {
                     // If the user doesn't find his bank
                     actionResult = await orm.call('account.online.link', 'create_new_bank_account_action',
                     [], {context: action.context});
+                    actionResult.help = markup(actionResult.help)
                     return actionService.doAction(actionResult);
                 }
             };

@@ -17,21 +17,6 @@ msgstr ""
 
 #. module: account_accountant
 #. odoo-python
-#: code:addons/account_accountant/models/account_bank_statement.py:0
-#, python-format
-msgid ""
-"\n"
-"                <p class=\"o_view_nocontent_smiling_face\">\n"
-"                    Nothing to do here!\n"
-"                </p>\n"
-"                <p>\n"
-"                    No transactions matching your filters were found.\n"
-"                </p>\n"
-"            "
-msgstr ""
-
-#. module: account_accountant
-#. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid ""
@@ -1224,6 +1209,13 @@ msgid "No statement"
 msgstr ""
 
 #. module: account_accountant
+#. odoo-python
+#: code:addons/account_accountant/models/account_bank_statement.py:0
+#, python-format
+msgid "No transactions matching your filters were found."
+msgstr ""
+
+#. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__tax_lock_date
 msgid ""
 "No users can edit journal entries related to a tax prior and inclusive of "
@@ -1252,6 +1244,13 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__res_company__generate_deferred_entries_method__on_validation
 msgid "On invoice/bill validation"
+msgstr ""
+
+#. module: account_accountant
+#. odoo-python
+#: code:addons/account_accountant/models/account_bank_statement.py:0
+#, python-format
+msgid "Nothing to do here!"
 msgstr ""
 
 #. module: account_accountant

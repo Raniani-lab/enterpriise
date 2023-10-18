@@ -6,6 +6,7 @@ from odoo.tools import html2plaintext
 from dateutil.relativedelta import relativedelta
 from itertools import product
 from lxml import etree
+from markupsafe import Markup
 
 class AccountBankStatement(models.Model):
     _inherit = 'account.bank.statement'
@@ -63,6 +64,10 @@ class AccountBankStatementLine(models.Model):
             (self.env.ref('account_accountant.view_bank_statement_line_kanban_bank_rec_widget').id, 'kanban'),
             (self.env.ref('account_accountant.view_bank_statement_line_tree_bank_rec_widget').id, 'list'),
         ]
+        helper = Markup("<p class='o_view_nocontent_smiling_face'>{}</p><p>{}</p>").format(
+            _("Nothing to do here!"),
+            _("No transactions matching your filters were found."),
+        )
         return {
             'name': name or _("Bank Reconciliation"),
             'type': 'ir.actions.act_window',
@@ -72,14 +77,7 @@ class AccountBankStatementLine(models.Model):
             'view_mode': 'kanban,list' if kanban_first else 'list,kanban',
             'views': views if kanban_first else views[::-1],
             'domain': [('state', '!=', 'cancel')] + (extra_domain or []),
-            'help': _("""
-                <p class="o_view_nocontent_smiling_face">
-                    Nothing to do here!
-                </p>
-                <p>
-                    No transactions matching your filters were found.
-                </p>
-            """),
+            'help': helper,
         }
 
     def action_open_recon_st_line(self):

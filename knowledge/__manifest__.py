@@ -81,6 +81,7 @@
             'knowledge/static/tests/knowledge_external_embeds_hotkeys.js',
             'knowledge/static/tests/knowledge_form_view_tests.js',
             'knowledge/static/tests/knowledge_behaviors_upgrade_tests.js',
+            'knowledge/static/tests/knowledge_wysiwyg_collaboration_tests.js',
             ('include', 'knowledge.assets_wysiwyg'),
         ],
         'web.tests_assets': [

@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-<div t-name="spreadsheet_edition.Breadcrumbs" t-inherit="web.Breadcrumbs" t-inherit-mode="primary">
+
+<t t-name="spreadsheet_edition.Breadcrumbs"  t-inherit="web.Breadcrumbs" t-inherit-mode="primary" >
+    <xpath expr="//div[hasclass('o_breadcrumb')]" position="attributes">
+        <attribute name="class" remove="flex-md-column" add="gap-2" separator=" " />
+    </xpath>
+    <xpath expr="//t[@t-set='visiblePathBreadcrumbs']" position="replace">
+        <t t-set="visiblePathBreadcrumbs" t-value="breadcrumbs.slice(-2, -1)"/>
+    </xpath>
+    <xpath expr="//t[@t-set='collapsedBreadcrumbs']" position="replace">
+        <t t-set="collapsedBreadcrumbs" t-value="breadcrumbs.slice(0, -2).reverse()"/>
+    </xpath>
     <xpath expr="(//div[hasclass('active')])[2]" position="replace">
-        <div class="active">
+        <div class="active d-flex">
             <SpreadsheetName name="props.spreadsheetName" isReadonly="props.isReadonly" onSpreadsheetNameChanged="props.onSpreadsheetNameChanged" />
         </div>
-        <t t-call="spreadsheet_edition.Breadcrumbs.SpreadsheetInfo"/>
     </xpath>
     <xpath expr="//div[hasclass('active')]" position="replace">
-        <div class="active">
+        <div class="active d-flex">
             <SpreadsheetName name="props.spreadsheetName" isReadonly="props.isReadonly" onSpreadsheetNameChanged="props.onSpreadsheetNameChanged" />
         </div>
-        <t t-call="spreadsheet_edition.Breadcrumbs.SpreadsheetInfo"/>
     </xpath>
-</div>
+</t>
 
-<div t-name="spreadsheet_edition.Breadcrumbs.SpreadsheetInfo">
+
+<div t-name="spreadsheet_edition.ControlPanel.SpreadsheetInfo">
         <t t-set-slot="control-panel-status-indicator">
             <div class="user-select-none">
                 <div class="o_spreadsheet_status o_spreadsheet_sync_status text-muted">

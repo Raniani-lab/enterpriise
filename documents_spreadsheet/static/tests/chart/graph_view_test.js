@@ -11,6 +11,7 @@ import {
 import { getSpreadsheetActionModel } from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { toggleMenu, toggleMenuItem } from "@web/../tests/search/helpers";
+import { session } from "@web/session";
 
 function beforeEach() {
     patchWithCleanup(GraphRenderer.prototype, patchGraphSpreadsheet());
@@ -129,7 +130,7 @@ QUnit.module("documents_spreadsheet > graph view", { beforeEach }, () => {
     });
 
     QUnit.test("graph with a contextual domain", async (assert) => {
-        const uid = 7;
+        const uid = session.user_context.uid;
         const serverData = getBasicServerData();
         serverData.models.partner.records = [
             {

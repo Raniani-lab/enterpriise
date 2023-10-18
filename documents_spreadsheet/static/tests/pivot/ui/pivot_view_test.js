@@ -746,7 +746,7 @@ QUnit.module("spreadsheet pivot view", {}, () => {
     });
 
     QUnit.test("pivot with a contextual domain", async (assert) => {
-        const uid = 7;
+        const uid = session.user_context.uid;
         const serverData = getBasicServerData();
         serverData.models.partner.records = [
             {

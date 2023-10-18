@@ -1363,6 +1363,7 @@ QUnit.module(
         QUnit.test(
             "Can clear automatic default user with the global clear button",
             async function (assert) {
+                const uid = session.user_context.uid;
                 const tagSelector = ".o_multi_record_selector .badge";
                 const { model } = await createSpreadsheetFromPivotView();
                 await addGlobalFilter(
@@ -1382,7 +1383,7 @@ QUnit.module(
                 await openGlobalFilterSidePanel();
                 const pivot = target.querySelector(".pivot_filter_section");
                 assert.deepEqual(model.getters.getPivotComputedDomain("1"), [
-                    ["user_ids", "in", [7]],
+                    ["user_ids", "in", [uid]],
                 ]);
                 assert.deepEqual(
                     [...pivot.querySelectorAll(tagSelector)].map((el) => el.textContent.trim()),
@@ -1401,6 +1402,7 @@ QUnit.module(
         QUnit.test(
             "Can clear automatic default user from the record selector tag",
             async function (assert) {
+                const uid = session.user_context.uid;
                 const { model } = await createSpreadsheetFromPivotView();
                 await addGlobalFilter(
                     model,
@@ -1418,7 +1420,7 @@ QUnit.module(
 
                 await openGlobalFilterSidePanel();
                 assert.deepEqual(model.getters.getPivotComputedDomain("1"), [
-                    ["user_ids", "in", [7]],
+                    ["user_ids", "in", [uid]],
                 ]);
                 // clear filter
                 const tagClearButton = target.querySelector(".o_multi_record_selector .o_delete");

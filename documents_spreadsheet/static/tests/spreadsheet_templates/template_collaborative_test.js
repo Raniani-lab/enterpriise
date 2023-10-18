@@ -14,6 +14,7 @@ import {
     joinSession,
     leaveSession,
 } from "@spreadsheet_edition/../tests/utils/collaborative_helpers";
+import { session } from "@web/session";
 
 /** @type {HTMLElement} */
 let target;
@@ -83,7 +84,7 @@ QUnit.module(
             assert.strictEqual(clients.length, 1);
             const localClient = clients[0];
             assert.strictEqual(localClient.name, "Mitchell");
-            assert.strictEqual(localClient.userId, 7);
+            assert.strictEqual(localClient.userId, session.user_context.uid);
         });
 
         QUnit.test("Sync status is correctly rendered", async function (assert) {

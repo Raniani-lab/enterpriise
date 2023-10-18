@@ -25,6 +25,7 @@ import {
     createSpreadsheetWithPivot,
     insertPivotInSpreadsheet,
 } from "@spreadsheet/../tests/utils/pivot";
+import { session } from "@web/session";
 
 const { toCartesian, toZone } = spreadsheet.helpers;
 const { cellMenuRegistry, topbarMenuRegistry } = spreadsheet.registries;
@@ -54,8 +55,8 @@ QUnit.module(
         });
 
         QUnit.test("Reinsert a pivot with a contextual search domain", async function (assert) {
-            const uid = 7;
             const serverData = getBasicServerData();
+            const uid = session.user_context.uid;
             serverData.models.partner.records = [{ id: 1, probability: 0.5, foo: uid }];
             serverData.views["partner,false,search"] = /* xml */ `
                 <search>
@@ -71,7 +72,7 @@ QUnit.module(
             await doMenuAction(topbarMenuRegistry, reinsertPivotPath, env);
             assert.equal(
                 getCellFormula(model, "E10"),
-                `=ODOO.PIVOT(1,"probability","bar","false","foo",7)`,
+                `=ODOO.PIVOT(1,"probability","bar","false","foo",${uid})`,
                 "It should contain a pivot formula"
             );
         });

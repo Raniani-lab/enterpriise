@@ -1403,7 +1403,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             'move_type': 'in_refund',
             'invoice_date': '2020-01-01',
             'date': '2020-01-01',
-            'partner_id': self.ref("base.res_partner_12"),
+            'partner_id': self.partner_a.id,
             'invoice_line_ids': [(0, 0, {
                 'name': 'Refund Insurance claim',
                 'account_id': self.company_data['default_account_assets'].id,
@@ -1475,7 +1475,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         invoice = self.env['account.move'].create({
             'move_type': 'in_invoice',
             'invoice_date': '2020-01-01',
-            'partner_id': self.ref("base.res_partner_12"),
+            'partner_id': self.partner_a.id,
             'invoice_line_ids': [
                 (0, 0, {
                     'product_id': product_b.id,
@@ -1584,7 +1584,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         vendor_bill_auto = self.env['account.move'].create({
             'move_type': 'in_invoice',
             'invoice_date': '2020-01-01',
-            'partner_id': self.ref("base.res_partner_12"),
+            'partner_id': self.partner_a.id,
             'invoice_line_ids': [Command.create({
                 'account_id': asset_account.id,
                 'name': 'Asus Laptop',
@@ -1608,7 +1608,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         vendor_bill_manu = self.env['account.move'].create({
             'move_type': 'in_invoice',
             'invoice_date': '2020-01-01',
-            'partner_id': self.ref("base.res_partner_12"),
+            'partner_id': self.partner_a.id,
             'invoice_line_ids': [
                 Command.create({
                     'account_id': asset_account.id,
@@ -1913,8 +1913,8 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         refund = self.env['account.move'].create({
             'move_type': 'in_refund',
-            'partner_id': self.ref("base.res_partner_12"),
             'invoice_date': fields.Date.today() + relativedelta(month=1),
+            'partner_id': self.partner_a.id,
             'invoice_line_ids': [(0, 0, {'name': 'refund', 'account_id': depreciation_account.id, 'price_unit': 500})],
         })
         refund.action_post()
@@ -1937,7 +1937,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         invoice = self.env['account.move'].create({
             'move_type': 'in_invoice',
             'invoice_date': fields.Date.today(),
-            'partner_id': self.ref("base.res_partner_12"),
+            'partner_id': self.partner_a.id,
             'invoice_line_ids': [
                 (0, 0, {
                     'name': 'Product B',
@@ -2494,7 +2494,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         invoice = self.env['account.move'].create({
             'move_type': 'in_invoice',
             'invoice_date': '2020-12-31',
-            'partner_id': self.ref("base.res_partner_12"),
+            'partner_id': self.partner_a.id,
             'invoice_line_ids': [
                 (0, 0, {
                     'name': 'A beautiful small bomb',

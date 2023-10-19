@@ -47,6 +47,7 @@
                     <field name="payslips_count" string="Payslips" widget="statinfo"/>
                 </button>
                 <button class="oe_stat_button" string="Salary Attachments" name="action_open_salary_attachments"
+                        groups="hr_payroll.group_hr_payroll_user"
                         type="object" icon="fa-book" invisible="salary_attachments_count == 0">
                     <field name="salary_attachments_count" string="Salary Attachments" widget="statinfo"/>
                 </button>

@@ -285,8 +285,8 @@ export class PlanningGanttRenderer extends GanttRenderer {
         let stop = fixed_stop || defaultColumnTiming.stop;
         const currentRow = this.model.data.rows.find(row => row.resId === pill.record.resource_id[0]) || this.model.data.rows.find(row => row.resId === false);
 
-        const unavailability_at_start = currentRow?.unavailabilities.find(unavailability => start >= unavailability.start && start < unavailability.stop);
-        const unavailability_at_stop = currentRow?.unavailabilities.find(unavailability => stop > unavailability.start && stop <= unavailability.stop);
+        const unavailability_at_start = currentRow?.unavailabilities?.find(unavailability => start >= unavailability.start && start < unavailability.stop);
+        const unavailability_at_stop = currentRow?.unavailabilities?.find(unavailability => stop > unavailability.start && stop <= unavailability.stop);
 
         if (!fixed_stop && unavailability_at_stop) {
             stop = unavailability_at_stop.start;

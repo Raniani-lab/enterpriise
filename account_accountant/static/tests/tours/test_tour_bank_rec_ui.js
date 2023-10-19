@@ -310,7 +310,11 @@ tour.register('account_accountant_bank_rec_widget_ui',
             content: "Validate line2 with double click",
             extra_trigger: "div.bank_rec_widget_form_amls_list_anchor table.o_list_table tr.o_rec_widget_list_selected_item td[name='move_id']:contains('INV/2019/00002')",
             trigger: "button[name='button_validate']",
-            run: "dblclick",
+        },
+        {
+            content: "Ensure validate button is disabled to prevent double-click",
+            trigger: "button[name='button_validate'][disabled]",
+            run: () => {}
         },
         {
             content: "Remove the kanban filter for 'Not Matched'",
@@ -444,7 +448,11 @@ tour.register('account_accountant_bank_rec_widget_ui',
             content: "Validate line3",
             extra_trigger: "button[name='button_validate']",
             trigger: "button[name='button_validate']",
-            run: "dblclick",
+        },
+        {
+            content: "Ensure validate button is disabled to prevent double-click",
+            trigger: "button[name='button_validate'][disabled]",
+            run: () => {}
         },
         {
             content: "Rainbow man",

@@ -3,6 +3,7 @@
 
 from odoo import models, api, fields, _
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools import SQL
 
 from psycopg2 import ProgrammingError, errorcodes
 
@@ -192,48 +193,44 @@ class DataMergeModel(models.Model):
             for rule in dm_model.rule_ids:
                 domain = ast.literal_eval(dm_model.domain or '[]')
                 query = res_model._where_calc(domain)
-                field_name = res_model._inherits_join_calc(table, rule.field_id.name, query)
+                sql_field = res_model._field_to_sql(table, rule.field_id.name, query)
                 if rule.field_id.relation:
                     related_model = self.env[rule.field_id.relation]
-                    lhs_alias, lhs_column = re.findall(r'"([^"]+)"', field_name)
+                    lhs_alias, lhs_column = re.findall(r'"([^"]+)"', sql_field.code)
                     rhs_alias = query.join(lhs_alias, lhs_column, related_model._table, 'id', lhs_column)
-                    field_name = related_model._inherits_join_calc(rhs_alias, related_model._rec_name, query)
+                    sql_field = related_model._field_to_sql(rhs_alias, related_model._rec_name, query)
 
                 if rule.match_mode == 'accent':
-                    # Since unaccent is case sensitive, we must add a lower to make field_name insensitive
-                    field_name = unaccent('lower(%s)' % field_name)
+                    # Since unaccent is case sensitive, we must add a lower to make sql_field insensitive
+                    sql_field = unaccent(SQL('lower(%s)', sql_field))
 
-                group_by = ''
+                sql_group_by = SQL()
                 company_field = res_model._fields.get('company_id')
                 if company_field and not dm_model.mix_by_company:
-                    group_by = ', %s' % res_model._inherits_join_calc(table, 'company_id', query)
-
-                tables, where_clause, where_clause_params = query.get_sql()
-                where_clause = where_clause and ('AND %s' % where_clause) or ''
+                    sql_group_by = SQL(', %s', res_model._field_to_sql(table, 'company_id', query))
 
                 # Get all the rows matching the rule defined
                 # (e.g. exact match of the name) having at least 2 records
                 # Each row contains the matched value and an array of matching records:
                 #   | value matched | {array of record IDs matching the field}
-                query = """
-                    SELECT
-                        %(field)s as group_field_name,
-                        array_agg(
-                            %(model_table)s.id order by %(model_table)s.id asc
-                        )
+                sql = SQL(
+                    """
+                    SELECT %(field)s AS group_field_name,
+                        array_agg(%(table_id)s ORDER BY %(table_id)s ASC)
                     FROM %(tables)s
-                        WHERE length(%(field)s) > 0 %(where_clause)s
+                    WHERE length(%(field)s) > 0 AND %(where_clause)s
                     GROUP BY group_field_name %(group_by)s
-                        HAVING COUNT(%(field)s) > 1""" % {
-                            'field': field_name,
-                            'model_table': table,
-                            'tables': tables,
-                            'where_clause': where_clause,
-                            'group_by': group_by,
-                        }
+                    HAVING COUNT(%(field)s) > 1
+                    """,
+                    field=sql_field,
+                    table_id=SQL.identifier(table, 'id'),
+                    tables=query.from_clause,
+                    where_clause=query.where_clause or SQL("TRUE"),
+                    group_by=sql_group_by,
+                )
 
                 try:
-                    self._cr.execute(query, where_clause_params)
+                    self._cr.execute(sql)
                 except ProgrammingError as e:
                     if e.pgcode == errorcodes.UNDEFINED_FUNCTION:
                         raise UserError(_('Missing required PostgreSQL extension: unaccent'))

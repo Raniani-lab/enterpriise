@@ -181,6 +181,7 @@ export class Frontdesk extends Component {
                 stationInfo: this.station,
                 langs: this.frontdeskData.langs.length > 1 ? this.frontdeskData.langs : false,
                 currentLang: this.props.currentLang,
+                theme: this.station.theme,
             };
         } else if (this.state.currentComponent === HostPage) {
             props = {
@@ -233,6 +234,10 @@ export class Frontdesk extends Component {
             companyInfo: this.frontdeskData.company,
             isMobile: this.props.isMobile,
             isPlannedVisitors: this.state.plannedVisitors.length ? true : false,
+            theme: this.station.theme,
+            onChangeLang: this.onChangeLang.bind(this),
+            langs: this.frontdeskData.langs.length > 1 ? this.frontdeskData.langs : false,
+            currentLang: this.props.currentLang,
         };
     }
 
@@ -243,6 +248,7 @@ export class Frontdesk extends Component {
             stationId: this.props.id,
             token: this.token,
             plannedVisitors: this.state.plannedVisitors,
+            theme: this.station.theme,
         };
     }
 

@@ -30,6 +30,22 @@
     ],
     'assets': {
         'frontdesk.assets_frontdesk': [
+            # 1 Define frontdesk variables (takes priority over frontend ones)
+            "frontdesk/static/src/primary_variables.scss",
+            "frontdesk/static/src/bootstrap_overridden.scss",
+
+            #2 Load frontend variables
+            ("include", "web._assets_helpers"),
+            ("include", "web._assets_frontend_helpers"),
+            ("include", "web._assets_primary_variables"),
+            "web/static/src/scss/pre_variables.scss",
+
+            #3 Load Bootstrap and frontend bundles
+            "web/static/lib/bootstrap/scss/_functions.scss",
+            "web/static/lib/bootstrap/scss/_variables.scss",
+            ("include", "web._assets_bootstrap_frontend"),
+
+            #4 Frontdesk's specific assets
             'web/static/lib/zxing-library/zxing-library.js',
             'frontdesk/static/src/**/*',
         ],

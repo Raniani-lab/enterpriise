@@ -16,7 +16,7 @@ registry.category("web_tour.tours").add("frontdesk_basic_tour", {
         },
         {
             content: "Click on the back button",
-            trigger: ".fa-chevron-left",
+            trigger: ".oi-arrow-left",
         },
         {
             content: "Click on Check in",

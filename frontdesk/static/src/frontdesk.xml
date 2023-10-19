@@ -2,24 +2,24 @@
 
 <templates>
     <t t-name="frontdesk.Frontdesk">
-        <div t-att-class="station.theme === 'light' ? 'o_light' : 'o_dark'">
+        <div t-att-class="state.currentComponent.name === 'WelcomePage' ? '' : 'container-fluid p-0'" class="o_frontdesk_wrap d-flex">
             <WelcomePage t-if="state.currentComponent.name == 'WelcomePage'" t-props="frontdeskProps"/>
-            <div t-elif="['VisitorForm', 'HostPage'].includes(state.currentComponent.name)" class="row gx-2 p-0 m-0">
-                <div t-att-class="state.plannedVisitors.length and state.currentComponent.name === 'VisitorForm' ? 'col-md-7 h-auto' : 'col-12 vh-100'" class="col-sm-12 d-flex flex-column">
+            <div t-elif="['VisitorForm', 'HostPage'].includes(state.currentComponent.name)" class="row g-0 flex-column flex-lg-row w-100">
+                <div t-att-class="state.plannedVisitors.length and state.currentComponent.name === 'VisitorForm' ? 'col-lg-8' : ''" class="d-flex flex-column gap-4 p-3 p-md-4">
                     <Navbar t-props="navBarProps"/>
                     <t t-component="state.currentComponent" t-props="frontdeskProps"/>
                 </div>
-                <div t-if="state.plannedVisitors.length and state.currentComponent.name === 'VisitorForm'" class="col-md-5 col-sm-12 vh-100">
+                <div t-if="state.plannedVisitors.length and state.currentComponent.name === 'VisitorForm'" class="col-lg-4 position-relative flex-fill">
                     <QuickCheckIn t-props="quickCheckInProps"/>
                 </div>
             </div>
-            <div t-else="" class="row vh-100 g-0">
+            <div t-else="" class="row g-0 flex-column flex-lg-row w-100">
                 <!-- Hide sidebar when empty or equal to "<p><br></p>" -->
-                <div class="col-md-8 col-sm-12 d-flex flex-column justify-content-between p-5" t-att-class="station.description and station.description != '&lt;p>&lt;br>&lt;/p>' ? 'col-md-8' : ''">
+                <div class="d-flex flex-column gap-5 justify-content-lg-between h-100 p-3 p-md-4" t-att-class="station.description and station.description != '&lt;p>&lt;br>&lt;/p>' ? 'col col-lg-8' : ''">
                     <t t-component="state.currentComponent" t-props="frontdeskProps"/>
                 </div>
-                <div t-if="station.description and station.description != '&lt;p>&lt;br>&lt;/p>'" class="col-md-4 col-sm-12 o_side_panel">
-                    <div class="p-5 h-100">
+                <div t-if="station.description and station.description != '&lt;p>&lt;br>&lt;/p>'" class="col-lg-4 position-relative flex-fill">
+                    <div class="position-relative position-lg-absolute top-0 bottom-0 w-100 h-100 p-3 p-md-4 overflow-auto" t-att-class="station.theme === 'light' ? 'border bg-100' : 'bg-800'">
                         <div class="text-break" t-out="markupValue"/>
                     </div>
                 </div>

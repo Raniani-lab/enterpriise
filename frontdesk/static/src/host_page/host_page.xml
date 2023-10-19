@@ -2,14 +2,13 @@
 
 <templates xml:space="preserve">
     <t t-name="frontdesk.HostPage">
-        <div class="vh-100">
-            <div class="container px-4 py-5">
+        <div class="d-flex flex-column justify-content-center">
+            <div class="container-fluid">
                 <div class="row g-0 d-flex justify-content-center">
-                    <div class="col-md-6">
-                        <h1 class="mb-3">Who are you visiting?</h1>
+                    <div class="col-lg-6">
                         <form t-on-submit.prevent="_onConfirm">
                             <Many2One update.bind="selectedHost" disableButton.bind="disableButton" stationId="props.stationId" token="props.token"/>
-                            <button t-ref="button" class="btn btn-primary p-2 fs-2 w-100 mt-3" disabled="disabled">Confirm</button>
+                            <button t-ref="button" class="btn btn-primary mt-3 w-100" disabled="disabled">Confirm</button>
                         </form>
                     </div>
                 </div>

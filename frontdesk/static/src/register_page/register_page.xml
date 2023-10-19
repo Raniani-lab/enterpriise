@@ -2,9 +2,9 @@
 
 <templates xml:space="preserve">
     <t t-name="frontdesk.RegisterPage">
-        <div>
-            <h1>You have been registered!</h1>
-            <div class="fs-4 fw-medium mt-2 text-break">
+        <div class="text-center">
+            <h1 class="display-6 mb-0">You have been registered!</h1>
+            <div class="mt-2 fs-5 text-break opacity-50">
                 <t t-if="props.plannedVisitorData?.plannedVisitorMessage" t-out="markupValue"/>
                 <t t-else="">
                     Please have a seat.
@@ -20,17 +20,17 @@
                 </t>
             </div>
         </div>
-        <div t-if="props.isDrinkVisible" t-att-class="props.isDrinkVisible ? 'flex-grow-1 d-flex align-items-center' : ''">
-            <div>
-                <div class="fs-3">Do you want something to drink?</div>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-primary fs-3 py-2 px-3" t-on-click="() => props.showScreen('DrinkPage')">Yes, please</button>
-                    <button class="btn btn-secondary fs-3 py-2 px-3" t-on-click="() => props.showScreen('EndPage')">No, thank you</button>
+        <div t-if="props.isDrinkVisible" t-att-class="props.isDrinkVisible ? 'd-flex flex-lg-fill align-items-center' : ''">
+            <div class="w-100 text-center">
+                <h3 class="mb-4">Do you want something to drink?</h3>
+                <div class="col-lg-6 d-grid gap-3 mx-auto">
+                    <button class="btn btn-primary" t-on-click="() => props.showScreen('DrinkPage')">Yes, please</button>
+                    <button class="btn btn-secondary" t-on-click="() => props.showScreen('EndPage')">No, thank you</button>
                 </div>
             </div>
         </div>
-        <div t-if="!props.isMobile">
-            <button class="btn fs-3 py-2 px-5" t-att-class="props.theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light'" t-on-click="props.onClose">Close</button>
+        <div t-if="!props.isMobile" class="col-lg-6 d-grid mx-lg-auto mt-auto">
+            <button class="btn" t-att-class="props.theme === 'light' ? 'bg-200' : 'bg-700'" t-on-click="props.onClose">Close</button>
         </div>
     </t>
 </templates>

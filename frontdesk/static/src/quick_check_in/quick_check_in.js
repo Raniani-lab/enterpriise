@@ -33,4 +33,5 @@ QuickCheckIn.props = {
     showScreen: Function,
     token: String,
     stationId: Number,
+    theme: String,
 };

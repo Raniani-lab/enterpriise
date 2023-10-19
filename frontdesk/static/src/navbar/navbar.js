@@ -11,4 +11,8 @@ Navbar.props = {
     isMobile: Boolean,
     isPlannedVisitors: Boolean,
     showScreen: Function,
+    onChangeLang: Function,
+    theme: String,
+    langs: [Object, Boolean],
+    currentLang: String,
 };

@@ -556,8 +556,13 @@ class TestReportEditorUIUnit(HttpCase):
         p1 = ResPartner.create({'name': "partner_1"})
         p2 = ResPartner.create({'name': "partner_2"})
 
-        def mock_search(*args, **kwargs):
-            return (p1 | p2).ids
+        original_search = ResPartner.search
+
+        def mock_search(self, *args, **kwargs):
+            if not args and not kwargs:
+                return (p1 | p2).ids
+            return original_search(*args, **kwargs)
+
         self.patch(type(ResPartner), "search", mock_search)
 
         self.start_tour(self.tour_url, "web_studio.test_report_xml_other_record", login="admin")

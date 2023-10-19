@@ -27,5 +27,8 @@ class AccountPaymentRegister(models.TransientModel):
         if self.env.context.get('hr_payroll_payment_register'):
             payslip = self.env['hr.payslip'].browse(self.env.context['hr_payroll_payment_register'])
             if all(line.currency_id.is_zero(line.amount_residual_currency) for line in payslip.move_id.line_ids):
-                payslip.state = 'paid'
+                payslip.write({
+                    "state": "paid",
+                    "paid_date": self.payment_date
+                })
         return res

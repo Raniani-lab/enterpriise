@@ -129,11 +129,12 @@
                     <field name="credit_note" invisible="1" readonly="state not in ['draft', 'verify']"/>
                     <field name="is_superuser" invisible="1"/>
                     <field name="has_refund_slip" invisible="1"/>
+                    <field name="use_worked_day_lines" invisible="1"/>
                 </group>
                 <notebook>
                     <page string="Worked Days &amp; Inputs" name="worked_days_input" class="o_hr_payroll_worked_days_input">
-                        <separator string="Worked Days"/>
-                        <field name="worked_days_line_ids" readonly="state in ['cancel', 'done', 'paid']">
+                        <separator string="Worked Days" invisible="not use_worked_day_lines"/>
+                        <field name="worked_days_line_ids" readonly="state in ['cancel', 'done', 'paid']" invisible=" not use_worked_day_lines">
                             <tree string="Worked Days" editable="bottom" create="0" delete="0">
                                 <field name="work_entry_type_id" readonly="1" force_save="1"/>
                                 <field name="name"/>

@@ -35,6 +35,7 @@ class HrPayslip(models.Model):
              'to the contract chosen. If the contract is empty, this field isn\'t '
              'mandatory anymore and all the valid rules of the structures '
              'of the employee\'s contracts will be applied.')
+    structure_code = fields.Char(related="struct_id.code")
     struct_type_id = fields.Many2one('hr.payroll.structure.type', related='struct_id.type_id')
     wage_type = fields.Selection(related='contract_id.wage_type')
     name = fields.Char(
@@ -131,6 +132,7 @@ class HrPayslip(models.Model):
         readonly=False,
     )
     salary_attachment_count = fields.Integer('Salary Attachment count', compute='_compute_salary_attachment_count')
+    use_worked_day_lines = fields.Boolean(related="struct_id.use_worked_day_lines")
 
     def _get_schedule_period_start(self):
         schedule = self.contract_id.schedule_pay or self.contract_id.structure_type_id.default_schedule_pay
@@ -624,7 +626,10 @@ class HrPayslip(models.Model):
                 'number_of_hours': hours,
             }
             res.append(attendance_line)
-        return res
+
+        # Sort by Work Entry Type sequence
+        work_entry_type = self.env['hr.work.entry.type']
+        return sorted(res, key=lambda d: work_entry_type.browse(d['work_entry_type_id']).sequence)
 
     def _get_worked_day_lines(self, domain=None, check_out_of_contract=True):
         """

@@ -35,6 +35,7 @@ class AppointmentCommon(MailCommon, common.HttpCase):
         cls.reference_now = datetime(2022, 2, 13, 20, 0, 0)
         cls.reference_monday = datetime(2022, 2, 14, 7, 0, 0)
         cls.reference_now_monthweekstart = date(2022, 1, 30)  # starts on a Sunday, first week containing Feb day
+        cls.global_slots_enddate = date(2022, 3, 5)  # last day of last week of February
 
         cls.apt_manager = mail_new_test_user(
             cls.env,

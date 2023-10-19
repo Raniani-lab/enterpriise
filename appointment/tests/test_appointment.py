@@ -237,8 +237,6 @@ class AppointmentTest(AppointmentCommon, HttpCase):
         with freeze_time(self.reference_now):
             slots = appt_type._get_appointment_slots('Europe/Brussels')
 
-        global_slots_startdate = self.reference_now_monthweekstart
-        global_slots_enddate = date(2022, 3, 5)  # last day of last week of February
         self.assertSlots(
             slots,
             [{'name_formated': 'February 2022',
@@ -246,8 +244,8 @@ class AppointmentTest(AppointmentCommon, HttpCase):
               'weeks_count': 5,  # 31/01 -> 28/02 (06/03)
               }
              ],
-            {'enddate': global_slots_enddate,
-             'startdate': global_slots_startdate,
+            {'enddate': self.global_slots_enddate,
+             'startdate': self.reference_now_monthweekstart,
              'slots_start_hours': [18, 19, 20, 21, 22, 23],
              'slots_startdate': self.reference_monday.date(),  # first Monday after reference_now
              'slots_enddate': self.reference_monday.date(),  # only test that day
@@ -550,8 +548,6 @@ class AppointmentTest(AppointmentCommon, HttpCase):
         with freeze_time(self.reference_now):
             slots = apt_type._get_appointment_slots('Europe/Brussels')
 
-        global_slots_startdate = self.reference_now_monthweekstart
-        global_slots_enddate = date(2022, 3, 5)  # last day of last week of February
         self.assertSlots(
             slots,
             [{'name_formated': 'February 2022',
@@ -559,8 +555,8 @@ class AppointmentTest(AppointmentCommon, HttpCase):
               'weeks_count': 5,  # 31/01 -> 28/02 (06/03)
              }
             ],
-            {'enddate': global_slots_enddate,
-             'startdate': global_slots_startdate,
+            {'enddate': self.global_slots_enddate,
+             'startdate': self.reference_now_monthweekstart,
              'slots_start_hours': [8, 9, 10, 11, 12, 13],  # based on appointment type start hours of slots, no work hours / no meetings / no leaves
              'slots_startdate': self.reference_monday.date(),  # first Monday after reference_now
              'slots_weekdays_nowork': range(2, 7)  # working hours only on Monday/Tuesday (0, 1)
@@ -636,8 +632,6 @@ class AppointmentTest(AppointmentCommon, HttpCase):
         with freeze_time(self.reference_now):
             slots = apt_type._get_appointment_slots('UTC')
 
-        global_slots_startdate = self.reference_now_monthweekstart
-        global_slots_enddate = date(2022, 3, 5)  # last day of last week of February
         self.assertSlots(
             slots,
             [{'name_formated': 'February 2022',
@@ -645,8 +639,8 @@ class AppointmentTest(AppointmentCommon, HttpCase):
               'weeks_count': 5,  # 31/01 -> 28/02 (06/03)
              }
             ],
-            {'enddate': global_slots_enddate,
-             'startdate': global_slots_startdate,
+            {'enddate': self.global_slots_enddate,
+             'startdate': self.reference_now_monthweekstart,
              'slots_start_hours': [7, 8, 9, 10, 11, 12],  # based on appointment type start hours of slots, no work hours / no meetings / no leaves
              'slots_startdate': self.reference_monday.date(),  # first Monday after reference_now
              'slots_weekdays_nowork': range(2, 7)  # working hours only on Monday/Tuesday (0, 1)
@@ -669,8 +663,6 @@ class AppointmentTest(AppointmentCommon, HttpCase):
         with freeze_time(self.reference_now):
             slots = apt_type._get_appointment_slots('Europe/Brussels')
 
-        global_slots_startdate = self.reference_now_monthweekstart
-        global_slots_enddate = date(2022, 3, 5)  # last day of last week of February
         self.assertSlots(
             slots,
             [{'name_formated': 'February 2022',
@@ -678,8 +670,8 @@ class AppointmentTest(AppointmentCommon, HttpCase):
               'weeks_count': 5,  # 31/01 -> 28/02 (06/03)
              }
             ],
-            {'enddate': global_slots_enddate,
-             'startdate': global_slots_startdate,
+            {'enddate': self.global_slots_enddate,
+             'startdate': self.reference_now_monthweekstart,
              'slots_start_hours': [8, 9, 10, 11, 12, 13],  # based on appointment type start hours of slots, no work hours / no meetings / no leaves
              'slots_startdate': self.reference_monday.date(),  # first Monday after reference_now
              'slots_weekdays_nowork': range(2, 7)  # working hours only on Monday/Tuesday (0, 1)
@@ -741,8 +733,6 @@ class AppointmentTest(AppointmentCommon, HttpCase):
         with freeze_time(self.reference_now):
             slots = apt_type._get_appointment_slots('Europe/Brussels')
 
-        global_slots_startdate = self.reference_now_monthweekstart
-        global_slots_enddate = date(2022, 3, 5)  # last day of last week of February
         self.assertSlots(
             slots,
             [{'name_formated': 'February 2022',
@@ -750,8 +740,8 @@ class AppointmentTest(AppointmentCommon, HttpCase):
               'weeks_count': 5,  # 31/01 -> 28/02 (06/03)
              }
             ],
-            {'enddate': global_slots_enddate,
-             'startdate': global_slots_startdate,
+            {'enddate': self.global_slots_enddate,
+             'startdate': self.reference_now_monthweekstart,
              'slots_day_specific': {
                 (self.reference_monday + timedelta(days=1)).date(): [
                     {'end': 12, 'start': 11},
@@ -804,8 +794,6 @@ class AppointmentTest(AppointmentCommon, HttpCase):
         with freeze_time(self.reference_now):
             slots = apt_type._get_appointment_slots('Europe/Brussels')
 
-        global_slots_startdate = self.reference_now_monthweekstart
-        global_slots_enddate = date(2022, 3, 5)  # last day of last week of February
         self.assertSlots(
             slots,
             [{'name_formated': 'February 2022',
@@ -813,8 +801,8 @@ class AppointmentTest(AppointmentCommon, HttpCase):
               'weeks_count': 5,  # 31/01 -> 28/02 (06/03)
              }
             ],
-            {'enddate': global_slots_enddate,
-             'startdate': global_slots_startdate,
+            {'enddate': self.global_slots_enddate,
+             'startdate': self.reference_now_monthweekstart,
              'slots_day_specific': {
                 self.reference_monday.date(): [{'end': 9, 'start': 8}],  # first unique 1 hour long
                 (self.reference_monday + timedelta(days=1)).date(): [{'allday': True, 'end': False, 'start': 8}],  # second unique all day-based
@@ -953,7 +941,6 @@ class AppointmentTest(AppointmentCommon, HttpCase):
         with freeze_time(self.reference_now):
             slots = apt_type.sudo()._get_appointment_slots('Australia/West', filter_users=None)
 
-        global_slots_startdate = self.reference_now_monthweekstart
         global_slots_enddate = date(2022, 4, 2)  # last day of last week of March
         self.assertSlots(
             slots,
@@ -967,7 +954,7 @@ class AppointmentTest(AppointmentCommon, HttpCase):
              }
             ],
             {'enddate': global_slots_enddate,
-             'startdate': global_slots_startdate,
+             'startdate': self.reference_now_monthweekstart,
              'slots_enddate': self.reference_now.date() + timedelta(days=15),  # maximum 2 weeks of slots
              'slots_start_hours': [15, 16, 17, 18, 19, 20],  # based on appointment type start hours of slots, no work hours / no meetings / no leaves, set in UTC+8
              'slots_startdate': self.reference_monday.date(),  # first Monday after reference_now
@@ -1081,9 +1068,6 @@ class AppointmentTest(AppointmentCommon, HttpCase):
               )])
         slots = appointment._get_appointment_slots(
             appointment.appointment_tz)
-        global_slots_startdate = self.reference_now_monthweekstart
-        # last day of last week of February
-        global_slots_enddate = date(2022, 3, 5)
         self.assertSlots(
             slots,
             [{'name_formated': 'February 2022',
@@ -1091,8 +1075,8 @@ class AppointmentTest(AppointmentCommon, HttpCase):
               'weeks_count': 5,  # 31/01 -> 28/02 (06/03)
               }
              ],
-            {'enddate': global_slots_enddate,
-             'startdate': global_slots_startdate,
+            {'enddate': self.global_slots_enddate,
+             'startdate': self.reference_now_monthweekstart,
              'slots_start_hours': [],
              # first Monday after reference_now
              'slots_startdate': self.reference_monday + timedelta(days=7),

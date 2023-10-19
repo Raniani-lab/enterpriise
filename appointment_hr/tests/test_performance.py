@@ -164,7 +164,6 @@ class AppointmentTest(AppointmenHrPerformanceCase):
         # Method count before optimization: 4186 - 4186 - 4186 - 1
         # Method count after optimization: 1 - 0 - 0 - 1
 
-        global_slots_startdate = date(2022, 1, 30)  # starts on a Sunday, first week containing Feb day
         global_slots_enddate = date(2022, 6, 4)  # last day of last week of May
         self.assertSlots(
             res,
@@ -182,7 +181,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
              },
             ],
             {'enddate': global_slots_enddate,
-             'startdate': global_slots_startdate,
+             'startdate': self.reference_now_monthweekstart,
             }
         )
 
@@ -228,16 +227,14 @@ class AppointmentTest(AppointmenHrPerformanceCase):
         # Method count before optimization: 506 - 506 - 506 - 1
         # Method count after optimization: 1 - 0 - 0 - 1
 
-        global_slots_startdate = self.reference_now_monthweekstart
-        global_slots_enddate = date(2022, 3, 5)  # last day of last week of Feb
         self.assertSlots(
             res,
             [{'name_formated': 'February 2022',
               'weeks_count': 5,  # 30/01 -> 27/02 (05/03)
              },
             ],
-            {'enddate': global_slots_enddate,
-             'startdate': global_slots_startdate,
+            {'enddate': self.global_slots_enddate,
+             'startdate': self.reference_now_monthweekstart,
             }
         )
 
@@ -291,7 +288,6 @@ class AppointmentTest(AppointmenHrPerformanceCase):
         # Method count before optimization: 480 - 480 - 480 - 1
         # Method count after optimization: 1 - 0 - 0 - 0
 
-        global_slots_startdate = self.reference_now_monthweekstart
         global_slots_enddate = date(2022, 4, 2)  # last day of last week of May
         self.assertSlots(
             res,
@@ -303,7 +299,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
              }
             ],
             {'enddate': global_slots_enddate,
-             'startdate': global_slots_startdate,
+             'startdate': self.reference_now_monthweekstart,
             }
         )
 
@@ -357,7 +353,6 @@ class AppointmentTest(AppointmenHrPerformanceCase):
         # Method count before optimization: 480 - 480 - 480 - 1
         # Method count after optimization: 1 - 0 - 0 - 0
 
-        global_slots_startdate = self.reference_now_monthweekstart
         global_slots_enddate = date(2022, 4, 2)  # last day of last week of May
         self.assertSlots(
             res,
@@ -369,7 +364,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
              }
             ],
             {'enddate': global_slots_enddate,
-             'startdate': global_slots_startdate,
+             'startdate': self.reference_now_monthweekstart,
             }
         )
 
@@ -402,7 +397,6 @@ class AppointmentTest(AppointmenHrPerformanceCase):
         # Method count before optimization: 402 - 402 - 402 - 20
         # Method count after optimization: 1 - 0 - 0 - 0
 
-        global_slots_startdate = self.reference_now_monthweekstart
         global_slots_enddate = date(2022, 4, 30)  # last day of last week of April
         self.assertSlots(
             res,
@@ -420,7 +414,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
              'slots_duration': 1,
              'slots_hours': range(8, 16, 1),
              'slots_startdt': self.reference_monday,
-             'startdate': global_slots_startdate,
+             'startdate': self.reference_now_monthweekstart,
             }
         )
 
@@ -452,7 +446,6 @@ class AppointmentTest(AppointmenHrPerformanceCase):
         # Method count before optimization: 1261 - 1261 - 1261 - 20
         # Method count after optimization: 1 - 0 - 0 - 1
 
-        global_slots_startdate = self.reference_now_monthweekstart
         global_slots_enddate = date(2022, 4, 30)  # last day of last week of April
         self.assertSlots(
             res,
@@ -470,7 +463,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
              'slots_duration': 1,
              'slots_hours': range(8, 16, 1),
              'slots_startdt': self.reference_monday,
-             'startdate': global_slots_startdate,
+             'startdate': self.reference_now_monthweekstart,
             }
         )
 
@@ -504,16 +497,14 @@ class AppointmentTest(AppointmenHrPerformanceCase):
         # Method count before optimization: 237 - 237 - 237 - 20
         # Method count after optimization: 1 - 0 - 0 - 1
 
-        global_slots_startdate = self.reference_now_monthweekstart
-        global_slots_enddate = date(2022, 3, 5)  # last day of last week of Feb
         self.assertSlots(
             res,
             [{'name_formated': 'February 2022',
               'weeks_count': 5,  # 30/01 -> 27/02 (05/03)
              }
             ],
-            {'enddate': global_slots_enddate,
-             'startdate': global_slots_startdate,
+            {'enddate': self.global_slots_enddate,
+             'startdate': self.reference_now_monthweekstart,
             }
         )
 
@@ -548,16 +539,14 @@ class AppointmentTest(AppointmenHrPerformanceCase):
         # Method count before optimization: 237 - 237 - 237 - 20
         # Method count after optimization: 1 - 0 - 0 - 1
 
-        global_slots_startdate = self.reference_now_monthweekstart
-        global_slots_enddate = date(2022, 3, 5)  # last day of last week of Feb
         self.assertSlots(
             res,
             [{'name_formated': 'February 2022',
               'weeks_count': 5,  # 30/01 -> 27/02 (05/03)
              }
             ],
-            {'enddate': global_slots_enddate,
-             'startdate': global_slots_startdate,
+            {'enddate': self.global_slots_enddate,
+             'startdate': self.reference_now_monthweekstart,
             }
         )
 

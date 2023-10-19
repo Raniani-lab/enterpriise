@@ -1375,9 +1375,12 @@ export default class BarcodeModel extends EventBus {
                     !dataLotName || !lineLotName || dataLotName !== lineLotName
                 ) && (
                     line.qty_done && line.qty_done >= line.reserved_uom_qty &&
-                    line.id && line.virtual_id != this.selectedLine.virtual_id
-            )) {
-                continue;
+                    (line.product_id.tracking === "none" || lineLotName) &&
+                    line.id && (!this.selectedLine || line.virtual_id != this.selectedLine.virtual_id)
+                )) {
+                    // Has enough quantity (and another lot is set if the line's product is tracked)
+                    // and the line wasn't explicitly selected.
+                    continue;
             }
             if (this._lineIsNotComplete(line) && this.lineCanBeTakenFromTheCurrentLocation(line)) {
                 // Found a uncompleted compatible line, stop searching if it has the same location

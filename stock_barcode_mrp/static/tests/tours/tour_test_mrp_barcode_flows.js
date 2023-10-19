@@ -43,9 +43,10 @@ tour.register('test_immediate_receipt_kit_from_scratch_with_tracked_compo', {tes
     },
     {
         trigger: '.o_barcode_line:contains("Compo Lot")',
+        run: 'scan compo_lot',
     },
     {
-        trigger: '.o_selected:contains("Compo Lot")',
+        trigger: '.o_barcode_line.o_selected div[name="lot"] .o_next_expected',
         run: 'scan super_lot',
     },
     {

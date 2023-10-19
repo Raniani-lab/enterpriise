@@ -3242,7 +3242,7 @@ msgstr "Beschreibung"
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__disabled
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_res_users__disabled
 msgid "Disabled"
-msgstr "Deaktiviert"
+msgstr "Beeinträchtigt"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__disabled_children_bool

@@ -316,7 +316,7 @@ msgstr "Keine Kategorie"
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_children
 msgid "Number of Dependent Children"
-msgstr "Anzahl abhängiger Kinder"
+msgstr "Anzahl Kinder zu Lasten"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_disabled_children_number

@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import random
-
 from odoo import models
 from odoo.tools import populate
 from odoo.addons.base.models.ir_qweb_fields import nl2br
@@ -51,6 +49,7 @@ class KnowledgeArticle(models.Model):
         return self._populate_article_factories(depth, internal_partner_ids, shared_partner_ids)
 
     def _populate_article_factories(self, depth, internal_partner_ids, shared_partner_ids):
+        random = populate.Random('articles')
         if depth == 0:
             names = populate.iterate(tools._a_title_root)
         elif depth == 1:
@@ -94,6 +93,7 @@ class KnowledgeArticle(models.Model):
         but if we want to add some favorite_ids to an article then we will check how many users will add the article as
         favorite.
         This is how we will populate the table."""
+        random = populate.Random('favorites')
 
         article_member_ids = values.get('article_member_ids', False)
         internal_permission = values.get('internal_permission', False)
@@ -159,6 +159,7 @@ class KnowledgeArticle(models.Model):
 
         The code that generates values re-uses the '_populate_factories' method and increases the depth
         every time we loop. """
+        random = populate.Random('childrenarticles')
 
         if depth > 4 or random.randint(1, depth + 1) != depth + 1:
             # higher depth means lower chance of having children articles
@@ -182,6 +183,7 @@ class KnowledgeArticle(models.Model):
         return create_values
 
     def _generate_internal_permission(self, depth):
+        random = populate.Random('internalpermission')
         if depth != 0:
             # we keep it simple and only set custom internal permission to root articles
             return False
@@ -195,6 +197,7 @@ class KnowledgeArticle(models.Model):
         return random.choices(['write', 'read'], weights=[0.8, 0.2], k=1)[0]
 
     def _prepare_member_ids(self, depth, values, internal_partner_ids, shared_partner_ids):
+        random = populate.Random('members')
         private_member_values = []
 
         admin_partner_id = self.env.ref('base.user_admin').partner_id.id

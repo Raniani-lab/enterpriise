@@ -3,7 +3,6 @@
 
 import datetime
 from dateutil.relativedelta import relativedelta
-import random
 
 from odoo import models
 from odoo.tools import populate
@@ -26,9 +25,9 @@ class PlanningSlot(models.Model):
                 + relativedelta(days=int(3 * int(counter)))
             return date_from
 
-        def get_end_datetime(counter, **kwargs):
+        def get_end_datetime(counter, random=None, **kwargs):
             date_to = datetime.datetime.now().replace(hour=23, minute=59, second=59)\
-                + relativedelta(days=int(3 * int(counter))  + random.randint(0, 2))
+                + relativedelta(days=int(3 * int(counter)) + random.randint(0, 2))
             return date_to
 
         return [

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import random
 
 from odoo import models
 from odoo.tools import populate
@@ -19,10 +18,11 @@ class ProductPricing(models.Model):
             .browse(self.env.registry.populated_models['product.product'])\
             .product_tmpl_id.filtered('recurring_invoice').ids
 
-        def get_rand_float(values, counter, random):
+        def get_rand_float(values, counter, random=None):
             return random.randrange(0, 1500) * random.random()
 
         def generate_template_values(iterator, field_name, model_name):
+            random = populate.Random('templatevalues')
             counter = 0
             existing_pair = defaultdict(set)
             for values in iterator:

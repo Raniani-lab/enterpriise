@@ -184,7 +184,7 @@
         <field name="model">sign.request</field>
         <field name="arch" type="xml">
             <search>
-                <field name="reference" string="Document/Signer" filter_domain="['|', '|', ('reference', 'ilike', self), ('request_item_ids.partner_id.email', 'ilike', self), ('request_item_ids.partner_id.display_name', 'ilike', self)]"/>
+                <field name="reference" string="Document/Signer" filter_domain="['|', '|', ('reference', 'ilike', self), ('request_item_ids.partner_id.email', 'ilike', self), ('request_item_ids.partner_id.complete_name', 'ilike', self)]"/>
                 <field name="template_id" string="Template or Tag" filter_domain="['|', ('template_id.attachment_id.name', 'ilike', self), ('template_id.tag_ids.name', 'ilike', self)]"/>
                 <filter name="my_docs" string="My Documents" domain="[('create_uid', '=', uid)]"/>
                 <filter name="my_sign_request" string="My Requests" domain="[('request_item_ids.partner_id.user_ids', 'in', uid)]"/>

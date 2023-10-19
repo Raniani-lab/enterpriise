@@ -104,7 +104,7 @@
                         </form>
                     </field>
                     <group>
-                        <group class="oe_subtotal_footer oe_right" name="ticket_hours">
+                        <group class="oe_subtotal_footer" name="ticket_hours">
                             <span>
                                 <label class="fw-bold" for="total_hours_spent" string="Hours Spent"
                                     invisible="encode_uom_in_days"/>

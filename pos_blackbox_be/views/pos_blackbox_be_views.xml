@@ -133,7 +133,7 @@
                                         </group>
                                     </form>
                                 </field>
-                                <group class="oe_subtotal_footer oe_right" colspan="2" name="order_total">
+                                <group class="oe_subtotal_footer" colspan="2" name="order_total">
                                     <div class="oe_subtotal_footer_separator oe_inline">
                                         <label for="amount_total" />
                                     </div>

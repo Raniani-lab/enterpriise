@@ -87,7 +87,7 @@
                                     </group>
                                 </form>
                             </field>
-                            <group class="oe_subtotal_footer oe_right" colspan="2" name="order_total">
+                            <group class="oe_subtotal_footer" colspan="2" name="order_total">
                                 <label for="amount_total" />
                                 <field name="amount_total" nolabel="1" widget="monetary"/>
                             </group>

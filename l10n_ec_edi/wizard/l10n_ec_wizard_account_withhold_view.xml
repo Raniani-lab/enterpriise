@@ -48,7 +48,7 @@
                                 <field name="amount" readonly="1"/> <!-- No functionality yet to adapt the calculated amount for rounding, but it could be done -->
                             </tree>
                         </field>
-                        <group class="oe_subtotal_footer oe_right">
+                        <group class="oe_subtotal_footer">
                             <field name="withhold_subtotals" widget="account-tax-totals-field-for-withhold" nolabel="1" colspan="2"/>
                         </group>
                     </page>

@@ -67,7 +67,7 @@
                                 <field name="l10n_ec_withhold_tax_amount"/>
                             </tree>
                         </field>
-                        <group class="oe_subtotal_footer oe_right">
+                        <group class="oe_subtotal_footer">
                             <field name="l10n_ec_withhold_subtotals" widget="account-tax-totals-field-for-withhold" nolabel="1" colspan="2"/>
                         </group>
                         <field name="narration" placeholder="Add an internal note..." nolabel="1" height="50"/>

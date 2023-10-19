@@ -41,73 +41,73 @@
                             <page string="Sales and Receipts">
                                 <group col="6" string="Total Sales / Receipts (472)">
                                     <label for="report_section_472_rest" string="Sales / Receipts (472): amount still to be allocated" colspan="4"/>
-                                    <label for="report_section_472_rest" string="472" colspan="1" class="oe_right"/>
+                                    <label for="report_section_472_rest" string="472" colspan="1"/>
                                     <field name="report_section_472_rest" nolabel="1" class="oe_inline"/>
                                     <separator string="Repartition fields for the annual tax report" colspan="6" class="fs-5"/>
                                     <label for="report_section_001" string="Supply of inhouse manufactured goods" colspan="4"/>
-                                    <label for="report_section_001" string="001" colspan="1" class="oe_right"/>
+                                    <label for="report_section_001" string="001" colspan="1"/>
                                     <field name="report_section_001" nolabel="1" class="oe_inline" readonly="state == 'exported'"/>
                                     <label for="report_section_002" string="Supply of goods not manufactured inhouse" colspan="4"/>
-                                    <label for="report_section_002" string="002" colspan="1" class="oe_right"/>
+                                    <label for="report_section_002" string="002" colspan="1"/>
                                     <field name="report_section_002" nolabel="1" class="oe_inline" readonly="state == 'exported'"/>
                                     <label for="report_section_003" string="Net profit margin (special arrangement: Art. 56ter-1 and 56ter-2)" colspan="4"/>
-                                    <label for="report_section_003" string="003" colspan="1" class="oe_right"/>
+                                    <label for="report_section_003" string="003" colspan="1"/>
                                     <field name="report_section_003" nolabel="1" class="oe_inline" readonly="state == 'exported'"/>
                                     <label for="report_section_004" string="Supply of services" colspan="4"/>
-                                    <label for="report_section_004" string="004" colspan="1" class="oe_right"/>
+                                    <label for="report_section_004" string="004" colspan="1"/>
                                     <field name="report_section_004" nolabel="1" class="oe_inline" readonly="state == 'exported'"/>
                                     <label for="report_section_005" string="Disposal of tangible and intangible capital assets for ancillary transactions" colspan="4"/>
-                                    <label for="report_section_005" string="005" colspan="1" class="oe_right"/>
+                                    <label for="report_section_005" string="005" colspan="1"/>
                                     <field name="report_section_005" nolabel="1" class="oe_inline" readonly="state == 'exported'"/>
                                     <label for="report_section_206" string="Custom: " colspan="2"/>
-                                    <label for="report_section_206" string="206" colspan="1" class="oe_right"/>
+                                    <label for="report_section_206" string="206" colspan="1"/>
                                     <field name="report_section_206" colspan="1" nolabel="1" readonly="state == 'exported'"/>
-                                    <label for="report_section_206" string="007" colspan="1" class="oe_right"/>
+                                    <label for="report_section_206" string="007" colspan="1"/>
                                     <field name="report_section_007" colspan="1" nolabel="1" readonly="state == 'exported'"/>
                                 </group>
                             </page>
                             <page string="Other Assimilated Supplies">
                                 <group col="6" string="Application of goods for non-business use and for business purposes (455)">
                                     <label for="report_section_455_rest" string="Application of goods for non-business use and for business purposes (455): amount still to be allocated" colspan="4"/>
-                                    <label for="report_section_455_rest" string="455" colspan="1" class="oe_right"/>
+                                    <label for="report_section_455_rest" string="455" colspan="1"/>
                                     <field name="report_section_455_rest" nolabel="1" class="oe_inline"/>
                                     <separator string="Repartition fields for the annual tax report" colspan="6" class="fs-5"/>
                                     <label for="report_section_008" string="Application of goods for private use or for that of the staff (008)" colspan="4"/>
-                                    <label for="report_section_008" string="008" colspan="1" class="oe_right"/>
+                                    <label for="report_section_008" string="008" colspan="1"/>
                                     <field name="report_section_008" nolabel="1" class="oe_inline" readonly="state == 'exported'"/>
                                     <label for="report_section_009" string="Application for the purpose of business of goods produced in the course of the business (009)" colspan="4"/>
-                                    <label for="report_section_009" string="009" colspan="1" class="oe_right"/>
+                                    <label for="report_section_009" string="009" colspan="1"/>
                                     <field name="report_section_009" nolabel="1" class="oe_inline" readonly="state == 'exported'"/>
                                 </group>
                                 <separator/>
                                 <group col="6" string="Non-business use of goods and supply of services free of charge (456)">
                                     <label for="report_section_456_rest" string="Non-business use of goods and supply of services free of charge (456): amount still to be allocated" colspan="4"/>
-                                    <label for="report_section_456_rest" string="456" colspan="1" class="oe_right"/>
+                                    <label for="report_section_456_rest" string="456" colspan="1"/>
                                     <field name="report_section_456_rest" nolabel="1" class="oe_inline"/>
                                     <separator string="Repartition fields for the annual tax report" colspan="6" class="fs-5"/>
                                     <label for="report_section_010" string="Use of goods considered business assets for purposes other than those of the business (010)" colspan="4"/>
-                                    <label for="report_section_010" string="010" colspan="1" class="oe_right"/>
+                                    <label for="report_section_010" string="010" colspan="1"/>
                                     <field name="report_section_010" nolabel="1" class="oe_inline" readonly="state == 'exported'"/>
                                     <label for="report_section_011" string="Supply of services carried out free of charge for purposes other than those of the business (011)" colspan="4"/>
-                                    <label for="report_section_011" string="011" colspan="1" class="oe_right"/>
+                                    <label for="report_section_011" string="011" colspan="1"/>
                                     <field name="report_section_011" nolabel="1" class="oe_inline" readonly="state == 'exported'"/>
                                 </group>
                             </page>
                             <page string="Intra-Community">
                                 <group col="6" string="Intra-Community supply (457)">
                                     <label for="report_section_457_rest" string="Intra-Community supply (457): amount still to be allocated" colspan="4"/>
-                                    <label for="report_section_457_rest" string="457" colspan="1" class="oe_right"/>
+                                    <label for="report_section_457_rest" string="457" colspan="1"/>
                                     <field name="report_section_457_rest" nolabel="1" colspan="1" class="oe_inline"/>
                                     <separator string="Repartition fields for the annual tax report" colspan="6" class="fs-5"/>
                                     <label for="report_section_013" string="IC supply of goods to persons identified for VAT purposes in another Member State (MS) (013)" colspan="4"/>
-                                    <label for="report_section_013" string="013" colspan="1" class="oe_right"/>
+                                    <label for="report_section_013" string="013" colspan="1"/>
                                     <field name="report_section_013" nolabel="1" class="oe_inline" readonly="state == 'exported'"/>
                                     <label for="report_section_202" string="IC supply of new means of transport (Art. 43(1)(e)) to persons not identified for VAT purposes who are established or reside in an other MS (202)" colspan="4"/>
-                                    <label for="report_section_202" string="202" colspan="1" class="oe_right"/>
+                                    <label for="report_section_202" string="202" colspan="1"/>
                                     <field name="report_section_202" nolabel="1" class="oe_inline" readonly="state == 'exported'"/>
                                     <label for="report_section_203" string="Supply of goods carried out to customers not identified for VAT
                                             purposes and established in the MS where the dispatch ends, when these supplies are taxable in that MS" colspan="4"/>
-                                    <label for="report_section_203" string="203" colspan="1" class="oe_right"/>
+                                    <label for="report_section_203" string="203" colspan="1"/>
                                     <field name="report_section_203" nolabel="1" class="oe_inline" readonly="state == 'exported'"/>
                                 </group>
                             </page>
@@ -161,36 +161,36 @@
                                 <group col="6" string="Appendix F. Names and addresses to be specified">
                                     <separator string="Accountant (A9) details" colspan="6" class="fs-5"/>
                                     <label for="report_section_397" string="a) Name" colspan="1"/>
-                                    <label for="report_section_397" string="397" colspan="1" class="oe_right"/>
+                                    <label for="report_section_397" string="397" colspan="1" class="float-end"/>
                                     <field name="report_section_397" nolabel="1" class="oe_inline" colspan="4" readonly="state == 'exported'"/>
                                     <label for="report_section_398" string="b) Address" colspan="1"/>
-                                    <label for="report_section_398" string="398" colspan="1" class="oe_right"/>
+                                    <label for="report_section_398" string="398" colspan="1" class="float-end"/>
                                     <field name="report_section_398" nolabel="1" class="oe_inline" colspan="4" readonly="state == 'exported'"/>
-                                    <label for="report_section_399" string="399" colspan="2" class="oe_right"/>
+                                    <label for="report_section_399" string="399" colspan="2" class="float-end"/>
                                     <field name="report_section_399" nolabel="1" class="oe_inline" colspan="4" readonly="state == 'exported'"/>
                                     <separator string="Lessor (A18a) details" colspan="6" class="fs-5"/>
                                     <label for="report_section_400" string="a) Name" colspan="1"/>
-                                    <label for="report_section_400" string="400" colspan="1" class="oe_right"/>
+                                    <label for="report_section_400" string="400" colspan="1" class="float-end"/>
                                     <field name="report_section_400" nolabel="1" class="oe_inline" colspan="4" readonly="state == 'exported'"/>
                                     <label for="report_section_401" string="b) Address" colspan="1"/>
-                                    <label for="report_section_401" string="401" colspan="1" class="oe_right"/>
+                                    <label for="report_section_401" string="401" colspan="1" class="float-end"/>
                                     <field name="report_section_401" nolabel="1" class="oe_inline" colspan="4" readonly="state == 'exported'"/>
-                                    <label for="report_section_402" string="402" colspan="2" class="oe_right"/>
+                                    <label for="report_section_402" string="402" colspan="2" class="float-end"/>
                                     <field name="report_section_402" nolabel="1" class="oe_inline" colspan="4" readonly="state == 'exported'"/>
                                 </group>
                             </page>
                             <page string="Adjustment of Deductions" name="deductions">
                                 <group col="6" string="Adjustment of Deductions">
                                     <label for="report_section_098" string="Adjustment of deductions in accordance with provisions of Art. 53" colspan="4"/>
-                                    <label for="report_section_098" string="098" colspan="1" class="oe_right"/>
+                                    <label for="report_section_098" string="098" colspan="1"/>
                                     <field name="report_section_098" nolabel="1" class="oe_inline" readonly="state == 'exported'"/>
                                     <label for="report_section_099" string="Adjustment of deductions in accordance with provisions of the grand-ducal Regulation of 7 March 1980 - option to tax land" colspan="4"/>
-                                    <label for="report_section_099" string="099" colspan="1" class="oe_right"/>
+                                    <label for="report_section_099" string="099" colspan="1"/>
                                     <field name="report_section_099" nolabel="1" class="oe_inline" readonly="state == 'exported'"/>
                                     <label for="report_section_229" string="Other: " colspan="2"/>
-                                    <label for="report_section_229" string="229" colspan="1" class="oe_right"/>
+                                    <label for="report_section_229" string="229" colspan="1"/>
                                     <field name="report_section_229" colspan="1" nolabel="1" readonly="state == 'exported'"/>
-                                    <label for="report_section_229" string="100" colspan="1" class="oe_right"/>
+                                    <label for="report_section_229" string="100" colspan="1"/>
                                     <field name="report_section_100" colspan="1" nolabel="1" readonly="state == 'exported'"/>
                                 </group>
                             </page>
@@ -391,30 +391,30 @@
                                 <group col="10" string="">
                                     <separator string="Total" colspan="10"/>
                                     <label for="report_section_389" string="Assessment total of the taxable amount for non-business use of assets allocated to business" colspan="7"/>
-                                    <label for="report_section_389" string="389" class="oe_right" colspan="1"/>
+                                    <label for="report_section_389" string="389" colspan="1"/>
                                     <field name="report_section_389" nolabel="1" colspan="2"/>
 
                                     <separator string="Motor vehicles" colspan="10"/>
                                     <separator string="Values" colspan="10" class="fs-5 fw-bold"/>
 
                                     <label for="report_section_363" string="Book (net asset) value at the beginning of the financial year" colspan="7"/>
-                                    <label for="report_section_363" string="363" class="oe_right"/>
+                                    <label for="report_section_363" string="363"/>
                                     <field name="report_section_363" nolabel="1" colspan="2" readonly="state == 'exported'"/>
 
                                     <label for="report_section_364" string="Acquisitions during the financial year" colspan="7"/>
-                                    <label for="report_section_364" string="364" class="oe_right" colspan="1"/>
+                                    <label for="report_section_364" string="364" colspan="1"/>
                                     <field name="report_section_364" nolabel="1" colspan="2" readonly="state == 'exported'"/>
 
                                     <label for="report_section_365" string="Sales during the financial year" colspan="7"/>
-                                    <label for="report_section_365" string="365" class="oe_right" colspan="1"/>
+                                    <label for="report_section_365" string="365" colspan="1"/>
                                     <field name="report_section_365" nolabel="1" colspan="2" readonly="state == 'exported'"/>
 
                                     <label for="report_section_366" string="Depreciation during the financial year" colspan="7"/>
-                                    <label for="report_section_366" string="366" class="oe_right" colspan="1"/>
+                                    <label for="report_section_366" string="366" colspan="1"/>
                                     <field name="report_section_366" nolabel="1" colspan="2" readonly="state == 'exported'"/>
 
                                     <label for="report_section_367" string="Book (net asset) value at the end of the financial year" colspan="7"/>
-                                    <label for="report_section_367" string="367" class="oe_right" colspan="1"/>
+                                    <label for="report_section_367" string="367" colspan="1"/>
                                     <field name="report_section_367" nolabel="1" colspan="2" readonly="state == 'exported'"/>
 
                                     <separator colspan="10"/>
@@ -428,81 +428,81 @@
                                     </div>
 
                                     <label for="report_section_381" string="Total of expenses during the financial year" colspan="4"/>
-                                    <label for="report_section_381" string="381" class="oe_right" colspan="1"/>
+                                    <label for="report_section_381" string="381" colspan="1"/>
                                     <field name="report_section_381" nolabel="1" colspan="2"/>
-                                    <label for="report_section_382" string="382" class="oe_right" colspan="1"/>
+                                    <label for="report_section_382" string="382" colspan="1"/>
                                     <field name="report_section_382" nolabel="1" colspan="2"/>
 
                                     <label for="report_section_368" string="Fuel (petrol, diesel) and lubricants" colspan="4"/>
-                                    <label for="report_section_368" string="368" class="oe_right" colspan="1"/>
+                                    <label for="report_section_368" string="368" colspan="1"/>
                                     <field name="report_section_368" nolabel="1" colspan="2" readonly="state == 'exported'"/>
-                                    <label for="report_section_369" string="369" class="oe_right" colspan="1"/>
+                                    <label for="report_section_369" string="369" colspan="1"/>
                                     <field name="report_section_369" nolabel="1" colspan="2" readonly="state == 'exported'"/>
 
                                     <label for="report_section_372" string="LPG" colspan="4"/>
-                                    <label for="report_section_372" string="372" class="oe_right" colspan="1"/>
+                                    <label for="report_section_372" string="372" colspan="1"/>
                                     <field name="report_section_372" nolabel="1" colspan="2" readonly="state == 'exported'"/>
-                                    <label for="report_section_373" string="373" class="oe_right" colspan="1"/>
+                                    <label for="report_section_373" string="373" colspan="1"/>
                                     <field name="report_section_373" nolabel="1" colspan="2" readonly="state == 'exported'"/>
 
                                     <label for="report_section_374" string="Repairs and servicing" colspan="4"/>
-                                    <label for="report_section_374" string="374" class="oe_right" colspan="1"/>
+                                    <label for="report_section_374" string="374" colspan="1"/>
                                     <field name="report_section_374" nolabel="1" colspan="2" readonly="state == 'exported'"/>
-                                    <label for="report_section_375" string="375" class="oe_right" colspan="1"/>
+                                    <label for="report_section_375" string="375" colspan="1"/>
                                     <field name="report_section_375" nolabel="1" colspan="2" readonly="state == 'exported'"/>
 
                                     <label for="report_section_376" string="Tyres, etc." colspan="4"/>
-                                    <label for="report_section_376" string="376" class="oe_right" colspan="1"/>
+                                    <label for="report_section_376" string="376" colspan="1"/>
                                     <field name="report_section_376" nolabel="1" colspan="2" readonly="state == 'exported'"/>
-                                    <label for="report_section_377" string="377" class="oe_right" colspan="1"/>
+                                    <label for="report_section_377" string="377" colspan="1"/>
                                     <field name="report_section_377" nolabel="1" colspan="2" readonly="state == 'exported'"/>
 
                                     <label for="report_section_378" string="Leasing / renting" colspan="4"/>
-                                    <label for="report_section_378" string="378" class="oe_right" colspan="1"/>
+                                    <label for="report_section_378" string="378" colspan="1"/>
                                     <field name="report_section_378" nolabel="1" colspan="2" readonly="state == 'exported'"/>
-                                    <label for="report_section_379" string="379" class="oe_right" colspan="1"/>
+                                    <label for="report_section_379" string="379" colspan="1"/>
                                     <field name="report_section_379" nolabel="1" colspan="2" readonly="state == 'exported'"/>
 
                                     <label for="report_section_380" string="Depreciation" colspan="4"/>
-                                    <label for="report_section_380" string="380" class="oe_right" colspan="1"/>
+                                    <label for="report_section_380" string="380" colspan="1"/>
                                     <field name="report_section_380" nolabel="1" colspan="2" readonly="state == 'exported'"/>
 
                                     <separator colspan="10" string="Number of km travelled during the financial year" class="fs-5 fw-bold"/>
 
                                     <label for="report_section_383" string="Km travelled" colspan="4"/>
-                                    <label for="report_section_383" string="383" class="oe_right" colspan="1"/>
+                                    <label for="report_section_383" string="383" colspan="1"/>
                                     <field name="report_section_383" nolabel="1" colspan="2" readonly="state == 'exported'"/>
 
                                     <label for="report_section_384" string="Non-business portion (km)" colspan="4"/>
-                                    <label for="report_section_384" string="384" class="oe_right" colspan="1"/>
+                                    <label for="report_section_384" string="384" colspan="1"/>
                                     <field name="report_section_384" nolabel="1" colspan="2" readonly="state == 'exported'"/>
 
                                     <label for="report_section_385" string="Non-business portion (in %)" colspan="4"/>
-                                    <label for="report_section_385" string="385" class="oe_right" colspan="1"/>
+                                    <label for="report_section_385" string="385" colspan="1"/>
                                     <field name="report_section_385" nolabel="1" colspan="2" readonly="state == 'exported'"/>
 
                                     <separator colspan="10" string="Non-business expenditures for motor vehicules" class="fs-5 fw-bold"/>
                                     <label for="report_section_386" string="Non-business part of expenditures for motor vehicules (VAT excluded)" colspan="7"/>
-                                    <label for="report_section_386" string="386" class="oe_right" colspan="1"/>
+                                    <label for="report_section_386" string="386" colspan="1"/>
                                     <field name="report_section_386" nolabel="1" colspan="2" readonly="state == 'exported'"/>
 
                                     <separator colspan="10" string="Other assets:" class="fs-5 fw-bold"/>
-                                    <label for="report_section_387" string="387" class="oe_right" colspan="1"/>
+                                    <label for="report_section_387" string="387" colspan="1"/>
                                     <field name="report_section_387" nolabel="1" colspan="2" readonly="state == 'exported'"/>
-                                    <label for="report_section_388" string="388" class="oe_right" colspan="1"/>
+                                    <label for="report_section_388" string="388" colspan="1"/>
                                     <field name="report_section_388" nolabel="1" colspan="2" readonly="state == 'exported'"/>
                                 </group>
                             </page>
                             <page string="Appendix C" name="appendix_c">
                                 <group col="12" string="">
                                     <label for="report_section_166" string="Supplies carried out within the scope of the special arrangement" colspan="6"/>
-                                    <label for="report_section_166" string="166" class="oe_right" colspan="4"/>
+                                    <label for="report_section_166" string="166" colspan="4"/>
                                     <field name="report_section_166" nolabel="1" colspan="2"/>
                                     <label for="report_section_106" string="Services supplied by the declaring person as a registered taxpayer in Luxembourg" colspan="6"/>
-                                    <label for="report_section_106" string="106" class="oe_right" colspan="4"/>
+                                    <label for="report_section_106" string="106" colspan="4"/>
                                     <field name="report_section_106" nolabel="1" colspan="2" readonly="state == 'exported'"/>
                                     <label for="report_section_107" string="Services to be declared and taxed by the registered taxpayer in Luxembourg" colspan="6"/>
-                                    <label for="report_section_107" string="107" class="oe_right" colspan="4"/>
+                                    <label for="report_section_107" string="107" colspan="4"/>
                                     <field name="report_section_107" nolabel="1" colspan="2" readonly="state == 'exported'"/>
                                 </group>
                             </page>

@@ -73,9 +73,12 @@ class ResUsers(models.Model):
         self.env.user.last_seen_phone_call = last_call.id
 
     def _init_messaging(self):
+        res = super()._init_messaging()
+        if not self.env.user._is_internal():
+            return res
         get_param = self.env["ir.config_parameter"].sudo().get_param
         return {
-            **super()._init_messaging(),
+            **res,
             "voipConfig": {
                 "mode": get_param("voip.mode", default="demo"),
                 "missedCalls": self.env["voip.call"]._get_number_of_missed_calls(),

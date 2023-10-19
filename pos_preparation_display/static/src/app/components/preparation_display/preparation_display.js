@@ -3,7 +3,7 @@ import { Category } from "@pos_preparation_display/app/components/category/categ
 import { Stages } from "@pos_preparation_display/app/components/stages/stages";
 import { Order } from "@pos_preparation_display/app/components/order/order";
 import { usePreparationDisplay } from "@pos_preparation_display/app/preparation_display_service";
-import { Component, onPatched } from "@odoo/owl";
+import { Component, onPatched, useState } from "@odoo/owl";
 
 export class PreparationDisplay extends Component {
     static props = {};
@@ -12,6 +12,9 @@ export class PreparationDisplay extends Component {
         this.preparationDisplay = usePreparationDisplay();
         this.displayName = odoo.preparation_display.name;
         this.onNextPatch = new Set();
+        this.state = useState({
+            isMenuOpened: false,
+        })
 
         onPatched(() => {
             for (const cb of this.onNextPatch) {
@@ -70,6 +73,15 @@ export class PreparationDisplay extends Component {
             this.preparationDisplay.stages.get(this.preparationDisplay.selectedStageId)
                 .recallIdsHistory.length == 0
         );
+    }
+    isBurgerMenuClosed() {
+        return !this.state.isMenuOpened;
+    }
+    closeMenu() {
+        this.state.isMenuOpened = false;
+    }
+    openMenu() {
+        this.state.isMenuOpened = true;
     }
 }
 

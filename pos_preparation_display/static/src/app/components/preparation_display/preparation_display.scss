@@ -26,3 +26,12 @@ $o-pdis-logo-size: 45px;
 .z-2000 {
     z-index: 2000;
 }
+
+.menu {
+    z-index: $zindex-dropdown;
+}
+
+.sub-menu {
+    top: $o-pdis-navbar-height - 1px;
+    right: -1px;
+}

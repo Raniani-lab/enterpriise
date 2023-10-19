@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from odoo import http
 from odoo.addons.pos_self_order_preparation_display.controllers.orders import PosSelfOrderPreparationDisplayController
 
 class PosOnlineSelfOrderPreparationDisplayController(PosSelfOrderPreparationDisplayController):

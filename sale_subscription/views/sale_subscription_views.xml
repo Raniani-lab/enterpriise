@@ -479,8 +479,8 @@
                 <templates>
                     <div t-name="activity-box">
                         <div>
-                            <field name="note" display="full"/>
-                            <field name="partner_id" muted="1" display="full"/>
+                            <field name="note" display="full" class="o_text_block"/>
+                            <field name="partner_id" muted="1" display="full" class="o_text_block"/>
                         </div>
                     </div>
                 </templates>

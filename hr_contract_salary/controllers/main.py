@@ -446,7 +446,7 @@ class HrContractSalary(http.Controller):
             'hr_responsible_id': contract.hr_responsible_id.id,
             'sign_template_id': contract.sign_template_id.id,
             'contract_update_template_id': contract.contract_update_template_id.id,
-            'date_start': fields.Date.today().replace(day=1),
+            'date_start': offer.contract_start_date or fields.Date.today().replace(day=1),
             'contract_type_id': contract.contract_type_id.id,
         }
         if 'work_entry_source' in contract:

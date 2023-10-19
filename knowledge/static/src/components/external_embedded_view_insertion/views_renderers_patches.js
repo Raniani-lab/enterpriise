@@ -6,6 +6,7 @@ import { CalendarRenderer } from "@web/views/calendar/calendar_renderer";
 import { CohortRenderer } from "@web_cohort/cohort_renderer";
 import { GanttRenderer } from "@web_gantt/gantt_renderer";
 import { GraphRenderer } from "@web/views/graph/graph_renderer";
+import { HierarchyRenderer } from "@web_hierarchy/hierarchy_renderer";
 import { KanbanRenderer } from "@web/views/kanban/kanban_renderer";
 import { ListRenderer } from "@web/views/list/list_renderer";
 import { MapRenderer } from "@web_map/map_view/map_renderer";
@@ -226,6 +227,7 @@ patch(CalendarRenderer.prototype, EmbeddedViewRendererPatch());
 patch(CohortRenderer.prototype, EmbeddedViewRendererPatch());
 patch(GanttRenderer.prototype, EmbeddedViewRendererPatch());
 patch(GraphRenderer.prototype, EmbeddedViewRendererPatch());
+patch(HierarchyRenderer.prototype, EmbeddedViewRendererPatch());
 patch(KanbanRenderer.prototype, EmbeddedViewRendererPatch());
 patch(ListRenderer.prototype, EmbeddedViewRendererPatch());
 patch(ListRenderer.prototype, EmbeddedViewListRendererPatch());
@@ -237,6 +239,7 @@ const supportedEmbeddedViews = new Set([
     'cohort',
     'gantt',
     'graph',
+    'hierarchy',
     'kanban',
     'list',
     'map',

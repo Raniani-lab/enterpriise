@@ -12,7 +12,8 @@
         'web_editor',
         'mail',
         'portal',
-        'web_unsplash'
+        'web_unsplash',
+        'web_hierarchy'
     ],
     'data': [
         'data/article_templates.xml',

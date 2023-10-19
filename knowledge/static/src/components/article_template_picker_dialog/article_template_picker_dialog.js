@@ -5,7 +5,7 @@ import { Component, onWillStart, useEffect, useRef, useState } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog";
 import { groupBy } from "@web/core/utils/arrays";
 import { HtmlField } from "@web_editor/js/backend/html_field";
-import { Record } from "@web/views/record";
+import { Record } from "@web/model/record";
 import { useService } from "@web/core/utils/hooks";
 
 

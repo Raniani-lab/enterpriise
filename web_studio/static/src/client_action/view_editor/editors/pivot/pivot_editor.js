@@ -10,7 +10,7 @@ import { SidebarViewToolbox } from "@web_studio/client_action/view_editor/intera
 import * as operationUtils from "@web_studio/client_action/view_editor/operations_utils";
 import { fieldsToChoices } from "@web_studio/client_action/view_editor/editors/utils";
 
-import { Record } from "@web/views/record";
+import { Record } from "@web/model/record";
 import { Many2ManyTagsField } from "@web/views/fields/many2many_tags/many2many_tags_field";
 
 import { useEditNodeAttributes } from "@web_studio/client_action/view_editor/view_editor_model";

@@ -2,8 +2,7 @@
 
 import { patch } from "@web/core/utils/patch";
 import { BinaryField } from "@web/views/fields/binary/binary_field";
-import { Record } from "@web/views/record";
-
+import { Record } from "@web/model/record";
 import { PayrollDashboardPayslipBatch } from '@hr_payroll/components/dashboard/payslip_batch/payslip_batch';
 
 patch(PayrollDashboardPayslipBatch.prototype, {

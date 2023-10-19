@@ -8,7 +8,7 @@ import { escape } from "@web/core/utils/strings";
 import { useDebounced } from "@web/core/utils/timing";
 import { useVirtual } from "@web/core/virtual_hook";
 import { Field } from "@web/views/fields/field";
-import { Record } from "@web/views/record";
+import { Record } from "@web/model/record";
 import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
 import { ViewScaleSelector } from "@web/views/view_components/view_scale_selector";
 

@@ -19,7 +19,7 @@ import { QWebPlugin } from "@web_editor/js/backend/QWebPlugin";
 import { StudioDynamicPlaceholderPopover } from "./studio_dynamic_placeholder_popover";
 import { Many2ManyTagsField } from "@web/views/fields/many2many_tags/many2many_tags_field";
 import { CharField } from "@web/views/fields/char/char_field";
-import { Record as _Record } from "@web/views/record";
+import { Record as _Record } from "@web/model/record";
 import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
 import { BooleanField } from "@web/views/fields/boolean/boolean_field";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";

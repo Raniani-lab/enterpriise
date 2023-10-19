@@ -3,7 +3,7 @@
 import { _t } from "@web/core/l10n/translation";
 import { Domain } from "@web/core/domain";
 import { useService } from "@web/core/utils/hooks";
-import { Record } from "@web/views/record";
+import { Record } from "@web/model/record";
 import { getRawValue } from "@web/views/kanban/kanban_record";
 
 import { TimesheetTimerHeader } from "../timesheet_timer_header/timesheet_timer_header";

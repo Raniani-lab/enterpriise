@@ -9,7 +9,7 @@ import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 
-import { Record } from "@web/views/record";
+import { Record } from "@web/model/record";
 import {
     Many2ManyTagsField,
     many2ManyTagsField,

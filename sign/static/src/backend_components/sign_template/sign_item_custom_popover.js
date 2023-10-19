@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { _t } from "@web/core/l10n/translation";
-import { Record } from "@web/views/record";
+import { Record } from "@web/model/record";
 import {
     many2ManyTagsField,
     Many2ManyTagsField,

@@ -7,7 +7,7 @@ import { Component, useState } from "@odoo/owl";
 import { InteractiveEditorSidebar } from "@web_studio/client_action/view_editor/interactive_editor/interactive_editor_sidebar";
 import { Property } from "@web_studio/client_action/view_editor/property/property";
 import { SidebarViewToolbox } from "@web_studio/client_action/view_editor/interactive_editor/sidebar_view_toolbox/sidebar_view_toolbox";
-import { Record } from "@web/views/record";
+import { Record } from "@web/model/record";
 import { Many2ManyTagsField } from "@web/views/fields/many2many_tags/many2many_tags_field";
 import { useEditNodeAttributes } from "@web_studio/client_action/view_editor/view_editor_model";
 import { MultiRecordSelector } from "@web/core/record_selectors/multi_record_selector";

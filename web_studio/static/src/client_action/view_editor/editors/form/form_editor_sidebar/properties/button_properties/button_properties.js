@@ -6,7 +6,7 @@ import { DomainSelectorDialog } from "@web/core/domain_selector_dialog/domain_se
 import { SelectMenu } from "@web/core/select_menu/select_menu";
 import { Property } from "@web_studio/client_action/view_editor/property/property";
 import { useService } from "@web/core/utils/hooks";
-import { Record } from "@web/views/record";
+import { Record } from "@web/model/record";
 import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
 import { Many2ManyTagsField } from "@web/views/fields/many2many_tags/many2many_tags_field";
 import { LimitGroupVisibility } from "@web_studio/client_action/view_editor/interactive_editor/properties/limit_group_visibility/limit_group_visibility";

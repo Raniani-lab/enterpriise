@@ -4804,13 +4804,31 @@ class AccountReport(models.Model):
         level_3_col1_total_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666', 'indent': 1})
         level_3_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666'})
 
-        #Set the first column width to 50
-        sheet.set_column(0, 0, 50)
-
-        y_offset = 0
-        x_offset = 1 # 1 and not 0 to leave space for the line name
         print_mode_self = self.with_context(no_format=True)
         lines = self._filter_out_folded_children(print_mode_self._get_lines(options))
+
+        # For reports with lines generated for accounts, the account name and codes are shown in a single column.
+        # To help user post-process the report if they need, we should in such a case split the account name and code in two columns.
+        account_lines_split_names = {}
+        for line in lines:
+            line_model = self._get_model_info_from_id(line['id'])[0]
+            if line_model == 'account.account':
+                # Reuse the _split_code_name to split the name and code in two values.
+                account_lines_split_names[line['id']] = self.env['account.account']._split_code_name(line['name'])
+
+        # Set the first column width to 50.
+        # If we have account lines and split the name and code in two columns, we will also set the second column.
+        if len(account_lines_split_names) > 0:
+            sheet.set_column(0, 0, 11)
+            sheet.set_column(1, 1, 50)
+        else:
+            sheet.set_column(0, 0, 50)
+
+        original_x_offset = 1 if len(account_lines_split_names) > 0 else 0
+
+        y_offset = 0
+        # 1 and not 0 to leave space for the line name. original_x_offset allows making place for the code column if needed.
+        x_offset = original_x_offset + 1
 
         # Add headers.
         # For this, iterate in the same way as done in main_table_header template
@@ -4823,14 +4841,14 @@ class AccountReport(models.Model):
             if options['show_growth_comparison']:
                 write_with_colspan(sheet, x_offset, y_offset, '%', 1, title_style)
             y_offset += 1
-            x_offset = 1
+            x_offset = original_x_offset + 1
 
         for subheader in column_headers_render_data['custom_subheaders']:
             colspan = subheader.get('colspan', 1)
             write_with_colspan(sheet, x_offset, y_offset, subheader.get('name', ''), colspan, title_style)
             x_offset += colspan
         y_offset += 1
-        x_offset = 1
+        x_offset = original_x_offset + 1
 
         for column in options['columns']:
             colspan = column.get('colspan', 1)
@@ -4864,18 +4882,26 @@ class AccountReport(models.Model):
                 style = default_style
                 col1_style = default_col1_style
 
-            #write the first column, with a specific style to manage the indentation
-            cell_type, cell_value = self._get_cell_type_value(lines[y])
-            if cell_type == 'date':
-                sheet.write_datetime(y + y_offset, 0, cell_value, date_default_col1_style)
+            # write the first column, with a specific style to manage the indentation
+            x_offset = original_x_offset + 1
+            if lines[y]['id'] in account_lines_split_names:
+                code, name = account_lines_split_names[lines[y]['id']]
+                sheet.write(y + y_offset, x_offset - 2, code, col1_style)
+                sheet.write(y + y_offset, x_offset - 1, name, col1_style)
             else:
-                sheet.write(y + y_offset, 0, cell_value, col1_style)
+                if lines[y].get('parent_id') and lines[y]['parent_id'] in account_lines_split_names:
+                    sheet.write(y + y_offset, x_offset - 2, account_lines_split_names[lines[y]['parent_id']][0], col1_style)
+                cell_type, cell_value = self._get_cell_type_value(lines[y])
+                if cell_type == 'date':
+                    sheet.write_datetime(y + y_offset, x_offset - 1, cell_value, date_default_col1_style)
+                else:
+                    sheet.write(y + y_offset, x_offset - 1, cell_value, col1_style)
 
             #write all the remaining cells
             columns = lines[y]['columns']
             if options['show_growth_comparison'] and 'growth_comparison_data' in lines[y]:
                 columns += [lines[y].get('growth_comparison_data')]
-            for x, column in enumerate(columns, start=1):
+            for x, column in enumerate(columns, start=x_offset):
                 cell_type, cell_value = self._get_cell_type_value(column)
                 if cell_type == 'date':
                     sheet.write_datetime(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell_value, date_default_style)

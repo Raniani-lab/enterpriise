@@ -41,7 +41,7 @@ class PosOrder(models.Model):
         if line_key not in changes:
             return True
         for line in self.lines:
-            if line.uuid == changes[line_key]['line_uuid'] and line.note == changes[line_key]['note']:
+            if line.uuid == changes[line_key]['line_uuid'] and (line.note or '') == changes[line_key]['note']:
                 return True
         return False
 

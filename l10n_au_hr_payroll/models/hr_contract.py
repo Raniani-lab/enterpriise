@@ -117,8 +117,7 @@ class HrContract(models.Model):
     @api.depends('wage_type')
     def _compute_l10n_au_employment_basis_code(self):
         for contract in self:
-            if contract.wage_type == 'hourly':
-                contract.l10n_au_employment_basis_code = 'C'
+            contract.l10n_au_employment_basis_code = "C" if contract.wage_type == "hourly" else "F"
 
     @api.depends("l10n_au_tax_treatment_category")
     def _compute_l10n_au_tax_treatment_option(self):

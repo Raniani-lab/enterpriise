@@ -30,13 +30,13 @@ class HrEmployee(models.Model):
         readonly=False)
     l10n_au_scale = fields.Selection(
         selection=[
-            ("1", "(1) national, tax-free threshold NOT claimed"),
-            ("2", "(2) national, tax-free threshold claimed"),
-            ("3", "(3) foreign resident"),
+            ("1", "(1) National, tax-free threshold NOT claimed"),
+            ("2", "(2) National, tax-free threshold claimed"),
+            ("3", "(3) Foreign resident"),
             ("4", "(4) TFN not provided"),
-            ("5", "(5) medicare levy full exemption claimed"),
-            ("6", "(6) medicare levy half exemption claimed")],
-        string="Scale for withholding",
+            ("5", "(5) Medicare levy full exemption claimed"),
+            ("6", "(6) Medicare levy half exemption claimed")],
+        string="Scale For Withholding",
         compute="_compute_l10n_au_scale",
         inverse="_inverse_l10n_au_scale",
         store=True,

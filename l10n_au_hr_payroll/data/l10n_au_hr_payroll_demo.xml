@@ -117,12 +117,14 @@
         <field name="name">Annual Leave</field>
         <field name="l10n_au_leave_type">annual</field>
         <field name="leave_validation_type">no_validation</field>
+        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_legal_leave"/>
     </record>
     <record id="hr_leave_type_long_service" model="hr.leave.type">
         <field name="company_id" ref="l10n_au_hr_payroll.res_company_au"/>
         <field name="name">Long Service Leave</field>
         <field name="l10n_au_leave_type">long_service</field>
         <field name="leave_validation_type">no_validation</field>
+        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_legal_leave"/>
     </record>
 
     <record id="hr_leave_allocation_long_service_pre_78" model="hr.leave.allocation">

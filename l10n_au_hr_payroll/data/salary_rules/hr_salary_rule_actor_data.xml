@@ -58,6 +58,22 @@ result = -payslip._l10n_au_compute_child_support(net_salary)
         <field name="struct_id" ref="l10n_au_hr_payroll.hr_payroll_structure_au_actor"/>
     </record>
 
+    <!-- Allowances not in Gross -->
+    <record id="l10n_au_allowance_structure_3" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="name">Allowance</field>
+        <field name="sequence">199</field>
+        <field name="code">ALW</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = payslip.input_line_ids.filtered(lambda x: x.input_type_id.l10n_au_is_allowance)</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+allowances = payslip.input_line_ids.filtered(lambda x: x.input_type_id.l10n_au_is_allowance)
+result = sum(allowances.mapped('amount'))
+        </field>
+        <field name="struct_id" ref="l10n_au_hr_payroll.hr_payroll_structure_au_actor"/>
+    </record>
+
     <record id="l10n_au_super_contribution_structure_3" model="hr.salary.rule">
         <field name="category_id" ref="l10n_au_hr_payroll.rule_category_super_contribution"/>
         <field name="name">Super Guarantee</field>
@@ -65,8 +81,8 @@ result = -payslip._l10n_au_compute_child_support(net_salary)
         <field name="sequence">300</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = categories['GROSS']
-result_rate = payslip._rule_parameter("l10n_au_withholding_super")
+rate = payslip._rule_parameter("l10n_au_withholding_super")
+result = categories['GROSS'] * rate/100 + contract.l10n_au_salary_sacrifice_superannuation
         </field>
         <field name="struct_id" ref="l10n_au_hr_payroll.hr_payroll_structure_au_actor"/>
     </record>

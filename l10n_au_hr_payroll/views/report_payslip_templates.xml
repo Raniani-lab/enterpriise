@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="report_payslip_au">
-        <t t-call="web.basic_layout">
+        <t t-call="web.external_layout">
             <div class="page">
                 <h2 id="payslip_name" t-field="o.name"/>
                 <t t-set="is_invalid" t-value="o._is_invalid()"/>
                 <t t-if="is_invalid">
                     <strong id="invalid_warning"><t t-esc="is_invalid"/></strong>
                 </t>
+                <h5 class="mt-1 mb-2 p-0">
+                    <strong><t t-esc="o.employee_id.name"/></strong>
+                </h5><br/>
                 <div class="row mb-5">
                     <div class="col-8">
-                        <h5 class="mt-5 mb-2 p-0">
-                            <strong><t t-esc="o.employee_id.name"/></strong>
-                        </h5><br/>
                         <span>
                             <strong>Pay Frequency: </strong>
                             <t t-esc="o.contract_id.schedule_pay.capitalize()"/>
@@ -27,8 +27,8 @@
                                 t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
                         </span><br/>
                         <span>
-                            <strong>Hourly Wage: </strong>
-                            <t t-esc="o.contract_id.hourly_wage"
+                            <t t-set="attendance_hours" t-value="o._get_worked_days_line_number_of_hours('WORK100')"/>
+                            <t t-esc="o._get_worked_days_line_amount('WORK100') / attendance_hours if attendance_hours else 0"
                                 t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
                         </span><br/>
                         <span>
@@ -42,25 +42,16 @@
                         </span><br/>
                     </div>
                     <div class="col-4 text-end">
-                        <strong><t t-esc="o.company_id.name"/></strong><br/>
-                        <span t-field="o.company_id.street"/>
-                        <span t-if="o.company_id.street2" t-field="' '+o.company_id.street2"/><br/>
-                        <span t-field="o.company_id.city"/> <span t-field="o.company_id.zip"/><br/>
-                        <span t-if="o.company_id.vat">
-                            <strong>ABN: </strong>
-                            <t t-esc="o.company_id.vat"/>
-                        </span><br/>
-                        <br/>
+
                         <span t-if="o.paid_date">Payment Date: <t t-esc="o.paid_date"/></span><br/>
                         <span>Gross Pay: <t t-esc="o.line_ids.filtered(lambda line: line.code == 'GROSS').total"
                             t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/></span><br/>
                         <span>Net Pay: <t t-esc="o.line_ids.filtered(lambda line: line.code == 'NET').total"
                             t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/></span><br/>
-                        <span>Super Payments: <t t-esc="o.contract_id.l10n_au_salary_sacrifice_superannuation"
+                        <span>Super Payments: <t t-esc="sum(o.line_ids.filtered(lambda line: line.code == 'SUPER').mapped('total'))"
                             t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/></span><br/>
                     </div>
                 </div>
-    
                 <div id="total">
                     <table class="table table-sm">
                         <thead class="o_black_border">
@@ -73,10 +64,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <t t-set="year_to_date_totals" t-value="o._l10n_au_get_year_to_date_totals(o.date_from)"/>
+                            <t t-set="year_to_date_totals" t-value="o.with_context(l10n_au_include_current_slip=True)._l10n_au_get_year_to_date_totals(o.date_from)"/>
                             <t t-set="total_hours" t-value="0.0"/>
                             <!-- show the detail of the worked lines -->
-                            <tr t-foreach="o.worked_days_line_ids" t-as="worked_line">
+                            <tr t-if="o.use_worked_day_lines">
+                                <td colspan="5"><strong>Worked Days</strong></td>
+                            </tr>
+                            <tr t-if="o.use_worked_day_lines" t-foreach="o.worked_days_line_ids" t-as="worked_line">
                                 <td>
                                     <t t-esc="worked_line.name"/>
                                 </td>
@@ -97,7 +91,13 @@
                                         t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
                                 </td>
                             </tr>
-                            <tr t-foreach="o.line_ids.filtered(lambda line: line.appears_on_payslip)" t-as="line">
+                            <tr>
+                                <td colspan="5"><strong>Payslip Lines</strong></td>
+                            </tr>
+                            <!-- Hide Medicare Adjustment line if the amount is 0 -->
+                            <tr t-foreach="o.line_ids.filtered(lambda line: line.appears_on_payslip and
+                                not (line.salary_rule_id == env.ref('l10n_au_hr_payroll.l10n_au_medicare_structure_1') and line.amount == 0))"
+                                t-as="line">
                                 <td><t t-esc="line.name"/></td>
                                 <td>
                                     <t t-if="line.category_id.code == 'BASIC'" t-esc="total_hours" t-options="{'widget': 'float_time'}"/>

@@ -20,7 +20,7 @@ class HrPayslipInput(models.Model):
     l10n_au_is_etp = fields.Boolean(string="Is ETP")
     l10n_au_etp_type = fields.Selection(
         selection=[
-            ('excluded', 'Genuine redundancy, invalidity, etc.'),
-            ('non_excluded', 'Non-genuine redundancy, gratuity, etc.'),
-        ])
-    l10n_au_etp_cap = fields.Boolean(string="ETP cap")
+            ('excluded', 'Excluded'),
+            ('non_excluded', 'Non-Excluded')],
+        string="ETP Type")
+    l10n_au_etp_cap = fields.Boolean(string="ETP Cap")

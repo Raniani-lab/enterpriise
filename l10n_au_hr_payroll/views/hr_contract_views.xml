@@ -8,7 +8,7 @@
             <div name="hourly_wage" position="after">
                 <field name="l10n_au_casual_loading"
                     class="o_hr_narrow_field" widget="percentage"
-                    invisible="country_code != 'AU'"/>
+                    invisible="country_code != 'AU' or wage_type == 'monthly'"/>
             </div>
             <xpath expr="//page[@name='information']//group[@name='yearly_benefits']" position="before">
                 <group>

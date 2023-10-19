@@ -24,7 +24,7 @@
                     <field name="l10n_au_tax_free_threshold" invisible="is_non_resident"/>
                     <field name="l10n_au_nat_3093_amount"/>
                     <field name="l10n_au_medicare_exemption"/>
-                    <field name="l10n_au_medicare_surcharge"/>
+                    <field name="l10n_au_medicare_surcharge" invisible="1"/> <!-- Hidden to be computed for 17.1-->
                     <field name="l10n_au_medicare_reduction"/>
                     <field name="l10n_au_scale"/>
                 </group>
@@ -37,7 +37,7 @@
                         invisible="l10n_au_child_support_garnishee in ['percentage', False]"/>
                 </group>
             </xpath>
-            <xpath expr="//field[@name='registration_number']" position="after">
+            <xpath expr="//field[@name='registration_number']" position="replace">
                 <field name="l10n_au_previous_id_bms" invisible="company_country_code != 'AU'"/>
             </xpath>
         </field>

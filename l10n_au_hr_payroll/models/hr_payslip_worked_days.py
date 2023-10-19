@@ -11,6 +11,10 @@ class HrPayslipWorkedDays(models.Model):
         for wd in self:
             if not wd.payslip_id.contract_id._is_struct_from_country("AU"):
                 continue
+            # The complete duration of contract not met (Pay for the hours worked)
+            if wd.payslip_id.date_from + wd.payslip_id._get_schedule_timedelta() != wd.payslip_id.date_to:
+                wage = wd.payslip_id.contract_id.hourly_wage if wd.payslip_id.contract_id else 0
+                wd.amount = wage * wd.number_of_hours
             if not wd.payslip_id.edited and wd.is_paid and wd.work_entry_type_id.is_leave \
                     and wd.contract_id.l10n_au_leave_loading == "regular":
                 wd.amount *= 1 + (wd.contract_id.l10n_au_leave_loading_rate / 100)

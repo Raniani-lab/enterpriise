@@ -38,7 +38,7 @@ result = categories['BASIC']
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 if employee.l10n_au_tfn_declaration != "provided":
-    no_tfn_rates = payslip._rule_parameter("l10n_au_withholding_no_tfn") 
+    no_tfn_rates = payslip._rule_parameter("l10n_au_withholding_no_tfn")
     result_rate = -no_tfn_rates["foreign"] if employee.is_non_resident else -no_tfn_rates["national"]
 else:
     result_rate = -payslip._rule_parameter("l10n_au_withholding_b2work")
@@ -83,6 +83,19 @@ result = -payslip._l10n_au_compute_child_support(net_salary)
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 result = categories['GROSS'] + categories['ALW'] + categories['DED']
+        </field>
+        <field name="struct_id" ref="l10n_au_hr_payroll.hr_payroll_structure_au_return_to_work"/>
+    </record>
+
+    <record id="l10n_au_super_contribution_structure_4" model="hr.salary.rule">
+        <field name="category_id" ref="l10n_au_hr_payroll.rule_category_super_contribution"/>
+        <field name="name">Super Guarantee</field>
+        <field name="code">SUPER</field>
+        <field name="sequence">300</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rate = payslip._rule_parameter("l10n_au_withholding_super")
+result = categories['GROSS'] * rate/100 + contract.l10n_au_salary_sacrifice_superannuation
         </field>
         <field name="struct_id" ref="l10n_au_hr_payroll.hr_payroll_structure_au_return_to_work"/>
     </record>

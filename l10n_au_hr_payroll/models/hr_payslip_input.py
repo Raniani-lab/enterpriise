@@ -7,6 +7,7 @@ class HrPayslipInput(models.Model):
     _inherit = "hr.payslip.input"
 
     amount = fields.Float(compute="_compute_amount", readonly=False, store=True)
+    l10n_au_is_default_allowance = fields.Boolean()  # True if line is added as a default structure allowance
 
     @api.depends("input_type_id")
     def _compute_amount(self):

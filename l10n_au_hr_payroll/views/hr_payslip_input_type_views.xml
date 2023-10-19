@@ -11,8 +11,8 @@
                     <field name="l10n_au_default_amount" />
                     <field name="l10n_au_is_allowance"/>
                     <field name="l10n_au_is_etp"/>
-                    <field name="l10n_au_etp_type"/>
-                    <field name="l10n_au_etp_cap"/>
+                    <field name="l10n_au_etp_type" invisible="not l10n_au_is_etp"/>
+                    <field name="l10n_au_etp_cap" invisible="not l10n_au_is_etp"/>
                 </group>
             </field>
         </field>

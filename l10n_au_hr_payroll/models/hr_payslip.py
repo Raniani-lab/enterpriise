@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, date
 from math import floor
 from dateutil.relativedelta import relativedelta
 
@@ -16,6 +16,7 @@ PERIODS_PER_YEAR = {
     "yearly": 1,
 }
 
+
 class HrPayslip(models.Model):
     _inherit = "hr.payslip"
 
@@ -28,11 +29,11 @@ class HrPayslip(models.Model):
         string="Exempt Foreign Income",
         help="Exempt foreign income for the current financial year")
     l10n_au_allowance_withholding = fields.Float(
-        string="Allowance Withholding",
+        string="Withholding for Allowance",
         help="Amount to be withheld from allowances")
     l10n_au_schedule_pay = fields.Selection(related="contract_id.schedule_pay", store=True, index=True)
     l10n_au_termination_type = fields.Selection([
-        ("normal", "Normal"),
+        ("normal", "Non-Genuine Redundancy"),
         ("genuine", "Genuine Redundancy"),
     ], required=True, default="normal", string="Termination Type")
 
@@ -64,16 +65,18 @@ class HrPayslip(models.Model):
             if not payslip.struct_id or payslip.company_id.country_id.code != "AU":
                 continue
             # this only works if the payslip is saved after struct type is changed, because it depends on the structure
-            # type that was selected before. _origin is the original structure type that was selected when the payslip was first opened
-            # for modification, if it was A , you changed to B, and now you change to C ( without saving ), _origin still holds A, so there
-            # is no way to know which default allowances should be removed. TODO: find a better way.
-            to_remove_lines = payslip.input_line_ids.filtered(lambda i: i.input_type_id.l10n_au_is_allowance)
+            # type that was selected before.
+            new_types = payslip.struct_id.type_id.l10n_au_default_input_type_ids
+            # Remove the lines not default for new structure and keep user defined allowances
+            to_remove_lines = payslip.input_line_ids.filtered(lambda i: i.input_type_id not in new_types and i.l10n_au_is_default_allowance)
             to_remove_vals = [(2, line.id) for line in to_remove_lines]
             to_add_vals = []
-            for default_allowance in payslip.struct_id.type_id.l10n_au_default_input_type_ids:
+            # Add default lines not already on the payslip
+            for default_allowance in new_types.filtered(lambda x: x not in payslip.input_line_ids.input_type_id):
                 to_add_vals.append((0, 0, {
                     'amount': default_allowance.l10n_au_default_amount,
                     'input_type_id': default_allowance.id,
+                    'l10n_au_is_default_allowance': True,
                 }))
             input_line_vals = to_remove_vals + to_add_vals
             payslip.update({'input_line_ids': input_line_vals})
@@ -144,6 +147,8 @@ class HrPayslip(models.Model):
             ("date_from", ">=", start_year),
             ("date_from", "<=", date_from),
         ], order="date_from")
+        if self.env.context.get('l10n_au_include_current_slip'):
+            year_slips |= self
         return year_slips
 
     def _l10n_au_get_year_to_date_totals(self, date_from):
@@ -260,7 +265,7 @@ class HrPayslip(models.Model):
         early_retirement = self.env.ref("l10n_au_hr_payroll.input_early_retirement_scheme")
 
         preservation_age = datetime.strptime(self._rule_parameter("l10n_au_preservation_age"), "%Y-%m-%d").date()
-        under_over = employee_id.birthday or datetime.today() > preservation_age
+        under_over = (employee_id.birthday or date.today()) > preservation_age
 
         base = self._rule_parameter("l10n_au_tax_free_base")
         yearly = self._rule_parameter("l10n_au_tax_free_year")
@@ -363,7 +368,7 @@ class HrPayslip(models.Model):
         self.ensure_one()
         coefficients = self._rule_parameter("l10n_au_withholding_coefficients")["regular"]
         pre_1993 = annual_leaves["pre_1993"]
-        post_1993 = annual_leaves["pre_1978"]
+        post_1993 = annual_leaves["post_1993"]
 
         flat_part = pre_1993
         marginal_part = 0.0
@@ -419,5 +424,5 @@ class HrPayslip(models.Model):
     def _l10n_au_has_extra_pay(self):
         self.ensure_one()
         pay_day = int(self.contract_id.l10n_au_pay_day)
-        today = fields.Date(fields.Date.today().year, 1, 1)
+        today = fields.Date.today().replace(month=1, day=1)
         return today.weekday() == pay_day

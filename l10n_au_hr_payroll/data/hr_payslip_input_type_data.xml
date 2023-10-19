@@ -140,7 +140,7 @@
     </record>
 
     <record id="input_genuine_redundancy" model="hr.payslip.input.type">
-        <field name="name">Genuine redundancy</field>
+        <field name="name">Genuine Redundancy</field>
         <field name="code">ETP.GRN</field>
         <field name="country_id" ref="base.au"/>
         <field name="l10n_au_is_etp">True</field>
@@ -185,7 +185,7 @@
     </record>
 
     <record id="input_discrimination" model="hr.payslip.input.type">
-        <field name="name">Compensation discrimination</field>
+        <field name="name">Compensation for Discrimination</field>
         <field name="code">ETP.DIS</field>
         <field name="country_id" ref="base.au"/>
         <field name="l10n_au_is_etp">True</field>
@@ -194,7 +194,7 @@
     </record>
 
     <record id="input_lumpsum_death" model="hr.payslip.input.type">
-        <field name="name">lump sum paid on death of employee</field>
+        <field name="name">Lump Sum Paid on Death of Employee</field>
         <field name="code">ETP.DED</field>
         <field name="country_id" ref="base.au"/>
         <field name="l10n_au_is_etp">True</field>
@@ -213,7 +213,7 @@
     </record>
 
     <record id="input_non_genuine_redundancy" model="hr.payslip.input.type">
-        <field name="name">Non Genuine redundancy</field>
+        <field name="name">Non-Genuine Redundancy</field>
         <field name="code">ETP.NGR</field>
         <field name="country_id" ref="base.au"/>
         <field name="l10n_au_is_etp">True</field>
@@ -261,6 +261,13 @@
     <record id="input_b2work" model="hr.payslip.input.type">
         <field name="name">Return To Work payment</field>
         <field name="code">B2WORK</field>
+        <field name="country_id" ref="base.au"/>
+    </record>
+
+    <!-- For Commissions and Extra Pay -->
+    <record id="input_extra_pay" model="hr.payslip.input.type">
+        <field name="name">Extra Pay Item</field>
+        <field name="code">EXTRA</field>
         <field name="country_id" ref="base.au"/>
     </record>
 </odoo>

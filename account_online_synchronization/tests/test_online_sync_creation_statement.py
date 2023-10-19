@@ -260,7 +260,7 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
         }
         patched_request.post.return_value = mock_response
 
-        generated_url = 'https://www.odoo.com/help?stage=bank_sync&summary=Bank+sync+error+ref%3A+abc123+-+Provider%3A+theonlyone&description=ClientID%3A+False%0AInstitution%3A+Test+Bank%0AError+Reference%3A+abc123%0AError+Message%3A+This+kind+of+things+can+happen%0A'
+        generated_url = 'https://www.odoo.com/help?stage=bank_sync&summary=Bank+sync+error+ref%3A+abc123+-+Provider%3A+theonlyone+-+Client+ID%3A+False&description=ClientID%3A+False%0AInstitution%3A+Test+Bank%0AError+Reference%3A+abc123%0AError+Message%3A+This+kind+of+things+can+happen%0A'
         return_act_url = {
             'type': 'ir.actions.act_url',
             'url': generated_url

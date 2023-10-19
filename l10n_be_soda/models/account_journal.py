@@ -67,7 +67,7 @@ class AccountJournal(models.Model):
             # account.move.ref is SocialNumber+SequenceNumber : check that this move has not already been imported
             ref = "%s-%s" % (parsed_attachment.find('.//Source').text, parsed_attachment.find('.//SeqNumber').text)
             existing_move = self.env['account.move'].search([('ref', '=', ref)])
-            if existing_move.id:
+            if existing_move.id and self._context.get('raise_no_imported_file', True):
                 raise UserError(_('The entry %s has already been uploaded (%s).', ref, existing_move.name))
             soda_files[ref] = {
                 'entries': [],

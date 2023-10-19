@@ -245,7 +245,7 @@ class AccountJournal(models.Model):
                             line_vals['partner_id'] = partner_bank.partner_id.id
         return stmts_vals
 
-    def _create_bank_statements(self, stmts_vals):
+    def _create_bank_statements(self, stmts_vals, raise_no_imported_file=True):
         """ Create new bank statements from imported values, filtering out already imported transactions, and returns data used by the reconciliation widget """
         BankStatement = self.env['account.bank.statement']
         BankStatementLine = self.env['account.bank.statement.line']
@@ -282,7 +282,7 @@ class AccountJournal(models.Model):
                 if statement.is_complete:
                     statement.action_generate_attachment()
 
-        if len(statement_line_ids) == 0:
+        if len(statement_line_ids) == 0 and raise_no_imported_file:
             raise UserError(_('You already have imported that file.'))
 
         # Prepare import feedback

@@ -41,9 +41,9 @@ class EditorOperationsWithSnackbar extends EditorOperations {
 }
 
 function getFieldsInArch(xmlDoc) {
-    return Array.from(xmlDoc.querySelectorAll(":not(field) field")).map((n) =>
-        n.getAttribute("name")
-    );
+    return Array.from(xmlDoc.querySelectorAll("field"))
+        .filter((el) => !el.parentElement.closest("field"))
+        .map((n) => n.getAttribute("name"));
 }
 
 /**

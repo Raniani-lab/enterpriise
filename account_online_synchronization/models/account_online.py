@@ -437,7 +437,7 @@ class AccountOnlineLink(models.Model):
                 error_reference = self.env.context.get('error_reference')
                 provider = self.env.context.get('provider_type')
                 odoo_help_description = f'''ClientID: {self.client_id}\nInstitution: {self.name}\nError Reference: {error_reference}\nError Message: {message}\n'''
-                odoo_help_summary = f'Bank sync error ref: {error_reference} - Provider: {provider}'
+                odoo_help_summary = f'Bank sync error ref: {error_reference} - Provider: {provider} - Client ID: {self.client_id}'
                 url_params = urllib.parse.urlencode({'stage': 'bank_sync', 'summary': odoo_help_summary, 'description': odoo_help_description[:1500]})
                 url = f'https://www.odoo.com/help?{url_params}'
             # if state is disconnected, and new state is error: ignore it

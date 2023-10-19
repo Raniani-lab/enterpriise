@@ -43,9 +43,10 @@ registry.category("web_tour.tours").add('test_immediate_receipt_kit_from_scratch
     },
     {
         trigger: '.o_barcode_line:contains("Compo Lot")',
+        run: 'scan compo_lot',
     },
     {
-        trigger: '.o_selected:contains("Compo Lot")',
+        trigger: '.o_barcode_line.o_selected div[name="lot"] .o_next_expected',
         run: 'scan super_lot',
     },
     ...stepUtils.validateBarcodeOperation('.o_line_lot_name:contains("super_lot")'),

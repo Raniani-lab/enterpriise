@@ -769,6 +769,17 @@ class AccountMove(models.Model):
     # CFDI Generation: Invoices
     # -------------------------------------------------------------------------
 
+    def _l10n_mx_edi_cfdi_invoice_line_ids(self):
+        """ Get the invoice lines to be considered when creating the CFDI.
+
+        :return: A recordset of invoice lines.
+        """
+        self.ensure_one()
+        return self.invoice_line_ids.filtered(lambda line: (
+            line.display_type == 'product'
+            and not line.currency_id.is_zero(line.price_unit * line.quantity)
+        ))
+
     def _l10n_mx_edi_cfdi_check_invoice_config(self):
         """ Prepare the CFDI xml for the invoice. """
         self.ensure_one()
@@ -785,7 +796,10 @@ class AccountMove(models.Model):
             ))
 
         # == Check the invoice ==
-        negative_lines = self.invoice_line_ids.filtered(lambda line: line.price_subtotal < 0)
+        invoice_lines = self._l10n_mx_edi_cfdi_invoice_line_ids()
+        if not invoice_lines:
+            errors.append(_("The invoice must contain at least one positive line to generate the CFDI."))
+        negative_lines = invoice_lines.filtered(lambda line: line.price_subtotal < 0)
         if negative_lines:
             # Line having a negative amount is not allowed.
             if not self.env['l10n_mx_edi.document']._is_cfdi_negative_lines_allowed():
@@ -799,7 +813,7 @@ class AccountMove(models.Model):
                     "Invoice lines having a negative amount without a tax set is not allowed to "
                     "generate the CFDI.",
                 ))
-        invalid_unspcs_products = self.invoice_line_ids.product_id.filtered(lambda product: not product.unspsc_code_id)
+        invalid_unspcs_products = invoice_lines.product_id.filtered(lambda product: not product.unspsc_code_id)
         if invalid_unspcs_products:
             errors.append(_(
                 "You need to define an 'UNSPSC Product Category' on the following products: %s",
@@ -816,7 +830,7 @@ class AccountMove(models.Model):
                 'uom': invl.product_uom_id,
                 'name': invl.name,
             }
-            for invl in self.invoice_line_ids.filtered(lambda line: line.display_type == 'product')
+            for invl in self._l10n_mx_edi_cfdi_invoice_line_ids()
         ]
 
         self._l10n_mx_edi_add_common_cfdi_values(cfdi_values)

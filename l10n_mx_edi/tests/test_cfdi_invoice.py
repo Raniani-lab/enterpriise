@@ -37,6 +37,17 @@ class TestCFDIInvoice(TestMxEdiCommon):
                             'quantity': 5,
                             'discount': 20.0,
                         }),
+                        # Ignored lines by the CFDI:
+                        Command.create({
+                            'product_id': self.product.id,
+                            'price_unit': 2000.0,
+                            'quantity': 0.0,
+                        }),
+                        Command.create({
+                            'product_id': self.product.id,
+                            'price_unit': 0.0,
+                            'quantity': 10.0,
+                        }),
                     ],
                 )
                 with self.with_mocked_pac_sign_success():

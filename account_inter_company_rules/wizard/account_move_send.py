@@ -1,20 +1,21 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models
+from odoo import api, models
 
 
-class AccountMoveSend(models.Model):
+class AccountMoveSend(models.TransientModel):
     _inherit = 'account.move.send'
 
-    def action_send_and_print(self, from_cron=False, allow_fallback_pdf=False):
+    @api.model
+    def _process_send_and_print(self, moves, wizard=None, allow_fallback_pdf=False, **kwargs):
         # extends account to create the pdf attachment
         # in the matching inter-company move
-        res = super().action_send_and_print(from_cron, allow_fallback_pdf)
+        res = super()._process_send_and_print(moves, wizard=wizard, allow_fallback_pdf=allow_fallback_pdf, **kwargs)
 
         partner_companies = self.env['res.company'].sudo().search([]).partner_id.ids
 
-        moves_with_attachments = self.move_ids.filtered(
+        moves_with_attachments = moves.filtered(
             lambda move: bool(move.message_main_attachment_id)
             and move.is_sale_document(include_receipts=True)
             and move.partner_id.id in partner_companies

@@ -560,7 +560,7 @@ class TestCFDIInvoice(TestMxEdiCommon):
             ],
         )
         template = self.env.ref(invoice._get_mail_template())
-        invoice.with_context(skip_invoice_sync=True)._generate_pdf_and_send_invoice(template, from_cron=True, allow_fallback_pdf=True)
+        invoice.with_context(skip_invoice_sync=True)._generate_pdf_and_send_invoice(template, force_synchronous=True, allow_fallback_pdf=True)
         self.assertFalse(invoice.invoice_pdf_report_id, "invoice_pdf_report_id shouldn't be set with the proforma PDF.")
 
     @freeze_time('2017-01-01')

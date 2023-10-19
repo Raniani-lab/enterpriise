@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
-
 from odoo import _, api, fields, models
 
 
-class AccountMoveSend(models.Model):
+class AccountMoveSend(models.TransientModel):
     _inherit = 'account.move.send'
 
     l10n_mx_edi_enable_cfdi = fields.Boolean(compute='_compute_send_mail_extra_fields')
@@ -21,6 +19,12 @@ class AccountMoveSend(models.Model):
             and move.l10n_mx_edi_is_cfdi_needed \
             and move.l10n_mx_edi_cfdi_state not in ('sent', 'global_sent')
         )
+
+    def _get_wizard_values(self, move):
+        # EXTENDS 'account'
+        values = super()._get_wizard_values(move)
+        values['l10n_mx_edi_cfdi'] = self.l10n_mx_edi_checkbox_cfdi
+        return values
 
     # -------------------------------------------------------------------------
     # COMPUTE METHODS
@@ -77,33 +81,29 @@ class AccountMoveSend(models.Model):
     # BUSINESS ACTIONS
     # -------------------------------------------------------------------------
 
+    @api.model
     def _call_web_service_before_invoice_pdf_render(self, invoices_data):
         # EXTENDS 'account'
         super()._call_web_service_before_invoice_pdf_render(invoices_data)
 
-        if not self.l10n_mx_edi_checkbox_cfdi:
-            return
-
         for invoice, invoice_data in invoices_data.items():
 
-            if not self._get_default_l10n_mx_edi_enable_cfdi(invoice):
-                continue
+            if invoice_data.get('l10n_mx_edi_cfdi') and self._get_default_l10n_mx_edi_enable_cfdi(invoice):
+                # Sign it.
+                invoice._l10n_mx_edi_cfdi_invoice_try_send()
 
-            # Sign it.
-            invoice._l10n_mx_edi_cfdi_invoice_try_send()
+                # Check for success.
+                if invoice.l10n_mx_edi_cfdi_state == 'sent':
+                    continue
 
-            # Check for success.
-            if invoice.l10n_mx_edi_cfdi_state == 'sent':
-                continue
+                # Check for error.
+                errors = [_("Error when sending the CFDI to the PAC:")]
+                for document in invoice.l10n_mx_edi_invoice_document_ids:
+                    if document.state == 'invoice_sent_failed':
+                        errors.append(document.message)
+                        break
 
-            # Check for error.
-            errors = [_("Error when sending the CFDI to the PAC:")]
-            for document in invoice.l10n_mx_edi_invoice_document_ids:
-                if document.state == 'invoice_sent_failed':
-                    errors.append(document.message)
-                    break
+                invoice_data['error'] = "\n".join(errors)
 
-            invoice_data['error'] = "\n".join(errors)
-
-            if self._can_commit():
-                self._cr.commit()
+                if self._can_commit():
+                    self._cr.commit()

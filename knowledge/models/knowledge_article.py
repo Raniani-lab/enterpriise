@@ -18,6 +18,7 @@ from odoo.exceptions import AccessError, ValidationError, UserError
 from odoo.osv import expression
 from odoo.tools import get_lang
 from odoo.tools.translate import html_translate
+from odoo.tools.sql import SQL
 
 ARTICLE_PERMISSION_LEVEL = {'none': 0, 'read': 1, 'write': 2}
 
@@ -1473,7 +1474,6 @@ class Article(models.Model):
         This means that we need to add in the search_domain the leaf ('is_article_visible', '!=', hidden_mode)
         since the value of is_article_visible is the opposite of hidden_mode.
         """
-        search_query = search_query.casefold()
         search_domain = [
             ("is_template", "=", False),
             ("is_article_visible", "!=", hidden_mode),
@@ -1486,20 +1486,63 @@ class Article(models.Model):
                     ("root_article_id.name", "ilike", search_query),
             ]])
 
-        matching_articles = self.search(search_domain)
-        sorted_articles = matching_articles.sorted(
-            key=lambda a: (search_query in a.name.casefold() if a.name else False,
-                           not a.parent_id if hidden_mode else False,
-                           a.is_user_favorite,
-                           -1 * a.user_favorite_sequence,
-                           a.favorite_count,
-                           a.write_date,
-                           a.id),
-            reverse=True
-        )[:limit]
-
-        return sorted_articles.read(['id', 'name', 'is_user_favorite',
-                                     'favorite_count', 'root_article_id', 'icon'])
+        articles_query = self._search(search_domain)
+        self.env.cr.execute(SQL('''
+       SELECT knowledge_article.id,
+              knowledge_article.name,
+              COALESCE(CAST(fav.id AS BOOLEAN), FALSE) AS is_user_favorite,
+              knowledge_article.favorite_count,
+              knowledge_article.root_article_id,
+              root_article.icon AS root_article_icon,
+              root_article.name AS root_article_name,
+              knowledge_article.icon
+         FROM knowledge_article
+    LEFT JOIN knowledge_article_favorite AS fav
+           ON knowledge_article.id = fav.article_id AND fav.user_id = %s
+    LEFT JOIN knowledge_article AS root_article
+           ON knowledge_article.root_article_id = root_article.id
+        WHERE %s
+     ORDER BY CASE
+                  WHEN knowledge_article.name IS NOT NULL THEN
+                      POSITION(LOWER(%s) IN LOWER(knowledge_article.name)) > 0
+                  ELSE
+                      FALSE
+              END DESC,
+              CASE
+                  WHEN %s THEN
+                      NOT COALESCE(CAST(knowledge_article.parent_id AS BOOLEAN), FALSE)
+                  ELSE
+                      FALSE
+              END DESC,
+              is_user_favorite DESC,
+              COALESCE(fav.sequence, -1),
+              knowledge_article.favorite_count DESC,
+              knowledge_article.write_date DESC,
+              knowledge_article.id DESC
+           %s
+            ''',
+            self.env.user.id,
+            articles_query.where_clause,
+            search_query,
+            hidden_mode,
+            SQL("LIMIT %s", limit) if limit else SQL()
+        ))
+        sorted_articles = self.env.cr.dictfetchall()
+        # Create a tuple with the id and name_get for root_article_id to
+        # mimic the result of a read.
+        for sorted_article in sorted_articles:
+            # Get the display name of the root article using the same logic as
+            # in name_get.
+            sorted_article['root_article_id'] = (
+                sorted_article['root_article_id'],
+                "%s %s" % (
+                    sorted_article['root_article_icon'] or self._get_no_icon_placeholder(),
+                    sorted_article['root_article_name']
+                )
+            )
+            del sorted_article['root_article_icon']
+            del sorted_article['root_article_name']
+        return sorted_articles
 
     # ------------------------------------------------------------
     # PERMISSIONS / MEMBERS MANAGEMENT

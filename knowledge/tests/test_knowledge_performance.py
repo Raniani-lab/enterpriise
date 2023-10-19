@@ -117,7 +117,7 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
     @users('employee')
     @warmup
     def test_get_user_sorted_articles(self):
-        with self.assertQueryCount(employee=17):
+        with self.assertQueryCount(employee=9):
             self.env['knowledge.article'].get_user_sorted_articles('')
 
 @tagged('knowledge_performance', 'post_install', '-at_install')

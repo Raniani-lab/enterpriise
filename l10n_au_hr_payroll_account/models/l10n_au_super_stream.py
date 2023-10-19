@@ -192,18 +192,10 @@ class L10nauSuperStreamLine(models.Model):
     @api.depends("payslip_id")
     def _compute_payslip_fields(self):
         for rec in self:
-            super_lines_total = 0
-            super_lines_amount = 0
-            sacrifice_lines_total = 0
-            for line in rec.payslip_id.line_ids:
-                if line.code == "SUPER":
-                    super_lines_total += line.total
-                    super_lines_amount += line.amount
-                elif line.code == "SALARY.SACRIFICE":
-                    sacrifice_lines_total += line.total
-            rec.superannuation_guarantee_amount = super_lines_total
-            rec.salary_sacrificed_amount = sacrifice_lines_total
-            rec.annual_salary_for_contributions_amount = abs(super_lines_amount)
+            super_lines_total = rec.payslip_id._get_line_values(['SUPER'], vals_list=['total'], compute_sum=True)['SUPER']['sum']['total']
+            rec.superannuation_guarantee_amount = super_lines_total - rec.payslip_id.contract_id.l10n_au_salary_sacrifice_superannuation
+            rec.salary_sacrificed_amount = rec.payslip_id.contract_id.l10n_au_salary_sacrifice_superannuation
+            rec.annual_salary_for_contributions_amount = self.payslip_id.contract_id.l10n_au_yearly_wage
             rec.at_work_indicator = rec.payslip_id.contract_id.state == "open"
 
     def _get_data_line(self, idx):

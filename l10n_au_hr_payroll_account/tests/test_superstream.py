@@ -68,6 +68,7 @@ class TestPayrollSuperStream(AccountTestInvoicingCommon):
             'name': 'Roger Contract',
             'date_start': date(1975, 1, 1),
             'wage': 5000,
+            'l10n_au_yearly_wage': 60000,
             'structure_type_id': cls.env.ref('l10n_au_hr_payroll.structure_type_schedule_1').id,
             'l10n_au_leave_loading': 'regular',
             'l10n_au_leave_loading_rate': 5,
@@ -163,7 +164,7 @@ class TestPayrollSuperStream(AccountTestInvoicingCommon):
         data = [0, "83 914 571 673", "abn", "", "", "", "My Superstream Australian Company", "", "Mel", "", "", "123456789", "83 914 571 673", "My Superstream Australian Company", "123-456", "12344321",
                    "My Superstream Australian Company", "2345678912", "", "Fund A", "", "", "", "", "", "", "", "", "", "83 914 571 673", "", "My Superstream Australian Company", "", "123456789", "", "",
                    "", "Roger", "", "1", "1970-03-21", "RES", "Australian Street", "", "", "", "Sydney", "", "", "", "", "123456789", "", "", "",
-                   "", "", "2023-08-01", "2023-08-31", 550.0, "", "", 40.0, "", "", "", "", "1975-01-01", True, "", 5000.0, "", "", "", "", "", "", "", "", "", "", "", "", "",
+                   "", "", "2023-08-01", "2023-08-31", 545.6, "", "", 20.0, "", "", "", "", "1975-01-01", True, "", 60000.0, "", "", "", "", "", "", "", "", "", "", "", "", "",
                    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
                    "", "", "", "", "", "", "", "", ""]
 

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-    <div t-name="spreadsheet_edition.FilterComponent"
+    <t t-name="spreadsheet_edition.FilterComponent"
         class="o_filter_component">
-        <div t-attf-class="o_topbar_filter_icon fa fa-search {{activeFilter ? 'btn-link': ''}}"
+        <div t-attf-class="o_topbar_filter_icon h-100 d-flex align-items-center {{activeFilter ? 'btn-link': ''}}"
             title="Filters"
-            t-on-click="toggleDropdown"></div>
-    </div>
+            t-on-click="toggleDropdown">
+            <t t-call="o-spreadsheet-Icon.GLOBAL_FILTERS"/>
+        </div>
+    </t>
 
     <div t-name="spreadsheet_edition.GlobalFiltersSidePanel" class="o_spreadsheet_global_filters_side_panel h-100">
         <div class="h-100 overflow-auto" t-ref="filtersList">

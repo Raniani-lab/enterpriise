@@ -1,8 +1,8 @@
 /** @odoo-module */
 import { Component, onWillStart, onWillUpdateProps, toRaw, useState } from "@odoo/owl";
 import { _t } from "@web/core/l10n/translation";
-import { ResizablePanel } from "./resizable_panel/resizable_panel";
 import { CodeEditor } from "@web/core/code_editor/code_editor";
+import { ResizablePanel } from "@web/core/resizable_panel/resizable_panel";
 import { SelectMenu } from "@web/core/select_menu/select_menu";
 import { useService } from "@web/core/utils/hooks";
 

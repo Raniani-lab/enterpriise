@@ -16,16 +16,22 @@ let wysiwyg;
 function onMount() {
     const editor = wysiwyg.odooEditor;
     const editable = editor.editable;
+    editor.clean();
     const originalContent = editable.innerHTML;
     editor.testMode = true;
     return { editor, editable, originalContent };
 }
 
 function assertHistorySteps(assert, editable, originalContent) {
+    wysiwyg.odooEditor.clean();
     const currentContent = editable.innerHTML;
+    wysiwyg.odooEditor._setLinkZws();
     wysiwyg.odooEditor.historyUndo();
+    wysiwyg.odooEditor.clean();
     assert.strictEqual(editable.innerHTML, originalContent);
+    wysiwyg.odooEditor._setLinkZws();
     wysiwyg.odooEditor.historyRedo();
+    wysiwyg.odooEditor.clean();
     assert.strictEqual(editable.innerHTML, currentContent);
 }
 
@@ -91,6 +97,7 @@ QUnit.module('appointment.wysiwyg', {
         setSelection(editable.querySelector('p'), 0);
         await insertText(editor, '/Calendar');
         await triggerEvent(editable, null, 'keydown', { key: 'Enter' });
+        editor.clean();
 
         assert.strictEqual(editable.innerHTML,
             `<p><a href="${window.location.origin}/appointment">Our Appointment Types</a></p>`);
@@ -116,6 +123,7 @@ QUnit.module('appointment.wysiwyg', {
         setSelection(editable.querySelector('p'), 0);
         await insertText(editor, '/Appointment');
         await triggerEvent(editable, null, 'keydown', { key: 'Enter' });
+        editor.clean();
 
         assert.strictEqual(editable.innerHTML,
             `<p><a href="${linkUrl}">Schedule an Appointment</a></p>`);
@@ -144,6 +152,7 @@ QUnit.module('appointment.wysiwyg', {
         // Type powerbox command + 'Enter'
         await insertText(editor, '/Calendar');
         await triggerEvent(editable, null, 'keydown', { key: 'Enter' });
+        editor.clean();
 
         assert.strictEqual(editable.innerHTML,
             `<p><a href="${window.location.origin}/appointment">Our Appointment Types</a></p>`);
@@ -172,6 +181,7 @@ QUnit.module('appointment.wysiwyg', {
         // Type powerbox command + 'Enter'
         await insertText(editor, '/Appointment');
         await triggerEvent(editable, null, 'keydown', { key: 'Enter' });
+        editor.clean();
 
         assert.strictEqual(editable.innerHTML,
             `<p><a href="${linkUrl}">Schedule an Appointment</a></p>`);

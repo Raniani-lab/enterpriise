@@ -178,7 +178,7 @@
                         <cbc:ID t-out="move_index + 1"/>
                         <cbc:DeliveredQuantity t-att-unitCode="move.product_uom.l10n_pe_edi_measure_unit_code"
                             unitCodeListID="UN/ECE rec 20"
-                            unitCodeListAgencyName="United Nations Economic Commission for Europe"><t t-out='format_float(move.quantity_done, 10)'/></cbc:DeliveredQuantity>
+                            unitCodeListAgencyName="United Nations Economic Commission for Europe"><t t-out='format_float(move.quantity, 10)'/></cbc:DeliveredQuantity>
                         <cac:OrderLineReference>
                             <cbc:LineID t-out="move_index + 1"/>
                         </cac:OrderLineReference>

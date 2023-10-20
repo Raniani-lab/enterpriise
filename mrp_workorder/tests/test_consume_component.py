@@ -59,14 +59,11 @@ class TestConsumeTrackedComponent(TestConsumeComponentCommon):
         # Quantities are fully reserved (stock.move state is available)
         mo_serial.action_assign()
         for mov in mo_serial.move_raw_ids:
-            self.assertEqual(mov.product_qty, mov.reserved_availability, "Reserved quantity shall be equal to To Consume quantity.")
+            self.assertEqual(mov.product_qty, mov.quantity, "Reserved quantity shall be equal to To Consume quantity.")
 
         mo_serial.action_generate_serial()
         for mov in mo_serial.move_raw_ids:
-            if mov.has_tracking != 'serial':
-                self.assertEqual(mov.product_qty, mov.quantity_done, "Done quantity shall be equal to To Consume quantity.")
-            else:
-                self.assertEqual(0, mov.quantity_done, "Done quantity shall be equal to 0.")
+            self.assertEqual(mov.product_qty, mov.quantity, "Done quantity shall be equal to To Consume quantity.")
 
     def test_option_enabled_and_operation_id(self):
         """
@@ -95,14 +92,11 @@ class TestConsumeTrackedComponent(TestConsumeComponentCommon):
         # Quantities are fully reserved (stock.move state is available)
         mo_serial.action_assign()
         for mov in mo_serial.move_raw_ids:
-            self.assertEqual(mov.product_qty, mov.reserved_availability, "Reserved quantity shall be equal to To Consume quantity.")
+            self.assertEqual(mov.product_qty, mov.quantity, "Reserved quantity shall be equal to To Consume quantity.")
 
         mo_serial.action_generate_serial()
         for mov in mo_serial.move_raw_ids:
-            if mov.has_tracking != 'serial':
-                self.assertEqual(mov.product_qty, mov.quantity_done, "Done quantity shall be equal to To Consume quantity.")
-            else:
-                self.assertEqual(0, mov.quantity_done, "Done quantity shall be equal to 0.")
+            self.assertEqual(mov.product_qty, mov.quantity, "Done quantity shall be equal to To Consume quantity.")
 
     def test_option_enabled_and_quality_point(self):
         """
@@ -132,14 +126,11 @@ class TestConsumeTrackedComponent(TestConsumeComponentCommon):
         # Quantities are fully reserved (stock.move state is available)
         mo_serial.action_assign()
         for mov in mo_serial.move_raw_ids:
-            self.assertEqual(mov.product_qty, mov.reserved_availability, "Reserved quantity shall be equal to To Consume quantity.")
+            self.assertEqual(mov.product_qty, mov.quantity, "Reserved quantity shall be equal to To Consume quantity.")
 
         mo_serial.action_generate_serial()
         for mov in mo_serial.move_raw_ids:
-            if mov.has_tracking != 'serial':
-                self.assertEqual(mov.product_qty, mov.quantity_done, "Done quantity shall be equal to To Consume quantity.")
-            else:
-                self.assertEqual(0, mov.quantity_done, "Done quantity shall be equal to 0.")
+            self.assertEqual(mov.product_qty, mov.quantity, "Done quantity shall be equal to To Consume quantity.")
 
     def test_option_enabled_only(self):
         """
@@ -168,8 +159,8 @@ class TestConsumeTrackedComponent(TestConsumeComponentCommon):
         # Quantities are fully reserved (stock.move state is available)
         mo_serial.action_assign()
         for mov in mo_serial.move_raw_ids:
-            self.assertEqual(mov.product_qty, mov.reserved_availability, "Reserved quantity shall be equal to To Consume quantity.")
+            self.assertEqual(mov.product_qty, mov.quantity, "Reserved quantity shall be equal to To Consume quantity.")
 
         mo_serial.action_generate_serial()
         for mov in mo_serial.move_raw_ids:
-            self.assertEqual(mov.product_qty, mov.quantity_done, "Done quantity shall be equal to To Consume quantity.")
+            self.assertEqual(mov.product_qty, mov.quantity, "Done quantity shall be equal to To Consume quantity.")

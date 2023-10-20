@@ -115,7 +115,7 @@ class ProductProduct(models.Model):
 
         lot_done_dict = defaultdict(int)
         for move_line in sale_lines.move_ids.filtered(lambda m: m.state == 'done').move_line_ids:
-            lot_done_dict[move_line.lot_id.id] += move_line.qty_done
+            lot_done_dict[move_line.lot_id.id] += move_line.quantity
 
         tracking_validated_line_ids = [(0, 0, {
             'lot_id': vals,

@@ -68,11 +68,12 @@ class TestReportsCommon(TestMrpAccount):
 
         # avoid qty done not being updated when enterprise mrp_workorder is installed
         for move in production_table.move_raw_ids:
-            move.quantity_done = move.product_uom_qty
+            move.quantity = move.product_uom_qty
+            move.picked = True
         production_table._post_inventory()
         production_table.button_mark_done()
 
-        total_component_cost = sum(move.product_id.standard_price * move.quantity_done for move in production_table.move_raw_ids)
+        total_component_cost = sum(move.product_id.standard_price * move.quantity for move in production_table.move_raw_ids)
         total_operation_cost = sum(wo.costs_hour * sum(wo.time_ids.mapped('duration')) / 60.0 for wo in production_table.workorder_ids)
 
         report = self.env['report.mrp_account_enterprise.mrp_cost_structure']

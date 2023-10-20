@@ -44,8 +44,7 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
     }
 
     askBeforeNewLinesCreation(product) {
-        return !this.picking.immediate_transfer && product &&
-            !this.currentState.lines.some(line => line.product_id.id === product.id);
+        return product && !this.currentState.lines.some(line => line.product_id.id === product.id);
     }
 
     get backordersDomain() {

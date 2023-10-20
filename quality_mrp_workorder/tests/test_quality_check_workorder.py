@@ -107,8 +107,8 @@ class TestQualityCheckWorkorder(TestMrpCommon):
         mo.button_mark_done()
 
         self.assertRecordValues(mo.move_raw_ids.move_line_ids + mo.move_finished_ids.move_line_ids, [
-            {'qty_done': 1, 'lot_id': component_sn.id},
-            {'qty_done': 1, 'lot_id': finished_sn.id},
+            {'quantity': 1, 'lot_id': component_sn.id},
+            {'quantity': 1, 'lot_id': finished_sn.id},
         ])
 
     def test_backorder_cancelled_workorder_quality_check(self):

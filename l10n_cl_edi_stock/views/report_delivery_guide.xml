@@ -214,7 +214,7 @@
                                 <tbody>
                                     <t t-set="total_line_amounts" t-value="prepared_amounts.get('total_line_amounts', {})"/>
                                     <t t-set="float_repr" t-value="prepared_amounts['float_repr']"/>
-                                    <t t-foreach="o.move_ids.filtered(lambda x: x.quantity_done > 0)" t-as="line">
+                                    <t t-foreach="o.move_ids.filtered(lambda x: x.quantity > 0)" t-as="line">
                                         <t t-set="line_amounts" t-value="total_line_amounts.get(line, {})"/>
                                         <tr>
                                             <td>
@@ -226,7 +226,7 @@
                                                 <span t-field="line.product_id.description_picking"/>
                                             </td>
                                             <td class="text-end">
-                                                <span t-field="line.quantity_done"/>
+                                                <span t-field="line.quantity"/>
                                             </td>
                                             <td groups="uom.group_uom">
                                                 <span t-field="line.product_uom"/>

@@ -265,7 +265,7 @@ class Picking(models.Model):
             guide_price = "product"
         max_vat_perc = 0.0
         move_retentions = self.env['account.tax']
-        for move in self.move_ids.filtered(lambda x: x.quantity_done > 0):
+        for move in self.move_ids.filtered(lambda x: x.quantity > 0):
             if guide_price == "product" or not move.sale_line_id:
                 taxes = move.product_id.taxes_id.filtered(lambda t: t.company_id == self.company_id)
                 price = move.product_id.lst_price

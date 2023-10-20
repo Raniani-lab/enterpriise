@@ -248,7 +248,7 @@ class Picking(models.Model):
             'warehouse_address': self.picking_type_id.warehouse_id.partner_id or self.company_id.partner_id,
             'document_number': self.l10n_latam_document_number,
             'format_date': format_date,
-            'moves': self.move_ids.filtered(lambda ml: ml.quantity_done > 0),
+            'moves': self.move_ids.filtered(lambda ml: ml.quantity > 0),
             'reason_for_transfer': dict(PE_TRANSFER_REASONS)[self.l10n_pe_edi_reason_for_transfer],
             'format_float': format_float,
             'related_document': dict(PE_RELATED_DOCUMENT)[self.l10n_pe_edi_related_document_type] if self.l10n_pe_edi_related_document_type else False,

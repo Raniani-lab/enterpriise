@@ -449,8 +449,7 @@ class TestAmazon(common.TestAmazonCommon):
             order = self.env['sale.order'].search([('amazon_order_ref', '=', '123456789')])
             self.assertNotEqual(order.state, 'cancel')
             picking = self.env['stock.picking'].search([('sale_id', '=', order.id)])
-            for ml in picking.move_line_ids:
-                ml.qty_done = ml.reserved_uom_qty
+            picking.move_ids.picked = True
             picking.carrier_id, picking.carrier_tracking_ref = self.carrier, self.tracking_ref
             picking._action_done()
             self.assertEqual(picking.state, 'done')

@@ -73,7 +73,7 @@ class StockPicking(models.Model):
             for move in picking.move_ids.filtered('sale_line_id.amazon_item_ref'):
                 completion = sales_order_lines_completion.setdefault(move.sale_line_id, [0, 0])
                 completion[0] += move.product_uom_qty
-                completion[1] += move.quantity_done
+                completion[1] += move.quantity
 
             # Check that all sales order lines are either entirely shipped or not shipped at all
             for sales_order_line, completion in sales_order_lines_completion.items():
@@ -285,6 +285,6 @@ class StockPicking(models.Model):
 
         return self.move_ids.filtered(
             lambda m: m.sale_line_id.amazon_item_ref  # Only consider moves for Amazon products
-            and m.quantity_done > 0  # Only notify Amazon for shipped products
-            and m.quantity_done == m.product_uom_qty  # Only consider fully shipped products
+            and m.quantity > 0  # Only notify Amazon for shipped products
+            and m.quantity == m.product_uom_qty  # Only consider fully shipped products
         ).sale_line_id

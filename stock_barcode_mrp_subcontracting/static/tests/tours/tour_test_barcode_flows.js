@@ -108,11 +108,11 @@ registry.category("web_tour.tours").add('test_receipt_flexible_subcontracted_pro
         run: "text 1",
     },
     {
-        trigger: "div[name=move_line_raw_ids] td[name=qty_done]",
+        trigger: "div[name=move_line_raw_ids] td[name=quantity]",
     },
 
     {
-        trigger: "div[name=move_line_raw_ids] [name=qty_done] input",
+        trigger: "div[name=move_line_raw_ids] [name=quantity] input",
         run: "text 2",
     },
     {

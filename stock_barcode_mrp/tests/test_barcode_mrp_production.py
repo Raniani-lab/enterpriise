@@ -132,8 +132,8 @@ class TestMRPBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(mo.state, 'done')
         self.assertEqual(mo.qty_produced, 3)
         self.assertRecordValues(mo.move_raw_ids, [
-            {'product_id': self.component01.id, 'product_uom_qty': 2, 'quantity_done': 6},
-            {'product_id': component02.id, 'product_uom_qty': 3, 'quantity_done': 9},
+            {'product_id': self.component01.id, 'product_uom_qty': 2, 'quantity': 6},
+            {'product_id': component02.id, 'product_uom_qty': 3, 'quantity': 9},
         ])
 
     def test_barcode_production_create_tracked_bom(self):
@@ -166,11 +166,11 @@ class TestMRPBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(mo.state, 'done')
         self.assertEqual(mo.qty_produced, 3)
         self.assertRecordValues(mo.move_raw_ids, [
-            {'product_id': self.component01.id, 'product_uom_qty': 3, 'quantity_done': 3},
-            {'product_id': self.component_lot.id, 'product_uom_qty': 3, 'quantity_done': 3},
+            {'product_id': self.component01.id, 'product_uom_qty': 3, 'quantity': 3},
+            {'product_id': self.component_lot.id, 'product_uom_qty': 3, 'quantity': 3},
         ])
         self.assertRecordValues(mo.move_byproduct_ids, [
-            {'product_id': self.by_product.id, 'product_uom_qty': 2, 'quantity_done': 2},
+            {'product_id': self.by_product.id, 'product_uom_qty': 2, 'quantity': 2},
         ])
 
     def test_barcode_production_reserved_from_multiple_locations(self):

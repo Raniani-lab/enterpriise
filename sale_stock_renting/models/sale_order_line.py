@@ -181,8 +181,9 @@ class RentalOrderLine(models.Model):
                 # Let the move be created with the erroneous quant???
             # As we are using serial numbers, only one quant is expected
             ml = self.env['stock.move.line'].create(rental_stock_move._prepare_move_line_vals(reserved_quant=lot_quant))
-            ml['qty_done'] = 1
+            ml['quantity'] = 1
 
+        rental_stock_move.picked = True
         rental_stock_move._action_done()
 
     def _return_serials(self, lot_ids, location_id, location_dest_id):
@@ -203,7 +204,7 @@ class RentalOrderLine(models.Model):
         for ml in rental_stock_move.mapped('move_line_ids'):
             # update move lines qties.
             if ml.lot_id.id in lot_ids:
-                ml.qty_done = 0.0
+                ml.quantity = 0.0
 
         rental_stock_move.product_uom_qty -= len(lot_ids)
 
@@ -226,7 +227,8 @@ class RentalOrderLine(models.Model):
             'state': 'confirmed',
         })
         rental_stock_move._action_assign()
-        rental_stock_move._set_quantity_done(qty)
+        rental_stock_move.quantity = qty
+        rental_stock_move.picked = True
         rental_stock_move._action_done()
 
     def _return_qty(self, qty, location_id, location_dest_id):
@@ -245,8 +247,8 @@ class RentalOrderLine(models.Model):
 
         for ml in rental_stock_move.mapped('move_line_ids'):
             # update move lines qties.
-            qty -= ml.qty_done
-            ml.qty_done = 0.0 if qty > 0.0 else -qty
+            qty -= ml.quantity
+            ml.quantity = 0.0 if qty > 0.0 else -qty
 
             if qty <= 0.0:
                 return True
@@ -323,7 +325,7 @@ class RentalOrderLine(models.Model):
                 for move in outgoing_moves:
                     if move.state != 'done':
                         continue
-                    qty += move.product_uom._compute_quantity(move.quantity_done, line.product_uom, rounding_method='HALF-UP')
+                    qty += move.product_uom._compute_quantity(move.quantity, line.product_uom, rounding_method='HALF-UP')
                 line.qty_delivered = qty
 
     @api.depends('pickedup_lot_ids', 'returned_lot_ids', 'reserved_lot_ids')

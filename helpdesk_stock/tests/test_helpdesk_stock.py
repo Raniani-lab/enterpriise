@@ -33,8 +33,8 @@ class TestHelpdeskStock(common.HelpdeskCommon):
         so._create_invoices()
         invoice = so.invoice_ids
         invoice.action_post()
-        so.picking_ids[0].move_ids[0].quantity_done = 1
-        so.picking_ids[0]._action_done()
+        so.picking_ids[0].move_ids[0].quantity = 1
+        so.picking_ids[0].button_validate()
         ticket = self.env['helpdesk.ticket'].create({
             'name': 'test',
             'partner_id': self.partner.id,
@@ -68,7 +68,7 @@ class TestHelpdeskStock(common.HelpdeskCommon):
         self.assertEqual(return_picking.id, ticket.picking_ids[0].id,
             "The correct return should be referenced in the ticket")
 
-        return_picking.move_ids[0].quantity_done = 1
+        return_picking.move_ids[0].quantity = 1
         return_picking.button_validate()
         # Trigger _compute_state
         return_picking.state
@@ -103,7 +103,7 @@ class TestHelpdeskStock(common.HelpdeskCommon):
         # get delivery order
         delivery_order = so.picking_ids[0]
         # validated only 3 units
-        delivery_order.move_ids[0].quantity_done = 3
+        delivery_order.move_ids[0].quantity = 3
         # validate delivery order
         delivery_order.button_validate()
         # create backorder with form

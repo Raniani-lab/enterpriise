@@ -249,7 +249,7 @@ class Picking(models.Model):
             'cfdi_date': self.date_done.astimezone(mx_tz).strftime(date_fmt),
             'scheduled_date': self.scheduled_date.astimezone(mx_tz).strftime(date_fmt),
             'lugar_expedicion': issued_address.zip,
-            'moves': self.move_ids.filtered(lambda ml: ml.quantity_done > 0),
+            'moves': self.move_ids.filtered(lambda ml: ml.quantity > 0),
             'weight_uom': self.env['product.template']._get_weight_uom_id_from_ir_config_parameter(),
         })
 

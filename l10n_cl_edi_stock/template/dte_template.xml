@@ -51,7 +51,7 @@
                 </Totales>
             </Encabezado>
         <t t-set="line_number" t-value="1"/>
-        <t t-foreach="picking.move_ids.filtered(lambda x: x.quantity_done > 0)" t-as="line">
+        <t t-foreach="picking.move_ids.filtered(lambda x: x.quantity > 0)" t-as="line">
             <t t-set="line_amounts" t-value="total_line_amounts.get(line, {})"/>
             <Detalle>
                 <NroLinDet t-out="line_number"/>

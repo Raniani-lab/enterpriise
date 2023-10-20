@@ -233,10 +233,10 @@ class QualityCheck(models.Model):
             else:
                 rec.warning_message = ''
 
-    @api.depends('move_line_id.qty_done')
+    @api.depends('move_line_id.quantity')
     def _compute_qty_line(self):
         for qc in self:
-            qc.qty_line = qc.move_line_id.qty_done
+            qc.qty_line = qc.move_line_id.quantity
 
     @api.depends('move_line_id.lot_id')
     def _compute_lot_line_id(self):
@@ -360,25 +360,23 @@ class QualityCheck(models.Model):
              - split it into failed and passed qties (i.e. 2 move lines w/1 check each)
              - send the failed qty to a failure location
         :param failure_location_id: id of location to send failed qty to
-        :param failed_qty: qty failed on check, defaults to None, if None all qty_done of the move is failed
+        :param failed_qty: qty failed on check, defaults to None, if None all quantity of the move is failed
         """
         for check in self:
             if check.quality_state != 'fail' or check.point_id.measure_on != 'move_line' or not check.move_line_id or not check.picking_id:
                 continue
-            failed_qty = failed_qty or check.move_line_id.qty_done
+            failed_qty = failed_qty or check.move_line_id.quantity
             old_move_line = check.move_line_id
             dest_location = failure_location_id or old_move_line.location_dest_id.id
             if failure_location_id:
                 check.failure_location_id = failure_location_id
-            if failed_qty == check.move_line_id.qty_done:
+            if failed_qty == check.move_line_id.quantity:
                 old_move_line.location_dest_id = dest_location
                 return
-            old_move_line.qty_done -= failed_qty
-            old_move_line.reserved_uom_qty = old_move_line.qty_done
+            old_move_line.quantity -= failed_qty
             failed_move_line = old_move_line.with_context(default_check_ids=None, no_checks=True).copy({
                 'location_dest_id': dest_location,
-                'qty_done': failed_qty,
-                'reserved_uom_qty': failed_qty
+                'quantity': failed_qty,
             })
             # switch the checks, check in self should always be the failed one,
             # new check linked to original move line will be passed check

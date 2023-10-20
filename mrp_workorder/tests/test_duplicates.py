@@ -173,27 +173,28 @@ class TestDuplicateProducts(common.TransactionCase):
         # Components
         wo.finished_lot_id = self.pb1
         wo.move_raw_ids[0].move_line_ids[0].lot_id = self.bb1
-        wo.move_raw_ids[0].move_line_ids[0].qty_done = 1
+        wo.move_raw_ids[0].move_line_ids[0].quantity = 1
         # First layer
         wo.move_raw_ids[1].move_line_ids[0].lot_id = self.p1
-        wo.move_raw_ids[1].move_line_ids[0].qty_done = 1
+        wo.move_raw_ids[1].move_line_ids[0].quantity = 1
         # Second layer
         wo.move_raw_ids[2].move_line_ids[0].lot_id = self.p1
-        wo.move_raw_ids[2].move_line_ids[0].qty_done = 1
+        wo.move_raw_ids[2].move_line_ids[0].quantity = 1
         # Byproduct
         wo.move_finished_ids[1].move_line_ids[0].lot_id = self.p2
-        wo.move_finished_ids[1].move_line_ids[0].qty_done = 1
+        wo.move_finished_ids[1].move_line_ids[0].quantity = 1
+        wo.move_raw_ids.picked = True
         wo.do_finish()
         production.button_mark_done()
 
         move_paint_raw = production.move_raw_ids.filtered(lambda move: move.product_id == self.painting)
         self.assertEqual(len(move_paint_raw), 2, 'there should be 2 moves after merge same components')
         self.assertEqual(move_paint_raw.mapped('state'), ['done', 'done'], 'Moves should be done')
-        self.assertEqual(move_paint_raw.mapped('quantity_done'), [1, 1], 'Consumed quantity should be 2')
+        self.assertEqual(move_paint_raw.mapped('quantity'), [1, 1], 'Consumed quantity should be 2')
         self.assertEqual(len(move_paint_raw.move_line_ids), 2, 'their should be 2 move lines')
         self.assertEqual(move_paint_raw.mapped('move_line_ids').mapped('lot_id'), self.p1, 'Wrong lot numbers used')
         move_paint_finished = production.move_finished_ids.filtered(lambda move: move.product_id == self.painting)
         self.assertEqual(move_paint_finished.state, 'done', 'Move should be done')
-        self.assertEqual(move_paint_finished.quantity_done, 1, 'Consumed quantity should be 1')
+        self.assertEqual(move_paint_finished.quantity, 1, 'Consumed quantity should be 1')
         self.assertEqual(len(move_paint_finished.move_line_ids), 1, 'their should be 1 move line')
         self.assertEqual(move_paint_finished.move_line_ids.lot_id, self.p2, 'Wrong lot numbers used')

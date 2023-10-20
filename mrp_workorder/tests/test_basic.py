@@ -237,7 +237,8 @@ class TestWorkOrderProcessCommon(TestMrpWorkorderCommon):
 
         workorder.button_start()
         workorder.record_production()
-        mo_laptop.move_raw_ids.quantity_done = 2.0
+        mo_laptop.move_raw_ids.quantity = 2.0
+        mo_laptop.move_raw_ids.picked = True
         mo_laptop.button_mark_done()
 
         # We check if the laptop go in the depot and not in the stock
@@ -364,7 +365,8 @@ class TestWorkOrderProcessCommon(TestMrpWorkorderCommon):
         self.assertEqual(workorder2.qty_remaining, 2)
 
         mo.workorder_ids.check_ids.quality_state = 'pass'
-        mo.move_raw_ids.quantity_done = 2.0
+        mo.move_raw_ids.quantity = 2.0
+        mo.move_raw_ids.picked = True
         mo.qty_producing = 2.0
         mo.with_context(debug=True).button_mark_done()
 
@@ -522,21 +524,22 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         workorder.qty_producing = 1.0
         for stock_move in workorder.move_raw_ids:
             if stock_move.product_id.id == product_bolt.id:
-                stock_move.move_line_ids.write({'lot_id': lot_bolt.id, 'qty_done': 1})
+                stock_move.move_line_ids.write({'lot_id': lot_bolt.id, 'quantity': 1, 'picked': True})
             if stock_move.product_id.id == product_table_sheet.id:
-                stock_move.move_line_ids.write({'lot_id': lot_sheet.id, 'qty_done': 1})
+                stock_move.move_line_ids.write({'lot_id': lot_sheet.id, 'quantity': 1, 'picked': True})
             if stock_move.product_id.id == product_table_leg.id:
-                stock_move.move_line_ids.write({'lot_id': lot_leg.id, 'qty_done': 1})
+                stock_move.move_line_ids.write({'lot_id': lot_leg.id, 'quantity': 1, 'picked': True})
         self.assertEqual(workorder.state, 'progress')
 
         workorder.record_production()
         self.assertEqual(workorder.state, 'done')
         move_table_sheet = production_table.move_raw_ids.filtered(lambda x: x.product_id == product_table_sheet)
-        self.assertEqual(move_table_sheet.quantity_done, 1)
+        self.assertEqual(move_table_sheet.quantity, 1)
 
         # ---------------------------------------------------------------
         # Check consume quants and produce quants after posting inventory
         # ---------------------------------------------------------------
+        production_table.move_raw_ids.picked = True
         production_table.button_mark_done()
 
         self.assertEqual(product_screw.qty_available, 10)
@@ -642,22 +645,22 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         workorders[0].write({'finished_lot_id': finished_lot.id, 'qty_producing': 1.0})
         workorders[0].button_start()
         move_table_sheet = production_table.move_raw_ids.filtered(lambda p: p.product_id == product_table_sheet)
-        move_table_sheet.move_line_ids.write({'lot_id': lot_sheet.id, 'qty_done': 1})
+        move_table_sheet.move_line_ids.write({'lot_id': lot_sheet.id, 'quantity': 1, 'picked': True})
         self.assertEqual(workorders[0].state, 'progress')
 
         workorders[0].record_production()
 
-        self.assertEqual(move_table_sheet.quantity_done, 1)
+        self.assertEqual(move_table_sheet.quantity, 1)
 
         # --------------------------------------------------------------
         # Process drilling operation ...
         # ---------------------------------------------------------
         workorders[1].button_start()
         move_leg = production_table.move_raw_ids.filtered(lambda p: p.product_id == product_table_leg)
-        move_leg.move_line_ids.write({'lot_id': lot_leg.id, 'qty_done': 4})
+        move_leg.move_line_ids.write({'lot_id': lot_leg.id, 'quantity': 4, 'picked': True})
         workorders[1].record_production()
         self.assertEqual(workorders[1].state, 'done')
-        self.assertEqual(move_leg.quantity_done, 4)
+        self.assertEqual(move_leg.quantity, 4)
 
         # --------------------------------------------------------------
         # Process fitting operation ...
@@ -665,9 +668,9 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         workorders[2].button_start()
         workorders[2].qty_producing = 1.0
         move_table_bolt = production_table.move_raw_ids.filtered(lambda p: p.product_id.id == product_bolt.id)
-        move_table_bolt.move_line_ids.write({'lot_id': lot_bolt.id, 'qty_done': 4})
+        move_table_bolt.move_line_ids.write({'lot_id': lot_bolt.id, 'quantity': 4, 'picked': True})
         workorders[2].record_production()
-        self.assertEqual(move_table_bolt.quantity_done, 4)
+        self.assertEqual(move_table_bolt.quantity, 4)
 
         # Change the quantity of the production order to 1
         wiz = self.env['change.production.qty'].create({
@@ -678,10 +681,11 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         # ---------------------------------------------------------------
         # Check consume quants and produce quants after posting inventory
         # ---------------------------------------------------------------
+        production_table.move_raw_ids.picked = True
         production_table._post_inventory()
-        self.assertEqual(sum(move_table_sheet.mapped('quantity_done')), 1, "Wrong quantity of consumed product %s" % move_table_sheet.product_id.name)
-        self.assertEqual(sum(move_leg.mapped('quantity_done')), 4, "Wrong quantity of consumed product %s" % move_leg.product_id.name)
-        self.assertEqual(sum(move_table_bolt.mapped('quantity_done')), 4, "Wrong quantity of consumed product %s" % move_table_bolt.product_id.name)
+        self.assertEqual(sum(move_table_sheet.mapped('quantity')), 1, "Wrong quantity of consumed product %s" % move_table_sheet.product_id.name)
+        self.assertEqual(sum(move_leg.mapped('quantity')), 4, "Wrong quantity of consumed product %s" % move_leg.product_id.name)
+        self.assertEqual(sum(move_table_bolt.mapped('quantity')), 4, "Wrong quantity of consumed product %s" % move_table_bolt.product_id.name)
 
     def test_explode_from_order(self):
         # bom3 produces 2 Dozen of Doors (p6), aka 24
@@ -906,7 +910,8 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         # Check current status of raw materials.
         for move in mo_custom_laptop.move_raw_ids:
             self.assertEqual(move.product_uom_qty, 20, "Wrong consume quantity of raw material %s: %s instead of %s" % (move.product_id.name, move.product_uom_qty, 20))
-            self.assertEqual(move.quantity_done, 0, "Wrong produced quantity on raw material %s: %s instead of %s" % (move.product_id.name, move.quantity_done, 0))
+            self.assertEqual(move.quantity, 20, "Wrong produced quantity on raw material %s: %s instead of 20" % (move.product_id.name, move.quantity))
+            self.assertFalse(move.picked)
 
         # -----------------
         # Start production
@@ -920,20 +925,21 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         mo_custom_laptop = mo_form.save()
         details_operation_form = Form(mo_custom_laptop.move_raw_ids[0], view=self.env.ref('stock.view_stock_move_operations'))
         with details_operation_form.move_line_ids.edit(0) as ml:
-            ml.qty_done = 12
+            ml.quantity = 12
         details_operation_form.save()
         details_operation_form = Form(mo_custom_laptop.move_raw_ids[1], view=self.env.ref('stock.view_stock_move_operations'))
         with details_operation_form.move_line_ids.edit(0) as ml:
-            ml.qty_done = 12
+            ml.quantity = 12
         details_operation_form.save()
 
+        mo_custom_laptop.move_raw_ids.picked = True
         action = mo_custom_laptop.button_mark_done()
         backorder = Form(self.env[action['res_model']].with_context(**action['context']))
         backorder.save().action_backorder()
 
         # Check consumed move after produce 6 quantity of customized laptop.
         for move in mo_custom_laptop.move_raw_ids:
-            self.assertEqual(move.quantity_done, 12, "Wrong produced quantity on raw material %s" % (move.product_id.name))
+            self.assertEqual(move.quantity, 12, "Wrong produced quantity on raw material %s" % (move.product_id.name))
         self.assertEqual(len(mo_custom_laptop.move_raw_ids), 2)
 
         # Check done move and confirmed move quantity.
@@ -954,17 +960,17 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         mo_custom_laptop = mo_form.save()
         details_operation_form = Form(mo_custom_laptop.move_raw_ids[0], view=self.env.ref('stock.view_stock_move_operations'))
         with details_operation_form.move_line_ids.edit(0) as ml:
-            ml.qty_done = 8
+            ml.quantity = 8
         details_operation_form.save()
         details_operation_form = Form(mo_custom_laptop.move_raw_ids[1], view=self.env.ref('stock.view_stock_move_operations'))
         with details_operation_form.move_line_ids.edit(0) as ml:
-            ml.qty_done = 8
+            ml.quantity = 8
         details_operation_form.save()
 
         charger_move = mo_custom_laptop.move_raw_ids.filtered(lambda x: x.product_id.id == product_charger.id and x.state != 'done')
         keybord_move = mo_custom_laptop.move_raw_ids.filtered(lambda x: x.product_id.id == product_keybord.id and x.state !='done')
-        self.assertEqual(charger_move.quantity_done, 8, "Wrong consumed quantity of %s" % charger_move.product_id.name)
-        self.assertEqual(keybord_move.quantity_done, 8, "Wrong consumed quantity of %s" % keybord_move.product_id.name)
+        self.assertEqual(charger_move.quantity, 8, "Wrong consumed quantity of %s" % charger_move.product_id.name)
+        self.assertEqual(keybord_move.quantity, 8, "Wrong consumed quantity of %s" % keybord_move.product_id.name)
 
     def test_03_test_serial_number_defaults(self):
         """ Test that the correct serial number is suggested on consecutive work orders. """
@@ -1021,6 +1027,7 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         serial_a = self.env['stock.lot'].create({'product_id': laptop.id, 'company_id': self.env.company.id})
         workorder.finished_lot_id = serial_a
         workorder = self.env['mrp.workorder'].browse(workorder.record_production()['res_id'])
+        self.assertTrue(workorder)
         serial_b = self.env['stock.lot'].create({'product_id': laptop.id, 'company_id': self.env.company.id})
         workorder.finished_lot_id = serial_b
         workorder = self.env['mrp.workorder'].browse(workorder.record_production()['res_id'])
@@ -1173,7 +1180,7 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         self.assertEqual(productions.lot_producing_id, lot_1 | lot_2)
         for production in productions:
             production._post_inventory()
-        self.assertEqual(sum(productions.move_finished_ids.move_line_ids.mapped('qty_done')), 2)
+        self.assertEqual(sum(productions.move_finished_ids.move_line_ids.mapped('quantity')), 2)
         self.assertEqual(productions.move_finished_ids.move_line_ids.mapped('lot_id'), lot_1 | lot_2)
 
     def test_04_test_planning_date(self):

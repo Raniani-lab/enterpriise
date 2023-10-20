@@ -36,7 +36,7 @@
         </xpath>
     </template>
     <template id="l10n_mx_edi_cartaporte_report_hazard_has_serial_move_line" inherit_id="stock.stock_report_delivery_has_serial_move_line">
-        <xpath expr="//td[@name='move_line_lot_qty_done']" position="before">
+        <xpath expr="//td[@name='move_line_lot_quantity']" position="before">
             <t t-if="o.l10n_mx_edi_cfdi_state == 'sent' and o.l10n_mx_edi_transport_type == '01' and any(o.move_line_ids.product_id.mapped('l10n_mx_edi_hazardous_material_code'))">
                 <td>
                     <span t-esc="move_line.product_id.l10n_mx_edi_hazardous_material_code"/>
@@ -48,7 +48,7 @@
         </xpath>
     </template>
     <template id="l10n_mx_edi_cartaporte_report_hazard_aggregated_move_lines" inherit_id="stock.stock_report_delivery_aggregated_move_lines">
-        <xpath expr="//td[@name='move_line_aggregated_qty_done']" position="before">
+        <xpath expr="//td[@name='move_line_aggregated_quantity']" position="before">
             <t t-if="o.l10n_mx_edi_cfdi_state == 'sent' and o.l10n_mx_edi_transport_type == '01' and any(o.move_line_ids.product_id.mapped('l10n_mx_edi_hazardous_material_code'))">
                 <td>
                     <span t-esc="aggregated_lines[line]['product'].l10n_mx_edi_hazardous_material_code"/>

@@ -279,7 +279,6 @@ class TestDeliverySendCloud(TransactionCase):
             picking = sale_order.picking_ids[0]
             self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
             picking.action_assign()
-            picking.action_set_quantities_to_reservation()
             self.assertGreater(picking.weight, 0.0, "Picking weight should be positive.")
 
             picking._action_done()
@@ -315,7 +314,6 @@ class TestDeliverySendCloud(TransactionCase):
             picking = sale_order.picking_ids[0]
             self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
             picking.action_assign()
-            picking.action_set_quantities_to_reservation()
             self.assertGreater(picking.weight, 0.0, "Picking weight should be positive.")
 
             picking._action_done()
@@ -395,7 +393,8 @@ class TestDeliverySendCloud(TransactionCase):
             picking.action_assign()
             picking.action_set_quantities_to_reservation()
             for move_line in picking.move_line_ids:
-                move_line.qty_done = move_line.reserved_uom_qty / 2.0
+                move_line.quantity = move_line.quantity / 2.0
+            picking.move_ids.picked = True
             picking.move_ids._action_done()
             self.assertGreater(picking.weight, 0.0, "Picking weight should be positive.")
             # Create parcels

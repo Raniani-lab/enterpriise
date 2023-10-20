@@ -32,10 +32,7 @@ export class StockMove extends Component {
     }
 
     get isComplete() {
-        if (this.toConsumeQuantity) {
-            return this.props.record.data.quantity_done >= this.toConsumeQuantity;
-        }
-        return Boolean(this.props.record.data.quantity_done);
+        return Boolean(this.props.record.data.picked);
     }
 
     get toConsumeQuantity() {
@@ -49,7 +46,7 @@ export class StockMove extends Component {
     }
 
     get quantityDone() {
-        return this.props.record.data.quantity_done;
+        return this.props.record.data.quantity;
     }
 
     get uom() {
@@ -100,7 +97,10 @@ export class StockMove extends Component {
             return this.clicked();
         }
         const quantity = this.isComplete ? 0 : this.toConsumeQuantity;
-        this.props.record.update({ quantity_done: quantity });
+        this.props.record.update({
+            quantity: quantity,
+            picked: true,
+        });
         this.props.record.save({ reload: false });
     }
 

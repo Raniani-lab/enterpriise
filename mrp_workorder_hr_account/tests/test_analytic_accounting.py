@@ -139,6 +139,7 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
             mo_form = Form(mo)
             mo_form.qty_producing = 1.0
             mo = mo_form.save()
+            mo.move_raw_ids.picked = True
             mo.button_mark_done()
             self.assertEqual(mo.state, 'done')
 
@@ -182,7 +183,6 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
         # mo.analytic_distribution = {str(self.analytic_account.id): 100.0},
         # mo.analytic_account_id = self.analytic_account
         mo.action_confirm()
-
         self.env['mrp.workcenter.productivity'].create({
             'workcenter_id': workcenter.id,
             'date_start': datetime.now() - timedelta(minutes=30),

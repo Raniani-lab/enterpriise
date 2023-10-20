@@ -79,7 +79,6 @@ class TestPEDeliveryGuideCommon(TestPeEdiCommon):
             'l10n_pe_edi_reason_for_transfer': '01',
             'l10n_pe_edi_departure_start_date': datetime.today(),
             'state': 'draft',
-            'immediate_transfer': False,
         })
 
         cls.env['stock.move'].create({
@@ -94,8 +93,10 @@ class TestPEDeliveryGuideCommon(TestPeEdiCommon):
             'description_picking': cls.productA.name,
         })
         cls.env['stock.quant']._update_available_quantity(cls.productA, cls.new_wh.lot_stock_id, 10.0)
+        cls.picking.action_confirm()
         cls.picking.action_assign()
-        cls.picking.move_ids[0].move_line_ids[0].qty_done = 10
+        cls.picking.move_ids[0].move_line_ids[0].quantity = 10
+        cls.picking.move_ids[0].picked = True
         cls.picking._action_done()
 
 

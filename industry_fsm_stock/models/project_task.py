@@ -43,28 +43,27 @@ class Task(models.Model):
             if not qty:
                 continue
             for move in so_line.move_ids:
-                if move.state in ['done', 'cancel'] or move.quantity_done >= qty:
+                if move.state in ['done', 'cancel'] or move.quantity >= qty:
                     continue
                 fsm_sn_moves |= move
-                while move.move_orig_ids.filtered(lambda m: m.quantity_done < qty):
+                while move.move_orig_ids.filtered(lambda m: not m.picked or m.quantity < qty):
                     move = move.move_orig_ids
                     fsm_sn_moves |= move
             for fsm_sn_move in fsm_sn_moves:
                 if not fsm_sn_move.move_line_ids:
                     ml_vals = fsm_sn_move._prepare_move_line_vals(quantity=0)
-                    ml_vals['qty_done'] = fsm_sn_move.product_uom_qty - fsm_sn_move.quantity_done
+                    ml_vals['quantity'] = fsm_sn_move.product_uom_qty
                     ml_vals['lot_id'] = so_line.fsm_lot_id.id
                     ml_to_create.append(ml_vals)
                 else:
                     qty_done = 0
                     fsm_sn_move.move_line_ids.lot_id = so_line.fsm_lot_id
                     for move_line in fsm_sn_move.move_line_ids:
-                        move_line.qty_done = move_line.reserved_uom_qty
-                        qty_done += move_line.reserved_uom_qty
+                        qty_done += move_line.quantity
                     missing_qty = fsm_sn_move.product_uom_qty - qty_done
                     if missing_qty > 0:
                         ml_vals = fsm_sn_move._prepare_move_line_vals(quantity=0)
-                        ml_vals['qty_done'] = missing_qty
+                        ml_vals['quantity'] = missing_qty
                         ml_vals['lot_id'] = so_line.fsm_lot_id.id
                         ml_to_create.append(ml_vals)
                 if fsm_sn_move.product_id.tracking == "serial":
@@ -100,12 +99,12 @@ class Task(models.Model):
             if move.state in ('done', 'cancel') or move in all_fsm_sn_moves:
                 continue
             rounding = move.product_uom.rounding
-            if float_compare(move.quantity_done, move.product_uom_qty, precision_rounding=rounding) < 0:
+            if float_compare(move.quantity, move.product_uom_qty, precision_rounding=rounding) < 0:
                 qty_to_do = float_round(
-                    move.product_uom_qty - move.quantity_done,
+                    move.product_uom_qty - move.quantity,
                     precision_rounding=rounding,
                     rounding_method='HALF-UP')
-                move._set_quantity_done(qty_to_do)
+                move.quantity = qty_to_do
         pickings_to_do.with_context(skip_sms=True, cancel_backorder=True).button_validate()
 
     def _fsm_ensure_sale_order(self):

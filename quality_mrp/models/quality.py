@@ -18,7 +18,6 @@ class QualityCheck(models.Model):
     production_id = fields.Many2one(
         'mrp.production', 'Production Order', check_company=True)
 
-    @api.depends('move_line_id.qty_done')
     def _compute_qty_line(self):
         record_without_production = self.env['quality.check']
         for qc in self:

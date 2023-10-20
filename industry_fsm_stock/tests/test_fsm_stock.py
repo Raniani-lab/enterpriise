@@ -202,12 +202,12 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         while move.move_orig_ids:
             move = move.move_orig_ids
         self.assertEqual(move.move_line_ids[0].lot_id, self.lot_id2)
-        self.assertEqual(move.move_line_ids[0].reserved_qty, 2)
+        self.assertEqual(move.move_line_ids[0].quantity, 2)
         self.assertNotEqual(move.move_line_ids[1].lot_id, self.lot_id2, "Lot automatically added on move lines is not the same as asked. (By default, it's the first lot available)")
-        self.assertEqual(move.move_line_ids[1].reserved_qty, 1)
+        self.assertEqual(move.move_line_ids[1].quantity, 1)
         self.task.with_user(self.project_user).action_fsm_validate()
         self.assertEqual(move.move_line_ids.lot_id, self.lot_id2, "Asked lots are added on move lines.")
-        self.assertEqual(move.quantity_done, 3, "We deliver 3 (even they are only 2 in stock)")
+        self.assertEqual(move.quantity, 3, "We deliver 3 (even they are only 2 in stock)")
 
         self.assertEqual(self.task.sale_order_id.picking_ids.mapped('state'), ['done', 'done', 'done'], "Pickings should be set as done")
 
@@ -276,7 +276,7 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         self.assertEqual(wizard.tracking_line_ids.lot_id, self.lot_id2, "The line has lot_id2")
 
         move = self.task.sale_order_id.order_line.move_ids
-        move.quantity_done = 1
+        move.quantity = 1
         picking_ids = self.task.sale_order_id.picking_ids
         picking_ids.with_context(skip_sms=True, cancel_backorder=True).button_validate()
         self.assertEqual(picking_ids.mapped('state'), ['done'], "Pickings should be set as done")
@@ -304,7 +304,7 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         move = order_line_ids.move_ids
         self.assertEqual(len(order_line_ids), 2, "There are 2 order lines.")
         self.assertEqual(move.move_line_ids.lot_id, self.lot_id2 + self.lot_id3, "Lots stay the same.")
-        self.assertEqual(sum(move.move_line_ids.mapped('qty_done')), 4, "We deliver 4 (1+3)")
+        self.assertEqual(sum(move.move_line_ids.mapped('quantity')), 4, "We deliver 4 (1+3)")
 
         self.assertEqual(self.task.sale_order_id.picking_ids.mapped('state'), ['done', 'done'], "The 2 pickings should be set as done")
 
@@ -435,7 +435,7 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         self._add_lot_product(self.product_lot, [{'lot_id': self.lot_id3.id, 'qty': 5}])
 
         order_line_ids = self.task.sale_order_id.order_line.filtered(lambda l: l.product_id == self.product_lot)
-        order_line_ids[0].move_ids[0].move_line_ids[0].write({'qty_done': 3, 'lot_id': self.lot_id2.id})
+        order_line_ids[0].move_ids[0].move_line_ids[0].write({'quantity': 3, 'lot_id': self.lot_id2.id})
 
         # When we validate the picking manually, we create a backorder.
         backorder_wizard_dict = self.task.sale_order_id.picking_ids.button_validate()
@@ -462,7 +462,7 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         move = order_line_ids.move_ids
         self.assertEqual(len(order_line_ids), 1, "There are 1 order lines, delivered in 2 times (first manually, second with fsm task validation).")
         self.assertEqual(move.move_line_ids.lot_id, self.lot_id2 + self.lot_id3, "Lot stay the same.")
-        self.assertEqual(sum(move.move_line_ids.mapped('qty_done')), 7, "We deliver 7 (4+3)")
+        self.assertEqual(sum(move.move_line_ids.mapped('quantity')), 7, "We deliver 7 (4+3)")
 
         self.assertEqual(self.task.sale_order_id.picking_ids.mapped('state'), ['done', 'done'], "The 2 pickings should be set as done")
 
@@ -536,7 +536,7 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         })
         # Confirm two first pickings
         for picking in so.picking_ids.sorted(lambda p: p.id)[:2]:
-            picking.move_line_ids_without_package.qty_done = 1
+            picking.move_line_ids_without_package.quantity = 1
             picking.button_validate()
 
         task.with_user(self.project_user).action_fsm_validate()
@@ -544,7 +544,7 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         for picking in so.picking_ids:
             self.assertEqual(picking.state, 'done')
             self.assertEqual(len(picking.move_line_ids_without_package), 1)
-            self.assertEqual(picking.move_line_ids_without_package.qty_done, 1)
+            self.assertEqual(picking.move_line_ids_without_package.quantity, 1)
 
     def test_fsm_qty(self):
         """ Making sure industry_fsm_stock/Product.set_fsm_quantity()
@@ -649,46 +649,46 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         pickings_step = self.task.sale_order_id.picking_ids[1] | self.task.sale_order_id.picking_ids[2]
 
         # moves
-        # Ensures the quantity_done, the lot_ids, and the product_uom_qty are correctly set
+        # Ensures the quantity, the lot_ids, and the product_uom_qty are correctly set
         for pick in pickings_step:
             self.assertRecordValues(pick.move_ids, [
-                {'product_id': self.product_lot_stock.id, 'product_uom_qty': 5.0, 'quantity_done': 5.0},
-                {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 9.0, 'quantity_done': 9.0},
-                {'product_id': self.product_sn_stock.id, 'product_uom_qty': 2.0, 'lot_ids': [self.serial_stock_1.id, self.serial_stock_2.id], 'quantity_done': 2.0},
-                {'product_id': self.product_sn_no_stock.id, 'product_uom_qty': 2.0, 'lot_ids': [self.serial_no_stock_1.id, self.serial_no_stock_2.id], 'quantity_done': 2.0},
+                {'product_id': self.product_lot_stock.id, 'product_uom_qty': 5.0, 'quantity': 5.0},
+                {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 9.0, 'quantity': 9.0},
+                {'product_id': self.product_sn_stock.id, 'product_uom_qty': 2.0, 'lot_ids': [self.serial_stock_1.id, self.serial_stock_2.id], 'quantity': 2.0},
+                {'product_id': self.product_sn_no_stock.id, 'product_uom_qty': 2.0, 'lot_ids': [self.serial_no_stock_1.id, self.serial_no_stock_2.id], 'quantity': 2.0},
             ])
         self.assertRecordValues(self.task.sale_order_id.picking_ids[0].move_ids, [
-            {'product_id': self.product_lot_stock.id, 'product_uom_qty': 2.0, 'quantity_done': 2.0},
-            {'product_id': self.product_lot_stock.id, 'product_uom_qty': 3.0, 'quantity_done': 3.0},
-            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 4.0, 'quantity_done': 4.0},
-            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 5.0, 'quantity_done': 5.0},
-            {'product_id': self.product_sn_stock.id, 'lot_ids': self.serial_stock_1.id, 'product_uom_qty': 1.0, 'quantity_done': 1.0},
-            {'product_id': self.product_sn_stock.id, 'lot_ids': self.serial_stock_2.id, 'product_uom_qty': 1.0, 'quantity_done': 1.0},
-            {'product_id': self.product_sn_no_stock.id, 'lot_ids': self.serial_no_stock_1.id, 'product_uom_qty': 1.0, 'quantity_done': 1.0},
-            {'product_id': self.product_sn_no_stock.id, 'lot_ids': self.serial_no_stock_2.id, 'product_uom_qty': 1.0, 'quantity_done': 1.0},
+            {'product_id': self.product_lot_stock.id, 'product_uom_qty': 2.0, 'quantity': 2.0},
+            {'product_id': self.product_lot_stock.id, 'product_uom_qty': 3.0, 'quantity': 3.0},
+            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 4.0, 'quantity': 4.0},
+            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 5.0, 'quantity': 5.0},
+            {'product_id': self.product_sn_stock.id, 'lot_ids': self.serial_stock_1.id, 'product_uom_qty': 1.0, 'quantity': 1.0},
+            {'product_id': self.product_sn_stock.id, 'lot_ids': self.serial_stock_2.id, 'product_uom_qty': 1.0, 'quantity': 1.0},
+            {'product_id': self.product_sn_no_stock.id, 'lot_ids': self.serial_no_stock_1.id, 'product_uom_qty': 1.0, 'quantity': 1.0},
+            {'product_id': self.product_sn_no_stock.id, 'lot_ids': self.serial_no_stock_2.id, 'product_uom_qty': 1.0, 'quantity': 1.0},
         ])
         # move_lines
-        # Ensures the qty_done, the lot_id and the reserved_uom_qty are correctly set.
+        # Ensures the quantity, the lot_id and the quantity are correctly set.
         self.assertRecordValues(self.task.sale_order_id.picking_ids[2].move_ids.move_line_ids, [
-            {'product_id': self.product_lot_stock.id, 'lot_id': self.lot_pls_1.id, 'reserved_uom_qty': 2.0, 'qty_done': 2.0},
-            {'product_id': self.product_lot_stock.id, 'lot_id': self.lot_pls_2.id, 'reserved_uom_qty': 3.0, 'qty_done': 3.0},
-            {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'reserved_uom_qty': 0.0, 'qty_done': 4.0},
-            {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_2.id, 'reserved_uom_qty': 0.0, 'qty_done': 5.0},
-            {'product_id': self.product_sn_stock.id, 'lot_id': self.serial_stock_1.id, 'reserved_uom_qty': 1.0, 'qty_done': 1.0},
-            {'product_id': self.product_sn_stock.id, 'lot_id': self.serial_stock_2.id, 'reserved_uom_qty': 1.0, 'qty_done': 1.0},
-            {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'reserved_uom_qty': 0.0, 'qty_done': 1.0},
-            {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_2.id, 'reserved_uom_qty': 0.0, 'qty_done': 1.0},
+            {'product_id': self.product_lot_stock.id, 'lot_id': self.lot_pls_1.id, 'quantity': 2.0},
+            {'product_id': self.product_lot_stock.id, 'lot_id': self.lot_pls_2.id, 'quantity': 3.0},
+            {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'quantity': 4.0},
+            {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_2.id, 'quantity': 5.0},
+            {'product_id': self.product_sn_stock.id, 'lot_id': self.serial_stock_1.id, 'quantity': 1.0},
+            {'product_id': self.product_sn_stock.id, 'lot_id': self.serial_stock_2.id, 'quantity': 1.0},
+            {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'quantity': 1.0},
+            {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_2.id, 'quantity': 1.0},
         ])
         for pick in pickings_waiting:
             self.assertRecordValues(pick.move_ids.move_line_ids, [
-                {'product_id': self.product_lot_stock.id, 'lot_id': self.lot_pls_1.id, 'reserved_uom_qty': 0.0, 'qty_done': 2.0},
-                {'product_id': self.product_lot_stock.id, 'lot_id': self.lot_pls_2.id, 'reserved_uom_qty': 0.0, 'qty_done': 3.0},
-                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'reserved_uom_qty': 0.0, 'qty_done': 4.0},
-                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_2.id, 'reserved_uom_qty': 0.0, 'qty_done': 5.0},
-                {'product_id': self.product_sn_stock.id, 'lot_id': self.serial_stock_1.id, 'reserved_uom_qty': 0.0, 'qty_done': 1.0},
-                {'product_id': self.product_sn_stock.id, 'lot_id': self.serial_stock_2.id, 'reserved_uom_qty': 0.0, 'qty_done': 1.0},
-                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'reserved_uom_qty': 0.0, 'qty_done': 1.0},
-                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_2.id, 'reserved_uom_qty': 0.0, 'qty_done': 1.0},
+                {'product_id': self.product_lot_stock.id, 'lot_id': self.lot_pls_1.id, 'quantity': 2.0},
+                {'product_id': self.product_lot_stock.id, 'lot_id': self.lot_pls_2.id, 'quantity': 3.0},
+                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'quantity': 4.0},
+                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_2.id, 'quantity': 5.0},
+                {'product_id': self.product_sn_stock.id, 'lot_id': self.serial_stock_1.id, 'quantity': 1.0},
+                {'product_id': self.product_sn_stock.id, 'lot_id': self.serial_stock_2.id, 'quantity': 1.0},
+                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'quantity': 1.0},
+                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_2.id, 'quantity': 1.0},
             ])
 
         # mark the task as done
@@ -731,52 +731,52 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         # check moves
         for pick in pickings_step_whA:
             self.assertRecordValues(pick.move_ids, [
-                {'product_id': self.product_lot_no_stock.id, 'quantity_done': 6.0},
-                {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_1.id, self.serial_no_stock_2.id], 'quantity_done': 2.0},
+                {'product_id': self.product_lot_no_stock.id, 'quantity': 6.0},
+                {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_1.id, self.serial_no_stock_2.id], 'quantity': 2.0},
             ])
         for pick in pickings_step_default:
             self.assertRecordValues(pick.move_ids, [
-                {'product_id': self.product_lot_no_stock.id, 'quantity_done': 8.0},
-                {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_1.id, self.serial_no_stock_2.id], 'quantity_done': 2.0},
+                {'product_id': self.product_lot_no_stock.id, 'quantity': 8.0},
+                {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_1.id, self.serial_no_stock_2.id], 'quantity': 2.0},
             ])
         self.assertRecordValues(delivery_out_whA.move_ids, [
-            {'product_id': self.product_lot_no_stock.id, 'quantity_done': 4.0},
-            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_1.id], 'quantity_done': 1.0},
-            {'product_id': self.product_lot_no_stock.id, 'quantity_done': 2.0},
-            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_2.id], 'quantity_done': 1.0},
+            {'product_id': self.product_lot_no_stock.id, 'quantity': 4.0},
+            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_1.id], 'quantity': 1.0},
+            {'product_id': self.product_lot_no_stock.id, 'quantity': 2.0},
+            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_2.id], 'quantity': 1.0},
         ])
         self.assertRecordValues(delivery_out_default.move_ids, [
-            {'product_id': self.product_lot_no_stock.id, 'quantity_done': 5.0},
-            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_1.id], 'quantity_done': 1.0},
-            {'product_id': self.product_lot_no_stock.id, 'quantity_done': 3.0},
-            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_2.id], 'quantity_done': 1.0},
+            {'product_id': self.product_lot_no_stock.id, 'quantity': 5.0},
+            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_1.id], 'quantity': 1.0},
+            {'product_id': self.product_lot_no_stock.id, 'quantity': 3.0},
+            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_2.id], 'quantity': 1.0},
         ])
         # check move_lines
         for pick in pickings_step_whA:
             self.assertRecordValues(pick.move_ids.move_line_ids, [
-                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'qty_done': 4.0},
-                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_2.id, 'qty_done': 2.0},
-                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'qty_done': 1.0},
-                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_2.id, 'qty_done': 1.0},
+                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'quantity': 4.0},
+                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_2.id, 'quantity': 2.0},
+                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'quantity': 1.0},
+                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_2.id, 'quantity': 1.0},
             ])
         for pick in pickings_step_default:
             self.assertRecordValues(pick.move_ids.move_line_ids, [
-                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'qty_done': 5.0},
-                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_2.id, 'qty_done': 3.0},
-                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'qty_done': 1.0},
-                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_2.id, 'qty_done': 1.0},
+                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'quantity': 5.0},
+                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_2.id, 'quantity': 3.0},
+                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'quantity': 1.0},
+                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_2.id, 'quantity': 1.0},
             ])
         self.assertRecordValues(delivery_out_whA.move_ids.move_line_ids, [
-            {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'qty_done': 4.0},
-            {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'qty_done': 1.0},
-            {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_2.id, 'qty_done': 2.0},
-            {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_2.id, 'qty_done': 1.0},
+            {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'quantity': 4.0},
+            {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'quantity': 1.0},
+            {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_2.id, 'quantity': 2.0},
+            {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_2.id, 'quantity': 1.0},
         ])
         self.assertRecordValues(delivery_out_default.move_ids.move_line_ids, [
-            {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'qty_done': 5.0},
-            {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'qty_done': 1.0},
-            {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_2.id, 'qty_done': 3.0},
-            {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_2.id, 'qty_done': 1.0},
+            {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'quantity': 5.0},
+            {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'quantity': 1.0},
+            {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_2.id, 'quantity': 3.0},
+            {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_2.id, 'quantity': 1.0},
         ])
 
         # remove one line from each warehouse for each product
@@ -790,48 +790,48 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         # check moves
         for pick in pickings_step_whA:
             self.assertRecordValues(pick.move_ids, [
-                {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 4.0, 'quantity_done': 4.0},
-                {'product_id': self.product_sn_no_stock.id, 'lot_ids': self.serial_no_stock_1.id, 'product_uom_qty': 1.0, 'quantity_done': 1.0},
+                {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 4.0, 'quantity': 4.0},
+                {'product_id': self.product_sn_no_stock.id, 'lot_ids': self.serial_no_stock_1.id, 'product_uom_qty': 1.0, 'quantity': 1.0},
             ])
         for pick in pickings_step_default:
             self.assertRecordValues(pick.move_ids, [
-                {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 5.0, 'quantity_done': 5.0},
-                {'product_id': self.product_sn_no_stock.id, 'lot_ids': self.serial_no_stock_1.id, 'product_uom_qty': 1.0, 'quantity_done': 1.0},
+                {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 5.0, 'quantity': 5.0},
+                {'product_id': self.product_sn_no_stock.id, 'lot_ids': self.serial_no_stock_1.id, 'product_uom_qty': 1.0, 'quantity': 1.0},
             ])
         self.assertRecordValues(delivery_out_whA.move_ids, [
-            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 4.0, 'quantity_done': 4.0, 'state': 'waiting'},
-            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_1.id], 'product_uom_qty': 1.0, 'quantity_done': 1.0, 'state': 'waiting'},
-            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 0.0, 'quantity_done': 0.0, 'state': 'cancel'},
-            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_2.id], 'product_uom_qty': 0.0, 'quantity_done': 0.0, 'state': 'cancel'},
+            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 4.0, 'quantity': 4.0, 'state': 'assigned'},
+            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_1.id], 'product_uom_qty': 1.0, 'quantity': 1.0, 'state': 'assigned'},
+            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 0.0, 'quantity': 0.0, 'state': 'cancel'},
+            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_2.id], 'product_uom_qty': 0.0, 'quantity': 0.0, 'state': 'cancel'},
         ])
         self.assertRecordValues(delivery_out_default.move_ids, [
-            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 5.0, 'quantity_done': 5.0, 'state': 'waiting'},
-            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_1.id], 'product_uom_qty': 1.0, 'quantity_done': 1.0, 'state': 'waiting'},
-            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 0.0, 'quantity_done': 0.0, 'state': 'cancel'},
-            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_2.id], 'product_uom_qty': 0.0, 'quantity_done': 0.0, 'state': 'cancel'},
+            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 5.0, 'quantity': 5.0, 'state': 'assigned'},
+            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_1.id], 'product_uom_qty': 1.0, 'quantity': 1.0, 'state': 'assigned'},
+            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 0.0, 'quantity': 0.0, 'state': 'cancel'},
+            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_2.id], 'product_uom_qty': 0.0, 'quantity': 0.0, 'state': 'cancel'},
         ])
         # check move_lines
         for pick in pickings_step_whA:
             self.assertRecordValues(pick.move_ids.move_line_ids, [
-                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'qty_done': 4.0},
-                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_2.id, 'qty_done': 0.0},
-                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'qty_done': 1.0},
-                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_2.id, 'qty_done': 0.0},
+                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'quantity': 4.0},
+                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_2.id, 'quantity': 0.0},
+                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'quantity': 1.0},
+                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_2.id, 'quantity': 0.0},
             ])
         for pick in pickings_step_default:
             self.assertRecordValues(pick.move_ids.move_line_ids, [
-                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'qty_done': 5.0},
-                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_2.id, 'qty_done': 0.0},
-                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'qty_done': 1.0},
-                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_2.id, 'qty_done': 0.0},
+                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'quantity': 5.0},
+                {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_2.id, 'quantity': 0.0},
+                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'quantity': 1.0},
+                {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_2.id, 'quantity': 0.0},
             ])
         self.assertRecordValues(delivery_out_whA.move_ids.move_line_ids, [
-            {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'qty_done': 4.0},
-            {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'qty_done': 1.0},
+            {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'quantity': 4.0},
+            {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'quantity': 1.0},
         ])
         self.assertRecordValues(delivery_out_default.move_ids.move_line_ids, [
-            {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'qty_done': 5.0},
-            {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'qty_done': 1.0},
+            {'product_id': self.product_lot_no_stock.id, 'lot_id': self.lot_plns_1.id, 'quantity': 5.0},
+            {'product_id': self.product_sn_no_stock.id, 'lot_id': self.serial_no_stock_1.id, 'quantity': 1.0},
         ])
 
         # remove the remaining line in each wizard for each delivery
@@ -845,25 +845,25 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         # check moves
         for pick in pickings_step_whA:
             self.assertRecordValues(pick.move_ids, [
-                {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 0.0, 'quantity_done': 0.0, 'state': 'cancel'},
-                {'product_id': self.product_sn_no_stock.id, 'lot_ids': self.serial_no_stock_1.id, 'product_uom_qty': 0.0, 'quantity_done': 0.0, 'state': 'cancel'},
+                {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 0.0, 'quantity': 0.0, 'state': 'cancel'},
+                {'product_id': self.product_sn_no_stock.id, 'lot_ids': self.serial_no_stock_1.id, 'product_uom_qty': 0.0, 'quantity': 0.0, 'state': 'cancel'},
             ])
         for pick in pickings_step_default:
             self.assertRecordValues(pick.move_ids, [
-                {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 0.0, 'quantity_done': 0.0, 'state': 'cancel'},
-                {'product_id': self.product_sn_no_stock.id, 'lot_ids': self.serial_no_stock_1.id, 'product_uom_qty': 0.0, 'quantity_done': 0.0, 'state': 'cancel'},
+                {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 0.0, 'quantity': 0.0, 'state': 'cancel'},
+                {'product_id': self.product_sn_no_stock.id, 'lot_ids': self.serial_no_stock_1.id, 'product_uom_qty': 0.0, 'quantity': 0.0, 'state': 'cancel'},
             ])
         self.assertRecordValues(delivery_out_whA.move_ids, [
-            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 0.0, 'quantity_done': 0.0, 'state': 'cancel'},
-            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_1.id], 'product_uom_qty': 0.0, 'quantity_done': 0.0, 'state': 'cancel'},
-            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 0.0, 'quantity_done': 0.0, 'state': 'cancel'},
-            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_2.id], 'product_uom_qty': 0.0, 'quantity_done': 0.0, 'state': 'cancel'},
+            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 0.0, 'quantity': 0.0, 'state': 'cancel'},
+            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_1.id], 'product_uom_qty': 0.0, 'quantity': 0.0, 'state': 'cancel'},
+            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 0.0, 'quantity': 0.0, 'state': 'cancel'},
+            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_2.id], 'product_uom_qty': 0.0, 'quantity': 0.0, 'state': 'cancel'},
         ])
         self.assertRecordValues(delivery_out_default.move_ids, [
-            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 0.0, 'quantity_done': 0.0, 'state': 'cancel'},
-            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_1.id], 'product_uom_qty': 0.0, 'quantity_done': 0.0, 'state': 'cancel'},
-            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 0.0, 'quantity_done': 0.0, 'state': 'cancel'},
-            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_2.id], 'product_uom_qty': 0.0, 'quantity_done': 0.0, 'state': 'cancel'},
+            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 0.0, 'quantity': 0.0, 'state': 'cancel'},
+            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_1.id], 'product_uom_qty': 0.0, 'quantity': 0.0, 'state': 'cancel'},
+            {'product_id': self.product_lot_no_stock.id, 'product_uom_qty': 0.0, 'quantity': 0.0, 'state': 'cancel'},
+            {'product_id': self.product_sn_no_stock.id, 'lot_ids': [self.serial_no_stock_2.id], 'product_uom_qty': 0.0, 'quantity': 0.0, 'state': 'cancel'},
         ])
         # check move_lines
         for pick in self.task.sale_order_id.picking_ids:
@@ -901,7 +901,7 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         # ensures the quantity is correctly increased
         for pick in self.task.sale_order_id.picking_ids:
             # move 1 product lot no stock
-            self.assertEqual(6, pick.move_ids[0].move_line_ids[0].qty_done)
+            self.assertEqual(6, pick.move_ids[0].move_line_ids[0].quantity)
             self.assertEqual(self.lot_plns_1, pick.move_ids[0].move_line_ids[0].lot_id)
 
         # decrease the qty of the product
@@ -913,7 +913,7 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         # ensures the quantity is correctly decreased
         for pick in self.task.sale_order_id.picking_ids:
             # move 1 product lot no stock
-            self.assertEqual(2, pick.move_ids[0].move_line_ids[0].qty_done)
+            self.assertEqual(2, pick.move_ids[0].move_line_ids[0].quantity)
             self.assertEqual(self.lot_plns_1, pick.move_ids[0].move_line_ids[0].lot_id)
 
         # update the lot_id of the product
@@ -925,11 +925,11 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         picking_step = self.task.sale_order_id.picking_ids - picking_out
         # ensures the lot_id is correctly updated
         for pick in picking_step:
-            self.assertEqual(0, pick.move_ids[0].move_line_ids[0].qty_done)
+            self.assertEqual(0, pick.move_ids[0].move_line_ids[0].quantity)
             self.assertEqual(self.lot_plns_1, pick.move_ids[0].move_line_ids[0].lot_id)
-            self.assertEqual(2, pick.move_ids[0].move_line_ids[1].qty_done)
+            self.assertEqual(2, pick.move_ids[0].move_line_ids[1].quantity)
             self.assertEqual(self.lot_plns_2, pick.move_ids[0].move_line_ids[1].lot_id)
-        self.assertEqual(2, picking_out.move_ids[0].move_line_ids[0].qty_done)
+        self.assertEqual(2, picking_out.move_ids[0].move_line_ids[0].quantity)
         self.assertEqual(self.lot_plns_2, picking_out.move_ids[0].move_line_ids[0].lot_id)
 
         # add serial products to the task
@@ -945,11 +945,11 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
 
         # ensures the sn is correctly updated
         for pick in picking_step:
-            self.assertEqual(0, pick.move_ids[1].move_line_ids[0].qty_done)
+            self.assertEqual(0, pick.move_ids[1].move_line_ids[0].quantity)
             self.assertEqual(self.serial_no_stock_1, pick.move_ids[1].move_line_ids[0].lot_id)
-            self.assertEqual(1, pick.move_ids[1].move_line_ids[1].qty_done)
+            self.assertEqual(1, pick.move_ids[1].move_line_ids[1].quantity)
             self.assertEqual(self.serial_no_stock_2, pick.move_ids[1].move_line_ids[1].lot_id)
-        self.assertEqual(1, picking_out.move_ids[1].move_line_ids[0].qty_done)
+        self.assertEqual(1, picking_out.move_ids[1].move_line_ids[0].quantity)
         self.assertEqual(self.serial_no_stock_2, picking_out.move_ids[1].move_line_ids[0].lot_id)
 
         # we set the lot_id of the first wizard line to a different lot_id in order to have different SN for each line.
@@ -980,14 +980,14 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         picking_out = self.task.sale_order_id.picking_ids[0] | self.task.sale_order_id.picking_ids[3]
         picking_step = self.task.sale_order_id.picking_ids - picking_out
 
-        # ensures that the correct qty_done is set on the deliveries
+        # ensures that the correct quantity is set on the deliveries
         for pick in picking_step:
-            self.assertEqual(3, pick.move_ids[0].move_line_ids[0].qty_done)
+            self.assertEqual(3, pick.move_ids[0].move_line_ids[0].quantity)
             self.assertEqual(self.lot_plns_1, pick.move_ids[0].move_line_ids[0].lot_id)
         for pick in picking_out:
-            self.assertEqual(1, pick.move_ids[0].move_line_ids[0].qty_done)
+            self.assertEqual(1, pick.move_ids[0].move_line_ids[0].quantity)
             self.assertEqual(self.lot_plns_1, pick.move_ids[0].move_line_ids[0].lot_id)
-            self.assertEqual(2, pick.move_ids[1].move_line_ids[0].qty_done)
+            self.assertEqual(2, pick.move_ids[1].move_line_ids[0].quantity)
             self.assertEqual(self.lot_plns_1, pick.move_ids[1].move_line_ids[0].lot_id)
 
         self.task.action_fsm_validate()
@@ -1028,14 +1028,14 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
 
         picking_out = new_pickings[0] | new_pickings[3]
         picking_step = new_pickings - picking_out
-        # ensures that the correct qty_done is set on the deliveries
+        # ensures that the correct quantity is set on the deliveries
         for pick in picking_step:
-            self.assertEqual(3, pick.move_ids[0].move_line_ids[0].qty_done)
+            self.assertEqual(3, pick.move_ids[0].move_line_ids[0].quantity)
             self.assertEqual(self.lot_plns_1, pick.move_ids[0].move_line_ids[0].lot_id)
         for pick in picking_out:
-            self.assertEqual(1, pick.move_ids[0].move_line_ids[0].qty_done)
+            self.assertEqual(1, pick.move_ids[0].move_line_ids[0].quantity)
             self.assertEqual(self.lot_plns_1, pick.move_ids[0].move_line_ids[0].lot_id)
-            self.assertEqual(2, pick.move_ids[1].move_line_ids[0].qty_done)
+            self.assertEqual(2, pick.move_ids[1].move_line_ids[0].quantity)
             self.assertEqual(self.lot_plns_1, pick.move_ids[1].move_line_ids[0].lot_id)
 
         self.task.action_fsm_validate()
@@ -1187,9 +1187,9 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
             4. Adds product to the task created at the confirmation of the so.
             5. Check that the delivery created has the correct amount of each product for each task.
             6. Mark task linked to sol 0 as done.
-            7. Check that the qty_delivered of the sol, the qty_done of the move_line of the delivery and the status of the delivery are correct.
+            7. Check that the qty_delivered of the sol, the quantity of the move_line of the delivery and the status of the delivery are correct.
             8. Mark task linked to sol 1 as done.
-            9. Check that the qty_delivered of the sol, the qty_done of the move_line of the delivery and the status of the delivery are correct.
+            9. Check that the qty_delivered of the sol, the quantity of the move_line of the delivery and the status of the delivery are correct.
         """
         # 1. create sale order
         self.task.write({'partner_id': self.partner_1.id})
@@ -1241,16 +1241,16 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         # 5. check that the delivery contains all the materials product from task_sol_0 and task_sol_1
         move_lines = sale_order.picking_ids.move_ids
         sale_order_lines = sale_order.order_line
-        self.assertEqual(2, move_lines[0].quantity_done, "quantity must be 2 as the product were added through the fsm_task")
+        self.assertEqual(2, move_lines[0].quantity, "quantity must be 2 as the product were added through the fsm_task")
         self.assertEqual(2, move_lines[0].product_uom_qty, "quantity must be 2")
         self.assertEqual(product_a, move_lines[0].product_id, "product must be product a")
-        self.assertEqual(4, move_lines[1].quantity_done, "quantity must be 4 as the product were added through the fsm_task")
+        self.assertEqual(4, move_lines[1].quantity, "quantity must be 4 as the product were added through the fsm_task")
         self.assertEqual(4, move_lines[1].product_uom_qty, "quantity must be 4")
         self.assertEqual(product_b, move_lines[1].product_id, "product must be product b")
-        self.assertEqual(1, move_lines[2].quantity_done, "quantity must be 1 as the product were added through the fsm_task")
+        self.assertEqual(1, move_lines[2].quantity, "quantity must be 1 as the product were added through the fsm_task")
         self.assertEqual(1, move_lines[2].product_uom_qty, "quantity must be 1")
         self.assertEqual(product_a, move_lines[2].product_id, "product must be product a")
-        self.assertEqual(3, move_lines[3].quantity_done, "quantity must be 3 as the product were added through the fsm_task")
+        self.assertEqual(3, move_lines[3].quantity, "quantity must be 3 as the product were added through the fsm_task")
         self.assertEqual(3, move_lines[3].product_uom_qty, "quantity must be 3")
         self.assertEqual(product_b, move_lines[3].product_id, "product must be product b")
 
@@ -1261,7 +1261,7 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         self.assertEqual(4, sale_order_lines[3].qty_delivered, "quantity delivered must be set to 4")
         self.assertEqual(0, sale_order_lines[4].qty_delivered, "quantity delivered must not change, since its task is not yet marked as done")
         self.assertEqual(0, sale_order_lines[5].qty_delivered, "quantity delivered must not change, since its task is not yet marked as done")
-        self.assertEqual('confirmed', sale_order.picking_ids[0].state, "delivery's state must be done as a backorder with the remaining qty was created")
+        self.assertEqual('assigned', sale_order.picking_ids[0].state, "delivery's state must be done as a backorder with the remaining qty was created")
 
         # 8. task 1: mark as done
         task_sol_1.with_user(self.project_user).action_fsm_validate()
@@ -1296,7 +1296,7 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         move_line = move.move_line_ids
         self.assertEqual(move.product_uom_qty, 3, 'The move quantity is 3')
         self.assertEqual(move_line.lot_id, self.lot_id3, 'Lot stay the same.')
-        self.assertEqual(move_line.qty_done, 3, 'We deliver 3')
+        self.assertEqual(move_line.quantity, 3, 'We deliver 3')
         # changes in the picking is correctly applied
         wizard_action = self.product_lot.with_context({'fsm_task_id': self.task.id}).action_assign_serial()
         wizard = self.env['fsm.stock.tracking'].browse(wizard_action['res_id'])
@@ -1327,7 +1327,7 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         new_move_line = new_move.move_line_ids
         self.assertEqual(new_move.product_uom_qty, 2, 'The move quantity is 2')
         self.assertEqual(new_move_line.lot_id, self.lot_id2, 'Lot stay the same.')
-        self.assertEqual(new_move_line.qty_done, 2, 'We deliver 2')
+        self.assertEqual(new_move_line.quantity, 2, 'We deliver 2')
         self.assertTrue(new_move.state == 'assigned', 'Move state set to assigned prior to FSM task validation')
         self.task.with_user(self.project_user).action_fsm_validate()
         # moves are validated
@@ -1433,6 +1433,7 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
             product.set_fsm_quantity(1)
         # Let's validate the picking an check that quantity decreasable gets Falsy
         self.assertEqual(len(self.task.sale_order_id.order_line), 1, 'There is 1 order line')
+        self.task.sale_order_id.order_line.move_ids.picked = True
         self.task.sale_order_id.order_line.move_ids._action_done()
         self.assertFalse(product.quantity_decreasable)
 
@@ -1528,20 +1529,20 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         so = self.task.sale_order_id
         delivery, picking = so.picking_ids
         self.assertRecordValues(picking.move_ids.move_line_ids, [
-            {'product_id': product_01_sn.id, 'lot_id': p01sn01.id, 'reserved_uom_qty': 1.0, 'qty_done': 1.0},
-            {'product_id': product_01_sn.id, 'lot_id': p01sn03.id, 'reserved_uom_qty': 1.0, 'qty_done': 1.0},
-            {'product_id': product_02_sn.id, 'lot_id': p02sn01.id, 'reserved_uom_qty': 1.0, 'qty_done': 1.0},
-            {'product_id': product_03_lot.id, 'lot_id': p03lot01.id, 'reserved_uom_qty': 3.0, 'qty_done': 3.0},
-            {'product_id': product_03_lot.id, 'lot_id': p03lot02.id, 'reserved_uom_qty': 4.0, 'qty_done': 4.0},
+            {'product_id': product_01_sn.id, 'lot_id': p01sn01.id, 'quantity': 1.0},
+            {'product_id': product_01_sn.id, 'lot_id': p01sn03.id, 'quantity': 1.0},
+            {'product_id': product_02_sn.id, 'lot_id': p02sn01.id, 'quantity': 1.0},
+            {'product_id': product_03_lot.id, 'lot_id': p03lot01.id, 'quantity': 3.0},
+            {'product_id': product_03_lot.id, 'lot_id': p03lot02.id, 'quantity': 4.0},
         ])
         picking.button_validate()
 
         self.assertRecordValues(delivery.move_ids.move_line_ids, [
-            {'product_id': product_01_sn.id, 'lot_id': p01sn01.id, 'reserved_uom_qty': 1.0, 'qty_done': 1.0},
-            {'product_id': product_01_sn.id, 'lot_id': p01sn03.id, 'reserved_uom_qty': 1.0, 'qty_done': 1.0},
-            {'product_id': product_02_sn.id, 'lot_id': p02sn01.id, 'reserved_uom_qty': 1.0, 'qty_done': 1.0},
-            {'product_id': product_03_lot.id, 'lot_id': p03lot01.id, 'reserved_uom_qty': 3.0, 'qty_done': 3.0},
-            {'product_id': product_03_lot.id, 'lot_id': p03lot02.id, 'reserved_uom_qty': 4.0, 'qty_done': 4.0},
+            {'product_id': product_01_sn.id, 'lot_id': p01sn01.id, 'quantity': 1.0},
+            {'product_id': product_01_sn.id, 'lot_id': p01sn03.id, 'quantity': 1.0},
+            {'product_id': product_02_sn.id, 'lot_id': p02sn01.id, 'quantity': 1.0},
+            {'product_id': product_03_lot.id, 'lot_id': p03lot01.id, 'quantity': 3.0},
+            {'product_id': product_03_lot.id, 'lot_id': p03lot02.id, 'quantity': 4.0},
         ])
 
     def test_mark_as_done_with_report_enable_and_multi_step(self):

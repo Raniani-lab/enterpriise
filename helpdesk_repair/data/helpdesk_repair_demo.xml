@@ -47,7 +47,7 @@ Thank you!
                 'product_id': obj().env.ref('product.product_product_27').id,
                 'lot_id': obj().env.ref('stock.lot_product_27').id,
                 'lot_name': obj().env.ref('stock.lot_product_27').name,
-                'qty_done': '1.0',
+                'quantity': '1.0',
             })],
         })]"/>
     </record>
@@ -67,8 +67,7 @@ Thank you!
                 'product_id': obj().env.ref('product.product_product_27').id,
                 'lot_id': obj().env.ref('stock.lot_product_27').id,
                 'lot_name': obj().env.ref('stock.lot_product_27').name,
-                'reserved_uom_qty': 0,
-                'qty_done': 1,
+                'quantity': 1,
                 'package_id': False,
                 'result_package_id': False,
                 'location_id': obj().env.ref('stock.stock_location_stock').id,

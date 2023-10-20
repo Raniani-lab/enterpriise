@@ -56,16 +56,17 @@ class FsmStockTracking(models.TransientModel):
                 if move.state in ['done, cancel']:
                     continue
                 for move_line in move.move_line_ids:
-                    if move_line.qty_done > 0:
+                    if move_line.quantity > 0:
                         if not move_line.lot_id:
                             move_line.lot_id = lot
                         elif move_line.lot_id != lot:
                             continue
-                        new_line_qty = max(0, move_line.qty_done + qty_done_diff)
-                        qty_done_diff += move_line.qty_done - new_line_qty
+                        new_line_qty = max(0, move_line.quantity + qty_done_diff)
+                        qty_done_diff += move_line.quantity - new_line_qty
+                        previous_qty = move_line.quantity
+                        move_line.quantity = new_line_qty
                         if deleted_line and move.warehouse_id != self.task_id.sale_order_id.warehouse_id:
-                            move.product_uom_qty -= move_line.qty_done - new_line_qty
-                        move_line.qty_done = new_line_qty
+                            move.product_uom_qty -= previous_qty - new_line_qty
                         if qty_done_diff == 0:
                             break
                 if deleted_line and move.product_uom_qty == 0 and move.warehouse_id != self.task_id.sale_order_id.warehouse_id:
@@ -83,14 +84,14 @@ class FsmStockTracking(models.TransientModel):
                 new_line_needed = True
                 for ml in move.move_line_ids:
                     if not ml.lot_id or ml.lot_id == lot:
-                        ml.qty_done += qty_added
-                        ml.lot_id = lot
+                        if ml.quantity != qty_added:
+                            ml.quantity = qty_added
                         new_line_needed = False
                         break
                 # if no ml were available, create a new one
                 if new_line_needed:
                     ml_vals = move._prepare_move_line_vals(quantity=0)
-                    ml_vals['qty_done'] = qty_added
+                    ml_vals['quantity'] = qty_added
                     ml_vals['lot_id'] = lot.id
                     ml_to_create.append(ml_vals)
         return ml_to_create
@@ -159,7 +160,7 @@ class FsmStockTracking(models.TransientModel):
                     if sol.fsm_lot_id == line.lot_id:
                         current_qty_demand = sol.product_uom_qty - sol.qty_delivered
                         if qty > current_qty_demand:
-                            self._add_qty_to_intermediate_delivery(dict_moves_per_picking, line, qty - current_qty_demand)
+                            self._add_qty_to_intermediate_delivery(dict_moves_per_picking, line, qty)
                         elif qty < current_qty_demand:
                             self._remove_qty_from_intermediate_delivery(dict_moves_per_picking, sol.fsm_lot_id, qty - current_qty_demand)
                     else:  # the sn/lot id was changed

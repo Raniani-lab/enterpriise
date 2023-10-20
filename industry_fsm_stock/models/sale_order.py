@@ -29,11 +29,11 @@ class SaleOrderLine(models.Model):
                 if move.product_uom_qty:
                     if not move.move_line_ids:
                         ml_vals = move._prepare_move_line_vals(quantity=0)
-                        ml_vals['qty_done'] = move.product_uom_qty
+                        ml_vals['quantity'] = move.product_uom_qty
                         ml_vals['lot_id'] = sol_to_treat.fsm_lot_id.id
                         ml_to_create.append(ml_vals)
                     else:
-                        qty_done_in_move_lines = sum(ml.qty_done for ml in move.move_line_ids)
+                        qty_done_in_move_lines = sum(ml.quantity for ml in move.move_line_ids)
                         qty_done_diff = move.product_uom_qty - qty_done_in_move_lines
                         if qty_done_diff == 0:
                             continue
@@ -42,15 +42,15 @@ class SaleOrderLine(models.Model):
                             if not move_line.lot_id:
                                 move_line.lot_id = sol_to_treat.fsm_lot_id
                             if move_line.lot_id == sol_to_treat.fsm_lot_id:
-                                move_line.qty_done += qty_done_diff
+                                move_line.quantity += qty_done_diff
                         else:  # qty was removed from the sale_line
                             for move_line in move.move_line_ids:
                                 if not move_line.lot_id:
                                     move_line.lot_id = sol_to_treat.fsm_lot_id
-                                if move_line.qty_done > 0 and move_line.lot_id == sol_to_treat.fsm_lot_id:
-                                    new_line_qty = max(0, move_line.qty_done + qty_done_diff)
-                                    qty_done_diff += move_line.qty_done - new_line_qty
-                                    move_line.qty_done = new_line_qty
+                                if move_line.quantity > 0 and move_line.lot_id == sol_to_treat.fsm_lot_id:
+                                    new_line_qty = max(0, move_line.quantity + qty_done_diff)
+                                    qty_done_diff += move_line.quantity - new_line_qty
+                                    move_line.quantity = new_line_qty
                                     if not move_line.lot_id:
                                         move_line.lot_id = sol_to_treat.fsm_lot_id
                                     if qty_done_diff == 0:

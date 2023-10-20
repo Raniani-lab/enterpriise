@@ -214,11 +214,11 @@ class TestQualityCheck(TestQualityCommon):
         # Create move line without qty_done and setting it after
         move_line_vals = move._prepare_move_line_vals()
         move_line = self.env['stock.move.line'].create(move_line_vals)
-        move_line.qty_done = 1.
+        move_line.quantity = 1.
         self.assertTrue(len(move.move_line_ids.check_ids) == 22, "Wrong number of Quality Checks created on the move lines")
 
         # Updating quantity of one move line
-        move.move_line_ids[0].qty_done = 2
+        move.move_line_ids[0].quantity = 2
         check_line1 = move.move_line_ids[0].check_ids[0]
         check_line2 = move.move_line_ids[1].check_ids[0]
 
@@ -239,7 +239,7 @@ class TestQualityCheck(TestQualityCommon):
             'name': product.name,
             'product_id': product.id,
             'product_uom_qty': 1,
-            'quantity_done': 1,
+            'quantity': 1,
             'product_uom': product.uom_id.id,
             'picking_id': self.picking_in.id,
             'location_id': self.location_id,
@@ -252,13 +252,13 @@ class TestQualityCheck(TestQualityCommon):
             'name': product.name,
             'product_id': product.id,
             'product_uom_qty': 1,
-            'quantity_done': 0,
+            'quantity': 0,
             'product_uom': product.uom_id.id,
             'picking_id': self.picking_in.id,
             'location_id': self.location_id,
             'location_dest_id': self.location_dest_id
         })
-        move_without_tracking2.quantity_done = 1
+        move_without_tracking2.quantity = 1
         self.assertTrue(len(move_without_tracking2.move_line_ids.check_ids) == 2, "Wrong number of Quality Checks created on the move lines")
 
     def test_04_picking_quality_check_creation_no_products_no_categories(self):
@@ -528,8 +528,8 @@ class TestQualityCheck(TestQualityCommon):
         })
         # Confirm incoming shipment.
         self.picking_in.action_confirm()
-        for line in self.picking_in.move_line_ids:
-            line.qty_done = line.reserved_qty
+        self.picking_in.move_ids.picked = True
+
         # Check that Quality Check for incoming shipment have been created for all the good move lines
         self.assertEqual(len(self.picking_in.check_ids), 3)
         self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product.id)), 1)
@@ -608,7 +608,7 @@ class TestQualityCheck(TestQualityCommon):
             'location_dest_id': warehouse.wh_input_stock_loc_id.id,
         } for product in (p01, p02)])
         receipt.action_confirm()
-        receipt.move_ids.quantity_done = 1
+        receipt.move_ids.quantity = 1
         receipt.button_validate()
 
         internal_transfer = self.env['stock.picking'].search(
@@ -632,7 +632,7 @@ class TestQualityCheck(TestQualityCommon):
             'location_dest_id': warehouse.wh_input_stock_loc_id.id,
         })
         receipt.action_confirm()
-        receipt.move_ids.quantity_done = 1
+        receipt.move_ids.quantity = 1
         receipt.button_validate()
 
         self.assertRecordValues(internal_transfer.move_ids, [
@@ -670,7 +670,7 @@ class TestQualityCheck(TestQualityCommon):
         ml = move.move_line_ids
 
         ml.write({
-            'qty_done': 1,
+            'quantity': 1,
             'lot_name': '1457',
         })
         self.assertEqual(ml.check_ids.lot_name, '1457')
@@ -710,13 +710,13 @@ class TestQualityCheck(TestQualityCommon):
         })
         picking.action_confirm()
 
-        move.quantity_done = 1.0
+        move.quantity = 1.0
         self.assertEqual(picking.check_ids.qty_line, 1)
 
-        move.quantity_done = 0.0
+        move.quantity = 0.0
         self.assertEqual(picking.check_ids.qty_line, 0)
 
-        move.quantity_done = 2.0
+        move.quantity = 2.0
         self.assertEqual(picking.check_ids.qty_line, 2)
 
     def test_quality_check_with_backorder(self):
@@ -749,7 +749,7 @@ class TestQualityCheck(TestQualityCommon):
             'location_dest_id': self.location_dest_id,
         })
         picking.action_confirm()
-        move.quantity_done = 1.0
+        move.quantity = 1.0
         # 'Pass' Quality Checks of shipment.
         picking.check_ids.do_pass()
         # Validate the picking and create a backorder
@@ -764,7 +764,7 @@ class TestQualityCheck(TestQualityCommon):
         # 'Pass' Quality Checks of backorder.
         backorder.check_ids.do_pass()
         # Validate the backorder
-        backorder.move_ids.quantity_done = 1.0
+        backorder.move_ids.quantity = 1.0
         backorder.with_user(user).button_validate()
         self.assertEqual(backorder.state, 'done')
 
@@ -809,7 +809,6 @@ class TestQualityCheck(TestQualityCommon):
             }
         ])
         receipt.action_confirm()
-        receipt.action_set_quantities_to_reservation()
         self.assertEqual(len(receipt.check_ids), 2)
         # open the wizard to do the checks
         action = receipt.check_ids.action_open_quality_check_wizard()

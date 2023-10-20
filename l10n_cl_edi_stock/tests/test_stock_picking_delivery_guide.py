@@ -31,7 +31,7 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
             'product_id': self.product_with_taxes_a.id,
             'product_uom': self.product_with_taxes_a.uom_id.id,
             'product_uom_qty': 10.00,
-            'quantity_done': 10.00,
+            'quantity': 10.00,
             'procure_method': 'make_to_stock',
             'picking_id': picking.id,
             'location_id': self.stock_location,
@@ -43,7 +43,7 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
             'product_id': self.product_with_taxes_b.id,
             'product_uom': self.product_with_taxes_b.uom_id.id,
             'product_uom_qty': 1,
-            'quantity_done': 1,
+            'quantity': 1,
             'procure_method': 'make_to_stock',
             'picking_id': picking.id,
             'location_id': self.stock_location,
@@ -96,8 +96,8 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
 
         picking = sale_order.picking_ids[0]
         picking.action_assign()
-        picking.move_ids[0].write({'quantity_done': 10})
-        picking.move_ids[1].write({'quantity_done': 1})
+        picking.move_ids[0].write({'quantity': 10})
+        picking.move_ids[1].write({'quantity': 1})
         picking.button_validate()
 
         picking.create_delivery_guide()
@@ -146,8 +146,8 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
 
         picking = sale_order.picking_ids[0]
         picking.action_assign()
-        picking.move_ids[0].write({'quantity_done': 5})
-        picking.move_ids[1].write({'quantity_done': 10})
+        picking.move_ids[0].write({'quantity': 5})
+        picking.move_ids[1].write({'quantity': 10})
         picking.button_validate()
 
         picking.create_delivery_guide()
@@ -191,7 +191,7 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
 
         picking = sale_order.picking_ids[0]
         picking.action_assign()
-        picking.move_ids[0].write({'quantity_done': 3})
+        picking.move_ids[0].write({'quantity': 3})
         picking.button_validate()
 
         picking.create_delivery_guide()

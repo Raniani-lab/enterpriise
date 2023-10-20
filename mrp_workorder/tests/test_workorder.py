@@ -231,15 +231,15 @@ class TestWorkOrder(TestMrpWorkorderCommon):
         wo.button_start()
         wo.finished_lot_id = self.sp1
         self.assertEqual(wo.move_raw_ids.move_line_ids[0].lot_id, self.mc1, 'The suggested lot is wrong')
-        wo.move_raw_ids.move_line_ids[0].qty_done = 1
+        wo.move_raw_ids.move_line_ids[0].quantity = 1
         wo.do_finish()
 
         wo = sorted_workorder_ids[1]
         wo.button_start()
         self.assertEqual(wo.finished_lot_id, self.sp1, 'The suggested final product is wrong')
         self.assertEqual(wo.move_raw_ids.move_line_ids[0].lot_id, self.elon1, 'The suggested lot is wrong')
-        wo.move_raw_ids.move_line_ids[0].qty_done = 1
-        wo.move_raw_ids.move_line_ids[0].copy({'lot_id': self.elon2.id, 'qty_done': 1})
+        wo.move_raw_ids.move_line_ids[0].quantity = 1
+        wo.move_raw_ids.move_line_ids[0].copy({'lot_id': self.elon2.id, 'quantity': 1})
         wo.do_finish()
 
         wo = sorted_workorder_ids[2]
@@ -247,13 +247,14 @@ class TestWorkOrder(TestMrpWorkorderCommon):
         self.assertEqual(wo.finished_lot_id, self.sp1, 'The suggested final product is wrong')
         wo.do_finish()
 
+        mo.move_raw_ids.filtered(lambda m: not m.operation_id).picked = True
         mo.button_mark_done()
         move_1 = mo.move_raw_ids.filtered(lambda move: move.product_id == self.metal_cylinder and move.state == 'done')
-        self.assertEqual(sum(move_1.mapped('quantity_done')), 1, 'Only one cylinder was consumed')
+        self.assertEqual(sum(move_1.mapped('quantity')), 1, 'Only one cylinder was consumed')
         move_2 = mo.move_raw_ids.filtered(lambda move: move.product_id == self.elon_musk and move.state == 'done')
-        self.assertEqual(sum(move_2.mapped('quantity_done')), 2, '2 Elon Musk was consumed')
+        self.assertEqual(sum(move_2.mapped('quantity')), 2, '2 Elon Musk was consumed')
         move_3 = mo.move_raw_ids.filtered(lambda move: move.product_id == self.trapped_child and move.state == 'done')
-        self.assertEqual(sum(move_3.mapped('quantity_done')), 12, '12 child was consumed')
+        self.assertEqual(sum(move_3.mapped('quantity')), 12, '12 child was consumed')
         self.assertEqual(mo.state, 'done', 'Final state of the MO should be "done"')
 
     def test_workorder_1(self):
@@ -293,7 +294,6 @@ class TestWorkOrder(TestMrpWorkorderCommon):
 
         production.picking_ids.action_assign()
         production.picking_ids.move_line_ids.lot_id = self.elon2
-        production.picking_ids.move_line_ids.qty_done = 1
         production.picking_ids.button_validate()
 
         wo = production.workorder_ids
@@ -441,7 +441,7 @@ class TestWorkOrder(TestMrpWorkorderCommon):
         mo.action_confirm()
         mo.action_assign()
 
-        self.assertEqual(mo.move_raw_ids.move_line_ids.reserved_uom_qty, 3)
+        self.assertEqual(mo.move_raw_ids.move_line_ids.quantity, 3)
         self.assertEqual(mo.move_raw_ids.move_line_ids.location_id, location)
 
         with Form(mo) as mo_form:
@@ -452,21 +452,21 @@ class TestWorkOrder(TestMrpWorkorderCommon):
         backorder_form.save().action_backorder()
         backorder = mo.procurement_group_id.mrp_production_ids[1]
 
-        self.assertEqual(mo.move_raw_ids.move_line_ids.qty_done, 1)
+        self.assertEqual(mo.move_raw_ids.move_line_ids.quantity, 1)
         self.assertEqual(mo.move_raw_ids.move_line_ids.location_id, location)
-        self.assertEqual(backorder.move_raw_ids.move_line_ids.reserved_uom_qty, 2)
+        self.assertEqual(backorder.move_raw_ids.move_line_ids.quantity, 2)
         self.assertEqual(backorder.move_raw_ids.move_line_ids.location_id, location)
 
         with Form(backorder) as bo_form:
             bo_form.qty_producing = 2
-        self.assertEqual(backorder.move_raw_ids.move_line_ids.qty_done, 2)
+        self.assertEqual(backorder.move_raw_ids.move_line_ids.quantity, 2)
         self.assertEqual(backorder.move_raw_ids.move_line_ids.location_id, location)
 
         backorder.button_mark_done()
 
         self.assertEqual(backorder.state, 'done')
         self.assertEqual(backorder.move_raw_ids.state, 'done')
-        self.assertEqual(backorder.move_raw_ids.move_line_ids.qty_done, 2)
+        self.assertEqual(backorder.move_raw_ids.move_line_ids.quantity, 2)
         self.assertEqual(backorder.move_raw_ids.move_line_ids.location_id, location)
 
     def test_split_mo_finished_wo_transition(self):

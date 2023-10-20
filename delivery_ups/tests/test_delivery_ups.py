@@ -80,7 +80,8 @@ class TestDeliveryUPS(TransactionCase):
         picking = sale_order.picking_ids[0]
         self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
-        picking.move_ids[0].quantity_done = 1.0
+        picking.move_ids[0].quantity = 1.0
+        picking.move_ids[0].picked = True
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
         picking._action_done()
@@ -137,10 +138,12 @@ class TestDeliveryUPS(TransactionCase):
         self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
         move0 = picking.move_ids[0]
-        move0.quantity_done = 1.0
+        move0.quantity = 1.0
+        move0.picked = True
         self.wiz_put_in_pack(picking)
         move1 = picking.move_ids[1]
-        move1.quantity_done = 1.0
+        move1.quantity = 1.0
+        move1.picked = True
         self.wiz_put_in_pack(picking)
         self.assertEqual(len(picking.move_line_ids.mapped('result_package_id')), 2, "2 packages should have been created at this point")
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
@@ -177,8 +180,6 @@ class TestDeliveryUPS(TransactionCase):
                     'location_id': self.stock_location.id,
                     'location_dest_id': self.customer_location.id,
                     'picking_type_id': self.env.ref('stock.picking_type_out').id,
-                    'state': 'draft',
-                    'immediate_transfer': False,
                     'move_ids_without_package': [(0, None, order1_vals)]}
 
         delivery_order = StockPicking.create(do_vals)
@@ -186,7 +187,7 @@ class TestDeliveryUPS(TransactionCase):
 
         delivery_order.action_confirm()
         self.assertEqual(delivery_order.state, 'assigned', 'Shipment state should be ready(assigned).')
-        delivery_order.move_ids_without_package.quantity_done = 1.0
+        delivery_order.move_ids_without_package.quantity = 1.0
 
         delivery_order.button_validate()
         self.assertEqual(delivery_order.state, 'done', 'Shipment state should be done.')
@@ -204,8 +205,9 @@ class TestDeliveryUPS(TransactionCase):
         """
         def process_picking(picking):
             action = picking.button_validate()
-            wizard = Form(self.env[action['res_model']].with_context(action['context']))
-            wizard.save().process()
+            if action is not True:
+                wizard = Form(self.env[action['res_model']].with_context(action['context']))
+                wizard.save().process()
 
         warehouse = self.env.user._get_default_warehouse_id()
         warehouse.delivery_steps = 'pick_ship'
@@ -244,14 +246,14 @@ class TestDeliveryUPS(TransactionCase):
         out01 = so.picking_ids - pick01
 
         # First step with 2 x Product A
-        pick01.move_ids.filtered(lambda m: m.product_id == product_a).quantity_done = 2
+        pick01.move_ids.filtered(lambda m: m.product_id == product_a).write({'quantity': 2, 'picked': True})
         process_picking(pick01)
         # First step with 2 x Product B
         pick02 = pick01.backorder_ids
         process_picking(pick02)
 
         # Second step with 1 x Product A
-        out01.move_ids.filtered(lambda m: m.product_id == product_a).quantity_done = 1
+        out01.move_ids.filtered(lambda m: m.product_id == product_a).write({'quantity': 1, 'picked': True})
         process_picking(out01)
         out02 = out01.backorder_ids
         self.assertTrue(out01.carrier_tracking_ref)

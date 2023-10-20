@@ -323,16 +323,16 @@ class TestRentalPicking(TestRentalCommon):
         outgoing_picking = rental_order_1.picking_ids.filtered(lambda p: p.picking_type_code == 'outgoing')
         incoming_picking = rental_order_1.picking_ids.filtered(lambda p: p.picking_type_code == 'incoming')
 
-        outgoing_picking.move_ids.quantity_done = 2
+        outgoing_picking.move_ids.quantity = 2
         backorder_wizard_dict = outgoing_picking.button_validate()
         backorder_wizard = Form(self.env[backorder_wizard_dict['res_model']].with_context(backorder_wizard_dict['context'])).save()
         backorder_wizard.process()
         self.assertEqual(rental_order_1.order_line.qty_delivered, 2)
         self.assertEqual(rental_order_1.rental_status, 'pickup')
         self.assertEqual(len(rental_order_1.picking_ids), 3)
-        self.assertEqual(incoming_picking.move_ids.reserved_availability, 2)
+        self.assertEqual(incoming_picking.move_ids.quantity, 2)
 
-        incoming_picking.move_ids.quantity_done = 1
+        incoming_picking.move_ids.quantity = 1
         backorder_wizard_dict = incoming_picking.button_validate()
         backorder_wizard = Form(self.env[backorder_wizard_dict['res_model']].with_context(backorder_wizard_dict['context'])).save()
         backorder_wizard.process()
@@ -344,21 +344,21 @@ class TestRentalPicking(TestRentalCommon):
         incoming_picking_2 = rental_order_1.picking_ids.filtered(lambda p: p.picking_type_code == 'incoming' and p.state == 'assigned')
         self.assertEqual(outgoing_picking_2.scheduled_date.date(), rental_order_1.rental_start_date.date())
         self.assertEqual(incoming_picking_2.scheduled_date.date(), rental_order_1.rental_return_date.date())
-        self.assertEqual(outgoing_picking_2.move_ids.reserved_availability, 1)
-        self.assertEqual(incoming_picking_2.move_ids.reserved_availability, 1)
+        self.assertEqual(outgoing_picking_2.move_ids.quantity, 1)
+        self.assertEqual(incoming_picking_2.move_ids.quantity, 1)
 
         rental_order_1.order_line.write({'product_uom_qty': 5})
         self.assertEqual(outgoing_picking_2.move_ids.product_uom_qty, 3)
         self.assertEqual(incoming_picking_2.move_ids.product_uom_qty, 4)
 
-        outgoing_picking_2.move_ids.quantity_done = 1
+        outgoing_picking_2.move_ids.quantity = 1
         backorder_wizard_dict = outgoing_picking_2.button_validate()
         backorder_wizard = Form(self.env[backorder_wizard_dict['res_model']].with_context(backorder_wizard_dict['context'])).save()
         backorder_wizard.process()
         self.assertEqual(rental_order_1.order_line.qty_delivered, 3)
         self.assertEqual(rental_order_1.rental_status, 'pickup')
         self.assertEqual(len(rental_order_1.picking_ids), 5)
-        self.assertEqual(incoming_picking_2.move_ids.reserved_availability, 2)
+        self.assertEqual(incoming_picking_2.move_ids.quantity, 2)
 
         rental_order_1.order_line.write({'product_uom_qty': 4})
         outgoing_picking_3 = rental_order_1.picking_ids.filtered(lambda p: p.picking_type_code == 'outgoing' and p.state == 'assigned')
@@ -366,13 +366,11 @@ class TestRentalPicking(TestRentalCommon):
         self.assertEqual(outgoing_picking_3.move_ids.product_uom_qty, 1)
         self.assertEqual(incoming_picking_2.move_ids.product_uom_qty, 3)
 
-        outgoing_picking_3.action_set_quantities_to_reservation()
         outgoing_picking_3.button_validate()
-        self.assertEqual(incoming_picking_2.move_ids.reserved_availability, 3)
+        self.assertEqual(incoming_picking_2.move_ids.quantity, 3)
         self.assertEqual(rental_order_1.order_line.qty_delivered, 4)
         self.assertEqual(rental_order_1.rental_status, 'return')
 
-        incoming_picking_2.action_set_quantities_to_reservation()
         incoming_picking_2.button_validate()
         self.assertEqual(rental_order_1.order_line.qty_returned, 4)
         self.assertEqual(rental_order_1.rental_status, 'returned')
@@ -398,7 +396,6 @@ class TestRentalPicking(TestRentalCommon):
 
         pick_picking = rental_order_1.picking_ids.filtered(lambda p: p.state == 'assigned')
         self.assertEqual(pick_picking.location_dest_id, self.warehouse_id.wh_pack_stock_loc_id)
-        pick_picking.action_set_quantities_to_reservation()
         pick_picking.button_validate()
         rental_order_1.order_line.write({'product_uom_qty': 1})
         self.assertEqual(len(rental_order_1.picking_ids), 7)
@@ -409,34 +406,28 @@ class TestRentalPicking(TestRentalCommon):
         self.assertEqual(return_pick_picking.state, 'waiting')
         self.assertEqual(all_other_pickings.move_ids.mapped('product_uom_qty'), [1.0, 1.0, 1.0, 1.0, 1.0])
         return_pick_picking.action_assign()
-        return_pick_picking.action_set_quantities_to_reservation()
         return_pick_picking.button_validate()
 
         pack_picking = rental_order_1.picking_ids.filtered(lambda p: p.state == 'assigned')
         self.assertEqual(pack_picking.location_dest_id, self.warehouse_id.wh_output_stock_loc_id)
-        pack_picking.action_set_quantities_to_reservation()
         pack_picking.button_validate()
 
         out_picking = rental_order_1.picking_ids.filtered(lambda p: p.state == 'assigned')
         self.assertEqual(out_picking.location_dest_id, self.env.company.rental_loc_id)
-        out_picking.action_set_quantities_to_reservation()
         out_picking.button_validate()
         self.assertEqual(rental_order_1.order_line.qty_delivered, 1)
 
         incoming_picking = rental_order_1.picking_ids.filtered(lambda p: p.state == 'assigned')
         self.assertEqual(incoming_picking.location_dest_id, self.warehouse_id.wh_input_stock_loc_id)
-        incoming_picking.action_set_quantities_to_reservation()
         incoming_picking.button_validate()
         self.assertEqual(rental_order_1.order_line.qty_returned, 1)
 
         qc_picking = rental_order_1.picking_ids.filtered(lambda p: p.state == 'assigned')
         self.assertEqual(qc_picking.location_dest_id, self.warehouse_id.wh_qc_stock_loc_id)
-        qc_picking.action_set_quantities_to_reservation()
         qc_picking.button_validate()
 
         final_picking = rental_order_1.picking_ids.filtered(lambda p: p.state == 'assigned')
         self.assertEqual(final_picking.location_dest_id, self.warehouse_id.lot_stock_id)
-        final_picking.action_set_quantities_to_reservation()
         final_picking.button_validate()
 
     def test_flow_serial(self):
@@ -450,9 +441,8 @@ class TestRentalPicking(TestRentalCommon):
 
         outgoing_picking = rental_order_1.picking_ids.filtered(lambda p: p.state == 'assigned')
         self.assertEqual(len(outgoing_picking.move_ids.move_line_ids), 2)
-        self.assertEqual(outgoing_picking.move_ids.move_line_ids.lot_id, self.lot_id3+self.lot_id2)
+        self.assertEqual(outgoing_picking.move_ids.move_line_ids.lot_id, self.lot_id3 + self.lot_id2)
 
-        outgoing_picking.action_set_quantities_to_reservation()
         outgoing_picking.button_validate()
         self.assertEqual(rental_order_1.order_line.qty_delivered, 2)
         self.assertEqual(self.lot_id2.quant_ids.filtered(lambda q: q.quantity == 1).location_id, self.env.company.rental_loc_id)
@@ -460,9 +450,8 @@ class TestRentalPicking(TestRentalCommon):
 
         incoming_picking = rental_order_1.picking_ids.filtered(lambda p: p.state == 'assigned')
         self.assertEqual(len(incoming_picking.move_ids.move_line_ids), 2)
-        self.assertEqual(incoming_picking.move_ids.move_line_ids.lot_id, self.lot_id3+self.lot_id2)
+        self.assertEqual(incoming_picking.move_ids.move_line_ids.lot_id, self.lot_id3 + self.lot_id2)
 
-        incoming_picking.action_set_quantities_to_reservation()
         incoming_picking.button_validate()
         self.assertEqual(rental_order_1.order_line.qty_returned, 2)
         self.assertEqual(self.lot_id2.quant_ids.filtered(lambda q: q.quantity == 1).location_id, self.warehouse_id.lot_stock_id)
@@ -477,12 +466,10 @@ class TestRentalPicking(TestRentalCommon):
 
         outgoing_picking = rental_order_1.picking_ids.filtered(lambda p: p.state == 'assigned')
         self.assertEqual(outgoing_picking.scheduled_date.date(), rental_order_1.rental_start_date.date())
-        outgoing_picking.action_set_quantities_to_reservation()
         outgoing_picking.button_validate()
 
         incoming_picking = rental_order_1.picking_ids.filtered(lambda p: p.state == 'assigned')
         self.assertEqual(incoming_picking.scheduled_date.date(), rental_order_1.rental_return_date.date())
-        incoming_picking.action_set_quantities_to_reservation()
         incoming_picking.button_validate()
 
         self.assertEqual(len(rental_order_1.order_line), 2)
@@ -504,7 +491,6 @@ class TestRentalPicking(TestRentalCommon):
         self.assertEqual(action_open_return.get('xml_id'), 'stock.action_picking_tree_all')
 
         ready_picking = rental_order_1.picking_ids.filtered(lambda p: p.state == 'assigned')
-        ready_picking.action_set_quantities_to_reservation()
         ready_picking.button_validate()
         self.assertEqual(rental_order_1.rental_status, 'return')
 

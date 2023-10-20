@@ -56,7 +56,6 @@ registry.category("web_tour.tours").add('test_planned_receipt_kit_from_scratch_w
         trigger: '.o_barcode_client_action',
         run: 'scan kit_lot',
     },
-    stepUtils.confirmAddingUnreservedProduct(),
     {
         trigger: '.o_barcode_line:contains("Kit Lot") .o_edit',
     },
@@ -73,7 +72,6 @@ registry.category("web_tour.tours").add('test_planned_receipt_kit_from_scratch_w
         trigger: '.o_barcode_line:contains("Kit Lot") .qty-done:contains("3")',
         run: 'scan simple_kit',
     },
-    stepUtils.confirmAddingUnreservedProduct(),
     {
         extra_trigger: '.o_barcode_line:contains("Simple Kit")',
         trigger: '.btn.o_validate_page',

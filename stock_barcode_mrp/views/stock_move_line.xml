@@ -4,7 +4,7 @@
         <field name="model">stock.move.line</field>
         <field name="inherit_id" ref="stock_barcode.stock_move_line_product_selector"/>
         <field name="arch" type="xml">
-            <field name="is_completed" position="after">
+            <field name="picked" position="after">
                 <field name="manual_consumption" force_save="1" invisible="1"/>
                 <field name="production_id" invisible="1"/>
             </field>
@@ -24,7 +24,7 @@
                 <attribute name="invisible">(context.get('newByProduct')) or (picking_code == 'mrp_operation')</attribute>
             </xpath>
             <xpath expr="//widget[@name='stock_barcode_unlink_button']" position="attributes">
-                <attribute name="invisible">context.get('newByProduct') or reserved_uom_qty != 0</attribute>
+                <attribute name="invisible">context.get('newByProduct') or context.get('hide_unlink_button')</attribute>
             </xpath>
         </field>
     </record>

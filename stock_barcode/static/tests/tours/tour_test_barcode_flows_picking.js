@@ -788,12 +788,6 @@ registry.category("web_tour.tours").add("test_delivery_reserved_4_backorder", { 
             helper.assertLineQty(1, "0 / 2"); // 4 demand but only 2 reserved.
         }
     },
-    // Tries to validate immediatly -> Should open the immediate transfer wizard.
-    { trigger: ".o_validate_page" },
-    {
-        extra_trigger: ".modal-header h4:contains('Immediate Transfer?')",
-        trigger: "button.btn-secondary[special='cancel']", // Closes the wizard.
-    },
     // Scans product1 then tries to validate again -> Should display the backorder dialog.
     { trigger: ".o_barcode_client_action", run: "scan product1" },
     {

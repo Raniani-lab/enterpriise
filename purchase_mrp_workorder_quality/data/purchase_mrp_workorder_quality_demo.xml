@@ -22,7 +22,7 @@
             <value model="stock.move" eval="obj().search([('purchase_line_id', '=', obj().env.ref('purchase_mrp_workorder_quality.purchase_order_line_1').id)]).move_line_ids.filtered(lambda line: not line.lot_name).id"/>
             <value eval="{
                 'lot_name': '0000000000001',
-                'qty_done': 1,
+                'quantity': 1,
                 }"/>
         </function>
 
@@ -61,7 +61,7 @@
             <value model="stock.move" eval="obj().search([('purchase_line_id', '=', obj().env.ref('purchase_mrp_workorder_quality.purchase_order_line_2').id)]).move_line_ids.filtered(lambda line: not line.lot_name).id"/>
             <value eval="{
                 'lot_name': '0000000000002',
-                'qty_done': 4,
+                'quantity': 4,
             }"/>
         </function>
 

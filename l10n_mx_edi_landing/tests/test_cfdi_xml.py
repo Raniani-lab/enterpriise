@@ -58,7 +58,7 @@ class TestEdiResults(TestMxExtendedEdiCommon, ValuationReconciliationTestCommon)
 
             purchase.button_confirm()
             picking_purchase = purchase.picking_ids
-            picking_purchase.move_line_ids.write({'qty_done': 2})
+            picking_purchase.move_line_ids.write({'quantity': 2})
             picking_purchase.button_validate()
 
             landing_cost = self.env['stock.landed.cost'].create({
@@ -94,7 +94,7 @@ class TestEdiResults(TestMxExtendedEdiCommon, ValuationReconciliationTestCommon)
 
             # Generate two moves for procurement by partial delivery
             picking_sale.action_assign()
-            picking_sale.move_line_ids.write({'qty_done': 1})
+            picking_sale.move_line_ids.write({'quantity': 1})
             res_dict = picking_sale.button_validate()
             self.env[res_dict['res_model']]\
                 .with_context(res_dict['context'])\
@@ -102,7 +102,7 @@ class TestEdiResults(TestMxExtendedEdiCommon, ValuationReconciliationTestCommon)
                 .process()
 
             picking_backorder = sale.picking_ids.filtered(lambda r: r.state == 'assigned')
-            picking_backorder.move_line_ids.write({'qty_done': 1})
+            picking_backorder.move_line_ids.write({'quantity': 1})
             picking_backorder.button_validate()
 
             invoice = sale._create_invoices()

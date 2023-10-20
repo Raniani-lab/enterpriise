@@ -22,8 +22,7 @@ class StockMove(models.Model):
 
         already_used_by_lots = defaultdict(float)
         for ml in self.move_dest_ids.move_orig_ids.move_line_ids:
-            f_name = 'qty_done' if ml.state == 'done' else 'reserved_uom_qty'
-            qty = ml[f_name]
+            qty = ml.quantity
             qty = ml.product_uom_id._compute_quantity(qty, ml.product_id.uom_id)
             already_used_by_lots[ml.lot_id] += qty
 
@@ -44,11 +43,3 @@ class StockMove(models.Model):
 
         reserved += super()._update_reserved_quantity(need, location_id, quant_ids=quant_ids, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=strict)
         return reserved
-
-    def _add_serial_move_line_to_vals_list(self, reserved_quant, quantity):
-        if self.sale_line_id.fsm_lot_id:
-            for line in self.move_line_ids:
-                if line.lot_id == self.sale_line_id.fsm_lot_id and line.qty_done == 1 and line.reserved_uom_qty == 0:
-                    line.reserved_uom_qty = 1
-                    return False
-        return super()._add_serial_move_line_to_vals_list(reserved_quant, quantity)

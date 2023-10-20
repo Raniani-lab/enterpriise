@@ -986,8 +986,13 @@ export default class BarcodePickingModel extends BarcodeModel {
 
         if (this.reloadingMoveLines) {
             if (prevLine) {
-                // The reservation of this line is already known.
-                smlData.reserved_uom_qty = prevLine.reserved_uom_qty;
+                if (smlData.quantity && !smlData.qty_done) {
+                    // The reservation likely changed.
+                    smlData.reserved_uom_qty = smlData.quantity;
+                } else {
+                    // The reservation of this line is already known.
+                    smlData.reserved_uom_qty = prevLine.reserved_uom_qty;
+                }
             } else {
                 // This line was created in the Barcode App, so it has no reservation.
                 smlData.qty_done = smlData.quantity;

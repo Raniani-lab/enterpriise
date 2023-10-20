@@ -319,17 +319,17 @@ class BpostRequest():
             weight_in_kg = carrier._bpost_convert_weight(package.shipping_weight)
             boxes.append({
                 'weight': str(_grams(weight_in_kg)),
-                'parcelValue': max(min(int(parcel_value*100), 2500000), 100),
-                'contentDescription': ' '.join(["%d %s" % (line.qty_done, re.sub('[\W_]+', ' ', line.product_id.name or '')) for line in package_lines])[:50],
+                'parcelValue': max(min(int(parcel_value * 100), 2500000), 100),
+                'contentDescription': ' '.join(["%d %s" % (line.quantity, re.sub(r'[\W_]+', ' ', line.product_id.name or '')) for line in package_lines])[:50],
             })
         lines_without_package = picking.move_line_ids.filtered(lambda sml: not sml.result_package_id)
         if lines_without_package:
             parcel_value = sum(sml.sale_price for sml in lines_without_package)
-            weight_in_kg = carrier._bpost_convert_weight(sum(sml.qty_done * sml.product_id.weight for sml in lines_without_package))
+            weight_in_kg = carrier._bpost_convert_weight(sum(sml.quantity * sml.product_id.weight for sml in lines_without_package))
             boxes.append({
                 'weight': str(_grams(weight_in_kg)),
-                'parcelValue': max(min(int(parcel_value*100), 2500000), 100),
-                'contentDescription': ' '.join(["%d %s" % (line.qty_done, re.sub('[\W_]+', ' ', line.product_id.name or '')) for line in lines_without_package])[:50],
+                'parcelValue': max(min(int(parcel_value * 100), 2500000), 100),
+                'contentDescription': ' '.join(["%d %s" % (line.quantity, re.sub(r'[\W_]+', ' ', line.product_id.name or '')) for line in lines_without_package])[:50],
             })
         return boxes
 
@@ -339,7 +339,7 @@ class BpostRequest():
         parcel_value = sum(move.product_qty * move.product_id.lst_price for move in picking.move_ids)
         boxes = [{
             'weight': str(_grams(weight_in_kg)),
-            'parcelValue': max(min(int(parcel_value*100), 2500000), 100),
+            'parcelValue': max(min(int(parcel_value * 100), 2500000), 100),
             'contentDescription': ' '.join(["%d %s" % (line.product_qty, re.sub(r'[\W_]+', ' ', line.product_id.name or '')) for line in picking.move_ids])[:50],
         }]
         return boxes

@@ -468,6 +468,7 @@ class MrpProductionWorkcenterLine(models.Model):
                     lambda p: index < len(p.workorder_ids) and p.workorder_ids[index].state not in ('cancel', 'done')
                 )[:1]
 
+        self.move_raw_ids.picked = True
         self.button_finish()
 
         if backorder:
@@ -500,7 +501,7 @@ class MrpProductionWorkcenterLine(models.Model):
         if move_line_id:
             vals.update({
                 'move_line_id': move_line_id.id,
-                'qty_done': move_line_id.reserved_uom_qty or 1.0
+                'qty_done': move_line_id.quantity or 1.0
             })
             if move.picking_type_id.prefill_lot_tablet:
                 vals['lot_id'] = move_line_id.lot_id.id

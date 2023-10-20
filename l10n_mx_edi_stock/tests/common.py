@@ -92,7 +92,6 @@ class TestMXEdiStockCommon(TestMxEdiCommon):
             'l10n_mx_edi_vehicle_id': self.vehicle_pedro.id,
             'l10n_mx_edi_distance': 120,
             'state': 'draft',
-            'immediate_transfer': False,
         })
         self.env['stock.move'].create({
             'name': self.product_c.name,
@@ -109,8 +108,10 @@ class TestMXEdiStockCommon(TestMxEdiCommon):
         })
 
         self.env['stock.quant']._update_available_quantity(self.product_c, warehouse.lot_stock_id, 10.0)
+        picking.action_confirm()
         picking.action_assign()
-        picking.move_ids[0].move_line_ids[0].qty_done = 10
+        picking.move_ids[0].move_line_ids[0].quantity = 10
+        picking.move_ids[0].picked = True
         picking._action_done()
         return picking
 

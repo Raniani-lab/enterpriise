@@ -92,7 +92,8 @@ class TestDeliveryUSPS(TransactionCase):
         picking = sale_order.picking_ids[0]
         self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
-        picking.move_ids[0].quantity_done = 1.0
+        picking.move_ids[0].quantity = 1.0
+        picking.move_ids[0].picked = True
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
         picking._action_done()
@@ -140,7 +141,8 @@ class TestDeliveryUSPS(TransactionCase):
         picking = sale_order.picking_ids[0]
         self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
-        picking.move_ids[0].quantity_done = 1.0
+        picking.move_ids[0].quantity = 1.0
+        picking.move_ids[0].picked = True
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
         picking._action_done()
@@ -187,7 +189,8 @@ class TestDeliveryUSPS(TransactionCase):
         picking = sale_order.picking_ids[0]
         self.assertEqual(picking.carrier_id.id, sale_order.carrier_id.id, "Carrier is not the same on Picking and on SO.")
 
-        picking.move_ids[0].quantity_done = 1.0
+        picking.move_ids[0].quantity = 1.0
+        picking.move_ids[0].picked = True
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
         picking._action_done()
@@ -215,7 +218,6 @@ class TestDeliveryUSPS(TransactionCase):
                     'location_dest_id': self.customer_location.id,
                     'picking_type_id': self.env.ref('stock.picking_type_out').id,
                     'state': 'draft',
-                    'immediate_transfer': False,
                     'move_ids_without_package': [(0, None, order1_vals)]}
 
         delivery_order = StockPicking.create(do_vals)
@@ -223,7 +225,7 @@ class TestDeliveryUSPS(TransactionCase):
 
         delivery_order.action_confirm()
         self.assertEqual(delivery_order.state, 'assigned', 'Shipment state should be ready(assigned).')
-        delivery_order.move_ids_without_package.quantity_done = 1.0
+        delivery_order.move_ids_without_package.quantity = 1.0
 
         try:
             delivery_order.button_validate()

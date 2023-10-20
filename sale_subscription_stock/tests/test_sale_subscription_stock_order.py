@@ -40,13 +40,12 @@ class TestSubscriptionStockOnOrder(TestSubscriptionStockCommon):
                              'The delivery deadline should correspond to the current period')
             self.assertEqual(move.product_id, self.sub_product_order)
             self.assertEqual(move.product_uom_qty, 1)
-            self.assertEqual(move.reserved_availability, 1)
-            self.assertEqual(move.quantity_done, 0, 'Nothing should be delivered now')
+            self.assertEqual(move.quantity, 1)
             self.assertEqual(sub.order_line.qty_delivered, 0, 'Nothing should be delivered now')
             # Fulfil the delivery order
-            move.quantity_done = 1
+            move.write({'quantity': 1, 'picked': True})
             sub.picking_ids._action_done()
-            self.assertEqual(move.quantity_done, 1, 'Move should be delivered now')
+            self.assertEqual(move.quantity, 1, 'Move should be delivered now')
             self.assertEqual(sub.order_line.qty_delivered, 1, 'Order line should be marked as delivered')
 
     def test_subscription_stock_order_cron(self):
@@ -134,11 +133,11 @@ class TestSubscriptionStockOnOrder(TestSubscriptionStockCommon):
         invoice, picking = self.simulate_period(sub, "2022-03-02", move_qty=2)
         self.assertEqual(len(invoice), 1, 'We should generate a new invoices')
         self.assertEqual(len(picking), 1, 'We should generate a new delivery order')
-        self.assertEqual(picking.move_ids.quantity_done, 2, 'Check that we over_delivered')
+        self.assertEqual(picking.move_ids.quantity, 2, 'Check that we over_delivered')
         self.assertEqual(invoice.invoice_line_ids.quantity, 1, 'We should invoice the quantity ordered')
 
         invoice, picking = self.simulate_period(sub, "2022-04-02")
-        self.assertEqual(picking.move_ids.quantity_done, 1, 'Check that we did not over_delivered again')
+        self.assertEqual(picking.move_ids.quantity, 1, 'Check that we did not over_delivered again')
         self.assertEqual(invoice.invoice_line_ids.quantity, 1, 'We should still invoice the quantity ordered')
 
     def test_subscription_stock_order_under_deliver(self):
@@ -147,7 +146,7 @@ class TestSubscriptionStockOnOrder(TestSubscriptionStockCommon):
         self.assertEqual(len(sub.picking_ids), 0, 'Updating the quantity should not create a new delivery')
 
         invoice, picking = self.simulate_period(sub, "2022-03-02", move_qty=1)
-        self.assertEqual(picking.move_ids.quantity_done, 1, 'Check that we under_delivered')
+        self.assertEqual(picking.move_ids.quantity, 1, 'Check that we under_delivered')
         self.assertEqual(invoice.invoice_line_ids.quantity, 2, 'We should invoice the quantity ordered')
         self.assertEqual(invoice.amount_total, 45 * 2, 'We should invoice the quantity ordered')
 
@@ -221,7 +220,7 @@ class TestSubscriptionStockOnOrder(TestSubscriptionStockCommon):
         self.assertEqual(sub.picking_ids.move_ids.product_id, self.test_product_order)
 
         # We deliver the non-recurring product
-        sub.picking_ids.move_ids.write({'quantity_done': 1})
+        sub.picking_ids.move_ids.write({'quantity': 1, 'picked': True})
         sub.picking_ids._action_done()
 
         invoice, picking = self.simulate_period(sub, "2022-03-02")

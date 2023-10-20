@@ -82,8 +82,8 @@ class TestStock(common.TestAmazonCommon, TestStockCommon):
     def test_check_SOL_completion_all_moves(self):
         """ Test that the check on SOL completion passes if all moves are confirmed. """
 
-        self.move_1.quantity_done = 1
-        self.move_2.quantity_done = 1
+        self.move_1.quantity = 1
+        self.move_2.quantity = 1
         self.assertIsNone(
             self.picking._check_sales_order_line_completion(),
             "the check of SOL completion should not raise for pickings with completions of 100% "
@@ -93,7 +93,7 @@ class TestStock(common.TestAmazonCommon, TestStockCommon):
     def test_check_SOL_completion_some_moves(self):
         """ Test that the check on SOL completion fails if only some moves are confirmed. """
 
-        self.move_1.quantity_done = 1
+        self.move_1.quantity = 1
         with self.assertRaises(UserError):
             # The check of SOL completion should raise for pickings with completions of ]0%, 100%[
             # (some moves related to a given sales order line are confirmed, but not all)

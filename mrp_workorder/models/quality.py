@@ -5,14 +5,15 @@ from markupsafe import Markup
 from odoo import SUPERUSER_ID, api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.fields import Command
-from odoo.tools import float_compare, float_round, is_html_empty, float_is_zero
+from odoo.tools import float_compare, float_round, is_html_empty
 
 
 class TestType(models.Model):
     _inherit = "quality.point.test_type"
 
-    allow_registration = fields.Boolean(search='_get_domain_from_allow_registration',
-            store=False, default=False)
+    allow_registration = fields.Boolean(
+        search='_get_domain_from_allow_registration',
+        store=False, default=False)
 
     def _get_domain_from_allow_registration(self, operator, value):
         if value:
@@ -486,24 +487,24 @@ class QualityCheck(models.Model):
                 if self.move_line_id.product_id.tracking != 'none':
                     self.move_line_id = next((sml
                                               for sml in self.move_line_id.move_id.move_line_ids
-                                              if sml.lot_id == self.lot_id and float_is_zero(sml.qty_done, precision_rounding=sml.product_uom_id.rounding)),
+                                              if sml.lot_id == self.lot_id and not sml.picked),
                                              self.move_line_id)
                 rounding = self.move_line_id.product_uom_id.rounding
-                if float_compare(self.qty_done, self.move_line_id.reserved_uom_qty, precision_rounding=rounding) >= 0:
+                if float_compare(self.qty_done, self.move_line_id.quantity, precision_rounding=rounding) >= 0:
                     self.move_line_id.write({
-                        'qty_done': self.qty_done,
+                        'quantity': self.qty_done,
                         'lot_id': self.lot_id.id,
+                        'picked': True,
                     })
                 else:
-                    new_qty_reserved = self.move_line_id.reserved_uom_qty - self.qty_done
+                    new_qty_reserved = self.move_line_id.quantity - self.qty_done
                     default = {
-                        'reserved_uom_qty': new_qty_reserved,
-                        'qty_done': 0,
+                        'quantity': new_qty_reserved,
                     }
                     self.move_line_id.copy(default=default)
-                    self.move_line_id.with_context(bypass_reservation_update=True).write({
-                        'reserved_uom_qty': self.qty_done,
-                        'qty_done': self.qty_done,
+                    self.move_line_id.write({
+                        'quantity': self.qty_done,
+                        'picked': True,
                     })
                     self.move_line_id.lot_id = self.lot_id
             else:
@@ -529,11 +530,10 @@ class QualityCheck(models.Model):
         rounding = move.product_uom.rounding
         new_qty = self._prepare_component_quantity(move, self.workorder_id.qty_producing)
         qty_todo = float_round(new_qty, precision_rounding=rounding)
-        qty_todo = qty_todo - move.quantity_done
+        qty_todo = qty_todo - move.quantity
         if self.move_line_id and self.move_line_id.lot_id:
-            qty_todo = min(self.move_line_id.reserved_uom_qty, qty_todo)
+            qty_todo = min(self.move_line_id.quantity, qty_todo)
         self.qty_done = qty_todo
-
 
     def _insert_in_chain(self, position, relative):
         """Insert the quality check `self` in a chain of quality checks.

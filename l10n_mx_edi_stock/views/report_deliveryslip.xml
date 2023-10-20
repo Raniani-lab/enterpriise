@@ -147,7 +147,7 @@
                 </td>
             </t>
         </xpath>
-        <xpath expr="//td[@name='move_line_lot_qty_done']" position="after">
+        <xpath expr="//td[@name='move_line_lot_quantity']" position="after">
             <t t-if="o.l10n_mx_edi_cfdi_state == 'sent'">
                 <td>
                     <span t-field="move_line.product_uom_id.unspsc_code_id.code"/>
@@ -168,7 +168,7 @@
                 </td>
             </t>
         </xpath>
-        <xpath expr="//td[@name='move_line_aggregated_qty_done']" position="after">
+        <xpath expr="//td[@name='move_line_aggregated_quantity']" position="after">
             <t t-if="o.l10n_mx_edi_cfdi_state == 'sent'">
                 <td>
                     <span t-esc="aggregated_lines[line]['product_uom'].unspsc_code_id.code"/>

@@ -132,6 +132,6 @@ class TestSubscriptionStockCommon(TestSubscriptionCommon, ValuationReconciliatio
             picking = subscription.picking_ids and subscription.picking_ids.filtered(lambda picking: picking.date.date().isoformat() == date)
             if picking:
                 for move in picking.move_ids:
-                    move.write({'quantity_done': move_qty or move.product_uom_qty})
+                    move.write({'quantity': move_qty or move.product_uom_qty, 'picked': True})
                 picking._action_done()
         return invoice, picking

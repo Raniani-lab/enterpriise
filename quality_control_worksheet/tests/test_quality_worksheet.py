@@ -57,7 +57,6 @@ class TestQualityWorksheet(HttpCase, TestQualityCommon):
             }
         ])
         receipt.action_confirm()
-        receipt.action_set_quantities_to_reservation()
         self.assertEqual(len(receipt.check_ids), 2)
         # launch tour to test the worksheets opening back to back
         action = self.env.ref('stock.action_picking_tree_all')

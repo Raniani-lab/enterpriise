@@ -196,6 +196,7 @@ QUnit.module("Studio clickbot", (hooks) => {
             "Clicking on: home menu toggle button",
             "Successfully tested 2 apps",
             "Successfully tested 2 menus",
+            "Successfully tested 0 modals",
             "Successfully tested 10 filters",
             "Successfully tested 5 views in Studio",
             "test successful",

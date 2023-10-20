@@ -79,7 +79,7 @@ export class Frontdesk extends Component {
      * @param {Event} ev
      */
     onChangeLang(ev) {
-        window.location.href = window.location.pathname + `?lang=${encodeURIComponent(ev.currentTarget.value)};`;
+        window.location.href = window.location.pathname + `?lang=${encodeURIComponent(ev.currentTarget.value)}`;
     }
 
     /**

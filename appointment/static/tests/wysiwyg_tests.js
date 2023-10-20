@@ -16,6 +16,7 @@ let wysiwyg;
 function onMount() {
     const editor = wysiwyg.odooEditor;
     const editable = editor.editable;
+    editor.clean();
     const originalContent = editable.innerHTML;
     editor.testMode = true;
     return { editor, editable, originalContent };
@@ -24,8 +25,10 @@ function onMount() {
 function assertHistorySteps(assert, editable, originalContent) {
     const currentContent = editable.innerHTML;
     wysiwyg.odooEditor.historyUndo();
+    wysiwyg.odooEditor.clean();
     assert.strictEqual(editable.innerHTML, originalContent);
     wysiwyg.odooEditor.historyRedo();
+    wysiwyg.odooEditor.clean();
     assert.strictEqual(editable.innerHTML, currentContent);
 }
 
@@ -91,6 +94,7 @@ QUnit.module('appointment.wysiwyg', {
         setSelection(editable.querySelector('p'), 0);
         await insertText(editor, '/Appointment');
         await triggerEvent(editable, null, 'keydown', { key: 'Enter' });
+        editor.clean();
 
         assert.strictEqual(editable.innerHTML,
             `<p><a href="${linkUrl}">Schedule an Appointment</a></p>`);
@@ -119,6 +123,7 @@ QUnit.module('appointment.wysiwyg', {
         // Type powerbox command + 'Enter'
         await insertText(editor, '/Appointment');
         await triggerEvent(editable, null, 'keydown', { key: 'Enter' });
+        editor.clean();
 
         assert.strictEqual(editable.innerHTML,
             `<p><a href="${linkUrl}">Schedule an Appointment</a></p>`);

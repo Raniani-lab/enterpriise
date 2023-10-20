@@ -41,6 +41,16 @@ class AccountExternalTaxMixinL10nBR(models.AbstractModel):
         """ Returns line dicts for this record created with _l10n_br_build_avatax_line(). """
         raise NotImplementedError()
 
+    def _l10n_br_get_operation_type(self):
+        """ Returns the operationType to be used for requests to Avatax. By default, it's "standardSales", but
+        can be overriden. """
+        return 'standardSales'
+
+    def _l10n_br_get_invoice_refs(self):
+        """ Should return a dict of invoiceRefs, as specified by the Avatax API. These are required for
+        credit and debit notes. """
+        return {}
+
     def _l10n_br_line_model_name(self):
         return self._name + '.line'
 
@@ -100,7 +110,6 @@ class AccountExternalTaxMixinL10nBR(models.AbstractModel):
         """
         return {
             'lineCode': line_id,
-            'operationType': 'standardSales',
             'useType': product.l10n_br_use_type,
             'otherCostAmount': 0,
             'freightAmount': 0,
@@ -110,6 +119,7 @@ class AccountExternalTaxMixinL10nBR(models.AbstractModel):
             'lineUnitPrice': unit_price,
             'numberOfItems': qty,
             'itemDescriptor': {
+                'description': product.display_name or '',
                 'cest': product.l10n_br_cest_code or '',
                 'hsCode': product.l10n_br_ncm_code_id.code,
                 'source': product.l10n_br_source_origin or '',
@@ -231,6 +241,8 @@ class AccountExternalTaxMixinL10nBR(models.AbstractModel):
                 'documentCode': '%s_%s' % (self._name, self.id),
                 'messageType': 'goods',
                 'companyLocation': '',
+                'operationType': self._l10n_br_get_operation_type(),
+                **self._l10n_br_get_invoice_refs(),
                 'locations': {
                     'entity': {  # the customer
                         'type': customer_type,
@@ -337,6 +349,7 @@ class AccountExternalTaxMixinL10nBR(models.AbstractModel):
         for document, query_result in query_results.items():
             subtracted_tax_types = set()
             tax_type_to_price_include = {}
+            is_return = document._l10n_br_get_operation_type() == 'salesReturn'
             for line_result in query_result['lines']:
                 record_id = line_result['lineCode']
                 record = self.env[self._l10n_br_line_model_name()].browse(int(record_id))
@@ -347,6 +360,9 @@ class AccountExternalTaxMixinL10nBR(models.AbstractModel):
                 for detail in line_result['taxDetails']:
                     if detail['taxImpact']['impactOnNetAmount'] != 'Informative':
                         tax_amount = detail['tax']
+                        if is_return:
+                            tax_amount = -tax_amount
+
                         if detail['taxImpact']['impactOnNetAmount'] == 'Subtracted':
                             tax_amount = -tax_amount
                             subtracted_tax_types.add(detail['taxType'])
@@ -367,6 +383,9 @@ class AccountExternalTaxMixinL10nBR(models.AbstractModel):
                 tax = find_or_create_tax(document, tax_type, tax_type_to_price_include.get(tax_type, False))
 
                 amount = type_details['tax']
+                if is_return:
+                    amount = -amount
+
                 if tax_type in subtracted_tax_types:
                     amount = -amount
 

@@ -281,12 +281,29 @@ class TestAvalaraBrInvoice(TestAvalaraBrInvoiceCommon):
         self.env['account.move.line'].create({
             'product_id': self.product_user_discount.id,
             'move_id': invoice.id,
-            'price_unit' : -1_000.00,
+            'price_unit': -1_000.00,
         })
 
         with self._capture_request_br(), \
              self.assertRaisesRegex(UserError, "Avatax Brazil doesn't support negative lines."):
             invoice.action_post()
+
+    def test_05_credit_note(self):
+        invoice, response = self._create_invoice_01_and_expected_response()
+        with self._capture_request_br(return_value=response):
+            invoice.action_post()
+
+        credit_note_wizard = self.env['account.move.reversal'].with_context(active_model='account.move', active_ids=invoice.ids).create({
+            'journal_id': invoice.journal_id.id,
+        })
+        credit_note_wizard.reverse_moves()
+
+        credit_note = self.env['account.move'].search([('reversed_entry_id', '=', invoice.id)])
+        self.assertTrue(credit_note, "A credit note should have been created.")
+
+        payload = credit_note._l10n_br_get_calculate_payload()
+        self.assertEqual(payload['header']['operationType'], 'salesReturn', 'The operationType for credit notes should be returnSales.')
+        self.assertEqual(payload['header']['invoicesRefs'][0]['documentCode'], f'account.move_{invoice.id}', 'The credit note should reference the original invoice.')
 
 
 @tagged('external_l10n', 'external', '-at_install', 'post_install', '-standard')

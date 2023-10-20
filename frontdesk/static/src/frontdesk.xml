@@ -14,10 +14,11 @@
                 </div>
             </div>
             <div t-else="" class="row vh-100 g-0">
-                <div class="col-md-8 col-sm-12 d-flex flex-column justify-content-between p-5">
+                <!-- Hide sidebar when empty or equal to "<p><br></p>" -->
+                <div class="col-md-8 col-sm-12 d-flex flex-column justify-content-between p-5" t-att-class="station.description and station.description != '&lt;p>&lt;br>&lt;/p>' ? 'col-md-8' : ''">
                     <t t-component="state.currentComponent" t-props="frontdeskProps"/>
                 </div>
-                <div t-if="station.description" class="col-md-4 col-sm-12 o_side_panel">
+                <div t-if="station.description and station.description != '&lt;p>&lt;br>&lt;/p>'" class="col-md-4 col-sm-12 o_side_panel">
                     <div class="p-5 h-100">
                         <div class="text-break" t-out="markupValue"/>
                     </div>

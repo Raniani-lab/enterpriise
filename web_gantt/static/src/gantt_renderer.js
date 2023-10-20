@@ -712,18 +712,16 @@ export class GanttRenderer extends Component {
                 const columnStart = Math.min(this.selection.initialIndex, columnIndex);
                 const columnStop = Math.max(this.selection.initialIndex, columnIndex);
                 this.selection.lastSelectId = columnIndex;
-                document
-                    .querySelectorAll(`.o_gantt_cell[data-row-id='${this.selection.rowId}']`)
-                    .forEach((cell) => {
-                        if (
-                            cell.dataset.columnIndex < columnStart ||
-                            cell.dataset.columnIndex > columnStop
-                        ) {
-                            cell.classList.remove("o_drag_hover");
-                        } else {
-                            cell.classList.add("o_drag_hover");
-                        }
-                    });
+                for (const cell of this.getCellsOnRow(this.selection.rowId)) {
+                    if (
+                        cell.dataset.columnIndex < columnStart ||
+                        cell.dataset.columnIndex > columnStop
+                    ) {
+                        cell.classList.remove("o_drag_hover");
+                    } else {
+                        cell.classList.add("o_drag_hover");
+                    }
+                }
             }
         }
 
@@ -917,6 +915,16 @@ export class GanttRenderer extends Component {
             }
         }
         return null;
+    }
+
+    /**
+     * @param {string} rowId
+     * @returns {NodeList[]}
+     */
+    getCellsOnRow(rowId) {
+        return this.cellContainerRef.el.querySelectorAll(
+            `.o_gantt_cell[data-row-id='${CSS.escape(rowId)}']`
+        );
     }
 
     /**
@@ -1825,9 +1833,9 @@ export class GanttRenderer extends Component {
             const { rowId, initialIndex, lastSelectId } = this.selection;
             const columnStart = Math.min(initialIndex, lastSelectId);
             const columnStop = Math.max(initialIndex, lastSelectId);
-            document
-                .querySelectorAll(`.o_gantt_cell[data-row-id='${rowId}']`)
-                .forEach((cell) => cell.classList.remove("o_drag_hover"));
+            for (const cell of this.getCellsOnRow(rowId)) {
+                cell.classList.remove("o_drag_hover");
+            }
             if (canPlan) {
                 this.onPlan(rowId, columnStart, columnStop);
             } else {

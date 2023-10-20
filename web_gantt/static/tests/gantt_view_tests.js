@@ -1360,6 +1360,29 @@ QUnit.test("select cells to plan a task", async (assert) => {
     assert.verifySteps(["[dialog] Plan"]);
 });
 
+QUnit.test("row id is properly escaped to avoid name issues in selection", async (assert) => {
+    const dialogService = {
+        start() {
+            return {
+                add() {
+                    assert.step(`[dialog]`);
+                },
+            };
+        },
+    };
+    serverData.models.users.records[0].name = "O'Reilly";
+    registry.category("services").add("dialog", dialogService, { force: true });
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: '<gantt date_start="start" date_stop="stop" default_group_by="user_id"/>',
+    });
+    await hoverGridCell(1, 1);
+    await clickCell(1, 1);
+    assert.verifySteps(["[dialog]"]);
+});
+
 QUnit.test("select cells to plan a task: 1-level grouped", async (assert) => {
     const dialogService = {
         start() {

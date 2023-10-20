@@ -223,7 +223,7 @@ class SaleOrderAlert(models.Model):
             if field_name:
                 tag_field = tag_fields.filtered(lambda t: t.name == field_name)
                 action_values['state'] = 'object_write'
-                action_values['update_field_id'] = tag_field.id
+                action_values['update_path'] = tag_field.name
                 action_values['evaluation_type'] = 'value'
             elif vals.get('action') in ('mail_post', 'sms'):
                 action_values['state'] = vals['action']

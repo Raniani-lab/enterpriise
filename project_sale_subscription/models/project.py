@@ -124,10 +124,10 @@ class Project(models.Model):
         subscription_template_dict = {}
         if recurring_per_currency_per_template.keys():
             subscription_template_dict = {
-                res['id']: res['recurring_rule_count']
+                res['id']: res['duration_value']
                 for res in self.env['sale.order.template'].sudo().search_read(
-                    [('id', 'in', list(recurring_per_currency_per_template.keys())), ('recurring_rule_boundary', '=', 'limited')],
-                    ['id', 'recurring_rule_count'],
+                    [('id', 'in', list(recurring_per_currency_per_template.keys())), ('is_unlimited', '=', False)],
+                    ['id', 'duration_value'],
                 )
             }
         for subcription_template_id in recurring_per_currency_per_template:

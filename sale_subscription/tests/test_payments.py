@@ -89,12 +89,11 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
 
             subscription_tmpl = self.env['sale.order.template'].create({
                 'name': 'Subscription template without discount',
-                'recurring_rule_boundary': 'limited',
+                'is_unlimited': False,
                 'note': "This is the template description",
-                'recurring_rule_count': 4,
-                'recurring_rule_type': 'month',
-                'auto_close_limit': 5,
-                'recurrence_id': self.recurrence_month.id
+                'duration_value': 4,
+                'duration_unit': 'month',
+                'plan_id': self.plan_month.id,
             })
 
             self.subscription.write({
@@ -276,7 +275,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
             "The draft invoice has to be kept as we committed after the payment succeeded "
             "(the next invoice date has already been updated)."
         )
-        expected_next_invoice_date = self.subscription.start_date + self.subscription.recurrence_id.get_recurrence_timedelta()
+        expected_next_invoice_date = self.subscription.start_date + self.subscription.plan_id.billing_period
         self.assertEqual(
             self.subscription.next_invoice_date, expected_next_invoice_date,
             "The next invoice date should have been updated, as the invoice was kept after the payment succeeded",
@@ -317,7 +316,6 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
             sub0 = self.env['sale.order'].create({
                 'name': 'Paid',
                 'partner_id': self.partner.id,
-                'recurrence_id': self.recurrence_year.id,
                 'payment_term_id': self.env.ref('account.account_payment_term_21days').id,
                 'sale_order_template_id': self.templ_5_days.id,
             })
@@ -326,9 +324,8 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
             sub1 = sub0.copy(default={'name': 'Unpaid with simple date'})
             sub2 = sub1.copy(default={
                 'name': "Partial",
-                'payment_term_id': self.env.ref('account.account_payment_term_advance_60days').id,
-                'sale_order_template_id': self.templ_60_days.id,
-            })
+                'payment_term_id': self.env.ref('account.account_payment_term_advance_60days').id})
+            sub2.sale_order_template_id = self.templ_60_days.id
             sub3 = sub1.copy(default={
                 'name': "Unpaid",
                 'payment_term_id': self.env.ref('account.account_payment_term_advance_60days').id
@@ -336,7 +333,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
             sub4 = self.env['sale.order'].create({
                 'name': 'Contract without template',
                 'is_subscription': True,
-                'recurrence_id': self.recurrence_year.id,
+                'plan_id': self.plan_year.id,
                 'partner_id': self.user_portal.partner_id.id,
                 'pricelist_id': self.company_data['default_pricelist'].id,
                 'order_line': [
@@ -423,7 +420,6 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
             sub = self.env['sale.order'].create({
                 'name': 'Paid',
                 'partner_id': self.partner.id,
-                'recurrence_id': self.recurrence_year.id,
                 'payment_term_id': self.env.ref('account.account_payment_term_21days').id,
                 'sale_order_template_id': self.templ_5_days.id,
             })
@@ -489,7 +485,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
         with freeze_time('2023-01-18'):
             subscription = self.env['sale.order'].create({
                 'partner_id': self.partner.id,
-                'recurrence_id': self.recurrence_month.id,
+                'plan_id': self.plan_month.id,
                 'order_line': [
                     (0, 0, {
                         'name': self.product.name,

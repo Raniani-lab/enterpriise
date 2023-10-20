@@ -59,7 +59,7 @@
                         </group>
                         <group name="subscription_details">
                             <field name="active" invisible="1"/>
-                            <field name="subscription_template_ids" widget="many2many_tags"/>
+                            <field name="subscription_plan_ids" widget="many2many_tags"/>
                             <field name="product_ids" string="Products" widget="many2many_tags"/>
                             <field name="customer_ids" widget="many2many_tags"/>
                             <field name="company_id" groups="base.group_multi_company"/>

@@ -8,8 +8,8 @@
         <field name="arch" type="xml">
             <xpath expr="//div[@id='order_default_values_div']" position="inside">
                 <div class="mt16">
-                    <label for="subscription_default_recurrence_id" class="me-2"/>
-                    <field name="subscription_default_recurrence_id" domain="[('unit', 'not in', ('hour', 'day'))]"/>
+                    <label for="subscription_default_plan_id" class="me-2"/>
+                    <field name="subscription_default_plan_id"/>
                 </div>
                 <div class="text-muted">
                     Default period to use as recurrence for a new quotation.

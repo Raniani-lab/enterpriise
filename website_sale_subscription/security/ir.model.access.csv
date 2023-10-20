@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_product_pricing_global_public,product.pricing.global,sale_temporal.model_product_pricing,base.group_public,1,0,0,0
-access_product_pricing_global_portal,product.pricing.global,sale_temporal.model_product_pricing,base.group_portal,1,0,0,0
-access_product_pricing_global_employee,product.pricing.global,sale_temporal.model_product_pricing,base.group_user,1,0,0,0
-access_sale_order_recurrence_global_public,sale.temporal.recurrence.global,sale_temporal.model_sale_temporal_recurrence,base.group_public,1,0,0,0
-access_sale_order_recurrence_global_portal,sale.temporal.recurrence.global,sale_temporal.model_sale_temporal_recurrence,base.group_portal,1,0,0,0
-access_sale_order_recurrence_global_employee,sale.temporal.recurrence.global,sale_temporal.model_sale_temporal_recurrence,base.group_user,1,0,0,0

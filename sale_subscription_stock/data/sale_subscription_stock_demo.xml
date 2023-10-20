@@ -4,20 +4,20 @@
 
         <!-- Recurring storable products -->
 
-        <record id="mug_order_pricing_1" model="product.pricing">
-            <field name="recurrence_id" ref="sale_temporal.recurrence_weekly"/>
+        <record id="mug_order_pricing_1" model="sale.subscription.pricing">
+            <field name="plan_id" ref="sale_subscription.subscription_plan_month"/>
             <field name="price" eval="10"/>
             <field name="currency_id" ref="base.USD"/>
         </record>
 
-        <record id="mug_order_pricing_2" model="product.pricing">
-            <field name="recurrence_id" ref="sale_temporal.recurrence_monthly"/>
+        <record id="mug_order_pricing_2" model="sale.subscription.pricing">
+            <field name="plan_id" ref="sale_subscription.subscription_plan_6_month"/>
             <field name="price" eval="10"/>
             <field name="currency_id" ref="base.USD"/>
         </record>
 
-        <record id="mug_order_pricing_3" model="product.pricing">
-            <field name="recurrence_id" ref="sale_temporal.recurrence_quarterly"/>
+        <record id="mug_order_pricing_3" model="sale.subscription.pricing">
+            <field name="plan_id" ref="sale_subscription.subscription_plan_year"/>
             <field name="price" eval="10"/>
             <field name="currency_id" ref="base.USD"/>
         </record>
@@ -31,7 +31,7 @@
             <field name="invoice_policy">order</field>
             <field name="uom_id" ref="uom.product_uom_unit"/>
             <field name="uom_po_id" ref="uom.product_uom_unit"/>
-            <field name="product_pricing_ids"
+            <field name="product_subscription_pricing_ids"
                    eval="[(6,0,[ref('mug_order_pricing_1'), ref('mug_order_pricing_2'), ref('mug_order_pricing_3')])]"/>
         </record>
 

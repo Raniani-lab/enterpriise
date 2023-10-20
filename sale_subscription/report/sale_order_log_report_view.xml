@@ -146,8 +146,8 @@
                             context="{'group_by': 'event_type'}"/>
                     <filter string="Salesperson" name="sales_person" domain="[]" context="{'group_by': 'user_id'}"/>
                     <filter string="Sales Team" name="group_by_team" domain="[]" context="{'group_by': 'team_id'}"/>
-                    <filter string="Plan" name="group_by_plan" domain="[]" context="{'group_by': 'template_id'}"/>
-                    <filter string="Recurrence" name="group_by_recurrence" domain="[]" context="{'group_by': 'recurrence_id'}"/>
+                    <filter string="Template" name="group_by_template" domain="[]" context="{'group_by': 'template_id'}"/>
+                    <filter string="Plan" name="group_by_plan" domain="[]" context="{'group_by': 'plan_id'}"/>
                     <filter string="Customer" name="group_by_customer" domain="[]" context="{'group_by': 'partner_id'}"/>
                     <filter string="Country" name="group_by_country" domain="[]" context="{'group_by': 'country_id'}"/>
                     <filter string="Company" name="group_by_company" domain="[]" context="{'group_by': 'company_id'}"/>

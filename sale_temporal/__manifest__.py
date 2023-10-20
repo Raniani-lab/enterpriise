@@ -15,7 +15,6 @@
         'views/product_pricelist_views.xml',
         'views/product_template_views.xml',
         'views/sale_temporal_recurrence_views.xml',
-        'views/sale_order_views.xml',
         'data/sale_temporal_data.xml',
     ],
 }

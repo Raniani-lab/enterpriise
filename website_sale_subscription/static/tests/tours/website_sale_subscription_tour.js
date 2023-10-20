@@ -48,11 +48,6 @@ registry.category("web_tour.tours").add('shop_buy_subscription_product', {
             content: "Select streaming monthly",
             trigger: '.oe_product_cart:first a:contains("Streaming SUB Monthly")',
         },
-        {
-            content: "Check that we cannot add streaming monthly",
-            trigger: '#product_detail p:contains("This product pricing is not compatible with the product(s) in your cart.")',
-            run: function () {}, // it's a check
-        },
         wsTourUtils.goToCart({quantity: 2}),
     ]
 });

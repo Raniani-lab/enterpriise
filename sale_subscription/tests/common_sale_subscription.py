@@ -28,6 +28,8 @@ class TestSubscriptionCommon(TestSaleCommon):
         AnalyticPlan = cls.env['account.analytic.plan'].with_context(context_no_mail)
         Analytic = cls.env['account.analytic.account'].with_context(context_no_mail)
         SaleOrder = cls.env['sale.order'].with_context(context_no_mail)
+        SubPlan = cls.env['sale.subscription.plan'].with_context(context_no_mail)
+        SubPricing = cls.env['sale.subscription.pricing'].with_context(context_no_mail)
         Tax = cls.env['account.tax'].with_context(context_no_mail)
         ProductTmpl = cls.env['product.template'].with_context(context_no_mail)
         cls.country_belgium = cls.env.ref('base.be')
@@ -53,21 +55,21 @@ class TestSubscriptionCommon(TestSaleCommon):
         cls.journal = cls.company_data['default_journal_sale']
 
         # Test products
-        cls.recurrence_week = cls.env['sale.temporal.recurrence'].create({'duration': 1, 'unit': 'week'})
-        cls.recurrence_month = cls.env['sale.temporal.recurrence'].create({'duration': 1, 'unit': 'month'})
-        cls.recurrence_year = cls.env['sale.temporal.recurrence'].create({'duration': 1, 'unit': 'year'})
-        cls.recurrence_2_month = cls.env['sale.temporal.recurrence'].create({'duration': 2, 'unit': 'month'})
+        cls.plan_week = SubPlan.create({'name': 'Weekly', 'billing_period_value': 1, 'billing_period_unit': 'week'})
+        cls.plan_month = SubPlan.create({'name': 'Monthly', 'billing_period_value': 1, 'billing_period_unit': 'month'})
+        cls.plan_year = SubPlan.create({'name': 'Yearly', 'billing_period_value': 1, 'billing_period_unit': 'year'})
+        cls.plan_2_month = SubPlan.create({'name': '2 Months', 'billing_period_value': 2, 'billing_period_unit': 'month'})
 
-        cls.pricing_month = cls.env['product.pricing'].create({'recurrence_id': cls.recurrence_month.id})
-        cls.pricing_year = cls.env['product.pricing'].create({'recurrence_id': cls.recurrence_year.id, 'price': 100})
-        cls.pricing_year_2 = cls.env['product.pricing'].create({'recurrence_id': cls.recurrence_year.id, 'price': 200})
-        cls.pricing_year_3 = cls.env['product.pricing'].create({'recurrence_id': cls.recurrence_year.id, 'price': 300})
+        cls.pricing_month = SubPricing.create({'plan_id': cls.plan_month.id, 'price': 1})
+        cls.pricing_year = SubPricing.create({'plan_id': cls.plan_year.id, 'price': 100})
+        cls.pricing_year_2 = SubPricing.create({'plan_id': cls.plan_year.id, 'price': 200})
+        cls.pricing_year_3 = SubPricing.create({'plan_id': cls.plan_year.id, 'price': 300})
         cls.sub_product_tmpl = ProductTmpl.create({
             'name': 'BaseTestProduct',
             'type': 'service',
             'recurring_invoice': True,
             'uom_id': cls.env.ref('uom.product_uom_unit').id,
-            'product_pricing_ids': [(6, 0, (cls.pricing_month | cls.pricing_year).ids)]
+            'product_subscription_pricing_ids': [(6, 0, (cls.pricing_month | cls.pricing_year).ids)]
         })
         cls.product = cls.sub_product_tmpl.product_variant_id
         cls.product.write({
@@ -128,12 +130,11 @@ class TestSubscriptionCommon(TestSaleCommon):
         })
         cls.subscription_tmpl = cls.env['sale.order.template'].create({
             'name': 'Subscription template without discount',
-            'recurring_rule_type': 'year',
-            'recurring_rule_boundary': 'limited',
-            'recurring_rule_count': 2,
+            'is_unlimited': False,
+            'duration_value': 2,
+            'duration_unit': 'year',
             'note': "This is the template description",
-            'auto_close_limit': 5,
-            'recurrence_id': cls.recurrence_month.id,
+            'plan_id': cls.plan_month.id,
             'sale_order_template_line_ids': [Command.create({
                 'name': "Product 1",
                 'product_id': cls.product.id,
@@ -150,12 +151,11 @@ class TestSubscriptionCommon(TestSaleCommon):
         })
         cls.templ_5_days = cls.env['sale.order.template'].create({
             'name': 'Template 2 days',
-            'recurring_rule_boundary': 'limited',
+            'is_unlimited': False,
             'note': "This is the template description",
-            'recurring_rule_count': 4,
-            'recurring_rule_type': 'year',
-            'auto_close_limit': 5,
-            'recurrence_id': cls.recurrence_year.id,
+            'duration_value': 4,
+            'duration_unit': 'year',
+            'plan_id': cls.plan_year.copy(default={'auto_close_limit': 5}).id,
             'sale_order_template_line_ids': [
                 (0, 0, {
                     'name': cls.product.name,
@@ -172,7 +172,8 @@ class TestSubscriptionCommon(TestSaleCommon):
             ],
 
         })
-        cls.templ_60_days = cls.templ_5_days.copy(default={'auto_close_limit': 60})
+        cls.templ_60_days = cls.templ_5_days.copy()
+        cls.templ_60_days.plan_id = cls.plan_year.copy(default={'auto_close_limit': 60})
 
         # Test user
         TestUsersEnv = cls.env['res.users'].with_context({'no_reset_password': True})
@@ -228,7 +229,7 @@ class TestSubscriptionCommon(TestSaleCommon):
         cls.subscription = SaleOrder.create({
             'name': 'TestSubscription',
             'is_subscription': True,
-            'recurrence_id': cls.recurrence_month.id,
+            'plan_id': cls.plan_month.id,
             'note': "original subscription description",
             'partner_id': cls.user_portal.partner_id.id,
             'pricelist_id': cls.company_data['default_pricelist'].id,

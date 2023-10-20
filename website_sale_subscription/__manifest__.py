@@ -12,7 +12,6 @@ appropriate views and selling choices.
     """,
     'depends': ['website_sale', 'sale_subscription'],
     'data': [
-        'security/ir.model.access.csv',
         'views/templates.xml',
         'views/sale_order_views.xml',
     ],

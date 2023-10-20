@@ -14,8 +14,8 @@ class ProductTemplate(models.Model):
     def _constraints_optional_product_ids(self):
         for template in self:
             for optional_template in template.optional_product_ids:
-                if self.env['product.pricing']._get_first_suitable_pricing(template).recurrence_id != \
-                        self.env['product.pricing']._get_first_suitable_pricing(optional_template).recurrence_id:
+                if self.env['sale.subscription.pricing'].sudo()._get_first_suitable_recurring_pricing(template).plan_id != \
+                        self.env['sale.subscription.pricing'].sudo()._get_first_suitable_recurring_pricing(optional_template).plan_id:
                     raise UserError(_('You cannot have an optional product that has a different default pricing.'))
 
     def _website_can_be_added(self, so=None, pricelist=None, pricing=None, product=None):
@@ -25,12 +25,13 @@ class ProductTemplate(models.Model):
             return True
         website = self.env['website'].get_current_website()
         so = so or website and request and website.sale_get_order()
-        if not so or not so.recurrence_id:
+        if not so or not so.plan_id:
             return True
         if not pricing:
             pricelist = pricelist or website.pricelist_id
-            pricing = pricing or self.env['product.pricing']._get_first_suitable_pricing(product or self, pricelist)
-        return so.recurrence_id == pricing.recurrence_id
+            pricing = pricing or self.env['sale.subscription.pricing'].sudo()._get_first_suitable_recurring_pricing(
+                product or self, pricelist=pricelist)
+        return so.plan_id == pricing.plan_id
 
     def _get_additionnal_combination_info(self, product_or_template, quantity, date, website):
         res = super()._get_additionnal_combination_info(product_or_template, quantity, date, website)
@@ -41,12 +42,13 @@ class ProductTemplate(models.Model):
         currency = website.currency_id
         pricelist = website.pricelist_id
 
-        pricing = self.env['product.pricing']._get_first_suitable_pricing(
-            product_or_template, pricelist)
+        pricing = self.env['sale.subscription.pricing'].sudo()._get_first_suitable_recurring_pricing(
+            product_or_template, pricelist=pricelist)
+
         if not pricing:
             res.update({
                 'is_subscription': True,
-                'is_recurrence_possible': False,
+                'is_plan_possible': False,
             })
             return res
 
@@ -66,16 +68,16 @@ class ProductTemplate(models.Model):
                 unit_price, currency, product_taxes, res['taxes'], product_or_template,
             )
 
-        recurrence = pricing.recurrence_id
+        plan = pricing.plan_id
         return {
             **res,
             'is_subscription': True,
             'price': unit_price,
-            'is_recurrence_possible': product_or_template._website_can_be_added(
+            'is_plan_possible': product_or_template._website_can_be_added(
                 pricelist=pricelist, pricing=pricing),
-            'subscription_duration': recurrence.duration,
-            'subscription_unit': recurrence.unit,
-            'temporal_unit_display': recurrence.temporal_unit_display,
+            'subscription_duration': plan.billing_period_value,
+            'subscription_unit': plan.billing_period_unit,
+            'temporal_unit_display': plan.billing_period_display_sentence,
         }
 
     # Search bar
@@ -83,7 +85,7 @@ class ProductTemplate(models.Model):
         if not combination_info.get('is_subscription'):
             return super()._search_render_results_prices(mapping, combination_info)
 
-        if not combination_info['is_recurrence_possible']:
+        if not combination_info['is_plan_possible']:
             return '', 0
 
         return self.env['ir.ui.view']._render_template(
@@ -102,11 +104,11 @@ class ProductTemplate(models.Model):
         currency = pricelist.currency_id or self.env.company.currency_id
         date = fields.Date.context_today(self)
         for template in self.filtered('recurring_invoice'):
-            pricing = self.env['product.pricing']._get_first_suitable_pricing(template, pricelist)
+            pricing = self.env['sale.subscription.pricing'].sudo()._get_first_suitable_recurring_pricing(template.sudo(), pricelist=pricelist)
             if not pricing:
                 prices[template.id].update({
                     'is_subscription': True,
-                    'is_recurrence_possible': False,
+                    'is_plan_possible': False,
                 })
                 continue
 
@@ -128,13 +130,13 @@ class ProductTemplate(models.Model):
                 unit_price = self.env['product.template']._apply_taxes_to_price(
                     unit_price, currency, product_taxes, taxes, template)
 
-            recurrence = pricing.recurrence_id
+            plan = pricing.plan_id
             prices[template.id].update({
                 'is_subscription': True,
                 'price_reduce': unit_price,
-                'is_recurrence_possible': template._website_can_be_added(
+                'is_plan_possible': template._website_can_be_added(
                     pricelist=pricelist, pricing=pricing),
-                'temporal_unit_display': recurrence.temporal_unit_display,
+                'temporal_unit_display': plan.billing_period_display_sentence,
             })
         return prices
 

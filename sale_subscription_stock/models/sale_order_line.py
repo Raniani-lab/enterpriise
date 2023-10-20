@@ -48,7 +48,7 @@ class SaleOrderLine(models.Model):
     def _get_stock_subscription_lines(self):
         """ Return the sale.order.line of self which relate to a subscription of storable products
         """
-        return self.filtered(lambda line: line.temporal_type == 'subscription' and line.product_id.type in ['consu', 'product'])
+        return self.filtered(lambda line: line.recurring_invoice and line.product_id.type in ['consu', 'product'])
 
     # =============================
     #       Delivery logic
@@ -72,7 +72,7 @@ class SaleOrderLine(models.Model):
     def _action_launch_stock_rule(self, previous_product_uom_qty=False):
         """ Only launch stock rule if we know they won't be empty
         """
-        lines = self.filtered(lambda line: line.temporal_type != 'subscription' or
+        lines = self.filtered(lambda line: not line.recurring_invoice or
                                            line.order_id.subscription_state == '7_upsell' or
                                            line.qty_invoiced or
                                            (line.product_id.invoice_policy == 'delivery' and line.order_id.start_date and line.order_id.next_invoice_date > line.order_id.start_date))
@@ -83,7 +83,7 @@ class SaleOrderLine(models.Model):
         """
         self.ensure_one()
         # If we update the line, we don't want it to affect the current period for subscriptions
-        if self.temporal_type == 'subscription' and previous_product_uom_qty and previous_product_uom_qty.get(self.id, 0):
+        if self.recurring_invoice and previous_product_uom_qty and previous_product_uom_qty.get(self.id, 0):
             return self.product_uom_qty
         return super()._get_qty_procurement(previous_product_uom_qty)
 
@@ -93,7 +93,7 @@ class SaleOrderLine(models.Model):
         Ensure one is present in inherited function
         """
         values = super()._prepare_procurement_values(group_id)
-        if self.temporal_type != 'subscription' or self.order_id.subscription_state == '7_upsell':
+        if not self.recurring_invoice or self.order_id.subscription_state == '7_upsell':
             return values
         # Remove 1 day as normal people thinks in terms of inclusive ranges.
         current_deadline = self.order_id.next_invoice_date - relativedelta(days=1)
@@ -113,7 +113,7 @@ class SaleOrderLine(models.Model):
     # =============================
 
     def _need_renew_discount_domain(self):
-        return super()._need_renew_discount_domain() + ['!', '&', ('temporal_type', '=', 'subscription'), ('product_id.type', 'in', ['consu', 'product'])]
+        return super()._need_renew_discount_domain() + ['!', '&', ('recurring_invoice', '=', True), ('product_id.type', 'in', ['consu', 'product'])]
 
     def _compute_discount(self):
         # We don't create prorated discount for stock subscription lines

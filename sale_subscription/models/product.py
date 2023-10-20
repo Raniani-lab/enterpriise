@@ -9,19 +9,7 @@ class product_template(models.Model):
         'Subscription Product',
         help='If set, confirming a sale order with this product will create a subscription')
 
-    @api.model
-    def _get_incompatible_types(self):
-        return ['recurring_invoice'] + super()._get_incompatible_types()
-
-    @api.constrains('recurring_invoice')
-    def _prevent_subscription_incompability(self):
-        """ Some boolean fields are incompatibles """
-        self._check_incompatible_types()
-
-    @api.depends('recurring_invoice')
-    def _compute_is_temporal(self):
-        super()._compute_is_temporal()
-        self.filtered('recurring_invoice').is_temporal = True
+    product_subscription_pricing_ids = fields.One2many('sale.subscription.pricing', 'product_template_id', string="Custom Subscription Pricings", auto_join=True, copy=True)
 
     @api.onchange('recurring_invoice')
     def _onchange_recurring_invoice(self):

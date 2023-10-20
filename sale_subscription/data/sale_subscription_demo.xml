@@ -12,6 +12,65 @@
             <field name="retention_button_link">mailto:mark.brown23@example.com?subject=Close contract: too expensive</field>
         </record>
 
+        <!-- Subscription Plan -->
+        <record id="subscription_plan_month" model="sale.subscription.plan">
+            <field name="name">Monthly</field>
+            <field name="billing_period_value">1</field>
+            <field name="billing_period_unit">month</field>
+            <field name="user_closable">False</field>
+        </record>
+
+        <record id="subscription_plan_6_month" model="sale.subscription.plan">
+            <field name="name">6 Months</field>
+            <field name="billing_period_value">6</field>
+            <field name="billing_period_unit">month</field>
+            <field name="user_closable">False</field>
+        </record>
+
+        <record id="subscription_plan_year" model="sale.subscription.plan">
+            <field name="name">Yearly</field>
+            <field name="billing_period_value">1</field>
+            <field name="billing_period_unit">year</field>
+            <field name="user_closable">False</field>
+        </record>
+
+        <!-- Subscription Pricing -->
+        <record id="subscription_pricing_1" model="sale.subscription.pricing">
+            <field name="plan_id" ref="sale_subscription.subscription_plan_month"/>
+            <field name="price" eval="10"/>
+            <field name="currency_id" ref="base.USD"/>
+        </record>
+
+        <record id="subscription_pricing_2" model="sale.subscription.pricing">
+            <field name="plan_id" ref="sale_subscription.subscription_plan_6_month"/>
+            <field name="price" eval="50"/>
+            <field name="currency_id" ref="base.USD"/>
+        </record>
+
+        <record id="subscription_pricing_3" model="sale.subscription.pricing">
+            <field name="plan_id" ref="sale_subscription.subscription_plan_year"/>
+            <field name="price" eval="90"/>
+            <field name="currency_id" ref="base.USD"/>
+        </record>
+
+        <record id="subscription_pricing_4" model="sale.subscription.pricing">
+            <field name="plan_id" ref="sale_subscription.subscription_plan_month"/>
+            <field name="price" eval="20"/>
+            <field name="currency_id" ref="base.USD"/>
+        </record>
+
+        <record id="subscription_pricing_5" model="sale.subscription.pricing">
+            <field name="plan_id" ref="sale_subscription.subscription_plan_6_month"/>
+            <field name="price" eval="100"/>
+            <field name="currency_id" ref="base.USD"/>
+        </record>
+
+        <record id="subscription_pricing_6" model="sale.subscription.pricing">
+            <field name="plan_id" ref="sale_subscription.subscription_plan_year"/>
+            <field name="price" eval="200"/>
+            <field name="currency_id" ref="base.USD"/>
+        </record>
+
         <!-- Recurring products -->
         <record id="product_office_cleaning" model="product.product">
             <field name="name">Office Cleaning Service (SUB)</field>
@@ -22,24 +81,7 @@
             <field name="invoice_policy">order</field>
             <field name="uom_id" ref="uom.product_uom_unit"/>
             <field name="uom_po_id" ref="uom.product_uom_unit"/>
-        </record>
-
-        <record id="product_pricing_1" model="product.pricing">
-            <field name="recurrence_id" ref="sale_temporal.recurrence_monthly"/>
-            <field name="price" eval="10"/>
-            <field name="currency_id" ref="base.USD"/>
-        </record>
-
-        <record id="product_pricing_2" model="product.pricing">
-            <field name="recurrence_id" ref="sale_temporal.recurrence_yearly"/>
-            <field name="price" eval="100"/>
-            <field name="currency_id" ref="base.USD"/>
-        </record>
-
-        <record id="product_pricing_3" model="product.pricing">
-            <field name="recurrence_id" ref="sale_temporal.recurrence_3_year"/>
-            <field name="price" eval="250"/>
-            <field name="currency_id" ref="base.USD"/>
+            <field name="product_subscription_pricing_ids" eval="[(6,0,[ref('subscription_pricing_1'), ref('subscription_pricing_2'), ref('subscription_pricing_3')])]"/>
         </record>
 
         <record id="product_car_leasing" model="product.product">
@@ -51,46 +93,17 @@
             <field name="invoice_policy">delivery</field>
             <field name="uom_id" ref="uom.product_uom_unit"/>
             <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="product_subscription_pricing_ids" eval="[(6,0,[ref('subscription_pricing_4'), ref('subscription_pricing_5'), ref('subscription_pricing_6')])]"/>
         </record>
-
-        <record id="product_pricing_4" model="product.pricing">
-            <field name="recurrence_id" ref="sale_temporal.recurrence_monthly"/>
-            <field name="price" eval="20"/>
-            <field name="currency_id" ref="base.USD"/>
-        </record>
-
-        <record id="product_pricing_5" model="product.pricing">
-            <field name="recurrence_id" ref="sale_temporal.recurrence_yearly"/>
-            <field name="price" eval="200"/>
-            <field name="currency_id" ref="base.USD"/>
-        </record>
-
-        <record id="product_pricing_6" model="product.pricing">
-            <field name="recurrence_id" ref="sale_temporal.recurrence_3_year"/>
-            <field name="price" eval="500"/>
-            <field name="currency_id" ref="base.USD"/>
-        </record>
-
-        <!-- Subscription products with pricings -->
-        <record id="product_office_cleaning" model="product.product"> <!-- Cleaning -->
-            <field name="product_pricing_ids"
-                   eval="[(6,0,[ref('product_pricing_1'), ref('product_pricing_2'), ref('product_pricing_3')])]"/>
-        </record>
-        <record id="product_car_leasing" model="product.product"> <!-- Car -->
-            <field name="product_pricing_ids"
-                   eval="[(6,0,[ref('product_pricing_4'), ref('product_pricing_5'), ref('product_pricing_6')])]"/>
-        </record>
-
 
         <!-- Default Subscription Templates
              Defined in data and extended here to add demo values for some fields -->
         <record id="monthly_template" model="sale.order.template">
             <field name="name">Monthly</field>
-            <field name="recurrence_id" ref="sale_temporal.recurrence_monthly"/>
-            <field name="recurring_rule_boundary">limited</field>
-            <field name="recurring_rule_count">6</field>
-            <field name="recurring_rule_type">year</field>
-            <field name="user_closable" eval="True"/>
+            <field name="plan_id" ref="sale_subscription.subscription_plan_month"/>
+            <field name="is_unlimited" eval="False"/>
+            <field name="duration_value">6</field>
+            <field name="duration_unit">year</field>
         </record>
 
         <record id="montly_template_line" model="sale.order.template.line">
@@ -103,10 +116,10 @@
 
         <record id="yearly_template" model="sale.order.template">
             <field name="name">Yearly</field>
-            <field name="recurrence_id" ref="sale_temporal.recurrence_yearly"/>
-            <field name="recurring_rule_boundary">limited</field>
-            <field name="recurring_rule_type">year</field>
-            <field name="recurring_rule_count">6</field>
+            <field name="plan_id" ref="sale_subscription.subscription_plan_year"/>
+            <field name="is_unlimited" eval="False"/>
+            <field name="duration_value">6</field>
+            <field name="duration_unit">year</field>
         </record>
 
         <record id="yearly_template_line" model="sale.order.template.line">
@@ -157,7 +170,7 @@
 
         <record id="subscription_portal_3" model="sale.order">
             <field name="partner_id" ref="base.partner_demo_portal"/>
-            <field name="recurrence_id" ref="sale_temporal.recurrence_monthly"/>
+            <field name="plan_id" ref="sale_subscription.subscription_plan_month"/>
             <field name="user_id" ref="base.user_admin"/>
             <field name="state">draft</field>
             <field name="client_order_ref">subscription_portal_3</field>

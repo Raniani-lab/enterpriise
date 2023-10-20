@@ -49,7 +49,7 @@ class SaleOrderAlert(models.Model):
     trigger_condition = fields.Selection([
         ('on_create_or_write', 'Modification'), ('on_time', 'Timed Condition')], string='Trigger On', required=True, default='on_create_or_write')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
-    subscription_template_ids = fields.Many2many('sale.order.template', string='Quotation templates', check_company=True)
+    subscription_plan_ids = fields.Many2many('sale.subscription.plan', string='Subscription Plans', check_company=True)
     customer_ids = fields.Many2many('res.partner', string='Customers')
     company_id = fields.Many2one('res.company', string='Company')
     mrr_min = fields.Monetary('MRR Range Min', currency_field='currency_id')
@@ -144,8 +144,8 @@ class SaleOrderAlert(models.Model):
 
     def _get_alert_domain(self):
         domain = [('is_subscription', '=', True)]
-        if self.subscription_template_ids:
-            domain += [('sale_order_template_id', 'in', self.subscription_template_ids.ids)]
+        if self.subscription_plan_ids:
+            domain += [('plan_id', 'in', self.subscription_plan_ids.ids)]
         if self.customer_ids:
             domain += [('partner_id', 'in', self.customer_ids.ids)]
         if self.team_ids:

@@ -3,9 +3,9 @@
 
     <template id="report_saleorder_document" inherit_id="sale.report_saleorder_document" priority="50">
         <xpath expr="//div[@name='informations_reference']" position="after">
-            <div t-if="doc.is_subscription" class="col-auto col-3 mw-100 mb-2" name="recurrence">
-                <strong>Recurrence:</strong>
-                <p class="m-0" t-field="doc.recurrence_id.name"/>
+            <div t-if="doc.is_subscription" class="col-auto col-3 mw-100 mb-2" name="plan">
+                <strong>Recurring Plan:</strong>
+                <p class="m-0" t-field="doc.plan_id.name"/>
             </div>
         </xpath>
     </template>

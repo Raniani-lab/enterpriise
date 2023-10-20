@@ -3118,6 +3118,34 @@ QUnit.module("View Editors", (hooks) => {
         await nextTick();
         assert.verifySteps([], "we should not save a form editor");
     });
+
+    QUnit.test("fields in arch works correctly", async (assert) => {
+        serverData.models.partner.fields = {
+            partner_ids: { relation: "partner", type: "one2many" },
+            some_field: { type: "char", string: "Some Field" },
+        };
+        serverData.models.partner.records = [];
+        await createViewEditor({
+            type: "form",
+            resModel: "partner",
+            serverData,
+            arch: `
+                <form>
+                    <field name="display_name"/>
+                    <field name="partner_ids" >
+                        <tree>
+                            <field name="some_field" />
+                        </tree>
+                    </field>
+                </form>`,
+        });
+
+        await click(target, ".o_web_studio_existing_fields_header");
+        assert.strictEqual(
+            target.querySelector(".o_web_studio_existing_fields").textContent,
+            "Some FieldIDLast Modified onName"
+        );
+    });
 });
 
 QUnit.module("View Editors", (hooks) => {

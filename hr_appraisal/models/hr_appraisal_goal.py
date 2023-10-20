@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, api, models, _
+from odoo.exceptions import UserError
 from odoo.tools.misc import get_lang
 
 
@@ -27,7 +28,7 @@ class HrAppraisalGoal(models.Model):
     ], string="Progress", default="000", tracking=True, required=True)
     description = fields.Html()
     deadline = fields.Date(tracking=True)
-    is_manager = fields.Boolean(compute='_compute_is_manager')
+    is_manager = fields.Boolean(compute='_compute_is_manager', search='_search_is_manager')
     tag_ids = fields.Many2many('hr.appraisal.goal.tag', string="Tags")
 
     @api.depends_context('uid')
@@ -37,6 +38,18 @@ class HrAppraisalGoal(models.Model):
         self.is_manager =\
             self.env.user.has_group('hr_appraisal.group_hr_appraisal_user')\
             or len(self.employee_autocomplete_ids) > 1
+
+    def _search_is_manager(self, operator, value):
+        if operator not in ('=', '!=') or not isinstance(value, bool):
+            raise UserError(_('Operation not supported'))
+        if self.env.user.has_group('hr_appraisal.group_hr_appraisal_user'):
+            return [(1, '=', 1)]
+        domain_operator = 'not in' if (operator == '=') ^ value else 'in'
+        return [(
+            'employee_id',
+            domain_operator,
+            self.env.user.get_employee_autocomplete_ids().ids
+        )]
 
     @api.depends('employee_id')
     def _compute_manager_id(self):

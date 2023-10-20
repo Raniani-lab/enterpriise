@@ -41,8 +41,6 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/src/views/**/*.js',
             'web_enterprise/static/src/views/**/*.xml',
 
-            'web_enterprise/static/src/legacy/**/*.js',
-
             # Don't include dark mode files in light mode
             ('remove', 'web_enterprise/static/src/**/*.dark.scss'),
         ],

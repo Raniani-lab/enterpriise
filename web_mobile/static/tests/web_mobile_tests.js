@@ -1,13 +1,10 @@
 /** @odoo-module **/
 
-import Dialog from "@web/legacy/js/core/dialog";
-import dom from "@web/legacy/js/core/dom";
 import { session } from "@web/session";
 import testUtils from "@web/../tests/legacy/helpers/test_utils";
-import Widget from "@web/legacy/js/core/widget";
 
 import { useBackButton } from "@web_mobile/js/core/hooks";
-import { accountMethodsForMobile, BackButtonEventMixin } from "@web_mobile/js/core/mixins";
+import { accountMethodsForMobile } from "@web_mobile/js/core/mixins";
 import mobile from "@web_mobile/js/services/core";
 /*import UserPreferencesFormView from "web_mobile.UserPreferencesFormView";*/
 
@@ -97,167 +94,6 @@ QUnit.module("web_mobile", {
         setupViewRegistries();
     },
 }, function () {
-    QUnit.module("core", function () {
-        QUnit.test("BackButtonManager", async function (assert) {
-            assert.expect(13);
-
-            patchWithCleanup(mobile.methods, {
-                overrideBackButton({ enabled }) {
-                    assert.step(`overrideBackButton: ${enabled}`);
-                },
-            });
-
-            const { BackButtonManager, BackButtonListenerError } = mobile;
-            const manager = new BackButtonManager();
-            const DummyWidget = Widget.extend({
-                _onBackButton(ev) {
-                    assert.step(`${ev.type} event`);
-                },
-            });
-            const dummy = new DummyWidget();
-
-            manager.addListener(dummy, dummy._onBackButton);
-            assert.verifySteps(["overrideBackButton: true"]);
-
-            // simulate 'backbutton' event triggered by the app
-            await testUtils.dom.triggerEvent(document, "backbutton");
-            assert.verifySteps(["backbutton event"]);
-
-            manager.removeListener(dummy);
-            assert.verifySteps(["overrideBackButton: false"]);
-            await testUtils.dom.triggerEvent(document, "backbutton");
-            assert.verifySteps([], "shouldn't trigger any handler");
-
-            manager.addListener(dummy, dummy._onBackButton);
-            assert.throws(
-                () => {
-                    manager.addListener(dummy, dummy._onBackButton);
-                },
-                BackButtonListenerError,
-                "should raise an error if adding a listener twice"
-            );
-            assert.verifySteps(["overrideBackButton: true"]);
-
-            manager.removeListener(dummy);
-            assert.throws(
-                () => {
-                    manager.removeListener(dummy);
-                },
-                BackButtonListenerError,
-                "should raise an error if removing a non-registered listener"
-            );
-            assert.verifySteps(["overrideBackButton: false"]);
-
-            dummy.destroy();
-        });
-    });
-
-    QUnit.module("BackButtonEventMixin");
-
-    QUnit.test("widget should receive a backbutton event", async function (assert) {
-        assert.expect(5);
-
-        patchWithCleanup(mobile.methods, {
-            overrideBackButton({ enabled }) {
-                assert.step(`overrideBackButton: ${enabled}`);
-            },
-        });
-
-        const DummyWidget = Widget.extend(BackButtonEventMixin, {
-            _onBackButton(ev) {
-                assert.step(`${ev.type} event`);
-            },
-        });
-        const backButtonEvent = new Event("backbutton");
-        const dummy = new DummyWidget();
-        dummy.appendTo($("<div>"));
-
-        // simulate 'backbutton' event triggered by the app
-        document.dispatchEvent(backButtonEvent);
-        // waiting nextTick to match testUtils.dom.triggerEvents() behavior
-        await testUtils.nextTick();
-
-        assert.verifySteps([], "shouldn't have register handle before attached to the DOM");
-
-        dom.append($("qunit-fixture"), dummy.$el, {
-            in_DOM: true,
-            callbacks: [{ widget: dummy }],
-        });
-
-        // simulate 'backbutton' event triggered by the app
-        document.dispatchEvent(backButtonEvent);
-        await testUtils.nextTick();
-
-        dom.detach([{ widget: dummy }]);
-
-        assert.verifySteps(
-            ["overrideBackButton: true", "backbutton event", "overrideBackButton: false"],
-            "should have enabled/disabled the back-button override"
-        );
-
-        dummy.destroy();
-    });
-
-    QUnit.test("multiple widgets should receive backbutton events in the right order", async function (assert) {
-        assert.expect(6);
-
-        patchWithCleanup(mobile.methods, {
-            overrideBackButton({ enabled }) {
-                assert.step(`overrideBackButton: ${enabled}`);
-            },
-        });
-
-        const DummyWidget = Widget.extend(BackButtonEventMixin, {
-            init(parent, { name }) {
-                this._super.apply(this, arguments);
-                this.name = name;
-            },
-            _onBackButton(ev) {
-                assert.step(`${this.name}: ${ev.type} event`);
-                dom.detach([{ widget: this }]);
-            },
-        });
-        const backButtonEvent = new Event("backbutton");
-        const dummy1 = new DummyWidget(null, { name: "dummy1" });
-        dom.append($("qunit-fixture"), dummy1.$el, {
-            in_DOM: true,
-            callbacks: [{ widget: dummy1 }],
-        });
-
-        const dummy2 = new DummyWidget(null, { name: "dummy2" });
-        dom.append($("qunit-fixture"), dummy2.$el, {
-            in_DOM: true,
-            callbacks: [{ widget: dummy2 }],
-        });
-
-        const dummy3 = new DummyWidget(null, { name: "dummy3" });
-        dom.append($("qunit-fixture"), dummy3.$el, {
-            in_DOM: true,
-            callbacks: [{ widget: dummy3 }],
-        });
-
-        // simulate 'backbutton' events triggered by the app
-        document.dispatchEvent(backButtonEvent);
-        // waiting nextTick to match testUtils.dom.triggerEvents() behavior
-        await testUtils.nextTick();
-        document.dispatchEvent(backButtonEvent);
-        await testUtils.nextTick();
-        document.dispatchEvent(backButtonEvent);
-        await testUtils.nextTick();
-
-        assert.verifySteps([
-            "overrideBackButton: true",
-            "dummy3: backbutton event",
-            "dummy2: backbutton event",
-            "dummy1: backbutton event",
-            "overrideBackButton: false",
-        ]);
-
-        dummy1.destroy();
-        dummy2.destroy();
-        dummy3.destroy();
-    });
-
     QUnit.module("useBackButton");
 
     QUnit.test("component should receive a backbutton event", async function (assert) {
@@ -414,52 +250,6 @@ QUnit.module("web_mobile", {
             ["backbutton event", "overrideBackButton: false"],
             "should have disabled the back-button override during unmount"
         );
-    });
-
-    QUnit.module("Dialog");
-
-    QUnit.test("dialog is closable with backbutton event", async function (assert) {
-        assert.expect(7);
-
-        patchWithCleanup(mobile.methods, {
-            overrideBackButton({ enabled }) {
-                assert.step(`overrideBackButton: ${enabled}`);
-            },
-        });
-
-        patchWithCleanup(Dialog.prototype, {
-            close() {
-                assert.step("close");
-                return super.close(...arguments);
-            },
-        });
-
-        const parent = new Widget();
-
-        const backButtonEvent = new Event("backbutton");
-        const dialog = new Dialog(parent, {
-            res_model: "partner",
-            res_id: 1,
-        }).open();
-        await dialog.opened().then(() => {
-            assert.step("opened");
-        });
-        assert.containsOnce(document.body, ".modal", "should have a modal");
-
-        // simulate 'backbutton' event triggered by the app waiting
-        document.dispatchEvent(backButtonEvent);
-        // nextTick to match testUtils.dom.triggerEvents() behavior
-        await testUtils.nextTick();
-
-        // The goal of this assert is to check that our event called the
-        // opened/close methods on Dialog.
-        assert.verifySteps(
-            ["overrideBackButton: true", "opened", "close", "overrideBackButton: false"],
-            "should have open/close dialog"
-        );
-        assert.containsNone(document.body, ".modal", "modal should be closed");
-
-        parent.destroy();
     });
 
     QUnit.module("Popover");

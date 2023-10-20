@@ -97,7 +97,7 @@ class BackButtonManager {
     /**
      * Enables the func listener, overriding default back button behavior.
      *
-     * @param {Widget|Component} listener
+     * @param {Component} listener
      * @param {function} func
      * @throws {BackButtonListenerError} if the listener has already been registered
      */
@@ -118,7 +118,7 @@ class BackButtonManager {
      * Disables the func listener, restoring the default back button behavior if
      * no other listeners are present.
      *
-     * @param {Widget|Component} listener
+     * @param {Component} listener
      * @throws {BackButtonListenerError} if the listener has already been unregistered
      */
     removeListener(listener) {

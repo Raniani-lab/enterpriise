@@ -158,3 +158,11 @@ class PaymentTransaction(models.Model):
                 automatic = tx.subscription_action == 'automatic_send_mail'
                 for order in orders:
                     order._subscription_post_success_payment(tx, tx.invoice_ids, automatic=automatic)
+
+    def _set_canceled(self, **kwargs):
+        self.sale_order_ids.filtered('is_subscription').pending_transaction = False
+        return super()._set_canceled(**kwargs)
+
+    def _set_error(self, state_message):
+        self.sale_order_ids.filtered('is_subscription').pending_transaction = False
+        return super()._set_error(state_message)

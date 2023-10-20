@@ -293,6 +293,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
             self.subscription._create_recurring_invoice()
 
         invoice = self.subscription.order_line.invoice_lines.move_id
+        self.assertFalse(self.subscription.pending_transaction, "The pending transaction flag should not remain")
         self.assertFalse(invoice, "The draft invoice should be deleted when something goes wrong in _handle_automatic_invoices")
         self.assertEqual(
             self.subscription.next_invoice_date, self.subscription.start_date,

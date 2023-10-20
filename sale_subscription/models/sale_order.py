@@ -1660,6 +1660,7 @@ class SaleOrder(models.Model):
         try:
             existing_transactions = self.transaction_ids
             # execute payment
+            self.pending_transaction = True
             transaction = self._do_payment(payment_token, invoice, auto_commit=auto_commit)
             # commit change as soon as we try the payment, so we have a trace in the payment_transaction table
 
@@ -1669,9 +1670,8 @@ class SaleOrder(models.Model):
                 self._subscription_commit_cursor(auto_commit)
                 return
             else: #  transaction.renewal_state in ['pending', 'authorized', 'done']
-                self.pending_transaction = True
                 self._subscription_commit_cursor(auto_commit)
-                self.with_context(mail_notrack=True).write({'payment_exception': False, 'pending_transaction': False})
+                self.with_context(mail_notrack=True).write({'payment_exception': False})
                 invoice._post()
                 self._subscription_commit_cursor(auto_commit)
             # if no transaction or failure, log error, rollback and remove invoice

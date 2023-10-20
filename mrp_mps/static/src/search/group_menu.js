@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { SearchDropdownItem } from "@web/search/search_dropdown_item/search_dropdown_item";
+import { CheckboxItem } from "@web/core/dropdown/checkbox_item";
 import { Component } from "@odoo/owl";
 
 export class GroupMenu extends Component {
@@ -17,4 +17,4 @@ export class GroupMenu extends Component {
 }
 
 GroupMenu.template = "mrp_mps.GroupMenu";
-GroupMenu.components = { SearchDropdownItem };
+GroupMenu.components = { CheckboxItem };

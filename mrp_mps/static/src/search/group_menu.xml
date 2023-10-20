@@ -6,76 +6,76 @@
             <div class="px-3 fs-5 mb-2">
                 <h5 class="o_dropdown_title d-inline">Rows</h5>
             </div>
-            <SearchDropdownItem
+            <CheckboxItem
                 class="{ o_menu_item: true, selected: items.mrp_mps_show_starting_inventory }"
                 checked="items.mrp_mps_show_starting_inventory"
                 parentClosingMode="'none'"
                 onSelected="() => this._toggle_group('mrp_mps_show_starting_inventory')">
                     Starting Inventory
-            </SearchDropdownItem>
-            <SearchDropdownItem
+            </CheckboxItem>
+            <CheckboxItem
                 class="{ o_menu_item: true, selected: items.mrp_mps_show_demand_forecast }"
                 checked="items.mrp_mps_show_demand_forecast"
                 parentClosingMode="'none'"
                 onSelected="() => this._toggle_group('mrp_mps_show_demand_forecast')">
                     Demand Forecast
-            </SearchDropdownItem>
-            <SearchDropdownItem
+            </CheckboxItem>
+            <CheckboxItem
                 class="{ o_menu_item: true, selected: items.mrp_mps_show_actual_demand }"
                 checked="items.mrp_mps_show_actual_demand"
                 parentClosingMode="'none'"
                 onSelected="() => this._toggle_group('mrp_mps_show_actual_demand')">
                     Actual Demand
-            </SearchDropdownItem>
-            <SearchDropdownItem
+            </CheckboxItem>
+            <CheckboxItem
                 class="{ o_menu_item: true, selected: items.mrp_mps_show_actual_demand_year_minus_1 }"
                 checked="items.mrp_mps_show_actual_demand_year_minus_1"
                 parentClosingMode="'none'"
                 onSelected="() => this._toggle_group('mrp_mps_show_actual_demand_year_minus_1')">
                     Actual Demand Y-1
-            </SearchDropdownItem>
-            <SearchDropdownItem
+            </CheckboxItem>
+            <CheckboxItem
                 class="{ o_menu_item: true, selected: items.mrp_mps_show_actual_demand_year_minus_2 }"
                 checked="items.mrp_mps_show_actual_demand_year_minus_2"
                 parentClosingMode="'none'"
                 onSelected="() => this._toggle_group('mrp_mps_show_actual_demand_year_minus_2')">
                     Actual Demand Y-2
-            </SearchDropdownItem>
-            <SearchDropdownItem
+            </CheckboxItem>
+            <CheckboxItem
                 class="{ o_menu_item: true, selected: items.mrp_mps_show_indirect_demand }"
                 checked="items.mrp_mps_show_indirect_demand"
                 parentClosingMode="'none'"
                 onSelected="() => this._toggle_group('mrp_mps_show_indirect_demand')">
                     Indirect Demand Forecast
-            </SearchDropdownItem>
-            <SearchDropdownItem
+            </CheckboxItem>
+            <CheckboxItem
                 class="{ o_menu_item: true, selected: items.mrp_mps_show_to_replenish }"
                 checked="items.mrp_mps_show_to_replenish"
                 parentClosingMode="'none'"
                 onSelected="() => this._toggle_group('mrp_mps_show_to_replenish')">
                     To Replenish
-            </SearchDropdownItem>
-            <SearchDropdownItem
+            </CheckboxItem>
+            <CheckboxItem
                 class="{ o_menu_item: true, selected: items.mrp_mps_show_actual_replenishment }"
                 checked="items.mrp_mps_show_actual_replenishment"
                 parentClosingMode="'none'"
                 onSelected="() => this._toggle_group('mrp_mps_show_actual_replenishment')">
                     Actual Replenishment
-            </SearchDropdownItem>
-            <SearchDropdownItem
+            </CheckboxItem>
+            <CheckboxItem
                 class="{ o_menu_item: true, selected: items.mrp_mps_show_safety_stock }"
                 checked="items.mrp_mps_show_safety_stock"
                 parentClosingMode="'none'"
                 onSelected="() => this._toggle_group('mrp_mps_show_safety_stock')">
                     Forecasted Stock
-            </SearchDropdownItem>
-            <SearchDropdownItem
+            </CheckboxItem>
+            <CheckboxItem
                 class="{ o_menu_item: true, selected: items.mrp_mps_show_available_to_promise }"
                 checked="items.mrp_mps_show_available_to_promise"
                 parentClosingMode="'none'"
                 onSelected="() => this._toggle_group('mrp_mps_show_available_to_promise')">
                     Available to Promise
-            </SearchDropdownItem>
+            </CheckboxItem>
         </div>
     </t>
 

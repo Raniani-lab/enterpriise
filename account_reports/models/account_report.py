@@ -401,7 +401,7 @@ class AccountReport(models.Model):
             fy_day = self.env.company.fiscalyear_last_day
             fy_month = int(self.env.company.fiscalyear_last_month)
             if mode == 'single':
-                string = _('As of %s') % (format_date(self.env, fields.Date.to_string(date_to)))
+                string = _('As of %s', format_date(self.env, date_to))
             elif period_type == 'year' or (
                     period_type == 'fiscalyear' and (date_from, date_to) == date_utils.get_fiscal_year(date_to)):
                 string = date_to.strftime('%Y')
@@ -416,7 +416,7 @@ class AccountReport(models.Model):
             else:
                 dt_from_str = format_date(self.env, fields.Date.to_string(date_from))
                 dt_to_str = format_date(self.env, fields.Date.to_string(date_to))
-                string = _('From %s\nto  %s') % (dt_from_str, dt_to_str)
+                string = _('From %s\nto  %s', dt_from_str, dt_to_str)
 
         return {
             'string': string,

@@ -55,7 +55,7 @@ class HrContractSalaryOffer(models.Model):
                 name = offer.applicant_id.emp_id.name or offer.applicant_id.partner_id.name or offer.applicant_id.partner_name
             else:
                 name = offer.employee_contract_id.employee_id.name
-            offer.display_name = _("Offer [%s] for %s / Budget: %s") % (offer.offer_end_date or 'No end date', name, format_amount(offer.env, offer.final_yearly_costs, offer.currency_id))
+            offer.display_name = _("Offer [%s] for %s / Budget: %s", offer.offer_end_date or 'No end date', name, format_amount(offer.env, offer.final_yearly_costs, offer.currency_id))
 
     def action_jump_to_offer(self):
         self.ensure_one()

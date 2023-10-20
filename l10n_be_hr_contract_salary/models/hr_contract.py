@@ -167,7 +167,7 @@ class HrContract(models.Model):
             transmission = vehicle_id.transmission
             door_number = odometer = immatriculation = trailer_hook = False
             bik_display = "%s €" % round(vehicle_id.default_atn, 2)
-            monthly_cost_display = _("%s € (CO2 Fee) + %s € (Rent)") % (round(vehicle_id.co2_fee, 2), round(vehicle_id.default_total_depreciated_cost - vehicle_id.co2_fee, 2))
+            monthly_cost_display = _("%s € (CO2 Fee) + %s € (Rent)", round(vehicle_id.co2_fee, 2), round(vehicle_id.default_total_depreciated_cost - vehicle_id.co2_fee, 2))
         else:
             co2 = vehicle_id.co2
             fuel_type = vehicle_id.fuel_type
@@ -177,7 +177,7 @@ class HrContract(models.Model):
             transmission = vehicle_id.transmission
             trailer_hook = "Yes" if vehicle_id.trailer_hook else "No"
             bik_display = "%s €" % round(vehicle_id.atn, 2)
-            monthly_cost_display = _("%s € (CO2 Fee) + %s € (Rent)") % (round(vehicle_id.co2_fee, 2), round(vehicle_id.total_depreciated_cost - vehicle_id.co2_fee, 2))
+            monthly_cost_display = _("%s € (CO2 Fee) + %s € (Rent)", round(vehicle_id.co2_fee, 2), round(vehicle_id.total_depreciated_cost - vehicle_id.co2_fee, 2))
 
         car_elements = {
             'CO2 Emission': co2,

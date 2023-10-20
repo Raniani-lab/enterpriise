@@ -356,7 +356,7 @@ class SpanishTaxReportCustomHandler(models.AbstractModel):
     def _extract_tin(self, partner, error_if_no_tin=True):
         if not partner.vat:
             if error_if_no_tin:
-                raise UserError(_("No TIN set for partner %s (id %d). Please define one.") % (partner.name, partner.id))
+                raise UserError(_("No TIN set for partner %s (id %d). Please define one.", partner.name, partner.id))
             else:
                 return ''
 
@@ -1012,7 +1012,7 @@ class SpanishMod347TaxReportCustomHandler(models.AbstractModel):
         # The country code is only mandatory if there is no province code (hence: no head office in Spain)
         if province_code == '99':
             if not line_partner.country_id or not line_partner.country_id.code:
-                raise UserError(_("Partner with %s (id %d) is not associated to any Spanish province, and should hence have a country code. For this, fill in its 'country' field.") % (line_partner.name, line_partner.id))
+                raise UserError(_("Partner with %s (id %d) is not associated to any Spanish province, and should hence have a country code. For this, fill in its 'country' field.", line_partner.name, line_partner.id))
 
             if line_partner.country_id.code == 'ES':
                 raise UserError(_("Partner %s (id %s) is located in Spain but does not have any province. Please set one.", line_partner.name, line_partner.id))
@@ -1210,7 +1210,7 @@ class SpanishMod349TaxReportCustomHandler(models.AbstractModel):
             original_invoice = refund_invoice.reversed_entry_id
             if not original_invoice:
                 raise UserError(_('Refund Invoice %s was created without a link to the original invoice that was credited, '
-                                  'while we need that information for this report. ') % (refund_invoice.display_name,))
+                                  'while we need that information for this report. ', refund_invoice.display_name))
 
             invoice_period, invoice_year = self._retrieve_period_and_year(original_invoice.date, trimester=report_period[-1] == 'T')
             group_key = (invoice_period, invoice_year, refund_invoice.l10n_es_reports_mod349_invoice_type)

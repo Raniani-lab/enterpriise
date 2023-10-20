@@ -165,10 +165,10 @@ class FetchmailServer(models.Model):
             msg = _('Incoming SII DTE result:<br/> '
                     '<li><b>ESTADO</b>: %s</li>'
                     '<li><b>REVISIONDTE/ESTADO</b>: %s</li>'
-                    '<li><b>REVISIONDTE/DETALLE</b>: %s</li>') % (
+                    '<li><b>REVISIONDTE/DETALLE</b>: %s</li>',
                       status, error_status, xml_content.findtext('REVISIONENVIO/REVISIONDTE/DETALLE'))
         else:
-            msg = _('Incoming SII DTE result:<br/><li><b>ESTADO</b>: %s</li>') % status
+            msg = _('Incoming SII DTE result:<br/><li><b>ESTADO</b>: %s</li>', status)
         for move in moves:
             move.message_post(body=msg)
 
@@ -203,7 +203,7 @@ class FetchmailServer(models.Model):
                 origin_type, 'claimed')
             move.write({'l10n_cl_dte_acceptation_status': status})
             move.with_context(no_new_invoice=True).message_post(
-                body=_('DTE reception status established as <b>%s</b> by incoming email') % status,
+                body=_('DTE reception status established as <b>%s</b> by incoming email', status),
                 attachments=[(att_name, att_content)])
 
     def _check_document_number_exists(self, partner_id, document_number, document_type, company_id):
@@ -309,7 +309,7 @@ class FetchmailServer(models.Model):
                        formatLang(self.env, move.amount_total, currency_obj=move.currency_id)))
             move.l10n_cl_dte_acceptation_status = 'received'
             moves.append(move)
-            _logger.info(_('New move has been created from DTE %s with id: %s') % (att_name, move.id))
+            _logger.info('New move has been created from DTE %s with id: %s', att_name, move.id)
         return moves
 
     def _get_invoice_form(self, company_id, partner, default_move_type, from_address, dte_xml, document_number,

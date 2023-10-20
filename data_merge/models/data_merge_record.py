@@ -602,7 +602,7 @@ AND NOT EXISTS (
 
         if len(active_ids) < 2:
             translated_desc = records.with_context(lang=get_lang(self.env).code)._description
-            raise UserError(_("You must select at least two %s in order to merge them.") % translated_desc)
+            raise UserError(_("You must select at least two %s in order to merge them.", translated_desc))
         if active_model not in self.env:
             raise ValidationError(_('The target model does not exists.'))
 

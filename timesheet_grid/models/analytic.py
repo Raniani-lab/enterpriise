@@ -370,7 +370,7 @@ class AnalyticLine(models.Model):
             if view_type == 'grid':
                 node.set('string', encoding_uom.name)
             else:
-                node.set('string', _('%s Spent') % (re.sub(r'[\(\)]', '', encoding_uom.name or '')))
+                node.set('string', _('%s Spent', re.sub(r'[\(\)]', '', encoding_uom.name or '')))
         return doc
 
     def _get_project_task_from_domain(self, domain):

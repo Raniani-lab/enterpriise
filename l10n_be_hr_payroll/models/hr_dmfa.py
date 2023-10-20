@@ -908,7 +908,7 @@ class HrDMFAReport(models.Model):
     @api.depends('reference', 'quarter', 'year')
     def _compute_name(self):
         for dmfa in self:
-            dmfa.name = _('%s %s quarter %s') % (dmfa.reference, dmfa.quarter, dmfa.year)
+            dmfa.name = _('%s %s quarter %s', dmfa.reference, dmfa.quarter, dmfa.year)
 
     @api.constrains('year')
     def _check_year(self):

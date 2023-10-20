@@ -15,7 +15,7 @@ class HrPayslipRun(models.Model):
     def create_advice(self):
         for run in self:
             if run.available_advice:
-                raise UserError(_("Payment advice already exists for %s, 'Set to Draft' to create a new advice.") % (run.name,))
+                raise UserError(_("Payment advice already exists for %s, 'Set to Draft' to create a new advice.", run.name))
             company = self.env.company
             advice = self.env['hr.payroll.advice'].create({
                         'batch_id': run.id,
@@ -28,7 +28,7 @@ class HrPayslipRun(models.Model):
                 # TODO is it necessary to interleave the calls ?
                 slip.action_payslip_done()
                 if not slip.employee_id.bank_account_id or not slip.employee_id.bank_account_id.acc_number:
-                    raise UserError(_('Please define bank account for the %s employee') % (slip.employee_id.name))
+                    raise UserError(_('Please define bank account for the %s employee', slip.employee_id.name))
                 payslip_line = self.env['hr.payslip.line'].search([('slip_id', '=', slip.id), ('code', '=', 'NET')], limit=1)
                 if payslip_line:
                     self.env['hr.payroll.advice.line'].create({

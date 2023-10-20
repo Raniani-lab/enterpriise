@@ -91,9 +91,12 @@ class AccountDebitNote(models.TransientModel):
         elif self.l10n_cl_edi_reference_doc_code == '2':
             default_values['line_ids'] = [[5, 0, 0], [0, 0, {
                 'account_id': move.journal_id.default_account_id.id,
-                'name': _('Where it says: %s should say: %s') % (
+                'name': _('Where it says: %s should say: %s',
                     self._context.get('default_l10n_cl_original_text'),
-                    self._context.get('default_l10n_cl_corrected_text')), 'quantity': 1, 'price_unit': 0.0, }, ], ]
+                    self._context.get('default_l10n_cl_corrected_text')),
+                'quantity': 1,
+                'price_unit': 0.0,
+            }]]
         return default_values
 
     def create_debit(self):
@@ -103,5 +106,5 @@ class AccountDebitNote(models.TransientModel):
             r.l10n_cl_journal_point_of_sale_type == 'online' and
             r.l10n_cl_dte_status not in ['accepted', 'objected']
         ):
-            raise UserError(_('You can add a debit note only if the %s is accepted or objected by SII. ') % move.name)
+            raise UserError(_('You can add a debit note only if the %s is accepted or objected by SII. ', move.name))
         return super(AccountDebitNote, self).create_debit()

@@ -859,9 +859,9 @@ class AccountEdiFormat(models.Model):
             return res
 
         if not move.company_id.vat:
-            res.append(_("VAT number is missing on company %s") % move.company_id.display_name)
+            res.append(_("VAT number is missing on company %s", move.company_id.display_name))
         if not move.commercial_partner_id.vat:
-            res.append(_("VAT number is missing on partner %s") % move.commercial_partner_id.display_name)
+            res.append(_("VAT number is missing on partner %s", move.commercial_partner_id.display_name))
         lines = move.invoice_line_ids.filtered(lambda line: line.display_type not in ('line_note', 'line_section'))
         for line in lines:
             taxes = line.tax_ids

@@ -61,8 +61,8 @@ class AccountMove(models.Model):
         self.l10n_cl_sii_send_ident = response.get('trackid')
         sii_response_status = response.get('estado')
         self.l10n_cl_dte_status = 'ask_for_status' if sii_response_status == 'REC' else 'rejected'
-        self.message_post(body=_('DTE has been sent to SII with response: %s') %
-                               self._l10n_cl_get_sii_reception_status_message_rest(sii_response_status))
+        self.message_post(body=_('DTE has been sent to SII with response: %s',
+                               self._l10n_cl_get_sii_reception_status_message_rest(sii_response_status)))
 
     def l10n_cl_verify_dte_status(self, send_dte_to_partner=True):
         if not self.l10n_latam_document_type_id._is_doc_type_ticket():

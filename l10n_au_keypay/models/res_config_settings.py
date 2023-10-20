@@ -24,7 +24,7 @@ class ResConfigSettings(models.TransientModel):
             'tag': 'display_notification',
             'params': {
                 'title': 'Payruns fetched',
-                'message': _("%s Payruns were fetched and added to your accounting") % (len(account_moves)),
+                'message': _("%s Payruns were fetched and added to your accounting", len(account_moves)),
                 'sticky': True,
             }
         }

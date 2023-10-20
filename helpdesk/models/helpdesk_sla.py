@@ -66,7 +66,7 @@ class HelpdeskSLA(models.Model):
     def copy(self, default=None):
         default = dict(default or {})
         if not default.get('name'):
-            default['name'] = _("%s (copy)") % (self.name)
+            default['name'] = _("%s (copy)", self.name)
         return super().copy(default)
 
     def action_open_helpdesk_ticket(self):

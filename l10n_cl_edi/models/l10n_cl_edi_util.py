@@ -74,7 +74,7 @@ def l10n_cl_edi_retry(max_retries=MAX_RETRIES, logger=None, custom_msg=None):
                 except Exception as error:
                     self._report_connection_err(error)
                     break
-            msg = _('- It was not possible to get a response after %s retries.') % max_retries
+            msg = _('- It was not possible to get a response after %s retries.', max_retries)
             if custom_msg is not None:
                 msg = custom_msg + msg
             self._report_connection_err(msg)

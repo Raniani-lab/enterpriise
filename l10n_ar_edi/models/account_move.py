@@ -170,11 +170,11 @@ class AccountMove(models.Model):
 
         if error_invoice:
             if error_invoice.exists():
-                msg = _('We couldn\'t validate the document "%s" (Draft Invoice *%s) in AFIP') % (
+                msg = _('We couldn\'t validate the document "%s" (Draft Invoice *%s) in AFIP',
                     error_invoice.partner_id.name, error_invoice.id)
             else:
                 msg = _('We couldn\'t validate the invoice in AFIP.')
-            msg += _('This is what we get:\n%s\n\nPlease make the required corrections and try again') % (return_info)
+            msg += _('This is what we get:\n%s\n\nPlease make the required corrections and try again', return_info)
 
             # if we've already validate any invoice, we've commit and we want to inform which invoices were validated
             # which one were not and the detail of the error we get. This ins neccesary because is not usual to have a
@@ -394,9 +394,17 @@ class AccountMove(models.Model):
 
         still_missing = verification_missing.filtered(lambda x: x.l10n_ar_afip_verification_result not in ['A', 'O'])
         if still_missing:
-            text = 'these vendor bills' if len(still_missing) > 1 else 'this vendor bill'
-            raise UserError(_('We can not post %s in Odoo because the AFIP verification fail: %s\nPlease verify in AFIP manually'
-                              ' and review the bill chatter for more information') % (text, '\n * '.join(still_missing.mapped('display_name'))))
+            if len(still_missing) > 1:
+                raise UserError(_(
+                    'We can not post these vendor bills in Odoo because the '
+                    'AFIP verification fail: %s\nPlease verify in AFIP '
+                    'manually and review the bill chatter for more information',
+                    '\n * '.join(still_missing.mapped('display_name'))))
+            raise UserError(_(
+                'We can not post this vendor bill in Odoo because the AFIP '
+                'verification fail: %s\nPlease verify in AFIP manually and '
+                'review the bill chatter for more information',
+                still_missing.display_name))
 
     def _is_mipyme_fce(self):
         """ True of False if the invoice is a mipyme document """

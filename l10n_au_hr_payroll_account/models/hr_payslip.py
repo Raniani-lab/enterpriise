@@ -16,10 +16,10 @@ class HrPayslip(models.Model):
     def _generate_aba_file(self, journal_id):
         bank_account = journal_id.bank_account_id
         if bank_account.acc_type != 'aba' or not bank_account.aba_bsb:
-            raise UserError(_("The account %s, of journal '%s', is not valid for ABA.\nEither its account number is incorrect or it has no BSB set.") % (bank_account.acc_number, journal_id.name))
+            raise UserError(_("The account %s, of journal '%s', is not valid for ABA.\nEither its account number is incorrect or it has no BSB set.", bank_account.acc_number, journal_id.name))
 
         if not journal_id.aba_fic or not journal_id.aba_user_spec or not journal_id.aba_user_number:
-            raise UserError(_("The account %s, of journal '%s', is not set up for ABA payslips.\nPlease fill in its ABA fields.") % (bank_account.acc_number, journal_id.name))
+            raise UserError(_("The account %s, of journal '%s', is not set up for ABA payslips.\nPlease fill in its ABA fields.", bank_account.acc_number, journal_id.name))
 
         for payslip in self:
             if payslip.employee_id.bank_account_id.acc_type != 'aba' or not payslip.employee_id.bank_account_id.aba_bsb:

@@ -75,7 +75,7 @@ class AccountMove(models.Model):
             if not self.l10n_cl_customs_transport_type:
                 msgs.append(_('a transport type'))
             if self.currency_id == self.company_id.currency_id:
-                msgs.append(_('a different currency than %s') % self.company_id.currency_id.name)
+                msgs.append(_('a different currency than %s', self.company_id.currency_id.name))
             if not self.invoice_incoterm_id and self.l10n_cl_customs_service_indicator not in ['3', '4', '5']:
                 msgs.append(_('an Incoterm'))
             if not (self.l10n_cl_port_origin_id and self.l10n_cl_port_destination_id) and \
@@ -84,5 +84,5 @@ class AccountMove(models.Model):
             if self.l10n_cl_customs_quantity_of_packages <= 0 and self.l10n_cl_customs_service_indicator in [False, '5']:
                 msgs.append(_('the number of packages when exporting goods'))
             if msgs:
-                raise UserError(_('You must set %s on invoice %s') % (', '.join(msgs), self._get_move_display_name()))
+                raise UserError(_('You must set %s on invoice %s', ', '.join(msgs), self._get_move_display_name()))
         return super()._l10n_cl_edi_post_validation()

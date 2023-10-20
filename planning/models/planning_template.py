@@ -73,7 +73,7 @@ class PlanningTemplate(models.Model):
             shift_template.name = '%s - %s %s' % (
                 format_time(shift_template.env, start_time, time_format='short').replace(':00 ', ' '),
                 format_time(shift_template.env, end_time, time_format='short').replace(':00 ', ' '),
-                _('(%s days span)') % (shift_template.duration_days) if shift_template.duration_days > 1 else ''
+                _('(%s days span)', shift_template.duration_days) if shift_template.duration_days > 1 else ''
             )
 
     @api.model

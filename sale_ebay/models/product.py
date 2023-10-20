@@ -377,7 +377,7 @@ class ProductTemplate(models.Model):
                 error_message = _(" You need to have at least 2 variations selected for a multi-variations listing.\n"
                                   " Or if you try to delete a variation, you cannot do it by unselecting it."
                                   " Setting the quantity to 0 is the safest method to make a variation unavailable.")
-            raise UserError(_("Error Encountered.\n'%s'") % (error_message,))
+            raise UserError(_("Error Encountered.\n%r", error_message))
 
     def _get_ebay_images_attachments(self):
         """Images need to follow some guidelines to be accepted on ebay, otherwise they may generate errors

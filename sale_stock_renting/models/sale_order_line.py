@@ -168,7 +168,7 @@ class RentalOrderLine(models.Model):
             lot_quant = self.env['stock.quant']._gather(self.product_id, location_id, lot_id)
             lot_quant = lot_quant.filtered(lambda quant: quant.quantity == 1.0)
             if not lot_quant:
-                raise ValidationError(_("No valid quant has been found in location %s for serial number %s!") % (location_id.name, lot_id.name))
+                raise ValidationError(_("No valid quant has been found in location %s for serial number %s!", location_id.name, lot_id.name))
                 # Best fallback strategy??
                 # Make a stock move without specifying quants and lots?
                 # Let the move be created with the erroneous quant???

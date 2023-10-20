@@ -727,7 +727,7 @@ class WebStudioController(http.Controller):
             records = request.env[model_name].search([(field_name, 'not in', selection_values)])
             if records and not force_edit:
                 message = _("""There are %s records using selection values not listed in those you are trying to save.
-Are you sure you want to remove the selection values of those records?""") % len(records)
+Are you sure you want to remove the selection values of those records?""", len(records))
                 return {'records_linked': len(records), 'message': message}
             records.write({field_name: False})
 
@@ -1686,6 +1686,6 @@ Are you sure you want to remove the selection values of those records?""") % len
         else:
             check_method_name(method_name)
             if not callable(getattr(model, method_name)):
-                raise ValidationError(_('The method %s does not exist on the model %s.') % (method_name, model))
+                raise ValidationError(_('The method %s does not exist on the model %s.', method_name, model))
             else:
                 return True

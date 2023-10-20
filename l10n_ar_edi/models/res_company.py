@@ -117,7 +117,7 @@ class ResCompany(models.Model):
         exception when it has not been defined yet """
         self.ensure_one()
         if not self.l10n_ar_afip_ws_environment:
-            raise UserError(_('AFIP environment not configured for company "%s", please check accounting settings') % (self.name))
+            raise UserError(_('AFIP environment not configured for company %r, please check accounting settings', self.name))
         return self.l10n_ar_afip_ws_environment
 
     def _l10n_ar_get_connection(self, afip_ws):

@@ -273,7 +273,7 @@ class L10nEcWizardAccountWithhold(models.TransientModel):
                 account = self._get_partner_account(self.partner_id, self.withhold_type)
                 vals = {
                     **self._get_move_line_default_values(line, amount, 'in_withhold'),
-                    'name': _('Withhold on: %s') % invoice.name,
+                    'name': _('Withhold on: %s', invoice.name),
                     'account_id': account.id,
                 }
                 total_lines.append(vals)

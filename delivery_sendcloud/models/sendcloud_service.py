@@ -31,7 +31,7 @@ class SendCloud:
             from_country = order.warehouse_id.partner_id.country_id.code
             error_lines = order.order_line.filtered(lambda line: not line.product_id.weight and not line.is_delivery and line.product_id.type != 'service' and not line.display_type)
             if error_lines:
-                raise UserError(_("The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n %s") % ", ".join(error_lines.product_id.mapped('name')))
+                raise UserError(_("The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n %s", ", ".join(error_lines.product_id.mapped('name'))))
             packages = carrier._get_packages_from_order(order, carrier.sendcloud_default_package_type_id)
             total_weight = sum(pack.weight for pack in packages)
         elif picking:
@@ -219,7 +219,7 @@ class SendCloud:
             apply_rules = picking.carrier_id.sendcloud_shipping_rules in ['return', 'both']
         error_lines = picking.move_ids.filtered(lambda line: not line.weight)
         if error_lines:
-            raise UserError(_("The weight of some products is missing: \n %s") % ", ".join(error_lines.product_id.mapped('name')))
+            raise UserError(_("The weight of some products is missing: \n %s", ", ".join(error_lines.product_id.mapped('name'))))
         parcels = []
         delivery_packages = picking.carrier_id._get_packages_from_picking(picking, picking.carrier_id.sendcloud_default_package_type_id)
         sale_order = picking.sale_id

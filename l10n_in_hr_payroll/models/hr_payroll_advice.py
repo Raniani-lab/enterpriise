@@ -42,7 +42,7 @@ class HrPayrollAdvice(models.Model):
             payslips = self.env['hr.payslip'].search([('date_from', '<=', advice.date), ('date_to', '>=', advice.date), ('state', '=', 'done')])
             for slip in payslips:
                 if not slip.employee_id.bank_account_id and not slip.employee_id.bank_account_id.acc_number:
-                    raise UserError(_('Please define bank account for the %s employee') % (slip.employee_id.name,))
+                    raise UserError(_('Please define bank account for the %s employee', slip.employee_id.name))
                 payslip_line = self.env['hr.payslip.line'].search([('slip_id', '=', slip.id), ('code', '=', 'NET')], limit=1)
                 if payslip_line:
                     self.env['hr.payroll.advice.line'].create({

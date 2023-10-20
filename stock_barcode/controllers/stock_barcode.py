@@ -61,9 +61,9 @@ class StockBarcodeController(http.Controller):
                 return ret_open_package
 
         if request.env.user.has_group('stock.group_stock_multi_locations'):
-            return {'warning': _('No picking or location or product corresponding to barcode %(barcode)s') % {'barcode': barcode}}
+            return {'warning': _('No picking or location or product corresponding to barcode %(barcode)s', barcode=barcode)}
         else:
-            return {'warning': _('No picking or product corresponding to barcode %(barcode)s') % {'barcode': barcode}}
+            return {'warning': _('No picking or product corresponding to barcode %(barcode)s', barcode=barcode)}
 
     @http.route('/stock_barcode/save_barcode_data', type='json', auth='user')
     def save_barcode_data(self, model, res_id, write_field, write_vals):

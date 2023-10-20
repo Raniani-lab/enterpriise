@@ -12,7 +12,7 @@ class AccountBatchPayment(models.Model):
     def _validate_bank_for_nacha(self, payment):
         bank = payment.partner_bank_id
         if not bank.aba_routing:
-            raise ValidationError(_("Please set an ABA routing number on the %s bank account for %s.") % (bank.display_name, payment.partner_id.display_name))
+            raise ValidationError(_("Please set an ABA routing number on the %s bank account for %s.", bank.display_name, payment.partner_id.display_name))
 
     def _validate_journal_for_nacha(self):
         journal = self.journal_id

@@ -38,11 +38,14 @@ class res_company(models.Model):
             'company': self.name,
         }
         if rule_type != 'sale':
-            return _('Generate a %(validation)s %(generated_object)s\
-                using warehouse %(warehouse)s when a company confirms a %(event_type)s for %(company)s.') % text
+            return _(
+                'Generate a %(validation)s %(generated_object)s using '
+                'warehouse %(warehouse)s when a company confirms a '
+                '%(event_type)s for %(company)s.', **text)
         else:
-            return _('Generate a %(validation)s %(generated_object)s\
-                when a company confirms a %(event_type)s for %(company)s.') % text
+            return _(
+                'Generate a %(validation)s %(generated_object)s when a '
+                'company confirms a %(event_type)s for %(company)s.', **text)
 
     @api.depends('rule_type', 'auto_validation', 'warehouse_id', 'name')
     def _compute_intercompany_transaction_message(self):

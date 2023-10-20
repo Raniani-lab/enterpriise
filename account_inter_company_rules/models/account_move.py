@@ -92,7 +92,7 @@ class AccountMove(models.Model):
             'invoice_date': self.invoice_date,
             'invoice_date_due': self.invoice_date_due,
             'payment_reference': self.payment_reference,
-            'invoice_origin': _('%s Invoice: %s') % (self.company_id.name, self.name),
+            'invoice_origin': _('%s Invoice: %s', self.company_id.name, self.name),
             'fiscal_position_id': fiscal_position_id,
         }
 

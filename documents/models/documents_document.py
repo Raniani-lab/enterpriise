@@ -535,7 +535,7 @@ class Document(models.Model):
         for record in self:
 
             if record.type == 'empty' and ('datas' in vals or 'url' in vals):
-                body = _("Document Request: %s Uploaded by: %s") % (record.name, self.env.user.name)
+                body = _("Document Request: %s Uploaded by: %s", record.name, self.env.user.name)
                 record.with_context(no_document=True).message_post(body=body)
 
             if record.attachment_id:
@@ -583,7 +583,7 @@ class Document(models.Model):
     def _process_activities(self, attachment_id):
         self.ensure_one()
         if attachment_id and self.request_activity_id:
-            feedback = _("Document Request: %s Uploaded by: %s") % (self.name, self.env.user.name)
+            feedback = _("Document Request: %s Uploaded by: %s", self.name, self.env.user.name)
             self.request_activity_id.action_feedback(feedback=feedback, attachment_ids=[attachment_id])
 
     @api.model

@@ -36,7 +36,7 @@ class MailActivity(models.Model):
                 if to_remove:
                     to_remove.unlink()
                 if not feedback:
-                    feedback = _("Document Request: %s Uploaded by: %s") % (documents[0].name, self.env.user.name)
+                    feedback = _("Document Request: %s Uploaded by: %s", documents[0].name, self.env.user.name)
                 documents.write({
                     'attachment_id': attachment_ids[0],
                     'request_activity_id': False

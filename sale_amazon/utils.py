@@ -66,12 +66,12 @@ def ensure_account_is_set_up(account, require_marketplaces=True):
     """
     # Check that the API keys and tokens are set.
     if not account.refresh_token or not account.seller_key:
-        raise UserError(_("You first need to authorize the Amazon account %s.") % account.name)
+        raise UserError(_("You first need to authorize the Amazon account %s.", account.name))
     # Check that the marketplaces are set when required.
     if require_marketplaces and not account.active_marketplace_ids:
         raise UserError(_(
-            "You first need to set the marketplaces to synchronize for the Amazon account %s."
-        ) % account.name)
+            "You first need to set the marketplaces to synchronize for the Amazon account %s.",
+            account.name))
 
 
 #=== PROXY COMMUNICATIONS ===#
@@ -106,7 +106,7 @@ def make_proxy_request(endpoint, env, payload=None):
                 error_code, error_description, pformat(data)
             )
             raise ValidationError(
-                _("Error code: %s; description: %s") % (error_code, error_description)
+                _("Error code: %s; description: %s", error_code, error_description)
             )
     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
         _logger.warning("Could not establish the connection to the proxy.", exc_info=True)
@@ -182,8 +182,8 @@ def make_sp_api_request(account, operation, path_parameter='', payload=None, met
                     error_code, error_message, pformat(payload)
                 )
                 raise ValidationError(_(
-                    "The communication with the API failed.\nError code: %s; description: %s"
-                ) % (error_code, error_message))
+                    "The communication with the API failed.\nError code: %s; description: %s",
+                    error_code, error_message))
     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
         _logger.exception("Unable to reach endpoint at %s", url)
         raise ValidationError(_("Could not establish the connection to the API."))

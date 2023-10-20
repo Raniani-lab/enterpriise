@@ -92,7 +92,7 @@ result = contract.wage * 0.10''')
 - Contract: %s
 - Payslip: %s
 - Salary rule: %s (%s)
-- Error: %s""") % (
+- Error: %s""",
             error_type,
             localdict['employee'].name,
             localdict['contract'].name,

@@ -87,8 +87,8 @@ class PeruvianTaxPle141ReportCustomHandler(models.AbstractModel):
 
         if state_error:
             raise UserError(_(
-                "The state in the next documents are posted, but are not present in the SUNAT:\n\n%s") % '\n'.join(
-                    state_error))
+                "The state in the next documents are posted, but are not present in the SUNAT:\n\n%s", '\n'.join(
+                    state_error)))
 
         return self._get_file_txt(options, data)
 

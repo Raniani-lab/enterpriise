@@ -83,7 +83,7 @@ class Certificate(models.Model):
                 'date_end': fields.Datetime.to_string(cert_date_end),
             })
             if peruvian_dt > cert_date_end:
-                raise ValidationError(_('The certificate is expired since %s') % certificate.date_end)
+                raise ValidationError(_('The certificate is expired since %s', certificate.date_end))
         return certificates
 
     # -------------------------------------------------------------------------

@@ -23,7 +23,7 @@ class SaleOrder(models.Model):
                     so = self._process_order_new(order, transaction)
                     so._process_order_update(order)
             except Exception as e:
-                message = _("Ebay could not synchronize order:\n%s") % str(e)
+                message = _("Ebay could not synchronize order:\n%s", e)
                 path = str(order)
                 product._log_logging(self.env, message, "_process_order", path)
                 _logger.exception(message)

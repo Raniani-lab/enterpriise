@@ -66,7 +66,7 @@ class L10nHkIr56b(models.Model):
     @api.depends('start_period', 'end_period')
     def _compute_display_name(self):
         for sheet in self:
-            sheet.display_name = _("From %s to %s") % (
+            sheet.display_name = _("From %s to %s",
                 format_date(self.env, sheet.start_period, date_format="MMMM y", lang_code=self.env.user.lang),
                 format_date(self.env, sheet.end_period, date_format="MMMM y", lang_code=self.env.user.lang),
             )

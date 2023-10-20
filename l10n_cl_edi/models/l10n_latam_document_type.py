@@ -44,7 +44,7 @@ class L10nLatamDocumentType(models.Model):
             ('status', '=', 'in_use'), ('company_id', '=', company_id)], limit=1)
         if not caf:
             raise UserError(_('There are no CAFs available for folio %s in the sequence of %s. '
-                            'Please upload a CAF file or ask for a new one at www.sii.cl website') % (folio, self.name))
+                            'Please upload a CAF file or ask for a new one at www.sii.cl website', folio, self.name))
 
         return caf._decode_caf()
 

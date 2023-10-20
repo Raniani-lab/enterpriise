@@ -82,8 +82,8 @@ class StudioApprovalRule(models.Model):
                 model = rule.model_id and self.env[rule.model_id.model]
                 if not hasattr(model, rule.method) or not callable(getattr(model, rule.method)):
                     raise ValidationError(
-                        _("There is no method %s on the model %s (%s)")
-                        % (rule.method, rule.model_id.name, rule.model_id.model)
+                        _("There is no method %s on the model %s (%s)",
+                        rule.method, rule.model_id.name, rule.model_id.model)
                     )
                 if rule.method in ["create", "write", "unlink"]:
                     # base_automation and studio_approval executes delattr command in their

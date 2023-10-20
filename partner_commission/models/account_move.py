@@ -105,7 +105,12 @@ class AccountMove(models.Model):
                 continue
 
             # build description lines
-            desc = f"{_('Commission on %s') % (move.name)}, {move.partner_id.name}, {formatLang(self.env, move.amount_untaxed, currency_obj=move.currency_id)}"
+            desc = _(
+                'Commission on %(invoice)s, %(partner)s, %(amount)s',
+                invoice=move.name,
+                partner=move.partner_id.name,
+                amount=formatLang(self.env, move.amount_untaxed, currency_obj=move.currency_id),
+            )
             if order:
                 desc += f"\n{order.name}, {desc_lines}"
                 # extend the description to show the number of months to defer the expense over

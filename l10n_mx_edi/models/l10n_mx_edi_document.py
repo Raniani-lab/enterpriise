@@ -202,9 +202,9 @@ class L10nMxEdiDocument(models.Model):
                 msg = None
             errors = []
             if code:
-                errors.append(_("Code : %s") % code)
+                errors.append(_("Code : %s", code))
             if msg:
-                errors.append(_("Message : %s") % msg)
+                errors.append(_("Message : %s", msg))
             return {'errors': errors}
 
         cfdi_signed = response.xml if 'xml' in response else None
@@ -261,9 +261,9 @@ class L10nMxEdiDocument(models.Model):
 
         errors = []
         if code:
-            errors.append(_("Code : %s") % code)
+            errors.append(_("Code : %s", code))
         if msg:
-            errors.append(_("Message : %s") % msg)
+            errors.append(_("Message : %s", msg))
         if errors:
             return {'errors': errors}
 
@@ -326,9 +326,9 @@ class L10nMxEdiDocument(models.Model):
         code = result.status if 'status' in result else None
         errors = []
         if code:
-            errors.append(_("Code : %s") % code)
+            errors.append(_("Code : %s", code))
         if msg:
-            errors.append(_("Message : %s") % msg)
+            errors.append(_("Message : %s", msg))
         return {'errors': errors}
 
     @api.model
@@ -381,9 +381,9 @@ class L10nMxEdiDocument(models.Model):
 
         errors = []
         if code:
-            errors.append(_("Code : %s") % code)
+            errors.append(_("Code : %s", code))
         if msg:
-            errors.append(_("Message : %s") % msg)
+            errors.append(_("Message : %s", msg))
         if errors:
             return {'errors': errors}
 
@@ -525,9 +525,9 @@ Content-Disposition: form-data; name="xml"; filename="xml"
             msg = response_json.get('messageDetail')
             errors = []
             if code:
-                errors.append(_("Code : %s") % code)
+                errors.append(_("Code : %s", code))
             if msg:
-                errors.append(_("Message : %s") % msg)
+                errors.append(_("Message : %s", msg))
             return {'errors': errors}
 
     @api.model
@@ -560,9 +560,9 @@ Content-Disposition: form-data; name="xml"; filename="xml"
         msg = response_json.get('messageDetail')
         errors = []
         if code:
-            errors.append(_("Code : %s") % code)
+            errors.append(_("Code : %s", code))
         if msg:
-            errors.append(_("Message : %s") % msg)
+            errors.append(_("Message : %s", msg))
         return {'errors': errors}
 
     # -------------------------------------------------------------------------

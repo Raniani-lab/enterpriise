@@ -202,9 +202,9 @@ class L10nBeHrPayrollScheduleChange(models.TransientModel):
             self.part_time = False
 
         if self.part_time:
-            name = _('%s - Part Time %s') % (self.employee_id.name, self.resource_calendar_id.name)
+            name = _('%s - Part Time %s', self.employee_id.name, self.resource_calendar_id.name)
         else:
-            name = _('%s - %s') % (self.employee_id.name, self.resource_calendar_id.name)
+            name = f'{self.employee_id.name} - {self.resource_calendar_id.name}'
 
         new_contracts = self.contract_id.copy({
             'name': name,

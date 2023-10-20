@@ -890,7 +890,7 @@ class SignRequestItem(models.Model):
         if refuse_user and refuse_user.has_group('sign.group_sign_user'):
             self.sign_request_id.activity_feedback(['mail.mail_activity_data_todo'], user_id=refuse_user.id)
         refusal_reason = _("No specified reason") if not refusal_reason or refusal_reason.isspace() else refusal_reason
-        message_post = _("The signature has been refused by %s(%s)") % (self.partner_id.name, self.role_id.name)
+        message_post = _("The signature has been refused by %s(%s)", self.partner_id.name, self.role_id.name)
         message_post = Markup('{}<p style="white-space: pre">{}</p>').format(message_post, refusal_reason)
         self.sign_request_id.message_post(body=message_post)
         self.sign_request_id._refuse(self.partner_id, refusal_reason)

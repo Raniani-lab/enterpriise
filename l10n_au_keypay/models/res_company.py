@@ -45,7 +45,7 @@ class res_company(models.Model):
                 '|', ('l10n_au_kp_account_identifier', '=', kp_journal_item['accountCode']), ('code', '=', kp_journal_item['accountCode'])
             ], limit=1, order='l10n_au_kp_account_identifier')
             if not item_account:
-                raise UserError(_("Account not found: %s, either create an account with that code or link an existing one to that Employment Hero code") % (kp_journal_item['accountCode'],))
+                raise UserError(_("Account not found: %s, either create an account with that code or link an existing one to that Employment Hero code", kp_journal_item['accountCode']))
 
             tax = False
             if kp_journal_item.get('taxCode'):
@@ -72,7 +72,7 @@ class res_company(models.Model):
 
         move = self.env['account.move'].create({
             'journal_id': self.l10n_au_kp_journal_id.id,
-            'ref': _("Pay period ending %s (#%s)") % (format_date(self.env, period_ending_date), kp_payrun['id']),
+            'ref': _("Pay period ending %s (#%s)", format_date(self.env, period_ending_date), kp_payrun['id']),
             'date': datetime.strptime(kp_payrun["datePaid"], "%Y-%m-%dT%H:%M:%S"),
             'line_ids': line_ids_commands,
             'l10n_au_kp_payrun_identifier': kp_payrun['id'],
@@ -95,7 +95,7 @@ class res_company(models.Model):
             raise AccessError(_("You don't have the access rights to fetch Employment Hero payrun."))
         key, l10n_au_kp_base_url = self._kp_get_key_and_url()
         if not key or not self.l10n_au_kp_identifier or not self.l10n_au_kp_journal_id:
-            raise UserError(_("Company %s does not have the apikey, business_id or the journal_id set") % (self.name))
+            raise UserError(_("Company %s does not have the apikey, business_id or the journal_id set", self.name))
 
         from_formatted_datetime = self.l10n_au_kp_lock_date and datetime.combine(self.l10n_au_kp_lock_date, datetime.min.time()).replace(hour=23, minute=59, second=59)
         from_formatted_datetime = format_datetime(self.env, from_formatted_datetime, dt_format="yyyy-MM-dd'T'HH:mm:ss", tz='UTC')

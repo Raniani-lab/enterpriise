@@ -18,7 +18,7 @@ CODABOX_ERROR_CODES = {
 DEFAULT_IAP_ENDPOINT = "https://l10n_be_codabox.api.odoo.com/api/l10n_be_codabox/1"
 
 def get_error_msg(error_code):
-    return CODABOX_ERROR_CODES.get(error_code, _("Unknown error %s while fetching files from Codabox. Please contact Odoo support.") % error_code)
+    return CODABOX_ERROR_CODES.get(error_code, _("Unknown error %s while fetching files from Codabox. Please contact Odoo support.", error_code))
 
 def get_iap_endpoint(env):
     return env["ir.config_parameter"].sudo().get_param("l10n_be_codabox.iap_endpoint", DEFAULT_IAP_ENDPOINT)

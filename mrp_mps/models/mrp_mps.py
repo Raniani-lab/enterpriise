@@ -105,7 +105,7 @@ class MrpProductionSchedule(models.Model):
             'res_model': 'stock.picking',
             'views': [(False, 'list'), (False, 'form')],
             'view_mode': 'list,form',
-            'name': _('Actual Demand %s %s (%s - %s)') % (self.product_id.display_name, date_str, date_start_str, date_stop_str),
+            'name': _('Actual Demand %s %s (%s - %s)', self.product_id.display_name, date_str, date_start_str, date_stop_str),
             'target': 'current',
             'domain': [('id', 'in', picking_ids)],
         }
@@ -128,7 +128,7 @@ class MrpProductionSchedule(models.Model):
         rfq_domain = self._get_rfq_domain(date_start, date_stop)
         purchase_order_by_date = self._get_rfq_and_planned_date(rfq_domain)
         purchase_order_line_ids = self._filter_rfq(purchase_order_by_date, date_start, date_stop).ids
-        name = _('Actual Replenishment %s %s (%s - %s)') % (self.product_id.display_name, date_str, date_start_str, date_stop_str)
+        name = _('Actual Replenishment %s %s (%s - %s)', self.product_id.display_name, date_str, date_start_str, date_stop_str)
 
         context = {
             'default_move_ids': move_ids,

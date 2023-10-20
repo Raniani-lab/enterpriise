@@ -146,7 +146,7 @@ class AccountMove(models.Model):
                         'asset_number_days': 0
                     }))
 
-                msg = _('Depreciation entry %s reversed (%s)') % (move.name, formatLang(self.env, move.depreciation_value, currency_obj=move.company_id.currency_id))
+                msg = _('Depreciation entry %s reversed (%s)', move.name, formatLang(self.env, move.depreciation_value, currency_obj=move.company_id.currency_id))
                 move.asset_id.message_post(body=msg)
                 default_values['asset_id'] = move.asset_id.id
                 default_values['asset_number_days'] = -move.asset_number_days
@@ -171,7 +171,7 @@ class AccountMove(models.Model):
     def _log_depreciation_asset(self):
         for move in self.filtered(lambda m: m.asset_id):
             asset = move.asset_id
-            msg = _('Depreciation entry %s posted (%s)') % (move.name, formatLang(self.env, move.depreciation_value, currency_obj=move.company_id.currency_id))
+            msg = _('Depreciation entry %s posted (%s)', move.name, formatLang(self.env, move.depreciation_value, currency_obj=move.company_id.currency_id))
             asset.message_post(body=msg)
 
     def _auto_create_asset(self):
@@ -194,7 +194,7 @@ class AccountMove(models.Model):
                     and not (move.move_type in ('out_invoice', 'out_refund') and move_line.account_id.internal_group == 'asset')
                 ):
                     if not move_line.name:
-                        raise UserError(_('Journal Items of {account} should have a label in order to generate an asset').format(account=move_line.account_id.display_name))
+                        raise UserError(_('Journal Items of %(account)s should have a label in order to generate an asset', account=move_line.account_id.display_name))
                     if move_line.account_id.multiple_assets_per_line:
                         # decimal quantities are not supported, quantities are rounded to the lower int
                         units_quantity = max(1, int(move_line.quantity))
@@ -234,9 +234,9 @@ class AccountMove(models.Model):
 
     @api.model
     def _prepare_move_for_asset_depreciation(self, vals):
-        missing_fields = set(['asset_id', 'amount', 'depreciation_beginning_date', 'date', 'asset_number_days']) - set(vals)
+        missing_fields = {'asset_id', 'amount', 'depreciation_beginning_date', 'date', 'asset_number_days'} - set(vals)
         if missing_fields:
-            raise UserError(_('Some fields are missing {}').format(', '.join(missing_fields)))
+            raise UserError(_('Some fields are missing %s', ', '.join(missing_fields)))
         asset = vals['asset_id']
         analytic_distribution = asset.analytic_distribution
         depreciation_date = vals.get('date', fields.Date.context_today(self))

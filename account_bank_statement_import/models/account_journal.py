@@ -49,7 +49,7 @@ class AccountJournal(models.Model):
                 journal = self._find_additional_data(currency_code, account_number)
                 # If no journal found, ask the user about creating one
                 if not journal.default_account_id:
-                    raise UserError(_('You have to set a Default Account for the journal: %s') % (journal.name,))
+                    raise UserError(_('You have to set a Default Account for the journal: %s', journal.name))
                 # Prepare statement data to be used for bank statements creation
                 stmts_vals = self._complete_bank_statement_vals(stmts_vals, journal, account_number, attachment)
                 # Create the bank statements
@@ -138,7 +138,7 @@ class AccountJournal(models.Model):
         extra_msg = _('If it contains transactions for more than one account, it must be imported on each of them.')
         if len(stmts_vals) == 0:
             raise UserError(
-                _('This file doesn\'t contain any statement for account %s.') % (account_number,)
+                _('This file doesn\'t contain any statement for account %s.', account_number)
                 + '\n' + extra_msg
             )
 
@@ -149,7 +149,7 @@ class AccountJournal(models.Model):
                 break
         if no_st_line:
             raise UserError(
-                _('This file doesn\'t contain any transaction for account %s.') % (account_number,)
+                _('This file doesn\'t contain any transaction for account %s.', account_number)
                 + '\n' + extra_msg
             )
 
@@ -197,7 +197,7 @@ class AccountJournal(models.Model):
             # Already a bank account on the journal : check it's the same as on the statement
             else:
                 if not self._statement_import_check_bank_account(sanitized_account_number):
-                    raise UserError(_('The account of this statement (%s) is not the same as the journal (%s).') % (account_number, journal.bank_account_id.acc_number))
+                    raise UserError(_('The account of this statement (%s) is not the same as the journal (%s).', account_number, journal.bank_account_id.acc_number))
 
         # If importing into an existing journal, its currency must be the same as the bank statement
         if journal:
@@ -207,7 +207,7 @@ class AccountJournal(models.Model):
             if currency and currency != journal_currency:
                 statement_cur_code = not currency and company_currency.name or currency.name
                 journal_cur_code = not journal_currency and company_currency.name or journal_currency.name
-                raise UserError(_('The currency of the bank statement (%s) is not the same as the currency of the journal (%s).') % (statement_cur_code, journal_cur_code))
+                raise UserError(_('The currency of the bank statement (%s) is not the same as the currency of the journal (%s).', statement_cur_code, journal_cur_code))
 
         if not journal:
             raise UserError(_('Cannot find in which journal import this statement. Please manually select a journal.'))

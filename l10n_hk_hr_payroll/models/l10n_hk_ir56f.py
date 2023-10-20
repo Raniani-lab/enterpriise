@@ -47,7 +47,7 @@ class L10nHkIr56f(models.Model):
         error_messages = super()._check_employees(employees)
         invalid_lines = self.line_ids.filtered(lambda line: not line.employee_id.departure_reason_id.l10n_hk_ir56f_code)
         if invalid_lines:
-            error_messages += '\n' + _("The following employees don't have a valid departure reason: %s") % ', '.join(invalid_lines.employee_id.mapped('name'))
+            error_messages += '\n' + _("The following employees don't have a valid departure reason: %s", ', '.join(invalid_lines.employee_id.mapped('name')))
         return error_messages
 
     def _get_rendering_data(self, employees):

@@ -296,7 +296,7 @@ class AbstractBuilder(ABC):
             'id': account_line_id,
             'unfolded': account_line_unfolded,
             'name': len(name) > 40 and options['export_mode'] != 'print' and name[:40] + '...' or name,
-            'title_hover': _("%s (%s Currency Conversion Method)") % (account.name, account.get_display_currency_mode()),
+            'title_hover': _("%s (%s Currency Conversion Method)", account.name, account.get_display_currency_mode()),
             'columns': cols,
             'level': level,
         }

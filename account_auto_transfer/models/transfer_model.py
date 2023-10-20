@@ -450,11 +450,11 @@ class TransferModelLine(models.Model):
         anal_accounts = self.analytic_account_ids and ', '.join(self.analytic_account_ids.mapped('name'))
         partners = self.partner_ids and ', '.join(self.partner_ids.mapped('name'))
         if anal_accounts and partners:
-            name = _("Automatic Transfer (entries with analytic account(s): %s and partner(s): %s)") % (anal_accounts, partners)
+            name = _("Automatic Transfer (entries with analytic account(s): %s and partner(s): %s)", anal_accounts, partners)
         elif anal_accounts:
-            name = _("Automatic Transfer (entries with analytic account(s): %s)") % (anal_accounts,)
+            name = _("Automatic Transfer (entries with analytic account(s): %s)", anal_accounts)
         elif partners:
-            name = _("Automatic Transfer (entries with partner(s): %s)") % (partners,)
+            name = _("Automatic Transfer (entries with partner(s): %s)", partners)
         else:
             name = _("Automatic Transfer (to account %s)", self.account_id.code)
         return {
@@ -481,13 +481,13 @@ class TransferModelLine(models.Model):
         anal_accounts = self.analytic_account_ids and ', '.join(self.analytic_account_ids.mapped('name'))
         partners = self.partner_ids and ', '.join(self.partner_ids.mapped('name'))
         if anal_accounts and partners:
-            name = _("Automatic Transfer (from account %s with analytic account(s): %s and partner(s): %s)") % (origin_account.code, anal_accounts, partners)
+            name = _("Automatic Transfer (from account %s with analytic account(s): %s and partner(s): %s)", origin_account.code, anal_accounts, partners)
         elif anal_accounts:
-            name = _("Automatic Transfer (from account %s with analytic account(s): %s)") % (origin_account.code, anal_accounts)
+            name = _("Automatic Transfer (from account %s with analytic account(s): %s)", origin_account.code, anal_accounts)
         elif partners:
-            name = _("Automatic Transfer (from account %s with partner(s): %s)") % (origin_account.code, partners,)
+            name = _("Automatic Transfer (from account %s with partner(s): %s)", origin_account.code, partners)
         else:
-            name = _("Automatic Transfer (%s%% from account %s)") % (self.percent, origin_account.code)
+            name = _("Automatic Transfer (%s%% from account %s)", self.percent, origin_account.code)
         return {
             'name': name,
             'account_id': self.account_id.id,

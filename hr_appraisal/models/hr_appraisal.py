@@ -361,10 +361,9 @@ class HrAppraisal(models.Model):
                 if employee.appraisal_count == 1:
                     months = (appraisal.date_close.year - employee.create_date.year) * \
                         12 + (appraisal.date_close.month - employee.create_date.month)
-                    note = _("You arrived %s months ago. Your appraisal is created and you can fill it here.") % (months)
+                    note = _("You arrived %s months ago. Your appraisal is created and you can fill it here.", months)
                 else:
-                    note = _("Your last appraisal was %s months ago. Your appraisal is created and you can fill it here.") % (
-                        last_appraisal_months)
+                    note = _("Your last appraisal was %s months ago. Your appraisal is created and you can fill it here.", last_appraisal_months)
                 appraisal.with_context(mail_activity_quick_update=True).activity_schedule(
                     'mail.mail_activity_data_todo', today,
                     summary=_('Appraisal to fill'),
@@ -378,8 +377,7 @@ class HrAppraisal(models.Model):
                             appraisal.employee_id._get_html_link(), last_appraisal_months)
                     appraisal.with_context(mail_activity_quick_update=True).activity_schedule(
                         'mail.mail_activity_data_todo', today,
-                        summary=_('Appraisal for %s to fill') % (
-                            employee.name),
+                        summary=_('Appraisal for %s to fill', employee.name),
                         note=note, user_id=manager.user_id.id)
 
     def _sync_meeting_attendees(self, manager_ids):
@@ -483,7 +481,7 @@ class HrAppraisal(models.Model):
     def action_open_goals(self):
         self.ensure_one()
         return {
-            'name': _('%s Goals') % self.employee_id.name,
+            'name': _("%s's Goals", self.employee_id.name),
             'view_mode': 'kanban,tree,form,graph',
             'res_model': 'hr.appraisal.goal',
             'type': 'ir.actions.act_window',

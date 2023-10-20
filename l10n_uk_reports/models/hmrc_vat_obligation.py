@@ -209,4 +209,4 @@ class HmrcVatObligation(models.Model):
                     msgs += err.get('message', '')
             else:
                 msgs = response.get('message') or response
-            raise UserError(_("Sorry, something went wrong: %s") %  msgs)
+            raise UserError(_("Sorry, something went wrong: %s", msgs))

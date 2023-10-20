@@ -221,7 +221,7 @@ class AustralianReportCustomHandler(models.AbstractModel):
         for line in lines:
             if len(line) != 996:
                 raise UserError(_('There was an error while writing the file (line length not 996).'
-                                  '\nPlease contact the support.\n\n%s') % line)
+                                  '\nPlease contact the support.\n\n%s', line))
         file_content = ''.join(lines)
 
         return {
@@ -372,7 +372,7 @@ class AustralianReportCustomHandler(models.AbstractModel):
             errors += self._validate_abn(data['vat'])
 
         if errors:
-            raise UserError('\n'.join(errors + ['', _('While processing %s') % data['name']]))
+            raise UserError('\n'.join(errors + ['', _('While processing %s', data['name'])]))
 
         data['email'] = data['email'] or ''
 
@@ -392,7 +392,7 @@ class AustralianReportCustomHandler(models.AbstractModel):
         partner = self.env['res.partner'].browse(record_id)
         tags = self.env.ref('l10n_au.service_tag') + self.env.ref('l10n_au.tax_withheld_tag')
         return {
-            'name': _('TPAR invoices of %s') % partner.display_name,
+            'name': _('TPAR invoices of %s', partner.display_name),
             'type': 'ir.actions.act_window',
             'res_model': 'account.move',
             'view_mode': 'tree,form',

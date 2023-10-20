@@ -48,7 +48,7 @@ class L10nArAfipWsConsult(models.TransientModel):
         afip_ws = self.journal_id.l10n_ar_afip_ws
 
         if not afip_ws:
-            raise UserError(_('No AFIP WS selected on point of sale %s') % (self.journal_id.name))
+            raise UserError(_('No AFIP WS selected on point of sale %s', self.journal_id.name))
         if not self.number:
             raise UserError(_('Please set the number you want to consult'))
 

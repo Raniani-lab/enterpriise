@@ -71,7 +71,7 @@ class AccountBatchPayment(models.Model):
             if not company.bacs_sun:
                 raise UserError(_("The company '%s' requires a SUN to generate BACS files. Please configure it first.", company.name))
             if batch.journal_id.bank_account_id.acc_type != 'iban':
-                raise UserError(_("The account %s, of journal '%s', is not of type IBAN.\nA valid IBAN account is required to use BACS features.") % (batch.journal_id.bank_account_id.acc_number, batch.journal_id.name))
+                raise UserError(_("The account %s, of journal '%s', is not of type IBAN.\nA valid IBAN account is required to use BACS features.", batch.journal_id.bank_account_id.acc_number, batch.journal_id.name))
             if batch.bacs_processing_date < fields.Date.today():
                 raise UserError(_("The processing date cannot be in the past."))
 

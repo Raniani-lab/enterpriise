@@ -2295,9 +2295,9 @@ class AccountMove(models.Model):
             if tax:
                 tax_ids.append(tax.id)
             elif tax_type:
-                line.move_id.message_post(body=_("Could not retrieve the %s tax with rate %s%%.") % (tax_type, amount))
+                line.move_id.message_post(body=_("Could not retrieve the %s tax with rate %s%%.", tax_type, amount))
             else:
-                line.move_id.message_post(body=_("Could not retrieve the tax with rate %s%%.") % amount)
+                line.move_id.message_post(body=_("Could not retrieve the tax with rate %s%%.", amount))
         # Discount
         discount_percent = 0
         discount_amount = float(tree.attrib.get('Descuento') or 0)

@@ -80,7 +80,7 @@ class SignSendRequest(models.TransientModel):
     def _onchange_template_id(self):
         self.signer_id = False
         self.filename = self.template_id.display_name
-        self.subject = _("Signature Request - %s") % (self.template_id.attachment_id.name or '')
+        self.subject = _("Signature Request - %s", self.template_id.attachment_id.name or '')
         roles = self.template_id.mapped('sign_item_ids.responsible_id').sorted()
         if self.signer_ids and len(self.signer_ids) == len(roles):
             signer_ids = [(0, 0, {
@@ -113,7 +113,7 @@ class SignSendRequest(models.TransientModel):
 
     def _activity_done(self):
         signatories = self.signer_id.name or ', '.join(self.signer_ids.partner_id.mapped('name'))
-        feedback = _('Signature requested for template: %s\nSignatories: %s') % (self.template_id.name, signatories)
+        feedback = _('Signature requested for template: %s\nSignatories: %s', self.template_id.name, signatories)
         self.activity_id._action_done(feedback=feedback)
 
     def create_request(self):

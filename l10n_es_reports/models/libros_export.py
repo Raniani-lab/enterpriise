@@ -254,7 +254,7 @@ class SpanishLibrosRegistroExportHandler(models.AbstractModel):
                             surcharge_line_vals[move.id][tax.id] = other_tax.id
                             break
                     else:
-                        raise UserError(_('Unable to find matching surcharge tax in %s') % move.name)
+                        raise UserError(_('Unable to find matching surcharge tax in %s', move.name))
 
                 elif tax.id in sheet_line_vals[move.id]:
                     self._merge_base_line(sheet_line_vals[move.id][tax.id], line)

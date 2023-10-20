@@ -153,7 +153,7 @@ class AccountJournal(models.Model):
             bank_account = self.bank_account_id
             bic_code = self._get_cleaned_bic_code(bank_account)
             if pain_version in ['pain.001.001.03.se', 'pain.001.001.03.ch.02'] and not bic_code:
-                raise UserError(_("Bank account %s 's bank does not have any BIC number associated. Please define one.") % bank_account.sanitized_acc_number)
+                raise UserError(_("Bank account %s 's bank does not have any BIC number associated. Please define one.", bank_account.sanitized_acc_number))
             bic_tag = pain_version == "pain.001.001.09" and "BICFI" or "BIC"
             if bic_code:
                 BIC = etree.SubElement(FinInstnId, bic_tag)
@@ -429,7 +429,7 @@ class AccountJournal(models.Model):
 
     def _get_CdtrAcct(self, bank_account, sct_generic):
         if not sct_generic and (not bank_account.acc_type or not bank_account.acc_type == 'iban'):
-            raise UserError(_("The account %s, linked to partner '%s', is not of type IBAN.\nA valid IBAN account is required to use SEPA features.") % (bank_account.acc_number, bank_account.partner_id.name))
+            raise UserError(_("The account %s, linked to partner '%s', is not of type IBAN.\nA valid IBAN account is required to use SEPA features.", bank_account.acc_number, bank_account.partner_id.name))
 
         CdtrAcct = etree.Element("CdtrAcct")
         Id = etree.SubElement(CdtrAcct, "Id")

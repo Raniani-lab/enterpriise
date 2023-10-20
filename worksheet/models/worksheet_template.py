@@ -98,7 +98,7 @@ class WorksheetTemplate(models.Model):
         if default is None:
             default = {}
         if not default.get('name'):
-            default['name'] = _("%s (copy)") % (self.name)
+            default['name'] = _("%s (copy)", self.name)
 
         # force no model
         default['model_id'] = False

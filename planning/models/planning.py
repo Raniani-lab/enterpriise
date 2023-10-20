@@ -2096,6 +2096,7 @@ class Planning(models.Model):
                 'value': planned_hours_mapped[resource.id],
                 'max_value': work_hours.get(resource.id, 0.0),
                 'employee_id': resource.employee_id.id,
+                'employee_model': 'hr.employee' if self.env.user.has_group('hr.group_hr_user') else 'hr.employee.public',
             }
             for resource in resources
         }

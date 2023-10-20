@@ -219,13 +219,12 @@ export class PlanningGanttRenderer extends GanttRenderer {
         const { fromServer, groupedByField, name, progressBar } = row;
         const isGroupedByResource = groupedByField === "resource_id";
         const employeeId = progressBar && progressBar.employee_id;
+        const employeeModel = progressBar && progressBar.employee_model;
         const isResourceMaterial = progressBar && progressBar.is_material_resource;
         const showEmployeeAvatar =
             !isResourceMaterial && isGroupedByResource && fromServer && Boolean(employeeId);
         if (showEmployeeAvatar) {
-            const { fields } = this.model.metaData;
-            const resModel = fields.employee_id.relation;
-            this.rowsWithAvatar[row.id] = { resModel, resId: employeeId, displayName: name };
+            this.rowsWithAvatar[row.id] = { resModel: employeeModel, resId: employeeId, displayName: name };
         }
         return super.processRow(...arguments);
     }

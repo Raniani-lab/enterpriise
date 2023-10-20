@@ -18,8 +18,7 @@ class TestDiscussChannelExpand(HttpCase):
             'password': 'testuser',
         })
         DiscussChannelAsUser = self.env['discuss.channel'].with_user(testuser)
-        channel_info = DiscussChannelAsUser.channel_create(name="test-mail-channel-expand-tour", group_id=self.ref('base.group_user'))
-        channel = DiscussChannelAsUser.browse(channel_info['id'])
+        channel = DiscussChannelAsUser.channel_create(name="test-mail-channel-expand-tour", group_id=self.ref("base.group_user"))
         channel.channel_fold('open')
         channel.message_post(
             body=Markup("<p>test-message-mail-channel-expand-tour</p>"),

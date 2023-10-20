@@ -20,8 +20,8 @@ class HrContractSalaryPersonalInfo(models.Model):
         help="Name of the field related to this personal info.")
     field = fields.Char(related='res_field_id.name', readonly=True)
     structure_type_id = fields.Many2one('hr.payroll.structure.type', string="Salary Structure Type")
-    placeholder = fields.Char()
-    helper = fields.Char()
+    placeholder = fields.Char(translate=True)
+    helper = fields.Char(translate=True)
     display_type = fields.Selection([
         ('text', 'Text'),
         ('radio', 'Radio'),

@@ -3,10 +3,10 @@
 
 import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
-import { ProductScreen } from "@point_of_sale/../tests/tours/helpers/ProductScreenTourMethods";
-import { Numpad } from "@point_of_sale/../tests/tours/helpers/NumpadTourMethods";
+import * as ProductScreen from "@point_of_sale/../tests/tours/helpers/ProductScreenTourMethods";
+import * as Numpad from "@point_of_sale/../tests/tours/helpers/NumpadTourMethods";
 import * as Order from "@point_of_sale/../tests/tours/helpers/generic_components/OrderWidgetMethods";
-
+import { inLeftSide } from "@point_of_sale/../tests/tours/helpers/utils";
 class TerminalProxy {
     action(data) {
         var self = this;
@@ -86,12 +86,12 @@ registry.category("web_tour.tours").add("payment_terminals_tour", {
             content: "cash control",
             trigger: ".opening-cash-control footer .button",
         },
-        ...ProductScreen.do.clickHomeCategory(),
+        ...ProductScreen.clickHomeCategory(),
         {
             content: "Buy a Desk Organizer",
             trigger: '.product-list .product-name:contains("Desk Organizer")',
         },
-        ...Order.hasLine({ prodctName: "Desk Organizer" }),
+        ...inLeftSide(Order.hasLine({ productName: "Desk Organizer" })),
         {
             content: "Go to payment screen",
             trigger: ".button.pay-order-button",

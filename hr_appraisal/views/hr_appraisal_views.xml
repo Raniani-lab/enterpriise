@@ -79,6 +79,7 @@
                         <field name="assessment_note" options="{'no_create': True, 'no_open': True}" invisible="state == 'new' or employee_user_id == uid" readonly="state == 'done' or (state == 'pending' and 'uid' not in manager_user_ids and not is_manager)"/>
                     </group>
                 </group>
+                <field name="appraisal_properties" columns="2"/>
                 <notebook>
                     <page string="Appraisal" name="appraisal">
                         <div class="o_appraisal_both_feedback d-flex flex-column flex-md-row flex-wrap align-items-stretch" >
@@ -266,6 +267,9 @@
                                             <span t-attf-class="#{red}"><field name="date_close"/></span>
                                         </div>
                                     </div>
+                                    <div>
+                                        <field name="appraisal_properties" widget="properties"/>
+                                    </div>
                                 </div>
                                 <div>
                                     <div>
@@ -340,6 +344,8 @@
             <calendar date_start="date_close" date_stop="date_close" mode="month" color="employee_id" quick_create="0">
                 <field name="display_name"/>
                 <field name="employee_id" filters="1" invisible="1"/>
+                <field name="department_id" invisible="1"/>
+                <field name="appraisal_properties"/>
             </calendar>
         </field>
     </record>

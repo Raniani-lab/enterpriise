@@ -137,6 +137,8 @@ class Planning(models.Model):
 
     is_hatched = fields.Boolean(compute='_compute_is_hatched')
 
+    slot_properties = fields.Properties('Properties', definition='role_id.slot_properties_definition', precompute=False)
+
     _sql_constraints = [
         ('check_start_date_lower_end_date', 'CHECK(end_datetime > start_datetime)', 'The end date of a shift should be after its start date.'),
         ('check_allocated_hours_positive', 'CHECK(allocated_hours >= 0)', 'Allocated hours and allocated time percentage cannot be negative.'),
@@ -2154,6 +2156,7 @@ class PlanningRole(models.Model):
     resource_ids = fields.Many2many('resource.resource', 'resource_resource_planning_role_rel',
                                     'planning_role_id', 'resource_resource_id', 'Resources')
     sequence = fields.Integer()
+    slot_properties_definition = fields.PropertiesDefinition('Planning Slot Properties')
 
     @api.returns('self', lambda value: value.id)
     def copy(self, default=None):

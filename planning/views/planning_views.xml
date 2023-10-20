@@ -136,6 +136,7 @@
                             </div>
                         </div>
                     </div>
+                    <field name="slot_properties" columns="2"/>
                     <field name="allow_template_creation" invisible="1"/>
                     <label for="template_creation" groups="planning.group_planning_manager"></label>
                     <field name="template_creation" class="ms-2" nolabel="1" groups="planning.group_planning_manager"/>
@@ -204,6 +205,7 @@
                                     <span name="role"><field name="role_id"/></span>
                                 </t>
                             </div>
+                            <field name="slot_properties" widget="properties"/>
                             <div class="o_kanban_record_bottom">
                                 <div class="oe_kanban_bottom_left"/>
                                 <div class="oe_kanban_bottom_right">
@@ -350,6 +352,7 @@
                 <field name="allocated_percentage" invisible="1"/>
                 <field name="state" invisible="1"/>
                 <field name="request_to_switch" invisible="1"/>
+                <field name="slot_properties"/>
             </calendar>
         </field>
     </record>

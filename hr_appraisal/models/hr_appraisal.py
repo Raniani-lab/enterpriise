@@ -82,6 +82,7 @@ class HrAppraisal(models.Model):
     assessment_note = fields.Many2one('hr.appraisal.note', string="Final Rating", help="This field is not visible to the Employee.", domain="[('company_id', '=', company_id)]")
     note = fields.Html(string="Private Note", help="The content of this note is not visible by the Employee.")
     appraisal_plan_posted = fields.Boolean()
+    appraisal_properties = fields.Properties("Properties", definition="department_id.appraisal_properties_definition", precompute=False)
 
     @api.depends('employee_id')
     def _compute_department_id(self):

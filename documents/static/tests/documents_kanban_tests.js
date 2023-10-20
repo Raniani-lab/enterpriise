@@ -1397,6 +1397,7 @@ QUnit.module("documents", {}, function () {
                 await legacyClick(
                     target.querySelector(".o_documents_inspector_info .o_inspector_share")
                 );
+                await nextTick();
                 assert.containsN(target, ".o_notification_body", 1, "should have a notification");
             });
 

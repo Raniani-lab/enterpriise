@@ -362,17 +362,19 @@ export class DocumentsInspector extends Component {
                 [vals]
             );
         }
-        browser.navigator.clipboard.writeText(this.generatedUrls[resIds]);
-        if (linkProportion == "some") {
-            this.notificationService.add(
-                _t("The share url has been copied to your clipboard. Links were excluded."),
-                { type: "warning" }
-            );
-        } else {
-            this.notificationService.add(_t("The share url has been copied to your clipboard."), {
-                type: "success",
-            });
-        }
+        setTimeout(async () => {
+            await browser.navigator.clipboard.writeText(this.generatedUrls[resIds]);
+            if (linkProportion == "some") {
+                this.notificationService.add(
+                    _t("The share url has been copied to your clipboard. Links were excluded."),
+                    { type: "warning" }
+                );
+            } else {
+                this.notificationService.add(_t("The share url has been copied to your clipboard."), {
+                    type: "success",
+                });
+            }
+        });
     }
 
     async createShareVals() {

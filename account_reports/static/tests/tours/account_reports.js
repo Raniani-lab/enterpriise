@@ -265,7 +265,7 @@ registry.category("web_tour.tours").add('account_reports', {
         },
         {
             content: "Unfold not previously unfolded line",
-            trigger: "tr:nth-child(34) td:first()",
+            trigger: "tr:nth-child(34):contains('Current Liabilities') td:first()",
             run: "click",
         },
         {

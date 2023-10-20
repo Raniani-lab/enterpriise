@@ -72,7 +72,8 @@ class AccountMove(models.Model):
             ('P01', 'To define (CFDI 3.3 only)'),
         ],
         string="Usage",
-        default='P01',
+        default='G03',
+        tracking=True,
         help="Used in CFDI 3.3 to express the key to the usage that will gives the receiver to this invoice. This "
              "value is defined by the customer.\nNote: It is not cause for cancellation if the key set is not the usage "
              "that will give the receiver of the document.")

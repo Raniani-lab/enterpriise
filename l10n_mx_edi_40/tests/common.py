@@ -197,7 +197,7 @@ class TestMxEdiCommon(AccountEdiTestCommon):
                     Nombre="PARTNER_A"
                     DomicilioFiscalReceptor="85134"
                     RegimenFiscalReceptor="616"
-                    UsoCFDI="S01"/>
+                    UsoCFDI="G03"/>
                 <Conceptos>
                     <Concepto
                         Cantidad="5.000000"

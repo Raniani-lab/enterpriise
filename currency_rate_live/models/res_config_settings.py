@@ -509,7 +509,7 @@ class ResCompany(models.Model):
         token = icp.get_param('banxico_token')
         if not token:
             # https://www.banxico.org.mx/SieAPIRest/service/v1/token
-            token = 'd03cdee20272f1edc5009a79375f1d942d94acac8348a33245c866831019fef4'  # noqa
+            token = 'f9456e38aa6d8336c17f9a6c71fabddb1ee5101c6e83d4c1babccd70198aad38'  # noqa
             icp.set_param('banxico_token', token)
         foreigns = {
             # position order of the rates from webservices

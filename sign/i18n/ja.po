@@ -3430,6 +3430,12 @@ msgstr ""
 "×（署名が必要な連絡先の数＋署名要求が署名された場合のコピーの連絡先の数）＝ページの合計に基づいています。1ページの重さは0.005キログラムと仮定します。"
 
 #. module: sign
+#: code:addons/sign/wizard/sign_duplicate_template_with_pdf.py:0
+#, python-format
+msgid "The uploaded file is not a valid PDF. Please upload a valid PDF file."
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 msgid "There are no signatures request."
 msgstr ""

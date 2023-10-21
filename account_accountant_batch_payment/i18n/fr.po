@@ -35,8 +35,7 @@ msgstr ""
 #. module: account_accountant_batch_payment
 #: model:ir.model,name:account_accountant_batch_payment.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
-"L'assistant de la réconciliation bancaire pour une seule ligne du relevé"
+msgstr "L'assistant du rapprochement bancaire pour une seule ligne du relevé"
 
 #. module: account_accountant_batch_payment
 #: code:addons/account_accountant_batch_payment/models/account_batch_payment.py:0

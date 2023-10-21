@@ -3168,7 +3168,7 @@ msgstr "Kirjanpidon saldo Odoossa tälle päivälle"
 msgid ""
 "The company's chart of account does not match the report's chart of "
 "accounts."
-msgstr ""
+msgstr "Yrityksen tilikartta ei vastaa raportin tilikarttaa."
 
 #. module: account_reports
 #. odoo-python

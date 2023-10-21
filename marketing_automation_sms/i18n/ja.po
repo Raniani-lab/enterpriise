@@ -184,7 +184,7 @@ msgstr "SMS: 未クリック"
 #. module: marketing_automation_sms
 #: model:ir.model,name:marketing_automation_sms.model_sms_composer
 msgid "Send SMS Wizard"
-msgstr ""
+msgstr "SMS送信ウィザード"
 
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form

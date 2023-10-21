@@ -3156,6 +3156,8 @@ msgid ""
 "The company's chart of account does not match the report's chart of "
 "accounts."
 msgstr ""
+"Het grootboekschema van het bedrijf komt niet overeen met het "
+"grootboekschema op het rapport."
 
 #. module: account_reports
 #. odoo-python

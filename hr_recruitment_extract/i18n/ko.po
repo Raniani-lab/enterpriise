@@ -285,4 +285,4 @@ msgstr "첫 단계에 들어오지 않은 지원자는 이력서를 보낼 수 �
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "You don't have enough credit to extract data from your Resume."
-msgstr ""
+msgstr "이력서에서 데이터를 추출할 크레딧이 부족합니다."

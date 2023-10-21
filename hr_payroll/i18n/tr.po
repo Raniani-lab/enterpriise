@@ -12,6 +12,7 @@
 # Ramiz Deniz Öner <deniz@denizoner.com>, 2022
 # Saban Yildiz <sabany@projetgrup.com>, 2022
 # abc Def <hdogan1974@gmail.com>, 2022
+# Ozlem Cikrikci <ozlemc@eskayazilim.com.tr>, 2022
 # Buket Şeker <buket_skr@hotmail.com>, 2022
 # Umur Akın <umura@projetgrup.com>, 2022
 # Levent Karakaş <levent@mektup.at>, 2022
@@ -19,7 +20,6 @@
 # Nadir Gazioglu <nadirgazioglu@gmail.com>, 2022
 # Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2022
 # Murat Kaplan <muratk@projetgrup.com>, 2022
-# Ozlem Cikrikci <ozlemc@eskayazilim.com.tr>, 2022
 # Martin Trigaux, 2022
 # Ediz Duman <neps1192@gmail.com>, 2022
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2023
@@ -855,6 +855,7 @@ msgid "Config Settings"
 msgstr "Yapılandırma Ayarları"
 
 #. module: hr_payroll
+#: model:ir.actions.server,name:hr_payroll.action_hr_payroll_confirm_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_index_form_view
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 msgid "Confirm"
@@ -972,11 +973,6 @@ msgstr "Ülke"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__country_code
 msgid "Country Code"
 msgstr "Ülke Kodu"
-
-#. module: hr_payroll
-#: model:ir.actions.server,name:hr_payroll.action_hr_payroll_confirm_payroll
-msgid "Create Draft Entry"
-msgstr "Taslak Kaydı Onayla"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
@@ -1601,7 +1597,7 @@ msgstr "Oluşturulan Ücret Bordroları"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
-msgid "Give assurance card to new registered employees"
+msgid "Give insurance card to new registered employees"
 msgstr ""
 
 #. module: hr_payroll
@@ -1974,11 +1970,6 @@ msgid "Made Payment Order ? "
 msgstr "Made Payment Order ? "
 
 #. module: hr_payroll
-#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
-msgid "Made by Odoo with ❤️"
-msgstr ""
-
-#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_main_attachment_id
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__message_main_attachment_id
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__message_main_attachment_id
@@ -2173,12 +2164,6 @@ msgstr "Yeni Personel"
 #, python-format
 msgid "New Payslip"
 msgstr ""
-
-#. module: hr_payroll
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_calendar_event_id
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
-msgstr "Sonraki Aktivite Takvim Etkinliği"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_date_deadline
@@ -3816,20 +3801,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "We have to improve our Payroll flow with the new Odoo process"
 msgstr ""
-
-#. module: hr_payroll
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__website_message_ids
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__website_message_ids
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__website_message_ids
-msgid "Website Messages"
-msgstr "Websitesi Mesajları"
-
-#. module: hr_payroll
-#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__website_message_ids
-#: model:ir.model.fields,help:hr_payroll.field_hr_payslip_run__website_message_ids
-#: model:ir.model.fields,help:hr_payroll.field_hr_salary_attachment__website_message_ids
-msgid "Website communication history"
-msgstr "Websitesi iletişim geçmişi"
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payroll_structure__schedule_pay__weekly

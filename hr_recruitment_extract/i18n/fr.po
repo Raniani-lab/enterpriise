@@ -294,3 +294,4 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "You don't have enough credit to extract data from your Resume."
 msgstr ""
+"Vous n'avez pas assez de crédits pour extraire les données de votre CV."

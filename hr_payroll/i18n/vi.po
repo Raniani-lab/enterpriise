@@ -868,6 +868,7 @@ msgid "Config Settings"
 msgstr "Cấu hình"
 
 #. module: hr_payroll
+#: model:ir.actions.server,name:hr_payroll.action_hr_payroll_confirm_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_index_form_view
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 msgid "Confirm"
@@ -987,11 +988,6 @@ msgstr "Quốc gia"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__country_code
 msgid "Country Code"
 msgstr "Mã quốc gia"
-
-#. module: hr_payroll
-#: model:ir.actions.server,name:hr_payroll.action_hr_payroll_confirm_payroll
-msgid "Create Draft Entry"
-msgstr "Tạo bút toán nháp"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
@@ -1616,8 +1612,8 @@ msgstr "Tạo phiếu lương"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
-msgid "Give assurance card to new registered employees"
-msgstr "Trao thẻ bảo hiểm cho nhân viên đăng ký mới"
+msgid "Give insurance card to new registered employees"
+msgstr ""
 
 #. module: hr_payroll
 #. odoo-python
@@ -1998,11 +1994,6 @@ msgid "Made Payment Order ? "
 msgstr "Đã tạo lệnh thanh toán/UNC? "
 
 #. module: hr_payroll
-#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
-msgid "Made by Odoo with ❤️"
-msgstr "Tạo bởi Odoo ❤️"
-
-#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_main_attachment_id
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__message_main_attachment_id
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__message_main_attachment_id
@@ -2197,12 +2188,6 @@ msgstr "Nhân viên mới"
 #, python-format
 msgid "New Payslip"
 msgstr "Phiếu lương mới"
-
-#. module: hr_payroll
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_calendar_event_id
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
-msgstr "Sự kiện lịch hoạt động tiếp theo"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_date_deadline
@@ -3884,20 +3869,6 @@ msgid "We have to improve our Payroll flow with the new Odoo process"
 msgstr ""
 "Chúng tôi phải cải thiện quy trình tính lương của mình với quy trình Odoo "
 "mới"
-
-#. module: hr_payroll
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__website_message_ids
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__website_message_ids
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__website_message_ids
-msgid "Website Messages"
-msgstr "Thông báo Website"
-
-#. module: hr_payroll
-#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__website_message_ids
-#: model:ir.model.fields,help:hr_payroll.field_hr_payslip_run__website_message_ids
-#: model:ir.model.fields,help:hr_payroll.field_hr_salary_attachment__website_message_ids
-msgid "Website communication history"
-msgstr "Lịch sử thông tin liên lạc website"
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payroll_structure__schedule_pay__weekly

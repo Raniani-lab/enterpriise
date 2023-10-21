@@ -614,7 +614,7 @@ msgid ""
 "Recurring shifts cannot be planned further than 999 days in the future. If "
 "you need to schedule beyond this limit, please set the recurrence to repeat "
 "forever instead."
-msgstr ""
+msgstr "重复轮班安排不能超出未来 999 天。如果需要安排超过此限制的班次，请设置为永久重复。"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_report_action_analysis

@@ -390,7 +390,7 @@ msgstr "Đăng lên mạng xã hội"
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_social_post_template
 msgid "Social Post Template"
-msgstr ""
+msgstr "Mẫu bài đăng trên mạng xã hội"
 
 #. module: social_push_notifications
 #. odoo-python
@@ -449,6 +449,8 @@ msgid ""
 "Used to make comparisons when we need to restrict some features to a "
 "specific media ('facebook', 'twitter', ...)."
 msgstr ""
+"Dùng để so sánh khi chúng ta cần giới hạn một số tính năng cho một phương "
+"tiện cụ thể ('facebook', 'twitter', ...)."
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_post__visitor_domain

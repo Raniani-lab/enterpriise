@@ -28,12 +28,12 @@ msgstr ""
 #. module: social_linkedin
 #: model_terms:ir.ui.view,arch_db:social_linkedin.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-comments me-1\" title=\"Bình luận\"/>"
 
 #. module: social_linkedin
 #: model_terms:ir.ui.view,arch_db:social_linkedin.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-thumbs-up me-1\" title=\"Likes\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-thumbs-up me-1\" title=\"Thích\"/>"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_live_post__linkedin_post_id
@@ -56,7 +56,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social_linkedin.social_stream_post_view_kanban
 #, python-format
 msgid "Author Image"
-msgstr ""
+msgstr "Hình ảnh tác giả"
 
 #. module: social_linkedin
 #: model:ir.model.fields,help:social_linkedin.field_res_config_settings__linkedin_use_own_account
@@ -169,7 +169,7 @@ msgstr "Media Type"
 #. module: social_linkedin
 #: model_terms:ir.ui.view,arch_db:social_linkedin.linkedin_preview
 msgid "Post Image"
-msgstr ""
+msgstr "Hình ảnh bài đăng"
 
 #. module: social_linkedin
 #: model:social.stream.type,name:social_linkedin.stream_type_linkedin_company_post
@@ -199,7 +199,7 @@ msgstr "Đăng lên mạng xã hội"
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_post_template
 msgid "Social Post Template"
-msgstr ""
+msgstr "Mẫu bài đăng trên mạng xã hội"
 
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_stream
@@ -224,6 +224,8 @@ msgid ""
 "The url that this service requested returned an error. Please contact the "
 "author of the app."
 msgstr ""
+"Url mà dịch vụ này yêu cầu đã trả về lỗi. Vui lòng liên hệ với người tạo ứng"
+" dụng."
 
 #. module: social_linkedin
 #. odoo-python
@@ -244,7 +246,7 @@ msgstr ""
 #: code:addons/social_linkedin/controllers/main.py:0
 #, python-format
 msgid "Unauthorized. Please contact your administrator."
-msgstr ""
+msgstr "Không được phép. Vui lòng liên hệ với quản trị viên."
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_res_config_settings__linkedin_use_own_account
@@ -257,6 +259,8 @@ msgid ""
 "Used to make comparisons when we need to restrict some features to a "
 "specific media ('facebook', 'twitter', ...)."
 msgstr ""
+"Dùng để so sánh khi chúng ta cần giới hạn một số tính năng cho một phương "
+"tiện cụ thể ('facebook', 'twitter', ...)."
 
 #. module: social_linkedin
 #: model:ir.model.fields,help:social_linkedin.field_social_stream_post__linkedin_author_vanity_name

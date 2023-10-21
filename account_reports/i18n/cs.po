@@ -2184,7 +2184,7 @@ msgstr ""
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "Line without formula"
-msgstr ""
+msgstr "Položky bez vzorce"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_form
@@ -3088,6 +3088,15 @@ msgstr ""
 #, python-format
 msgid "The Book balance in Odoo dated today"
 msgstr "Zůstatek knih v Odoo je datován dnes"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid ""
+"The company's chart of account does not match the report's chart of "
+"accounts."
+msgstr ""
 
 #. module: account_reports
 #. odoo-python

@@ -310,6 +310,8 @@ msgid ""
 "Create projects to organize your tasks and define a different workflow for "
 "each project."
 msgstr ""
+"Tạo dự án để sắp xếp nhiệm vụ của bạn và xác định quy trình làm việc khác "
+"nhau cho từng dự án."
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_view_form_inherit

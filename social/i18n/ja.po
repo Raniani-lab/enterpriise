@@ -584,7 +584,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__has_account_stats
 msgid "Has Account Stats"
-msgstr ""
+msgstr "アカウントステータスあり"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__has_message
@@ -595,7 +595,7 @@ msgstr "メッセージあり"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__has_trends
 msgid "Has Trends?"
-msgstr ""
+msgstr "トレンドがありますか？"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__id

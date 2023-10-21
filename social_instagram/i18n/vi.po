@@ -28,7 +28,7 @@ msgstr ""
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-comments me-1\" title=\"Bình luận\"/>"
 
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.social_stream_post_view_kanban
@@ -83,7 +83,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social_instagram.social_stream_post_view_kanban
 #, python-format
 msgid "Author Image"
-msgstr ""
+msgstr "Hình ảnh tác giả"
 
 #. module: social_instagram
 #: model:ir.model.fields,help:social_instagram.field_res_config_settings__instagram_use_own_account
@@ -255,7 +255,7 @@ msgstr ""
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.instagram_preview
 msgid "Post Image"
-msgstr ""
+msgstr "Hình ảnh bài đăng"
 
 #. module: social_instagram
 #: model:ir.model,name:social_instagram.model_social_account
@@ -280,7 +280,7 @@ msgstr "Đăng lên mạng xã hội"
 #. module: social_instagram
 #: model:ir.model,name:social_instagram.model_social_post_template
 msgid "Social Post Template"
-msgstr ""
+msgstr "Mẫu bài đăng trên mạng xã hội"
 
 #. module: social_instagram
 #: model:ir.model,name:social_instagram.model_social_stream
@@ -311,7 +311,7 @@ msgstr ""
 #: code:addons/social_instagram/controllers/main.py:0
 #, python-format
 msgid "Unauthorized. Please contact your administrator."
-msgstr ""
+msgstr "Không được phép. Vui lòng liên hệ với quản trị viên."
 
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_res_config_settings__instagram_use_own_account
@@ -330,6 +330,8 @@ msgid ""
 "Used to make comparisons when we need to restrict some features to a "
 "specific media ('facebook', 'twitter', ...)."
 msgstr ""
+"Dùng để so sánh khi chúng ta cần giới hạn một số tính năng cho một phương "
+"tiện cụ thể ('facebook', 'twitter', ...)."
 
 #. module: social_instagram
 #. odoo-python

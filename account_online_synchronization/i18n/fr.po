@@ -170,8 +170,7 @@ msgstr "Synchronisation bancaire : Mettez à jour votre consentement"
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
-"L'assistant de la réconciliation bancaire pour une seule ligne du relevé"
+msgstr "L'assistant du rapprochement bancaire pour une seule ligne du relevé"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.view_account_link_journal_form_wizard

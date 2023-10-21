@@ -598,7 +598,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_tree
 #: model_terms:ir.ui.view,arch_db:appointment.calendar_event_view_search_inherit_appointment
 msgid "Appointment Type"
-msgstr ""
+msgstr "Görüş Növü"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__appointment_type_ids
@@ -1435,7 +1435,7 @@ msgstr "Onlayn"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_calendar_event__appointment_type_id
 msgid "Online Appointment"
-msgstr ""
+msgstr "Online Görüş"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_slot

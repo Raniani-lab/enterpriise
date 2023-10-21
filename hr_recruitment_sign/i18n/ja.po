@@ -121,7 +121,7 @@ msgstr ""
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__has_both_template
 msgid "Has Both Template"
-msgstr ""
+msgstr "両方のテンプレートあり"
 
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__id
@@ -248,7 +248,7 @@ msgstr "Eメールを登録もしくは連絡先を検索..."
 #: code:addons/hr_recruitment_sign/models/hr_applicant.py:0
 #, python-format
 msgid "You must define a Contact Name for this applicant."
-msgstr ""
+msgstr "この応募者に連絡先名を定義する必要があります。"
 
 #. module: hr_recruitment_sign
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_sign.message_signature_request

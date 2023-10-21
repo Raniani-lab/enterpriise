@@ -3522,6 +3522,14 @@ msgstr ""
 " qu'une page pèse 0,005 kilogramme."
 
 #. module: sign
+#: code:addons/sign/wizard/sign_duplicate_template_with_pdf.py:0
+#, python-format
+msgid "The uploaded file is not a valid PDF. Please upload a valid PDF file."
+msgstr ""
+"Le fichier chargé n'est pas un PDF valide. Veuillez charger un fichier PDF "
+"valide."
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 msgid "There are no signatures request."
 msgstr "Il n'y a pas de demandes de signatures."

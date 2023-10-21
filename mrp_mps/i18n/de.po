@@ -482,12 +482,12 @@ msgstr "Produktionslager"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_purchase_order
 msgid "Purchase Order"
-msgstr "Einkaufsauftrag"
+msgstr "Bestellung"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__purchase_order_line_ids
 msgid "Purchase Order Line"
-msgstr "Einkaufsauftragszeile"
+msgstr "Bestellzeile"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__moves_qty
@@ -689,7 +689,8 @@ msgstr ""
 #, python-format
 msgid ""
 "The quantity to replenish through Purchase Orders or Manufacturing Orders."
-msgstr "Die aufzufüllende Menge durch einen Einkaufs- oder Fertigungsauftrag."
+msgstr ""
+"Die aufzufüllende Menge durch eine Bestellung oder einen Fertigungsauftrag."
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_mrp_production_schedule__forecast_target_qty

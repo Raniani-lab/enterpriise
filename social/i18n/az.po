@@ -1164,7 +1164,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_live_post__live_post_link
 #: model:ir.model.fields,field_description:social.field_social_stream_post__post_link
 msgid "Post Link"
-msgstr ""
+msgstr "Paylaşım Linki"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_search
@@ -1362,7 +1362,7 @@ msgstr "Parametrlər"
 #: model:ir.model.fields,field_description:social.field_social_stream__account_id
 #: model_terms:ir.ui.view,arch_db:social.social_account_view_form
 msgid "Social Account"
-msgstr ""
+msgstr "Sosial Hesab"
 
 #. module: social
 #: model:ir.actions.act_window,name:social.action_social_account
@@ -1415,7 +1415,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_live_post__post_id
 #: model_terms:ir.ui.view,arch_db:social.social_live_post_view_form
 msgid "Social Post"
-msgstr ""
+msgstr "Sosial Paylaşım"
 
 #. module: social
 #: model:ir.model,name:social.model_social_post_template
@@ -1446,7 +1446,7 @@ msgstr ""
 #: model:ir.model,name:social.model_social_stream_post
 #: model:ir.model,name:social.model_social_stream_type
 msgid "Social Stream Post"
-msgstr ""
+msgstr "Sosial Yayım Paylaşım"
 
 #. module: social
 #: model:ir.model,name:social.model_social_stream_post_image

@@ -289,7 +289,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:product.template,name:stock_barcode.product_cable_management_box_2_product_template
 msgid "Cable Management Box"
-msgstr "Kabel-Management-Box"
+msgstr "Kabelverwaltungsbox"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1600,19 +1600,19 @@ msgstr "Produkt"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation
 msgid "products were not processed at all."
-msgstr "Produkte wurden überhaupt nicht verarbeitet."
+msgstr "Produkt(e) wurde(n) überhaupt nicht verarbeitet."
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation
 msgid "products were partially processed."
-msgstr "Produkte wurden teilweise verarbeitet."
+msgstr "Produkt(e) wurde(n) teilweise verarbeitet."
 
 #. module: stock_barcode
 #. odoo-javascript
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "stock barcodes sheet"
-msgstr "Blatt für Bestandsbarcodes"
+msgstr "Dokument für Bestandsbarcodes"
 
 #. module: stock_barcode
 #. odoo-javascript

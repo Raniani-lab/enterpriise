@@ -2509,7 +2509,7 @@ msgstr "视图不存在或您没有被允许访问。"
 msgid ""
 "This Article cannot be unfolded. Either you lost access to it or it has been"
 " deleted."
-msgstr ""
+msgstr "本文无法展开。您可能已失去访问权限，或者文章已被删除。"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form

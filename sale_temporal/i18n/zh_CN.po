@@ -114,7 +114,7 @@ msgstr "时长"
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__duration_display
 msgid "Duration Display"
-msgstr ""
+msgstr "时长显示"
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_product__display_price
@@ -343,7 +343,7 @@ msgstr "按时间定价"
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Time-based rules"
-msgstr ""
+msgstr "基于时间的规则"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__unit
@@ -454,4 +454,4 @@ msgstr "每年"
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "This recurrence unit is not supported."
-msgstr ""
+msgstr "不支持此重复使用单位。"

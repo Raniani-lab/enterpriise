@@ -55,7 +55,7 @@ msgstr "署名者に第二の認証方式による識別を強制する。"
 #: code:addons/sign_itsme/static/src/xml/templates.xml:0
 #, python-format
 msgid "Go Back"
-msgstr ""
+msgstr "戻る"
 
 #. module: sign_itsme
 #. odoo-javascript

@@ -9,7 +9,7 @@
 # ff68f1f9b02a0effe4204ba86a8b106e_92c9ca6, 2023
 # Lucas Borba, 2023
 # Kevilyn Rosa, 2023
-# adrianojprado <adrianojprado@gmail.com>, 2023
+# Adriano Prado <adrianojprado@gmail.com>, 2023
 # Wil Odoo, 2023
 # Layna Nascimento, 2023
 # 
@@ -3512,6 +3512,12 @@ msgstr ""
 " que precisam assinar + número de contatos em cópia se a solicitação de "
 "assinatura for assinada) = total de páginas. Consideramos que uma página "
 "pesa 0,005 kg."
+
+#. module: sign
+#: code:addons/sign/wizard/sign_duplicate_template_with_pdf.py:0
+#, python-format
+msgid "The uploaded file is not a valid PDF. Please upload a valid PDF file."
+msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests

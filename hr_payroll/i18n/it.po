@@ -887,6 +887,7 @@ msgid "Config Settings"
 msgstr "Impostazioni di configurazione"
 
 #. module: hr_payroll
+#: model:ir.actions.server,name:hr_payroll.action_hr_payroll_confirm_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_index_form_view
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 msgid "Confirm"
@@ -1005,11 +1006,6 @@ msgstr "Nazione"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__country_code
 msgid "Country Code"
 msgstr "Codice nazione"
-
-#. module: hr_payroll
-#: model:ir.actions.server,name:hr_payroll.action_hr_payroll_confirm_payroll
-msgid "Create Draft Entry"
-msgstr "Crea registrazione in bozza"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
@@ -1637,9 +1633,8 @@ msgstr "Buste paga generate"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
-msgid "Give assurance card to new registered employees"
+msgid "Give insurance card to new registered employees"
 msgstr ""
-"Consegnare ai nuovi dipendenti registrati la tessera dell'assicurazione"
 
 #. module: hr_payroll
 #. odoo-python
@@ -2020,11 +2015,6 @@ msgid "Made Payment Order ? "
 msgstr "Fatto ordine di pagamento? "
 
 #. module: hr_payroll
-#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
-msgid "Made by Odoo with ❤️"
-msgstr "Fatto da Odoo con ❤️"
-
-#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_main_attachment_id
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__message_main_attachment_id
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__message_main_attachment_id
@@ -2219,12 +2209,6 @@ msgstr "Nuovi dipendenti"
 #, python-format
 msgid "New Payslip"
 msgstr "Nuova busta paga"
-
-#. module: hr_payroll
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_calendar_event_id
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
-msgstr "Prossimo evento del calendario delle attività"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_date_deadline
@@ -3914,20 +3898,6 @@ msgstr "Modo di arrotondare il tipo di voce lavorativa."
 msgid "We have to improve our Payroll flow with the new Odoo process"
 msgstr ""
 "Bisogna adattare il flusso del modulo Buste paga al nuovo processo di Odoo"
-
-#. module: hr_payroll
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__website_message_ids
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__website_message_ids
-#: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__website_message_ids
-msgid "Website Messages"
-msgstr "Messaggi sito web"
-
-#. module: hr_payroll
-#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__website_message_ids
-#: model:ir.model.fields,help:hr_payroll.field_hr_payslip_run__website_message_ids
-#: model:ir.model.fields,help:hr_payroll.field_hr_salary_attachment__website_message_ids
-msgid "Website communication history"
-msgstr "Cronologia comunicazioni sito web"
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payroll_structure__schedule_pay__weekly

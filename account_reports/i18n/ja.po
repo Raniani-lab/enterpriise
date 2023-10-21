@@ -3093,6 +3093,15 @@ msgstr "本日付けのOdooの帳簿残高"
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
+msgid ""
+"The company's chart of account does not match the report's chart of "
+"accounts."
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
 msgid "The company's country does not match the report's country."
 msgstr "会社の国は、レポートの国と一致してません。"
 
@@ -3521,7 +3530,7 @@ msgstr "禁止期間中の税務レポートを影響する繰越値が削除さ
 #: code:addons/account_reports/models/account_multicurrency_revaluation_report.py:0
 #, python-format
 msgid "You need to activate more than one currency to access this report."
-msgstr ""
+msgstr "このレポートにアクセスするには、複数の通貨を有効化する必要があります。"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template

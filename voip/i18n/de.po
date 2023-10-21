@@ -1097,7 +1097,7 @@ msgid ""
 "When the call is over, the status is set to Held.\n"
 "If the call is not applicable anymore, the status can be set to Cancelled."
 msgstr ""
-"Der Status ist „Zu erledigen“, wenn ein Anruf angelegt wird.\n"
+"Der Status ist „To-do“, wenn ein Anruf angelegt wird.\n"
 "Wenn der Anruf beendet ist, wird der Status „Geführt“.\n"
 "Wenn der Anruf nicht mehr erforderlich ist, kann der Status auf „Abgebrochen“ gesetzt werden."
 
@@ -1127,7 +1127,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_report__state__open
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "To Do"
-msgstr "Zu erledigen"
+msgstr "To-do"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__1d

@@ -129,7 +129,7 @@ msgstr ""
 #: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid "Click on Advanced/Show Details/Details/More information"
-msgstr ""
+msgstr "請按：進階 / 顯示詳細資料 / 詳細資料 / 更多資訊"
 
 #. module: iot
 #. odoo-javascript

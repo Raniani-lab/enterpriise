@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Jumshud Sultanov <cumshud@gmail.com>, 2022
-# erpgo translator <jumshud@erpgo.az>, 2022
+# erpgo translator <jumshud@erpgo.az>, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: erpgo translator <jumshud@erpgo.az>, 2022\n"
+"Last-Translator: erpgo translator <jumshud@erpgo.az>, 2023\n"
 "Language-Team: Azerbaijani (https://app.transifex.com/odoo/teams/41243/az/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -191,7 +191,7 @@ msgstr "Hesab-faktura Tərtib edin"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
 msgid "Create new quotation"
-msgstr ""
+msgstr "Yeni qiymət təklifi yaradın"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_view_form_inherit
@@ -368,7 +368,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
 msgid "New Quotation"
-msgstr ""
+msgstr "Yeni Qiymət Təklifi"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.actions.act_window,help:industry_fsm_sale.product_action_fsm
@@ -473,7 +473,7 @@ msgstr "Miqdar"
 #: code:addons/industry_fsm_sale/controllers/portal.py:0
 #, python-format
 msgid "Quotation"
-msgstr ""
+msgstr "Qiymət Təklifi"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__quotation_count

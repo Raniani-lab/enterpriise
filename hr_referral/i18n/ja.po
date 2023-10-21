@@ -1037,7 +1037,7 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_recruitment_stage
 msgid "Recruitment Stages"
-msgstr ""
+msgstr "採用ステージ"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_report_view_tree

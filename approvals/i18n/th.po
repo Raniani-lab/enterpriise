@@ -211,6 +211,8 @@ msgstr "ผู้อนุมัติ"
 msgid ""
 "Approver Sequence can only be activated with at least 1 minimum approver."
 msgstr ""
+"ลำดับผู้อนุมัติสามารถเปิดใช้งานได้โดยมีผู้อนุมัติขั้นต่ำอย่างน้อย 1 "
+"คนเท่านั้น"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__user_ids
@@ -233,7 +235,7 @@ msgstr "ผู้อนุมัติ"
 #: model:ir.model.fields,field_description:approvals.field_approval_category__approver_sequence
 #: model:ir.model.fields,field_description:approvals.field_approval_request__approver_sequence
 msgid "Approvers Sequence?"
-msgstr ""
+msgstr "ลำดับผู้อนุมัติ?"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
@@ -280,7 +282,7 @@ msgstr "ทริปธุรกิจ"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__change_request_owner
 msgid "Can Change Request Owner"
-msgstr ""
+msgstr "สามารถเปลี่ยนเจ้าของคำขอได้"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__can_edit
@@ -309,7 +311,7 @@ msgstr "หมวดหมู่"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__category_approver
 msgid "Category Approver"
-msgstr ""
+msgstr "ผู้อนุมัติหมวดหมู่"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__sequence_code
@@ -1051,7 +1053,7 @@ msgstr "ส่งแล้ว"
 #. module: approvals
 #: model:res.groups,comment:approvals.group_approval_user
 msgid "The user will be able to access all requests and approve/refuse them."
-msgstr ""
+msgstr "ผู้ใช้จะสามารถเข้าถึงคำขอทั้งหมดและอนุมัติ/ปฏิเสธได้"
 
 #. module: approvals
 #: model:res.groups,comment:approvals.group_approval_manager
@@ -1153,7 +1155,7 @@ msgstr "ถอน"
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You cannot approve before the previous approver."
-msgstr ""
+msgstr "คุณไม่สามารถอนุมัติก่อนผู้อนุมัติคนก่อนหน้าได้"
 
 #. module: approvals
 #. odoo-python
@@ -1161,7 +1163,7 @@ msgstr ""
 #, python-format
 msgid ""
 "You cannot assign the same approver multiple times on the same request."
-msgstr ""
+msgstr "คุณไม่สามารถมอบหมายผู้อนุมัติคนเดียวกันหลายครั้งในคำขอเดียวกันได้"
 
 #. module: approvals
 #. odoo-python
@@ -1171,6 +1173,8 @@ msgid ""
 "You cannot unlink an attachment which is linked to a validated, refused or "
 "cancelled approval request."
 msgstr ""
+"คุณไม่สามารถยกเลิกการเชื่อมโยงเอกสารแนบที่เชื่อมโยงกับคำขออนุมัติที่ได้รับการตรวจสอบ"
+" ปฏิเสธ หรือยกเลิกได้"
 
 #. module: approvals
 #. odoo-python

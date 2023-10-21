@@ -19,9 +19,9 @@
 # Patrick-Jordan Kiudorv, 2022
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Anna, 2023
-# Leaanika Randmets, 2023
 # JanaAvalah, 2023
 # Eneli Õigus <enelioigus@gmail.com>, 2023
+# Leaanika Randmets, 2023
 # 
 msgid ""
 msgstr ""
@@ -29,7 +29,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Eneli Õigus <enelioigus@gmail.com>, 2023\n"
+"Last-Translator: Leaanika Randmets, 2023\n"
 "Language-Team: Estonian (https://app.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3392,7 +3392,7 @@ msgstr "Ülekanne"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trigger
 msgid "Trigger"
-msgstr "Tellimise meetod"
+msgstr "Käivitaja"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_id

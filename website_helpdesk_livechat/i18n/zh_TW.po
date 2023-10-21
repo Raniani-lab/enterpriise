@@ -64,7 +64,7 @@ msgstr "預設回應"
 #. module: website_helpdesk_livechat
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.im_livechat_canned_response_view_search
 msgid "Canned Responses Search"
-msgstr ""
+msgstr "預設回覆搜尋"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_chatbot_script

@@ -492,31 +492,31 @@ msgstr "その他承認"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_access_to_request
 msgid "Has Access To Request"
-msgstr ""
+msgstr "要求するアクセスあり"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_amount
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_amount
 msgid "Has Amount"
-msgstr ""
+msgstr "金額あり"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_partner
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_partner
 msgid "Has Contact"
-msgstr ""
+msgstr "連絡先あり"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_date
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_date
 msgid "Has Date"
-msgstr ""
+msgstr "日付あり"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_location
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_location
 msgid "Has Location"
-msgstr ""
+msgstr "ロケーションあり"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_message
@@ -527,31 +527,31 @@ msgstr "メッセージあり"
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_payment_method
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_payment_method
 msgid "Has Payment"
-msgstr ""
+msgstr "支払あり"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_period
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_period
 msgid "Has Period"
-msgstr ""
+msgstr "期間あり"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_product
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_product
 msgid "Has Product"
-msgstr ""
+msgstr "プロダクトあり"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_quantity
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_quantity
 msgid "Has Quantity"
-msgstr ""
+msgstr "数量あり"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_reference
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_reference
 msgid "Has Reference"
-msgstr ""
+msgstr "参照あり"
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_category__manager_approval

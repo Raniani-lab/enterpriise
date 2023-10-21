@@ -1290,7 +1290,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "To Do Today"
-msgstr "Heute zu erledigen"
+msgstr "To-dos von heute"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search_without_searchpanel

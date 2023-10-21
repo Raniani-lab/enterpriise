@@ -765,7 +765,7 @@ msgstr "Neuen aktiven Rechnungsabgrenzungsposten erstellen"
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_expense_model_form
 msgid "Create new deferred expense model"
-msgstr "Neue Vorlage für passive Rechnungsabgrenzungen erstellen"
+msgstr "Neue Vorlage für aktive Rechnungsabgrenzungen erstellen"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_revenue_form
@@ -900,7 +900,7 @@ msgstr "Betrag der Aktiven Rechnungsabgrenzung"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Deferred Expense Model"
-msgstr "Model für Passive Rechnungsabgrenzung"
+msgstr "Modell für Aktive Rechnungsabgrenzung"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1718,6 +1718,14 @@ msgstr "Übergeordnet"
 
 #. module: account_asset
 #. odoo-python
+#: code:addons/account_asset/models/account_asset.py:0
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
+#, python-format
+msgid "Parent Asset"
+msgstr ""
+
+#. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #, python-format
@@ -2019,7 +2027,7 @@ msgid ""
 "The disposal invoice is needed in order to generate the closing journal "
 "entry."
 msgstr ""
-"Der Veräußerungsbeleg wird gebraucht, um die Schlussbuchung zu erstellen"
+"Der Veräußerungsbeleg wird gebraucht, um die Abschlussbuchung zu erstellen"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__method_number

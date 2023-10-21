@@ -934,7 +934,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_2
 msgid "What's your name?"
-msgstr ""
+msgstr "お名前を教えて下さい。"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_2

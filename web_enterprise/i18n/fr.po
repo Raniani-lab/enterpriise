@@ -5,8 +5,8 @@
 # Translators:
 # Martin Trigaux, 2022
 # Cécile Collart <cco@odoo.com>, 2022
-# Jolien De Paepe, 2023
 # Wil Odoo, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:30+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -208,7 +208,7 @@ msgstr ""
 msgid "Login to your Odoo.com dashboard then unlink your previous database:"
 msgstr ""
 "Connectez-vous à votre tableau de bord Odoo.com puis dissociez votre "
-"ancienne base de données :"
+"ancienne base de données :"
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_ui_menu
@@ -288,7 +288,7 @@ msgstr "Recherche rapide : %s"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Refresh subscription status"
-msgstr "Mettre à jour le statut du contrat"
+msgstr "Mettre à jour le statut de l'abonnement"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -302,7 +302,7 @@ msgstr "S'inscrire"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Register your subscription"
-msgstr "Enregistrer votre inscription"
+msgstr "Enregistrer votre abonnement"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -316,7 +316,7 @@ msgstr "Supprimer"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Renew your subscription"
-msgstr "Renouveler votre inscription"
+msgstr "Renouveler votre abonnement"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -380,7 +380,7 @@ msgstr "ASTUCE"
 msgid ""
 "Thank you, your registration was successful! Your database is valid until"
 msgstr ""
-"Merci, votre enregistrement est terminé ! Votre base de données est validée "
+"Merci, votre enregistrement est terminé ! Votre base de données est valide "
 "jusqu'au"
 
 #. module: web_enterprise
@@ -417,14 +417,14 @@ msgstr "Cette base de données a expiré."
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "This database will expire in %s. "
-msgstr "Cette base de données expirera dans %s."
+msgstr "Cette base de données expire dans %s."
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "This demo database will expire in %s. "
-msgstr "Cette base de données de démonstration expirera dans %s."
+msgstr "Cette base de données de démonstration expire dans %s."
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -454,7 +454,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Upgrade your subscription"
-msgstr "Mettre à jour votre contrat"
+msgstr "Mettre à jour votre abonnement"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -470,7 +470,7 @@ msgstr "Sélecteur de vues"
 msgid ""
 "You have more users or more apps installed than your subscription allows."
 msgstr ""
-"Vous avez installer d'utilisateurs ou plus d'applications que votre "
+"Vous avez installé plus d'utilisateurs ou plus d'applications que votre "
 "abonnement ne le permet."
 
 #. module: web_enterprise
@@ -503,7 +503,7 @@ msgstr "Votre abonnement est déjà lié à une base de données."
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Your subscription was updated and is valid until"
-msgstr "Votre inscription a été mise à jour et est valide jusqu'au "
+msgstr "Votre abonnement a été mis à jour et est valide jusqu'au "
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -524,7 +524,7 @@ msgstr "ou"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "to the subscription owner (email:"
-msgstr "au propriétaire de l'abonnement (email:"
+msgstr "au propriétaire de l'abonnement (email :"
 
 #. module: web_enterprise
 #. odoo-javascript

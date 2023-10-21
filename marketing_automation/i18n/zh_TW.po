@@ -30,7 +30,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_filter_count
 msgid "# Favorite Filters"
-msgstr ""
+msgstr "最愛篩選器數目"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mass_mailing_count
@@ -162,12 +162,12 @@ msgstr "<strong>工作流已修改！</strong>"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_mailings_count
 msgid "A/B Test Mailings #"
-msgstr ""
+msgstr "A/B 測試郵寄 #"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_completed
 msgid "A/B Testing Campaign Finished"
-msgstr ""
+msgstr "A/B 測試活動完結"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__trace_ids
@@ -214,7 +214,7 @@ msgstr "活動類型"
 msgid ""
 "Activity will only be performed if record satisfies this domain, obtained "
 "from the combination of the activity filter and its inherited filter"
-msgstr ""
+msgstr "只限在記錄滿足這個範圍時（該範圍是結合活動篩選器及其繼承篩選器所得），才會執行活動"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -229,7 +229,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 msgid "Add to Templates"
-msgstr ""
+msgstr "加入至範本"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_activity__allowed_parent_ids
@@ -358,7 +358,7 @@ msgstr "點選率"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__links_click_datetime
 msgid "Clicked On"
-msgstr ""
+msgstr "點擊開啟於"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -427,7 +427,7 @@ msgstr "建立於"
 #: model:ir.model.fields,help:marketing_automation.field_marketing_campaign__ab_testing_schedule_datetime
 msgid ""
 "Date that will be used to know when to determine and send the winner mailing"
-msgstr ""
+msgstr "用於了解何時確定和發送優勝郵件的日期"
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__days
@@ -477,7 +477,7 @@ msgstr "顯示名稱"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__res_id
 msgid "Document ID"
-msgstr "文件ID"
+msgstr "文件識別碼"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
@@ -576,17 +576,17 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_filter_id
 msgid "Favorite Filter"
-msgstr ""
+msgstr "最愛篩選器"
 
 #. module: marketing_automation
 #: model:ir.ui.menu,name:marketing_automation.mailing_filter_menu_action_marketing_automaion
 msgid "Favorite Filters"
-msgstr ""
+msgstr "最愛篩選器"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_filter_domain
 msgid "Favorite filter domain"
-msgstr ""
+msgstr "最愛篩選範圍"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__domain
@@ -629,7 +629,7 @@ msgstr "ID"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__is_mailing_campaign_activated
 msgid "Is Mailing Campaign Activated"
-msgstr ""
+msgstr "郵寄活動是否已啟動"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -707,13 +707,13 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_category__email
 msgid "Mail"
-msgstr "信件"
+msgstr "郵件"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_automation
 msgid "Mail Body"
-msgstr "信件內容"
+msgstr "郵件正文"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
@@ -759,7 +759,7 @@ msgstr "信件：已回覆"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 msgid "Mailing"
-msgstr "信件"
+msgstr "郵寄"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_mailing_trace
@@ -981,7 +981,7 @@ msgstr "尚未回覆"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_mail_count
 msgid "Number of Mass Mailing"
-msgstr ""
+msgstr "群發郵件數目"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__click_count
@@ -1163,12 +1163,12 @@ msgstr "已被活動過濾器拒絕或記錄已刪除/歸檔"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Reload a favorite filter"
-msgstr ""
+msgstr "重新載入最愛篩選器"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 msgid "Remove from Templates"
-msgstr ""
+msgstr "從範本移除"
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_participant__state__unlinked
@@ -1267,7 +1267,7 @@ msgstr "確定將會發送的優勝者郵件的選擇。"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_schedule_datetime
 msgid "Send Final On"
-msgstr ""
+msgstr "傳送最後版本在"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__interval_number

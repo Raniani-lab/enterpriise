@@ -245,7 +245,7 @@ msgstr "Taxa de corretagem"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Buy Sell Back"
-msgstr ""
+msgstr "Buy Sell Back"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -382,7 +382,7 @@ msgstr "Cheque circular"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Clean Collection"
-msgstr ""
+msgstr "Clean Collection"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -687,7 +687,7 @@ msgstr "Débito direto em reserva"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Discounted Draft"
-msgstr ""
+msgstr "Discounted Draft"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -732,13 +732,13 @@ msgstr "Transferência doméstica de crédito"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Draft Maturity Change"
-msgstr ""
+msgstr "Draft Maturity Change"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Drafts/BillOfOrders"
-msgstr ""
+msgstr "Drafts/BillOfOrders"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -750,7 +750,7 @@ msgstr "Redução"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Drawing"
-msgstr ""
+msgstr "Drawing"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -972,7 +972,7 @@ msgstr "Congelamento de fundos"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Full Call / Early Redemption"
-msgstr ""
+msgstr "Full Call / Early Redemption"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1010,7 +1010,7 @@ msgstr "Garantias"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Inspeci/Share Exchange"
-msgstr ""
+msgstr "Inspeci/Share Exchange"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/models/account_journal.py:0
@@ -1106,7 +1106,7 @@ msgstr "Diário"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Lack"
-msgstr ""
+msgstr "Lack"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1426,7 +1426,7 @@ msgstr "Cobrança de cheque especial"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Pair-Off"
-msgstr ""
+msgstr "Pair-Off"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1557,7 +1557,7 @@ msgstr "Problema de prioridade"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Put Redemption"
-msgstr ""
+msgstr "Put Redemption"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1632,7 +1632,7 @@ msgstr "Repagamento"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Repo"
-msgstr ""
+msgstr "Repo"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1691,7 +1691,7 @@ msgstr "Estorno devido à solicitação de cancelamento de pagamento"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Reverse Repo"
-msgstr ""
+msgstr "Repo revertido"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1755,7 +1755,7 @@ msgstr "Financiamento de títulos"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Sell Buy Back"
-msgstr ""
+msgstr "Sell Buy Back"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1785,13 +1785,13 @@ msgstr "Liquidação no vencimento"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Settlement of Sight Export document"
-msgstr ""
+msgstr "Liquidação do documento Sight Export"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Settlement of Sight Import document"
-msgstr ""
+msgstr "Liquidação do documento Sight Import"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1814,7 +1814,7 @@ msgstr "Pagamento com cartão inteligente"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Spots"
-msgstr ""
+msgstr "Spots"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1826,7 +1826,7 @@ msgstr "Imposto de selo"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Stand-By Letter Of Credit"
-msgstr ""
+msgstr "Carta de crédito de stand-by"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1877,13 +1877,13 @@ msgstr "Swaps"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Sweep"
-msgstr ""
+msgstr "Sweep"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Sweeping"
-msgstr ""
+msgstr "Sweeping"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1907,7 +1907,7 @@ msgstr "Divulgações"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "TBA closing"
-msgstr ""
+msgstr "TBA closing"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1934,7 +1934,7 @@ msgstr "Licitação"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Topping"
-msgstr ""
+msgstr "Topping"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -2004,19 +2004,19 @@ msgstr "Serviço de empréstimos e impostos do tesouro"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Triparty Repo"
-msgstr ""
+msgstr "Triparty Repo"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Triparty Reverse Repo"
-msgstr ""
+msgstr "Triparty Reverse Repo"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Turnaround"
-msgstr ""
+msgstr "Turnaround"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -2060,7 +2060,7 @@ msgstr "Data de valorização"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Warrant Exercise/Warrant Conversion"
-msgstr ""
+msgstr "Exercício de mandado/conversão de mandado"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

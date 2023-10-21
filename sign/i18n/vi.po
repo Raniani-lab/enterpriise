@@ -3491,6 +3491,12 @@ msgstr ""
 "giả sử rằng một tờ giấy nặng 0,005 kg."
 
 #. module: sign
+#: code:addons/sign/wizard/sign_duplicate_template_with_pdf.py:0
+#, python-format
+msgid "The uploaded file is not a valid PDF. Please upload a valid PDF file."
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 msgid "There are no signatures request."
 msgstr ""

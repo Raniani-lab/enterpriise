@@ -28,12 +28,12 @@ msgstr ""
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-comments me-1\" title=\"Bình luận\"/>"
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-thumbs-up me-1\" title=\"Likes\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-thumbs-up me-1\" title=\"Thích\"/>"
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_live_post__facebook_post_id
@@ -45,7 +45,7 @@ msgstr ""
 #: code:addons/social_facebook/models/social_stream_post.py:0
 #, python-format
 msgid "An error occurred."
-msgstr ""
+msgstr "Đã xảy ra lỗi."
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.res_config_settings_view_form
@@ -63,7 +63,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social_facebook.social_stream_post_view_kanban
 #, python-format
 msgid "Author Image"
-msgstr ""
+msgstr "Hình ảnh tác giả"
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_res_config_settings__facebook_use_own_account
@@ -201,7 +201,7 @@ msgstr ""
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.facebook_preview
 msgid "Post Image"
-msgstr ""
+msgstr "Hình ảnh bài đăng"
 
 #. module: social_facebook
 #. odoo-python
@@ -254,7 +254,7 @@ msgstr "Đăng lên mạng xã hội"
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_post_template
 msgid "Social Post Template"
-msgstr ""
+msgstr "Mẫu bài đăng trên mạng xã hội"
 
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_stream
@@ -299,6 +299,8 @@ msgid ""
 "Used to make comparisons when we need to restrict some features to a "
 "specific media ('facebook', 'twitter', ...)."
 msgstr ""
+"Dùng để so sánh khi chúng ta cần giới hạn một số tính năng cho một phương "
+"tiện cụ thể ('facebook', 'twitter', ...)."
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_user_likes

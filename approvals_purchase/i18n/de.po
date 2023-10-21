@@ -80,19 +80,19 @@ msgstr "Produkte"
 #. module: approvals_purchase
 #: model:ir.model.fields,field_description:approvals_purchase.field_approval_request__purchase_order_count
 msgid "Purchase Order Count"
-msgstr "Anzahl Einkaufsaufträge"
+msgstr "Anzahl Bestellungen"
 
 #. module: approvals_purchase
 #: model:ir.model.fields,field_description:approvals_purchase.field_approval_product_line__purchase_order_line_id
 msgid "Purchase Order Line"
-msgstr "Einkaufsauftragszeile"
+msgstr "Bestellzeile"
 
 #. module: approvals_purchase
 #: code:addons/approvals_purchase/models/approval_request.py:0
 #: model_terms:ir.ui.view,arch_db:approvals_purchase.approval_purchase_request_view_form_inherit
 #, python-format
 msgid "Purchase Orders"
-msgstr "Einkaufsaufträge"
+msgstr "Bestellungen"
 
 #. module: approvals_purchase
 #: model:ir.model.fields,field_description:approvals_purchase.field_approval_product_line__po_uom_qty
@@ -104,7 +104,7 @@ msgstr "Menge der Einkaufsmaßeinheit"
 msgid ""
 "The quantity converted into the UoM used by the product in Purchase Order."
 msgstr ""
-"Die in die Einheit umgerechnete Menge, die das Produkt im Einkaufsauftrag "
+"Die in die Einheit umgerechnete Menge, die das Produkt in der Bestellung "
 "verwendet."
 
 #. module: approvals_purchase

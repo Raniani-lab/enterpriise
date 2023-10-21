@@ -40,7 +40,7 @@ msgstr ""
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-comments me-1\" title=\"Bình luận\"/>"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
@@ -84,11 +84,25 @@ msgid "An error occurred (%s)"
 msgstr ""
 
 #. module: social_twitter
-#. odoo-javascript
+#: code:addons/social_twitter/controllers/main.py:0
+#, python-format
+msgid "Authentication failed. Please enter valid credentials."
+msgstr ""
+
+#. module: social_twitter
+#. openerp-web
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 #, python-format
 msgid "Author Image"
+msgstr "Hình ảnh tác giả"
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid ""
+"Can not like / unlike the tweet\n"
+"%s."
 msgstr ""
 
 #. module: social_twitter
@@ -167,6 +181,33 @@ msgstr "Lỗi"
 #: code:addons/social_twitter/static/src/js/stream_post_twitter_quote.js:0
 #, python-format
 msgid "Error while sending the data to the server."
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid ""
+"Failed to delete the Tweet\n"
+"%s."
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "Failed to fetch the conversation id: '%s' using the account %s."
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid ""
+"Failed to fetch the tweets in the same thread: '%s' using the account %s."
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "Failed to post comment: %s with the account %s."
 msgstr ""
 
 #. module: social_twitter
@@ -252,6 +293,12 @@ msgstr "Tên"
 
 #. module: social_twitter
 #. odoo-python
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "Oops! Couldn't find this tweet on Twitter.com"
+msgstr ""
+
+#. module: social_twitter
 #: code:addons/social_twitter/models/social_stream.py:0
 #, python-format
 msgid "Please select a Twitter account for this stream type."
@@ -267,7 +314,7 @@ msgstr "Vào sổ"
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.twitter_preview
 msgid "Post Image"
-msgstr ""
+msgstr "Hình ảnh bài đăng"
 
 #. module: social_twitter
 #. odoo-javascript
@@ -324,6 +371,12 @@ msgid "Retweets"
 msgstr ""
 
 #. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "Replies from Tweets older than 7 days must be accessed on Twitter.com"
+msgstr ""
+
+#. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream__twitter_searched_keyword
 msgid "Search Keyword"
 msgstr ""
@@ -361,7 +414,7 @@ msgstr "Đăng lên mạng xã hội"
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_post_template
 msgid "Social Post Template"
-msgstr ""
+msgstr "Mẫu bài đăng trên mạng xã hội"
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_stream
@@ -401,6 +454,15 @@ msgstr ""
 msgid ""
 "The url that this service requested returned an error. Please contact the "
 "author of the app."
+msgstr ""
+"Url mà dịch vụ này yêu cầu đã trả về lỗi. Vui lòng liên hệ với người tạo ứng"
+" dụng."
+
+#. module: social_twitter
+#. odoo-python
+#: code:addons/social_twitter/controllers/main.py:0
+#, python-format
+msgid "This Tweet has been deleted."
 msgstr ""
 
 #. module: social_twitter
@@ -550,7 +612,7 @@ msgstr ""
 #: code:addons/social_twitter/controllers/main.py:0
 #, python-format
 msgid "Unauthorized. Please contact your administrator."
-msgstr ""
+msgstr "Không được phép. Vui lòng liên hệ với quản trị viên."
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
@@ -577,9 +639,19 @@ msgid ""
 "Used to make comparisons when we need to restrict some features to a "
 "specific media ('facebook', 'twitter', ...)."
 msgstr ""
+"Dùng để so sánh khi chúng ta cần giới hạn một số tính năng cho một phương "
+"tiện cụ thể ('facebook', 'twitter', ...)."
 
 #. module: social_twitter
 #. odoo-python
+#: code:addons/social_twitter/models/social_account.py:0
+#, python-format
+msgid ""
+"We could not upload your image, it may be corrupted, it may exceed size "
+"limit or API may have send improper response (error: %s)."
+msgstr ""
+
+#. module: social_twitter
 #: code:addons/social_twitter/models/social_account.py:0
 #, python-format
 msgid ""

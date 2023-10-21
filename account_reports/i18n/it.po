@@ -3170,6 +3170,8 @@ msgid ""
 "The company's chart of account does not match the report's chart of "
 "accounts."
 msgstr ""
+"Il piano contabile dell'azienda non corrisponde ai piani  contabili del "
+"report."
 
 #. module: account_reports
 #. odoo-python

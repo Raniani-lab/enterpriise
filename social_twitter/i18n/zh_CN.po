@@ -107,6 +107,8 @@ msgid ""
 "Can not like / unlike the tweet\n"
 "%s."
 msgstr ""
+"不能喜欢/不喜欢这条推特吗\n"
+"%s。"
 
 #. module: social_twitter
 #. odoo-javascript
@@ -200,20 +202,20 @@ msgstr ""
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Failed to fetch the conversation id: '%s' using the account %s."
-msgstr ""
+msgstr "使用帐户%s获取会话id: '%s' 失败。"
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid ""
 "Failed to fetch the tweets in the same thread: '%s' using the account %s."
-msgstr ""
+msgstr "使用帐户%s在同一频道 '%s' 获取推特失败。"
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Failed to post comment: %s with the account %s."
-msgstr ""
+msgstr "使用帐户%s发布评论：'%s' 失败。"
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_likes

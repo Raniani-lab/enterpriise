@@ -215,7 +215,7 @@ msgstr "応募者"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__applies_on
 msgid "Applies On"
-msgstr ""
+msgstr "以下に適用"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_next_step_button

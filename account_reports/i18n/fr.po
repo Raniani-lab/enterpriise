@@ -12,6 +12,7 @@
 # Christophe Klopfert, 2022
 # Jinjiu Liu, 2023
 # Jolien De Paepe, 2023
+# Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
@@ -19,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:36+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Jolien De Paepe, 2023\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -57,7 +58,7 @@ msgid ""
 msgstr ""
 "%s des transactions(+) importées depuis votre compte bancaire en ligne (à la"
 " date d'aujourd'hui) ne sont pas encore réconciliées dans Odoo (en attente "
-"de la réconciliation finale permettant de trouver le compte correct)"
+"du rapprochement finale permettant de trouver le compte correct)"
 
 #. module: account_reports
 #. odoo-python
@@ -69,8 +70,8 @@ msgid ""
 "allowing finding the right account)"
 msgstr ""
 "%s des transactions(-) importées depuis le compte bancaire en ligne ( à la "
-"date d'aujourd'hui) ne sont pas encore réconciliées dans Odoo (en attente de"
-" la réconciliation finale permettant de trouver le compte correct)"
+"date d'aujourd'hui) ne sont pas encore réconciliées dans Odoo (en attente du"
+" rapprochement finale permettant de trouver le compte correct)"
 
 #. module: account_reports
 #. odoo-python
@@ -898,17 +899,17 @@ msgstr "Solde compte courant d'impôt (à recevoir)"
 #. module: account_reports
 #: model:ir.actions.client,name:account_reports.action_account_report_bank_reconciliation
 msgid "Bank Reconciliation"
-msgstr "Réconciliation bancaire"
+msgstr "Rapprochement bancaire"
 
 #. module: account_reports
 #: model:account.report,name:account_reports.bank_reconciliation_report
 msgid "Bank Reconciliation Report"
-msgstr "Rapport des réconciliations bancaires"
+msgstr "Rapport des rapprochements bancaires"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_bank_reconciliation_report_handler
 msgid "Bank Reconciliation Report Custom Handler"
-msgstr "Gestionnaire personnalisé de rapport des réconciliations bancaires"
+msgstr "Gestionnaire personnalisé de rapport des rapprochements bancaires"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_bank_view0
@@ -919,7 +920,7 @@ msgstr "Comptes bancaires et d'espèces"
 #: model:ir.model,name:account_reports.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
 msgstr ""
-"L'assistant de la réconciliation bancaire pour une seule ligne de l'extrait"
+"L'assistant du rapprochement bancaire pour une seule ligne de l'extrait"
 
 #. module: account_reports
 #. odoo-python
@@ -3112,7 +3113,7 @@ msgstr "Déclaration de TVA"
 #: code:addons/account_reports/models/res_company.py:0
 #, python-format
 msgid "Tax return for %s%s"
-msgstr "Déclaration d'impôt pour%s%s"
+msgstr "Déclaration d'impôt pour %s%s"
 
 #. module: account_reports
 #. odoo-python
@@ -3184,6 +3185,8 @@ msgid ""
 "The company's chart of account does not match the report's chart of "
 "accounts."
 msgstr ""
+"Le plan comptable de l'entreprise ne correspond pas au plan comptable du "
+"rapport."
 
 #. module: account_reports
 #. odoo-python

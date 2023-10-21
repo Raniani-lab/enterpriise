@@ -1057,7 +1057,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "Document Name"
-msgstr ""
+msgstr "ชื่อเอกสาร"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__page
@@ -1862,7 +1862,7 @@ msgstr "วันครบกำหนดกิจกรรมของฉัน
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "My Documents"
-msgstr ""
+msgstr "เอกสารของฉัน"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -1878,7 +1878,7 @@ msgstr "คำร้องขอของฉัน"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "My Templates"
-msgstr ""
+msgstr "เทมเพลตของฉัน"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_request_my_requests_action
@@ -2884,7 +2884,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model,name:sign.model_sign_template
 msgid "Signature Template"
-msgstr ""
+msgstr "เทมเพลตลายเซ็น"
 
 #. module: sign
 #. odoo-javascript
@@ -3401,6 +3401,12 @@ msgid ""
 "x number of sheets in the document x (number of contacts who need to sign + "
 "number of contacts in copy if the sign request is signed) = total of pages. "
 "We assume that one page weights 0.005 kilograms."
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/wizard/sign_duplicate_template_with_pdf.py:0
+#, python-format
+msgid "The uploaded file is not a valid PDF. Please upload a valid PDF file."
 msgstr ""
 
 #. module: sign

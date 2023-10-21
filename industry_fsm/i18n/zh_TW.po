@@ -129,6 +129,9 @@ msgid ""
 "                                Signed\n"
 "                            </span>"
 msgstr ""
+"<span style=\"                                 font-size: 10px;                                 color: #fff;                                 text-transform: uppercase;                                 text-align: center;                                 font-weight: bold; line-height: 20px;                                 transform: rotate(45deg);                                 width: 100px; height: auto; display: block;                                 background: green;                                 position: absolute;                                 top: 19px; right: -21px; left: auto;                                 padding: 0;\">\n"
+"                                已簽名\n"
+"                            </span>"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page

@@ -2027,7 +2027,7 @@ msgstr ""
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "Type of structured communication not supported: "
-msgstr ""
+msgstr "Art der strukturierten Mitteilung nicht unterstützt:"
 
 #. module: l10n_be_coda
 #. odoo-python

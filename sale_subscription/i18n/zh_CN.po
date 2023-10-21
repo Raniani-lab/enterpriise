@@ -3696,6 +3696,8 @@ msgid ""
 "You cannot upsell a subscription whose next invoice date is in the past.\n"
 "Please, invoice directly the %s contract."
 msgstr ""
+"若定期订购的下次发票日期已逾期，便不可进行追加销售。\n"
+"请直接为%s合约开立发票。"
 
 #. module: sale_subscription
 #. odoo-python

@@ -1416,7 +1416,7 @@ msgstr "Inland"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid "Download the Data Inalterability Check Report"
-msgstr "Bericht über die Unveränderbarkeitsprüfung von Daten herunterladen"
+msgstr "Bericht über die Unveränderlichkeitsprüfung von Daten herunterladen"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.aged_payable_report_due_date
@@ -3169,6 +3169,8 @@ msgid ""
 "The company's chart of account does not match the report's chart of "
 "accounts."
 msgstr ""
+"Der Kontenplan des Unternehmens stimmt nicht mit dem Kontenplan des Berichts"
+" überein."
 
 #. module: account_reports
 #. odoo-python
@@ -3176,7 +3178,7 @@ msgstr ""
 #, python-format
 msgid "The company's country does not match the report's country."
 msgstr ""
-"Das Land des Unternehmen stimmt nicht mit dem Land des Berichts überein."
+"Das Land des Unternehmens stimmt nicht mit dem Land des Berichts überein."
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_tax_unit__country_id

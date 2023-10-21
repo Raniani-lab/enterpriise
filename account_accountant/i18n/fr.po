@@ -449,7 +449,7 @@ msgstr "Relevé bancaire.pdf"
 #: model:ir.model,name:account_accountant.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
 msgstr ""
-"L'assistant de la réconciliation bancaire pour une seule ligne de l'extrait"
+"L'assistant du rapprochement bancaire pour une seule ligne de l'extrait"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1295,7 +1295,7 @@ msgstr "Lettrer"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #, python-format
 msgid "Match Existing Entries"
-msgstr "Lettrage des écritures existantes "
+msgstr "Rapprocher des écritures existantes "
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1559,8 +1559,8 @@ msgstr "Prédire les comptes fournisseurs"
 msgid ""
 "Preset to create journal entries during a invoices and payments matching"
 msgstr ""
-"Préconfigurer pour créer une écriture pendant le lettrage entre des factures"
-" et des paiements"
+"Préconfigurer pour créer une écriture pendant le rapprochement entre des "
+"factures et des paiements"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2108,7 +2108,7 @@ msgid ""
 "reconciliation widget"
 msgstr ""
 "Vous ne pouvez pas avoir plus d'une ligne de solde automatique en même temps"
-" dans le widget de réconciliation bancaire."
+" dans le widget de rapprochement bancaire."
 
 #. module: account_accountant
 #. odoo-python
@@ -2119,7 +2119,7 @@ msgid ""
 "reconciliation widget"
 msgstr ""
 "Vous ne pouvez pas avoir plusieurs postes de journal des liquidités en même "
-"temps dans le widget de réconciliation bancaire."
+"temps dans le widget de rapprochement bancaire."
 
 #. module: account_accountant
 #. odoo-python
@@ -2130,7 +2130,7 @@ msgid ""
 "reconciliation widget"
 msgstr ""
 "Vous ne pouvez pas avoir plusieurs fois la même écriture comptable dans le "
-"widget de réconciliation bancaire."
+"widget de rapprochement bancaire."
 
 #. module: account_accountant
 #. odoo-python

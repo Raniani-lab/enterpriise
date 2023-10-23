@@ -187,7 +187,9 @@ def make_sp_api_request(account, operation, path_parameter='', payload=None, met
     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
         _logger.exception("Unable to reach endpoint at %s", url)
         raise ValidationError(_("Could not establish the connection to the API."))
-    return response.json()
+    json_response = response.json()
+    _logger.info("SPAPI response for operation %s: %s", operation, pformat(json_response))
+    return json_response
 
 
 def refresh_access_token(account):

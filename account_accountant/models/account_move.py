@@ -1,19 +1,22 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from contextlib import contextmanager
 import calendar
+from contextlib import contextmanager
+from dateutil.relativedelta import relativedelta
 import logging
 import re
-from dateutil.relativedelta import relativedelta
 
 from odoo import fields, models, api, _, Command
 from odoo.exceptions import UserError
 from odoo.osv import expression
 from odoo.tools import frozendict, SQL
 
-from odoo.addons.account_reports.models.account_deferred_reports import DEFERRED_DATE_MAX
 
 _logger = logging.getLogger(__name__)
+
+
+DEFERRED_DATE_MIN = '1900-01-01'
+DEFERRED_DATE_MAX = '9999-12-31'
 
 
 class AccountMove(models.Model):
@@ -178,8 +181,7 @@ class AccountMove(models.Model):
                 )
 
             values.append({
-                'account_id': line['account_id'],
-                'balance': line['balance'],
+                **self.env['account.move.line']._get_deferred_amounts_by_line_values(line),
                 **columns,
             })
             original_move_ids.add(int(line['move_id']))
@@ -193,18 +195,10 @@ class AccountMove(models.Model):
         deferred_amounts = self._get_deferred_amounts_by_line(line, [period])[0][0]
         balance = deferred_amounts[period] if force_balance is None else force_balance
         return [
-            Command.create({
-                'account_id': deferred_amounts['account_id'].id,
-                'balance': balance,
-                'name': ref,
-                'analytic_distribution': line.analytic_distribution,
-            }),
-            Command.create({
-                'account_id': deferred_account.id,
-                'balance': -balance,
-                'name': ref,
-                'analytic_distribution': line.analytic_distribution,
-            }),
+            Command.create(
+                self.env['account.move.line']._get_deferred_lines_values(account.id, coeff * balance, ref, line.analytic_distribution, line)
+            )
+            for (account, coeff) in [(deferred_amounts['account_id'], 1), (deferred_account, -1)]
         ]
 
     def _generate_deferred_entries(self):
@@ -243,18 +237,9 @@ class AccountMove(models.Model):
             # This way we can avoid adding taxes for deferred moves.
             move_fully_deferred.write({
                 'line_ids': [
-                    Command.create({
-                        'account_id': line.account_id.id,
-                        'balance': -1 * line.balance,
-                        'name': ref,
-                        'analytic_distribution': line.analytic_distribution,
-                    }),
-                    Command.create({
-                        'account_id': deferred_account.id,
-                        'balance': line.balance,
-                        'name': ref,
-                        'analytic_distribution': line.analytic_distribution,
-                    }),
+                    Command.create(
+                        self.env['account.move.line']._get_deferred_lines_values(account.id, coeff * line.balance, ref, line.analytic_distribution, line)
+                    ) for (account, coeff) in [(line.account_id, -1), (deferred_account, 1)]
                 ],
             })
             line.move_id.deferred_move_ids |= move_fully_deferred
@@ -428,6 +413,7 @@ class AccountMoveLine(models.Model):
                     ))
         return super().write(vals)
 
+    # ============================= START - Deferred management ====================================
     def _compute_has_deferred_moves(self):
         for line in self:
             line.has_deferred_moves = line.move_id.deferred_move_ids
@@ -520,6 +506,24 @@ class AccountMoveLine(models.Model):
             return []
         else:
             return periods
+
+    @api.model
+    def _get_deferred_amounts_by_line_values(self, line):
+        return {
+            'account_id': line['account_id'],
+            'balance': line['balance'],
+        }
+
+    @api.model
+    def _get_deferred_lines_values(self, account_id, balance, ref, analytic_distribution, line=None):
+        return {
+            'account_id': account_id,
+            'balance': balance,
+            'name': ref,
+            'analytic_distribution': analytic_distribution,
+        }
+
+    # ============================= END - Deferred management ====================================
 
     def _get_computed_taxes(self):
         if self.move_id.deferred_original_move_ids:

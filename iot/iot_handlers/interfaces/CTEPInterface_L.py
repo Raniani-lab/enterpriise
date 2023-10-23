@@ -19,9 +19,13 @@ if not easyCTEPPath.exists():
         subprocess.check_call(["sudo", "sh", load_library])
     except subprocess.CalledProcessError as e:
         _logger.error('A error encountered : %s ', e.output)
-else:
-    easyCTEP = ctypes.CDLL(easyCTEPPath)
 
+easyCTEP = ctypes.CDLL(easyCTEPPath)
+
+# CTEPManager* createCTEPManager(void);
+easyCTEP.createCTEPManager.restype = ctypes.c_void_p
+# int connectedTerminal(CTEPManager* manager, char* terminal_id, std::shared_ptr<ect::CTEPTerminal> terminal)
+easyCTEP.connectedTerminal.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_void_p]
 
 class CTEPInterface(Interface):
     _loop_delay = 10
@@ -33,8 +37,8 @@ class CTEPInterface(Interface):
 
     def get_devices(self):
         devices = {}
-        terminal_id = ctypes.create_string_buffer(20)
+        terminal_id = ctypes.create_string_buffer(1000)
         device = ctypes.c_void_p()
-        if easyCTEP.connectedTerminal(self.manager, ctypes.byref(terminal_id), ctypes.byref(device)):
+        if easyCTEP.connectedTerminal(self.manager, terminal_id, ctypes.byref(device)):
             devices[terminal_id.value.decode('utf-8')] = device
         return devices

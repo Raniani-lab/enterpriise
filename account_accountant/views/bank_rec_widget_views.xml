@@ -217,7 +217,6 @@
                     <field name="partner_id" readonly="is_reconciled and amount != 0"/>
                     <field name="narration"
                            string="Notes"
-                           invisible="not narration"
                            readonly="is_reconciled and amount != 0"
                            optional="hidden"/>
                     <field name="ref" readonly="is_reconciled and amount != 0" optional="hidden"/>

@@ -3,7 +3,7 @@
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 from odoo import fields, Command
 from odoo.exceptions import UserError
-from odoo.tests import tagged, HttpCase
+from odoo.tests import tagged, HttpCase, Form
 
 
 @tagged('post_install', '-at_install')
@@ -490,7 +490,6 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         - 1200 for the total amount to be deferred (1000 + 400/2)
         - 400 for the deferred amount for each of the 3 months
         """
-        move = self.create_invoice([], post=False)
         partially_deductible_tax = self.env['account.tax'].create({
             'name': 'Partially deductible Tax',
             'amount': 40,
@@ -525,17 +524,33 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 }),
             ],
         })
-        move.invoice_line_ids += self.env['account.move.line'].new({
-            'name': 'Partially deductible line',
-            'quantity': 1,
-            'price_unit': 1000,
-            'tax_ids': [Command.set(partially_deductible_tax.ids)],
-            'account_id': self.expense_accounts[0].id,
-            'deferred_start_date': '2023-01-01',
-            'deferred_end_date': '2023-03-31',
-        })
+
+        # Create invoice with 3 cars to be depreciated on different periods
+        # to make sure the deferred dates are correctly copied on the right lines
+        move_form = Form(self.env['account.move'].with_context(default_move_type='in_invoice'))
+        move_form.partner_id = self.partner_a
+        move_form.invoice_date = fields.Date.from_string('2022-01-01')
+        for year in (2022, 2023, 2023):
+            with move_form.invoice_line_ids.new() as line_form:
+                line_form.name = f"Car {year}"
+                line_form.quantity = 1
+                line_form.price_unit = 1000
+                line_form.deferred_start_date = f'{year}-01-01'
+                line_form.deferred_end_date = f'{year}-03-31'
+                line_form.tax_ids.add(partially_deductible_tax)
+                line_form.account_id = self.expense_accounts[0]
+        move = move_form.save()
         move.action_post()
 
+        # Taxes for 2023 should be aggregated into one because we have the same deferred dates.
+        # Taxes for 2022 should not be aggregated with 2023 because we have different deferred dates.
+        # Therefore we have 4 lines:
+        #     - 3 for the cars
+        #     - 1 for the tax of 2022
+        #     - 1 for the aggregated taxes of 2023
+        self.assertEqual(len(move.line_ids.filtered(lambda l: l.account_id == self.expense_accounts[0])), 5)
+
+        # 2 cars (not 3) should appear with this date range
         options = self.get_options('2023-02-01', '2023-02-28')
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
@@ -543,8 +558,8 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             #   Name                Total        Before      Current     Later
             [   0,                  1,           2,          3,          4       ],
             [
-                ('EXP0 Expense 0',  1200,        400,        400,        400     ),
-                ('Total',          1200,        400,        400,        400     ),
+                ('EXP0 Expense 0',  2400,        800,        800,        800     ),
+                ('Total',          2400,        800,        800,        800     ),
             ],
             options,
         )

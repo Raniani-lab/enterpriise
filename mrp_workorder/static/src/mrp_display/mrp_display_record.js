@@ -564,7 +564,7 @@ export class MrpDisplayRecord extends Component {
         const hasPDF = this.record.worksheet;
         const hasSlide = this.record.worksheet_google_slide;
         const hasNote = this.record.operation_note.length;
-        return !this.record.check_ids.count && (hasPDF || hasSlide || hasNote);
+        return hasPDF || hasSlide || hasNote;
     }
 
     onAnimationEnd(ev) {

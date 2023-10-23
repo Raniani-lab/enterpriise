@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from markupsafe import Markup, escape
+from markupsafe import Markup
 
 from odoo import api, fields, models, Command, _
 
@@ -27,8 +27,9 @@ class CalendarEventCrm(models.Model):
         opportunity_field = self.env['ir.model.fields']._get("calendar.event", "opportunity_id")
         for meeting in events.filtered('opportunity_id'):
             meeting._message_log(
-                body=Markup("<p>%s</p>") % escape(_("Meeting linked to Lead/Opportunity %s")) % \
-                    meeting.opportunity_id._get_html_link(),
+                body=Markup("<p>%s</p>") % _(
+                    "Meeting linked to Lead/Opportunity %s",
+                    meeting.opportunity_id._get_html_link()),
                 tracking_value_ids=[Command.create({
                     'field_id': opportunity_field.id,
                     'old_value_char': False,

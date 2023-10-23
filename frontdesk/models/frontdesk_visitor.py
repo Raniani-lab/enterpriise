@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from werkzeug.urls import url_encode, url_join
-from markupsafe import Markup, escape
+from markupsafe import Markup
 
 from odoo import models, fields, api, _, SUPERUSER_ID
 
@@ -101,10 +101,10 @@ class FrontdeskVisitor(models.Model):
                     'view_type': 'form',
                 })
                 name = f"{self.name} ({self.company})" if self.company else self.name
-                msg = escape(_("%(name)s just checked-in. He requested %(drink)s.")) % {
-                    'name': Markup('<a href="%s">%s</a>') % (url_join(visitor.get_base_url(), '/web?#%s' % url), name),
-                    'drink': ', '.join(drink.name for drink in visitor.drink_ids),
-                }
+                msg = _("%(name)s just checked-in. He requested %(drink)s.",
+                    name=Markup('<a href="%s">%s</a>') % (url_join(visitor.get_base_url(), '/web?#%s' % url), name),
+                    drink=', '.join(drink.name for drink in visitor.drink_ids),
+                )
                 visitor._notify_by_discuss(visitor.drink_ids.notify_user_ids, msg)
 
     def _notify_by_discuss(self, recipients, msg, is_host=False):

@@ -3,7 +3,7 @@
 
 import logging
 from dateutil.relativedelta import relativedelta
-from markupsafe import escape, Markup
+from markupsafe import Markup
 from psycopg2.extensions import TransactionRollbackError
 from ast import literal_eval
 from collections import defaultdict
@@ -760,10 +760,10 @@ class SaleOrder(models.Model):
     def _action_cancel(self):
         for order in self:
             if order.subscription_state == '7_upsell':
-                cancel_message_body = escape(_("The upsell %s has been canceled.")) % order._get_html_link()
+                cancel_message_body = _("The upsell %s has been canceled.", order._get_html_link())
                 order.subscription_id.message_post(body=cancel_message_body)
             elif order.subscription_state == '2_renewal':
-                cancel_message_body = escape(_("The renewal %s has been canceled.")) % order._get_html_link()
+                cancel_message_body = _("The renewal %s has been canceled.", order._get_html_link())
                 order.subscription_id.message_post(body=cancel_message_body)
             elif order.subscription_state in SUBSCRIPTION_PROGRESS_STATE + SUBSCRIPTION_DRAFT_STATE and not self.invoice_ids:
                 order.order_log_ids.sudo().unlink()
@@ -861,7 +861,7 @@ class SaleOrder(models.Model):
         # We need to get the default next_invoice_date that was saved on the upsell because the compute has no way
         # to differentiate new line created by an upsell and new line created by the user.
         for upsell in self:
-            upsell.subscription_id.message_post(body=escape(_("The upsell %s has been confirmed.")) % upsell._get_html_link())
+            upsell.subscription_id.message_post(body=_("The upsell %s has been confirmed.", upsell._get_html_link()))
         for line in (updated_line_ids | new_lines_ids).with_context(skip_line_status_compute=True):
             # The upsell invoice will take care of the invoicing for this period
             line.qty_to_invoice = 0
@@ -894,7 +894,7 @@ class SaleOrder(models.Model):
             if other_renew_so_ids:
                 other_renew_so_ids._action_cancel()
 
-            renew_msg_body = escape(_("This subscription is renewed in %s with a change of plan.")) % renew._get_html_link()
+            renew_msg_body = _("This subscription is renewed in %s with a change of plan.", renew._get_html_link())
             parent.message_post(body=renew_msg_body)
             renew_close_reason_id = self.env.ref('sale_subscription.close_reason_renew')
             end_of_contract_reason_id = self.env.ref('sale_subscription.close_reason_end_of_contract')
@@ -1029,10 +1029,10 @@ class SaleOrder(models.Model):
         self.subscription_child_ids = [Command.link(order.id)]
         order.message_post(body=message_body)
         if subscription_state == '7_upsell':
-            parent_message_body = escape(_("An upsell quotation %s has been created"))
+            parent_message_body = _("An upsell quotation %s has been created", order._get_html_link())
         else:
-            parent_message_body = escape(_("A renewal quotation %s has been created"))
-        self.message_post(body=parent_message_body % order._get_html_link())
+            parent_message_body = _("A renewal quotation %s has been created", order._get_html_link())
+        self.message_post(body=parent_message_body)
         order.order_line._compute_tax_id()
         action = self._get_associated_so_action()
         action['name'] = _('Upsell') if subscription_state == '7_upsell' else _('Renew')
@@ -1330,19 +1330,19 @@ class SaleOrder(models.Model):
         for invoice in invoices:
             invoice.write({'payment_reference': transaction.reference, 'ref': transaction.reference})
             if automatic:
-                msg_body = escape(_(
-                    'Automatic payment succeeded. Payment reference: %(ref)s. Amount: %(amount)s. Contract set to: In Progress, Next Invoice: %(inv)s. Email sent to customer.')) % {
-                    'ref': transaction._get_html_link(title=transaction.reference),
-                    'amount': transaction.amount,
-                    'inv': self.next_invoice_date,
-                }
+                msg_body = _(
+                    'Automatic payment succeeded. Payment reference: %(ref)s. Amount: %(amount)s. Contract set to: In Progress, Next Invoice: %(inv)s. Email sent to customer.',
+                    ref=transaction._get_html_link(title=transaction.reference),
+                    amount=transaction.amount,
+                    inv=self.next_invoice_date,
+                )
             else:
-                msg_body = escape(_(
-                    'Manual payment succeeded. Payment reference: %(ref)s. Amount: %(amount)s. Contract set to: In Progress, Next Invoice: %(inv)s. Email sent to customer.')) % {
-                    'ref': transaction._get_html_link(title=transaction.reference),
-                    'amount': transaction.amount,
-                    'inv': self.next_invoice_date,
-                }
+                msg_body = _(
+                    'Manual payment succeeded. Payment reference: %(ref)s. Amount: %(amount)s. Contract set to: In Progress, Next Invoice: %(inv)s. Email sent to customer.',
+                    ref=transaction._get_html_link(title=transaction.reference),
+                    amount=transaction.amount,
+                    inv=self.next_invoice_date,
+                )
             self.message_post(body=msg_body)
             if invoice.state != 'posted':
                 invoice.with_context(ocr_trigger_delta=15)._post()
@@ -1808,8 +1808,8 @@ class SaleOrder(models.Model):
                     unpaid_so |= so
                     account_move = self.env['account.move'].browse(unpaid_results[so.id])
                     so.message_post(
-                        body=escape(_("The last invoice (%s) of this subscription is unpaid after the due date.")) % \
-                               account_move._get_html_link(),
+                        body=_("The last invoice (%s) of this subscription is unpaid after the due date.",
+                               account_move._get_html_link()),
                         partner_ids=so.team_user_id.partner_id.ids,
                         message_type='email')
                 elif so.id in expired_ids:

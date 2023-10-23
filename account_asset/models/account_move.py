@@ -7,7 +7,6 @@ from odoo.tools import float_compare
 from odoo.tools.misc import formatLang
 from collections import defaultdict, namedtuple
 from dateutil.relativedelta import relativedelta
-from markupsafe import escape
 
 
 class AccountMove(models.Model):
@@ -228,7 +227,7 @@ class AccountMove(models.Model):
                 if validate:
                     asset.validate()
             if invoice:
-                asset.message_post(body=escape(_('Asset created from invoice: %s')) % invoice._get_html_link())
+                asset.message_post(body=_('Asset created from invoice: %s', invoice._get_html_link()))
                 asset._post_non_deductible_tax_value()
         return assets
 

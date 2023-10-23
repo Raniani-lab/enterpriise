@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from markupsafe import escape
-
 from odoo import models, _
 
 
@@ -19,7 +17,7 @@ class AccountPaymentRegister(models.TransientModel):
                     render_values={'self': payment, 'origin': payslip},
                     subtype_xmlid='mail.mt_note',
                 )
-                payslip.message_post(body=escape(_("Payment done at %s")) % payment._get_html_link())
+                payslip.message_post(body=_("Payment done at %s", payment._get_html_link()))
         return payments
 
     def _reconcile_payments(self, to_process, edit_mode=False):

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from markupsafe import escape
 from odoo import api, models, fields, _
 
 
@@ -15,7 +14,7 @@ class SaleOrder(models.Model):
         orders = super().create(vals)
         for sale_order in orders:
             if sale_order.task_id:
-                message = escape(_("Extra Quotation Created: %s")) % sale_order._get_html_link()
+                message = _("Extra Quotation Created: %s", sale_order._get_html_link())
                 sale_order.task_id.message_post(body=message)
         return orders
 
@@ -29,7 +28,7 @@ class SaleOrder(models.Model):
         res = super().action_confirm()
         for sale_order in self:
             if sale_order.task_id:
-                message = escape(_("This Sales Order has been created from Task: %s")) % sale_order.task_id._get_html_link()
+                message = _("This Sales Order has been created from Task: %s", sale_order.task_id._get_html_link())
                 sale_order.message_post(body=message)
         return res
 

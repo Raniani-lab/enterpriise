@@ -6,7 +6,6 @@ import datetime
 from dateutil.relativedelta import relativedelta
 from markupsafe import Markup
 from math import copysign
-from markupsafe import escape
 
 from odoo import api, Command, fields, models, _
 from odoo.exceptions import UserError, ValidationError
@@ -433,13 +432,13 @@ class AccountAsset(models.Model):
         for asset in self:
             for line in asset.original_move_line_ids:
                 if line.name:
-                    body = escape(_('A document linked to %s has been deleted: %s')) % (
+                    body = _('A document linked to %s has been deleted: %s',
                         line.name,
                         asset._get_html_link(),
                     )
                 else:
-                    body = escape(_('A document linked to this move has been deleted: %s')) % \
-                        asset._get_html_link(),
+                    body = _('A document linked to this move has been deleted: %s',
+                        asset._get_html_link())
                 line.move_id.message_post(body=body)
         return super(AccountAsset, self).unlink()
 

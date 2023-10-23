@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from markupsafe import escape
 from odoo import models, _
 
 
@@ -15,6 +14,6 @@ class SaleAdvancePaymentInv(models.TransientModel):
             for invoice in invoices:
                 for so in invoice.line_ids.sale_line_ids.order_id:
                     for task_id in so_task_mapping[str(so.id)]:
-                        message = escape(_("An invoice has been created: %s")) % invoice._get_html_link()
+                        message = _("An invoice has been created: %s", invoice._get_html_link())
                         self.env['project.task'].browse(task_id).message_post(body=message)
         return invoices

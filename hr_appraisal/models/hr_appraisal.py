@@ -6,7 +6,6 @@ import logging
 import pytz
 
 from dateutil.relativedelta import relativedelta
-from markupsafe import escape
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
@@ -256,8 +255,7 @@ class HrAppraisal(models.Model):
                     appraisal.activity_schedule(
                         'mail.mail_activity_data_todo', appraisal.date_close,
                         summary=_('Appraisal Form to Fill'),
-                        note=escape(_('Fill appraisal for %s')) % \
-                                appraisal.employee_id._get_html_link(),
+                        note=_('Fill appraisal for %s', appraisal.employee_id._get_html_link()),
                         user_id=employee.user_id.id)
 
     def action_cancel(self):
@@ -370,10 +368,12 @@ class HrAppraisal(models.Model):
                     note=note, user_id=employee.user_id.id)
                 for manager in managers.filtered('user_id'):
                     if employee.appraisal_count == 1:
-                        note = escape(_("The employee %s arrived %s months ago. The appraisal is created and you can fill it here.")) % (
+                        note = _(
+                            "The employee %s arrived %s months ago. The appraisal is created and you can fill it here.",
                             employee._get_html_link(), months)
                     else:
-                        note = escape(_(" The last appraisal of %s was %s months ago. The appraisal is created and you can fill it here.")) % (
+                        note = _(
+                            "The last appraisal of %s was %s months ago. The appraisal is created and you can fill it here.",
                             appraisal.employee_id._get_html_link(), last_appraisal_months)
                     appraisal.with_context(mail_activity_quick_update=True).activity_schedule(
                         'mail.mail_activity_data_todo', today,

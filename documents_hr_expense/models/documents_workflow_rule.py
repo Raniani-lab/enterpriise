@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from markupsafe import escape
 from odoo import fields, models, _
 
 
@@ -33,7 +32,7 @@ class WorkflowActionRuleExpense(models.Model):
                         'res_id': expense.id
                     })
                     document.attachment_id.register_as_main_attachment()
-                document.message_post(body=escape(_('Expense %s created from document')) % expense._get_html_link())
+                document.message_post(body=_('Expense %s created from document', expense._get_html_link()))
 
             action = self.env["ir.actions.actions"]._for_xml_id("hr_expense.hr_expense_actions_my_all")
             action['domain'] = [('id', 'in', expenses.ids)]

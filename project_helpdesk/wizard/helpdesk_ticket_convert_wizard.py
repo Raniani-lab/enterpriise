@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from markupsafe import Markup, escape
-
 from odoo import api, fields, models, _
 
 class HelpdeskTicketConvertWizard(models.TransientModel):
@@ -39,7 +37,7 @@ class HelpdeskTicketConvertWizard(models.TransientModel):
             ticket.active = False
 
             ticket_sudo, task_sudo = ticket.sudo(), task.sudo()
-            ticket_sudo.message_post(body=escape(_("Ticket converted into task %s")) % task_sudo._get_html_link())
+            ticket_sudo.message_post(body=_("Ticket converted into task %s", task_sudo._get_html_link()))
             task_sudo.message_post_with_source(
                 'mail.message_origin_link',
                 render_values={'self': task_sudo, 'origin': ticket_sudo},

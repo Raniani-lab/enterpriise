@@ -17,13 +17,11 @@
             <record id="account_financial_report_l10n_at_paragraph_224_ugb_line_root" model="account.report.line">
                 <field name="name">Balance</field>
                 <field name="hierarchy_level">0</field>
-                <field name="foldable" eval="True"/>
                 <field name="aggregation_formula">A.balance - P.balance</field>
                 <field name="children_ids">
                     <record id="account_financial_report_l10n_at_paragraph_224_ugb_line_activa" model="account.report.line">
                         <field name="name">Assets</field>
                         <field name="code">A</field>
-                        <field name="foldable" eval="True"/>
                         <field name="aggregation_formula">AA.balance + AB.balance + AC.balance + AD.balance</field>
                         <field name="children_ids">
                             <record id="account_financial_report_l10n_at_paragraph_224_ugb_line_activa_1" model="account.report.line">
@@ -284,7 +282,6 @@
                     <record id="account_financial_report_l10n_at_paragraph_224_ugb_line_passiva" model="account.report.line">
                         <field name="name">Equity and liabilities</field>
                         <field name="code">P</field>
-                        <field name="foldable" eval="True"/>
                         <field name="aggregation_formula">PA.balance + PB.balance + PC.balance + PD.balance</field>
                         <field name="children_ids">
                             <record id="account_financial_report_l10n_at_paragraph_224_ugb_line_passiva_1" model="account.report.line">

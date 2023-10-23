@@ -1351,3 +1351,26 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 fname_b = analytic_plan_b._column_name()
                 fname, idx = (fname_a, 0) if al[fname_a] else (fname_b, 1)
                 self.assertAlmostEqual(al.amount, -expected_analytic_amount[index][al[fname].id][idx])
+
+    def test_deferred_expense_report_invalid_period(self):
+        """
+        Only periods that start on the first day of a month and end on the last day of a month are allowed.
+        """
+        self.company.generate_deferred_expense_entries_method = 'manual'
+        self.create_invoice([self.expense_lines[0]])
+
+        options = self.get_options('2023-03-01', '2023-03-15')
+        lines = self.deferred_expense_report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                Total        Before      Current     Later
+            [   0,                  1,           2,          3,          4       ],
+            [
+                ('EXP0 Expense 0',  1000,        500,        125,        375     ),
+                ('Total',           1000,        500,        125,        375     ),
+            ],
+            options,
+        )
+
+        with self.assertRaisesRegex(UserError, 'You cannot generate entries for a period that does not end at the end of the month.'):
+            self.handler._generate_deferral_entry(options)

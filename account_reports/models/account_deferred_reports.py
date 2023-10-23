@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import calendar
 from collections import defaultdict
 from dateutil.relativedelta import relativedelta
 
@@ -338,6 +339,8 @@ class DeferredReportCustomHandler(models.AbstractModel):
             raise UserError(_("Please set the deferred journal in the accounting settings."))
         date_from = fields.Date.to_date(DEFERRED_DATE_MIN)
         date_to = fields.Date.from_string(options['date']['date_to'])
+        if date_to.day != calendar.monthrange(date_to.year, date_to.month)[1]:
+            raise UserError(_("You cannot generate entries for a period that does not end at the end of the month."))
         if self.env.company._get_violated_lock_dates(date_to, False):
             raise UserError(_("You cannot generate entries for a period that is locked."))
         options['all_entries'] = False  # We only want to create deferrals for posted moves

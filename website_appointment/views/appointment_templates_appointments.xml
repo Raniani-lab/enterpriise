@@ -219,7 +219,7 @@
                             <t t-set="display_description" t-valuef="true"/>
                             <t t-set="display_detail" t-valuef="false"/>
                             <t t-set="display_image" t-valuef="false"/>
-                            <t t-set="placeholder">Search an appointment...</t>
+                            <t t-set="placeholder">Search...</t>
                             <t t-set="search" t-value="current_search"/>
                             <t t-foreach="searches" t-as="search">
                                 <input t-if="item != 'search' and item_value != 'all'" type="hidden"

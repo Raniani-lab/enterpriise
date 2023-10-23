@@ -61,7 +61,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         """ Check whether the company configuration is correct for filling in the Header. """
         def get_company_action(message):
             return {
-                'message': _(message),
+                'message': message,
                 'action_text': _('View Company'),
                 'action_name': 'saft_action_open_company',
                 'action_params': values['company'].id,
@@ -89,19 +89,19 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
 
         # The company must have a telephone number defined.
         if not values['company'].partner_id.phone and not values['company'].partner_id.mobile:
-            errors.append(get_company_action('Please define a `Telephone Number` for your company.'))
+            errors.append(get_company_action(_('Please define a `Telephone Number` for your company.')))
 
         # The company must either have a VAT number defined (if it is registered for VAT in Romania),
         # or have its CUI number in the company_registry field (if not registered for VAT).
         partner = values['company'].partner_id
         if partner.vat:
             if not stdnum.ro.cf.is_valid(partner.vat):
-                errors.append(get_company_action('The VAT number for your company is incorrect.'))
+                errors.append(get_company_action(_('The VAT number for your company is incorrect.')))
         elif partner.company_registry:
             if not stdnum.ro.cui.is_valid(partner.company_registry):
-                errors.append(get_company_action('The CUI number for your company (under `Company Registry` in the Company settings) is incorrect.'))
+                errors.append(get_company_action(_('The CUI number for your company (under `Company Registry` in the Company settings) is incorrect.')))
         else:
-            errors.append(get_company_action('In the Company settings, please set your company VAT number under `Tax ID` if registered for VAT, or your CUI number under `Company Registry`.'))
+            errors.append(get_company_action(_('In the Company settings, please set your company VAT number under `Tax ID` if registered for VAT, or your CUI number under `Company Registry`.')))
 
         return errors
 
@@ -318,7 +318,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             and if the intrastat module is installed, that each product has an Intrastat Code. """
         def get_product_action(message, product_ids, critical=False):
             return {
-                'message': _(message),
+                'message': message,
                 'action_text': _('View Products'),
                 'action_name': 'action_open_products',
                 'action_params': product_ids,
@@ -339,13 +339,13 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         errors = []
         if products_no_ref:
             errors.append(get_product_action(
-                'Some products have no `Internal Reference`.',
+                _('Some products have no `Internal Reference`.'),
                 products_no_ref.ids,
                 critical=True
             ))
         if products_dup_ref:
             errors.append(get_product_action(
-                'Some products have duplicated `Internal Reference`, please make them unique.',
+                _('Some products have duplicated `Internal Reference`, please make them unique.'),
                 products_dup_ref.ids,
                 critical=True
             ))
@@ -355,7 +355,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         products_without_intrastat_code = encountered_products.filtered(lambda p: p.type != 'service' and not p.intrastat_code_id)
         if products_without_intrastat_code:
             errors.append(get_product_action(
-                "The Intrastat code isn't set on some products.",
+                _("The Intrastat code isn't set on some products."),
                 products_without_intrastat_code.ids
             ))
 

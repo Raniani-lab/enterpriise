@@ -932,10 +932,10 @@ class Article(models.Model):
 
         return result
 
-    def unlink(self):
-        if any(article.is_template for article in self) and not self.env.user.has_group('base.group_system'):
+    @api.ondelete(at_uninstall=False)
+    def _check_template_deletion(self):
+        if self.filtered('is_template') and not self.env.user.has_group('base.group_system'):
             raise ValidationError(_('You are not allowed to delete a template.'))
-        return super().unlink()
 
     @api.returns('self', lambda value: value.id)
     def copy(self, default=None):

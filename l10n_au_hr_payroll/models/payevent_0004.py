@@ -105,7 +105,6 @@ class L10nAuPayEvent0004(models.Model):
                 report.name = ""
 
     def _compute_warning_message(self):
-        message = ""
         for report in self:
             company_warnings, user_warnings = [], []
             if not self.env.company.zip:
@@ -116,11 +115,12 @@ class L10nAuPayEvent0004(models.Model):
                 user_warnings.append("Work Email.")
             if not self.env.user.work_phone:
                 user_warnings.append("Work Phone.")
+            message = ""
             if company_warnings:
                 message += "\n  ・ ".join(["Missing required company information:"] + company_warnings)
             if user_warnings:
                 message += "\n  ・ ".join(["Missing required user information:"] + user_warnings)
-            report.warning_message = _(message)
+            report.warning_message = message
 
     def _get_complex_rendering_data(self, payslips_ids):
         today = fields.Date.today()

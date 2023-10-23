@@ -101,17 +101,28 @@ class CalendarBooking(models.Model):
         self.ensure_one()
         tz = self.env.context.get('tz') or self.partner_id.tz or self.appointment_type_id.appointment_tz
         env_tz = self.with_context(tz=tz).env
-        return _(
-            "%(name)s with %(staff_user)s\n%(date_start)s at %(time_start)s to\n%(date_end)s at %(time_end)s (%(timezone)s)" if self.staff_user_id else
-            "%(name)s\n%(date_start)s at %(time_start)s to\n%(date_end)s at %(time_end)s (%(timezone)s)",
-            name=self.appointment_type_id.name,
-            staff_user=self.staff_user_id.display_name,
-            date_start=format_date(env_tz, self.start),
-            time_start=format_time(env_tz, self.start, tz=tz),
-            date_end=format_date(env_tz, self.stop),
-            time_end=format_time(env_tz, self.stop, tz=tz),
-            timezone=tz,
-        )
+        if self.staff_user_id:
+            return _(
+                "%(name)s with %(staff_user)s\n%(date_start)s at %(time_start)s to\n%(date_end)s at %(time_end)s (%(timezone)s)",
+                name=self.appointment_type_id.name,
+                staff_user=self.staff_user_id.display_name,
+                date_start=format_date(env_tz, self.start),
+                time_start=format_time(env_tz, self.start, tz=tz),
+                date_end=format_date(env_tz, self.stop),
+                time_end=format_time(env_tz, self.stop, tz=tz),
+                timezone=tz,
+            )
+        else:
+            return _(
+                "%(name)s\n%(date_start)s at %(time_start)s to\n%(date_end)s at %(time_end)s (%(timezone)s)",
+                name=self.appointment_type_id.name,
+                staff_user=self.staff_user_id.display_name,
+                date_start=format_date(env_tz, self.start),
+                time_start=format_time(env_tz, self.start, tz=tz),
+                date_end=format_date(env_tz, self.stop),
+                time_end=format_time(env_tz, self.stop, tz=tz),
+                timezone=tz,
+            )
 
     def _log_booking_collisions(self):
         """ Logs an error message on reference invoice listing the bookings that were not

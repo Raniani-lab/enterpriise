@@ -2,13 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _, _lt, Command
-from odoo.tools import get_timedelta, float_compare, float_is_zero
+from odoo.tools import get_timedelta
 
-billing_period_sentence_template = {
-    'week': ('per week', 'per %s weeks'),
-    'month': ('per month', 'per %s months'),
-    'year': ('per year', 'per %s years'),
-}
 
 class SaleSubscriptionPlan(models.Model):
     _name = 'sale.subscription.plan'
@@ -100,25 +95,25 @@ class SaleSubscriptionPlan(models.Model):
 
     @api.depends('billing_period_value', 'billing_period_unit')
     def _compute_billing_period_display(self):
+        labels = dict(self._fields['billing_period_unit']._description_selection(self.env))
         for plan in self:
-            plan.billing_period_display = f"{plan.billing_period_value} {plan._get_unit_label()}"
+            plan.billing_period_display = f"{plan.billing_period_value} {labels[plan.billing_period_unit]}"
 
     @api.depends('billing_period_value', 'billing_period_unit')
     def _compute_billing_period_display_sentence(self):
         for plan in self:
-            sentence = billing_period_sentence_template.get(plan.billing_period_unit)[plan.billing_period_value > 1]
-            plan.billing_period_display_sentence = _(sentence, plan.billing_period_value) if plan.billing_period_value > 1 else _(sentence)
+            value = plan.billing_period_value
+            if plan.billing_period_unit == 'week':
+                sentence = _('per %d weeks', value) if value > 1 else _('per week')
+            elif plan.billing_period_unit == 'month':
+                sentence = _('per %d months', value) if value > 1 else _('per month')
+            elif plan.billing_period_unit == 'year':
+                sentence = _('per %d years', value) if value > 1 else _('per year')
+            else:
+                raise ValueError(f"Invalid Billing Period Unit {plan.billing_period_unit!r}")
+            plan.billing_period_display_sentence = sentence
 
     @api.depends('auto_close_limit')
     def _compute_auto_close_limit_display(self):
         for plan in self:
             plan.auto_close_limit_display = _lt('%s days', plan.auto_close_limit)
-
-    def _get_unit_label(self):
-        """ Get the translated product pricing unit label. """
-        self.ensure_one()
-        if not float_compare(self.billing_period_value, 1.0, precision_digits=2) \
-                and not float_is_zero(self.billing_period_value, precision_digits=2):
-            return _lt(self.billing_period_unit.capitalize())
-        else:
-            return _lt(dict(self._fields['billing_period_unit']._description_selection(self.env))[self.billing_period_unit])

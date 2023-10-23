@@ -178,8 +178,9 @@ class SaleOrder(models.Model):
         incompatible_states = SUBSCRIPTION_PROGRESS_STATE + ['5_renewed']
         for so in self:
             if so.state == 'cancel' and so.subscription_state in incompatible_states:
-                raise ValidationError((_('A canceled SO cannot be in progress.'
-                                        'You should close %s before canceling it.' % so.name)))
+                raise ValidationError(_(
+                    'A canceled SO cannot be in progress. You should close %s before canceling it.',
+                    so.name))
 
     @api.depends('plan_id')
     def _compute_is_subscription(self):

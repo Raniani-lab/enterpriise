@@ -281,28 +281,28 @@ class JournalReportCustomHandler(models.AbstractModel):
         columns = []
         has_multicurrency = self.user_has_groups('base.group_multi_currency')
         report = self.env['account.report'].browse(options['report_id'])
-        for dummy in options['column_groups']:
-            for column in options['columns']:
-                if (column['expression_label'] == 'additional_col_1'):
-                    if journal_type in ['sale', 'purchase']:
-                        col_value = _('Taxes')
-                    elif journal_type == 'bank':
-                        col_value = _('Balance')
-                    else:
-                        col_value = ''
-                elif (column['expression_label'] == 'additional_col_2'):
-                    if journal_type in ['sale', 'purchase']:
-                        col_value = _('Tax Grids')
-                    elif journal_type == 'bank' and has_multicurrency:
-                        col_value = _('Amount In Currency')
-                    else:
-                        col_value = ''
-                elif (column['expression_label'] == 'invoice_date'):
-                    col_value = _(column['name']) if journal_type in ['sale', 'purchase', 'general'] else ''
+        for column in options['columns']:
+            if column['expression_label'] == 'additional_col_1':
+                if journal_type in ['sale', 'purchase']:
+                    col_value = _('Taxes')
+                elif journal_type == 'bank':
+                    col_value = _('Balance')
                 else:
-                    col_value = _(column['name'])
+                    col_value = ''
+            elif column['expression_label'] == 'additional_col_2':
+                if journal_type in ['sale', 'purchase']:
+                    col_value = _('Tax Grids')
+                elif journal_type == 'bank' and has_multicurrency:
+                    col_value = _('Amount In Currency')
+                else:
+                    col_value = ''
+            elif column['expression_label'] == 'invoice_date':
+                col_value = column['name'] if journal_type in ['sale', 'purchase', 'general'] else ''
 
-                columns.append(report._build_column_dict(col_value, column, options=options))
+            else:
+                col_value = column['name']
+
+            columns.append(report._build_column_dict(col_value, column, options=options))
 
         return {
             'id': report._get_generic_line_id(None, None, parent_line_id=parent_key, markup='headers'),

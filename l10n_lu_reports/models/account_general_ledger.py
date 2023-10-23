@@ -25,7 +25,7 @@ class AccountGeneralLedger(models.AbstractModel):
     def _fill_l10n_lu_saft_report_invoices_values(self, options, values):
         def _get_product_action(message, product_ids, critical=False):
             return {
-                'message': _(message),
+                'message': message,
                 'action_text': _('View Products'),
                 'action_name': 'action_open_products',
                 'action_params': product_ids,
@@ -75,13 +75,13 @@ class AccountGeneralLedger(models.AbstractModel):
                         duplicate_product_ids.add(product['id'])
             if duplicate_product_ids:
                 values['errors'].append(_get_product_action(
-                    "Some products have duplicate `Internal Reference`, please make them unique.",
+                    _("Some products have duplicate 'Internal Reference', please make them unique."),
                     list(duplicate_product_ids),
                     critical=True
                 ))
             if empty_product_ids:
                 values['errors'].append(_get_product_action(
-                    "Some products are missing `Internal Reference`, please define them.",
+                    _("Some products are missing `Internal Reference`, please define them."),
                     list(empty_product_ids),
                     critical=True
                 ))

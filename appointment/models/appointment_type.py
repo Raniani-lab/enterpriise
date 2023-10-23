@@ -288,7 +288,7 @@ class AppointmentType(models.Model):
             if appointment_type.category == 'punctual' and not (appointment_type.start_datetime and appointment_type.end_datetime):
                 raise ValidationError(_('A punctual appointment type should be limited between a start and end datetime.'))
             elif appointment_type.category != 'punctual' and (appointment_type.start_datetime or appointment_type.end_datetime):
-                raise ValidationError(_('A %s appointment type shouldn\'t be limited by datetimes.' % appointment_type.category))
+                raise ValidationError(_("A %s appointment type shouldn't be limited by datetimes.", appointment_type.category))
 
     @api.constrains('appointment_duration')
     def _check_appointment_duration(self):

@@ -161,7 +161,7 @@
         <tr>
             <td class="o_inspector_label align-middle">
                 <span>
-                    <i t-if="icon" t-attf-class="o_documents_model_color fa {{icon}}"/>
+                    <i t-if="icon" t-attf-class="o_documents_model_color pe-1 fa {{icon}}"/>
                     <label t-att-for="field">
                         <t t-esc="fieldInfo.string"/>
                     </label>

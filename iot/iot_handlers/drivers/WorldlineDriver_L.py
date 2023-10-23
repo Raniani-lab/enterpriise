@@ -30,6 +30,35 @@ IGNORE_ERRORS = [
     '2630', # Device Cancellation
 ]
 
+BUFFER_SIZE = 1000
+
+# Define pointers and argument types for ctypes function calls
+ulong_pointer = ctypes.POINTER(ctypes.c_ulong)
+double_pointer = ctypes.POINTER(ctypes.c_double)
+
+# int startTransaction(
+easyCTEP.startTransaction.argtypes = [
+    ctypes.c_void_p,    # std::shared_ptr<ect::CTEPTerminal> trm
+    ctypes.c_char_p,    # char const* amount
+    ctypes.c_char_p,    # char const* reference
+    ctypes.c_ulong,     # unsigned long action_identifier
+    ctypes.c_char_p,    # char* merchant_receipt
+    ctypes.c_char_p,    # char* customer_receipt
+    ctypes.c_char_p,    # char* card
+    ctypes.c_char_p     # char* error
+]
+
+# int abortTransaction(std::shared_ptr<ect::CTEPTerminal> trm, char* error)
+easyCTEP.abortTransaction.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
+
+# int lastTransactionStatus(
+easyCTEP.lastTransactionStatus.argtypes = [
+    ctypes.c_void_p,    # std::shared_ptr<ect::CTEPTerminal> trm
+    ulong_pointer,      # unsigned long* action_identifier
+    double_pointer,     # double* amount
+    ctypes.c_char_p,    # char* time,
+    ctypes.c_char_p     # char* error
+]
 
 class WorldlineDriver(Driver):
     connection_type = 'ctep'
@@ -71,19 +100,19 @@ class WorldlineDriver(Driver):
         self.send_status(stage='WaitingForCard')
 
         # Transaction
-        merchant_receipt = ctypes.create_string_buffer(500)
-        customer_receipt = ctypes.create_string_buffer(500)
-        card = ctypes.create_string_buffer(20)
-        error_code = ctypes.create_string_buffer(10)
+        merchant_receipt = ctypes.create_string_buffer(BUFFER_SIZE)
+        customer_receipt = ctypes.create_string_buffer(BUFFER_SIZE)
+        card = ctypes.create_string_buffer(BUFFER_SIZE)
+        error_code = ctypes.create_string_buffer(BUFFER_SIZE)
         result = easyCTEP.startTransaction(
-            ctypes.byref(self.dev),
-            ctypes.c_char_p(str(transaction['amount'] / 100).encode('utf-8')),
-            ctypes.c_char_p(str(transaction['TransactionID']).encode('utf-8')),
-            ctypes.c_ulong(transaction['actionIdentifier']),
-            ctypes.byref(merchant_receipt),
-            ctypes.byref(customer_receipt),
-            ctypes.byref(card),
-            ctypes.byref(error_code),
+            ctypes.byref(self.dev), # std::shared_ptr<ect::CTEPTerminal> trm
+            ctypes.c_char_p(str(transaction['amount'] / 100).encode('utf-8')),  # char const* amount
+            ctypes.c_char_p(str(transaction['TransactionID']).encode('utf-8')), # char const* reference
+            ctypes.c_ulong(transaction['actionIdentifier']),    # unsigned long action_identifier
+            merchant_receipt,   # char* merchant_receipt
+            customer_receipt, # char* customer_receipt
+            card,   # char* card
+            error_code, # char* error
         )
 
         # After a payment has been processed, the display on the terminal still shows some
@@ -115,8 +144,8 @@ class WorldlineDriver(Driver):
     def cancelTransaction(self):
         self.send_status(stage='waitingCancel')
 
-        error_code = ctypes.create_string_buffer(10)
-        result = easyCTEP.abortTransaction(ctypes.byref(self.dev), ctypes.byref(error_code))
+        error_code = ctypes.create_string_buffer(BUFFER_SIZE)
+        result = easyCTEP.abortTransaction(ctypes.byref(self.dev), error_code) # std::shared_ptr<ect::CTEPTerminal> trm
 
         if not result:
             error_code = error_code.value.decode('utf-8')
@@ -126,9 +155,9 @@ class WorldlineDriver(Driver):
     def lastTransactionStatus(self):
         action_identifier = ctypes.c_ulong()
         amount = ctypes.c_double()
-        time = ctypes.create_string_buffer(20)
-        error_code = ctypes.create_string_buffer(10)
-        result = easyCTEP.lastTransactionStatus(ctypes.byref(self.dev), ctypes.byref(action_identifier), ctypes.byref(amount), ctypes.byref(time), ctypes.byref(error_code))
+        time = ctypes.create_string_buffer(BUFFER_SIZE)
+        error_code = ctypes.create_string_buffer(BUFFER_SIZE)
+        result = easyCTEP.lastTransactionStatus(ctypes.byref(self.dev), ctypes.byref(action_identifier), ctypes.byref(amount), time, error_code)
 
         if result:
             self.send_status(value={

@@ -42,9 +42,6 @@ patch(Table.prototype, {
             .split(",");
         const light = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255 > 0.5 ? false : true;
         const order = this.pos.orders.find((o) => o.tableId === this.props.table.id);
-        const minWidth = 120;
-        const nbrHorizontal = Math.floor(window.innerWidth / minWidth);
-        const widthTable = (window.innerWidth - nbrHorizontal * 10) / nbrHorizontal;
 
         if (!order && dateNow > dateStart) {
             style = `color: ${light ? "#FF6767" : "#850000"};`;
@@ -56,7 +53,7 @@ patch(Table.prototype, {
             style += `opacity: 0.7;`;
         }
 
-        style += `top: ${widthTable + 7}px;`;
+        style += `bottom: -50px;`;
         return style;
     },
     computePosition(index, nbrHorizontal, widthTable) {

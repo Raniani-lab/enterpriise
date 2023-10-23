@@ -380,6 +380,8 @@ class ExtractMixin(models.AbstractModel):
     def _try_to_check_ocr_status(self):
         self.ensure_one()
         try:
-            self._check_ocr_status()
-        except Exception:
-            pass
+            with self.env.cr.savepoint():
+                self._check_ocr_status()
+            self.env.cr.commit()
+        except Exception as e:
+            _logger.error("Couldn't check OCR status of %s with id %d: %s", self._name, self.id, str(e))

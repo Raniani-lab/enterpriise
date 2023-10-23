@@ -135,16 +135,6 @@ class AccountMove(models.Model):
         super()._upload_to_extract_success_callback()
         self.extract_attachment_id = self.message_main_attachment_id
 
-    def _try_to_check_ocr_status(self):
-        """ Try to check the extract status of the invoice."""
-        self.ensure_one()
-        try:
-            with self.env.cr.savepoint():
-                self._check_ocr_status()
-            self.env.cr.commit()
-        except Exception as e:
-            _logger.error("Couldn't check status of account.move with id %d: %s", self.id, str(e))
-
     def _get_user_infos(self):
         user_infos = super()._get_user_infos()
         user_infos.update({

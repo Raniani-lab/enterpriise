@@ -103,6 +103,10 @@ class MrpProductionWorkcenterLine(models.Model):
                         check._update_component_quantity()
         return res
 
+    def unlink(self):
+        self.check_ids.unlink()
+        return super().unlink()
+
     def action_back(self):
         self.ensure_one()
         if self.is_user_working and self.working_state != 'blocked':

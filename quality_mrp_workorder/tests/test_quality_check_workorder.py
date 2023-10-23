@@ -342,3 +342,25 @@ class TestPickingWorkorderClientActionQuality(test_tablet_client_action.TestWork
 
         self.assertEqual(mo.workorder_ids.check_ids.filtered(lambda x: x.test_type == 'measure').quality_state, 'fail', 'The measure quality check should have failed')
         self.assertEqual(res_action.get('res_model'), 'quality.check.wizard', 'The action should return a wizard when failing')
+
+    def test_delete_workorder_linked_to_quality_check(self):
+        """
+        Test that a quality check is deleted when its linked workorder is deleted.
+        * When components is tracked by lot, a quality check is created and linked to the last workorder.
+        and when the last workorder is deleted, the quality check should be deleted too
+        because a new quality check will be created.
+        """
+        self.bom_3.bom_line_ids.product_id.tracking = 'lot'
+        mo_form = Form(self.env['mrp.production'])
+        mo_form.bom_id = self.bom_3
+        mo = mo_form.save()
+        mo.action_confirm()
+        self.assertEqual(len(mo.workorder_ids), 3)
+        qc = self.env['quality.check'].search([('product_id', '=', self.bom_3.product_id.id)])[-1]
+        self.assertEqual(len(qc), 1)
+        self.assertEqual(qc.mapped('workorder_id'), mo.workorder_ids[2])
+        mo.workorder_ids[2].unlink()
+        self.assertFalse(qc.exists())
+        qc = self.env['quality.check'].search([('product_id', '=', self.bom_3.product_id.id)])[-1]
+        self.assertEqual(len(qc), 1)
+        self.assertEqual(qc.mapped('workorder_id'), mo.workorder_ids[1])

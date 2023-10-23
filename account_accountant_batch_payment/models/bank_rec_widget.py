@@ -170,7 +170,7 @@ class BankRecWidget(models.Model):
         payments_with_batch = self.line_ids\
             .filtered(lambda x: x.flag == 'new_aml' and x.source_batch_payment_id)\
             .source_aml_id.payment_id
-        if self.env['account.batch.payment.rejection']._fetch_rejected_payment_ids(payments_with_batch):
+        if len(payments_with_batch) > 1 and self.env['account.batch.payment.rejection']._fetch_rejected_payment_ids(payments_with_batch):
             self.next_action_todo = clean_action(
                 {
                     'name': _("Batch Payment"),

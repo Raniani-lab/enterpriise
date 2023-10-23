@@ -211,3 +211,38 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         rejection_wizard.rejected_payment_ids.batch_payment_id = batch
         rejection_wizard.button_cancel_payments()
         self.assertFalse(rejection_wizard.rejected_payment_ids.exists())
+
+    def test_single_payment_from_batch_on_bank_reco_widget(self):
+        payment_method_line = self.company_data['default_journal_bank'].inbound_payment_method_line_ids\
+            .filtered(lambda l: l.code == 'batch_payment')
+
+        payments = self.env['account.payment'].create([
+            {
+                'date': '2018-01-01',
+                'payment_type': 'inbound',
+                'partner_type': 'customer',
+                'partner_id': self.partner_a.id,
+                'payment_method_line_id': payment_method_line.id,
+                'amount': i * 100.0,
+            }
+            for i in range(1, 4)
+        ])
+        payments.action_post()
+
+        # Add payments to a batch.
+        self.env['account.batch.payment'].create({
+            'journal_id': self.company_data['default_journal_bank'].id,
+            'payment_ids': [Command.set(payments.ids)],
+            'payment_method_id': payment_method_line.payment_method_id.id,
+        })
+
+        st_line = self._create_st_line(100.0, partner_id=self.partner_a.id)
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        # Add payment1 from the aml tab
+        aml = payments[0].line_ids.filtered(lambda x: x.account_id.account_type != 'asset_receivable')
+        wizard._action_add_new_amls(aml)
+
+        # Validate with one payment inside a batch should reconcile directly the statement line.
+        wizard.button_validate()
+        self.assertTrue(wizard.next_action_todo)
+        self.assertEqual(wizard.next_action_todo['type'], 'reconcile_st_line')

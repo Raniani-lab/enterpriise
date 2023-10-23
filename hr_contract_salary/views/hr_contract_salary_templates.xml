@@ -249,7 +249,7 @@
                         <t t-foreach="mapped_personal_infos[0]" t-as="personal_info_type">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h2 class="text-odoo" t-if="personal_info_type"><t t-esc="personal_info_type"/></h2>
+                                    <h2 class="text-primary" t-if="personal_info_type"><t t-esc="personal_info_type"/></h2>
                                 </div>
                                 <t t-foreach="mapped_personal_infos[0][personal_info_type]" t-as="personal_info">
                                     <t t-if="not personal_info.parent_id">

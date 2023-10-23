@@ -52,7 +52,7 @@
             <t t-if="!props.model.metaData.hideTitle">
                 <header class="o-map-renderer--pin-list-header o_pin_list_header text-uppercase px-0 py-md-2 d-flex align-items-baseline"
                         t-on-click="togglePinList">
-                    <i class="fa fa-list me-2 text-odoo"/>
+                    <i class="fa fa-list me-2 text-primary"/>
                     <span class="fs-6 fw-bold text-truncate" t-out="props.model.metaData.panelTitle"/>
                     <i t-if="env.isSmall" class="fa float-end ms-auto" t-att-class="{
                         'fa-caret-down': expendedPinList,

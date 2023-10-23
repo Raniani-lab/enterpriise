@@ -9,14 +9,14 @@
                 <div class="py-1 px-0 border-top">
                     <div class="row">
                         <t t-if="is_net">
-                            <label class="col-md-2 col-form-label text-odoo" t-att-for="line[0]"><t t-esc="line[0]"/></label>
+                            <label class="col-md-2 col-form-label text-primary" t-att-for="line[0]"><t t-esc="line[0]"/></label>
                             <div class="col-md-3 mt8">
                                 <a role="button" data-bs-toggle="modal" data-bs-target="#hr_cs_modal" name="details" data-bs-backdrop="false" data-bs-dismiss="modal">Details</a>
                                 <a role="button" name="recompute" title="Recompute" aria-label="Recompute" class="d-none"><i class="fa fa-refresh fa-spin"/></a>
                             </div>
                         </t>
                         <t t-if="!is_net">
-                            <label class="col-md-5 col-form-label text-odoo"
+                            <label class="col-md-5 col-form-label text-primary"
                              t-att-for="line[0]">
                                 <t t-out="line[0]"/>
                                 <t t-if="line[3]">

@@ -59,22 +59,22 @@
                                                 </t>
                                                 <t t-else="">
                                                     <t t-if="record.trigger_type.raw_value == 'mail_bounce'">
-                                                        <span class="text-odoo">
+                                                        <span class="text-primary">
                                                             <i t-attf-class="fa fa-exclamation-circle" /> Not bounced yet
                                                         </span>
                                                     </t>
                                                     <t t-if="record.trigger_type.raw_value == 'mail_open'">
-                                                        <span class="text-odoo">
+                                                        <span class="text-primary">
                                                             <i t-attf-class="fa fa-envelope-open-o" /> Not opened yet
                                                         </span>
                                                     </t>
                                                     <t t-if="record.trigger_type.raw_value == 'mail_reply'">
-                                                        <span class="text-odoo">
+                                                        <span class="text-primary">
                                                             <i t-attf-class="fa fa-reply" /> Not replied yet
                                                         </span>
                                                     </t>
                                                     <t t-if="record.trigger_type.raw_value == 'mail_click'">
-                                                        <span class="text-odoo">
+                                                        <span class="text-primary">
                                                             <i t-attf-class="fa fa-hand-pointer-o" /> Not clicked yet
                                                         </span>
                                                     </t>

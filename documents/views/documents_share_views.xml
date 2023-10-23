@@ -130,7 +130,7 @@
                         <group>
                             <label string="Shared" for="folder_id"/>
                             <div class="o_documents_content d-flex align-items-baseline">
-                                <i class="fa fa fa-folder text-odoo me-2" title="Workspace"/>
+                                <i class="fa fa fa-folder text-primary me-2" title="Workspace"/>
                                 <field name="folder_id" readonly="1" options="{'no_open': True}" class="w-100"/>
                                 <i class="fa fa-tag o_documents_tag_color ms-2" invisible="not tag_ids" title="Tags"/>
                                 <field name="tag_ids" readonly="1" widget="many2many_tags" options="{'no_edit_color': True}"/>

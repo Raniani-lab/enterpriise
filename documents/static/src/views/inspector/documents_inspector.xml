@@ -218,7 +218,7 @@
                         <t t-set="additionalProps" t-value="{canOpen: false, canCreate: false, canCreateEdit: false, canQuickCreate: false}"/>
                     </t>
                     <t t-call="documents.DocumentsInspector.field">
-                        <t t-set="icon" t-translation="off">fa fa-folder text-odoo</t>
+                        <t t-set="icon" t-translation="off">fa fa-folder text-primary</t>
                         <t t-set="fieldName" t-translation="off">folder_id</t>
                         <t t-set="additionalProps" t-value="{canOpen: false, canCreate: false, canCreateEdit: false, canQuickCreate: false}"/>
                     </t>

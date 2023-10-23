@@ -178,10 +178,11 @@ class HrLeave(models.Model):
 
         return [traverse(inject_unvailabilty, row) for row in rows]
 
-
-# function to "mark" top level rows concerning employees
-# the propagation of that item to subrows is taken care of in the traverse function below
 def tag_employee_rows(rows):
+    """
+        Add `employee_id` key in rows and subsrows recursively if necessary
+        :return: a set of ids with all concerned employees (subrows included)
+    """
     employee_ids = set()
     for row in rows:
         group_bys = row.get('groupedBy')
@@ -194,7 +195,7 @@ def tag_employee_rows(rows):
                 row['employee_id'] = employee_id
             # else we recursively traverse the rows where employee_id appears in the group_by
             elif 'employee_id' in group_bys:
-                tag_employee_rows(row.get('rows'))
+                employee_ids.update(tag_employee_rows(row.get('rows')))
     return employee_ids
 
 # function to recursively replace subrows with the ones returned by func

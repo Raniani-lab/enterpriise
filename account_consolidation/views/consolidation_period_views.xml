@@ -204,9 +204,9 @@
                         <t t-name="analysis_period_menu">
                             <div class="row">
                                 <div class="col-6 o_kanban_card_manage_section o_kanban_manage_view">
-                                    <div class="o_kanban_card_manage_title">
+                                    <h5 class="o_kanban_card_manage_title">
                                         <span role="separator">Actions</span>
-                                    </div>
+                                    </h5>
                                     <div>
                                         <a t-if="!widget.auto_generated and record.state.raw_value == 'draft'"
                                            name="action_generate_journals" role="menuitem" type="object"
@@ -223,9 +223,9 @@
                                     </div>
                                 </div>
                                 <div class="col-6 o_kanban_card_manage_section o_kanban_manage_view">
-                                    <div class="o_kanban_card_manage_title">
+                                    <h5 class="o_kanban_card_manage_title">
                                         <span role="separator">View</span>
-                                    </div>
+                                    </h5>
                                     <div>
                                         <a name="%(consolidation_journal_action)d" role="menuitem"
                                            context="{'search_default_period_id': id, 'default_period_id': id}"

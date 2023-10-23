@@ -302,17 +302,17 @@
                         <div class="container">
                             <div t-if="widget.editable" class="row">
                                 <div class="col-6 o_kanban_card_manage_section o_kanban_manage_view">
-                                    <div role="menuitem" class="o_kanban_card_manage_title">
+                                    <h5 role="menuitem" class="o_kanban_card_manage_title">
                                         <span>View</span>
-                                    </div>
+                                    </h5>
                                     <div role="menuitem">
                                         <a name="action_view_ticket" type="object">Tickets</a>
                                     </div>
                                 </div>
                                 <div class="col-6 o_kanban_card_manage_section o_kanban_manage_reporting">
-                                    <div role="menuitem" class="o_kanban_card_manage_title">
+                                    <h5 role="menuitem" class="o_kanban_card_manage_title">
                                         <span>Reporting</span>
-                                    </div>
+                                    </h5>
                                     <div role="menuitem">
                                         <a name="%(helpdesk.helpdesk_ticket_analysis_dashboard_action)d" type="action" context="{'search_default_team_id': id}">Tickets Analysis</a>
                                     </div>

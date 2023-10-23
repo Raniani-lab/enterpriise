@@ -3,7 +3,7 @@
 import re
 import requests
 
-from odoo import models, fields, _
+from odoo import models, fields, _, api
 from odoo.exceptions import UserError
 from odoo.addons.l10n_be_codabox.const import get_error_msg, get_iap_endpoint
 
@@ -16,7 +16,8 @@ class ResCompany(models.Model):
     l10n_be_codabox_is_connected = fields.Boolean(string="Codabox Is Connected")
     l10n_be_codabox_soda_journal = fields.Many2one("account.journal", string="Journal in which SODA's will be imported", domain="[('type', '=', 'bank')]")
 
-    def _call_iap(self, url, params):
+    @api.model
+    def _l10_be_codabox_call_iap(self, url, params):
         response = requests.post(url, json={"params": params}, timeout=10)
         result = response.json().get("result", {})
         error_msg = result.get("error")
@@ -41,7 +42,7 @@ class ResCompany(models.Model):
             "callback_url": self.get_base_url(),
         }
         try:
-            result = self._call_iap(f"{get_iap_endpoint(self.env)}/connect", params)
+            result = self._l10_be_codabox_call_iap(f"{get_iap_endpoint(self.env)}/connect", params)
             self.l10n_be_codabox_is_connected = True
             if result.get("iap_token"):
                 self.l10n_be_codabox_iap_token = result["iap_token"]
@@ -67,7 +68,7 @@ class ResCompany(models.Model):
             "iap_token": self.l10n_be_codabox_iap_token or "",
         }
         try:
-            self._call_iap(f"{get_iap_endpoint(self.env)}/revoke", params)
+            self._l10_be_codabox_call_iap(f"{get_iap_endpoint(self.env)}/revoke", params)
             self.l10n_be_codabox_fiduciary_vat = False
             self.l10n_be_codabox_is_connected = False
             self.l10n_be_codabox_iap_token = False

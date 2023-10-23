@@ -7,7 +7,7 @@ import { pick } from "@web/core/utils/objects";
 import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
-import { Component } from "@odoo/owl";
+import { Component, onMounted } from "@odoo/owl";
 
 
 class L10nBeCodaboxSettingsButtons extends Component {
@@ -19,10 +19,22 @@ class L10nBeCodaboxSettingsButtons extends Component {
     setup() {
         super.setup();
         this.dialogService = useService("dialog");
+        onMounted(() => {
+            document.querySelector('[name="l10n_be_codabox_fiduciary_vat"]').addEventListener('change', this._onFiduVatChange.bind(this));
+        });
     }
 
-    get l10nBeCodaboxIsConnected() {
-        return this.props.record.data.l10n_be_codabox_is_connected;
+    _onFiduVatChange() {
+        const vat_input = document.querySelector('[name="l10n_be_codabox_fiduciary_vat"] > input');
+        const revoke_button = document.querySelector('[name="l10nBeCodaboxRevokeButton"]');
+        if (revoke_button === null) {
+            return; // Never connected, button is not rendered
+        }
+        if (vat_input.value) {
+            revoke_button.classList.remove('o_hidden');
+        } else {
+            revoke_button.classList.add('o_hidden');
+        }
     }
 
     async l10nBeCodaboxConnect() {

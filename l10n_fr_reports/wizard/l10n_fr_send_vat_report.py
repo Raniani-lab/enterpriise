@@ -162,9 +162,15 @@ class L10nFrSendVatReport(models.TransientModel):
         # Use mapping to populate the xml
         form_vals = []
         currency = self.env.company.currency_id
-        # Lines 22A is the tax coefficient and cannot be 0, the others are petroleum lines
-        # and should be sent only for companies with specific tax regimes
-        specific_lines = ['box_22A', 'box_P1_base', 'box_P1_taxe', 'box_P2_base', 'box_P2_taxe']
+        # Specific Lines (not filled if 0):
+        # * 22A: the tax coefficient and cannot be 0
+        # * P1 and P2: petroleum lines and should be sent only for companies with specific tax regimes
+        # * F9: should be in the xml only for vat units
+        # * A4, I1, I2, I3, I4, I5: some companies do not have the option to declare VAT import
+        specific_lines = [
+            'box_A4', 'box_F9', 'box_I1_base', 'box_I2_base', 'box_I3_base', 'box_I4_base', 'box_I5_base',
+            'box_I6_base', 'box_22A', 'box_P1_base', 'box_P1_taxe', 'box_P2_base', 'box_P2_taxe',
+        ]
         for line in lines:
             model, res_id = report._get_model_info_from_id(line['id'])
             if model == 'account.report.line':

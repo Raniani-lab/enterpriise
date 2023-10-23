@@ -34,7 +34,6 @@ This module allows the creation of the EDI documents and the communication with 
         'data/l10n_mx_uom_unspsc.xml',
 
         'views/account_journal_view.xml',
-        'views/account_move_send_views.xml',
         'views/account_move_view.xml',
         'views/account_payment_views.xml',
         'views/account_payment_register_views.xml',
@@ -49,6 +48,7 @@ This module allows the creation of the EDI documents and the communication with 
         'views/res_config_settings_view.xml',
         'views/res_country_view.xml',
 
+        'wizard/account_move_send_views.xml',
         'wizard/l10n_mx_edi_invoice_cancel.xml',
         'wizard/l10n_mx_edi_global_invoice_create.xml',
 

@@ -22,4 +22,8 @@ class AccountBankSelection(models.TransientModel):
             self.selected_account = self.account_online_account_ids[0]
         self.selected_account._assign_journal()
         # Get transactions for that account
-        return self.account_online_link_id._fetch_transactions(accounts=self.selected_account)
+        action = self.account_online_link_id._fetch_transactions(accounts=self.selected_account)
+        if not action:
+            action = self.env['ir.actions.act_window']._for_xml_id('account.open_account_journal_dashboard_kanban')
+            action['target'] = 'main'
+        return action

@@ -12,7 +12,7 @@ from dateutil.relativedelta import relativedelta
 from markupsafe import Markup
 
 from requests.exceptions import RequestException, Timeout, ConnectionError
-from odoo import api, fields, models, tools, _
+from odoo import api, fields, models, modules, tools, _
 from odoo.exceptions import UserError, CacheMiss, MissingError, ValidationError, RedirectWarning
 from odoo.addons.account_online_synchronization.models.odoofin_auth import OdooFinAuth
 from odoo.tools.misc import format_amount, format_date, get_lang
@@ -353,6 +353,90 @@ class AccountOnlineLink(models.Model):
             "context": self.env.context,
         }
 
+    @api.model
+    def _show_fetched_transactions_action(self, stmt_line_ids):
+        return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
+            extra_domain=[('id', 'in', stmt_line_ids.ids)],
+            name=_('Fetched Transactions'),
+        )
+
+    def _get_connection_state_details(self, journal):
+        self.ensure_one()
+        if self.connection_state_details and self.connection_state_details.get(str(journal.id)):
+            # We have to check that we have a key and a right value for this journal
+            # Because if we have an empty dict, the JS part will handle it as a Proxy object.
+            # To avoid that, we checked if we have a key in the dict and if the value is truthy.
+            return self.connection_state_details[str(journal.id)]
+        return None
+
+    def _pop_connection_state_details(self, journal):
+        self.ensure_one()
+        if journal_connection_state_details := self._get_connection_state_details(journal):
+            self._set_connection_state_details(journal, {})
+            return journal_connection_state_details
+        return None
+
+    def _set_connection_state_details(self, journal, connection_state_details):
+        self.ensure_one()
+        existing_connection_state_details = self.connection_state_details or {}
+        self.connection_state_details = {
+            **existing_connection_state_details,
+            str(journal.id): connection_state_details,
+        }
+
+    def _notify_connection_update(self, journal, connection_state_details):
+        """ The aim of this function is saving the last connection state details
+            (like if the status is success or in error) on the account.online.link
+            object. At the same moment, we're sending a websocket message to
+            accounting dashboard where we return the status of the connection.
+            To make sure that we don't return sensitive information, we filtered
+            the connection state details to only send by websocket information
+            like the connection status, how many transactions we fetched, and
+            the error type. In case of an error, the function is calling rollback
+            on the cursor and is committing the save on the account online link.
+            It's also usefull to commit in case of error to send the websocket message.
+            The commit is only called if we aren't in test mode and if the connection is
+            in error.
+
+            :param journal: The journal for which we want to save the connection state details.
+            :param connection_state_details: The information about the status of the connection (like how many transactions fetched, ...)
+        """
+        self.ensure_one()
+
+        connection_state_details_status = connection_state_details['status']  # We're always waiting for a status in the dict.
+        if connection_state_details_status == 'error':
+            # In case the connection status is in error, we roll back everything before saving the status.
+            self.env.cr.rollback()
+        if not (connection_state_details_status == 'success' and connection_state_details.get('nb_fetched_transactions', 0) == 0):
+            self._set_connection_state_details(
+                journal=journal,
+                connection_state_details=connection_state_details,
+            )
+        accounting_user_group = self.env.ref('account.group_account_user')
+
+        self.env['bus.bus']._sendmany([
+            (
+                user.partner_id,
+                'online_sync',
+                {
+                    'id': journal.id,
+                    'connection_state_details': {
+                        key: value
+                        for key, value in connection_state_details.items()
+                        if key in ('status', 'error_type', 'nb_fetched_transactions')
+                    },
+                }
+            ) for user in accounting_user_group.users
+        ])
+        if connection_state_details_status == 'error' and not tools.config['test_enable'] and not modules.module.current_test:
+            # In case the status is in error, and we aren't in test mode, we commit to save the last connection state and to send the websocket message
+            self.env.cr.commit()
+
+    def _handle_odoofin_redirect_exception(self, mode='link'):
+        if mode == 'link':
+            return self.action_new_synchronization()
+        return self._open_iframe(mode=mode)
+
     #######################################################
     # Generic methods to contact server and handle errors #
     #######################################################
@@ -576,46 +660,82 @@ class AccountOnlineLink(models.Model):
 
     def _fetch_transactions(self, refresh=True, accounts=False):
         self.ensure_one()
-        bank_statement_line_ids = self.env['account.bank.statement.line']
-        dashboard_action = self.env["ir.actions.act_window"]._for_xml_id('account.open_account_journal_dashboard_kanban')
-        is_cron_running = self.env.context.get('cron')
-        acc = accounts or self.account_online_account_ids
         # return early if condition to fetch transactions are not met
         if not self._pre_check_fetch_transactions():
-            return dashboard_action
-        cron_record = self.env.ref('account_online_synchronization.online_sync_cron')
+            return
+
+        is_cron_running = self.env.context.get('cron')
+        acc = (accounts or self.account_online_account_ids).filtered('journal_ids')
         self.last_refresh = fields.Datetime.now()
         try:
-            for online_account in acc:
-                # Only get transactions on account linked to a journal
-                if online_account.journal_ids:
+            # When manually fetching, refresh must still be done in case a redirect occurs
+            # however since transactions are always fetched inside a cron, in case we are manually
+            # fetching, trigger the cron and redirect customer to accounting dashboard
+            if not is_cron_running:
+                accounts_not_to_synchronize = self.env['account.online.account']
+                for online_account in acc:
+                    # Only get transactions on account linked to a journal
                     if refresh and not online_account._refresh():
+                        accounts_not_to_synchronize += online_account
                         continue
                     online_account.fetching_status = 'waiting'
-                    # When manually fetching, refresh must still be done in case a redirect occurs
-                    # however since transactions are always fetched inside a cron, in case we are manually
-                    # fetching, trigger the cron and redirect customer to accounting dashboard
-                    if not is_cron_running:
-                        self._trigger_fetch_transactions_cron()
-                        return dashboard_action
-                    online_account.fetching_status = 'processing'
-                    # Commiting here so that multiple thread calling this method won't execute in parrallel and import duplicates transaction
-                    self.env.cr.commit()
+                accounts_to_synchronize = acc - accounts_not_to_synchronize
+                if accounts_to_synchronize:
+                    # Only call the cron (to fetch transaction asynchronously) if we have account to synchronize
+                    # It means that the account should be refreshed successfully and that we're currently fetching it.
+                    self._trigger_fetch_transactions_cron()
+                return
+
+            for online_account in acc:
+                journal = online_account.journal_ids[0]
+                online_account.fetching_status = 'processing'
+                # Commiting here so that multiple thread calling this method won't execute in parrallel and import duplicates transaction
+                self.env.cr.commit()
+                try:
                     transactions = online_account._retrieve_transactions().get('transactions', [])
-                    bank_statement_line_ids += self.env['account.bank.statement.line']._online_sync_bank_statement(transactions, online_account)
-                    online_account.fetching_status = 'done'
-            if is_cron_running:
-                # Everything has been imported: cancel all further cron_trigger
-                self.env['ir.cron.trigger'].search([('cron_id', '=', cron_record.id), ('call_at', '>', fields.Datetime.now())]).unlink()
-            return dashboard_action
+                except RedirectWarning as redirect_warning:
+                    self._notify_connection_update(
+                        journal=journal,
+                        connection_state_details={
+                            'status': 'error',
+                            'error_type': 'redirect_warning',
+                            'error_message': redirect_warning.args[0],
+                            'action': redirect_warning.args[1],
+                        },
+                    )
+                    raise
+                except OdooFinRedirectException as redirect_exception:
+                    self._notify_connection_update(
+                        journal=journal,
+                        connection_state_details={
+                            'status': 'error',
+                            'error_type': 'odoofin_redirect',
+                            'action': self._handle_odoofin_redirect_exception(mode=redirect_exception.mode),
+                        },
+                    )
+                    raise
+
+                statement_lines = self.env['account.bank.statement.line']._online_sync_bank_statement(transactions, online_account)
+                online_account.fetching_status = 'done'
+                self._notify_connection_update(
+                    journal=journal,
+                    connection_state_details={
+                        'status': 'success',
+                        'nb_fetched_transactions': len(statement_lines),
+                        'action': self._show_fetched_transactions_action(statement_lines),
+                    },
+                )
+
+            cron_record = self.env.ref('account_online_synchronization.online_sync_cron_waiting_synchronization')
+            # Everything has been imported: cancel all further cron_trigger
+            self.env['ir.cron.trigger'].search([('cron_id', '=', cron_record.id), ('call_at', '>', fields.Datetime.now())]).unlink()
+            return
         except OdooFinRedirectException as e:
-            if e.mode == 'link':
-                return self.action_new_synchronization()
-            return self._open_iframe(e.mode)
+            return self._handle_odoofin_redirect_exception(mode=e.mode)
 
     @api.model
     def _trigger_fetch_transactions_cron(self, execution_time=None):
-        cron_record = self.env.ref('account_online_synchronization.online_sync_cron')
+        cron_record = self.env.ref('account_online_synchronization.online_sync_cron_waiting_synchronization')
         # Only add a trigger if no other one before exists
         if not execution_time:
             execution_time = fields.Datetime.now()
@@ -726,7 +846,8 @@ class AccountOnlineLink(models.Model):
             self.env.cr.rollback()
             self._log_information(state='error', subject=_('Internal Error'), message=message, reset_tx=True)
             raise UserError(message)
-        return method()
+        action = method()
+        return action or self.env['ir.actions.act_window']._for_xml_id('account.open_account_journal_dashboard_kanban')
 
     @api.model
     def connect_existing_account(self, data):
@@ -741,7 +862,8 @@ class AccountOnlineLink(models.Model):
             new_account = online_link._fetch_accounts(online_identifier=online_identifier)
             if new_account:
                 new_account._assign_journal()
-                return online_link._fetch_transactions(accounts=new_account)
+                action = online_link._fetch_transactions(accounts=new_account)
+                return action or self.env['ir.actions.act_window']._for_xml_id('account.open_account_journal_dashboard_kanban')
         return {'type': 'ir.actions.client', 'tag': 'reload'}
 
     def exchange_token(self, exchange_token):
@@ -801,7 +923,8 @@ class AccountOnlineLink(models.Model):
         return self._open_iframe('updateCredentials')
 
     def action_fetch_transactions(self):
-        return self._fetch_transactions()
+        action = self._fetch_transactions()
+        return action or self.env['ir.actions.act_window']._for_xml_id('account.open_account_journal_dashboard_kanban')
 
     def action_reconnect_account(self):
         return self._open_iframe('reconnect')

@@ -7,15 +7,6 @@ from odoo.exceptions import UserError, ValidationError, RedirectWarning
 class AccountJournal(models.Model):
     _inherit = "account.journal"
 
-    def open_action(self):
-        # Extends 'account_accountant'
-        self.ensure_one()
-        if not self._context.get('action_name') and self.type == 'bank' and self.bank_statements_source == 'online_sync':
-            return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
-                default_context={'search_default_journal_id': self.id},
-            )
-        return super().open_action()
-
     def __get_bank_statements_available_sources(self):
         rslt = super(AccountJournal, self).__get_bank_statements_available_sources()
         rslt.append(("online_sync", _("Automated Bank Synchronization")))
@@ -59,17 +50,36 @@ class AccountJournal(models.Model):
             if len(journal.account_online_account_id.journal_ids) > 1:
                 raise ValidationError(_('You cannot have two journals associated with the same Online Account.'))
 
-    @api.model
-    def _cron_fetch_online_transactions(self):
-        for journal in self.search([('account_online_account_id', '!=', False)]):
+    def _fetch_online_transactions(self):
+        for journal in self:
             try:
-                journal.with_context(cron=True).manual_sync()
+                journal.account_online_link_id._pop_connection_state_details(journal=journal)
+                journal.manual_sync()
                 # for cron jobs it is usually recommended committing after each iteration,
                 # so that a later error or job timeout doesn't discard previous work
                 self.env.cr.commit()
             except (UserError, RedirectWarning):
                 # We need to rollback here otherwise the next iteration will still have the error when trying to commit
                 self.env.cr.rollback()
+
+    @api.model
+    def _cron_fetch_waiting_online_transactions(self):
+        """ This method is only called when the user fetch transactions asynchronously.
+            We only fetch transactions on synchronizations that are in "waiting" status.
+            Once the synchronization is done, the status is changed for "done".
+            We have to that to avoid having too much logic in the same cron function to do
+            2 different things. This cron should only be used for asynchronous fetchs.
+        """
+        journals = self.search([('account_online_account_id', '!=', False), ('online_sync_fetching_status', '=', 'waiting')])
+        journals.with_context(cron=True)._fetch_online_transactions()
+
+    @api.model
+    def _cron_fetch_online_transactions(self):
+        """ This method is called by the cron (by default twice a day) to fetch (for all journals)
+            the new transactions.
+        """
+        journals = self.search([('account_online_account_id', '!=', False)])
+        journals.with_context(cron=True)._fetch_online_transactions()
 
     @api.model
     def _cron_send_reminder_email(self):
@@ -156,3 +166,78 @@ class AccountJournal(models.Model):
             'views': [(False, 'form')],
             'target': 'new',
         }
+
+    def action_open_dashboard_asynchronous_action(self):
+        """ This method allows to open action asynchronously
+            during the fetching process.
+            When a user clicks on the Fetch Transactions button in
+            the dashboard, we fetch the transactions asynchronously
+            and save connection state details on the synchronization.
+            This action allows the user to open the action saved in
+            the connection state details.
+        """
+        self.ensure_one()
+
+        if not self.account_online_account_id:
+            raise UserError(_("You can only execute this action for bank-synchronized journals."))
+
+        connection_state_details = self.account_online_link_id._pop_connection_state_details(journal=self)
+        if connection_state_details and connection_state_details.get('action'):
+            if connection_state_details.get('error_type') == 'redirect_warning':
+                self.env.cr.commit()
+                raise RedirectWarning(connection_state_details['error_message'], connection_state_details['action'], _('Report Issue'))
+            else:
+                return connection_state_details['action']
+
+        return {'type': 'ir.actions.client', 'tag': 'soft_reload'}
+
+    def _get_journal_dashboard_data_batched(self):
+        dashboard_data = super()._get_journal_dashboard_data_batched()
+        for journal in self.filtered('account_online_link_id'):
+            connection_state_details = journal.account_online_link_id._get_connection_state_details(journal=journal)
+            if not connection_state_details and journal.account_online_account_id.fetching_status in ('waiting', 'processing'):
+                connection_state_details = {'status': 'fetching'}
+            dashboard_data[journal.id]['connection_state_details'] = connection_state_details
+        return dashboard_data
+
+    def get_related_connection_state_details(self):
+        """ This method allows JS widget to get the last connection state details
+            It's useful if the user wasn't on the dashboard when we send the message
+            by websocket that the asynchronous flow is finished.
+            In case we don't have a connection state details and if the fetching
+            status is set on "waiting" or "processing". We're returning that the sync
+            is currently fetching.
+        """
+        self.ensure_one()
+        connection_state_details = self.account_online_link_id._get_connection_state_details(journal=self)
+        if not connection_state_details and self.account_online_account_id.fetching_status in ('waiting', 'processing'):
+            connection_state_details = {'status': 'fetching'}
+        return connection_state_details
+
+    def _consume_connection_state_details(self):
+        self.ensure_one()
+        if self.account_online_link_id:
+            # In case we have a bank synchronization connected to the journal
+            # we want to remove the last connection state because it means that we
+            # have "mark as read" this state, and we don't want to display it again to
+            # the user.
+            self.account_online_link_id._pop_connection_state_details(journal=self)
+
+    def open_action(self):
+        # Extends 'account_accountant'
+        if not self._context.get('action_name') and self.type == 'bank' and self.bank_statements_source == 'online_sync':
+            self._consume_connection_state_details()
+            return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
+                default_context={'search_default_journal_id': self.id},
+            )
+        return super().open_action()
+
+    def action_open_reconcile(self):
+        # Extends 'account_accountant'
+        self._consume_connection_state_details()
+        return super().action_open_reconcile()
+
+    def action_open_bank_transactions(self):
+        # Extends 'account_accountant'
+        self._consume_connection_state_details()
+        return super().action_open_bank_transactions()

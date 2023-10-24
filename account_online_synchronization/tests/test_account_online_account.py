@@ -164,8 +164,7 @@ class TestAccountOnlineAccount(AccountOnlineSynchronizationCommon):
     @freeze_time('2023-01-01 01:10:15')
     @patch('odoo.addons.base.models.ir_cron.ir_cron._trigger')
     @patch('odoo.addons.account_online_synchronization.models.account_online.AccountOnlineAccount._retrieve_transactions', return_value={})
-    @patch('odoo.addons.account_online_synchronization.models.account_online.AccountOnlineAccount._refresh', return_value=True)
-    def test_basic_flow_cron_fetching_transactions(self, patched_refresh, patched_transactions, patched_trigger):
+    def test_basic_flow_cron_fetching_transactions(self, patched_transactions, patched_trigger):
         self.addCleanup(self.env.registry.leave_test_mode)
         # flush and clear everything for the new "transaction"
         self.env.invalidate_all()
@@ -176,10 +175,9 @@ class TestAccountOnlineAccount(AccountOnlineSynchronizationCommon):
             test_link_account = self.account_online_link.with_env(test_env)
             test_link_account.state = 'connected'
 
-            # Call fetch_transaction in cron mode and check that a call was made to refresh, transaction and that
+            # Call fetch_transaction in cron mode and check that a call was made to transaction and that
             # one trigger was created in case import failed due to process being killed.
             test_link_account.with_context(cron=True)._fetch_transactions()
-            patched_refresh.assert_called_once()
             patched_transactions.assert_called_once()
             cron_limit_time = tools.config['limit_time_real_cron']  # time after which cron process is killed
             limit_time = (cron_limit_time if cron_limit_time > 0 else 300) + 60
@@ -193,12 +191,11 @@ class TestAccountOnlineAccount(AccountOnlineSynchronizationCommon):
     def test_basic_flow_manual_fetching_transactions(self, patched_refresh, patched_transactions, patched_trigger):
         # Call fetch_transaction in manual mode and check that a call was made to refresh, nothing to transaction and that
         # one trigger was created immediately to fetch transactions.
-        result = self.account_online_link._fetch_transactions()
+        self.account_online_link._fetch_transactions()
         patched_refresh.assert_called_once()
         patched_transactions.assert_not_called()
         patched_trigger.assert_called_once_with(fields.Datetime.now())
         self.assertEqual(self.account_online_account.fetching_status, 'waiting')
-        self.assertEqual(result, self.env["ir.actions.act_window"]._for_xml_id('account.open_account_journal_dashboard_kanban'))
 
     @freeze_time('2023-01-01 01:10:15')
     @patch('odoo.addons.base.models.ir_cron.ir_cron._trigger')
@@ -207,21 +204,17 @@ class TestAccountOnlineAccount(AccountOnlineSynchronizationCommon):
     def test_refresh_incomplete_fetching_transactions(self, patched_refresh, patched_transactions, patched_trigger):
         patched_refresh.return_value = {'success': False}
         # Call fetch_transaction and if call result is false, don't call transaction
-        result = self.account_online_link._fetch_transactions()
-        # patched_refresh.assert_called_once()
+        self.account_online_link._fetch_transactions()
         patched_transactions.assert_not_called()
         patched_trigger.assert_not_called()
-        self.assertEqual(result, self.env["ir.actions.act_window"]._for_xml_id('account.open_account_journal_dashboard_kanban'))
 
         patched_refresh.return_value = {'success': False, 'currently_fetching': True}
         # Call fetch_transaction and if call result is false but in the process of fetching, don't call transaction
         # and instead create a cron trigger to check in 3minutes if process has finished
-        result = self.account_online_link._fetch_transactions()
-        # patched_refresh.assert_called_once()
+        self.account_online_link._fetch_transactions()
         patched_transactions.assert_not_called()
         patched_trigger.assert_called_once_with(fields.Datetime.now() + timedelta(minutes=3))  # should retry in 3min
         self.assertEqual(self.account_online_account.fetching_status, 'waiting')
-        self.assertEqual(result, self.env["ir.actions.act_window"]._for_xml_id('account.open_account_journal_dashboard_kanban'))
 
     @freeze_time('2023-01-01 01:10:15')
     @patch('odoo.addons.base.models.ir_cron.ir_cron._trigger')
@@ -230,8 +223,7 @@ class TestAccountOnlineAccount(AccountOnlineSynchronizationCommon):
     def test_currently_processing_fetching_transactions(self, patched_refresh, patched_transactions, patched_trigger):
         self.account_online_account.fetching_status = 'processing'  # simulate the fact that we are currently creating entries in odoo
         # Call to fetch_transaction should be skipped
-        result = self.account_online_link._fetch_transactions()
+        self.account_online_link._fetch_transactions()
         patched_refresh.assert_not_called()
         patched_transactions.assert_not_called()
         patched_trigger.assert_not_called()
-        self.assertEqual(result, self.env["ir.actions.act_window"]._for_xml_id('account.open_account_journal_dashboard_kanban'))

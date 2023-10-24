@@ -284,6 +284,7 @@ class AccountOnlineLink(models.Model):
     next_refresh = fields.Datetime("Next synchronization", compute='_compute_next_synchronization')
     state = fields.Selection([('connected', 'Connected'), ('error', 'Error'), ('disconnected', 'Not Connected')],
                              default='disconnected', tracking=True, required=True, readonly=True)
+    connection_state_details = fields.Json()
     auto_sync = fields.Boolean(default=True, string="Automatic synchronization",
                                help="If possible, we will try to automatically fetch new transactions for this record")
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)

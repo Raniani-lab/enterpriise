@@ -56,29 +56,13 @@ class AppraisalAskFeedback(models.TransientModel):
                 options={'post_process': True}
             )[wizard_su.appraisal_id.id]
 
-    @api.depends('employee_ids', 'deadline', 'employee_id', 'survey_template_id')
+    @api.depends('template_id', 'employee_ids')
     def _compute_body(self):
-        for wizard_su in self.filtered(lambda w: w.employee_id and w.template_id).sudo():
-            recipients = [emp.name for emp in wizard_su.employee_ids]
-            if recipients:
-                last_name = recipients.pop()
-                if len(recipients) > 0:
-                    recipients_str = _("Employee")
-                else:
-                    recipients_str = last_name
-            else:
-                recipients_str = ""
-            context = {
-                'deadline': wizard_su.deadline,
-                'recipients': recipients_str,
-                'logged_user': wizard_su.env.user.name
-            }
-            wizard_su.body = wizard_su.with_context(context)._render_template(
-                wizard_su.template_id.body_html,
-                'hr.appraisal',
-                wizard_su.appraisal_id.ids,
-                engine='inline_template'
-            )[wizard_su.appraisal_id.id]
+        for wizard in self:
+            langs = set(wizard.employee_ids.user_partner_id.mapped('lang')) - {False}
+            if len(langs) == 1:
+                wizard = wizard.with_context(lang=langs.pop())
+            super(AppraisalAskFeedback, wizard)._compute_body()
 
     @api.depends('appraisal_id.date_close')
     def _compute_deadline(self):
@@ -144,10 +128,10 @@ class AppraisalAskFeedback(models.TransientModel):
 
     def _send_mail(self, answer):
         """ Create mail specific for recipient containing notably its access token """
-        user_body = self.body
-        user_body = user_body if not is_html_empty(html_sanitize(user_body, strip_style=True, strip_classes=True)) else False
         ctx = {
-            'user_body': user_body
+            'logged_user': self.env.user.name,
+            'employee': self.employee_id.name,
+            'deadline': self.deadline,
         }
         body = self.with_context(**ctx)._render_field('body', answer.ids)[answer.id]
         mail_values = {

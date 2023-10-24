@@ -710,7 +710,7 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.mail_activity_plan_menu_config_subscription
-msgid "Activity Plan"
+msgid "Activity Plans"
 msgstr ""
 
 #. module: sale_subscription

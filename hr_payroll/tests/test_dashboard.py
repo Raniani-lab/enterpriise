@@ -20,7 +20,7 @@ class TestDashboardUi(HttpCase):
         })
         user = mail_new_test_user(
             self.env, name="Laurie Poiret", login="dashboarder",
-            groups="base.group_user,hr_payroll.group_hr_payroll_manager",
+            groups="base.group_user,hr_payroll.group_hr_payroll_manager,sign.group_sign_manager",
             company_id=company.id)
         department = self.env['hr.department'].create({
             'name': 'Payroll',

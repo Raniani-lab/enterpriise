@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-        <!-- internal -->
+        <record id="base.user_demo" model="res.users">
+            <field name="groups_id" eval="[(3, ref('documents.group_documents_manager'))]"/>
+        </record>
 
+        <!-- internal -->
         <record id="documents_image_city_document" model="documents.document" forcecreate="0">
             <field name="name">city.jpg</field>
             <field name="datas" type="base64" file="documents/demo/files/city.jpg"/>

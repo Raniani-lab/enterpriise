@@ -75,10 +75,11 @@ class HrApplicant(models.Model):
             if self.env['ir.module.module']._get('hr_recruitment_skills').state == 'installed':
                 ocr_text_lower = ocr_results['full_text_annotation'].lower()
                 splitting_characters = string.punctuation.replace('-', '') + ' ' + '\n'
-                ocr_tokens = re.split('|'.join(re.escape(char) for char in splitting_characters), ocr_text_lower)
-                target_search_set = set(filter(lambda token: len(token) >= 3, ocr_tokens))
-                skills = self.env['hr.skill'].search([]).filtered(
-                    lambda skill: skill.name.lower() in target_search_set and len(skill.name) >= 3)
+                ocr_tokens = re.sub('|'.join(re.escape(char) for char in splitting_characters), ' ', ocr_text_lower)
+                skills = set(self.env['hr.skill'].search([]).filtered(lambda skill: (
+                    re.search(rf'\s{re.escape(skill.name.lower())}\s', ocr_tokens)
+                    and len(skill.name) >= 3
+                )))
 
                 applicant_skills = self.env['hr.applicant.skill']
                 for skill in skills:

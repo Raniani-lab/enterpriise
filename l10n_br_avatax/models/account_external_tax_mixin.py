@@ -86,11 +86,13 @@ class AccountExternalTaxMixinL10nBR(models.AbstractModel):
         if errors:
             raise ValidationError('\n'.join(errors))
 
-    def _l10n_br_build_avatax_line(self, product, total, discount, line_id):
+    def _l10n_br_build_avatax_line(self, product, qty, unit_price, total, discount, line_id):
         """ Prepares the line data for the /calculations API call. temp* values are here to help with post-processing
         and will be removed before sending by _remove_temp_values_lines.
 
         :param product.product product: product on the line
+        :param float qty: the number of items on the line
+        :param float unit_price: the unit_price on the line
         :param float total: the amount on the line without taxes or discount
         :param float discount: the discount amount on the line
         :param int line_id: the database ID of the line record, this is used to uniquely identify it in Avatax
@@ -105,6 +107,8 @@ class AccountExternalTaxMixinL10nBR(models.AbstractModel):
             'insuranceAmount': 0,
             'lineTaxedDiscount': discount,
             'lineAmount': total,
+            'lineUnitPrice': unit_price,
+            'numberOfItems': qty,
             'itemDescriptor': {
                 'cest': product.l10n_br_cest_code or '',
                 'hsCode': product.l10n_br_ncm_code_id.code,
@@ -192,6 +196,8 @@ class AccountExternalTaxMixinL10nBR(models.AbstractModel):
         lines = [
             self._l10n_br_build_avatax_line(
                 line['product_id'],
+                line['qty'],
+                line['price_unit'],
                 line['qty'] * line['price_unit'],
                 line['qty'] * line['price_unit'] * (line['discount'] / 100.0),
                 line['id'],

@@ -4,7 +4,7 @@ from odoo import _, api, fields, models
 class AccountMoveSend(models.TransientModel):
     _inherit = 'account.move.send'
 
-    l10n_mx_edi_enable_cfdi = fields.Boolean(compute='_compute_send_mail_extra_fields')
+    l10n_mx_edi_enable_cfdi = fields.Boolean(compute='_compute_l10n_mx_edi_enable_cfdi')
     l10n_mx_edi_checkbox_cfdi = fields.Boolean(
         string="CFDI",
         compute='_compute_l10n_mx_edi_checkbox_cfdi',
@@ -30,9 +30,8 @@ class AccountMoveSend(models.TransientModel):
     # COMPUTE METHODS
     # -------------------------------------------------------------------------
 
-    def _compute_send_mail_extra_fields(self):
-        # EXTENDS 'account'
-        super()._compute_send_mail_extra_fields()
+    @api.depends('move_ids')
+    def _compute_l10n_mx_edi_enable_cfdi(self):
         for wizard in self:
             wizard.l10n_mx_edi_enable_cfdi = any(wizard._get_default_l10n_mx_edi_enable_cfdi(m) for m in wizard.move_ids)
 

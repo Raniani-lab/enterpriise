@@ -123,7 +123,7 @@ class AccountEdiFormat(models.Model):
     @api.model
     def _l10n_mx_edi_get_invoice_attachment(self, res_model, res_id):
         return self.env['ir.attachment'].search([
-            ('name', 'like', '%-MX-Invoice-3.3.xml'),
+            ('name', 'like', '%-MX-Invoice-%.xml'),
             ('res_model', '=', res_model),
             ('res_id', '=', res_id)], limit=1, order='create_date desc')
 

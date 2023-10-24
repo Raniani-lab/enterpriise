@@ -1203,8 +1203,8 @@ class AccountReport(models.Model):
     # OPTIONS: HIDE LINE AT 0
     ####################################################
     def _init_options_hide_0_lines(self, options, previous_options=None):
-        if self.filter_hide_0_lines != 'never' and previous_options:
-            previous_val = previous_options.get('hide_0_lines')
+        if self.filter_hide_0_lines != 'never':
+            previous_val = (previous_options or {}).get('hide_0_lines')
             if previous_val is not None:
                 options['hide_0_lines'] = previous_val
             else:

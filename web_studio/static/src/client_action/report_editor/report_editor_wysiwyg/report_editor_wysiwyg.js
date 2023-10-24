@@ -542,6 +542,7 @@ export class ReportEditorWysiwyg extends Component {
             cancel: () => {},
             confirm: async () => {
                 await this.reportEditorModel.saveReport();
+                this.reportEditorModel.renderKey++;
                 return this.reportEditorModel.resetReport(state.includeHeaderFooter);
             },
         });

@@ -572,7 +572,7 @@ export const ViewEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
                 } else if (keyFromView || !trueValue) { // modifier not applied or under certain condition, remove modifier attribute and use attrs if any
                     newAttributes[key] = "";
                     if (value !== false) {
-                        attrs.push(_.str.sprintf("\"%s\": \"%s\"", key, Domain.prototype.arrayToString(value)));
+                        attrs.push(_.str.sprintf("\"%s\": %s", key, Domain.prototype.arrayToString(value)));
                     }
                 }
         });

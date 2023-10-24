@@ -5,7 +5,7 @@
         <t t-if="controller.buttons.length == 1">
             <t t-set="button" t-value="controller.buttons[0]"/>
             <button
-                class="btn btn-primary"
+                t-att-class="'btn btn-primary' + (button.disabled ? ' disabled' : '')"
                 t-on-click="(ev) => controller.reportAction(ev, button.action, button.action_param, true)"
             >
                 <t t-out="button.name"/>
@@ -18,7 +18,7 @@
             <!-- There is only one grouped button -->
             <t t-if="groupedButtons.length == 1">
                 <button
-                    class="btn btn-primary text-nowrap"
+                    t-att-class="'btn btn-primary text-nowrap' + (groupedButtons[0].disabled ? ' disabled' : '')"
                     t-on-click="(ev) => controller.reportAction(ev, groupedButtons[0].action, groupedButtons[0].action_param, true)"
                 >
                     <t t-out="groupedButtons[0].name"/>
@@ -29,7 +29,7 @@
             <t t-if="groupedButtons.length > 1">
                 <div class="btn-group">
                     <button
-                        class="btn btn-primary text-nowrap"
+                        t-att-class="'btn btn-primary text-nowrap' + (groupedButtons[0].disabled ? ' disabled' : '')"
                         t-on-click="(ev) => controller.reportAction(ev, groupedButtons[0].action, groupedButtons[0].action_param, true)"
                     >
                         <t t-out="groupedButtons[0].name"/>
@@ -40,7 +40,7 @@
                             <t t-if="groupedButton_index != 0">
                                 <DropdownItem>
                                     <button
-                                        class="btn btn-link text-nowrap"
+                                        t-att-class="'btn btn-link text-nowrap' + (groupedButton.disabled ? ' disabled' : '')"
                                         t-on-click="(ev) => controller.reportAction(ev, groupedButton.action, groupedButton.action_param, true)"
                                     >
                                         <t t-out="groupedButton.name"/>
@@ -55,7 +55,7 @@
             <!-- Single buttons -->
             <t t-foreach="singleButtons" t-as="singleButton" t-key="singleButton_index">
                 <button
-                    class="btn btn-secondary text-nowrap"
+                    t-att-class="'btn btn-secondary text-nowrap' + (singleButton.disabled ? ' disabled' : '')"
                     t-on-click="(ev) => controller.reportAction(ev, singleButton.action, singleButton.action_param, true)"
                 >
                     <t t-out="singleButton.name"/>

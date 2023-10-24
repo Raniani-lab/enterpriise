@@ -1620,7 +1620,8 @@ class AccountReport(models.Model):
 
         # Sort the buttons list by sequence, for rendering
         if not self.env['res.company']._all_branches_selected():
-            options['buttons'] = [button for button in options['buttons'] if button.get('branch_allowed')]
+            for button in filter(lambda x: not x.get('branch_allowed'), options['buttons']):
+                button['disabled'] = True
         options['buttons'] = sorted(options['buttons'], key=lambda x: x.get('sequence', 90))
 
         return options

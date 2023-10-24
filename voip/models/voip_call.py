@@ -50,15 +50,13 @@ class VoipCall(models.Model):
                 if call.direction == "incoming":
                     return _("Rejected call from %(phone_number)s", phone_number=call.phone_number)
                 return _("Rejected call to %(phone_number)s", phone_number=call.phone_number)
-            if call.state == "terminated":
-                if call.partner_id:
-                    if call.direction == "incoming":
-                        return _("Call from %(correspondent)s", correspondent=call.partner_id.name)
-                    return _("Call to %(correspondent)s", correspondent=call.partner_id.name)
+            if call.partner_id:
                 if call.direction == "incoming":
-                    return _("Call from %(phone_number)s", phone_number=call.phone_number)
-                return _("Call to %(phone_number)s", phone_number=call.phone_number)
-            return ""
+                    return _("Call from %(correspondent)s", correspondent=call.partner_id.name)
+                return _("Call to %(correspondent)s", correspondent=call.partner_id.name)
+            if call.direction == "incoming":
+                return _("Call from %(phone_number)s", phone_number=call.phone_number)
+            return _("Call to %(phone_number)s", phone_number=call.phone_number)
 
         for call in self:
             call.display_name = get_name(call)

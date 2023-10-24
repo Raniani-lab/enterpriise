@@ -28,6 +28,8 @@ patch(MockServer.prototype, {
                 return this._mockVoipCallCreateAndFormat(...args, kwargs);
             case "end_call":
                 return this._mockVoipCallEndCall(...args, kwargs);
+            case "get_recent_phone_calls":
+                return this._mockVoipCallGetRecentPhoneCalls(...args, kwargs);
             case "start_call":
                 return this._mockVoipCallStartCall(...args, kwargs);
             default:
@@ -68,6 +70,16 @@ patch(MockServer.prototype, {
         }
         return this._mockVoipCall_FormatCalls(ids);
     },
+    _mockVoipCallGetRecentPhoneCalls(_args, { search_terms, offset = 0, limit } = {}) {
+        const domain = [["user_id", "=", this.pyEnv.currentUserId]];
+        if (search_terms) {
+            for (const field of ["phone_number", "partner_id.name", "activity_name"]) {
+                domain.push("|", [field, "ilike", search_terms]);
+            }
+        }
+        const recordIds = this.pyEnv["voip.call"].search(domain, { offset, limit, order: "create_date DESC" });
+        return this._mockVoipCall_FormatCalls(recordIds);
+    },
     /**
      * @param {number[]} param0
      * @returns {Object[]}
@@ -92,7 +104,7 @@ patch(MockServer.prototype, {
                     return `Missed call from ${call.phone_number}`;
                 case "rejected":
                     return `Rejected call ${preposition} ${call.phone_number}`;
-                case "terminated":
+                default:
                     if (call.partner_id) {
                         const [partner] = this.getRecords("res.partner", [
                             ["id", "=", call.partner_id],
@@ -100,8 +112,6 @@ patch(MockServer.prototype, {
                         return `Call ${preposition} ${partner.name}`;
                     }
                     return `Call ${preposition} ${call.phone_number}`;
-                default:
-                    return "";
             }
         };
         for (const call of calls) {

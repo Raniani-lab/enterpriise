@@ -20,9 +20,9 @@ class AccountMoveSend(models.TransientModel):
             and move.l10n_mx_edi_cfdi_state not in ('sent', 'global_sent')
         )
 
-    def _get_wizard_values(self, move):
+    def _get_wizard_values(self):
         # EXTENDS 'account'
-        values = super()._get_wizard_values(move)
+        values = super()._get_wizard_values()
         values['l10n_mx_edi_cfdi'] = self.l10n_mx_edi_checkbox_cfdi
         return values
 

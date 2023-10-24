@@ -80,9 +80,9 @@ class AccountJournal(models.Model):
         if not company.vat or not company.l10n_be_codabox_is_connected:
             raise UserError(get_error_msg("error_codabox_not_configured"))
 
-        # Check last stmt (and stmt line of each journal, and take the oldest one as from_date
-        # If any journal has no from_date, take 3 months ago
-        oldest_bank_stmt_dates = [fields.Date.today() - relativedelta(months=3)]
+        # Fetch last bank statement date for each journal, and take the oldest one as from_date
+        # for Codabox. If any Codabox journal has no bank statement, take 3 months ago as from_date
+        latest_bank_stmt_dates = []
         codabox_journals = self.search([
             ("bank_statements_source", "=", "l10n_be_codabox"),
             ("company_id", "=", company.id),
@@ -90,17 +90,19 @@ class AccountJournal(models.Model):
         for journal in codabox_journals:
             last_date = self.env["account.bank.statement"].search([
                 ("journal_id", "=", journal.id),
-            ], order="date ASC", limit=1).date
+            ], order="date DESC", limit=1).date
             if not last_date:
                 last_date = self.env["account.bank.statement.line"].search([
                     ("journal_id", "=", journal.id),
-                ], order="date ASC", limit=1).date
+                ], order="date DESC", limit=1).date
             if last_date:
-                oldest_bank_stmt_dates.append(last_date)
-
+                latest_bank_stmt_dates.append(last_date)
+            else:
+                latest_bank_stmt_dates.append(fields.Date.today() - relativedelta(months=3))
         statement_ids_all = []
+        skipped_bank_accounts = set()
         session = requests.Session()
-        codas = self._l10n_be_codabox_fetch_transactions_from_iap(session, company, "codas", min(oldest_bank_stmt_dates))
+        codas = self._l10n_be_codabox_fetch_transactions_from_iap(session, company, "codas", min(latest_bank_stmt_dates))
         for coda in codas:
             try:
                 attachment = self.env["ir.attachment"].create({
@@ -114,7 +116,7 @@ class AccountJournal(models.Model):
                 if journal.bank_statements_source in ("l10n_be_codabox", "undefined"):
                     journal.bank_statements_source = "l10n_be_codabox"
                 else:
-                    _logger.info("L10nBeCodabox: Some bank statement were found in Codabox for account number %s but no journal exists for this account", account_number)
+                    skipped_bank_accounts.add(account_number)
                     continue
                 stmts_vals = journal._complete_bank_statement_vals(stmts_vals, journal, account_number, attachment)
                 statement_ids, __, __ = journal._create_bank_statements(stmts_vals, raise_no_imported_file=False)
@@ -125,7 +127,7 @@ class AccountJournal(models.Model):
             except (UserError, ValueError):
                 # We need to rollback here otherwise the next iteration will still have the error when trying to commit
                 self.env.cr.rollback()
-
+        _logger.info("L10nBeCodabox: No journals were found for the following bank accounts found in Codabox: %s", ','.join(skipped_bank_accounts))
         return statement_ids_all
 
     def l10n_be_codabox_manually_fetch_soda_transactions(self):

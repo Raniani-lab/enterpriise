@@ -537,9 +537,7 @@
                 <field name="name"/>
                 <field name="check_count"/>
                 <field name="alert_count"/>
-                <field name="alias_id"/>
-                <field name="alias_name"/>
-                <field name="alias_domain"/>
+                <field name="alias_email"/>
                 <field name="color"/>
                 <templates>
                     <t t-name="kanban-menu">
@@ -556,7 +554,7 @@
                             <div t-attf-class="o_kanban_card_header">
                                 <div class="o_kanban_card_header_title">
                                     <div class="o_primary"><field name="name"/></div>
-                                    <div t-if="record.alias_name.value and record.alias_domain.value">
+                                    <div t-if="record.alias_email.value">
                                         <small><i class="fa fa-envelope-o" role="img" aria-label="Domain alias" title="Domain alias"></i>&amp;nbsp; <field name="alias_id"/></small>
                                     </div>
                                 </div>
@@ -602,7 +600,9 @@
                                 <field name="alias_id" class="oe_read_only oe_inline"
                                         string="Email Alias" required="0"/>
                                 <div class="oe_edit_only oe_inline" name="edit_alias" style="display: inline;" >
-                                    <field name="alias_name" class="oe_inline"/>@<field name="alias_domain" class="oe_inline" readonly="1"/>
+                                    <field name="alias_name" class="oe_inline"/>@
+                                    <field name="alias_domain_id" class="oe_inline" placeholder="e.g. domain.com"
+                                           options="{'no_create': True, 'no_open': True}"/>
                                 </div>
                             </div>
                             <field name="alias_contact" class="oe_inline" groups="base.group_no_one"

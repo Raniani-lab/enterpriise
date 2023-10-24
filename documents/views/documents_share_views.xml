@@ -52,19 +52,20 @@
                             <field name="date_deadline" widget="date"/>
                             <label for="email_drop" invisible="action == 'download'"/>
                             <div invisible="action == 'download'">
-                                <div class="o_row">
                                 <field name="email_drop"/>
                                 <div invisible="not email_drop" class="oe_inline">
-                                    <div name="alias_def" invisible="not alias_domain">
+                                    <div name="alias_def">
                                         <field name="alias_id" class="oe_read_only oe_inline" required="0"/>
                                         <div class="oe_edit_only oe_inline" name="edit_alias" style="display: inline;">
-                                            <field name="alias_name" class="oe_inline"/>@<field name="alias_domain" class="oe_inline" readonly="1"/>
+                                            <field name="alias_name" class="oe_inline"/>@
+                                            <field name="alias_domain_id" class="oe_inline" placeholder="e.g. domain.com"
+                                                   options="{'no_create': True, 'no_open': True}"/>
                                         </div>
                                     </div>
-                                    <div class="content-group" invisible="alias_domain">
-                                        <button name="%(settings_action)d" icon="oi-arrow-right" type="action" string="Configure Email Servers" class="btn btn-sm btn-link"/>
+                                    <div class="content-group" invisible="alias_domain_id">
+                                        <button name="%(settings_action)d" icon="oi-arrow-right" type="action"
+                                                string="Choose or Configure Email Servers" class="btn btn-sm btn-link"/>
                                     </div>
-                                </div>
                                 </div>
                             </div>
                             <field name="folder_id" readonly="1" invisible="type == 'ids'"/>
@@ -149,12 +150,15 @@
                         </group>
                     </group>
                     <group string="Upload by email" invisible="action != 'downloadupload'">
-                        <div class="content-group" invisible="alias_domain" colspan="2">
-                            <button name="%(settings_action)d" icon="oi-arrow-right" type="action" string="Configure Email Servers" class="btn btn-sm btn-link"/>
+                        <div class="content-group" invisible="alias_domain_id" colspan="2">
+                            <button name="%(settings_action)d" icon="oi-arrow-right" type="action"
+                                    string="Choose or Configure Email Servers" class="btn btn-sm btn-link"/>
                         </div>
                         <label for="alias_name" string="Email Alias"/>
                         <span class="oe_edit_only">
-                            <field name="alias_name" class="oe_inline"/>@<field name="alias_domain" class="oe_inline" readonly="1"/>
+                            <field name="alias_name" class="oe_inline"/>@
+                            <field name="alias_domain_id" class="oe_inline" placeholder="e.g. domain.com"
+                                   options="{'no_create': True, 'no_open': True}"/>
                         </span>
                     </group>
                     <group string="Default values for uploaded documents" invisible="action == 'download'">

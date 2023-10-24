@@ -41,7 +41,7 @@ class TestMailGateway(MailCommon):
             self.format_and_process(
                 MAIL_EML_ATTACHMENT,
                 email_from,
-                'inbox-test@test.com',
+                f'inbox-test@{self.alias_domain}',
                 subject='Test document creation on incoming mail',
                 target_model='documents.document',
             )

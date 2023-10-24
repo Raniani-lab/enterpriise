@@ -14,6 +14,7 @@ class HelpdeskCommon(TransactionCase, MockEmail):
     @classmethod
     def setUpClass(cls):
         super(HelpdeskCommon, cls).setUpClass()
+        cls._init_mail_gateway()
         cls.env.user.tz = 'Europe/Brussels'
         cls.env['resource.calendar'].search([]).write({'tz': 'Europe/Brussels'})
 

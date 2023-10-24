@@ -229,13 +229,14 @@ class TestHelpdeskFlow(HelpdeskCommon):
             'alias_parent_thread_id': helpdesk_team1.id,
             'alias_defaults': "{'team_id': %s}" % helpdesk_team1.id,
         })
+        self.assertEqual((mail_alias0 + mail_alias1).alias_domain_id, self.mail_alias_domain)
 
-        new_message0 = """MIME-Version: 1.0
+        new_message0 = f"""MIME-Version: 1.0
 Date: Thu, 27 Dec 2018 16:27:45 +0100
 Message-ID: blablabla0
 Subject: helpdesk team 0 in company 0
 From:  A client <client_a@someprovider.com>
-To: helpdesk_team_0@test.mycompany.com
+To: {mail_alias0.display_name}
 Content-Type: multipart/alternative; boundary="000000000000a47519057e029630"
 
 --000000000000a47519057e029630
@@ -251,12 +252,12 @@ Content-Transfer-Encoding: quoted-printable
 --000000000000a47519057e029630--
 """
 
-        new_message1 = """MIME-Version: 1.0
+        new_message1 = f"""MIME-Version: 1.0
 Date: Thu, 27 Dec 2018 16:27:45 +0100
 Message-ID: blablabla1
 Subject: helpdesk team 1 in company 1
 From:  B client <client_b@someprovider.com>
-To: helpdesk_team_1@test.mycompany.com
+To: {mail_alias1.display_name}
 Content-Type: multipart/alternative; boundary="000000000000a47519057e029630"
 
 --000000000000a47519057e029630
@@ -274,8 +275,8 @@ Content-Transfer-Encoding: quoted-printable
         partners_exist = Partner.search([('email', 'in', ['client_a@someprovider.com', 'client_b@someprovider.com'])])
         self.assertFalse(partners_exist)
 
-        helpdesk_ticket0_id = self.env['mail.thread'].message_process('helpdesk.ticket', new_message0)
-        helpdesk_ticket1_id = self.env['mail.thread'].message_process('helpdesk.ticket', new_message1)
+        helpdesk_ticket0_id = self.env['mail.thread'].message_process(False, new_message0)
+        helpdesk_ticket1_id = self.env['mail.thread'].message_process(False, new_message1)
         self.env.cr.flush()  # trigger pre-commit
         helpdesk_ticket0 = self.env['helpdesk.ticket'].browse(helpdesk_ticket0_id)
         helpdesk_ticket1 = self.env['helpdesk.ticket'].browse(helpdesk_ticket1_id)
@@ -327,7 +328,7 @@ Content-Transfer-Encoding: quoted-printable
             'company_id': company1.id,
         })
 
-        self.env['mail.alias'].create([
+        _mail_alias_0, mail_alias_1 = self.env['mail.alias'].create([
             {
                 'alias_name': 'helpdesk_team_0',
                 'alias_model_id': ticket_model.id,
@@ -344,12 +345,12 @@ Content-Transfer-Encoding: quoted-printable
             }
         ])
 
-        new_message1 = """MIME-Version: 1.0
+        new_message1 = f"""MIME-Version: 1.0
 Date: Thu, 27 Dec 2018 16:27:45 +0100
 Message-ID: blablabla1
 Subject: helpdesk team 1 in company 1
 From:  B client <client_b@someprovider.com>
-To: helpdesk_team_1@aqualung.com
+To: {mail_alias_1.display_name}
 Content-Type: multipart/alternative; boundary="000000000000a47519057e029630"
 
 --000000000000a47519057e029630

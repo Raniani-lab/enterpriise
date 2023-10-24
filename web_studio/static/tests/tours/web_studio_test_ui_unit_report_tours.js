@@ -625,6 +625,42 @@ registry.category("web_tour.tours").add("web_studio.test_add_field_blank_report"
     ],
 });
 
+registry.category("web_tour.tours").add("web_studio.test_toolbar_appearance", {
+    test: true,
+    sequence: 260,
+    steps: () => [
+        {
+            trigger: ".o-web-studio-report-editor-wysiwyg iframe p[t-field='doc.name']",
+            run() {
+                const anchor = this.$anchor[0];
+                const selection = anchor.ownerDocument.getSelection();
+                const range = new Range();
+                range.selectNode(anchor);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        },
+        {
+            trigger: "#toolbar.oe-floating[style*=visible]",
+            isCheck: true
+        },
+        {
+            trigger: "#bold.btn"
+        },
+        {
+            trigger: "#italic.btn"
+        },
+        {
+            trigger: ".o-web-studio-discard-report"
+        },
+        {
+            trigger: "#toolbar.oe-floating[style*=hidden]",
+            in_modal: false,
+            isCheck: true
+        }
+    ],
+});
+
 registry.category("web_tour.tours").add("web_studio.test_edition_without_lang", {
     test: true,
     sequence: 260,

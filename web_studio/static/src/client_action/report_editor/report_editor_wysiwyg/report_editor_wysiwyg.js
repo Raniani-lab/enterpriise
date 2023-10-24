@@ -392,6 +392,7 @@ export class ReportEditorWysiwyg extends Component {
     }
 
     async discard() {
+        this.wysiwyg.odooEditor.document.getSelection().removeAllRanges();
         await this.wysiwyg.cancel(false);
         await this.reportEditorModel.discardReport();
     }
@@ -532,6 +533,7 @@ export class ReportEditorWysiwyg extends Component {
     }
 
     async resetReport() {
+        this.wysiwyg.odooEditor.document.getSelection().removeAllRanges();
         const state = reactive({ includeHeaderFooter: true });
         this.addDialog(ResetConfirmatiopnPopup, {
             title: _t("Reset report"),

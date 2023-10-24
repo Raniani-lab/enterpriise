@@ -549,6 +549,16 @@ class TestReportEditorUIUnit(HttpCase):
              </t>
         """)
 
+    def test_toolbar_appearance(self):
+        self.main_view_document.arch = """
+            <t t-name="web_studio.test_report_document">
+                <div><p t-field="doc.name" title="Name"/></div>
+                <p><br/></p>
+            </t>
+        """
+
+        self.start_tour(self.tour_url, "web_studio.test_toolbar_appearance", login="admin")
+
     def test_add_field_blank_report(self):
         studio_views = self.env["ir.ui.view"].search([("key", "=ilike", "studio_customization.%")])
         self.start_tour(self.tour_url, "web_studio.test_add_field_blank_report", login="admin")

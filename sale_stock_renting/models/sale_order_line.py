@@ -78,7 +78,7 @@ class RentalOrderLine(models.Model):
 
         When quantity/lots are decreased/removed, we decrease the quantity in the stock moves made by previous corresponding write call.
         """
-        if not any(key in vals for key in ['qty_delivered', 'pickedup_lot_ids', 'qty_returned', 'returned_lot_ids']):
+        if not any(key in vals for key in ['qty_delivered', 'pickedup_lot_ids', 'qty_returned', 'returned_lot_ids']) or self.env.user.has_group('sale_stock_renting.group_rental_stock_picking'):
             # If nothing to catch for rental: usual write behavior
             return super(RentalOrderLine, self).write(vals)
 
@@ -254,15 +254,70 @@ class RentalOrderLine(models.Model):
             if moves and moves.mapped('product_id') != line.product_id:
                 raise ValidationError(_("You cannot change the product of lines linked to stock moves."))
 
-    def _action_launch_stock_rule(self, previous_product_uom_qty=False):
-        """Disable stock moves for rental order lines.
+    def _prepare_procurement_values(self, group_id=False):
+        """ Change the planned and deadline dates of rental delivery pickings. """
+        values = super()._prepare_procurement_values(group_id)
+        if self.is_rental and self.env.user.has_group('sale_stock_renting.group_rental_stock_picking'):
+            values.update({
+                'date_planned': self.order_id.rental_start_date,
+                'date_deadline': self.order_id.rental_start_date,
+            })
+        return values
 
+    def _get_qty_procurement(self, previous_product_uom_qty=False):
+        qty = super()._get_qty_procurement(previous_product_uom_qty)
+        if self.is_rental and self.env.user.has_group('sale_stock_renting.group_rental_stock_picking'):
+            outgoing_moves = self.move_ids.filtered(lambda m: m.location_dest_id == m.company_id.rental_loc_id and m.state != 'cancel' and not m.scrapped and self.product_id == m.product_id)
+            for move in outgoing_moves:
+                qty += move.product_uom._compute_quantity(move.product_qty, self.product_uom, rounding_method='HALF-UP')
+        return qty
+
+    def _create_procurement(self, product_qty, procurement_uom, values):
+        """ Change the destination for rental procurement groups. """
+        if self.is_rental:
+            return self.env['procurement.group'].Procurement(
+                self.product_id, product_qty, procurement_uom, self.order_id.company_id.rental_loc_id,
+                self.product_id.display_name, self.order_id.name, self.order_id.company_id, values)
+        return super()._create_procurement(product_qty, procurement_uom, values)
+
+    def _action_launch_stock_rule(self, previous_product_uom_qty=False):
+        """ If the rental picking setting is deactivated:
+        Disable stock moves for rental order lines.
         Stock moves for rental orders are created on pickup/return.
-        The rental reservations are not propagated in the stock until
-        the effective pickup or returns.
-        """
-        other_lines = self.filtered(lambda sol: not sol.is_rental)
-        super(RentalOrderLine, other_lines)._action_launch_stock_rule(previous_product_uom_qty)
+        The rental reservations are not propagated in the stock
+        until the effective pickup or returns.
+
+        If the rental picking setting is activated:
+        Process all lines at the same time. """
+        if self.env.user.has_group('sale_stock_renting.group_rental_stock_picking'):
+            super()._action_launch_stock_rule(previous_product_uom_qty)
+        else:
+            other_lines = self.filtered(lambda sol: not sol.is_rental)
+            super(RentalOrderLine, other_lines)._action_launch_stock_rule(previous_product_uom_qty)
+
+    def _get_outgoing_incoming_moves(self):
+        outgoing_moves, incoming_moves = super()._get_outgoing_incoming_moves()
+        if self.is_rental and self.env.user.has_group('sale_stock_renting.group_rental_stock_picking'):
+            for move in self.move_ids.filtered(lambda r: r.state != 'cancel' and not r.scrapped and self.product_id == r.product_id):
+                if move.location_dest_id == self.company_id.rental_loc_id:
+                    outgoing_moves |= move
+                elif move.location_id == self.company_id.rental_loc_id:
+                    incoming_moves |= move
+
+        return outgoing_moves, incoming_moves
+
+    def _compute_qty_delivered(self):
+        super()._compute_qty_delivered()
+
+        for line in self:
+            if line.is_rental and self.env.user.has_group('sale_stock_renting.group_rental_stock_picking'):
+                qty = 0.0
+                outgoing_moves, dummy = line._get_outgoing_incoming_moves()
+                for move in outgoing_moves:
+                    if move.state != 'done':
+                        continue
+                    qty += move.product_uom._compute_quantity(move.quantity_done, line.product_uom, rounding_method='HALF-UP')
+                line.qty_delivered = qty
 
     @api.depends('pickedup_lot_ids', 'returned_lot_ids', 'reserved_lot_ids')
     def _compute_unavailable_lots(self):

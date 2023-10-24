@@ -16,6 +16,7 @@
     'depends': ['sale_renting', 'sale_stock'],
 
     'data': [
+        'security/sale_stock_renting_security.xml',
         'data/rental_stock_data.xml',
         'wizard/rental_processing_views.xml',
         'report/rental_schedule_views.xml',

@@ -945,9 +945,10 @@ class AccountMoveLine(models.Model):
         price_subtotal = abs(self[main_currency_field])
         if self.quantity and self.discount != 100.0:
             price_unit = (price_subtotal / abs(self.quantity)) / (1 - self.discount / 100)
+            discount_amount = (price_subtotal / (1 - self.discount / 100)) * self.discount / 100
         else:
             price_unit = self.price_unit
-        discount_amount = (price_subtotal / (1 - self.discount / 100)) * self.discount / 100
+            discount_amount = self.price_unit * self.quantity
         values = {
             'decimal_places': main_currency.decimal_places,
             'price_item': round(price_unit, 6),

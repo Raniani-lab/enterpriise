@@ -8,18 +8,13 @@ patch(Order.prototype, {
     async sendChanges(cancelled) {
         await this.pos.sendDraftToServer();
 
-        try {
-            const lastOrderPreparationChange = await this.env.services.orm.call(
-                "pos_preparation_display.order",
-                "process_order",
-                [this.server_id, cancelled]
-            );
-            if (lastOrderPreparationChange) {
-                this.lastOrderPrepaChange = JSON.parse(lastOrderPreparationChange);
-            }
-        } catch (e) {
-            console.warn(e);
-            return false;
+        const lastOrderPreparationChange = await this.env.services.orm.call(
+            "pos_preparation_display.order",
+            "process_order",
+            [this.server_id, cancelled]
+        );
+        if (lastOrderPreparationChange) {
+            this.lastOrderPrepaChange = JSON.parse(lastOrderPreparationChange);
         }
 
         return true;

@@ -7,6 +7,16 @@ import json
 class PosOrder(models.Model):
     _inherit = 'pos.order'
 
+    def create_from_ui(self, orders, draft=False):
+        orders = super().create_from_ui(orders, draft=draft)
+        order_ids = self.browse([order['id'] for order in orders])
+        for order in order_ids:
+            line_to_send = order._get_orderline_to_send()
+            if order.state == 'paid' and len(line_to_send['preparation_display_order_line_ids']) > 0:
+                self.env['pos_preparation_display.order'].process_order(order.id)
+
+        return orders
+
     def _update_last_order_changes(self):
         changes = json.loads(self.last_order_preparation_change)
         for line in self.lines:

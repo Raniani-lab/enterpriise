@@ -1136,8 +1136,8 @@ class AccountReport(models.Model):
         elif self.filter_multi_company == 'tax_units':
             self._multi_company_tax_units_init_options(options, previous_options=previous_options)
         else:
-            # filter_multi_company == 'disabled'
-            options['companies'] = [{'name': self.env.company.name, 'id': self.env.company.id}]
+            # Multi-company is disabled for this report ; only accept the sub-branches of the current company from the selector
+            options['companies'] = [{'name': company.name, 'id': company.id} for company in self.env.company._accessible_branches()]
 
     def _multi_company_selector_init_options(self, options, previous_options=None):
         """ Initializes the companies option for reports configured to compute it from the company selector.
@@ -1191,12 +1191,21 @@ class AccountReport(models.Model):
             else:
                 options['tax_unit'] = 'company_only'
 
-        # Finally initialize the 'companies' option
+        # Finally initialize multi_company filter
         if options['tax_unit'] == 'company_only':
-            options['companies'] = [{'name': self.env.company.name, 'id': self.env.company.id}]
+            companies = self.env['res.company']
+            current_company_vat_set = {self.env.company.vat} if self.env.company.vat else set()
+            current_company_strict_parents = self.env.company.parent_ids - self.env.company
+            for branch in self.env.company._accessible_branches():
+                if set(filter(None, (branch.parent_ids - current_company_strict_parents).mapped('vat'))) == current_company_vat_set:
+                    # If all the branches between the active company and branch (both included) share the same VAT number as the active company,
+                    # we want to add the branch to the selection.
+                    companies += branch
         else:
             tax_unit = available_tax_units.filtered(lambda x: x.id == options['tax_unit'])
-            options['companies'] = [{'name': company.name, 'id': company.id} for company in tax_unit.company_ids]
+            companies = tax_unit.company_ids
+
+        options['companies'] = [{'name': company.name, 'id': company.id} for company in companies]
 
     ####################################################
     # OPTIONS: MULTI CURRENCY

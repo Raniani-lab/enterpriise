@@ -1115,7 +1115,6 @@ class TestAccountReportsFilters(TestAccountReportsCommon, odoo.tests.HttpCase):
             ],
         )
 
-
     ####################################################
     # User Defined Filters on Journal Items
     ####################################################
@@ -1197,3 +1196,112 @@ class TestAccountReportsFilters(TestAccountReportsCommon, odoo.tests.HttpCase):
         } for i in range(1, 4)]).action_post()
 
         self.start_tour("/web", 'account_reports_hide_0_lines', login=self.env.user.login)
+
+    def test_filter_multi_company(self):
+        def _check_company_filter(allowed_companies, expected_companies, message=None, match_active=True):
+            options = self.single_date_report.with_context(allowed_company_ids=allowed_companies.ids).get_options()
+            computed_company_ids = self.env['account.report'].get_report_company_ids(options)
+            if match_active:
+                # Active company should match
+                self.assertEqual(computed_company_ids[0], expected_companies[0].id, message)
+            # Selected companies should match, whatever their order
+            self.assertEqual(set(computed_company_ids), set(expected_companies.ids), message)
+
+        main_company = self.company_data['company']
+        main_company.vat = '123'
+        branch_1 = self.env['res.company'].create({'name': "Branch 1", 'parent_id': main_company.id, 'vat': '123'})
+        branch_1_1 = self.env['res.company'].create({'name': "Branch 1 sub-branch 1", 'parent_id': branch_1.id})
+        branch_1_2 = self.env['res.company'].create({'name': "Branch 1 sub-branch 2", 'parent_id': branch_1.id, 'vat': '123'})
+        branch_2 = self.env['res.company'].create({'name': "Branch 2", 'parent_id': main_company.id})
+        branch_2_1 = self.env['res.company'].create({'name': "Branch 2 sub-branch 1", 'parent_id': branch_2.id})
+        other_company = self.env['res.company'].create({'name': "Other company"})
+
+        # Test 'disabled' filter, as well as 'tax_units' when no tax unit is defined and VAT is shared (they should behave in the same way)
+        for company_filter in ('disabled', 'tax_units'):
+            self.single_date_report.filter_multi_company = company_filter
+
+            _check_company_filter(
+                main_company + branch_1 + branch_1_1 + branch_1_2 + branch_2 + branch_2_1 + other_company,
+                main_company + branch_1 + branch_1_1 + branch_1_2 + branch_2 + branch_2_1,
+                "The main company and all of its sub-branches should be selected",
+            )
+            _check_company_filter(
+                branch_1 + main_company + branch_1_1 + branch_1_2 + branch_2 + branch_2_1 + other_company,
+                branch_1 + branch_1_1 + branch_1_2,
+                "When the active company is a branch of another active company, it should only be selected with its sub-branches.",
+            )
+            _check_company_filter(
+                main_company + branch_1 + branch_1_2 + branch_2_1 + other_company,
+                main_company + branch_1 + branch_1_2 + branch_2_1,
+                "Choosing a subset of branches in the company selector should keep that selection in the report.",
+            )
+
+        # Test 'selector' filter
+        self.single_date_report.filter_multi_company = 'selector'
+
+        _check_company_filter(
+            branch_1,
+            branch_1,
+        )
+        _check_company_filter(
+            main_company + branch_1 + branch_1_1 + branch_1_2 + branch_2 + branch_2_1 + other_company,
+            main_company + branch_1 + branch_1_1 + branch_1_2 + branch_2 + branch_2_1 + other_company,
+        )
+        _check_company_filter(
+            branch_1 + main_company + branch_1_1 + branch_1_2 + branch_2 + branch_2_1 + other_company,
+            branch_1 + main_company + branch_1_1 + branch_1_2 + branch_2 + branch_2_1 + other_company,
+        )
+        _check_company_filter(
+            main_company + branch_1_1 + branch_1_2 + branch_2 + other_company,
+            main_company + branch_1_1 + branch_1_2 + branch_2 + other_company,
+        )
+
+        # Test 'tax_units' filter, with no tax unit, and non-shared VAT numbers
+        self.single_date_report.filter_multi_company = 'tax_units'
+        branch_1_1.vat = '456'
+        branch_2.vat = '789'
+
+        _check_company_filter(
+            main_company + branch_1_1 + branch_1_2 + branch_2 + branch_2_1 + other_company,
+            main_company + branch_1_2,
+            "Only the current company and its sub-branches sharing its vat number should be selected.",
+        )
+
+        _check_company_filter(
+            branch_2 + main_company + branch_1_1 + branch_1_2  + branch_2_1 + other_company,
+            branch_2 + branch_2_1,
+            "Only the current company and its sub-branches sharing its vat number should be selected.",
+        )
+
+        # Test 'tax_units' filter, with an existing tax unit object
+        self.single_date_report.availability_condition = 'country'
+        self.single_date_report.country_id = self.env.ref('base.be')
+
+        tax_unit = self.env['account.tax.unit'].create({
+            'name': "Test Tax Unit",
+            'country_id': self.single_date_report.country_id.id,
+            'vat': 'BE0477472701',
+            'company_ids': (main_company + branch_1_1 + branch_1_2 + branch_2 + other_company).ids,
+            'main_company_id': main_company.id,
+        })
+
+        _check_company_filter(
+            other_company + main_company + branch_1_1 + branch_1_2 + branch_2,
+            other_company + main_company + branch_1_1 + branch_1_2 + branch_2,
+            "Opening the report with a company selector matching the content of the tax unit should select this tax unit, keeping the companies.",
+            match_active=False,
+        )
+
+        _check_company_filter(
+            tax_unit.company_ids + branch_2_1,
+            main_company + branch_1_2,
+            "Opening the report with a company selector matching more than the content of the tax unit should not select the tax unit, "
+            "but take the accessible branches with the same VAT number as the active company.",
+        )
+
+        _check_company_filter(
+            main_company + branch_1_1 + branch_1_2 + branch_2,
+            main_company + branch_1_2,
+            "Opening the report with a company selector matching less than the content of the tax unit should select the active sub-branches "
+            "with the same VAT as the active company.",
+        )

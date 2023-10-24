@@ -110,7 +110,8 @@ class ResCompany(models.Model):
         activity_deadline = period_end + relativedelta(days=self.account_tax_periodicity_reminder_day)
 
         # Search for an existing tax closing move
-        tax_closing_activity_type_id = self.env['ir.model.data']._xmlid_to_res_id('account_reports.tax_closing_activity_type')
+        tax_closing_activity_type = self.env.ref('account_reports.tax_closing_activity_type', raise_if_not_found=False)
+        tax_closing_activity_type_id = tax_closing_activity_type.id if tax_closing_activity_type else False
 
         all_closing_moves = self.env['account.move']
         for fpos in itertools.chain(fiscal_positions, [None] if include_domestic else []):
@@ -160,9 +161,15 @@ class ResCompany(models.Model):
                 # Create a new, empty, tax closing move
                 tax_closing_move = self.env['account.move'].create(closing_vals)
 
-                advisor_user = self.env['res.users'].search(
-                    [('company_ids', 'in', self.ids), ('groups_id', 'in', self.env.ref('account.group_account_manager').ids)],
-                    limit=1, order="id ASC")
+                group_account_manager = self.env.ref('account.group_account_manager')
+                advisor_user = tax_closing_activity_type.default_user_id if tax_closing_activity_type else self.env['res.users']
+                if advisor_user and not (self in advisor_user.company_ids and group_account_manager in advisor_user.groups_id):
+                    advisor_user = self.env['res.users']
+
+                if not advisor_user:
+                    advisor_user = self.env['res.users'].search(
+                        [('company_ids', 'in', self.ids), ('groups_id', 'in', group_account_manager.ids)],
+                        limit=1, order="id ASC")
 
                 self.env['mail.activity'].with_context(mail_activity_quick_update=True).create({
                     'res_id': tax_closing_move.id,

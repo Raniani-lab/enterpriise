@@ -12,7 +12,11 @@
                 </div>
                 <div class="row ml32" invisible="rule_type not in ('sale', 'purchase', 'sale_purchase')">
                     <field name="auto_validation" class="col-1 col-lg-1"/>
-                    <label for="auto_validation" class="o_light_label"/>
+                    <label for="auto_validation" class="col o_light_label"/>
+                </div>
+                <div class="row ml32" invisible="rule_type not in ('sale', 'sale_purchase')">
+                    <field name="copy_lots_delivery" class="col-1 col-lg-1"/>
+                    <label for="copy_lots_delivery" class="col o_light_label"/>
                 </div>
             </xpath>
         </field>

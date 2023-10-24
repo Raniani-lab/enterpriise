@@ -18,7 +18,7 @@ export class BankRecBatchPaymentsRenderer extends ListRenderer {
         const classes = super.getRowClass(record);
         const batchId = this.globalState.bankRecRecordData.selected_batch_payment_ids.currentIds.find((x) => x === record.resId);
         if (batchId){
-            return `${classes} o_rec_widget_list_selected_item`;
+            return `${classes} o_rec_widget_list_selected_item table-info`;
         }
         return classes;
     }

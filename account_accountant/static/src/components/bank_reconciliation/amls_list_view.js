@@ -18,7 +18,7 @@ export class BankRecAmlsRenderer extends ListRenderer {
         const classes = super.getRowClass(record);
         const amlId = this.globalState.bankRecRecordData.selected_aml_ids.currentIds.find((x) => x === record.resId);
         if (amlId){
-            return `${classes} o_rec_widget_list_selected_item`;
+            return `${classes} o_rec_widget_list_selected_item table-info`;
         }
         return classes;
     }

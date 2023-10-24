@@ -53,7 +53,6 @@
            }
 
             &.o_bank_rec_selected_st_line .o_bank_rec_st_line_kanban_card{
-                @extend .table-info;
                 background-color: var(--table-bg);
             }
 
@@ -192,10 +191,6 @@
     th{
         border-top: none;
     }
-}
-
-.o_rec_widget_list_selected_item{
-    @extend .table-info;
 }
 
 .o_bank_rec_model_button{

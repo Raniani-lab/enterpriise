@@ -52,7 +52,7 @@ export class BankRecKanbanRecord extends KanbanRecord {
     getRecordClasses() {
         let classes = `${super.getRecordClasses()} w-100 o_bank_rec_st_line`;
         if (this.props.record.resId === this.state.bankRecStLineId) {
-            classes = `${classes} o_bank_rec_selected_st_line`;
+            classes = `${classes} o_bank_rec_selected_st_line table-info`;
         }
         return classes;
     }

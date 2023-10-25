@@ -15,7 +15,9 @@ import { usePopover } from "@web/core/popover/popover_hook";
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 import { sortBy } from "@web/core/utils/arrays";
 import { useOwnedDialogs, useService } from "@web/core/utils/hooks";
+import { SelectMenu } from '@web/core/select_menu/select_menu';
 import { QWebPlugin } from "@web_editor/js/backend/QWebPlugin";
+import { setSelection, startPos, endPos } from "@web_editor/js/editor/odoo-editor/src/utils/utils";
 
 import { StudioDynamicPlaceholderPopover } from "./studio_dynamic_placeholder_popover";
 import { Many2ManyTagsField } from "@web/views/fields/many2many_tags/many2many_tags_field";
@@ -66,7 +68,7 @@ function getOrderedTAs(node) {
 }
 
 class FieldDynamicPlaceholder extends Component {
-    static components = { StudioDynamicPlaceholderPopover };
+    static components = { StudioDynamicPlaceholderPopover, SelectMenu };
     static template = "web_studio.FieldDynamicPlaceholder";
     static props = {
         resModel: String,
@@ -75,11 +77,12 @@ class FieldDynamicPlaceholder extends Component {
         validate: Function,
         isEditingFooterHeader: Boolean,
         initialQwebVar: { optional: true, type: String },
+        showOnlyX2ManyFields: Boolean,
     };
 
     static defaultProps = {
         initialQwebVar: "",
-     };
+    };
 
     setup() {
         this.state = useState({ currentVar: this.getDefaultVariable() });
@@ -113,7 +116,15 @@ class FieldDynamicPlaceholder extends Component {
             }
             return score;
         };
-        return Object.fromEntries(sortBy(entries, sortFn, "desc"));
+
+        const mapFn = ([k, v]) => {
+            return {
+                value: k,
+                label: `${k} (${v.name})`,
+                model: v.model,
+            }
+        }
+        return sortBy(entries, sortFn, "desc").map(e => mapFn(e));
     }
 
     validate(...args) {
@@ -131,12 +142,12 @@ class FieldDynamicPlaceholder extends Component {
             );
             return companyVar && companyVar[0];
         }
-        const entries = Object.entries(this.sortedVariables);
-        let defaultVar = entries.find(([ctxVar]) => {
-            return ["doc", "o"].includes(ctxVar);
+
+        let defaultVar = this.sortedVariables.find((v) => {
+            return ["doc", "o"].includes(v.value);
         });
-        defaultVar = defaultVar || entries.find(([_, val]) => val.model === this.props.resModel);
-        return defaultVar && defaultVar[0];
+        defaultVar = defaultVar || this.sortedVariables.find((v) => v.model === this.props.resModel);
+        return defaultVar && defaultVar.value;
     }
 }
 
@@ -280,7 +291,7 @@ export class ReportEditorWysiwyg extends Component {
                 undoRedoState.canUndo = odooEditor.historyCanUndo();
                 undoRedoState.canRedo = odooEditor.historyCanRedo();
                 this.reportEditorModel.isDirty = this.undoRedoState.canUndo;
-            })
+            });
 
             const observe = () => {
                 this.observer.observe(wysiwyg.$editable[0], {
@@ -470,58 +481,139 @@ export class ReportEditorWysiwyg extends Component {
     }
 
     getPowerboxCommands() {
-        const commandAddField = {
-            category: _t("Report Tools"),
-            name: _t("Field"),
-            priority: 150,
-            description: _t("Insert a field"),
-            fontawesome: "fa-magic",
-            callback: async () => {
-                const odooEditor = this.wysiwyg.odooEditor;
-                const doc = odooEditor.document;
+        return [
+            {
+                category: _t("Report Tools"),
+                name: _t("Field"),
+                priority: 150,
+                description: _t("Insert a field"),
+                fontawesome: "fa-magic",
+                callback: () => this.insertField(),
+            },
+            {
+                category: _t("Report Tools"),
+                name: _t("Dynamic Table"),
+                priority: 140,
+                description: _t("Insert a table based on a relational field."),
+                fontawesome: "fa-magic",
+                callback: () => this.insertTableX2Many(),
+            },
+        ];
+    }
 
-                const resModel = this.reportEditorModel.reportResModel;
-                const docSelection = doc.getSelection();
-                const { anchorNode } = docSelection;
-                const isEditingFooterHeader =
-                    !!(doc.querySelector(".header") &&
-                        doc.querySelector(".header").contains(anchorNode)) ||
-                    !!(doc.querySelector(".footer") &&
-                        doc.querySelector(".footer").contains(anchorNode));
+    getFieldPopoverParams() {
+        const odooEditor = this.wysiwyg.odooEditor;
+        const doc = odooEditor.document;
 
-                const popoverAnchor =
-                    anchorNode.nodeType === 1 ? anchorNode : anchorNode.parentElement;
+        const resModel = this.reportEditorModel.reportResModel;
+        const docSelection = doc.getSelection();
+        const { anchorNode } = docSelection;
+        const isEditingFooterHeader =
+            !!(doc.querySelector(".header") && doc.querySelector(".header").contains(anchorNode)) ||
+            !!(doc.querySelector(".footer") && doc.querySelector(".footer").contains(anchorNode));
 
-                const nodeOeContext = popoverAnchor.closest("[oe-context]");
-                const availableQwebVariables =
-                    nodeOeContext && JSON.parse(nodeOeContext.getAttribute("oe-context"));
+        const popoverAnchor = anchorNode.nodeType === 1 ? anchorNode : anchorNode.parentElement;
 
-                await this.fieldPopover.open(popoverAnchor, {
-                    availableQwebVariables,
-                    isEditingFooterHeader,
-                    initialQwebVar: getOrderedTAs(popoverAnchor)[0] || "",
-                    resModel,
-                    validate: (qwebVar, fieldNameChain, defaultValue = "", is_image) => {
-                        this.wysiwyg.focus();
+        const nodeOeContext = popoverAnchor.closest("[oe-context]");
+        const availableQwebVariables =
+            nodeOeContext && JSON.parse(nodeOeContext.getAttribute("oe-context"));
 
-                        const span = doc.createElement("span");
-                        span.textContent = defaultValue;
-                        span.setAttribute("t-field", `${qwebVar}.${fieldNameChain}`);
-
-                        if (odoo.debug) {
-                            span.setAttribute("title", `${qwebVar}.${fieldNameChain}`);
-                        }
-
-                        if (is_image) {
-                            span.setAttribute("t-options-widget", "'image'");
-                            span.setAttribute("t-options-qweb_img_raw_data", 1);
-                        }
-                        odooEditor.execCommand("insert", span);
-                    },
-                });
+        return {
+            popoverAnchor,
+            props: {
+                availableQwebVariables,
+                initialQwebVar: getOrderedTAs(popoverAnchor)[0] || "",
+                isEditingFooterHeader,
+                resModel,
             },
         };
-        return [commandAddField];
+    }
+
+    async insertTableX2Many() {
+        const { popoverAnchor, props } = this.getFieldPopoverParams();
+        await this.fieldPopover.open(popoverAnchor, {
+            ...props,
+            showOnlyX2ManyFields: true,
+            validate: (
+                qwebVar,
+                fieldNameChain,
+                defaultValue = "",
+                is_image,
+                relation,
+                relationName
+            ) => {
+                this.wysiwyg.focus();
+                const doc = this.wysiwyg.odooEditor.document;
+
+                const table = doc.createElement("table");
+                table.classList.add("table", "table-sm");
+
+                const tBody = table.createTBody();
+
+                const topRow = tBody.insertRow();
+                topRow.classList.add(
+                    "border-bottom",
+                    "border-top-0",
+                    "border-start-0",
+                    "border-end-0",
+                    "border-2",
+                    "border-dark",
+                    "fw-bold"
+                );
+                const topTd = doc.createElement("td");
+                topTd.appendChild(doc.createTextNode(defaultValue || "Column name"));
+                topRow.appendChild(topTd);
+
+                const tr = doc.createElement("tr");
+                tr.setAttribute("t-foreach", `${qwebVar}.${fieldNameChain}`);
+                tr.setAttribute("t-as", "x2many_record");
+                tr.setAttribute(
+                    "oe-context",
+                    JSON.stringify({
+                        x2many_record: {
+                            model: relation,
+                            in_foreach: true,
+                            name: relationName,
+                        },
+                        ...props.availableQwebVariables
+                    })
+                );
+                tBody.appendChild(tr);
+
+                const td = doc.createElement("td");
+                td.textContent = _t("Insert a field...");
+                tr.appendChild(td);
+
+                this.wysiwyg.odooEditor.execCommand("insert", table);
+                this.iframeRef.el.focus();
+                setSelection(...startPos(td), ...endPos(td), true);
+            },
+        });
+    }
+
+    async insertField() {
+        const { popoverAnchor, props } = this.getFieldPopoverParams();
+        await this.fieldPopover.open(popoverAnchor, {
+            ...props,
+            showOnlyX2ManyFields: false,
+            validate: (qwebVar, fieldNameChain, defaultValue = "", is_image) => {
+                this.wysiwyg.focus();
+                const doc = this.wysiwyg.odooEditor.document;
+                const span = doc.createElement("span");
+                span.textContent = defaultValue;
+                span.setAttribute("t-field", `${qwebVar}.${fieldNameChain}`);
+
+                if (odoo.debug) {
+                    span.setAttribute("title", `${qwebVar}.${fieldNameChain}`);
+                }
+
+                if (is_image) {
+                    span.setAttribute("t-options-widget", "'image'");
+                    span.setAttribute("t-options-qweb_img_raw_data", 1);
+                }
+                this.wysiwyg.odooEditor.execCommand("insert", span);
+            },
+        });
     }
 
     async printPreview() {

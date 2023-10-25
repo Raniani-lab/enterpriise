@@ -68,18 +68,17 @@
 
 <t t-name="web_studio.FieldDynamicPlaceholder">
   <div class="o-web-studio-field-dynamic-placeholder">
-    <div class="m-3" style="max-width: 240px;" t-if="Object.keys(sortedVariables).length > 1">
-      <h6 class="d-inline">Select the report's variable for the field:</h6>
-      <span class="ms-1">('doc' or 'o' are recommended)</span>
-      <div class="d-flex flex-row gap-2 flex-wrap mt-2 o-web-studio-report-field-qweb-selector">
-        <div t-foreach="sortedVariables" t-as="qwebVar" t-key="qwebVar" t-att-selected="qwebVar === state.currentVar" class="border border-primary border-1 rounded-pill px-2 cursor-pointer" t-on-click="() => state.currentVar = qwebVar" t-att-data-tooltip="qwebVar_value.model">
-          <span>
-            <t t-esc="qwebVar" /> (<t t-esc="qwebVar_value.name" />)
-          </span>
-        </div>
-      </div>
+    <div class="px-1 pt-3 bg-secondary" t-if="Object.keys(sortedVariables).length > 1">
+      <label class="text-small text-bold mb-2"  for="o_studio_report_field_model">Current model:</label>
+      <SelectMenu
+        choices="sortedVariables"
+        value="state.currentVar"
+        onSelect="(value) => state.currentVar = value"
+        required="true"
+        searchable="false"
+      />
     </div>
-    <StudioDynamicPlaceholderPopover resModel="currentResModel" validate.bind="validate" close="props.close" t-key="currentResModel"/>
+    <StudioDynamicPlaceholderPopover showOnlyX2ManyFields="props.showOnlyX2ManyFields" resModel="currentResModel" validate.bind="validate" close="props.close" t-key="currentResModel"/>
   </div>
 </t>
 

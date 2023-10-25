@@ -880,6 +880,104 @@ registry.category("web_tour.tours").add("web_studio.test_report_edition_binary_f
     ],
 });
 
+registry.category("web_tour.tours").add("web_studio.test_report_edition_dynamic_table", {
+    test: true,
+    sequence: 260,
+    steps: () => [
+        {
+            trigger: ".o-web-studio-report-editor-wysiwyg iframe p:eq(2)",
+            async run(helpers) {
+                const el = this.$anchor[0];
+                openEditorPowerBox(el);
+            },
+        },
+        {
+            trigger:
+                ".oe-powerbox-wrapper .oe-powerbox-commandDescription:contains(Insert a table based on a relational field)",
+        },
+        {
+            trigger:
+                ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover_search input",
+            run: "text Activities",
+        },
+        {
+            trigger: "[data-name=activity_ids] > button.o_model_field_selector_popover_item_name",
+        },
+        {
+            trigger:
+                ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_default_value_input input",
+            run: "text First Column",
+        },
+        {
+            trigger: ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover",
+            run() {
+                this.$anchor[0].dispatchEvent(
+                    new KeyboardEvent("keydown", { key: "Enter", bubbles: true })
+                );
+            },
+        },
+        {
+            trigger:
+                ".o-web-studio-report-editor-wysiwyg iframe table tr td:contains(First Column)",
+            isCheck: true,
+        },
+        {
+            trigger: ".o-web-studio-report-editor-wysiwyg iframe table tr[t-foreach]",
+            run() {
+                const el = this.$anchor[0];
+                const context = JSON.parse(el.getAttribute("oe-context"));
+                assertEqual(context.x2many_record.model, "mail.activity");
+            },
+        },
+        {
+            trigger:
+                ".o-web-studio-report-editor-wysiwyg iframe table tr td:contains(Insert a field...)",
+            run() {
+                const el = this.$anchor[0];
+                openEditorPowerBox(el);
+            },
+        },
+        {
+            trigger:
+                ".oe-powerbox-wrapper .oe-powerbox-commandDescription:contains(Insert a field)",
+        },
+        {
+            trigger:
+                ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover_search input",
+            run: "text Summary",
+        },
+        {
+            trigger:
+                ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover_item_name:contains(Summary)",
+        },
+        {
+            trigger:
+                ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_default_value_input input",
+            run: "text Some Summary",
+        },
+        {
+            trigger: ".o-web-studio-field-dynamic-placeholder .o_model_field_selector_popover",
+            run() {
+                this.$anchor[0].dispatchEvent(
+                    new KeyboardEvent("keydown", { key: "Enter", bubbles: true })
+                );
+            },
+        },
+        {
+            trigger:
+                ".o-web-studio-report-editor-wysiwyg iframe table td span[t-field='x2many_record.summary']",
+            isCheck: true,
+        },
+        {
+            trigger: ".o-web-studio-save-report.btn-primary",
+        },
+        {
+            trigger: ".o-web-studio-save-report:not(.btn-primary)",
+            isCheck: true,
+        },
+    ],
+});
+
 registry.category("web_tour.tours").add("web_studio.test_saving_xml_editor_reload", {
     test: true,
     sequence: 260,

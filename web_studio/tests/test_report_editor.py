@@ -701,6 +701,33 @@ class TestReportEditorUIUnit(HttpCase):
             </t>
         """)
 
+    def test_report_edition_dynamic_table(self):
+        self.start_tour(self.tour_url, "web_studio.test_report_edition_dynamic_table", login="admin")
+
+        self.assertXMLEqual(self.main_view_document.arch, """
+            <t t-name="web_studio.test_report_document" class="">
+                <div>
+                    <p t-field="doc.name"/>
+                </div>
+                <table class="table table-sm">
+                    <tbody>
+                        <tr class="border-bottom border-top-0 border-start-0 border-end-0 border-2 border-dark fw-bold">
+                            <td>First Column</td>
+                        </tr>
+                        <tr t-foreach="doc.activity_ids" t-as="x2many_record">
+                           <td>
+                               <span t-field="x2many_record.summary">Some Summary</span>
+                             <br/>
+                           </td>
+                        </tr>
+                    </tbody>
+                  </table>
+                  <p>
+                    <br/>
+                  </p>
+            </t>
+        """)
+
     def test_saving_xml_editor_reload(self):
         self.start_tour(self.tour_url, "web_studio.test_saving_xml_editor_reload", login="admin")
 

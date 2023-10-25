@@ -80,16 +80,6 @@
                             Please, select another date.
                         </p>
                     </div>
-                    <div t-if="state == 'failed-partner'" class="alert alert-danger mt16" role="alert">
-                        <p>
-                            <strong>Appointment failed!</strong>
-                            The selected timeslot is not available.
-                            It appears you already have another meeting with us at that date.
-                        </p>
-                        <p class="mb-0">
-                            Please, select another date.
-                        </p>
-                    </div>
                     <div t-if="state == 'cancel'" class="alert alert-danger mt16" role="alert">
                         <p class="mb-0">
                             <strong>Appointment canceled!</strong>

@@ -182,7 +182,6 @@ class AppointmentController(http.Controller):
         :param state: the type of message that will be displayed in case of an error/info. Possible values:
             - cancel: Info message to confirm that an appointment has been canceled
             - failed-staff-user: Error message displayed when the slot has been taken while doing the registration
-            - failed-partner: Info message displayed when the partner has already an event in the time slot selected
         :param staff_user_id: id of the selected user, from upstream or coming back from an error.
         :param resource_selected_id: id of the selected resource, from upstream or coming back from an error.
         """
@@ -611,14 +610,10 @@ class AppointmentController(http.Controller):
         guests = None
         if appointment_type.allow_guests:
             if guest_emails_str:
-                guests, unavailable = request.env['calendar.event'].sudo()._find_or_create_partners_with_availability(guest_emails_str, (date_start, date_end))
-                if unavailable:
-                    return request.redirect('/appointment/%s?%s' % (appointment_type.id, keep_query('*', state='failed-partner')))
+                guests = request.env['calendar.event'].sudo()._find_or_create_partners(guest_emails_str)
 
         customer = self._get_customer_partner() or request.env['res.partner'].sudo().search([('email', '=like', email)], limit=1)
         if customer:
-            if not customer.calendar_verify_availability(date_start, date_end):
-                return request.redirect('/appointment/%s?%s' % (appointment_type.id, keep_query('*', state='failed-partner')))
             if not customer.mobile:
                 customer.write({'mobile': phone})
             if not customer.email:

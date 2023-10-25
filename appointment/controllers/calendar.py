@@ -120,18 +120,11 @@ class AppointmentCalendarController(CalendarController):
             raise BadRequest()
         if not emails_str:
             return []
-        guests, unavailable_guests = event_sudo.sudo()._find_or_create_partners_with_availability(
-            emails_str, (event_sudo.start, event_sudo.stop)
-        )
-        if not unavailable_guests and guests:
+        guests = event_sudo.sudo()._find_or_create_partners(emails_str)
+        if guests:
             event_sudo.write({
                 'partner_ids': [(4, pid.id, False) for pid in guests]
             })
-        else:
-            guest_names = [guest.name for guest in unavailable_guests]
-            # returning the names of all the unavailable guests
-            return guest_names
-        return []
 
     @route(['/calendar/cancel/<string:access_token>',
             '/calendar/<string:access_token>/cancel',

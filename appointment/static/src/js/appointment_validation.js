@@ -31,14 +31,7 @@ publicWidget.registry.appointmentValidation = publicWidget.Widget.extend({
             jsonrpc(`/calendar/${accessToken}/add_attendees_from_emails`, {
                 access_token: accessToken,
                 emails_str: guestEmails,
-            }).then((result) => {
-                if (result.length) {
-                    const errorMsg = result.length > 1 ? _t("%s are unavailable", result) : _t("%s is unavailable", result);
-                    this._showErrorMsg(errorMsg);
-                } else {
-                    location.reload();
-                }
-            });
+            }).then(() => location.reload());
         }
     },
 

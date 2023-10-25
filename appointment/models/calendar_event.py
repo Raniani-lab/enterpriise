@@ -220,48 +220,35 @@ class CalendarEvent(models.Model):
             else:
                 self.message_post(body=message_body, message_type='notification', author_id=partner_ids[0])
 
-    def _find_or_create_partners_with_availability(self, guest_emails_str, slot_datetimes):
-        """Use to find the partners based on emails from in input string and creates
-        partners if not found. Availability of existing partners is checked based on given
-        slot boundaries.
+    def _find_or_create_partners(self, guest_emails_str):
+        """Used to find the partners from the emails strings and creates partners if not found.
         :param str guest_emails: optional line-separated guest emails. It will
           fetch or create partners to add them as event attendees;
-        :param tuple slot_datetimes: (begin_datetime, end_datetime) of the
-            appointment slot; The timezone of slot_datetimes is UTC
-        :return tuple: available partners, unavailable partners (recordsets)"""
+        :return tuple: partners (recordset)"""
         # Split and normalize guest emails
         name_emails = email_split_tuples(guest_emails_str)
         emails_normalized = [email_normalize(email, strict=False) for _, email in name_emails]
         valid_normalized = set(filter(None, emails_normalized))  # uniquify, valid only
-        available = self.env['res.partner']
-        unavailable = self.env['res.partner']
+        partners = self.env['res.partner']
         if not valid_normalized:
-            return (available, unavailable)
+            return partners
         # Find existing partners
-        existing = self.env['mail.thread']._mail_find_partner_from_emails(list(valid_normalized))
-        existing = self.env['res.partner'].concat(*existing)
-        remaining_emails = valid_normalized - set(existing.mapped('email_normalized'))
-        # Verify availability for existing partners and categorize them
-        begin_datetime, end_datetime = slot_datetimes
-        for partner in existing:
-            if partner.calendar_verify_availability(begin_datetime, end_datetime):
-                available += partner
-            else:
-                unavailable += partner
+        partners = self.env['mail.thread']._mail_find_partner_from_emails(list(valid_normalized))
+        partners = self.env['res.partner'].concat(*partners)
+        remaining_emails = valid_normalized - set(partners.mapped('email_normalized'))
         # limit public usage of guests
         if self.env.su and len(remaining_emails) > 10:
             raise ValueError(
                 _('Guest usage is limited to 10 customers for performance reason.')
             )
-        # if partners are available then we create the new partners from the emails
-        if not unavailable and remaining_emails:
+        if remaining_emails:
             partner_values = [
                 {'email': email, 'name': name if name else email}
                 for name, email in name_emails
                 if email in remaining_emails
             ]
-            available += self.env['res.partner'].create(partner_values)
-        return (available, unavailable)
+            partners += self.env['res.partner'].create(partner_values)
+        return partners
 
     def _get_mail_tz(self):
         self.ensure_one()

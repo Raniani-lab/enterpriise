@@ -1193,14 +1193,7 @@ class AccountReport(models.Model):
 
         # Finally initialize multi_company filter
         if options['tax_unit'] == 'company_only':
-            companies = self.env['res.company']
-            current_company_vat_set = {self.env.company.vat} if self.env.company.vat else set()
-            current_company_strict_parents = self.env.company.parent_ids - self.env.company
-            for branch in self.env.company._accessible_branches():
-                if set(filter(None, (branch.parent_ids - current_company_strict_parents).mapped('vat'))) == current_company_vat_set:
-                    # If all the branches between the active company and branch (both included) share the same VAT number as the active company,
-                    # we want to add the branch to the selection.
-                    companies += branch
+            companies = self.env.company._get_branches_with_same_vat(accessible_only=True)
         else:
             tax_unit = available_tax_units.filtered(lambda x: x.id == options['tax_unit'])
             companies = tax_unit.company_ids
@@ -3525,8 +3518,13 @@ class AccountReport(models.Model):
             tax_unit = self.env['account.tax.unit'].browse(options['tax_unit'])
             return tax_unit.main_company_id
 
-        options_main_company = self.env['res.company'].browse(self.get_report_company_ids(options)[0])
-        if options_main_company.root_id._all_branches_selected():
+        report_companies = self.env['res.company'].browse(self.get_report_company_ids(options))
+        options_main_company = report_companies[0]
+
+        if options.get('tax_unit') is not None and options_main_company._get_branches_with_same_vat() == report_companies:
+            # The line with the smallest number of parents in the VAT sub-hierarchy is assumed to be the root
+            return report_companies.sorted(lambda x: len(x.parent_ids))[0]
+        elif options_main_company._all_branches_selected():
             return options_main_company.root_id
 
         return options_main_company
@@ -5662,6 +5660,18 @@ class AccountReportCustomHandler(models.AbstractModel):
         },
         """
         return {}
+
+    def _enable_export_buttons_for_common_vat_groups_in_branches(self, options):
+        """ Helper function to be called in _custom_options_initializer to change the behavior of the report so that the export
+        buttons are all forced to 'branch_allowed' in case the currently selected company branches all share the same VAT number, and
+        no unselected sub-branch of the active company has the same VAT number. Companies without explicit VAT number (empty vat field)
+        will be considered as having the same VAT number as their closest parent with a non-empty VAT.
+        """
+        report_accepted_company_ids = set(self.env['account.report'].get_report_company_ids(options))
+        same_vat_branch_ids = set(self.env.company._get_branches_with_same_vat().ids)
+        if report_accepted_company_ids == same_vat_branch_ids:
+            for button in options['buttons']:
+                button['branch_allowed'] = True
 
 
 class AccountReportFileDownloadException(Exception):

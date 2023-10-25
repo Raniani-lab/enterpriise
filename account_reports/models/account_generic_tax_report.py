@@ -36,6 +36,8 @@ class AccountTaxReportHandler(models.AbstractModel):
 
             options['contains_archived_tag'] = bool(self._cr.fetchone())
 
+        self._enable_export_buttons_for_common_vat_groups_in_branches(options)
+
     # -------------------------------------------------------------------------
     # TAX CLOSING
     # -------------------------------------------------------------------------

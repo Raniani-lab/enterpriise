@@ -56,6 +56,8 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
             'file_export_type': _('XML')
         }]
 
+        self._enable_export_buttons_for_common_vat_groups_in_branches(options)
+
     def _report_custom_engine_partner_vat_listing(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None, warnings=None):
         def build_result_dict(query_res_lines, partners_vat_map):
             rslt = {

@@ -1305,3 +1305,21 @@ class TestAccountReportsFilters(TestAccountReportsCommon, odoo.tests.HttpCase):
             "Opening the report with a company selector matching less than the content of the tax unit should select the active sub-branches "
             "with the same VAT as the active company.",
         )
+
+        # Test 'tax_units' filter, with no tax unit, and no VAT number on branches (only one on main company)
+        branch_1.vat = None
+        branch_1_1.vat = None
+        branch_1_2.vat = None
+        branch_2.vat = None
+
+        _check_company_filter(
+            branch_2 + branch_2_1,
+            branch_2 + branch_2_1,
+            "When no VAT exists in the hierarchy; all companies should be considered as sharing the same VAT, and active companies should be kept.",
+        )
+
+        _check_company_filter(
+            branch_2_1 + branch_2,
+            branch_2_1 + branch_2,
+            "When no VAT exists in the hierarchy; all companies should be considered as sharing the same VAT, and active companies should be kept.",
+        )

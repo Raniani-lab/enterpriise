@@ -457,6 +457,33 @@ class TestTaxReport(TestAccountReportsCommon):
                 ],
             })
 
+    def test_vat_closing_button_availability(self):
+        def assertTaxClosingAvailable(is_enabled, active_companies, export_main_company=None):
+            options = tax_report.with_context(allowed_company_ids=active_companies.ids).get_options()
+            closing_button_dict = next(filter(lambda x: x['action'] == 'action_periodic_vat_entries', options['buttons']))
+            self.assertEqual(closing_button_dict.get('disabled', False), not is_enabled)
+            if is_enabled:
+                self.assertEqual(tax_report._get_sender_company_for_export(options), export_main_company)
+
+        tax_report = self.env.ref('account.generic_tax_report')
+
+        main_company = self.company_data['company']
+        main_company.vat = '123'
+        branch_1 = self.env['res.company'].create({'name': "Branch 1", 'parent_id': main_company.id})
+        branch_1_1 = self.env['res.company'].create({'name': "Branch 1 sub-branch 1", 'parent_id': branch_1.id})
+        branch_2 = self.env['res.company'].create({'name': "Branch 2", 'parent_id': main_company.id, 'vat': '456'})
+        branch_2_1 = self.env['res.company'].create({'name': "Branch 2 sub-branch 1", 'parent_id': branch_2.id})
+
+        assertTaxClosingAvailable(False, main_company)
+        assertTaxClosingAvailable(True, main_company + branch_1 + branch_1_1 + branch_2 + branch_2_1, export_main_company=main_company)
+        assertTaxClosingAvailable(True, branch_2 + branch_2_1 + main_company + branch_1 + branch_1_1, export_main_company=branch_2)
+        assertTaxClosingAvailable(True, main_company + branch_1 + branch_1_1, export_main_company=main_company)
+        assertTaxClosingAvailable(False, main_company + branch_1)
+        assertTaxClosingAvailable(False, branch_1 + branch_1_1)
+        assertTaxClosingAvailable(True, branch_1 + main_company + branch_1_1, export_main_company=main_company)
+        assertTaxClosingAvailable(True, branch_2 + main_company + branch_2_1, export_main_company=branch_2)
+        assertTaxClosingAvailable(False, branch_2_1)
+
     def test_tax_report_fpos_domestic(self):
         """ Test tax report's content for 'domestic' foreign VAT fiscal position option.
         """

@@ -13,7 +13,6 @@
 
         'data/ir_cron.xml',
         'data/mail_template_data.xml',
-        'data/payment_method_data.xml',
         'data/payment_provider_data.xml',  # Depends on `inline_form`, `payment_method_sepa`.
     ],
     'uninstall_hook': 'uninstall_hook',

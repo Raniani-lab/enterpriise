@@ -5,6 +5,8 @@ from datetime import datetime
 from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, ValidationError
 
+from odoo.addons.payment_sepa_direct_debit import const
+
 
 class PaymentProvider(models.Model):
     _inherit = 'payment.provider'
@@ -200,3 +202,10 @@ class PaymentProvider(models.Model):
         if self.code == 'custom' and self.custom_mode == 'sepa_direct_debit':
             return self.custom_mode
         return res
+
+    def _get_default_payment_method_codes(self):
+        """ Override of `payment` to return the default payment method codes. """
+        default_codes = super()._get_default_payment_method_codes()
+        if self.custom_mode != 'sepa_direct_debit':
+            return default_codes
+        return const.DEFAULT_PAYMENT_METHOD_CODES

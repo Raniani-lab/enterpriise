@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
+from odoo.addons.website_sale_ups import const
 
 
 class Paymentprovider(models.Model):
@@ -41,3 +42,10 @@ class Paymentprovider(models.Model):
             )
 
         return compatible_providers
+
+    def _get_default_payment_method_codes(self):
+        """ Override of `payment` to return the default payment method codes. """
+        default_codes = super()._get_default_payment_method_codes()
+        if self.custom_mode != 'cash_on_delivery':
+            return default_codes
+        return const.DEFAULT_PAYMENT_METHOD_CODES

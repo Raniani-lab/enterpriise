@@ -1622,6 +1622,7 @@ class AccountReport(models.Model):
         if not self.env['res.company']._all_branches_selected():
             for button in filter(lambda x: not x.get('branch_allowed'), options['buttons']):
                 button['disabled'] = True
+
         options['buttons'] = sorted(options['buttons'], key=lambda x: x.get('sequence', 90))
 
         return options
@@ -3523,7 +3524,11 @@ class AccountReport(models.Model):
             tax_unit = self.env['account.tax.unit'].browse(options['tax_unit'])
             return tax_unit.main_company_id
 
-        return self.env.company
+        options_main_company = self.env['res.company'].browse(self.get_report_company_ids(options)[0])
+        if options_main_company.root_id._all_branches_selected():
+            return options_main_company.root_id
+
+        return options_main_company
 
     def _create_carryover_for_company(self, options, company, carryover_per_expression, label=None):
         date_from = options['date']['date_from']
@@ -4901,7 +4906,7 @@ class AccountReport(models.Model):
             return tax_unit.vat
 
         if options['fiscal_position'] in {'all', 'domestic'}:
-            company = self.env.company
+            company = self._get_sender_company_for_export(options)
             if not company.vat:
                 action = self.env.ref('base.action_res_company_form')
                 raise RedirectWarning(_('No VAT number associated with your company. Please define one.'), action.id, _("Company Settings"))

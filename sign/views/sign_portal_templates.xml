@@ -160,9 +160,7 @@
             </t>
             <hr/>
             <div>
-                <h4>
-                    Message and communication history
-                </h4>
+                <h3>Communication history</h3>
                 <t t-call="portal.message_thread">
                     <t t-set="object" t-value="my_sign_item.sign_request_id"/>
                     <t t-set="token" t-value="my_sign_item.sign_request_id.access_token"/>

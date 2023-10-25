@@ -234,7 +234,7 @@
                 <div t-if="company_mismatch">
                     <t t-call="payment.company_mismatch_warning"/>
                 </div>
-                <div class="clearfix" t-elif="(providers or tokens) and sale_order.amount_total> 0">
+                <div class="clearfix" t-elif="(providers_sudo or tokens) and sale_order.amount_total> 0">
                     <h3 class="mb-1">Anticipate payment</h3>
                     <div t-if="sale_order.get_portal_last_transaction().state == 'pending'">
                         <div class="alert alert-warning m-1 mt-3">
@@ -245,7 +245,7 @@
                     </div>
                     <div>
                         <hr class="my-0"/>
-                        <t t-call="payment.checkout">
+                        <t t-call="payment.form">
                             <t t-set="landing_route" t-value="sale_order.get_portal_url()"/>
                         </t>
                     </div>
@@ -261,8 +261,8 @@
             <t t-set="renewal_url" t-value="sale_order._get_renewal_portal_url()"/>
 
             <t t-set="entries">
-                <ul class="d-flex flex-wrap flex-column">
-                    <li class="flex-grow-1">
+                <div class="d-flex flex-wrap flex-column">
+                    <div class="flex-grow-1">
                         <div class="text-center"><h1><span t-field="sale_order.amount_untaxed" t-options='{"widget": "monetary","display_currency": sale_order.currency_id}'/></h1></div>
                         <div t-if="sale_order.payment_token_id">Payment method:
                             <t t-out ="sale_order.payment_token_id._build_display_name(max_length=14)"/>
@@ -281,7 +281,7 @@
                                     href="#"
                                     disabled="true"
                                     role="button"
-                                    class="mt-2 btn btn-secondary  w-100">
+                                    class="mt-2 btn btn-secondary w-100">
                                 Manage Payment Methods
                             </button>
                             <!-- User is logged out -->
@@ -289,7 +289,7 @@
                                title="You must be logged in to manage your payment methods."
                                t-attf-href="/web/login?redirect={{sale_order.get_portal_url()}}"
                                role="button"
-                               class="mt-2 btn btn-secondary">
+                               class="mt-2 btn btn-secondary w-100">
                                 Manage Payment Methods
                             </a>
                         </t>
@@ -302,13 +302,13 @@
                                 <a class="btn btn-secondary btn-block o_print_btn o_portal_invoice_print" t-att-href="sale_order.get_portal_url(report_type='pdf')" id="print_invoice_report" title="Print" target="_blank"><i class="fa fa-print"/> Print</a>
                             </div>
                         </div>
-                    </li>
-                    <li class="flex-grow-1">
-                        <a role="button" class="btn btn-primary w-100" t-att-href="renewal_url"
+                    </div>
+                    <div class="flex-grow-1">
+                        <a role="button" class="btn btn-primary w-100 mt8" t-att-href="renewal_url"
                            t-if="sale_order.user_extend and renewal_url">
                             Renew
                         </a>
-                        <a role="button" class="btn btn-primary w-100" t-attf-href="/my/subscriptions/{{sale_order.id}}/renewal"
+                        <a role="button" class="btn btn-primary w-100 mt8" t-attf-href="/my/subscriptions/{{sale_order.id}}/renewal"
                            t-elif="sale_order.user_extend and not sale_order._can_be_edited_on_portal()">
                             Renew
                         </a>
@@ -337,8 +337,8 @@
                                 t-if="sale_order.user_closable and sale_order.subscription_state in ['3_progress', '4_paused']" >
                             Close Subscription
                         </button>
-                    </li>
-                    <li t-if="sale_order.user_id" class="flex-grow-1">
+                    </div>
+                    <div t-if="sale_order.user_id" class="flex-grow-1 mt8">
                         <div t-if="sale_order.user_id">
                             <h6><small class="text-muted">Subscription Manager:</small></h6>
                             <div class="o_portal_contact_details d-flex flex-column gap-2">
@@ -351,8 +351,8 @@
                                 </div>
                             </div>
                         </div>
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </t>
         </t>
     </template>

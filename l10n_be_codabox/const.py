@@ -12,6 +12,7 @@ CODABOX_ERROR_CODES = {
     "error_connecting_codabox": _lt("Error while connecting to Codabox. Please contact Odoo support."),
     "error_connection_not_found": _lt("It seems that no connection linked to your database/VAT number exists. Please check your configuration."),
     "error_consent_not_valid": _lt("It seems that your Codabox consent is not valid anymore.  Please check your configuration."),
+    "error_consent_already_registered": _lt("It seems you have already created a connection to Codabox with this fiduciary. To create a new connection, you must first revoke the old one on myCodabox portal."),
     "error_file_not_found": _lt("No files were found. Please check your configuration."),
 }
 

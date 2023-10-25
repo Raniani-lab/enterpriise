@@ -58,7 +58,7 @@ class DiscussChannel(models.Model):
         if wa_channels:
             channel_last_msg_ids = {
                 r['id']: r['message_id']
-                for r in wa_channels._channel_last_message_ids()
+                for r in wa_channels._channel_last_whatsapp_partner_id_message_ids()
             }
             MailMessage = self.env['mail.message'].with_prefetch(list(channel_last_msg_ids.values()))
             for channel in wa_channels:
@@ -66,6 +66,22 @@ class DiscussChannel(models.Model):
                 if not last_msg_id:
                     continue
                 channel.whatsapp_channel_valid_until = MailMessage.browse(last_msg_id).create_date + timedelta(hours=24)
+
+    def _channel_last_whatsapp_partner_id_message_ids(self):
+        """ Return the last message of the whatsapp_partner_id given whatsapp channels."""
+        if not self:
+            return []
+        self.env['mail.message'].flush_model()
+        self.env.cr.execute("""
+              SELECT res_id AS id, MAX(mm.id) AS message_id
+                FROM mail_message AS mm
+                JOIN discuss_channel AS dc ON mm.res_id = dc.id
+               WHERE mm.model = 'discuss.channel'
+                 AND mm.res_id IN %s
+                 AND mm.author_id = dc.whatsapp_partner_id
+            GROUP BY mm.res_id
+            """, [tuple(self.ids)])
+        return self.env.cr.dictfetchall()
 
     # INHERITED COMPUTES
 

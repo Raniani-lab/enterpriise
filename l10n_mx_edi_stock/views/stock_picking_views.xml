@@ -6,12 +6,14 @@
         <field name="inherit_id" ref="stock.view_picking_form" />
         <field name="arch" type="xml">
 
-            <xpath expr="//header//button[@name='action_cancel']" position="after">
-                    <!-- Invisible fields -->
+            <xpath expr="//header" position="before">
+                <!-- Invisible fields -->
                 <field name="l10n_mx_edi_is_cfdi_needed" invisible="1"/>
                 <field name="l10n_mx_edi_external_trade" invisible="1"/>
                 <field name="l10n_mx_edi_update_sat_needed" invisible="1"/>
+            </xpath>
 
+            <xpath expr="//header" position="inside">
                 <button string="Generate Delivery Guide"
                         name="l10n_mx_edi_cfdi_try_send"
                         type="object"

@@ -30,8 +30,9 @@ class HrExpense(models.Model):
     @api.model
     def _contact_iap_extract(self, pathinfo, params):
         params['version'] = OCR_VERSION
+        params['account_token'] = self.env['iap.account'].get('invoice_ocr').account_token
         endpoint = self.env['ir.config_parameter'].sudo().get_param('iap_extract_endpoint', 'https://extract.api.odoo.com')
-        return iap_tools.iap_jsonrpc(endpoint + '/api/extract/expense/1/' + pathinfo, params=params)
+        return iap_tools.iap_jsonrpc(endpoint + '/api/extract/expense/2/' + pathinfo, params=params)
 
     def attach_document(self, **kwargs):
         """when an attachment is uploaded, send the attachment to iap-extract if this is the first attachment"""

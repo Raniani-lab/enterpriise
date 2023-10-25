@@ -70,7 +70,7 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
             self.expense.message_post(attachment_ids=[self.attachment.id])
 
         self.assertEqual(self.expense.extract_state, 'waiting_extraction')
-        self.assertEqual(self.expense.extract_document_uuid, 'some_uuid')
+        self.assertEqual(self.expense.extract_document_uuid, 'some_token')
         self.assertTrue(self.expense.extract_state_processed)
         self.assertEqual(self.expense.predicted_category, 'miscellaneous')
         self.assertFalse(self.expense.total_amount)
@@ -79,7 +79,8 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
         extract_response = self.get_result_success_response()
         expected_get_results_params = {
             'version': OCR_VERSION,
-            'document_uuid': 'some_uuid',
+            'document_token': 'some_token',
+            'account_token': self.env['iap.account'].get('invoice_ocr').account_token,
         }
         with self._mock_iap_extract(
             extract_response=extract_response,
@@ -172,14 +173,14 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
 
         expected_validation_params = {
             'version': OCR_VERSION,
-            'documents': {
-                'some_uuid': {
-                    'total': {'content': self.expense.price_unit},
+            'values': {
+                'total': {'content': self.expense.price_unit},
                     'date': {'content': str(self.expense.date)},
                     'description': {'content': self.expense.name},
                     'currency': {'content': self.expense.currency_id.name},
-                }
-            }
+            },
+            'document_token': 'some_token',
+            'account_token': self.env['iap.account'].get('invoice_ocr').account_token,
         }
 
         with self._mock_iap_extract(

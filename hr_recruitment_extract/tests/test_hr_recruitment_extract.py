@@ -54,7 +54,7 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
             self.applicant.message_post(attachment_ids=[self.attachment.id])
 
         self.assertEqual(self.applicant.extract_state, 'waiting_extraction')
-        self.assertEqual(self.applicant.extract_document_uuid, 'some_uuid')
+        self.assertEqual(self.applicant.extract_document_uuid, 'some_token')
         self.assertTrue(self.applicant.extract_state_processed)
         self.assertFalse(self.applicant.partner_name)
         self.assertFalse(self.applicant.email_from)
@@ -64,7 +64,8 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
         extract_response = self.get_result_success_response()
         expected_get_results_params = {
             'version': OCR_VERSION,
-            'document_uuid': 'some_uuid',
+            'document_token': 'some_token',
+            'account_token': self.env['iap.account'].get('invoice_ocr').account_token,
         }
         with self._mock_iap_extract(
             extract_response=extract_response,
@@ -148,14 +149,14 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
 
         expected_validation_params = {
             'version': OCR_VERSION,
-            'documents': {
-                'some_uuid': {
-                    'email': {'content': self.applicant.email_from},
-                    'phone': {'content': self.applicant.partner_phone},
-                    'mobile': {'content': self.applicant.partner_mobile},
-                    'name': {'content': self.applicant.name},
-                }
-            }
+            'values': {
+                'email': {'content': self.applicant.email_from},
+                'phone': {'content': self.applicant.partner_phone},
+                'mobile': {'content': self.applicant.partner_mobile},
+                'name': {'content': self.applicant.name},
+            },
+            'document_token': 'some_token',
+            'account_token': self.env['iap.account'].get('invoice_ocr').account_token,
         }
 
         hired_stages = self.env['hr.recruitment.stage'].search([('hired_stage', '=', True)])

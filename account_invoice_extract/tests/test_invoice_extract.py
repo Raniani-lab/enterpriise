@@ -130,7 +130,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin, MailCommo
             invoice = self.env['account.move'].create({
                 'move_type': move_type,
                 'extract_state': 'waiting_extraction',
-                'extract_document_uuid': 'some_uuid',
+                'extract_document_uuid': 'some_token',
             })
 
             # This is necessary to avoid nondeterminism in this test.
@@ -146,7 +146,8 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin, MailCommo
 
             expected_get_results_params = {
                 'version': OCR_VERSION,
-                'document_uuid': 'some_uuid',
+                'document_token': 'some_token',
+                'account_token': self.env['iap.account'].get('invoice_ocr').account_token,
             }
 
             with self._mock_iap_extract(
@@ -546,7 +547,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin, MailCommo
         invoice = self.env['account.move'].create({
             'move_type': 'in_invoice',
             'extract_state': 'waiting_extraction',
-            'extract_document_uuid': 'some_uuid',
+            'extract_document_uuid': 'some_token',
         })
 
         with self._mock_iap_extract(
@@ -557,43 +558,43 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin, MailCommo
 
         expected_validation_params = {
             'version': OCR_VERSION,
-            'documents': {
-                'some_uuid': {
-                    'total': {'content': invoice.amount_total},
-                    'subtotal': {'content': invoice.amount_untaxed},
-                    'total_tax_amount': {'content': invoice.amount_tax},
-                    'date': {'content': str(invoice.invoice_date)},
-                    'due_date': {'content': str(invoice.invoice_date_due)},
-                    'invoice_id': {'content': invoice.ref},
-                    'partner': {'content': invoice.partner_id.name},
-                    'VAT_Number': {'content': invoice.partner_id.vat},
-                    'currency': {'content': invoice.currency_id.name},
-                    'payment_ref': {'content': invoice.payment_reference},
-                    'iban': {'content': invoice.partner_bank_id.acc_number},
-                    'SWIFT_code': {'content': invoice.partner_bank_id.bank_bic},
-                    'merged_lines': True,
-                    'invoice_lines': {
-                        'lines': [
-                            {
-                                'description': il.name,
-                                'quantity': il.quantity,
-                                'unit_price': il.price_unit,
-                                'product': il.product_id.id,
-                                'taxes_amount': round(il.price_total - il.price_subtotal, 2),
-                                'taxes': [
-                                    {
-                                        'amount': tax.amount,
-                                        'type': tax.amount_type,
-                                        'price_include': tax.price_include
-                                    } for tax in il.tax_ids
-                                ],
-                                'subtotal': il.price_subtotal,
-                                'total': il.price_total,
-                            } for il in invoice.invoice_line_ids
-                        ]
-                    }
+            'values': {
+                'total': {'content': invoice.amount_total},
+                'subtotal': {'content': invoice.amount_untaxed},
+                'total_tax_amount': {'content': invoice.amount_tax},
+                'date': {'content': str(invoice.invoice_date)},
+                'due_date': {'content': str(invoice.invoice_date_due)},
+                'invoice_id': {'content': invoice.ref},
+                'partner': {'content': invoice.partner_id.name},
+                'VAT_Number': {'content': invoice.partner_id.vat},
+                'currency': {'content': invoice.currency_id.name},
+                'payment_ref': {'content': invoice.payment_reference},
+                'iban': {'content': invoice.partner_bank_id.acc_number},
+                'SWIFT_code': {'content': invoice.partner_bank_id.bank_bic},
+                'merged_lines': True,
+                'invoice_lines': {
+                    'lines': [
+                        {
+                            'description': il.name,
+                            'quantity': il.quantity,
+                            'unit_price': il.price_unit,
+                            'product': il.product_id.id,
+                            'taxes_amount': round(il.price_total - il.price_subtotal, 2),
+                            'taxes': [
+                                {
+                                    'amount': tax.amount,
+                                    'type': tax.amount_type,
+                                    'price_include': tax.price_include
+                                } for tax in il.tax_ids
+                            ],
+                            'subtotal': il.price_subtotal,
+                            'total': il.price_total,
+                        } for il in invoice.invoice_line_ids
+                    ]
                 }
-            }
+            },
+            'document_token': 'some_token',
+            'account_token': self.env['iap.account'].get('invoice_ocr').account_token,
         }
 
         with self._mock_iap_extract(
@@ -664,7 +665,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin, MailCommo
             invoice.message_post(attachment_ids=[test_attachment.id])
 
         self.assertEqual(invoice.extract_state, 'waiting_extraction')
-        self.assertEqual(invoice.extract_document_uuid, 'some_uuid')
+        self.assertEqual(invoice.extract_document_uuid, 'some_token')
 
     def test_automatic_sending_vendor_bill_main_attachment(self):
         # test that a vendor bill is automatically sent to the OCR server when a main attachment is registered and the option is enabled
@@ -681,7 +682,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin, MailCommo
             test_attachment.register_as_main_attachment()
 
         self.assertEqual(invoice.extract_state, 'waiting_extraction')
-        self.assertEqual(invoice.extract_document_uuid, 'some_uuid')
+        self.assertEqual(invoice.extract_document_uuid, 'some_token')
 
     def test_automatic_sending_customer_invoice_upload(self):
         # test that a customer invoice is automatically sent to the OCR server when uploaded and the option is enabled
@@ -695,7 +696,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin, MailCommo
 
         invoice = self.env['account.move'].browse(action['res_id'])
         self.assertEqual(invoice.extract_state, 'waiting_extraction')
-        self.assertEqual(invoice.extract_document_uuid, 'some_uuid')
+        self.assertEqual(invoice.extract_document_uuid, 'some_token')
 
     def test_automatic_sending_customer_invoice_email_alias(self):
         # test that a customer invoice is automatically sent to the OCR server when sent via email alias and the option is enabled
@@ -704,7 +705,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin, MailCommo
         with self._mock_iap_extract(self.parse_success_response()):
             invoice = self.env['account.move'].browse(self.env['mail.thread'].message_process('account.move', mail))
         self.assertEqual(invoice.extract_state, 'waiting_extraction')
-        self.assertEqual(invoice.extract_document_uuid, 'some_uuid')
+        self.assertEqual(invoice.extract_document_uuid, 'some_token')
 
     # TODO: Test working thanks to a bug. Now the bug is fixed and since we need to merge now and since the test is not passing, let's skip it for now.
     @unittest.skip
@@ -731,7 +732,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin, MailCommo
         with self._mock_iap_extract(extract_response=self.parse_success_response()):
             invoice = self.env['account.move'].browse(self.env['mail.thread'].message_process('account.move', mail))
         self.assertEqual(invoice.extract_state, 'waiting_extraction')
-        self.assertEqual(invoice.extract_document_uuid, 'some_uuid')
+        self.assertEqual(invoice.extract_document_uuid, 'some_token')
 
     def test_no_automatic_sending_customer_invoice_message_post(self):
         # test that a customer invoice isn't automatically sent to the OCR server when a message with attachment is posted and the option is enabled

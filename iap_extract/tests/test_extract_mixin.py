@@ -15,7 +15,7 @@ from odoo.tests import common
 
 class TestExtractMixin(common.TransactionCase):
     def parse_success_response(self):
-        return {'status': 'success', 'document_uuid': 'some_uuid'}
+        return {'status': 'success', 'document_token': 'some_token'}
 
     def parse_processing_response(self):
         return {'status': 'processing'}

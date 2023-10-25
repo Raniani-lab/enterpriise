@@ -96,15 +96,18 @@ class ExtractMixin(models.AbstractModel):
     @api.model
     def _cron_validate(self):
         records_to_validate = self.search(self._get_validation_domain())
-        documents = {
-            record.extract_document_uuid: {
-                field: record._get_validation(field) for field in self._get_validation_fields()
-            } for record in records_to_validate
-        }
 
-        if documents:
+        for record in records_to_validate:
             try:
-                self._contact_iap_extract('validate_batch', params={'documents': documents})
+                self._contact_iap_extract(
+                    'validate',
+                    params={
+                        'document_token': record.extract_document_uuid,
+                        'values': {
+                            field: record._get_validation(field) for field in self._get_validation_fields()
+                        }
+                    }
+                )
             except AccessError:
                 pass
 
@@ -234,7 +237,6 @@ class ExtractMixin(models.AbstractModel):
 
             user_infos = self._get_user_infos()
             params = {
-                'account_token': account_token.account_token,
                 'dbuuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
                 'documents': [x.datas.decode('utf-8') for x in attachment],
                 'user_infos': user_infos,
@@ -245,7 +247,7 @@ class ExtractMixin(models.AbstractModel):
                 self.extract_status = result['status']
                 if result['status'] == 'success':
                     self.extract_state = 'waiting_extraction'
-                    self.extract_document_uuid = result['document_uuid']
+                    self.extract_document_uuid = result['document_token']
                     if self.env['ir.config_parameter'].sudo().get_param("iap_extract.already_notified", True):
                         self.env['ir.config_parameter'].sudo().set_param("iap_extract.already_notified", False)
                     self.env['iap.account']._send_success_notification(
@@ -311,7 +313,7 @@ class ExtractMixin(models.AbstractModel):
     def _check_ocr_status(self, force_write=False):
         """ Contact iap to get the actual status of the ocr request. """
         self.ensure_one()
-        result = self._contact_iap_extract('get_result', params={'document_uuid': self.extract_document_uuid})
+        result = self._contact_iap_extract('get_result', params={'document_token': self.extract_document_uuid})
         self.extract_status = result['status']
         if result['status'] == 'success':
             self.extract_state = 'waiting_validation'

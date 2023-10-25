@@ -88,20 +88,22 @@ patch(AttendeeCalendarCommonRenderer.prototype, {
         const { el, event } = info;
         if (event.extendedProps.slotId) {
             el.classList.add("o_calendar_slot");
-            const bg = el.querySelector(".fc-bg");
+            const bg = el.querySelector(".fc-content");
             if (bg) {
                 const duration = (event.end - event.start) / 3600000;
                 const iconSize = duration < 1 || event.allDay || this.props.model.scale === "month" ? "" : "fa-2x";
                 const domParser = new DOMParser();
                 const injectedContentEl = domParser.parseFromString(
                     /* xml */ `
-                    <button class="close border-0 p-0 m-0 w-100 h-100 disabled o_hidden">
-                        <i class='fa fa-trash text-white m-0 ${iconSize}'></i>
-                    </button>
+                    <div class="fc-bg opacity-75">
+                        <button class="close border-0 p-0 m-0 w-100 h-100 disabled o_hidden">
+                            <i class='fa fa-trash text-white m-0 ${iconSize}'></i>
+                        </button>
+                    </div>
                 `,
                     "text/html"
                 ).body.firstChild;
-                bg.appendChild(injectedContentEl);
+                bg.insertAdjacentElement("afterend", injectedContentEl);
             }
         }
     },

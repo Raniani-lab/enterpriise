@@ -28,8 +28,9 @@
                 <Stages stages="this.preparationDisplay.stages" />
                 <div class="d-inline-block d-sm-inline-block d-xs-inline-block d-md-inline-block d-lg-none">
                     <button t-if="isBurgerMenuClosed()" class="btn position-relative h-100 px-4 rounded-0 border-start shadow-none" t-on-click="openMenu">
-                        <div class="position-relative px-1">
+                        <div class="d-flex px-1">
                             <i class="d-block fa fa-bars" aria-hidden="true"></i>
+                            <span t-if="filterSelected>0" class="openMenu badge text-bg-info rounded-pill" t-esc="filterSelected"/>
                         </div>
                     </button>
                     <button t-else="" class="menu btn position-relative h-100 px-4 rounded-0 border-start shadow-none" t-on-click="closeMenu">
@@ -56,6 +57,7 @@
                             <li class="menu-item navbar-button" t-on-click="() => { this.toggleCategoryFilter(); this.showSidebar = !this.showSidebar }">
                                 <a class="dropdown-item py-2">
                                     Filters
+                                    <span t-if="filterSelected>0" class="badge text-bg-info rounded-pill py-1 ms-2" t-esc="filterSelected"/>
                                 </a>
                             </li>
                             <li class="menu-item navbar-button" t-on-click="() => this.preparationDisplay.exit()">

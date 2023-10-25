@@ -2149,6 +2149,7 @@ class AccountReport(models.Model):
             'unfolded': False,
             'caret_options': None,
             'action_id': None,
+            'page_break': False, # If the section's line possesses a page break, we don't want the total to have it.
         }
 
     def _get_static_line_dict(self, options, line, all_column_groups_expression_totals, parent_id=None):

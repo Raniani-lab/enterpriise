@@ -391,8 +391,8 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
         })
 
         move_vals = {
-            'move_type': 'in_invoice',
-            'journal_id': self.company_data['default_journal_purchase'].id,
+            'move_type': 'out_invoice',
+            'journal_id': self.company_data['default_journal_sale'].id,
             'partner_id': self.partner_a.id,
             'invoice_date': '2022-12-12',
             'date': '2022-12-12',

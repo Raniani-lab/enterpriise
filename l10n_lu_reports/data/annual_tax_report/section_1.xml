@@ -48,7 +48,7 @@
                                             <record id="l10n_lu_annual_tax_report_section_1_overall_turnover_001_default" model="account.report.expression">
                                                 <field name="label">_default_balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">tag(l10n_lu_reports.account_tag_001)</field>
+                                                <field name="formula">-tag(l10n_lu_reports.account_tag_001)</field>
                                                 <field name="date_scope">strict_range</field>
                                             </record>
                                         </field>
@@ -66,7 +66,7 @@
                                             <record id="l10n_lu_annual_tax_report_section_1_overall_turnover_002_default" model="account.report.expression">
                                                 <field name="label">_default_balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">tag(l10n_lu_reports.account_tag_002)</field>
+                                                <field name="formula">-tag(l10n_lu_reports.account_tag_002)</field>
                                                 <field name="date_scope">strict_range</field>
                                             </record>
                                         </field>
@@ -84,7 +84,7 @@
                                             <record id="l10n_lu_annual_tax_report_section_1_overall_turnover_003_default" model="account.report.expression">
                                                 <field name="label">_default_balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">tag(l10n_lu_reports.account_tag_003)</field>
+                                                <field name="formula">-tag(l10n_lu_reports.account_tag_003)</field>
                                                 <field name="date_scope">strict_range</field>
                                             </record>
                                         </field>
@@ -102,7 +102,7 @@
                                             <record id="l10n_lu_annual_tax_report_section_1_overall_turnover_004_default" model="account.report.expression">
                                                 <field name="label">_default_balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">tag(l10n_lu_reports.account_tag_004)</field>
+                                                <field name="formula">-tag(l10n_lu_reports.account_tag_004)</field>
                                                 <field name="date_scope">strict_range</field>
                                             </record>
                                         </field>
@@ -120,7 +120,7 @@
                                             <record id="l10n_lu_annual_tax_report_section_1_overall_turnover_005_default" model="account.report.expression">
                                                 <field name="label">_default_balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">tag(l10n_lu_reports.account_tag_005)</field>
+                                                <field name="formula">-tag(l10n_lu_reports.account_tag_005)</field>
                                                 <field name="date_scope">strict_range</field>
                                             </record>
                                         </field>
@@ -162,7 +162,7 @@
                                             <record id="l10n_lu_annual_tax_report_section_1_overall_turnover_008_default" model="account.report.expression">
                                                 <field name="label">_default_balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">tag(l10n_lu_reports.account_tag_008)</field>
+                                                <field name="formula">-tag(l10n_lu_reports.account_tag_008)</field>
                                                 <field name="date_scope">strict_range</field>
                                             </record>
                                         </field>
@@ -180,7 +180,7 @@
                                             <record id="l10n_lu_annual_tax_report_section_1_overall_turnover_009_default" model="account.report.expression">
                                                 <field name="label">_default_balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">tag(l10n_lu_reports.account_tag_009)</field>
+                                                <field name="formula">-tag(l10n_lu_reports.account_tag_009)</field>
                                                 <field name="date_scope">strict_range</field>
                                             </record>
                                         </field>
@@ -212,7 +212,7 @@
                                             <record id="l10n_lu_annual_tax_report_section_1_overall_turnover_010_default" model="account.report.expression">
                                                 <field name="label">_default_balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">tag(l10n_lu_reports.account_tag_010)</field>
+                                                <field name="formula">-tag(l10n_lu_reports.account_tag_010)</field>
                                                 <field name="date_scope">strict_range</field>
                                             </record>
                                         </field>
@@ -230,7 +230,7 @@
                                             <record id="l10n_lu_annual_tax_report_section_1_overall_turnover_011_default" model="account.report.expression">
                                                 <field name="label">_default_balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">tag(l10n_lu_reports.account_tag_011)</field>
+                                                <field name="formula">-tag(l10n_lu_reports.account_tag_011)</field>
                                                 <field name="date_scope">strict_range</field>
                                             </record>
                                         </field>
@@ -270,7 +270,7 @@
                                             <record id="l10n_lu_annual_tax_report_section_1_exemptions_deductible_013_default" model="account.report.expression">
                                                 <field name="label">_default_balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">tag(l10n_lu_reports.account_tag_013)</field>
+                                                <field name="formula">-tag(l10n_lu_reports.account_tag_013)</field>
                                                 <field name="date_scope">strict_range</field>
                                             </record>
                                         </field>
@@ -288,7 +288,7 @@
                                             <record id="l10n_lu_annual_tax_report_section_1_exemptions_deductible_202_default" model="account.report.expression">
                                                 <field name="label">_default_balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">tag(l10n_lu_reports.account_tag_202)</field>
+                                                <field name="formula">-tag(l10n_lu_reports.account_tag_202)</field>
                                                 <field name="date_scope">strict_range</field>
                                             </record>
                                         </field>
@@ -306,7 +306,7 @@
                                             <record id="l10n_lu_annual_tax_report_section_1_exemptions_deductible_203_default" model="account.report.expression">
                                                 <field name="label">_default_balance</field>
                                                 <field name="engine">account_codes</field>
-                                                <field name="formula">tag(l10n_lu_reports.account_tag_203)</field>
+                                                <field name="formula">-tag(l10n_lu_reports.account_tag_203)</field>
                                                 <field name="date_scope">strict_range</field>
                                             </record>
                                         </field>

@@ -13,6 +13,13 @@ class DeferredReportCustomHandler(models.AbstractModel):
     _inherit = 'account.report.custom.handler'
     _description = 'Deferred Expense Report Custom Handler'
 
+    def _get_custom_display_config(self):
+        return {
+            'templates': {
+                'AccountReportFilters': 'account_reports.DeferredFilters',
+            },
+        }
+
     def _get_deferred_report_type(self):
         raise NotImplementedError("This method is not implemented in the deferred report handler.")
 

@@ -57,6 +57,7 @@
             <div class="dropdown-divider"/>
 
             <div
+                name="filter_comparison_same_period_last_year"
                 class="dropdown-item period"
                 t-att-class="(controller.options.comparison.filter == 'same_last_year') ? 'selected' : ''"
             >
@@ -85,6 +86,7 @@
 
             <t t-if="controller.options.date.mode === 'range'">
                 <div
+                    name="filter_comparison_custom"
                     class="dropdown-item date"
                     t-att-class="(controller.options.comparison.filter == 'custom') ? 'selected' : ''"
                 >

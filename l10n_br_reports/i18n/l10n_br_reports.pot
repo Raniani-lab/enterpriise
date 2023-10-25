@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.1alpha1+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-03 12:22+0000\n"
 "PO-Revision-Date: 2023-01-03 12:22+0000\n"
@@ -21,31 +21,6 @@ msgid "ASSETS"
 msgstr ""
 
 #. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_ajustes
-msgid "Equity valuation adjustments"
-msgstr ""
-
-#. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_report_bio_assets
-msgid "Current biological assets"
-msgstr ""
-
-#. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_report_current_assets_view0
-msgid "Current assets"
-msgstr ""
-
-#. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_report_non_current_assets_view0
-msgid "Non-current assets"
-msgstr ""
-
-#. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_report_noncurrent_assets_for_sale
-msgid "Non-current assets held for sale"
-msgstr ""
-
-#. module: l10n_br_reports
 #: model:account.report.column,name:l10n_br_reports.account_financial_report_br_balancesheet0_column
 #: model:account.report.column,name:l10n_br_reports.account_financial_report_pnl_br_column
 msgid "Balance"
@@ -57,13 +32,8 @@ msgid "Balance Sheet"
 msgstr ""
 
 #. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_share_capital
-msgid "Equity capital"
-msgstr ""
-
-#. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_report_off_sheet
-msgid "Off-balance sheet accounts"
+#: model:account.report.line,name:l10n_br_reports.account_financial_report_disponibilidades
+msgid "Bank and Cash accounts"
 msgstr ""
 
 #. module: l10n_br_reports
@@ -72,13 +42,28 @@ msgid "Credits"
 msgstr ""
 
 #. module: l10n_br_reports
-#: model:account.report,name:l10n_br_reports.account_financial_report_pnl_br
-msgid "Profit and Loss Statement"
+#: model:account.report.line,name:l10n_br_reports.account_financial_report_current_liabilities1
+msgid "Current Liabilities"
 msgstr ""
 
 #. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_report_despesas
-msgid "Expenditure in the following year"
+#: model:account.report.line,name:l10n_br_reports.account_financial_report_current_assets_view0
+msgid "Current assets"
+msgstr ""
+
+#. module: l10n_br_reports
+#: model:account.report.line,name:l10n_br_reports.account_financial_report_bio_assets
+msgid "Current biological assets"
+msgstr ""
+
+#. module: l10n_br_reports
+#: model:account.report.line,name:l10n_br_reports.account_financial_report_current_liabilities0
+msgid "Current liabilities"
+msgstr ""
+
+#. module: l10n_br_reports
+#: model:account.report.line,name:l10n_br_reports.account_financial_report_current_revenue
+msgid "Current year profit"
 msgstr ""
 
 #. module: l10n_br_reports
@@ -87,13 +72,23 @@ msgid "Deferred"
 msgstr ""
 
 #. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_report_disponibilidades
-msgid "Bank and Cash accounts"
+#: model:account.report.line,name:l10n_br_reports.account_financial_report_equity0
+msgid "Equity"
 msgstr ""
 
 #. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_report_estoques
-msgid "Stocks"
+#: model:account.report.line,name:l10n_br_reports.account_financial_share_capital
+msgid "Equity capital"
+msgstr ""
+
+#. module: l10n_br_reports
+#: model:account.report.line,name:l10n_br_reports.account_financial_ajustes
+msgid "Equity valuation adjustments"
+msgstr ""
+
+#. module: l10n_br_reports
+#: model:account.report.line,name:l10n_br_reports.account_financial_report_despesas
+msgid "Expenditure in the following year"
 msgstr ""
 
 #. module: l10n_br_reports
@@ -112,59 +107,8 @@ msgid "Investments"
 msgstr ""
 
 #. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_report_current_revenue
-msgid "Current year profit"
-msgstr ""
-
-#. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_report_non_current_liabilities1
-msgid "Long-term liabilities"
-msgstr ""
-
-#. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_report_current_liabilities1
-msgid "Current Liabilities"
-msgstr ""
-
-#. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_outras_contas
-msgid "Other equity accounts"
-msgstr ""
-
-#. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_liabilities_view0
 msgid "LIABILITIES"
-msgstr ""
-
-#. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_report_participacoes_ag
-#: model:account.report.line,name:l10n_br_reports.account_financial_report_participacoes_ar
-msgid "Shares"
-msgstr ""
-
-#. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_report_current_liabilities0
-msgid "Current liabilities"
-msgstr ""
-
-#. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_report_non_current_liabilities0
-msgid "Non-current liabilities"
-msgstr ""
-
-#. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_report_equity0
-msgid "Equity"
-msgstr ""
-
-#. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_report_csll_ar
-msgid "Provision for CSLL - rural activity"
-msgstr ""
-
-#. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_report_csll_irpj
-msgid "Provision for CSLL and IRPJ"
 msgstr ""
 
 #. module: l10n_br_reports
@@ -173,8 +117,8 @@ msgid "Long-term assets"
 msgstr ""
 
 #. module: l10n_br_reports
-#: model:account.report.line,name:l10n_br_reports.account_financial_retained_earnings0
-msgid "Reserves"
+#: model:account.report.line,name:l10n_br_reports.account_financial_report_non_current_liabilities1
+msgid "Long-term liabilities"
 msgstr ""
 
 #. module: l10n_br_reports
@@ -193,6 +137,26 @@ msgid "Net profit for the period before IRPJ and CSLL - rural activity"
 msgstr ""
 
 #. module: l10n_br_reports
+#: model:account.report.line,name:l10n_br_reports.account_financial_report_non_current_assets_view0
+msgid "Non-current assets"
+msgstr ""
+
+#. module: l10n_br_reports
+#: model:account.report.line,name:l10n_br_reports.account_financial_report_noncurrent_assets_for_sale
+msgid "Non-current assets held for sale"
+msgstr ""
+
+#. module: l10n_br_reports
+#: model:account.report.line,name:l10n_br_reports.account_financial_report_non_current_liabilities0
+msgid "Non-current liabilities"
+msgstr ""
+
+#. module: l10n_br_reports
+#: model:account.report.line,name:l10n_br_reports.account_financial_report_off_sheet
+msgid "Off-balance sheet accounts"
+msgstr ""
+
+#. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_resultado_ag
 msgid "Operating profit"
 msgstr ""
@@ -200,4 +164,40 @@ msgstr ""
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_resultado_ar
 msgid "Operating profit - rural activity"
+msgstr ""
+
+#. module: l10n_br_reports
+#: model:account.report.line,name:l10n_br_reports.account_financial_outras_contas
+msgid "Other equity accounts"
+msgstr ""
+
+#. module: l10n_br_reports
+#: model:account.report,name:l10n_br_reports.account_financial_report_pnl_br
+msgid "Profit and Loss Statement"
+msgstr ""
+
+#. module: l10n_br_reports
+#: model:account.report.line,name:l10n_br_reports.account_financial_report_csll_ar
+msgid "Provision for CSLL - rural activity"
+msgstr ""
+
+#. module: l10n_br_reports
+#: model:account.report.line,name:l10n_br_reports.account_financial_report_csll_irpj
+msgid "Provision for CSLL and IRPJ"
+msgstr ""
+
+#. module: l10n_br_reports
+#: model:account.report.line,name:l10n_br_reports.account_financial_retained_earnings0
+msgid "Reserves"
+msgstr ""
+
+#. module: l10n_br_reports
+#: model:account.report.line,name:l10n_br_reports.account_financial_report_participacoes_ag
+#: model:account.report.line,name:l10n_br_reports.account_financial_report_participacoes_ar
+msgid "Shares"
+msgstr ""
+
+#. module: l10n_br_reports
+#: model:account.report.line,name:l10n_br_reports.account_financial_report_estoques
+msgid "Stocks"
 msgstr ""

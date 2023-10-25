@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates id="template" xml:space="preserve">
 <t t-name="knowledge.KnowledgeCoverDialog">
-    <Dialog contentClass="contentClass" size="size" title="title">
+    <Dialog contentClass="contentClass" size="size" title="title" modalRef="modalRef">
         <KnowledgeCoverSelector articleCoverId="props.articleCoverId"
                                 save.bind="save" 
                                 searchTerm="props.articleName"
-                                selectMedia="(media)=>this.selectedMedia=media"/>
+                                selectMedia="(media)=>this.selectedMedia=media"
+                                modalRef="modalRef"/>
         <t t-set-slot="footer">
             <button class="btn btn-secondary" t-on-click="() => this.props.close()">Discard</button>
         </t>

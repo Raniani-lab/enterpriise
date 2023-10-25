@@ -5,7 +5,7 @@ import { AutoResizeImage, ImageSelector } from '@web_editor/components/media_dia
 import { ConfirmationDialog } from '@web/core/confirmation_dialog/confirmation_dialog';
 import { Dialog } from '@web/core/dialog/dialog';
 import { UnsplashError } from '@web_unsplash/components/media_dialog/image_selector';
-import { useService } from "@web/core/utils/hooks";
+import { useService, useChildRef } from "@web/core/utils/hooks";
 import { Component } from "@odoo/owl";
 
 export class AutoResizeCover extends AutoResizeImage {
@@ -129,8 +129,9 @@ KnowledgeCoverSelector.components = {
 export class KnowledgeCoverDialog extends Component {
     setup() {
         this.size = 'xl';
-        this.contentClass = 'o_select_media_dialog';
+        this.contentClass = 'o_select_media_dialog h-100';
         this.title = _t("Choose a nice cover");
+        this.modalRef = useChildRef();
     }
 
     /**

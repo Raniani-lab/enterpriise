@@ -34,7 +34,7 @@ class SaleOrder(models.Model):
     def action_view_tickets(self):
         self.ensure_one()
         sorted_line = self.order_line.sorted('sequence')
-        default_sale_line = next(sol for sol in sorted_line if sol.product_id.detailed_type == 'service')
+        default_sale_line = next((sol for sol in sorted_line if sol.product_id.detailed_type == 'service'), self.env['sale.order.line'])
         if self.ticket_count > 1:
             action = self.env["ir.actions.actions"]._for_xml_id('helpdesk.helpdesk_ticket_action_main_tree')
             action.update({

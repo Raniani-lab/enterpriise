@@ -2,7 +2,6 @@
 
 import { registry } from "@web/core/registry";
 import { useBus, useService } from "@web/core/utils/hooks";
-import { cleanDomFromBootstrap } from "@web/legacy/utils";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 import { computeAppsAndMenuItems, reorderApps } from "@web/webclient/menus/menu_helpers";
 
@@ -42,7 +41,6 @@ export class StudioClientAction extends Component {
         this.studio = useService("studio");
         useBus(this.studio.bus, "UPDATE", () => {
             this.render();
-            cleanDomFromBootstrap();
         });
 
         this.menus = useService("menu");

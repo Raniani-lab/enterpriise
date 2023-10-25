@@ -13,3 +13,9 @@ class SaleOrderOption(models.Model):
     @api.depends('order_id.plan_id')
     def _compute_discount(self):
         super()._compute_discount()
+
+    def _get_values_to_add_to_order(self):
+        res = super()._get_values_to_add_to_order()
+        if self.order_id.is_subscription:
+            res.pop('discount')
+        return res

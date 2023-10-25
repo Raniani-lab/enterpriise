@@ -11,6 +11,7 @@ Provides a common interface to be used when implementing apps to outsource tax c
     'version': '1.0',
     'category': 'Accounting/Accounting',
     'depends': ['account_external_tax', 'sale'],
+    'auto_install': True,
     'data': [
         'views/sale_order_views.xml',
     ],

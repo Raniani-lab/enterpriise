@@ -56,7 +56,7 @@ class TestExpenseExtractProcess(TestExpenseCommon):
                 'currency': {'selected_value': {'content': 'euro', 'words': []}},
                 'bill_reference': {'selected_value': {'content': 'bill-ref007', 'words': []}},
             }],
-            'document_id': 1234567,
+            'document_token': 1234567,
         }
 
     @contextmanager

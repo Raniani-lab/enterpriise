@@ -138,26 +138,29 @@ class HrExpense(models.Model):
     def _cron_validate(self):
         """Send user corrected values to the ocr"""
         exp_to_validate = self.search([('extract_state', '=', 'to_validate')])
-        documents = {
-            record.extract_remote_id: {
-                'total': record.get_validation('total'),
-                'date': record.get_validation('date'),
-                'description': record.get_validation('description'),
-                'currency': record.get_validation('currency'),
-                'bill_reference': record.get_validation('bill_reference')
-            } for record in exp_to_validate
-        }
-        params = {
-            'documents': documents,
-            'version': CLIENT_OCR_VERSION,
-        }
-        endpoint = self.env['ir.config_parameter'].sudo().get_param(
-            'hr_expense_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/expense/1/validate_batch'
-        try:
-            iap_tools.iap_jsonrpc(endpoint, params=params)
-            exp_to_validate.extract_state = 'done'
-        except AccessError:
-            pass
+        if exp_to_validate:
+            account = self.env['iap.account'].get('invoice_ocr')
+            endpoint = self.env['ir.config_parameter'].sudo().get_param(
+                'hr_expense_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/expense/2/validate'
+            for record in exp_to_validate:
+                values = {
+                    'total': record.get_validation('total'),
+                    'date': record.get_validation('date'),
+                    'description': record.get_validation('description'),
+                    'currency': record.get_validation('currency'),
+                    'bill_reference': record.get_validation('bill_reference')
+                }
+                params = {
+                    'values': values,
+                    'document_token': record.extract_remote_id,
+                    'account_token': account.account_token,
+                    'version': CLIENT_OCR_VERSION,
+                }
+                try:
+                    iap_tools.iap_jsonrpc(endpoint, params=params)
+                except AccessError:
+                    pass
+        exp_to_validate.extract_state = 'done'
 
     def action_submit_expenses(self, **kwargs):
         res = super(HrExpense, self).action_submit_expenses(**kwargs)
@@ -206,10 +209,11 @@ class HrExpense(models.Model):
     def _check_status(self):
         self.ensure_one()
         endpoint = self.env['ir.config_parameter'].sudo().get_param(
-            'hr_expense_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/expense/1/get_result'
+            'hr_expense_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/expense/2/get_result'
         params = {
                 'version': CLIENT_OCR_VERSION,
-                'document_id': self.extract_remote_id
+                'document_token': self.extract_remote_id,
+                'account_token': self.env['iap.account'].get('invoice_ocr').account_token,
             }
         result = iap_tools.iap_jsonrpc(endpoint, params=params)
         self.extract_status_code = result['status_code']
@@ -318,7 +322,7 @@ class HrExpense(models.Model):
         ):
             account_token = self.env['iap.account'].get('invoice_ocr')
             endpoint = self.env['ir.config_parameter'].sudo().get_param(
-                    'hr_expense_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/expense/1/parse'
+                    'hr_expense_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/expense/2/parse'
 
             #this line contact iap to create account if this is the first request. This allow iap to give free credits if the database is elligible
             self.env['iap.account'].get_credits('invoice_ocr')
@@ -345,7 +349,7 @@ class HrExpense(models.Model):
                 self.extract_status_code = result['status_code']
                 if result['status_code'] == SUCCESS:
                     self.extract_state = 'waiting_extraction'
-                    self.extract_remote_id = result['document_id']
+                    self.extract_remote_id = result['document_token']
                     if 'isMobile' in self.env.context and self.env.context['isMobile']:
                         for record in self:
                             timer = 0

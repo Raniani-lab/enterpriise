@@ -130,26 +130,28 @@ class HrApplicant(models.Model):
     def _cron_validate(self):
         """Send user corrected values to the ocr"""
         app_to_validate = self.search([('extract_state', '=', 'to_validate')])
-        documents = {
-            record.extract_remote_id: {
-                'email': record.get_validation('email'),
-                'phone': record.get_validation('phone'),
-                'mobile': record.get_validation('mobile'),
-                'name': record.get_validation('name'),
-            } for record in app_to_validate
-        }
-
-        params = {
-            'documents': documents,
-            'version': CLIENT_OCR_VERSION,
-        }
-        endpoint = self.env['ir.config_parameter'].sudo().get_param(
-            'hr_recruitment_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/applicant/1/validate_batch'
-        try:
-            iap_tools.iap_jsonrpc(endpoint, params=params)
-            app_to_validate.extract_state = 'done'
-        except AccessError:
-            pass
+        if app_to_validate:
+            account = self.env['iap.account'].get('invoice_ocr')
+            endpoint = self.env['ir.config_parameter'].sudo().get_param(
+                'hr_recruitment_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/applicant/2/validate'
+            for record in app_to_validate:
+                values = {
+                    'email': record.get_validation('email'),
+                    'phone': record.get_validation('phone'),
+                    'mobile': record.get_validation('mobile'),
+                    'name': record.get_validation('name'),
+                }
+                params = {
+                    'values': values,
+                    'document_token': record.extract_remote_id,
+                    'account_token': account.account_token,
+                    'version': CLIENT_OCR_VERSION,
+                }
+                try:
+                    iap_tools.iap_jsonrpc(endpoint, params=params)
+                except AccessError:
+                    pass
+        app_to_validate.extract_state = 'done'
 
     def write(self, vals):
         res = super().write(vals)
@@ -209,10 +211,11 @@ class HrApplicant(models.Model):
     def _check_ocr_status(self):
         self.ensure_one()
         endpoint = self.env['ir.config_parameter'].sudo().get_param(
-            'hr_recruitment_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/applicant/1/get_result'
+            'hr_recruitment_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/applicant/2/get_result'
         params = {
             'version': CLIENT_OCR_VERSION,
-            'document_id': self.extract_remote_id
+            'document_token': self.extract_remote_id,
+            'account_token': self.env['iap.account'].get('invoice_ocr').account_token,
         }
         result = iap_tools.iap_jsonrpc(endpoint, params=params)
         self.extract_status_code = result['status_code']
@@ -292,7 +295,7 @@ class HrApplicant(models.Model):
         ):
             account_token = self.env['iap.account'].get('invoice_ocr')
             endpoint = self.env['ir.config_parameter'].sudo().get_param(
-                    'hr_recruitment_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/applicant/1/parse'
+                    'hr_recruitment_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/applicant/2/parse'
 
             #this line contact iap to create account if this is the first request. This allow iap to give free credits if the database is elligible
             self.env['iap.account'].get_credits('invoice_ocr')
@@ -317,7 +320,7 @@ class HrApplicant(models.Model):
                 self.extract_status_code = result['status_code']
                 if result['status_code'] == SUCCESS:
                     self.extract_state = 'waiting_extraction'
-                    self.extract_remote_id = result['document_id']
+                    self.extract_remote_id = result['document_token']
                 elif result['status_code'] == ERROR_NOT_ENOUGH_CREDIT:
                     self.extract_state = 'not_enough_credit'
                 else:

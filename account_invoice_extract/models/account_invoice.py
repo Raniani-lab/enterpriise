@@ -275,13 +275,13 @@ class AccountMove(models.Model):
                 'webhook_url': webhook_url,
             }
             try:
-                result = self._contact_iap_extract('/api/extract/invoice/1/parse', params)
+                result = self._contact_iap_extract('/api/extract/invoice/2/parse', params)
                 self.extract_status_code = result['status_code']
                 if result['status_code'] == SUCCESS:
                     if self.env['ir.config_parameter'].sudo().get_param("account_invoice_extract.already_notified", True):
                         self.env['ir.config_parameter'].sudo().set_param("account_invoice_extract.already_notified", False)
                     self.extract_state = 'waiting_extraction'
-                    self.extract_remote_id = result['document_id']
+                    self.extract_remote_id = result['document_token']
                     self.extract_attachment_id = attachments
                 elif result['status_code'] == ERROR_NOT_ENOUGH_CREDIT:
                     self.send_no_credit_notification()
@@ -403,31 +403,36 @@ class AccountMove(models.Model):
     @api.model
     def _cron_validate(self):
         inv_to_validate = self.search([('extract_state', '=', 'to_validate'), ('state', '=', 'posted')])
-        documents = {
-            record.extract_remote_id: {
-                'total': record.get_validation('total'),
-                'subtotal': record.get_validation('subtotal'),
-                'global_taxes': record.get_validation('global_taxes'),
-                'global_taxes_amount': record.get_validation('global_taxes_amount'),
-                'date': record.get_validation('date'),
-                'due_date': record.get_validation('due_date'),
-                'invoice_id': record.get_validation('invoice_id'),
-                'partner': record.get_validation('partner'),
-                'VAT_Number': record.get_validation('VAT_Number'),
-                'currency': record.get_validation('currency'),
-                'payment_ref': record.get_validation('payment_ref'),
-                'iban': record.get_validation('iban'),
-                'SWIFT_code': record.get_validation('SWIFT_code'),
-                'merged_lines': self.env.company.extract_single_line_per_tax,
-                'invoice_lines': record.get_validation('invoice_lines')
-            } for record in inv_to_validate
-        }
 
-        if documents:
-            try:
-                self._contact_iap_extract('/api/extract/invoice/1/validate_batch', params={'documents': documents})
-            except AccessError:
-                pass
+        if inv_to_validate:
+            account = self.env['iap.account'].get('invoice_ocr')
+            for record in inv_to_validate:
+                values = {
+                    'total': record.get_validation('total'),
+                    'subtotal': record.get_validation('subtotal'),
+                    'global_taxes': record.get_validation('global_taxes'),
+                    'global_taxes_amount': record.get_validation('global_taxes_amount'),
+                    'date': record.get_validation('date'),
+                    'due_date': record.get_validation('due_date'),
+                    'invoice_id': record.get_validation('invoice_id'),
+                    'partner': record.get_validation('partner'),
+                    'VAT_Number': record.get_validation('VAT_Number'),
+                    'currency': record.get_validation('currency'),
+                    'payment_ref': record.get_validation('payment_ref'),
+                    'iban': record.get_validation('iban'),
+                    'SWIFT_code': record.get_validation('SWIFT_code'),
+                    'merged_lines': self.env.company.extract_single_line_per_tax,
+                    'invoice_lines': record.get_validation('invoice_lines')
+                }
+                params = {
+                    'values': values,
+                    'document_token': record.extract_remote_id,
+                    'account_token': account.account_token,
+                }
+                try:
+                    self._contact_iap_extract('/api/extract/invoice/2/validate', params=params)
+                except AccessError:
+                    pass
 
         inv_to_validate.extract_state = 'done'
         inv_to_validate.mapped('extract_word_ids').unlink()  # We don't need word data anymore, we can delete them
@@ -793,9 +798,10 @@ class AccountMove(models.Model):
         self.ensure_one()
         if self.state == 'draft':
             params = {
-                'document_id': self.extract_remote_id
+                'document_token': self.extract_remote_id,
+                'account_token': self.env['iap.account'].get('invoice_ocr').account_token,
             }
-            result = self._contact_iap_extract('/api/extract/invoice/1/get_result', params=params)
+            result = self._contact_iap_extract('/api/extract/invoice/2/get_result', params=params)
             self.extract_status_code = result['status_code']
             if result['status_code'] == SUCCESS:
                 self.extract_state = "waiting_validation"

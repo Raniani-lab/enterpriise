@@ -540,7 +540,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
             'datas': base64.b64encode(b'My attachment'),
         })
 
-        with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+        with self.mock_iap_extract({'status_code': SUCCESS, 'document_token': 1}, {}):
             invoice.message_post(attachment_ids=[test_attachment.id])
 
         self.assertEqual(invoice.extract_state, 'waiting_extraction')
@@ -556,7 +556,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
             'res_id': invoice.id,
         })
 
-        with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+        with self.mock_iap_extract({'status_code': SUCCESS, 'document_token': 1}, {}):
             test_attachment.register_as_main_attachment()
 
         self.assertEqual(invoice.extract_state, 'waiting_extraction')
@@ -568,7 +568,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
             'name': "an attachment",
             'datas': base64.b64encode(b'My attachment'),
         })
-        with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+        with self.mock_iap_extract({'status_code': SUCCESS, 'document_token': 1}, {}):
             action = self.env['account.journal'].with_context(default_move_type='out_invoice').create_document_from_attachment(test_attachment.id)
 
         self.assertEqual(self.env['account.move'].browse(action['res_id']).extract_state, 'waiting_extraction')
@@ -607,7 +607,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
                '{attachment}\n'\
                '\n'\
                '--000000000000a47519057e029630--\n'.format(alias_name=journal.alias_id.alias_name, alias_domain=journal.alias_id.alias_domain, attachment=base64.b64encode(b'My attachment'))
-        with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+        with self.mock_iap_extract({'status_code': SUCCESS, 'document_token': 1}, {}):
             invoice = self.env['account.move'].browse(self.env['mail.thread'].message_process('account.move', mail))
         self.assertEqual(invoice.extract_state, 'waiting_extraction')
 
@@ -620,7 +620,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
             'datas': base64.b64encode(b'My attachment'),
         })
 
-        with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+        with self.mock_iap_extract({'status_code': SUCCESS, 'document_token': 1}, {}):
             invoice.message_post(attachment_ids=[test_attachment.id])
 
         self.assertEqual(invoice.extract_state, 'no_extract_requested')
@@ -636,7 +636,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
             'res_id': invoice.id,
         })
 
-        with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+        with self.mock_iap_extract({'status_code': SUCCESS, 'document_token': 1}, {}):
             test_attachment.register_as_main_attachment()
 
         self.assertEqual(invoice.extract_state, 'no_extract_requested')
@@ -653,7 +653,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
                 'datas': base64.b64encode(b'My attachment'),
             })
 
-            with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+            with self.mock_iap_extract({'status_code': SUCCESS, 'document_token': 1}, {}):
                 invoice.message_post(attachment_ids=[test_attachment.id])
 
             self.assertEqual(invoice.extract_state, 'no_extract_requested')
@@ -667,7 +667,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
                 'res_id': invoice.id,
             })
 
-            with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+            with self.mock_iap_extract({'status_code': SUCCESS, 'document_token': 1}, {}):
                 test_attachment.register_as_main_attachment()
 
             self.assertEqual(invoice.extract_state, 'no_extract_requested')

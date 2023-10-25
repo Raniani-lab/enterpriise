@@ -38,7 +38,7 @@ class TestRecruitmentExtractProcess(TestHrCommon):
                 'phone': {'selected_value': {'content': '+32488888888'}, 'words': []},
                 'mobile': {'selected_value': {'content': '+32499999999'}, 'words': []},
             }],
-            'document_id': 1234567,
+            'document_token': 1234567,
         }
 
     @contextmanager

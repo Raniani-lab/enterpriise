@@ -9,7 +9,7 @@
         </t>
         <t t-elif="props.size === 'small'">
             <td>#<t t-esc="props.rank"/></td>
-            <td><img t-attf-src="{{ this.imgSrc }}" alt="Avatar" width="32" height="32" class="rounded border"/></td>
+            <td class="p-0"><img t-attf-src="{{ this.imgSrc }}" alt="Avatar" width="32" height="32" class="rounded border"/></td>
         </t>
         <div t-else="props.size === 'medium'" class="position-relative d-flex justify-content-center align-items-center">
             <img t-attf-src="{{ this.imgSrc }}" alt="Avatar" width="100" height="100" t-attf-class="position-relative rounded-3 {{rankingClassBorder}} mb-2"/>

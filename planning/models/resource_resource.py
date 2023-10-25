@@ -23,9 +23,19 @@ class ResourceResource(models.Model):
 
     @api.depends('employee_id')
     def _compute_avatar_128(self):
+        is_hr_user = self.env.user.has_group('hr.group_hr_user')
+        if not is_hr_user:
+            public_employees = self.env['hr.employee.public'].with_context(active_test=False).search([
+                ('resource_id', 'in', self.ids),
+            ])
+            avatar_per_employee_id = {emp.id: emp.avatar_128 for emp in public_employees}
+
         for resource in self:
-            employees = resource.with_context(active_test=False).employee_id
-            resource.avatar_128 = employees[0].avatar_128 if employees else False
+            employee = resource.with_context(active_test=False).employee_id
+            if is_hr_user:
+                resource.avatar_128 = employee and employee[0].avatar_128
+            else:
+                resource.avatar_128 = avatar_per_employee_id[employee[0].id]
 
     @api.depends('role_ids')
     def _compute_default_role_id(self):

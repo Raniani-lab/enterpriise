@@ -3507,7 +3507,7 @@ msgstr "Fronteras"
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__d03
 msgid "Funeral expenses"
-msgstr "Gastos funerales"
+msgstr "Gastos funerarios"
 
 #. module: l10n_mx_edi
 #: model:res.city,name:l10n_mx_edi.res_city_mx_mic_033

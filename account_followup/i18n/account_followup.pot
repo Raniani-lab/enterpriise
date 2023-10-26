@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~16.3+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-28 12:54+0000\n"
-"PO-Revision-Date: 2023-07-28 12:54+0000\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 22:20+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -202,6 +202,14 @@ msgid ""
 msgstr ""
 
 #. module: account_followup
+#: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
+msgid ""
+"<strong>\n"
+"                                Payment Reminder\n"
+"                            </strong>"
+msgstr ""
+
+#. module: account_followup
 #: model:ir.model.constraint,message:account_followup.constraint_account_followup_followup_line_uniq_name
 msgid ""
 "A follow-up action name must be unique. This name is already set to another "
@@ -238,11 +246,6 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__activity_type_id
 msgid "Activity Type"
-msgstr ""
-
-#. module: account_followup
-#: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
-msgid "Add a note"
 msgstr ""
 
 #. module: account_followup
@@ -296,8 +299,8 @@ msgid "Cancel"
 msgstr ""
 
 #. module: account_followup
-#: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
-msgid "Check them"
+#: model_terms:ir.ui.view,arch_db:account_followup.missing_information_view_form
+msgid "Close"
 msgstr ""
 
 #. module: account_followup
@@ -336,12 +339,14 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__create_uid
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__create_uid
+#: model:ir.model.fields,field_description:account_followup.field_account_followup_missing_information_wizard__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__create_date
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__create_date
+#: model:ir.model.fields,field_description:account_followup.field_account_followup_missing_information_wizard__create_date
 msgid "Created on"
 msgstr ""
 
@@ -427,6 +432,7 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__display_name
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__display_name
+#: model:ir.model.fields,field_description:account_followup.field_account_followup_missing_information_wizard__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -543,8 +549,18 @@ msgid "Follow-up letter generated"
 msgstr ""
 
 #. module: account_followup
+#: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
+msgid "Follow-up message"
+msgstr ""
+
+#. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.account_followup_journal_dashboard_kanban_view
 msgid "Follow-up reports"
+msgstr ""
+
+#. module: account_followup
+#: model:ir.model,name:account_followup.model_account_followup_missing_information_wizard
+msgid "Followup missing information wizard"
 msgstr ""
 
 #. module: account_followup
@@ -568,6 +584,7 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__id
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__id
+#: model:ir.model.fields,field_description:account_followup.field_account_followup_missing_information_wizard__id
 msgid "ID"
 msgstr ""
 
@@ -579,13 +596,11 @@ msgid "In need of action"
 msgstr ""
 
 #. module: account_followup
+#. odoo-python
+#: code:addons/account_followup/models/account_followup_report.py:0
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
+#, python-format
 msgid "Invoice No."
-msgstr ""
-
-#. module: account_followup
-#: model:ir.model.fields,field_description:account_followup.field_account_move_line__invoice_date
-msgid "Invoice/Bill Date"
 msgstr ""
 
 #. module: account_followup
@@ -616,12 +631,14 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__write_uid
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__write_uid
+#: model:ir.model.fields,field_description:account_followup.field_account_followup_missing_information_wizard__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__write_date
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__write_date
+#: model:ir.model.fields,field_description:account_followup.field_account_followup_missing_information_wizard__write_date
 msgid "Last Updated on"
 msgstr ""
 
@@ -646,6 +663,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_search_view
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_line_filter
 msgid "Manual"
+msgstr ""
+
+#. module: account_followup
+#. odoo-python
+#: code:addons/account_followup/models/res_partner.py:0
+#: code:addons/account_followup/wizard/followup_missing_information.py:0
+#, python-format
+msgid "Missing information"
 msgstr ""
 
 #. module: account_followup
@@ -726,10 +751,7 @@ msgid "Partner"
 msgstr ""
 
 #. module: account_followup
-#. odoo-python
-#: code:addons/account_followup/models/account_followup_report.py:0
 #: model:mail.template,name:account_followup.email_template_followup_1
-#, python-format
 msgid "Payment Reminder"
 msgstr ""
 
@@ -855,11 +877,6 @@ msgid "Sms Template"
 msgstr ""
 
 #. module: account_followup
-#: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
-msgid "Some journal items appear to point to obsolete report lines."
-msgstr ""
-
-#. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__subject
 msgid "Subject"
 msgstr ""
@@ -867,6 +884,16 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__activity_summary
 msgid "Summary"
+msgstr ""
+
+#. module: account_followup
+#: model_terms:ir.ui.view,arch_db:account_followup.table_header_template_followup_report
+msgid "Table Header"
+msgstr ""
+
+#. module: account_followup
+#: model_terms:ir.ui.view,arch_db:account_followup.line_template
+msgid "Table Value"
 msgstr ""
 
 #. module: account_followup
@@ -904,8 +931,8 @@ msgid ""
 msgstr ""
 
 #. module: account_followup
-#: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
-msgid "There are"
+#: model_terms:ir.ui.view,arch_db:account_followup.followup_filter_info_template
+msgid "Today's date"
 msgstr ""
 
 #. module: account_followup
@@ -956,6 +983,18 @@ msgid "Unreconciled Aml"
 msgstr ""
 
 #. module: account_followup
+#: model_terms:ir.ui.view,arch_db:account_followup.missing_information_view_form
+msgid "View partners"
+msgstr ""
+
+#. module: account_followup
+#: model_terms:ir.ui.view,arch_db:account_followup.missing_information_view_form
+msgid ""
+"We were not able to process some of the automated follow-up actions due to "
+"missing information on the partners."
+msgstr ""
+
+#. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__res_partner__followup_status__with_overdue_invoices
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "With overdue invoices"
@@ -990,16 +1029,6 @@ msgid ""
 msgstr ""
 
 #. module: account_followup
-#: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
-msgid "[Draft]"
-msgstr ""
-
-#. module: account_followup
-#: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
-msgid "and correct their tax tags if necessary."
-msgstr ""
-
-#. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid "days after due date"
 msgstr ""
@@ -1014,16 +1043,6 @@ msgstr ""
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "payment reminder"
-msgstr ""
-
-#. module: account_followup
-#: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
-msgid "prior or included in this period"
-msgstr ""
-
-#. module: account_followup
-#: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
-msgid "unposted Journal Entries"
 msgstr ""
 
 #. module: account_followup

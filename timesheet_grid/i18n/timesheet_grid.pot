@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~16.3+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-30 05:23+0000\n"
-"PO-Revision-Date: 2023-05-30 05:23+0000\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 22:20+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,6 +20,13 @@ msgstr ""
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "%s Spent"
+msgstr ""
+
+#. module: timesheet_grid
+#. odoo-javascript
+#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
+#, python-format
+msgid "+ [A] to add"
 msgstr ""
 
 #. module: timesheet_grid
@@ -249,13 +256,6 @@ msgstr ""
 msgid ""
 "Check that your employees correctly filled in their timesheets and that "
 "their time is billable."
-msgstr ""
-
-#. module: timesheet_grid
-#. odoo-javascript
-#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
-#, python-format
-msgid "Click on"
 msgstr ""
 
 #. module: timesheet_grid
@@ -522,6 +522,7 @@ msgstr ""
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
+#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
 #, python-format
 msgid "Enter"
 msgstr ""
@@ -717,6 +718,8 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
 #: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
+#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
+#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
 #, python-format
 msgid "Press"
 msgstr ""
@@ -819,6 +822,14 @@ msgstr ""
 msgid ""
 "Set the number of hours you spent on this project (e.g. 1:30 or 1.5). "
 "<i>Tip: use the tab keys to easily navigate from one cell to another.</i>"
+msgstr ""
+
+#. module: timesheet_grid
+#. odoo-javascript
+#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
+#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
+#, python-format
+msgid "Shift"
 msgstr ""
 
 #. module: timesheet_grid
@@ -1171,6 +1182,14 @@ msgstr ""
 
 #. module: timesheet_grid
 #. odoo-python
+#: code:addons/timesheet_grid/models/hr_employee.py:0
+#: code:addons/timesheet_grid/models/res_users.py:0
+#, python-format
+msgid "You are not allowed to see timesheets."
+msgstr ""
+
+#. module: timesheet_grid
+#. odoo-python
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid ""
@@ -1257,6 +1276,13 @@ msgid "after the end of the week"
 msgstr ""
 
 #. module: timesheet_grid
+#. odoo-javascript
+#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
+#, python-format
+msgid "and click on"
+msgstr ""
+
+#. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "days"
 msgstr ""
@@ -1286,19 +1312,26 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
 #, python-format
-msgid "or a letter to start the timer"
+msgid "or [a] to launch the timer"
 msgstr ""
 
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
 #, python-format
-msgid "to add"
+msgid "or click on"
 msgstr ""
 
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
 #, python-format
-msgid "to start the timer"
+msgid "to add 15 min"
+msgstr ""
+
+#. module: timesheet_grid
+#. odoo-javascript
+#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
+#, python-format
+msgid "to launch the timer"
 msgstr ""

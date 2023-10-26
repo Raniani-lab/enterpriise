@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.3alpha1+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2023-05-16 16:01+0000\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 22:20+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -30,6 +30,11 @@ msgstr ""
 #: code:addons/pos_preparation_display/models/preparation_display.py:0
 #, python-format
 msgid "A preparation display must have a minimum of one step."
+msgstr ""
+
+#. module: pos_preparation_display
+#: model:ir.model.fields,field_description:pos_preparation_display.field_pos_preparation_display_display__access_token
+msgid "Access Token"
 msgstr ""
 
 #. module: pos_preparation_display
@@ -60,21 +65,6 @@ msgid "All the stage ids in which the order is placed"
 msgstr ""
 
 #. module: pos_preparation_display
-#. odoo-javascript
-#: code:addons/pos_preparation_display/static/src/app/components/order/order.xml:0
-#, python-format
-msgid "Archive"
-msgstr ""
-
-#. module: pos_preparation_display
-#. odoo-javascript
-#: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
-#: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
-#, python-format
-msgid "Archive all"
-msgstr ""
-
-#. module: pos_preparation_display
 #: model_terms:ir.ui.view,arch_db:pos_preparation_display.preparation_display_reset_wizard
 msgid ""
 "Archive all preparation display's orders for a fresh start. This will not "
@@ -93,6 +83,14 @@ msgstr ""
 
 #. module: pos_preparation_display
 #. odoo-javascript
+#: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
+#, python-format
+msgid "Clear All Filters"
+msgstr ""
+
+#. module: pos_preparation_display
+#. odoo-javascript
+#: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
 #: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
 #, python-format
 msgid "Close"
@@ -134,9 +132,32 @@ msgid "Created on"
 msgstr ""
 
 #. module: pos_preparation_display
+#. odoo-javascript
+#: code:addons/pos_preparation_display/static/src/app/components/order/order.xml:0
+#, python-format
+msgid "Delete"
+msgstr ""
+
+#. module: pos_preparation_display
+#. odoo-javascript
+#: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
+#: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
+#: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
+#: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
+#, python-format
+msgid "Delete All"
+msgstr ""
+
+#. module: pos_preparation_display
 #: model:ir.model.fields,help:pos_preparation_display.field_pos_preparation_display_order__displayed
 msgid ""
 "Determines whether the order should be displayed on the preparation screen"
+msgstr ""
+
+#. module: pos_preparation_display
+#: model_terms:ir.actions.act_window,help:pos_preparation_display.action_preparation_display
+msgid ""
+"Different products and categories are sent to different tablets and screens."
 msgstr ""
 
 #. module: pos_preparation_display
@@ -156,9 +177,23 @@ msgstr ""
 
 #. module: pos_preparation_display
 #. odoo-javascript
+#: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
+#, python-format
+msgid "Explore demo data"
+msgstr ""
+
+#. module: pos_preparation_display
+#. odoo-javascript
 #: code:addons/pos_preparation_display/static/src/override/point_of_sale/pos_store.js:0
 #, python-format
 msgid "Failed in sending the changes to preparation display"
+msgstr ""
+
+#. module: pos_preparation_display
+#. odoo-javascript
+#: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
+#, python-format
+msgid "Filters"
 msgstr ""
 
 #. module: pos_preparation_display
@@ -187,8 +222,20 @@ msgid "Internal notes written at the time of the order"
 msgstr ""
 
 #. module: pos_preparation_display
+#: model:ir.model.fields,field_description:pos_preparation_display.field_pos_preparation_display_display__contains_bar_restaurant
+#: model_terms:ir.ui.view,arch_db:pos_preparation_display.preparation_display_view_search
+msgid "Is a Bar/Restaurant"
+msgstr ""
+
+#. module: pos_preparation_display
 #: model:ir.model.fields,field_description:pos_preparation_display.field_pos_preparation_display_order_stage__done
 msgid "Is the order done"
+msgstr ""
+
+#. module: pos_preparation_display
+#: model:ir.actions.server,name:pos_preparation_display.action_pos_preparation_display_kitchen_display
+#: model:ir.ui.menu,name:pos_preparation_display.menu_point_kitchen_display_root
+msgid "Kitchen Display"
 msgstr ""
 
 #. module: pos_preparation_display
@@ -212,9 +259,29 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: pos_preparation_display
+#. odoo-javascript
+#: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
+#: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
+#, python-format
+msgid "Loading..."
+msgstr ""
+
+#. module: pos_preparation_display
 #: model:ir.model.fields,field_description:pos_preparation_display.field_pos_preparation_display_display__name
 #: model:ir.model.fields,field_description:pos_preparation_display.field_pos_preparation_display_stage__name
 msgid "Name"
+msgstr ""
+
+#. module: pos_preparation_display
+#: model_terms:ir.actions.act_window,help:pos_preparation_display.action_preparation_display
+msgid "Need a touchscreen interface to manage order ?"
+msgstr ""
+
+#. module: pos_preparation_display
+#. odoo-javascript
+#: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
+#, python-format
+msgid "No data available."
 msgstr ""
 
 #. module: pos_preparation_display
@@ -224,7 +291,7 @@ msgstr ""
 
 #. module: pos_preparation_display
 #: model_terms:ir.ui.view,arch_db:pos_preparation_display.preparation_display_view_kanban
-msgid "Open Display"
+msgid "Open Preparation Display"
 msgstr ""
 
 #. module: pos_preparation_display
@@ -264,6 +331,11 @@ msgid "Point of Sale"
 msgstr ""
 
 #. module: pos_preparation_display
+#: model:ir.model,name:pos_preparation_display.model_pos_order
+msgid "Point of Sale Orders"
+msgstr ""
+
+#. module: pos_preparation_display
 #: model:ir.model,name:pos_preparation_display.model_pos_session
 msgid "Point of Sale Session"
 msgstr ""
@@ -284,7 +356,9 @@ msgid "Pos Order"
 msgstr ""
 
 #. module: pos_preparation_display
+#: model:ir.actions.act_url,name:pos_preparation_display.action_pos_preparation_display_bar_restaurant_filter_link
 #: model:ir.actions.act_window,name:pos_preparation_display.action_preparation_display
+#: model:ir.actions.act_window,name:pos_preparation_display.action_preparation_display_bar_restaurant_filter
 #: model:ir.model.fields,field_description:pos_preparation_display.field_pos_preparation_display_order_stage__preparation_display_id
 #: model_terms:ir.ui.view,arch_db:pos_preparation_display.preparation_display_view_form
 #: model_terms:ir.ui.view,arch_db:pos_preparation_display.preparation_display_view_search
@@ -334,7 +408,18 @@ msgid "Quantity of ordered product"
 msgstr ""
 
 #. module: pos_preparation_display
+#. odoo-javascript
+#: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
+#: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
+#, python-format
+msgid "Recall"
+msgstr ""
+
+#. module: pos_preparation_display
+#. odoo-javascript
+#: code:addons/pos_preparation_display/static/src/app/components/order/order.xml:0
 #: model_terms:ir.ui.view,arch_db:pos_preparation_display.preparation_display_reset_wizard
+#, python-format
 msgid "Reset"
 msgstr ""
 
@@ -353,6 +438,11 @@ msgstr ""
 #. module: pos_preparation_display
 #: model_terms:ir.ui.view,arch_db:pos_preparation_display.preparation_display_view_kanban
 msgid "Reset all orders"
+msgstr ""
+
+#. module: pos_preparation_display
+#: model:ir.model.fields,field_description:pos_preparation_display.field_pos_preparation_display_orderline__attribute_value_ids
+msgid "Selected Attributes"
 msgstr ""
 
 #. module: pos_preparation_display
@@ -402,7 +492,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
 #, python-format
-msgid "filter(s)"
+msgid "or simply wait for commands to be sent to this location."
 msgstr ""
 
 #. module: pos_preparation_display

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~16.3+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-30 05:24+0000\n"
-"PO-Revision-Date: 2023-05-30 05:24+0000\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 22:20+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -28,8 +28,10 @@ msgid ""
 msgstr ""
 
 #. module: website_helpdesk
-#: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar
-msgid "<span class=\"navbar-brand h4 my-0 me-auto\">Help Center</span>"
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.footer
+msgid ""
+"<span class=\"h4-fs\">Can't find your answer? Our support team is here to "
+"help.</span>"
 msgstr ""
 
 #. module: website_helpdesk
@@ -71,20 +73,6 @@ msgstr ""
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.search_results
 msgid "<span class=\"text-600\">Search results for</span>"
-msgstr ""
-
-#. module: website_helpdesk
-#: model_terms:ir.ui.view,arch_db:website_helpdesk.footer
-msgid ""
-"<span style=\"font-size: 24px;\">Can't find your answer? Our support team is"
-" here to help.</span>"
-msgstr ""
-
-#. module: website_helpdesk
-#: model_terms:ir.ui.view,arch_db:website_helpdesk.knowledge_base
-msgid ""
-"<span style=\"font-size: 48px; font-weight: bolder;\">How can we help "
-"you?</span>"
 msgstr ""
 
 #. module: website_helpdesk
@@ -173,9 +161,15 @@ msgstr ""
 #. module: website_helpdesk
 #. odoo-python
 #: code:addons/website_helpdesk/models/helpdesk.py:0
+#: code:addons/website_helpdesk/models/helpdesk.py:0
 #: code:addons/website_helpdesk/models/website.py:0
 #, python-format
 msgid "Help"
+msgstr ""
+
+#. module: website_helpdesk
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar
+msgid "Help Center"
 msgstr ""
 
 #. module: website_helpdesk
@@ -196,6 +190,11 @@ msgstr ""
 #: model:ir.model,name:website_helpdesk.model_helpdesk_team
 #, python-format
 msgid "Helpdesk Team"
+msgstr ""
+
+#. module: website_helpdesk
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.knowledge_base
+msgid "How can we help you?"
 msgstr ""
 
 #. module: website_helpdesk
@@ -306,6 +305,7 @@ msgid "Website"
 msgstr ""
 
 #. module: website_helpdesk
+#: model:ir.model,name:website_helpdesk.model_website_menu
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_menu_id
 msgid "Website Menu"
 msgstr ""

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~16.3+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-30 05:25+0000\n"
-"PO-Revision-Date: 2023-05-30 05:25+0000\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 22:20+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -69,14 +69,14 @@ msgstr ""
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "Check the expired"
 msgstr ""
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "Check the premature"
 msgstr ""
@@ -153,7 +153,7 @@ msgstr ""
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_options.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/filters/filter_intrastat_options.xml:0
 #, python-format
 msgid "Extended Mode"
 msgstr ""
@@ -258,14 +258,14 @@ msgstr ""
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_partner.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/filters/filter_intrastat_partner.xml:0
 #, python-format
 msgid "Only with VAT numbers"
 msgstr ""
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_options.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/filters/filter_intrastat_options.xml:0
 #, python-format
 msgid "Options:"
 msgstr ""
@@ -283,7 +283,7 @@ msgstr ""
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_partner.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/filters/filter_intrastat_partner.xml:0
 #, python-format
 msgid "Partners:"
 msgstr ""
@@ -318,30 +318,30 @@ msgstr ""
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "Some lines have expired intrastat"
 msgstr ""
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "Some lines have premature intrastat"
 msgstr ""
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "Some lines have undefined"
 msgstr ""
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "Some products have undefined"
 msgstr ""
@@ -416,7 +416,7 @@ msgstr ""
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_type.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/filters/filter_intrastat_type.xml:0
 #, python-format
 msgid "Types:"
 msgstr ""
@@ -464,7 +464,7 @@ msgstr ""
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "commodity codes"
 msgstr ""
@@ -561,15 +561,21 @@ msgstr ""
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
+#, python-format
+msgid "product commodity codes"
+msgstr ""
+
+#. module: account_intrastat
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "product's commodity codes"
 msgstr ""
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "supplementary units"
 msgstr ""
@@ -581,24 +587,24 @@ msgstr ""
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "transaction codes"
 msgstr ""
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "weights"
 msgstr ""
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "when they are required."
 msgstr ""

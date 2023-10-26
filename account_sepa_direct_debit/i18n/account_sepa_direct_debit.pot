@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~16.3+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-30 05:25+0000\n"
-"PO-Revision-Date: 2023-05-30 05:25+0000\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 22:20+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -97,6 +97,24 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "<strong>Zip: </strong>"
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#. odoo-python
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:0
+#, python-format
+msgid ""
+"A SEPA direct debit version should be selected to generate the addresses in "
+"the export file."
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#. odoo-python
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:0
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:0
+#, python-format
+msgid ""
+"A SEPA direct debit version should be selected to generate the export file."
 msgstr ""
 
 #. module: account_sepa_direct_debit
@@ -330,6 +348,11 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__debtor_id_code
 msgid "Debtor Identifier"
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#: model:ir.model.fields.selection,name:account_sepa_direct_debit.selection__account_journal__debit_sepa_pain_version__pain_008_001_02
+msgid "Default (Pain 008.001.02)"
 msgstr ""
 
 #. module: account_sepa_direct_debit
@@ -838,6 +861,11 @@ msgid "SEPA Direct Debit Mandate"
 msgstr ""
 
 #. module: account_sepa_direct_debit
+#: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_journal__debit_sepa_pain_version
+msgid "SEPA Direct Debit Pain Version"
+msgstr ""
+
+#. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_res_company__sdd_creditor_identifier
 msgid ""
 "SEPA Direct Debit creditor identifier of the company, given by the bank."
@@ -850,6 +878,16 @@ msgstr ""
 msgid ""
 "SEPA Direct Debit scheme only accepts IBAN account numbers. Please select an"
 " IBAN-compliant debtor account for this mandate."
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.view_account_journal_form
+msgid "SEPA Pain Version"
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.view_account_journal_form
+msgid "SEPA Pain version"
 msgstr ""
 
 #. module: account_sepa_direct_debit
@@ -871,6 +909,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_partner__sdd_mandate_ids
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_users__sdd_mandate_ids
 msgid "Sdd Mandate"
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#. odoo-python
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:0
+#, python-format
+msgid "Select a SEPA Direct Debit version before generating the XML."
 msgstr ""
 
 #. module: account_sepa_direct_debit
@@ -937,6 +982,24 @@ msgstr ""
 #: code:addons/account_sepa_direct_debit/models/res_company.py:0
 #, python-format
 msgid "The creditor identifier exceeds the maximum length of 35 characters."
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#. odoo-python
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:0
+#, python-format
+msgid ""
+"The debtor and creditor city name is a compulsary information when "
+"generating the SDD XML."
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#. odoo-python
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:0
+#, python-format
+msgid ""
+"The debtor and creditor country is a compulsary information when generating "
+"the SDD XML."
 msgstr ""
 
 #. module: account_sepa_direct_debit
@@ -1060,6 +1123,11 @@ msgid ""
 "Unable to post payment %(payment)r due to no usable mandate being available "
 "at date %(date)s for partner %(partner)r. Please create one before encoding "
 "a SEPA Direct Debit payment."
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#: model:ir.model.fields.selection,name:account_sepa_direct_debit.selection__account_journal__debit_sepa_pain_version__pain_008_001_08
+msgid "Updated 2023 (Pain 008.001.08)"
 msgstr ""
 
 #. module: account_sepa_direct_debit

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~16.3+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-30 05:27+0000\n"
-"PO-Revision-Date: 2023-05-30 05:27+0000\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 22:21+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,6 +20,13 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/assets/list_view/list_renderer.js:0
 #, python-format
 msgid "%(field name)s by %(order)s"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/actions/version_history/version_history_action.js:0
+#, python-format
+msgid "%(name)s (restored from %(timestamp)s)"
 msgstr ""
 
 #. module: spreadsheet_edition
@@ -48,6 +55,20 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/list/side_panels/listing_details_side_panel.js:0
 #, python-format
 msgid "%(sortName)s (descending)"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/actions/control_panel/spreadsheet_control_panel.js:0
+#, python-format
+msgid "- dates: %s"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/actions/control_panel/spreadsheet_control_panel.js:0
+#, python-format
+msgid "- numbers: %s"
 msgstr ""
 
 #. module: spreadsheet_edition
@@ -92,8 +113,16 @@ msgstr ""
 
 #. module: spreadsheet_edition
 #. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/relation_filter_editor_side_panel.xml:0
+#, python-format
+msgid "Automatically filter on the current user"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/list/side_panels/listing_all_side_panel.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_list_side_panel.xml:0
+#: code:addons/spreadsheet_edition/static/src/bundle/version_history/side_panel/version_history_side_panel.xml:0
 #, python-format
 msgid "Back"
 msgstr ""
@@ -115,18 +144,11 @@ msgstr ""
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.xml:0
-#: code:addons/spreadsheet_edition/static/src/bundle/actions/spreadsheet.xml:0
+#: code:addons/spreadsheet_edition/static/src/bundle/actions/input_dialog/input_dialog.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/filter_editor_side_panel.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/ir_menu_selector/ir_menu_selector.xml:0
 #, python-format
 msgid "Cancel"
-msgstr ""
-
-#. module: spreadsheet_edition
-#. odoo-javascript
-#: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
-#, python-format
-msgid "Clear history"
 msgstr ""
 
 #. module: spreadsheet_edition
@@ -142,7 +164,8 @@ msgstr ""
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.xml:0
-#: code:addons/spreadsheet_edition/static/src/bundle/actions/spreadsheet.xml:0
+#: code:addons/spreadsheet_edition/static/src/bundle/actions/input_dialog/input_dialog.xml:0
+#: code:addons/spreadsheet_edition/static/src/bundle/actions/spreadsheet_component.js:0
 #: code:addons/spreadsheet_edition/static/src/bundle/ir_menu_selector/ir_menu_selector.xml:0
 #, python-format
 msgid "Confirm"
@@ -160,9 +183,23 @@ msgstr ""
 
 #. module: spreadsheet_edition
 #. odoo-javascript
-#: code:addons/spreadsheet_edition/static/src/bundle/actions/abstract_spreadsheet_action.js:0
+#: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/odoo_line/odoo_line_config_panel.xml:0
+#, python-format
+msgid "Cumulative data"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/hooks.js:0
 #, python-format
 msgid "Currency"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/version_history/side_panel/version_history_item.js:0
+#, python-format
+msgid "Current Version"
 msgstr ""
 
 #. module: spreadsheet_edition
@@ -212,6 +249,15 @@ msgstr ""
 
 #. module: spreadsheet_edition
 #. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/actions/control_panel/spreadsheet_control_panel.js:0
+#, python-format
+msgid ""
+"Difference between user locale (%(user_locale)s) and spreadsheet locale "
+"(%(spreadsheet_locale)s). This spreadsheet is using the formats below:"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
 msgid "Dimensions"
@@ -231,6 +277,7 @@ msgstr ""
 
 #. module: spreadsheet_edition
 #. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/common/config_panel.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/list/side_panels/listing_details_side_panel.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
@@ -267,6 +314,7 @@ msgstr ""
 
 #. module: spreadsheet_edition
 #. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/common/config_panel.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/list/side_panels/listing_details_side_panel.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
@@ -275,16 +323,11 @@ msgstr ""
 
 #. module: spreadsheet_edition
 #. odoo-javascript
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/filter_editor_side_panel.xml:0
+#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/date_filter_editor_side_panel.xml:0
+#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/relation_filter_editor_side_panel.xml:0
+#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/text_filter_editor_side_panel.xml:0
 #, python-format
 msgid "Field matching"
-msgstr ""
-
-#. module: spreadsheet_edition
-#. odoo-javascript
-#: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
-#, python-format
-msgid "File"
 msgstr ""
 
 #. module: spreadsheet_edition
@@ -302,6 +345,13 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/index.js:0
 #, python-format
 msgid "Filters"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/date_filter_editor_side_panel.js:0
+#, python-format
+msgid "From / To"
 msgstr ""
 
 #. module: spreadsheet_edition
@@ -369,6 +419,7 @@ msgstr ""
 
 #. module: spreadsheet_edition
 #. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/common/config_panel.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/list/side_panels/listing_details_side_panel.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
@@ -412,7 +463,15 @@ msgstr ""
 
 #. module: spreadsheet_edition
 #. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/version_history/side_panel/version_history_side_panel.xml:0
+#, python-format
+msgid "Load More"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
+#: code:addons/spreadsheet_edition/static/src/bundle/version_history/side_panel/version_history_item.js:0
 #, python-format
 msgid "Make a copy"
 msgstr ""
@@ -440,6 +499,28 @@ msgstr ""
 
 #. module: spreadsheet_edition
 #. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/list/plugins/list_autofill_plugin.js:0
+#, python-format
+msgid "Missing list #%s"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/pivot/plugins/pivot_autofill_plugin.js:0
+#, python-format
+msgid "Missing pivot"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/pivot/plugins/pivot_autofill_plugin.js:0
+#, python-format
+msgid "Missing pivot #%s"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/common/config_panel.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/list/side_panels/listing_details_side_panel.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__res_model
@@ -450,9 +531,16 @@ msgstr ""
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/assets/helpers.js:0
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/date_filter_editor_side_panel.js:0
+#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/date_filter_editor_side_panel.xml:0
 #, python-format
 msgid "Month"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/date_filter_editor_side_panel.js:0
+#, python-format
+msgid "Month / Quarter"
 msgstr ""
 
 #. module: spreadsheet_edition
@@ -460,6 +548,13 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "Name of the %s:"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/version_history/side_panel/version_history_item.js:0
+#, python-format
+msgid "Name this version"
 msgstr ""
 
 #. module: spreadsheet_edition
@@ -499,9 +594,13 @@ msgstr ""
 
 #. module: spreadsheet_edition
 #. odoo-javascript
-#: code:addons/spreadsheet_edition/static/src/bundle/actions/spreadsheet.xml:0
+#: code:addons/spreadsheet_edition/static/src/bundle/actions/input_dialog/input_dialog.js:0
+#: code:addons/spreadsheet_edition/static/src/bundle/actions/spreadsheet_component.js:0
+#: code:addons/spreadsheet_edition/static/src/bundle/actions/spreadsheet_component.js:0
+#: code:addons/spreadsheet_edition/static/src/bundle/actions/version_history/version_history_action.js:0
+#: code:addons/spreadsheet_edition/static/src/bundle/actions/version_history/version_history_action.js:0
 #, python-format
-msgid "Ok"
+msgid "Odoo Spreadsheet"
 msgstr ""
 
 #. module: spreadsheet_edition
@@ -554,7 +653,7 @@ msgstr ""
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/assets/helpers.js:0
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/date_filter_editor_side_panel.js:0
+#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/date_filter_editor_side_panel.xml:0
 #, python-format
 msgid "Quarter"
 msgstr ""
@@ -595,6 +694,7 @@ msgstr ""
 
 #. module: spreadsheet_edition
 #. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/common/config_panel.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/list/side_panels/listing_details_side_panel.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
@@ -633,6 +733,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/actions/control_panel/spreadsheet_name.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/editable_name/editable_name.xml:0
+#: code:addons/spreadsheet_edition/static/src/bundle/version_history/side_panel/version_history_item.js:0
 #, python-format
 msgid "Rename"
 msgstr ""
@@ -647,6 +748,11 @@ msgstr ""
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__revision_id
 msgid "Revision"
+msgstr ""
+
+#. module: spreadsheet_edition
+#: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__name
+msgid "Revision name"
 msgstr ""
 
 #. module: spreadsheet_edition
@@ -673,14 +779,12 @@ msgstr ""
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/actions/control_panel/spreadsheet_breadcrumbs.xml:0
-#: code:addons/spreadsheet_edition/static/src/bundle/actions/control_panel/spreadsheet_breadcrumbs.xml:0
 #, python-format
 msgid "Saved"
 msgstr ""
 
 #. module: spreadsheet_edition
 #. odoo-javascript
-#: code:addons/spreadsheet_edition/static/src/bundle/actions/control_panel/spreadsheet_breadcrumbs.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/actions/control_panel/spreadsheet_breadcrumbs.xml:0
 #, python-format
 msgid "Saving"
@@ -707,6 +811,13 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/index.js:0
 #, python-format
 msgid "See pivot properties"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/version_history/index.js:0
+#, python-format
+msgid "See version history"
 msgstr ""
 
 #. module: spreadsheet_edition
@@ -738,10 +849,24 @@ msgid "Select the number of records to insert"
 msgstr ""
 
 #. module: spreadsheet_edition
+#: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_dashboard__server_revision_id
+#: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_dashboard_share__server_revision_id
+#: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_mixin__server_revision_id
+msgid "Server Revision"
+msgstr ""
+
+#. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/index.js:0
 #, python-format
 msgid "Set as filter"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
+#, python-format
+msgid "Snapshot"
 msgstr ""
 
 #. module: spreadsheet_edition
@@ -760,18 +885,23 @@ msgid "Sorting"
 msgstr ""
 
 #. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/assets/spreadsheet_cog_menu/spreadsheet_cog_menu.xml:0
 #: model:ir.ui.menu,name:spreadsheet_edition.menu_technical_spreadsheet
+#, python-format
 msgid "Spreadsheet"
 msgstr ""
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_dashboard__spreadsheet_revision_ids
+#: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_dashboard_share__spreadsheet_revision_ids
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_mixin__spreadsheet_revision_ids
 msgid "Spreadsheet Revision"
 msgstr ""
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_dashboard__spreadsheet_snapshot
+#: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_dashboard_share__spreadsheet_snapshot
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_mixin__spreadsheet_snapshot
 msgid "Spreadsheet Snapshot"
 msgstr ""
@@ -811,6 +941,41 @@ msgstr ""
 
 #. module: spreadsheet_edition
 #. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/actions/version_history/version_history_action.js:0
+#, python-format
+msgid ""
+"The history of your spreadsheet is corrupted and you are likely missing "
+"recent revisions. This feature cannot be used."
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-python
+#: code:addons/spreadsheet_edition/models/spreadsheet_mixin.py:0
+#, python-format
+msgid ""
+"The operation could not be applied because of a concurrent update. Please "
+"try again."
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/actions/version_history/version_history_action.js:0
+#, python-format
+msgid ""
+"There are missing revisions that prevent to restore the whole edition history.\n"
+"\n"
+"Would you like to load the more recent modifications?"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/version_history/side_panel/version_history_side_panel.xml:0
+#, python-format
+msgid "There are no prior revisions for this spreadsheet."
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/date_filter_editor_side_panel.xml:0
 #, python-format
 msgid "Time range"
@@ -827,6 +992,13 @@ msgstr ""
 
 #. module: spreadsheet_edition
 #. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/version_history/index.js:0
+#, python-format
+msgid "Version History"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/assets/helpers.js:0
 #, python-format
 msgid "Week"
@@ -835,7 +1007,7 @@ msgstr ""
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/assets/helpers.js:0
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/date_filter_editor_side_panel.js:0
+#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/date_filter_editor_side_panel.xml:0
 #, python-format
 msgid "Year"
 msgstr ""
@@ -891,6 +1063,7 @@ msgstr ""
 
 #. module: spreadsheet_edition
 #. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/common/config_panel.js:0
 #: code:addons/spreadsheet_edition/static/src/bundle/list/side_panels/listing_details_side_panel.js:0
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.js:0
 #, python-format

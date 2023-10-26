@@ -4,24 +4,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.3alpha1+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:02+0000\n"
-"PO-Revision-Date: 2023-05-16 16:02+0000\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 22:21+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: industry_fsm_sale
-#. odoo-python
-#: code:addons/industry_fsm_sale/models/project_task.py:0
-#: code:addons/industry_fsm_sale/models/project_task.py:0
-#, python-format
-msgid "%s - %s"
-msgstr ""
 
 #. module: industry_fsm_sale
 #. odoo-javascript
@@ -64,6 +56,11 @@ msgstr ""
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
+msgid "<strong>Amount Due: </strong>"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "<strong>Taxes</strong>"
 msgstr ""
 
@@ -86,8 +83,13 @@ msgid "A customer should be set on the task to generate a worksheet."
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.industry_fsm_sale_product_catalog_inherit_search_view
 msgid "Added Products"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
+msgid "Amount"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -142,8 +144,8 @@ msgstr ""
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid ""
-"Click on your product to add it to your <b>list of materials</b>. <i>Tip: "
-"for large quantities, click on the number to edit it directly.</i>"
+"Click on a product to add it to your <b>list of materials</b>. <i>Tip: for "
+"large quantities, click on the number to edit it directly.</i>"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -162,11 +164,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_list_fsm_sale_inherit
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
 msgid "Create Invoice"
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
-msgid "Create new quotation"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -200,11 +197,6 @@ msgid "Delivered Total Tax"
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
-msgid "Description"
-msgstr ""
-
-#. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__display_create_invoice_primary
 msgid "Display Create Invoice Primary"
 msgstr ""
@@ -215,8 +207,10 @@ msgid "Display Create Invoice Secondary"
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
-msgid "Edit"
+#. odoo-python
+#: code:addons/industry_fsm_sale/models/sale_order.py:0
+#, python-format
+msgid "Extra Quotation Created: %s"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -228,11 +222,6 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_report_project_task_user_fsm
 msgid "FSM Tasks Analysis"
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
-msgid "Favorites"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -248,11 +237,6 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model.fields.selection,name:industry_fsm_sale.selection__report_project_task_user_fsm__invoice_status__invoiced
 msgid "Fully Invoiced"
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
-msgid "Group By"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -367,35 +351,15 @@ msgid "Portal Quotation Count"
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
-msgid "Price:"
-msgstr ""
-
-#. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__pricelist_id
 msgid "Pricelist"
 msgstr ""
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_product_template
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.industry_fsm_sale_product_catalog_kanban_view
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "Product"
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
-msgid "Product Category"
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
-msgid "Product Template"
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
-msgid "Product Type"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -406,7 +370,6 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.actions.act_window,name:industry_fsm_sale.product_action_fsm
 #: model:ir.ui.menu,name:industry_fsm_sale.fsm_menu_settings_product
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
 msgid "Products"
 msgstr ""
@@ -444,13 +407,6 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__quotation_count
 msgid "Quotation Count"
-msgstr ""
-
-#. module: industry_fsm_sale
-#. odoo-python
-#: code:addons/industry_fsm_sale/models/sale_order.py:0
-#, python-format
-msgid "Quotation created: %s"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -509,11 +465,6 @@ msgid "Service"
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
-msgid "Services"
-msgstr ""
-
-#. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_project_task
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order__task_id
 msgid "Task"
@@ -531,16 +482,6 @@ msgstr ""
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
-msgid "Tax excl."
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
-msgid "Tax incl."
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "Taxes"
 msgstr ""
 
@@ -554,6 +495,13 @@ msgstr ""
 msgid ""
 "The timesheet product is required when the fsm project can be billed and "
 "timesheets are allowed."
+msgstr ""
+
+#. module: industry_fsm_sale
+#. odoo-python
+#: code:addons/industry_fsm_sale/models/sale_order.py:0
+#, python-format
+msgid "This Sales Order has been created from Task: %s"
 msgstr ""
 
 #. module: industry_fsm_sale

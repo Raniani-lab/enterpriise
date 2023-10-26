@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~16.3+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-30 05:24+0000\n"
-"PO-Revision-Date: 2023-05-30 05:24+0000\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 22:20+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -97,6 +97,65 @@ msgid ""
 msgstr ""
 
 #. module: sale_amazon
+#: model:mail.template,body_html:sale_amazon.inventory_sync_failure
+msgid ""
+"<style>\n"
+"                .amz_table {\n"
+"                    width: 100%;\n"
+"                    max-width: 900px;\n"
+"                    border-collapse: collapse;\n"
+"                }\n"
+"\n"
+"                .amz_table th,\n"
+"                .amz_table td {\n"
+"                    border: 1px solid #888;\n"
+"                }\n"
+"\n"
+"                .amz_table th {\n"
+"                    white-space: nowrap;\n"
+"                }\n"
+"\n"
+"                .amz_table thead th {\n"
+"                    padding: 0.5em 0.5em;\n"
+"                    text-align: center;\n"
+"                    border-bottom: 1px solid #888;\n"
+"                }\n"
+"\n"
+"                .amz_table tbody th,\n"
+"                .amz_table tbody td {\n"
+"                    padding: 0.5em 0.5em 1em;\n"
+"                    vertical-align: top;\n"
+"                }\n"
+"            </style>\n"
+"            <div>\n"
+"                <p>The synchronization of the products availability for Amazon Account\n"
+"                    <b><t t-out=\"ctx.get('amazon_account') or ''\">REF</t></b>\n"
+"                    encountered some errors and was not completed.</p>\n"
+"                <p>Here are the errors sent by Amazon: </p>\n"
+"                <table class=\"amz_table\">\n"
+"                    <thead>\n"
+"                        <tr>\n"
+"                            <th>SKU</th>\n"
+"                            <th>Message</th>\n"
+"                        </tr>\n"
+"                    </thead>\n"
+"                    <tbody>\n"
+"                        <tr t-foreach=\"ctx.get('error_messages')\" t-as=\"error\">\n"
+"                            <th><t t-out=\"error['sku']\"></t></th>\n"
+"                            <td>\n"
+"                                <t t-if=\"error['message']\" t-out=\"error['message']\"></t>\n"
+"                                <t t-else=\"\">An unknown error occurred during the synchronisation with Amazon.\n"
+"                                    Unfortunately you need to manually check if the available quantity for the product is correct or not.\n"
+"                                </t>\n"
+"                            </td>\n"
+"                        </tr>\n"
+"                    </tbody>\n"
+"                </table>\n"
+"            </div>\n"
+"        "
+msgstr ""
+
+#. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_marketplace__api_ref
 msgid "API Identifier"
 msgstr ""
@@ -161,6 +220,7 @@ msgid "Amazon Email"
 msgstr ""
 
 #. module: sale_amazon
+#: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__amazon_feed_ref
 #: model:ir.model.fields,field_description:sale_amazon.field_stock_picking__amazon_feed_ref
 msgid "Amazon Feed Reference"
 msgstr ""
@@ -220,6 +280,7 @@ msgid "Amazon Shipping"
 msgstr ""
 
 #. module: sale_amazon
+#: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__amazon_sync_status
 #: model:ir.model.fields,field_description:sale_amazon.field_stock_picking__amazon_sync_status
 msgid "Amazon Synchronization Status"
 msgstr ""
@@ -368,6 +429,11 @@ msgid "Amazon.sg"
 msgstr ""
 
 #. module: sale_amazon
+#: model:mail.template,name:sale_amazon.inventory_sync_failure
+msgid "Amazon: Available Inventory for Offers Synchronization Failure"
+msgstr ""
+
+#. module: sale_amazon
 #: model:mail.template,name:sale_amazon.picking_sync_failure
 msgid "Amazon: Delivery Order Synchronization Failure"
 msgstr ""
@@ -375,6 +441,11 @@ msgstr ""
 #. module: sale_amazon
 #: model:mail.template,name:sale_amazon.order_sync_failure
 msgid "Amazon: Order Synchronization Failure"
+msgstr ""
+
+#. module: sale_amazon
+#: model:ir.actions.server,name:sale_amazon.ir_cron_sync_amazon_inventory_ir_actions_server
+msgid "Amazon: sync available inventory"
 msgstr ""
 
 #. module: sale_amazon
@@ -506,11 +577,13 @@ msgid "Display Name"
 msgstr ""
 
 #. module: sale_amazon
+#: model:ir.model.fields.selection,name:sale_amazon.selection__amazon_offer__amazon_sync_status__done
 #: model:ir.model.fields.selection,name:sale_amazon.selection__stock_picking__amazon_sync_status__done
 msgid "Done"
 msgstr ""
 
 #. module: sale_amazon
+#: model:ir.model.fields.selection,name:sale_amazon.selection__amazon_offer__amazon_sync_status__error
 #: model:ir.model.fields.selection,name:sale_amazon.selection__stock_picking__amazon_sync_status__error
 msgid "Error"
 msgstr ""
@@ -567,6 +640,11 @@ msgid ""
 msgstr ""
 
 #. module: sale_amazon
+#: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__base_marketplace_id
+msgid "Home Marketplace"
+msgstr ""
+
+#. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__id
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_marketplace__id
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__id
@@ -587,6 +665,13 @@ msgstr ""
 msgid ""
 "If the date is set in the past, orders placed on this Amazon Account before the first synchronization of the module might be synchronized with Odoo.\n"
 "If the date is set in the future, orders placed on this Amazon Account between the previous and the new date will not be synchronized with Odoo."
+msgstr ""
+
+#. module: sale_amazon
+#: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_order_view_form
+msgid ""
+"If the sale is locked, you can not modify it anymore. However, you will "
+"still be able to invoice or deliver."
 msgstr ""
 
 #. module: sale_amazon
@@ -661,6 +746,11 @@ msgid "Linked Account"
 msgstr ""
 
 #. module: sale_amazon
+#: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_order_view_form
+msgid "Lock"
+msgstr ""
+
+#. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__marketplace_id
 msgid "Marketplace"
 msgstr ""
@@ -693,6 +783,7 @@ msgstr ""
 #: code:addons/sale_amazon/models/amazon_account.py:0
 #: code:addons/sale_amazon/models/product_product.py:0
 #: code:addons/sale_amazon/models/product_template.py:0
+#: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__offer_ids
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_product_product_view_form
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_product_template_view_form
@@ -731,6 +822,7 @@ msgid "Pending"
 msgstr ""
 
 #. module: sale_amazon
+#: model:ir.model.fields.selection,name:sale_amazon.selection__amazon_offer__amazon_sync_status__processing
 #: model:ir.model.fields.selection,name:sale_amazon.selection__stock_picking__amazon_sync_status__processing
 msgid "Processing"
 msgstr ""
@@ -807,7 +899,7 @@ msgstr ""
 
 #. module: sale_amazon
 #: model:ir.model.constraint,message:sale_amazon.constraint_amazon_offer_unique_sku
-msgid "SKU must be unique for a given account and marketplace."
+msgid "SKU must be unique for a given account."
 msgstr ""
 
 #. module: sale_amazon
@@ -839,7 +931,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 msgid ""
 "Select the marketplace on which your seller account\n"
-"                                                was originally created."
+"                                                was initially created."
 msgstr ""
 
 #. module: sale_amazon
@@ -850,11 +942,6 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__seller_key
 msgid "Seller Key"
-msgstr ""
-
-#. module: sale_amazon
-#: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__base_marketplace_id
-msgid "Sign-up Marketplace"
 msgstr ""
 
 #. module: sale_amazon
@@ -871,7 +958,12 @@ msgstr ""
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
-msgid "Sync Delivery Orders"
+msgid "Sync Deliveries"
+msgstr ""
+
+#. module: sale_amazon
+#: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
+msgid "Sync FBM Inventory"
 msgstr ""
 
 #. module: sale_amazon
@@ -891,6 +983,11 @@ msgid "Sync Orders"
 msgstr ""
 
 #. module: sale_amazon
+#: model:mail.template,subject:sale_amazon.inventory_sync_failure
+msgid "Synchronization of Amazon Stock has failed"
+msgstr ""
+
+#. module: sale_amazon
 #: model:mail.template,subject:sale_amazon.order_sync_failure
 msgid ""
 "Synchronization of Amazon order {{ ctx.get('amazon_order_ref') }} has failed"
@@ -904,6 +1001,11 @@ msgstr ""
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.picking_view_form
 msgid "Synchronization with Amazon failed"
+msgstr ""
+
+#. module: sale_amazon
+#: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__synchronize_inventory
+msgid "Synchronize FBM Inventory"
 msgstr ""
 
 #. module: sale_amazon
@@ -988,6 +1090,11 @@ msgid "The encrypted email of the customer. Does not forward mails."
 msgstr ""
 
 #. module: sale_amazon
+#: model:ir.model.fields,help:sale_amazon.field_amazon_account__base_marketplace_id
+msgid "The home marketplace of this account; used for authentication only."
+msgstr ""
+
+#. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__last_orders_sync
 msgid ""
 "The last synchronization date for orders placed on this account. Orders "
@@ -1056,13 +1163,6 @@ msgid "The order was not found on this account's marketplaces."
 msgstr ""
 
 #. module: sale_amazon
-#: model:ir.model.fields,help:sale_amazon.field_amazon_account__base_marketplace_id
-msgid ""
-"The original sign-up marketplace of this account. Used for authentication "
-"only."
-msgstr ""
-
-#. module: sale_amazon
 #. odoo-python
 #: code:addons/sale_amazon/models/amazon_account.py:0
 #, python-format
@@ -1126,6 +1226,15 @@ msgid ""
 "- Processing: The delivery details have been sent and are being processed.\n"
 "- Done: The delivery details have been processed.\n"
 "- Error: The synchronization of the delivery order failed."
+msgstr ""
+
+#. module: sale_amazon
+#: model:ir.model.fields,help:sale_amazon.field_amazon_offer__amazon_sync_status
+msgid ""
+"The synchronization status of the product's stock level to Amazon:\n"
+"- Processing: The stock level has been sent and is being processed.\n"
+"- Done: The stock level has been processed.\n"
+"- Error: The synchronization of the stock level failed."
 msgstr ""
 
 #. module: sale_amazon
@@ -1197,6 +1306,13 @@ msgstr ""
 #: code:addons/sale_amazon/models/amazon_account.py:0
 #, python-format
 msgid "Warning"
+msgstr ""
+
+#. module: sale_amazon
+#: model:ir.model.fields,help:sale_amazon.field_amazon_account__synchronize_inventory
+msgid ""
+"Whether the available quantities of FBA products linked to this account are "
+"synchronized with Amazon."
 msgstr ""
 
 #. module: sale_amazon

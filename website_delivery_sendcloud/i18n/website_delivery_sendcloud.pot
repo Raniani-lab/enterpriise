@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.3alpha1+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:03+0000\n"
-"PO-Revision-Date: 2023-05-16 16:03+0000\n"
+"POT-Creation-Date: 2023-10-26 22:22+0000\n"
+"PO-Revision-Date: 2023-10-26 22:22+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -46,6 +46,11 @@ msgstr ""
 #: code:addons/website_delivery_sendcloud/static/src/xml/sendcloud_pickup_locations.xml:0
 #, python-format
 msgid "Select this location"
+msgstr ""
+
+#. module: website_delivery_sendcloud
+#: model:ir.model.fields,field_description:website_delivery_sendcloud.field_delivery_carrier__sendcloud_can_customize_use_locations
+msgid "Sendcloud Can Customize Use Locations"
 msgstr ""
 
 #. module: website_delivery_sendcloud

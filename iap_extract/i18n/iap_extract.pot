@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~16.3+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-30 05:26+0000\n"
-"PO-Revision-Date: 2023-05-30 05:26+0000\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 22:21+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -35,9 +35,19 @@ msgstr ""
 #. module: iap_extract
 #. odoo-python
 #: code:addons/iap_extract/models/extract_mixin.py:0
+#: model:ir.model.fields.selection,name:iap_extract.selection__account_move__extract_state__error_status
 #: model:ir.model.fields.selection,name:iap_extract.selection__extract_mixin__extract_state__error_status
+#: model:ir.model.fields.selection,name:iap_extract.selection__hr_applicant__extract_state__error_status
+#: model:ir.model.fields.selection,name:iap_extract.selection__hr_expense__extract_state__error_status
 #, python-format
 msgid "An error occurred"
+msgstr ""
+
+#. module: iap_extract
+#. odoo-python
+#: code:addons/iap_extract/models/extract_mixin.py:0
+#, python-format
+msgid "An error occurred during the upload"
 msgstr ""
 
 #. module: iap_extract
@@ -56,8 +66,32 @@ msgid "Can show the ocr send button"
 msgstr ""
 
 #. module: iap_extract
+#: model:ir.model.fields.selection,name:iap_extract.selection__account_move__extract_state__done
 #: model:ir.model.fields.selection,name:iap_extract.selection__extract_mixin__extract_state__done
+#: model:ir.model.fields.selection,name:iap_extract.selection__hr_applicant__extract_state__done
+#: model:ir.model.fields.selection,name:iap_extract.selection__hr_expense__extract_state__done
 msgid "Completed flow"
+msgstr ""
+
+#. module: iap_extract
+#. odoo-python
+#: code:addons/iap_extract/models/extract_mixin.py:0
+#, python-format
+msgid "Document is being digitized"
+msgstr ""
+
+#. module: iap_extract
+#. odoo-python
+#: code:addons/iap_extract/models/extract_mixin.py:0
+#, python-format
+msgid "Document sent for digitization"
+msgstr ""
+
+#. module: iap_extract
+#. odoo-python
+#: code:addons/iap_extract/models/extract_mixin.py:0
+#, python-format
+msgid "Documents sent for digitization"
 msgstr ""
 
 #. module: iap_extract
@@ -156,13 +190,26 @@ msgid "Messages"
 msgstr ""
 
 #. module: iap_extract
+#: model:ir.model.fields.selection,name:iap_extract.selection__account_move__extract_state__no_extract_requested
 #: model:ir.model.fields.selection,name:iap_extract.selection__extract_mixin__extract_state__no_extract_requested
+#: model:ir.model.fields.selection,name:iap_extract.selection__hr_applicant__extract_state__no_extract_requested
+#: model:ir.model.fields.selection,name:iap_extract.selection__hr_expense__extract_state__no_extract_requested
 msgid "No extract requested"
 msgstr ""
 
 #. module: iap_extract
+#: model:ir.model.fields.selection,name:iap_extract.selection__account_move__extract_state__not_enough_credit
 #: model:ir.model.fields.selection,name:iap_extract.selection__extract_mixin__extract_state__not_enough_credit
-msgid "Not enough credit"
+#: model:ir.model.fields.selection,name:iap_extract.selection__hr_applicant__extract_state__not_enough_credit
+#: model:ir.model.fields.selection,name:iap_extract.selection__hr_expense__extract_state__not_enough_credit
+msgid "Not enough credits"
+msgstr ""
+
+#. module: iap_extract
+#. odoo-python
+#: code:addons/iap_extract/models/extract_mixin.py:0
+#, python-format
+msgid "Not enough credits for data extraction"
 msgstr ""
 
 #. module: iap_extract
@@ -186,6 +233,11 @@ msgid "Number of messages with delivery error"
 msgstr ""
 
 #. module: iap_extract
+#: model:ir.model.fields,field_description:iap_extract.field_extract_mixin__rating_ids
+msgid "Ratings"
+msgstr ""
+
+#. module: iap_extract
 #. odoo-python
 #: code:addons/iap_extract/models/extract_mixin.py:0
 #, python-format
@@ -197,6 +249,13 @@ msgstr ""
 #: code:addons/iap_extract/models/extract_mixin.py:0
 #, python-format
 msgid "Server not available. Please retry later"
+msgstr ""
+
+#. module: iap_extract
+#. odoo-python
+#: code:addons/iap_extract/models/extract_mixin.py:0
+#, python-format
+msgid "Some documents were skipped as they were already digitized"
 msgstr ""
 
 #. module: iap_extract
@@ -223,7 +282,17 @@ msgid "The document has been rejected because it is too small"
 msgstr ""
 
 #. module: iap_extract
+#. odoo-python
+#: code:addons/iap_extract/models/extract_mixin.py:0
+#, python-format
+msgid "The selected documents are already digitized"
+msgstr ""
+
+#. module: iap_extract
+#: model:ir.model.fields.selection,name:iap_extract.selection__account_move__extract_state__to_validate
 #: model:ir.model.fields.selection,name:iap_extract.selection__extract_mixin__extract_state__to_validate
+#: model:ir.model.fields.selection,name:iap_extract.selection__hr_applicant__extract_state__to_validate
+#: model:ir.model.fields.selection,name:iap_extract.selection__hr_expense__extract_state__to_validate
 msgid "To validate"
 msgstr ""
 
@@ -235,17 +304,18 @@ msgid "Unsupported image format"
 msgstr ""
 
 #. module: iap_extract
+#: model:ir.model.fields.selection,name:iap_extract.selection__account_move__extract_state__waiting_extraction
 #: model:ir.model.fields.selection,name:iap_extract.selection__extract_mixin__extract_state__waiting_extraction
+#: model:ir.model.fields.selection,name:iap_extract.selection__hr_applicant__extract_state__waiting_extraction
+#: model:ir.model.fields.selection,name:iap_extract.selection__hr_expense__extract_state__waiting_extraction
 msgid "Waiting extraction"
 msgstr ""
 
 #. module: iap_extract
-#: model:ir.model.fields.selection,name:iap_extract.selection__extract_mixin__extract_state__waiting_upload
-msgid "Waiting upload"
-msgstr ""
-
-#. module: iap_extract
+#: model:ir.model.fields.selection,name:iap_extract.selection__account_move__extract_state__waiting_validation
 #: model:ir.model.fields.selection,name:iap_extract.selection__extract_mixin__extract_state__waiting_validation
+#: model:ir.model.fields.selection,name:iap_extract.selection__hr_applicant__extract_state__waiting_validation
+#: model:ir.model.fields.selection,name:iap_extract.selection__hr_expense__extract_state__waiting_validation
 msgid "Waiting validation"
 msgstr ""
 
@@ -261,12 +331,13 @@ msgstr ""
 #. odoo-python
 #: code:addons/iap_extract/models/extract_mixin.py:0
 #, python-format
-msgid ""
-"Your invoice is too heavy to be processed by the OCR. Try to reduce the "
-"number of pages and avoid pages with too many text"
+msgid "Your document contains too many pages"
 msgstr ""
 
 #. module: iap_extract
+#: model:ir.model.fields.selection,name:iap_extract.selection__account_move__extract_state__extract_not_ready
 #: model:ir.model.fields.selection,name:iap_extract.selection__extract_mixin__extract_state__extract_not_ready
+#: model:ir.model.fields.selection,name:iap_extract.selection__hr_applicant__extract_state__extract_not_ready
+#: model:ir.model.fields.selection,name:iap_extract.selection__hr_expense__extract_state__extract_not_ready
 msgid "waiting extraction, but it is not ready"
 msgstr ""

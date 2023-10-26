@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-19 07:30+0000\n"
-"PO-Revision-Date: 2023-10-19 07:30+0000\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 22:20+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -842,6 +842,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__code
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_structure__code
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__structure_code
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_input__code
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_input_type__code
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_line__code
@@ -931,7 +932,6 @@ msgid "Config Settings"
 msgstr ""
 
 #. module: hr_payroll
-#: model:ir.actions.server,name:hr_payroll.action_hr_payroll_confirm_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_index_form_view
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 msgid "Confirm"
@@ -1055,6 +1055,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_input_type__country_code
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__country_code
 msgid "Country Code"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.actions.server,name:hr_payroll.action_hr_payroll_confirm_payroll
+msgid "Create Draft Entry"
 msgstr ""
 
 #. module: hr_payroll
@@ -2355,6 +2360,12 @@ msgid "New Payslip"
 msgstr ""
 
 #. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_calendar_event_id
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_date_deadline
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__activity_date_deadline
 msgid "Next Activity Deadline"
@@ -2401,7 +2412,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/hr_payroll/models/hr_rule_parameter.py:0
 #, python-format
-msgid "No rule parameter with code '%s' was found for %s "
+msgid "No rule parameter with code %r was found for %s "
 msgstr ""
 
 #. module: hr_payroll
@@ -3103,6 +3114,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__rate
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_line__rate
 msgid "Rate (%)"
+msgstr ""
+
+#. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__rating_ids
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__rating_ids
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__rating_ids
+msgid "Ratings"
 msgstr ""
 
 #. module: hr_payroll
@@ -4023,6 +4041,7 @@ msgstr ""
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_structure__use_worked_day_lines
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__use_worked_day_lines
 msgid "Use Worked Day Lines"
 msgstr ""
 
@@ -4346,6 +4365,7 @@ msgstr ""
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_payroll_structure__use_worked_day_lines
+#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__use_worked_day_lines
 msgid "Worked days won't be computed/displayed in payslips."
 msgstr ""
 

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~16.1+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-17 10:16+0000\n"
-"PO-Revision-Date: 2023-01-17 10:16+0000\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 22:21+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,30 +19,14 @@ msgstr ""
 #. odoo-python
 #: code:addons/hr_holidays_gantt/models/hr_leave.py:0
 #, python-format
-msgid " and"
+msgid "%(name)s is on time off %(leaves)s. \n"
 msgstr ""
 
 #. module: hr_holidays_gantt
 #. odoo-python
 #: code:addons/hr_holidays_gantt/models/hr_leave.py:0
 #, python-format
-msgid "%(employee)s %(time_off_type)s%(period_leaves)s. \n"
-msgstr ""
-
-#. module: hr_holidays_gantt
-#. odoo-python
-#: code:addons/hr_holidays_gantt/models/hr_leave.py:0
-#, python-format
-msgid "%(prefix)s from the %(dfrom)s to the %(dto)s"
-msgstr ""
-
-#. module: hr_holidays_gantt
-#. odoo-python
-#: code:addons/hr_holidays_gantt/models/hr_leave.py:0
-#, python-format
-msgid ""
-"%(prefix)s from the %(dfrom_date)s at %(dfrom)s to the %(dto_date)s at "
-"%(dto)s"
+msgid "%(name)s requested time off %(leaves)s. \n"
 msgstr ""
 
 #. module: hr_holidays_gantt
@@ -71,12 +55,12 @@ msgstr ""
 #. odoo-python
 #: code:addons/hr_holidays_gantt/models/hr_leave.py:0
 #, python-format
-msgid "has requested time off"
+msgid "from %(start_date)s at %(start_time)s to %(end_date)s at %(end_time)s"
 msgstr ""
 
 #. module: hr_holidays_gantt
 #. odoo-python
 #: code:addons/hr_holidays_gantt/models/hr_leave.py:0
 #, python-format
-msgid "is on time off"
+msgid "from %(start_date)s to %(end_date)s"
 msgstr ""

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.3alpha1+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:03+0000\n"
-"PO-Revision-Date: 2023-05-16 16:03+0000\n"
+"POT-Creation-Date: 2023-10-26 22:22+0000\n"
+"PO-Revision-Date: 2023-10-26 22:22+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -43,11 +43,6 @@ msgid "Apply"
 msgstr ""
 
 #. module: website_sale_ups
-#: model:payment.provider,name:website_sale_ups.payment_provider_ups_cod
-msgid "COD"
-msgstr ""
-
-#. module: website_sale_ups
 #: model_terms:ir.ui.view,arch_db:website_sale_ups.ups_bill_my_account_dialog
 msgid "Cancel"
 msgstr ""
@@ -55,6 +50,11 @@ msgstr ""
 #. module: website_sale_ups
 #: model:ir.model.fields.selection,name:website_sale_ups.selection__payment_provider__custom_mode__cash_on_delivery
 msgid "Cash On Delivery"
+msgstr ""
+
+#. module: website_sale_ups
+#: model:payment.provider,name:website_sale_ups.payment_provider_ups_cod
+msgid "Cash on Delivery"
 msgstr ""
 
 #. module: website_sale_ups
@@ -69,7 +69,7 @@ msgstr ""
 
 #. module: website_sale_ups
 #. odoo-javascript
-#: code:addons/website_sale_ups/static/src/js/checkout_form.js:0
+#: code:addons/website_sale_ups/static/src/js/payment_form.js:0
 #, python-format
 msgid ""
 "If you believe that it is an error, please contact the website "
@@ -78,9 +78,9 @@ msgstr ""
 
 #. module: website_sale_ups
 #. odoo-javascript
-#: code:addons/website_sale_ups/static/src/js/checkout_form.js:0
+#: code:addons/website_sale_ups/static/src/js/payment_form.js:0
 #, python-format
-msgid "No suitable payment option could be found."
+msgid "No suitable payment method could be found."
 msgstr ""
 
 #. module: website_sale_ups
@@ -130,5 +130,5 @@ msgstr ""
 
 #. module: website_sale_ups
 #: model_terms:payment.provider,done_msg:website_sale_ups.payment_provider_ups_cod
-msgid "Your payment has been successfully processed. Thank you!"
+msgid "Your payment has been successfully processed."
 msgstr ""

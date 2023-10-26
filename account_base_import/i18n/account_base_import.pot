@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.3alpha1+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:02+0000\n"
-"PO-Revision-Date: 2023-05-16 16:02+0000\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 22:20+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -228,6 +228,30 @@ msgid "Review Manually"
 msgstr ""
 
 #. module: account_base_import
+#. odoo-javascript
+#: code:addons/account_base_import/static/src/xml/account_import.xml:0
+#, python-format
+msgid "SIE 5"
+msgstr ""
+
+#. module: account_base_import
+#. odoo-javascript
+#: code:addons/account_base_import/static/src/xml/account_import.xml:0
+#, python-format
+msgid "SIE Import module"
+msgstr ""
+
+#. module: account_base_import
+#. odoo-javascript
+#: code:addons/account_base_import/static/src/xml/account_import.xml:0
+#, python-format
+msgid ""
+"The SIE standard file format is very common in Sweden for several purposes "
+"such as auditing, importing and exporting data from and to other accounting "
+"softwares."
+msgstr ""
+
+#. module: account_base_import
 #. odoo-python
 #: code:addons/account_base_import/models/account_move_line.py:0
 #, python-format
@@ -279,6 +303,16 @@ msgstr ""
 msgid ""
 "Winbooks is an old school Belgian accounting software acquired by Exact.\n"
 "                            Use the"
+msgstr ""
+
+#. module: account_base_import
+#. odoo-javascript
+#: code:addons/account_base_import/static/src/xml/account_import.xml:0
+#, python-format
+msgid ""
+"is required to import the SIE and SIE entry files.\n"
+"                            For general SIE, we will setup your charts of accounts balances, journals, partners, and the history of journal entries (journals data must be present in the file).\n"
+"                            For the SIE entry, only entries and partners will be created, the rest must already be present in the system."
 msgstr ""
 
 #. module: account_base_import

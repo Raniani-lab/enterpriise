@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.3alpha1+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:02+0000\n"
-"PO-Revision-Date: 2023-05-16 16:02+0000\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 22:21+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,9 @@ msgstr ""
 
 #. module: helpdesk_timesheet
 #: model:ir.model,name:helpdesk_timesheet.model_account_analytic_line
+#: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_sla_report_analysis__analytic_account_id
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__analytic_account_id
+#: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_report_analysis__analytic_account_id
 msgid "Analytic Account"
 msgstr ""
 
@@ -71,7 +73,6 @@ msgstr ""
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_sla_report_analysis__department_id
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_report_analysis__department_id
-#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_sla_report_analysis_view_search_timesheet
 msgid "Department"
 msgstr ""
 
@@ -192,6 +193,11 @@ msgid "Is Timer Running"
 msgstr ""
 
 #. module: helpdesk_timesheet
+#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.timesheet_table
+msgid "Issue with new portal system"
+msgstr ""
+
+#. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_create_timesheet__write_uid
 msgid "Last Updated by"
 msgstr ""
@@ -204,28 +210,7 @@ msgstr ""
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_sla_report_analysis__manager_id
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_report_analysis__employee_parent_id
-#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_sla_report_analysis_view_search_timesheet
 msgid "Manager"
-msgstr ""
-
-#. module: helpdesk_timesheet
-#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_sla_report_analysis_view_search_timesheet
-#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_report_analysis_view_search_timesheet
-#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_view_search_inherit_helpdesk_timesheet
-#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.rating_rating_view_search_inherit_helpdesk_timesheet
-msgid "My Department"
-msgstr ""
-
-#. module: helpdesk_timesheet
-#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.rating_rating_view_search_inherit_helpdesk_timesheet
-msgid "My Team's Ratings"
-msgstr ""
-
-#. module: helpdesk_timesheet
-#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_sla_report_analysis_view_search_timesheet
-#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_report_analysis_view_search_timesheet
-#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_view_search_inherit_helpdesk_timesheet
-msgid "My Team's Tickets"
 msgstr ""
 
 #. module: helpdesk_timesheet
@@ -233,6 +218,13 @@ msgstr ""
 #: code:addons/helpdesk_timesheet/models/helpdesk_team.py:0
 #, python-format
 msgid "New"
+msgstr ""
+
+#. module: helpdesk_timesheet
+#. odoo-python
+#: code:addons/helpdesk_timesheet/models/project.py:0
+#, python-format
+msgid "Operation not supported"
 msgstr ""
 
 #. module: helpdesk_timesheet
@@ -296,6 +288,11 @@ msgid "Stop"
 msgstr ""
 
 #. module: helpdesk_timesheet
+#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.timesheet_table
+msgid "Task/Ticket"
+msgstr ""
+
+#. module: helpdesk_timesheet
 #: model:project.project,label_tasks:helpdesk_timesheet.helpdesk_team3_projet
 msgid "Tasks"
 msgstr ""
@@ -306,7 +303,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.hr_timesheet_line_tree_inherit_helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.report_timesheet_ticket
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.timesheet_table
-#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.timesheet_view_form_helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.timesheet_view_form_inherit
 msgid "Ticket"
 msgstr ""
 
@@ -385,6 +382,11 @@ msgstr ""
 #. module: helpdesk_timesheet
 #: model:ir.model,name:helpdesk_timesheet.model_timesheets_analysis_report
 msgid "Timesheets Analysis Report"
+msgstr ""
+
+#. module: helpdesk_timesheet
+#: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_view_tree_inherit_helpdesk_timesheet
+msgid "Total"
 msgstr ""
 
 #. module: helpdesk_timesheet

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~16.3+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-30 05:24+0000\n"
-"PO-Revision-Date: 2023-05-30 05:24+0000\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 22:20+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -28,48 +28,10 @@ msgid ""
 msgstr ""
 
 #. module: hr_appraisal_survey
+#: model:ir.actions.act_window,name:hr_appraisal_survey.survey_survey_action_appraisal
+#: model:ir.ui.menu,name:hr_appraisal_survey.menu_hr_appraisal_surveys
 #: model:survey.survey,title:hr_appraisal_survey.appraisal_360_feedback_template
 msgid "360 Feedback"
-msgstr ""
-
-#. module: hr_appraisal_survey
-#: model:mail.template,body_html:hr_appraisal_survey.mail_template_appraisal_ask_feedback
-msgid ""
-"<div style=\"margin: 0px; padding: 0px;\">\n"
-"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"                        Dear <t t-out=\"object.partner_id.name or ''\">Brandon Freeman</t>,\n"
-"                        <br><br>\n"
-"                        An appraisal feedback was requested about <t t-out=\"object.appraisal_id.employee_id.name or 'this'\">this</t>.\n"
-"                        <br>\n"
-"                        Please take time to fill the survey.\n"
-"                        <br><br>\n"
-"                        Thank you!\n"
-"                        <br><br>\n"
-"                        <t t-if=\"ctx.get('recipient_users')\">\n"
-"                            <p style=\"margin: 16px 0px 16px 0px;\">\n"
-"                                <a t-att-href=\"ctx.get('url')\" style=\"background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;\">\n"
-"                                    View Appraisal\n"
-"                                </a>\n"
-"                            </p>\n"
-"                        </t>\n"
-"                        <t t-if=\"ctx.get('user_body')\">\n"
-"                            <div style=\"background-color:#F8F8F8;\">\n"
-"                                <t t-out=\"ctx.get('user_body')\">Annual appraisal.</t>\n"
-"                            </div>\n"
-"                        </t>\n"
-"                        <div style=\"margin: 16px 0px 16px 0px; text-align: center;\">\n"
-"                            <a t-att-href=\"object.get_start_url()\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\">\n"
-"                                <t t-if=\"object.survey_id.certification\">\n"
-"                                    Start Certification\n"
-"                                </t>\n"
-"                                <t t-else=\"\">\n"
-"                                    Start Survey\n"
-"                                </t>\n"
-"                            </a>\n"
-"                        </div>\n"
-"                    </p>\n"
-"                </div>\n"
-"            "
 msgstr ""
 
 #. module: hr_appraisal_survey
@@ -79,9 +41,38 @@ msgstr ""
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_view_form
+msgid "<span class=\"o_stat_text\">Feedbacks</span>"
+msgstr ""
+
+#. module: hr_appraisal_survey
+#: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_view_form
+msgid "<span> / </span>"
+msgstr ""
+
+#. module: hr_appraisal_survey
+#: model:mail.template,body_html:hr_appraisal_survey.mail_template_appraisal_ask_feedback
 msgid ""
-"<span class=\"o_stat_text\">Feedback</span>\n"
-"                        <span class=\"o_stat_text\">Survey</span>"
+"<t t-set=\"logged_user\" t-value=\"ctx.get('logged_user')\"></t>\n"
+"                <t t-set=\"employee\" t-value=\"ctx.get('employee')\"></t>\n"
+"                <t t-set=\"deadline\" t-value=\"ctx.get('deadline')\"></t>\n"
+"                <div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                        <p style=\"margin-left:5px\">Dear <t t-out=\"object.partner_id.name or 'participant'\">[participant]</t></p>\n"
+"                        <span>\n"
+"                            <t t-out=\"logged_user\">[Current user]</t> invites you to participate in a survey and provide your feedback on <t t-out=\"employee\">[employee]</t>.\n"
+"                            Please complete the survey before the <t t-out=\"deadline\">[specified deadline]</t>.\n"
+"                        </span>\n"
+"                        <br>\n"
+"                        Thank you!\n"
+"                        <br><br>\n"
+"                        <div style=\"margin: 16px 0px 16px 0px; text-align: center;\">\n"
+"                            <a t-att-href=\"object.get_start_url()\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\">\n"
+"                                Give your feedback\n"
+"                            </a>\n"
+"                        </div>\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
 msgstr ""
 
 #. module: hr_appraisal_survey
@@ -134,6 +125,11 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_6
 msgid "Admit my mistakes"
+msgstr ""
+
+#. module: hr_appraisal_survey
+#: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_user_input_view_tree
+msgid "All answers"
 msgstr ""
 
 #. module: hr_appraisal_survey
@@ -199,13 +195,23 @@ msgid "Appraisal: Ask Feedback"
 msgstr ""
 
 #. module: hr_appraisal_survey
+#. odoo-python
+#: code:addons/hr_appraisal_survey/wizard/appraisal_ask_feedback.py:0
+#, python-format
+msgid "Appraisal: Ask Feedback new template"
+msgstr ""
+
+#. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_1_5
 msgid "Appraiser"
 msgstr ""
 
 #. module: hr_appraisal_survey
+#. odoo-python
+#: code:addons/hr_appraisal_survey/models/hr_appraisal.py:0
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_view_form
+#, python-format
 msgid "Ask Feedback"
 msgstr ""
 
@@ -260,11 +266,6 @@ msgid "Cancel"
 msgstr ""
 
 #. module: hr_appraisal_survey
-#: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
-msgid "Close"
-msgstr ""
-
-#. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_3
 msgid "Collaborate effectively with others to achieve shared goals"
 msgstr ""
@@ -278,6 +279,11 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_res_company
 msgid "Companies"
+msgstr ""
+
+#. module: hr_appraisal_survey
+#: model:ir.model.fields,field_description:hr_appraisal_survey.field_hr_appraisal__completed_survey_count
+msgid "Completed Survey Count"
 msgstr ""
 
 #. module: hr_appraisal_survey
@@ -374,6 +380,11 @@ msgid "Do you have any comment to tell me and help me improve?"
 msgstr ""
 
 #. module: hr_appraisal_survey
+#: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_user_input_view_tree
+msgid "Employee"
+msgstr ""
+
+#. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_hr_appraisal
 msgid "Employee Appraisal"
 msgstr ""
@@ -406,6 +417,13 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid "Exceeds standards and expectations"
+msgstr ""
+
+#. module: hr_appraisal_survey
+#. odoo-python
+#: code:addons/hr_appraisal_survey/models/hr_appraisal.py:0
+#, python-format
+msgid "Feedback Surveys"
 msgstr ""
 
 #. module: hr_appraisal_survey
@@ -507,6 +525,11 @@ msgid "Listen well to others"
 msgstr ""
 
 #. module: hr_appraisal_survey
+#: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
+msgid "Load template"
+msgstr ""
+
+#. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__template_id
 msgid "Mail Template"
 msgstr ""
@@ -563,6 +586,11 @@ msgid "Overall Purpose Of Employee Appraisal"
 msgstr ""
 
 #. module: hr_appraisal_survey
+#: model:ir.model.fields,help:hr_appraisal_survey.field_survey_user_input__requested_by
+msgid "Partner-related data of the user"
+msgstr ""
+
+#. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_4_2
 msgid "Personal Performance Objectives"
 msgstr ""
@@ -613,6 +641,16 @@ msgid "Rendering Model"
 msgstr ""
 
 #. module: hr_appraisal_survey
+#: model:ir.model.fields,field_description:hr_appraisal_survey.field_survey_user_input__requested_by
+msgid "Requested by"
+msgstr ""
+
+#. module: hr_appraisal_survey
+#: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_user_input_view_tree
+msgid "Resend"
+msgstr ""
+
+#. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_page_statistics_header
 msgid "Responded:"
 msgstr ""
@@ -627,6 +665,21 @@ msgstr ""
 msgid ""
 "Results of the bottom-up survey and mitigation actions to face technical, "
 "organizational, structural and/or relational issues"
+msgstr ""
+
+#. module: hr_appraisal_survey
+#: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
+msgid "Save as a new template"
+msgstr ""
+
+#. module: hr_appraisal_survey
+#: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
+msgid "Save as new template"
+msgstr ""
+
+#. module: hr_appraisal_survey
+#: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_user_input_view_tree
+msgid "See Answers"
 msgstr ""
 
 #. module: hr_appraisal_survey
@@ -696,7 +749,8 @@ msgstr ""
 #. module: hr_appraisal_survey
 #. odoo-python
 #: code:addons/hr_appraisal_survey/models/hr_appraisal.py:0
-#: code:addons/hr_appraisal_survey/models/hr_appraisal.py:0
+#: code:addons/hr_appraisal_survey/models/survey.py:0
+#: code:addons/hr_appraisal_survey/models/survey.py:0
 #: code:addons/hr_appraisal_survey/models/survey.py:0
 #, python-format
 msgid "Survey Feedback"
@@ -720,12 +774,6 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_survey_user_input
 msgid "Survey User Input"
-msgstr ""
-
-#. module: hr_appraisal_survey
-#: model:ir.actions.act_window,name:hr_appraisal_survey.survey_survey_action_appraisal
-#: model:ir.ui.menu,name:hr_appraisal_survey.menu_hr_appraisal_surveys
-msgid "Surveys"
 msgstr ""
 
 #. module: hr_appraisal_survey
@@ -824,20 +872,15 @@ msgid "To initiate a clear and open communication of performance expectations"
 msgstr ""
 
 #. module: hr_appraisal_survey
+#: model:ir.model.fields,field_description:hr_appraisal_survey.field_hr_appraisal__total_survey_count
+msgid "Total Survey Count"
+msgstr ""
+
+#. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_5_1
 msgid ""
 "Use the following space to make any comments regarding the above performance"
 " evaluation."
-msgstr ""
-
-#. module: hr_appraisal_survey
-#: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__user_body
-msgid "User Contents"
-msgstr ""
-
-#. module: hr_appraisal_survey
-#: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.survey_user_input_view_tree
-msgid "View Results"
 msgstr ""
 
 #. module: hr_appraisal_survey

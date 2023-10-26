@@ -96,13 +96,16 @@ class AccountMoveSend(models.TransientModel):
                     continue
 
                 # Check for error.
-                errors = [_("Error when sending the CFDI to the PAC:")]
+                errors = []
                 for document in invoice.l10n_mx_edi_invoice_document_ids:
                     if document.state == 'invoice_sent_failed':
                         errors.append(document.message)
                         break
 
-                invoice_data['error'] = "\n".join(errors)
+                invoice_data['error'] = {
+                    'error_title': _("Error when sending the CFDI to the PAC:"),
+                    'errors': errors,
+                }
 
                 if self._can_commit():
                     self._cr.commit()

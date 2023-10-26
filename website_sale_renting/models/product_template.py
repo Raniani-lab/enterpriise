@@ -49,8 +49,9 @@ class ProductTemplate(models.Model):
             return res
 
         # Compute best pricing rule or set default
-        start_date = self.env.context.get('start_date')
-        end_date = self.env.context.get('end_date')
+        order = website.sale_get_order() if website and request else self.env['sale.order']
+        start_date = self.env.context.get('start_date') or order.rental_start_date
+        end_date = self.env.context.get('end_date') or order.rental_return_date
         if start_date and end_date:
             current_pricing = product_or_template._get_best_pricing_rule(
                 start_date=start_date,
@@ -81,7 +82,7 @@ class ProductTemplate(models.Model):
         )
 
         default_start_date, default_end_date = self._get_default_renting_dates(
-            start_date, end_date, website, current_duration, current_unit
+            start_date, end_date, current_duration, current_unit
         )
 
         ratio = ceil(current_duration) / pricing.recurrence_id.duration if pricing.recurrence_id.duration else 1
@@ -145,14 +146,11 @@ class ProductTemplate(models.Model):
         }
 
     @api.model
-    def _get_default_renting_dates(
-        self, start_date, end_date, website, duration, unit
-    ):
+    def _get_default_renting_dates(self, start_date, end_date, duration, unit):
         """ Get default renting dates to help user
 
         :param datetime start_date: a start_date which is directly returned if defined
         :param datetime end_date: a end_date which is directly returned if defined
-        :param Website website: the website currently browsed by the user
         :param int duration: the duration expressed in int, in the unit given
         :param string unit: The duration unit, which can be 'hour', 'day', 'week' or 'month'
         """
@@ -161,11 +159,6 @@ class ProductTemplate(models.Model):
 
         if start_date or end_date:
             return start_date, end_date
-
-        if website and request:
-            order = website.sale_get_order()
-            if order.has_rented_products:
-                return order.rental_start_date, order.rental_return_date
 
         default_date = self._get_default_start_date()
         return default_date, self._get_default_end_date(default_date, duration, unit)

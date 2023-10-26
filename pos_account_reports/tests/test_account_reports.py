@@ -126,6 +126,7 @@ class POSTestTaxReport(TestAccountReportsCommon):
             'amount_tax': self.company_data['company'].currency_id.round(tax_amount),
             'amount_paid': 0,
             'amount_return': 0,
+            'last_order_preparation_change': '{}'
         })
 
         # Pay the order

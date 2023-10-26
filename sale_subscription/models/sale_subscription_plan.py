@@ -64,7 +64,7 @@ class SaleSubscriptionPlan(models.Model):
             for plan in self:
                 if to_remove := old_related[plan.id] - plan.related_plan_id:
                     to_remove.related_plan_id = [Command.unlink(plan.id)]
-                if to_add :=  plan.related_plan_id - old_related[plan.id]:
+                if to_add := plan.related_plan_id - old_related[plan.id]:
                     to_add.related_plan_id = [Command.link(plan.id)]
         return res
 

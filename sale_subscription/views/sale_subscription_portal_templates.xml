@@ -195,7 +195,7 @@
                     <td>
                         <a role="button" class="link-primary" data-bs-toggle="modal" data-bs-target="#wc-modal-change-plan" href="#"
                                 t-if="sale_order.is_subscription and sale_order.plan_id.related_plan_id and sale_order._can_be_edited_on_portal()">
-                        (Change Plan)
+                            (Change Plan)
                         </a>
                     </td>
                 </tr>

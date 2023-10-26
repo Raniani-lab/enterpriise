@@ -21,67 +21,58 @@
                     </t>
                 </div>
             </div>
-            <div class="o_web_studio_search_sub_item o-web-studio-search--filters bg-white shadow h-100 w-100">
-                <div class="o-web-studio-search-subitem-header border border-4 p-3">
-                    <h3 class="fw-normal">
-                        <i class="fa fa-filter me-2" />
-                        Filters
-                    </h3>
-                </div>
+            <div class="o_web_studio_search_container d-flex bg-white p-2 w-100">
+                <div class="o_web_studio_search_sub_item o-web-studio-search--filters w-lg-auto mb-lg-0 h-100 w-100 px-3 mb-4 border-end">
+                    <div class="o-web-studio-search-subitem-header">
+                        <i class="fa fa-filter me-2 text-primary" />
+                        <h5 class="o_dropdown_title d-inline">Filters</h5>
+                    </div>
 
-                <div class="d-flex flex-column border p-3">
-                    <t t-set="firstHook" t-value="getFirstHookProps('filter')" />
-                    <StudioHook t-if="firstHook" t-props="firstHook" />
-                    <t t-foreach="filtersGroups" t-as="filterGroup" t-key="filterGroup_index">
-                        <div t-if="filterGroup.separator" class="o-web-studio-editor--element-clickable" t-on-click="(ev) => this.onItemClicked(ev, filterGroup.separator)" t-att-data-studio-xpath="filterGroup.separator">
-                            <hr />
-                        </div>
+                    <div class="d-flex flex-column">
+                        <t t-set="firstHook" t-value="getFirstHookProps('filter')" />
+                        <StudioHook t-if="firstHook" t-props="firstHook" />
+                        <t t-foreach="filtersGroups" t-as="filterGroup" t-key="filterGroup_index">
+                            <div t-if="filterGroup.separator" class="o-web-studio-editor--element-clickable" t-on-click="(ev) => this.onItemClicked(ev, filterGroup.separator)" t-att-data-studio-xpath="filterGroup.separator">
+                                <hr />
+                            </div>
 
-                        <hr t-elif="filterGroup_index !== 0 and filterGroup !== filterGroup_last and filterGroup.items.length !==0" />
+                            <hr t-elif="filterGroup_index !== 0 and filterGroup !== filterGroup_last and filterGroup.items.length !==0" />
 
-                        <StudioHook t-if="filterGroup.items.length" position="'before'" xpath="filterGroup.items[0].studioXpath" type="'filter'" />
+                            <StudioHook t-if="filterGroup.items.length" position="'before'" xpath="filterGroup.items[0].studioXpath" type="'filter'" />
 
-                        <t t-foreach="getItems(filterGroup.items)" t-as="item" t-key="item_index">
-                            <div t-esc="getItemLabel('filter', item)" t-on-click="(ev) => this.onItemClicked(ev, item.studioXpath)" class="o-web-studio-editor--element-clickable p-1" t-att-data-studio-xpath="item.studioXpath" />
-                            <StudioHook position="'after'" xpath="item.studioXpath" type="'filter'" />
+                            <t t-foreach="getItems(filterGroup.items)" t-as="item" t-key="item_index">
+                                <div t-esc="getItemLabel('filter', item)" t-on-click="(ev) => this.onItemClicked(ev, item.studioXpath)" class="o-web-studio-editor--element-clickable p-1" t-att-data-studio-xpath="item.studioXpath" />
+                                <StudioHook position="'after'" xpath="item.studioXpath" type="'filter'" />
+                            </t>
                         </t>
-                    </t>
+                    </div>
                 </div>
-            </div>
-            <div class="o_web_studio_search_sub_item o-web-studio-search--groupbys bg-white shadow h-100 w-100">
-                <div class="o-web-studio-search-subitem-header border border-4 p-3">
-                    <h3 class="fw-normal">
-                        <i class="oi oi-group me-2" />
-                        Group by
-                    </h3>
-                </div>
+                <div class="o_web_studio_search_sub_item o-web-studio-search--groupbys w-lg-auto mb-lg-0 h-100 w-100 px-3 mb-4 border-end">
+                    <div class="o-web-studio-search-subitem-header">
+                        <i class="me-2 text-action oi oi-group" />
+                        <h5 class="o_dropdown_title d-inline">Group by</h5>
+                    </div>
 
-                <div class="d-flex flex-column p-3">
-                    <t t-set="firstHook" t-value="getFirstHookProps('groupBy')" />
-                    <StudioHook t-if="firstHook" t-props="firstHook" />
-                    <t t-foreach="groupByGroups" t-as="groupByGroup" t-key="groupByGroup_index">
-                        <hr t-if="groupByGroup_index !== 0 and groupByGroup !== groupByGroup_last and groupByGroup.items.length !==0" />
+                    <div class="d-flex flex-column p-3">
+                        <t t-set="firstHook" t-value="getFirstHookProps('groupBy')" />
+                        <StudioHook t-if="firstHook" t-props="firstHook" />
+                        <t t-foreach="groupByGroups" t-as="groupByGroup" t-key="groupByGroup_index">
+                            <hr t-if="groupByGroup_index !== 0 and groupByGroup !== groupByGroup_last and groupByGroup.items.length !==0" />
 
-                        <StudioHook t-if="groupByGroup.items.length" position="'before'" xpath="groupByGroup.items[0].studioXpath" type="'groupBy'" />
-                        <t t-foreach="getItems(groupByGroup.items)" t-as="item" t-key="item_index">
-                            <div t-esc="getItemLabel('groupBy', item)" t-on-click="(ev) => this.onItemClicked(ev, item.studioXpath)" class="o-web-studio-editor--element-clickable p-1" t-att-data-studio-xpath="item.studioXpath" />
-                            <StudioHook position="'after'" xpath="item.studioXpath" type="'groupBy'" />
+                            <StudioHook t-if="groupByGroup.items.length" position="'before'" xpath="groupByGroup.items[0].studioXpath" type="'groupBy'" />
+                            <t t-foreach="getItems(groupByGroup.items)" t-as="item" t-key="item_index">
+                                <div t-esc="getItemLabel('groupBy', item)" t-on-click="(ev) => this.onItemClicked(ev, item.studioXpath)" class="o-web-studio-editor--element-clickable p-1" t-att-data-studio-xpath="item.studioXpath" />
+                                <StudioHook position="'after'" xpath="item.studioXpath" type="'groupBy'" />
+                            </t>
                         </t>
-                    </t>
+                    </div>
                 </div>
-            </div>
-            <div class="o_web_studio_search_sub_item o_web_studio_blurred_childs w-100">
-                <div class="o-web-studio-search-subitem-header border border-4 p-3">
-                    <h3 class="fw-normal">
-                        <i class="fa fa-star me-2" />
-                        Favourites
-                    </h3>
+                <div class="o_web_studio_search_sub_item o_web_studio_blurred_childs w-lg-auto h-100 w-100 px-3 mb-4">
+                    <div class="o-web-studio-search-subitem-header">
+                        <i class="me-2 text-favourite fa fa-star" />
+                        <h5 class="o_dropdown_title d-inline">Favourites</h5>
+                    </div>
                 </div>
-            </div>
-            <div class="o_web_studio_search_sub_item o_web_studio_search_sub_item_icon text-end o_web_studio_blurred_childs">
-                <i class="oi oi-view-list" title="List View" role="img" aria-label="List View" />
-                <i class="fa fa-area-chart mx-3" title="Graph View" role="img" aria-label="Graph View" />
-                <i class="fa fa-th" title="Grid View" role="img" aria-label="Grid View" />
             </div>
         </div>
     </t>

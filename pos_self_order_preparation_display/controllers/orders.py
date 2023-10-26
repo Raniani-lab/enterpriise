@@ -27,7 +27,4 @@ class PosSelfOrderPreparationDisplayController(PosSelfOrderController):
             order_id.send_table_count_notification(order_id.table_id)
 
     def _get_self_payment_methods(self, pos_config):
-        payment_methods = []
-        if pos_config.self_ordering_mode == 'kiosk':
-            payment_methods = pos_config.payment_method_ids.filtered(lambda p: p.use_payment_terminal == 'adyen')
-        return payment_methods
+        return pos_config._get_allowed_payment_methods()

@@ -24,6 +24,7 @@
                             <h4 class="modal-title">
                                 Change Plan for <span t-field="sale_order.display_name" class="text-primary"/>
                             </h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
                         </header>
                         <form method="post" t-attf-action="/my/subscriptions/#{sale_order.id}/change_plan?access_token=#{sale_order.access_token}">
                             <input class="d-none" name="csrf_token" t-att-value="request.csrf_token()"/>
@@ -37,7 +38,6 @@
                             </main>
                             <footer class="modal-footer">
                                 <button class="btn btn-primary">Submit</button>
-                                <button class="btn btn-secondary" special="cancel">Cancel</button>
                             </footer>
                         </form>
                     </div>

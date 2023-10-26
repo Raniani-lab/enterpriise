@@ -20,7 +20,7 @@
                 <field name="user_id"/>
                 <field name="team_id"/>
                 <field name="order_line" string="Product" filter_domain="[('order_line.product_id', 'ilike', self)]"/>
-                <field name="sale_order_template_id"/>
+                <field name="sale_order_template_id" groups="sales_team.group_sale_manager"/>
                 <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
                 <filter name="my_subscriptions" string="My Subscriptions" domain="[('user_id','=',uid), ('subscription_state', '!=', False)]"/>
                 <filter string="Unassigned" name="contracts_not_assigned" help="Subscriptions that are not assigned to an account manager." domain="[('user_id', '=', False)]"/>
@@ -56,7 +56,7 @@
                     <filter string="Salesperson" name="sales_person" domain="[]" context="{'group_by':'user_id'}"/>
                     <filter string="Sales Team" name="sales_team" domain="[]" context="{'group_by':'team_id'}"/>
                     <filter string="Subscription Status" name="subscription_state" domain="[]" context="{'group_by':'subscription_state'}"/>
-                    <filter string="Template" name="template" domain="[]" context="{'group_by':'sale_order_template_id'}"/>
+                    <filter string="Template" name="template" domain="[]" context="{'group_by':'sale_order_template_id'}" groups="sales_team.group_sale_manager"/>
                     <filter string="Recurring Plan" name="plan" domain="[]" context="{'group_by' : 'plan_id'}" />
                     <filter string="Customer" name="customer" domain="[]" context="{'group_by':'partner_id'}"/>
                     <filter string="First Contract Date" name="first_contract_month" domain="[]" context="{'group_by' : 'first_contract_date'}"/>
@@ -188,7 +188,7 @@
                 <field name="state"/>
                 <field name="subscription_state" options="{'group_by_tooltip': {'description': 'Description'}}"/>
                 <field name="starred"/>
-                <field name="sale_order_template_id"/>
+                <field name="sale_order_template_id" groups="sales_team.group_sale_manager"/>
                 <field name="currency_id"/>
                 <field name="activity_ids"/>
                 <field name="health"/>
@@ -279,7 +279,7 @@
             <field name="recurring_total" string="Recurring" optional="show" readonly="1"/>
             <field name="plan_id" optional="show" readonly="1"/>
             <field name="non_recurring_total" string="Non Recurring" optional="hide" readonly="1"/>
-            <field name="sale_order_template_id" string="Quotation Template" optional="hide" readonly="state in ['cancel', 'sale']"/>
+            <field name="sale_order_template_id" string="Quotation Template" optional="hide" readonly="state in ['cancel', 'sale']" groups="sales_team.group_sale_manager"/>
             <field name="amount_total" decoration-bf="1" widget='monetary' options="{'currency_field': 'currency_id'}" optional="hide" readonly="1"
                 decoration-info="invoice_status == 'to invoice'"/>
             <field name="subscription_state" widget="badge"
@@ -614,10 +614,10 @@ if records:
 
     <menuitem action="product.product_pricelist_action2" id="menu_sale_subscription_pricelist" sequence="50" parent="product_menu_catalog" groups="product.group_product_pricelist"/>
 
-    <menuitem id="menu_sale_subscription_config" name="Configuration" sequence="100" parent="menu_sale_subscription_root"/>
+    <menuitem id="menu_sale_subscription_config" name="Configuration" sequence="100" parent="menu_sale_subscription_root" groups="sales_team.group_sale_manager"/>
     <menuitem id="menu_sale_subscription_settings" name="Settings" parent="menu_sale_subscription_config" sequence="1" action="sale.action_sale_config_settings" groups="base.group_system"/>
-    <menuitem id="menu_sale_subscription_plans" name="Recurring Plans" action="sale_subscription_plan_action" parent="menu_sale_subscription_config" sequence="2" groups="sales_team.group_sale_manager"/>
-    <menuitem id="menu_template_of_subscription" action="sale_subscription_template_action" parent="menu_sale_subscription_config" sequence="4" groups="sales_team.group_sale_manager"/>
+    <menuitem id="menu_sale_subscription_plans" name="Recurring Plans" action="sale_subscription_plan_action" parent="menu_sale_subscription_config" sequence="2"/>
+    <menuitem id="menu_template_of_subscription" action="sale_subscription_template_action" parent="menu_sale_subscription_config" sequence="4" groups="sale_management.group_sale_order_template"/>
     <menuitem id="menu_sale_subscription_alert" name="Automation Rules" parent="menu_sale_subscription_config" action="sale_subscription_alert_action" sequence="8"/>
-    <menuitem id="menu_sale_subscription_close_reason_action" action="sale_subscription_close_reason_action" parent="menu_sale_subscription_config" sequence="10" groups="sales_team.group_sale_manager"/>
+    <menuitem id="menu_sale_subscription_close_reason_action" action="sale_subscription_close_reason_action" parent="menu_sale_subscription_config" sequence="10"/>
 </odoo>

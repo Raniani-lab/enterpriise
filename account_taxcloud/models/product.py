@@ -16,7 +16,7 @@ class ProductTicCategory(models.Model):
     @api.depends('code', 'description')
     def _compute_display_name(self):
         for category in self:
-            category.display_name = _('[%s] %s', category.code, category.description[0:50])
+            category.display_name = _('[%s] %s', category.code, (category.description or '')[:50])
 
     @api.model
     def name_create(self, name):

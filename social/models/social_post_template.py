@@ -119,7 +119,8 @@ class SocialPostTemplate(models.Model):
     @api.depends('message')
     def _compute_display_name(self):
         for record in self:
-            record.display_name = record.message if len(record.message) < 50 else f'{record.message[:47]}...'
+            name = record.message or ""
+            record.display_name = name if len(name) <= 50 else f"{name[:47]}..."
 
     def action_generate_post(self):
         self.ensure_one()

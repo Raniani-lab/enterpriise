@@ -68,7 +68,7 @@ class PosOrder(models.Model):
     l10n_mx_edi_usage = fields.Selection(
         selection=USAGE_SELECTION,
         string="Usage",
-        default='G01',
+        default="G03",
         help="The code that corresponds to the use that will be made of the receipt by the recipient.",
     )
     l10n_mx_edi_cfdi_uuid = fields.Char(

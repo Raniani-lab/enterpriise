@@ -31,6 +31,8 @@ class SaleOrder(models.Model):
         compute="_compute_l10n_mx_edi_usage",
         store=True,
         readonly=False,
+        default="G03",
+        tracking=True,
         help="The code that corresponds to the use that will be made of the receipt by the recipient.",
     )
 

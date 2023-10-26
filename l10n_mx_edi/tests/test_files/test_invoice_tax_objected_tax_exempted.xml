@@ -24,7 +24,7 @@
                    Nombre="PARTNER_MX"
                    DomicilioFiscalReceptor="26670"
                    RegimenFiscalReceptor="601"
-                   UsoCFDI="S01"/>
+                   UsoCFDI="G03"/>
     <cfdi:Conceptos>
         <cfdi:Concepto ClaveProdServ="01010101"
                        NoIdentificacion="product_mx"

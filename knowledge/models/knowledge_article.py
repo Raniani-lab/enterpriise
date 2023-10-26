@@ -13,6 +13,7 @@ from urllib import parse
 from werkzeug.urls import url_join
 
 from odoo import api, Command, fields, models, _
+from odoo.addons.web_editor.tools import handle_history_divergence
 from odoo.exceptions import AccessError, ValidationError, UserError
 from odoo.osv import expression
 from odoo.tools import get_lang
@@ -899,6 +900,8 @@ class Article(models.Model):
                 raise AccessError(_('Only internal users are allowed to modify this information.'))
 
         if 'body' in vals:
+            if len(self) == 1:
+                handle_history_divergence(self, 'body', vals)
             vals.update({
                 'last_edition_date': fields.Datetime.now(),
                 'last_edition_uid': self.env.user.id,
@@ -2533,7 +2536,7 @@ class Article(models.Model):
             if 'o_knowledge_behavior_type_article' in element.get('class'):
                 element.set('href', '/knowledge/article/%s' % (behavior_props.get('article_id')))
 
-        return b''.join(html.tostring(child, method='html') \
+        return ''.join(html.tostring(child, encoding='unicode', method='html') \
             for child in fragment.getchildren()) # unwrap the elements from the parent node
 
     def create_default_item_stages(self):

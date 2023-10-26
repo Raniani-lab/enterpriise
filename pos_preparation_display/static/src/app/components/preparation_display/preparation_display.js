@@ -11,6 +11,7 @@ export class PreparationDisplay extends Component {
     setup() {
         this.preparationDisplay = usePreparationDisplay();
         this.displayName = odoo.preparation_display.name;
+        this.showSidebar = true;
         this.onNextPatch = new Set();
         this.state = useState({
             isMenuOpened: false,

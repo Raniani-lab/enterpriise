@@ -17,7 +17,7 @@ export class PreparationDisplay extends Reactive {
     async setup(data, env, preparationDisplayId) {
         this.id = preparationDisplayId;
         this.env = env;
-        this.showCategoryFilter = true;
+        this.showCategoryFilter = false;
         this.orm = env.services.orm;
         this.orders = {};
         this.orderlines = {};

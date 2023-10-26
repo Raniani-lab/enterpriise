@@ -8,7 +8,7 @@
     </t>
 
     <t t-name="account_reports.DeferredFilters" t-inherit="account_reports.AccountReportFiltersCustomizable" owl="1">
-        <xpath expr="//div[@id='filter_comparison']" position="replace">
+        <xpath expr="//div[@id='filter_comparison']/t" position="replace">
             <t t-call="account_reports.DeferredFilterComparison"/>
         </xpath>
     </t>

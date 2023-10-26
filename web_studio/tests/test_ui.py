@@ -75,7 +75,7 @@ class TestUi(odoo.tests.HttpCase):
         self.assertEqual(fields_of_interest[1].get("invisible"), None)
 
         self.assertEqual(fields_of_interest[0].get("column_invisible"), None)
-        self.assertEqual(fields_of_interest[1].get("column_invisible"), "1")
+        self.assertEqual(fields_of_interest[1].get("column_invisible"), "True")
 
     def test_add_field_into_empty_group_by(self):
         self.start_tour("/web?debug=tests", 'web_studio_add_field_into_empty_group_by', login="admin")

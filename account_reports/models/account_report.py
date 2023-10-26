@@ -1619,7 +1619,8 @@ class AccountReport(models.Model):
             initializer(options, previous_options=previous_options)
 
         # Sort the buttons list by sequence, for rendering
-        if not self.env['res.company']._all_branches_selected():
+        options_companies = self.env['res.company'].browse(self.get_report_company_ids(options))
+        if not options_companies._all_branches_selected():
             for button in filter(lambda x: not x.get('branch_allowed'), options['buttons']):
                 button['disabled'] = True
 

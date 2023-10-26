@@ -176,7 +176,7 @@ class SpreadsheetMixin(models.AbstractModel):
             self.spreadsheet_snapshot = base64.b64encode(
                 json.dumps(spreadsheet_snapshot).encode("utf-8")
             )
-            self._delete_spreadsheet_revisions()
+            self.spreadsheet_revision_ids.active = False
             self._broadcast_spreadsheet_message(
                 {
                     "type": "SNAPSHOT_CREATED",
@@ -282,13 +282,6 @@ class SpreadsheetMixin(models.AbstractModel):
         """Send the message to the spreadsheet channel"""
         self.ensure_one()
         self.env["bus.bus"]._sendone(self, "spreadsheet", dict(message, id=self.id))
-
-    def _delete_spreadsheet_revisions(self):
-        """Delete spreadsheet revisions"""
-        self.ensure_one()
-        # For debug purposes, we archive revisions instead of unlinking them
-        # self.spreadsheet_revision_ids.unlink()
-        self.spreadsheet_revision_ids.active = False
 
     def _delete_collaborative_data(self):
         self.spreadsheet_snapshot = False

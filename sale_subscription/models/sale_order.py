@@ -1818,7 +1818,7 @@ class SaleOrder(models.Model):
                         body=_("The last invoice (%s) of this subscription is unpaid after the due date.",
                                account_move._get_html_link()),
                         partner_ids=so.team_user_id.partner_id.ids,
-                        message_type='email')
+                    )
                 elif so.id in expired_ids:
                     expired_so |= so
 

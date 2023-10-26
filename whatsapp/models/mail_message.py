@@ -8,7 +8,7 @@ class MailMessage(models.Model):
 
     message_type = fields.Selection(
         selection_add=[('whatsapp_message', 'WhatsApp')],
-        ondelete={'whatsapp_message': lambda recs: recs.write({'message_type': 'email'})},
+        ondelete={'whatsapp_message': lambda recs: recs.write({'message_type': 'comment'})},
     )
     wa_message_ids = fields.One2many('whatsapp.message', 'mail_message_id', string='Related WhatsApp Messages')
 

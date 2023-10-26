@@ -131,3 +131,21 @@ class TestRequest(common.TransactionCase):
         })
         self.assertEqual(approval.product_line_ids.description, 'foo')
         self.assertEqual(approval.product_line_ids.product_uom_id, uom)
+
+    def test_unlink_approval(self):
+        """
+        There is no error when unlinking a draft request with a document attached
+        """
+        approval = self.env['approval.request'].create({
+            'name': 'test request',
+            'category_id': self.env.ref('approvals.approval_category_data_business_trip').id,
+            'date_start': fields.Datetime.now(),
+            'date_end': fields.Datetime.now(),
+            'location': 'testland'
+        })
+        self.env['ir.attachment'].create({
+            'name': 'test.file',
+            'res_id': approval.id,
+            'res_model': 'approval.request',
+        })
+        approval.unlink()

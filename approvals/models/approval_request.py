@@ -100,6 +100,15 @@ class ApprovalRequest(models.Model):
                 vals['name'] = category.sequence_id.next_by_id()
         return super().create(vals_list)
 
+    @api.ondelete(at_uninstall=False)
+    def unlink_attachments(self):
+        attachment_ids = self.env['ir.attachment'].search([
+            ('res_model', '=', 'approval.request'),
+            ('res_id', 'in', self.ids),
+        ])
+        if attachment_ids:
+            attachment_ids.unlink()
+
     def action_get_attachment_view(self):
         self.ensure_one()
         res = self.env['ir.actions.act_window']._for_xml_id('base.action_attachment')

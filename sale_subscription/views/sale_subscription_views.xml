@@ -86,7 +86,7 @@
             'search_default_progress': 1,
             'search_default_paused': 1,
         }</field>
-        <field name="domain">[('subscription_state', 'not in', ['2_renewal', '5_renewed', False] )]</field>
+        <field name="domain">[('subscription_state', 'not in', ['2_renewal', '5_renewed', '7_upsell', False])]</field>
         <field name="search_view_id" eval='sale_subscription_view_search'/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">

@@ -5,7 +5,6 @@
         <t t-set="send_as_message">Send as Message</t>
         <t t-set="copy">Copy</t>
         <t t-set="copy_to_clipboard">Copy to Clipboard</t>
-        <t t-set="copy_success">Content copied to clipboard.</t>
         <div class="d-flex justify-content-between flex-wrap w-100">
             <div class="o_knowledge_template_label px-2 py-1 text-break">Clipboard</div>
             <BehaviorToolbar>
@@ -22,11 +21,13 @@
                         label="htmlFieldTargetMessage"
                         onClick.bind="onClickUseAsDescription"
                     />
-                    <CopyButton
-                        copyText="copy"
-                        successText="copy_success"
-                        content="getCopyContent(state.copyContentElement)"
-                        className="'btn-link btn-sm border-0 text-break text-start'"
+                    <BehaviorToolbarButton
+                        buttonRef="copyToClipboardButton"
+                        icon="'fa-clipboard'"
+                        label="copy"
+                        name="'copyToClipboard'"
+                        onClick.bind="onClickCopyToClipboard"
+                        title="copy_to_clipboard"
                     />
                 </t>
             </BehaviorToolbar>

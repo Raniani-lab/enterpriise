@@ -3,6 +3,7 @@
 import {
     Component,
 } from "@odoo/owl";
+import { useForwardRefToParent } from "@web/core/utils/hooks";
 
 export class BehaviorToolbar extends Component {
     static props = {
@@ -14,6 +15,7 @@ export class BehaviorToolbar extends Component {
 
 export class BehaviorToolbarButton extends Component {
     static props = {
+        buttonRef: { type: Function, optional: true },
         hidden: { type: Boolean, optional: true },
         icon: { type: String, optional: true },
         label: String,
@@ -22,4 +24,8 @@ export class BehaviorToolbarButton extends Component {
         title: { type: String, optional: true},
     };
     static template = "knowledge.BehaviorToolbarButton";
+
+    setup() {
+        useForwardRefToParent("buttonRef");
+    }
 }

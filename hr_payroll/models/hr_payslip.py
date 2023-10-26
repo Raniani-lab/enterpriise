@@ -566,10 +566,11 @@ class HrPayslip(models.Model):
         # after the payslip generation
         if any(p.state not in ['draft', 'verify'] for p in self):
             raise UserError(_('The payslips should be in Draft or Waiting state.'))
-        self.mapped('worked_days_line_ids').unlink()
-        self.mapped('line_ids').unlink()
-        self._compute_worked_days_line_ids()
-        self.compute_sheet()
+        payslips = self.filtered(lambda p: not p.edited)
+        payslips.mapped('worked_days_line_ids').unlink()
+        payslips.mapped('line_ids').unlink()
+        payslips._compute_worked_days_line_ids()
+        payslips.compute_sheet()
 
     def _round_days(self, work_entry_type, days):
         if work_entry_type.round_days != 'NO':

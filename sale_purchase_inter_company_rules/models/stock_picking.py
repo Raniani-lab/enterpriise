@@ -33,7 +33,7 @@ class StockPicking(models.Model):
     @api.model
     def _find_corresponding_move(self, move_orig, candidate_pickings):
         for move in candidate_pickings.move_ids:
-            if move.product_id == move_orig.product_id and float_is_zero(move.quantity_done, precision_rounding=move.product_uom.rounding):
+            if move.product_id == move_orig.product_id and float_is_zero(move.quantity, precision_rounding=move.product_uom.rounding):
                 return move
         return False
 

@@ -47,7 +47,7 @@
                             <record id="mod_349_statistics_invoices_total_amount_balance" model="account.report.expression">
                                 <field name="label">balance</field>
                                 <field name="engine">domain</field>
-                                <field name="formula" eval="[('debit', '&gt;', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_invoice','out_invoice']), ('tax_line_id', '=', False)]"/>
+                                <field name="formula" eval="[('account_type', 'in', ('asset_receivable', 'liability_payable')), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_invoice','out_invoice']), ('tax_line_id', '=', False)]"/>
                                 <field name="subformula">sum</field>
                             </record>
                         </field>
@@ -74,7 +74,7 @@
                             <record id="mod_349_statistics_refunds_total_amount_balance" model="account.report.expression">
                                 <field name="label">balance</field>
                                 <field name="engine">domain</field>
-                                <field name="formula" eval="[('debit', '&gt;', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_refund','out_refund']), ('tax_line_id', '=', False)]"/>
+                                <field name="formula" eval="[('account_type', 'in', ('asset_receivable', 'liability_payable')), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_refund','out_refund']), ('tax_line_id', '=', False)]"/>
                                 <field name="subformula">sum</field>
                             </record>
                         </field>
@@ -91,49 +91,49 @@
                         <field name="code">aeat_mod_349_supplies</field>
                         <field name="groupby">partner_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="domain_formula">sum([('debit', '&gt;', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_invoice','out_invoice']), ('move_id.l10n_es_reports_mod349_invoice_type','=','E'), ('tax_line_id', '=', False)])</field>
+                        <field name="domain_formula">sum([('account_type', 'in', ('asset_receivable', 'liability_payable')), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_invoice','out_invoice']), ('move_id.l10n_es_reports_mod349_invoice_type','=','E'), ('tax_line_id', '=', False)])</field>
                     </record>
                     <record id="mod_349_acquisitions" model="account.report.line">
                         <field name="name">A. Intra-community purchases subject to taxes</field>
                         <field name="code">aeat_mod_349_acquisitions</field>
                         <field name="groupby">partner_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="domain_formula">sum([('debit', '&gt;', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_invoice','out_invoice']), ('move_id.l10n_es_reports_mod349_invoice_type','=','A'), ('tax_line_id', '=', False)])</field>
+                        <field name="domain_formula">sum([('account_type', 'in', ('asset_receivable', 'liability_payable')), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_invoice','out_invoice']), ('move_id.l10n_es_reports_mod349_invoice_type','=','A'), ('tax_line_id', '=', False)])</field>
                     </record>
                     <record id="mod_349_triangular" model="account.report.line">
                         <field name="name">T. Sales to other member states exempted of intra-community taxes in case of triangular operations</field>
                         <field name="code">aeat_mod_349_triangular</field>
                         <field name="groupby">partner_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="domain_formula">sum([('debit', '&gt;', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_invoice','out_invoice']), ('move_id.l10n_es_reports_mod349_invoice_type','=','T'), ('tax_line_id', '=', False)])</field>
+                        <field name="domain_formula">sum([('account_type', 'in', ('asset_receivable', 'liability_payable')), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_invoice','out_invoice']), ('move_id.l10n_es_reports_mod349_invoice_type','=','T'), ('tax_line_id', '=', False)])</field>
                     </record>
                     <record id="mod_349_services_sold" model="account.report.line">
                         <field name="name">S. Intra-community sales of services carried out by the declarant</field>
                         <field name="code">aeat_mod_349_services_sold</field>
                         <field name="groupby">partner_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="domain_formula">sum([('debit', '&gt;', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_invoice','out_invoice']), ('move_id.l10n_es_reports_mod349_invoice_type','=','S'), ('tax_line_id', '=', False)])</field>
+                        <field name="domain_formula">sum([('account_type', 'in', ('asset_receivable', 'liability_payable')), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_invoice','out_invoice']), ('move_id.l10n_es_reports_mod349_invoice_type','=','S'), ('tax_line_id', '=', False)])</field>
                     </record>
                     <record id="mod_349_services_acquired" model="account.report.line">
                         <field name="name">I. Intra-community purchases of services</field>
                         <field name="code">aeat_mod_349_services_acquired</field>
                         <field name="groupby">partner_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="domain_formula">sum([('debit', '&gt;', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_invoice','out_invoice']), ('move_id.l10n_es_reports_mod349_invoice_type','=','I'), ('tax_line_id', '=', False)])</field>
+                        <field name="domain_formula">sum([('account_type', 'in', ('asset_receivable', 'liability_payable')), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_invoice','out_invoice']), ('move_id.l10n_es_reports_mod349_invoice_type','=','I'), ('tax_line_id', '=', False)])</field>
                     </record>
                     <record id="mod_349_supplies_without_taxes" model="account.report.line">
                         <field name="name">M. Intra-community sales of goods after an importation exempted of taxes</field>
                         <field name="code">aeat_mod_349_supplies_without_taxes</field>
                         <field name="groupby">partner_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="domain_formula">sum([('debit', '&gt;', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_invoice','out_invoice']), ('move_id.l10n_es_reports_mod349_invoice_type','=','M'), ('tax_line_id', '=', False)])</field>
+                        <field name="domain_formula">sum([('account_type', 'in', ('asset_receivable', 'liability_payable')), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_invoice','out_invoice']), ('move_id.l10n_es_reports_mod349_invoice_type','=','M'), ('tax_line_id', '=', False)])</field>
                     </record>
                     <record id="mod_349_supplies_without_taxes_legal_representative" model="account.report.line">
                         <field name="name">H. Intra-community sales of goods after an import exempted of taxes made for the fiscal representative</field>
                         <field name="code">aeat_mod_349_supplies_without_taxes_legal_representative</field>
                         <field name="groupby">partner_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="domain_formula">sum([('debit', '&gt;', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_invoice','out_invoice']), ('move_id.l10n_es_reports_mod349_invoice_type','=','H'), ('tax_line_id', '=', False)])</field>
+                        <field name="domain_formula">sum([('account_type', 'in', ('asset_receivable', 'liability_payable')), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_invoice','out_invoice']), ('move_id.l10n_es_reports_mod349_invoice_type','=','H'), ('tax_line_id', '=', False)])</field>
                     </record>
                 </field>
             </record>
@@ -147,49 +147,49 @@
                         <field name="code">aeat_mod_349_supplies_refunds</field>
                         <field name="groupby">partner_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="domain_formula">sum([('debit', '&gt;', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_refund','out_refund']), ('move_id.l10n_es_reports_mod349_invoice_type','=','E'), ('tax_line_id', '=', False)])</field>
+                        <field name="domain_formula">sum([('account_type', 'in', ('asset_receivable', 'liability_payable')), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_refund','out_refund']), ('move_id.l10n_es_reports_mod349_invoice_type','=','E'), ('tax_line_id', '=', False)])</field>
                     </record>
                     <record id="mod_349_acquisitions_refunds" model="account.report.line">
                         <field name="name">A. Intra-community purchases subject to taxes</field>
                         <field name="code">aeat_mod_349_acquisitions_refunds</field>
                         <field name="groupby">partner_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="domain_formula">sum([('debit', '&gt;', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_refund','out_refund']), ('move_id.l10n_es_reports_mod349_invoice_type','=','A'), ('tax_line_id', '=', False)])</field>
+                        <field name="domain_formula">sum([('account_type', 'in', ('asset_receivable', 'liability_payable')), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_refund','out_refund']), ('move_id.l10n_es_reports_mod349_invoice_type','=','A'), ('tax_line_id', '=', False)])</field>
                     </record>
                     <record id="mod_349_triangular_refunds" model="account.report.line">
                         <field name="name">T. Sales to other member states exempted of intra-community taxes in case of triangular operations</field>
                         <field name="code">aeat_mod_349_triangular_refunds</field>
                         <field name="groupby">partner_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="domain_formula">sum([('debit', '&gt;', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_refund','out_refund']), ('move_id.l10n_es_reports_mod349_invoice_type','=','T'), ('tax_line_id', '=', False)])</field>
+                        <field name="domain_formula">sum([('account_type', 'in', ('asset_receivable', 'liability_payable')), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_refund','out_refund']), ('move_id.l10n_es_reports_mod349_invoice_type','=','T'), ('tax_line_id', '=', False)])</field>
                     </record>
                     <record id="mod_349_services_sold_refunds" model="account.report.line">
                         <field name="name">S. Intra-community sales of services carried out by the declarant</field>
                         <field name="code">aeat_mod_349_services_sold_refunds</field>
                         <field name="groupby">partner_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="domain_formula">sum([('debit', '&gt;', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_refund','out_refund']), ('move_id.l10n_es_reports_mod349_invoice_type','=','S'), ('tax_line_id', '=', False)])</field>
+                        <field name="domain_formula">sum([('account_type', 'in', ('asset_receivable', 'liability_payable')), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_refund','out_refund']), ('move_id.l10n_es_reports_mod349_invoice_type','=','S'), ('tax_line_id', '=', False)])</field>
                     </record>
                     <record id="mod_349_services_acquired_refunds" model="account.report.line">
                         <field name="name">I. Intra-community purchases of services</field>
                         <field name="code">aeat_mod_349_services_acquired_refunds</field>
                         <field name="groupby">partner_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="domain_formula">sum([('debit', '&gt;', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_refund','out_refund']), ('move_id.l10n_es_reports_mod349_invoice_type','=','I'), ('tax_line_id', '=', False)])</field>
+                        <field name="domain_formula">sum([('account_type', 'in', ('asset_receivable', 'liability_payable')), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_refund','out_refund']), ('move_id.l10n_es_reports_mod349_invoice_type','=','I'), ('tax_line_id', '=', False)])</field>
                     </record>
                     <record id="mod_349_supplies_without_taxes_refunds" model="account.report.line">
                         <field name="name">M. Intra-community sales of goods after an importation exempted of taxes</field>
                         <field name="code">aeat_mod_349_supplies_without_taxes_refunds</field>
                         <field name="groupby">partner_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="domain_formula">sum([('debit', '&gt;', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_refund','out_refund']), ('move_id.l10n_es_reports_mod349_invoice_type','=','M'), ('tax_line_id', '=', False)])</field>
+                        <field name="domain_formula">sum([('account_type', 'in', ('asset_receivable', 'liability_payable')), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_refund','out_refund']), ('move_id.l10n_es_reports_mod349_invoice_type','=','M'), ('tax_line_id', '=', False)])</field>
                     </record>
                     <record id="mod_349_supplies_without_taxes_legal_representative_refunds" model="account.report.line">
                         <field name="name">H. Intra-community sales of goods after an import exempted of taxes made for the fiscal representative</field>
                         <field name="code">aeat_mod_349_supplies_without_taxes_legal_representative_refunds</field>
                         <field name="groupby">partner_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="domain_formula">sum([('debit', '&gt;', 0.0), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_refund','out_refund']), ('move_id.l10n_es_reports_mod349_invoice_type','=','H'), ('tax_line_id', '=', False)])</field>
+                        <field name="domain_formula">sum([('account_type', 'in', ('asset_receivable', 'liability_payable')), ('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_refund','out_refund']), ('move_id.l10n_es_reports_mod349_invoice_type','=','H'), ('tax_line_id', '=', False)])</field>
                     </record>
                 </field>
             </record>

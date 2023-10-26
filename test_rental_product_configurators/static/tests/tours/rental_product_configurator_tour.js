@@ -2,6 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
+import configuratorTourUtils from "@test_sale_product_configurators/js/tour_utils";
 
 registry.category("web_tour.tours").add('rental_product_configurator_tour', {
     url: '/web',
@@ -26,27 +27,22 @@ registry.category("web_tour.tours").add('rental_product_configurator_tour', {
     trigger: 'ul.ui-autocomplete a:contains("Customizable Desk (TEST)")',
 },
 // Product Configurator Wizard
-{
-    trigger: 'tr:has(.o_sale_product_configurator_name:contains("Customizable Desk")) label:contains("Steel")',
-}, {
-    trigger: 'tr:has(.o_sale_product_configurator_name:contains("Customizable Desk")) label:contains("Aluminium")',
-}, {
+    configuratorTourUtils.selectAttribute("Customizable Desk", "Legs", "Aluminium"),
     // Check on the style to ensure that the color is the one set in backend.
-    trigger: 'label[style="background-color:#000000"] input'
-}, {
+    configuratorTourUtils.selectAttribute("Customizable Desk", "Color", "Black", "color"),
+{
     trigger: '.btn-primary:disabled:contains("Confirm")',
     isCheck: true, // check confirm button is disabled
-}, {
+},
     // Check on the style to ensure that the color is the one set in backend.
-    trigger: 'label[style="background-color:#FFFFFF"] input'
-}, {
+    configuratorTourUtils.selectAttribute("Customizable Desk", "Color", "White", "color"),
+{
     trigger: '.btn-primary:not(:disabled):contains("Confirm")',
     isCheck: true, // check confirm is available
-}, {
-    trigger: 'tr:has(.o_sale_product_configurator_name:contains("Conference Chair")) button:has(i.fa-shopping-cart)',
-}, {
-    trigger: 'tr:has(.o_sale_product_configurator_name:contains("Chair floor protection")) button:has(i.fa-shopping-cart)',
-}, {
+},
+    configuratorTourUtils.addOptionalProduct("Conference Chair"),
+    configuratorTourUtils.addOptionalProduct("Chair floor protection"),
+{
     trigger: 'button:contains(Confirm)',
     id: 'quotation_product_selected',
 }, {
@@ -74,12 +70,10 @@ registry.category("web_tour.tours").add('rental_product_configurator_tour', {
     trigger: 'ul.ui-autocomplete a:contains("Customizable Desk (TEST)")',
 },
 // Product Configurator Wizard
-{
-    trigger: 'tr:has(.o_sale_product_configurator_name:contains("Customizable Desk")) label:contains("Steel")',
-}, {
+    configuratorTourUtils.selectAttribute("Customizable Desk", "Legs", "Steel"),
     // Check on the style to ensure that the color is the one set in backend.
-    trigger: 'label[style="background-color:#FFFFFF"] input'
-}, {
+    configuratorTourUtils.selectAttribute("Customizable Desk", "Color", "Black", "color"),
+{
     trigger: '.btn-primary:not(:disabled):contains("Confirm")',
     isCheck: true, // check confirm is available
 }, {

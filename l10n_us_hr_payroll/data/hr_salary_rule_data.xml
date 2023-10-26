@@ -459,7 +459,7 @@ result_rate = - 0.9
 # METHOD B - EXACT CALCULATION METHOD
 # https://edd.ca.gov/siteassets/files/pdf_pub_ctr/23methb.pdf
 
-gross = categories['TAXABLE']
+gross = categories['TAXABLE'] - result_rules['MEDICALHSA']['total']
 employee = contract.employee_id
 schedule_pay = contract.schedule_pay
 
@@ -622,7 +622,7 @@ result = -step5
         <field name="condition_python">result = contract.employee_id.address_id.state_id.code == 'CA'</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = categories['TAXABLE'] - result_rules['401K']['total']
+result = categories['TAXABLE'] - result_rules['MEDICALHSA']['total'] - result_rules['401K']['total']
 result_rate = - 0.9
         </field>
         <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
@@ -638,7 +638,7 @@ result_rate = - 0.9
         <field name="condition_python">result = contract.employee_id.address_id.state_id.code == 'NY'</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-taxable = categories['GROSS']
+taxable = categories['TAXABLE']
 max_amount = payslip._rule_parameter('l10n_us_ny_sdi_max_amount')[contract.schedule_pay]
 result = - min(0.005 * taxable, max_amount)</field>
         <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>
@@ -750,7 +750,7 @@ result_rate = - result_rules['MEDICARE']['rate']
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-taxable = categories['GROSS']
+taxable = categories['TAXABLE'] - result_rules['401K']['total']
 year_payslips = contract.env['hr.payslip'].search([
     ('employee_id', '=', contract.employee_id.id),
     ('state', 'in', ['done', 'paid']),
@@ -781,7 +781,6 @@ result_rate = payslip._rule_parameter('l10n_us_FUTA_tax_rate')
         <field name="condition_python">result = contract.employee_id.address_id.state_id.code</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-taxable = categories['GROSS']
 year_payslips = contract.env['hr.payslip'].search([
     ('employee_id', '=', contract.employee_id.id),
     ('state', 'in', ['done', 'paid']),
@@ -789,14 +788,25 @@ year_payslips = contract.env['hr.payslip'].search([
     ('date_to', '&lt;=', payslip.date_from + relativedelta(days=-1)),
     ('company_id', '=', contract.company_id.id),
 ])
-line_values = year_payslips._get_line_values(['TAXABLE', '401K'], compute_sum=True)
-already_taxed = line_values['TAXABLE']['sum']['total'] - line_values['401K']['sum']['total']
+
+if contract.employee_id.address_id.state_id.code == 'CA':
+    line_values = year_payslips._get_line_values(['TAXABLE', '401K', 'MEDICALHSA'], compute_sum=True)
+    already_taxed = line_values['TAXABLE']['sum']['total'] \
+                  - line_values['MEDICALHSA']['sum']['total'] \
+                  - line_values['401K']['sum']['total']
+else:
+    line_values = year_payslips._get_line_values(['GROSS'], compute_sum=True)
+    already_taxed = line_values['GROSS']['sum']['total']
 state_code = contract.employee_id.address_id.state_id.code.lower()
 result_rate = payslip._rule_parameter('l10n_us_%s_sui_rate' % (state_code))
 cap = payslip._rule_parameter('l10n_us_%s_sui_cap' % (state_code))
 if already_taxed &gt; cap:
     result = 0
 else:
+    if contract.employee_id.address_id.state_id.code == 'CA':
+        taxable = categories['TAXABLE'] - result_rules['MEDICALHSA']['total'] - result_rules['401K']['total']
+    else:
+        taxable = categories['GROSS']
     result = min(cap - already_taxed, taxable)
         </field>
         <field name="appears_on_payslip" eval="False"/>
@@ -814,7 +824,7 @@ else:
         <field name="amount_python_compute">
 # https://edd.ca.gov/en/payroll_taxes/What_Are_State_Payroll_Taxes
 if contract.company_id.l10n_us_ca_ett_tax:
-    taxable = categories['GROSS']
+    taxable = categories['TAXABLE'] - result_rules['MEDICALHSA']['total'] - result_rules['401K']['total']
     year_payslips = contract.env['hr.payslip'].search([
         ('employee_id', '=', contract.employee_id.id),
         ('state', 'in', ['done', 'paid']),
@@ -822,8 +832,10 @@ if contract.company_id.l10n_us_ca_ett_tax:
         ('date_to', '&lt;=', payslip.date_from + relativedelta(days=-1)),
         ('company_id', '=', contract.company_id.id),
     ])
-    line_values = year_payslips._get_line_values(['TAXABLE', '401K'], vals_list=['amount'], compute_sum=True)
-    previous_amounts = line_values['TAXABLE']['sum']['amount'] - line_values['401K']['sum']['amount']
+    line_values = year_payslips._get_line_values(['TAXABLE', 'MEDICALHSA', '401K'], vals_list=['amount'], compute_sum=True)
+    previous_amounts = line_values['TAXABLE']['sum']['amount'] \
+                     - line_values['MEDICALHSA']['sum']['amount'] \
+                     - line_values['401K']['sum']['amount']
     cap = payslip._rule_parameter('l10n_us_ca_ett_cap')
     if previous_amounts &gt; cap:
         result = 0
@@ -857,12 +869,12 @@ year_payslips = contract.env['hr.payslip'].search([
 ])
 line_values = year_payslips._get_line_values(['COMPANYNYREEMPLOYMENT'], vals_list=['amount'], compute_sum=True)
 previous_amounts = line_values['COMPANYNYREEMPLOYMENT']['sum']['amount']
-cap = payslip._rule_parameter('l10n_us_nt_reemployment_tax_cap')
+cap = payslip._rule_parameter('l10n_us_ny_reemployment_tax_cap')
 if previous_amounts &gt; cap:
     result = 0
 else:
     result = min(cap - previous_amounts, taxable)
-result_rate = payslip._rule_parameter('l10n_us_nt_reemployment_tax_rate')
+result_rate = payslip._rule_parameter('l10n_us_ny_reemployment_tax_rate')
         </field>
         <field name="appears_on_payslip" eval="False"/>
         <field name="struct_id" ref="l10n_us_hr_payroll.hr_payroll_structure_us_employee_salary"/>

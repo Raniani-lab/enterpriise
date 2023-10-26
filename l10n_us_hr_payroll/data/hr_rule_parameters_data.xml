@@ -2396,7 +2396,7 @@
 
     <record id="l10n_us_employee_salary_ny_reimployment_rate" model="hr.rule.parameter">
         <field name="name">US: New York Re-employment Tax Rate</field>
-        <field name="code">l10n_us_nt_reemployment_tax_rate</field>
+        <field name="code">l10n_us_ny_reemployment_tax_rate</field>
         <field name="country_id" ref="base.us"/>
     </record>
     <record id="l10n_us_employee_salary_ny_reimployment_rate_2023" model="hr.rule.parameter.value">
@@ -2407,7 +2407,7 @@
 
     <record id="l10n_us_employee_salary_ny_reimployment_cap" model="hr.rule.parameter">
         <field name="name">US: New York Re-employment Tax Cap</field>
-        <field name="code">l10n_us_nt_reemployment_tax_cap</field>
+        <field name="code">l10n_us_ny_reemployment_tax_cap</field>
         <field name="country_id" ref="base.us"/>
     </record>
     <record id="l10n_us_employee_salary_ny_reimployment_cap_2023" model="hr.rule.parameter.value">

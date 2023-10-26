@@ -161,7 +161,8 @@ const EmbeddedViewRendererPatch = () => ({
             resModel: 'knowledge.article',
             context: {},
             domain: [
-                ['user_has_write_access', '=', true]
+                ['user_has_write_access', '=', true],
+                ['is_template', '=', false]
             ],
             onSelected: resIds => {
                 onSelectCallback(resIds[0]);

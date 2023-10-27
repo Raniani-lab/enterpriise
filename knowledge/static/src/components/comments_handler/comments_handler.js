@@ -467,7 +467,7 @@ export class KnowledgeCommentsHandler extends Component {
 
 export const knowledgeCommentsHandler = {
     component: KnowledgeCommentsHandler,
-    additionalClasses: ['position-absolute', 'top-0', 'start-100']
+    additionalClasses: ['position-absolute', 'top-0', 'start-100', 'd-print-none']
 };
 
 registry.category('view_widgets').add('knowledge_comments_handler', knowledgeCommentsHandler);

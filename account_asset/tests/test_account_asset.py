@@ -1887,41 +1887,23 @@ class TestAccountAsset(TestAccountReportsCommon):
 
     def test_depreciation_schedule_report_with_negative_asset(self):
         """
-        Test the computation of book value and remaining value
-        when posting a depreciation move related with a negative asset
+        Test the computation of depreciation schedule with negative asset
         """
-        depreciation_account = self.company_data['default_account_assets']
-        asset_model = self.env['account.asset'].create({
+        asset = self.env['account.asset'].create({
             'name': 'test',
-            'state': 'model',
-            'active': True,
+            'original_value': -500,
             'asset_type': 'purchase',
             'method': 'linear',
             'method_number': 5,
             'method_period': '1',
+            'acquisition_date': fields.Date.today() + relativedelta(months=-1),
             'prorata_computation_type': 'none',
-            'account_asset_id': depreciation_account.id,
-            'account_depreciation_id': depreciation_account.id,
+            'account_asset_id': self.company_data['default_account_assets'].id,
+            'account_depreciation_id': self.company_data['default_account_assets'].id,
             'account_depreciation_expense_id': self.company_data['default_account_expense'].id,
             'journal_id': self.company_data['default_journal_misc'].id,
         })
 
-        depreciation_account.asset_type = 'purchase'
-        depreciation_account.can_create_asset = True
-        depreciation_account.create_asset = 'draft'
-        depreciation_account.asset_model = asset_model
-
-        refund = self.env['account.move'].create({
-            'move_type': 'in_refund',
-            'invoice_date': fields.Date.today() + relativedelta(month=1),
-            'partner_id': self.partner_a.id,
-            'invoice_line_ids': [(0, 0, {'name': 'refund', 'account_id': depreciation_account.id, 'price_unit': 500})],
-        })
-        refund.action_post()
-
-        self.assertTrue(refund.asset_ids)
-
-        asset = refund.asset_ids
         asset.validate()
 
         report = self.env.ref('account_asset.assets_report')
@@ -1929,36 +1911,24 @@ class TestAccountAsset(TestAccountReportsCommon):
         options = self._generate_options(report, fields.Date.today() + relativedelta(months=-7, day=1), fields.Date.today() + relativedelta(months=-6, day=31))
 
         expected_values_open_asset = [
-            ("refund", 0, 0, 500.0, -500.0, 0, 0, 100.0, -100.0, -400.0),
+            ("test", 0, 0, 500.0, -500.0, 0, 0, 100.0, -100.0, -400.0),
         ]
 
         self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_open_asset)
 
-        invoice = self.env['account.move'].create({
-            'move_type': 'in_invoice',
-            'invoice_date': fields.Date.today(),
-            'partner_id': self.partner_a.id,
-            'invoice_line_ids': [
-                (0, 0, {
-                    'name': 'Product B',
-                    'account_id': self.company_data['default_account_revenue'].id,
-                    'price_unit': 200.0,
-                    'quantity': 4,
-                }),
-            ]
-        })
+        expense_account_copy = self.company_data['default_account_expense'].copy()
 
-        res_move = self.env['asset.modify'].create({
+        disposal_action_view = self.env['asset.modify'].create({
             'asset_id': asset.id,
-            'invoice_ids': [Command.set(invoice.ids)],
-            'modify_action': 'sell',
-            'gain_account_id': self.company_data['default_account_receivable'].id,
+            'modify_action': 'dispose',
+            'loss_account_id': expense_account_copy.id,
+            'date': fields.Date.today()
         }).sell_dispose()
 
-        self.env['account.move'].search(res_move['domain']).action_post()
+        self.env['account.move'].browse(disposal_action_view['res_id']).action_post()
 
         expected_values_closed_asset = [
-            ("refund", 0, 500.0, 500.0, 0, 0, 500.0, 500.0, 0, 0),
+            ("test", 0, 500.0, 500.0, 0, 0, 500.0, 500.0, 0, 0),
         ]
         options = self._generate_options(report, fields.Date.today() + relativedelta(months=-7, day=1), fields.Date.today())
         self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_closed_asset)
@@ -2111,7 +2081,60 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.env['account.move'].browse(disposal_action_view.get('res_id')).action_post()
 
         expected_values_asset_disposal_posted = [
-            ("test asset", 1000.0, 0.0, 1000.0, 0.0, 400.0, 600.0, 1000.0, 0.0, 0.0),
+            ("test asset", 1000.0, 0.0, 1000.0, 0.0, 400.0, 100.0, 500.0, 0.0, 0.0),
+        ]
+
+        self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_asset_disposal_posted)
+
+    def test_depreciation_schedule_disposal_move_unposted_with_non_depreciable_value(self):
+        """
+        Test the computation of values when disposing an asset with non-depreciable value, and the difference if the disposal move is posted
+        """
+        asset = self.env['account.asset'].create({
+            'name': 'test asset',
+            'asset_type': 'purchase',
+            'method': 'linear',
+            'original_value': 10000,
+            'salvage_value': 8000,
+            'method_number': 24,
+            'method_period': '1',
+            'acquisition_date': fields.Date.today() + relativedelta(months=-1, day=1),
+            'account_asset_id': self.company_data['default_account_assets'].id,
+            'account_depreciation_id': self.company_data['default_account_assets'].id,
+            'account_depreciation_expense_id': self.company_data['default_account_expense'].id,
+            'journal_id': self.company_data['default_journal_misc'].id,
+        })
+        asset.validate()
+
+        report = self.env.ref('account_asset.assets_report')
+
+        options = self._generate_options(report, '2021-07-01', '2021-07-31')
+
+        expected_values_asset_disposal_unposted = [
+            ("test asset", 10000.0, 0.0, 0.0, 10000.0, 83.33, 0.0, 0.0, 83.33, 9916.67),
+        ]
+
+        self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_asset_disposal_unposted)
+
+        expense_account_copy = self.company_data['default_account_expense'].copy()
+
+        disposal_action_view = self.env['asset.modify'].create({
+            'asset_id': asset.id,
+            'modify_action': 'dispose',
+            'loss_account_id': expense_account_copy.id,
+            'date': fields.Date.today()
+        }).sell_dispose()
+
+        expected_values_asset_disposal_unposted = [
+            ("test asset", 10000.0, 0.0, 0.0, 10000.0, 83.33, 2.69, 0.0, 86.02, 9913.98),
+        ]
+
+        self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_asset_disposal_unposted)
+
+        self.env['account.move'].browse(disposal_action_view['res_id']).action_post()
+
+        expected_values_asset_disposal_posted = [
+            ("test asset", 10000.0, 0.0, 10000.0, 0.0, 83.33, 2.69, 86.02, 0.0, 0.0),
         ]
 
         self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_asset_disposal_posted)

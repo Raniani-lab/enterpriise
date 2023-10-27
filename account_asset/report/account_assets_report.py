@@ -210,9 +210,12 @@ class AssetReportCustomHandler(models.AbstractModel):
             depreciation_add = al['depreciated_during']
             depreciation_minus = 0.0
 
+            asset_disposal_value = al['asset_disposal_value'] if al['asset_disposal_date'] and al['asset_disposal_date'] <= fields.Date.to_date(options['date']['date_to']) else 0.0
+
             asset_opening = al['asset_original_value'] if opening else 0.0
             asset_add = 0.0 if opening else al['asset_original_value']
             asset_minus = 0.0
+            asset_salvage_value = al.get('asset_salvage_value', 0.0)
 
             # Add the main values of the board for all the sub assets (gross increases)
             for child in children_lines[al['asset_id']]:
@@ -229,8 +232,14 @@ class AssetReportCustomHandler(models.AbstractModel):
             al_currency = self.env['res.currency'].browse(al['asset_currency_id'])
 
             # Manage the closing of the asset
-            if al['asset_state'] == 'close' and al['asset_disposal_date'] and al['asset_disposal_date'] <= fields.Date.to_date(options['date']['date_to']) and al_currency.compare_amounts(depreciation_closing, asset_closing) == 0:
-                depreciation_minus += depreciation_closing
+            if (
+                    al['asset_state'] == 'close'
+                    and al['asset_disposal_date']
+                    and al['asset_disposal_date'] <= fields.Date.to_date(options['date']['date_to'])
+                    and al_currency.compare_amounts(depreciation_closing, asset_closing - asset_salvage_value) == 0
+            ):
+                depreciation_add -= asset_disposal_value
+                depreciation_minus += depreciation_closing - asset_disposal_value
                 depreciation_closing = 0.0
                 asset_minus += asset_closing
                 asset_closing = 0.0
@@ -381,6 +390,7 @@ class AssetReportCustomHandler(models.AbstractModel):
                    asset.name AS asset_name,
                    asset.original_value AS asset_original_value,
                    asset.currency_id AS asset_currency_id,
+                   COALESCE(asset.salvage_value, 0) as asset_salvage_value,
                    MIN(move.date) AS asset_date,
                    asset.disposal_date AS asset_disposal_date,
                    asset.acquisition_date AS asset_acquisition_date,
@@ -394,7 +404,8 @@ class AssetReportCustomHandler(models.AbstractModel):
                    account.id AS account_id,
                    account.company_id AS company_id,
                    COALESCE(SUM(move.depreciation_value) FILTER (WHERE move.date < %(date_from)s AND {move_filter}), 0) + COALESCE(asset.already_depreciated_amount_import, 0) AS depreciated_before,
-                   COALESCE(SUM(move.depreciation_value) FILTER (WHERE move.date BETWEEN %(date_from)s AND %(date_to)s AND {move_filter}), 0) AS depreciated_during
+                   COALESCE(SUM(move.depreciation_value) FILTER (WHERE move.date BETWEEN %(date_from)s AND %(date_to)s AND {move_filter}), 0) AS depreciated_during,
+                   COALESCE(SUM(move.depreciation_value) FILTER (WHERE move.date BETWEEN %(date_from)s AND %(date_to)s AND {move_filter} AND move.asset_number_days IS NULL), 0) AS asset_disposal_value
               FROM account_asset AS asset
          LEFT JOIN account_account AS account ON asset.account_asset_id = account.id
          LEFT JOIN account_move move ON move.asset_id = asset.id

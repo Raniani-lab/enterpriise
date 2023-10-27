@@ -69,7 +69,7 @@ class SurveyUserInput(models.Model):
             'context': {
                 'default_appraisal_id': self.appraisal_id.id,
                 'default_employee_ids': self.appraisal_id.employee_feedback_ids.filtered(
-                    lambda e: e.work_email == self.email or e.private_email == self.email).ids,
+                    lambda e: e.work_email == self.email or e.user_id.partner_id.email == self.email).ids,
                 'default_survey_template_id': self.survey_id.id
             }
         }

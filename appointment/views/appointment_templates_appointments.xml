@@ -280,8 +280,8 @@
 
     <!-- Details column displayed on the right of the screen -->
     <template id="appointment_details_column" name="Details column">
-        <aside t-attf-class="o_appointment_details_column o_not_editable col-12 col-md-3 offset-lg-1 position-relative mb-4 mb-lg-0 #{'p-4 bg-light' if not website else ''}">
-            <h4 class="mb-3 d-md-none">Your Appointment</h4>
+        <aside t-attf-class="o_appointment_details_column o_not_editable col-12 col-md-4 col-lg-3 offset-lg-1 position-relative #{'p-4 bg-light' if not website else 'mb-4 mb-lg-0'}">
+            <h4 class="my-4 d-md-none">Your Appointment</h4>
             <div t-if="appointment_type.category in ['punctual', 'recurring']" class="position-relative">
                 <t t-call="appointment.appointment_meeting_details"/>
                 <t t-if="staff_user or resource and not isOperator" t-call="appointment.appointment_meeting_user"/>

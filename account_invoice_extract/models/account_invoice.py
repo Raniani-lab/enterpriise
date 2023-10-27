@@ -84,10 +84,6 @@ class AccountMove(models.Model):
     def _contact_iap_partner_autocomplete(self, local_endpoint, params):
         return iap_tools.iap_jsonrpc(PARTNER_AUTOCOMPLETE_ENDPOINT + local_endpoint, params=params)
 
-    @api.model
-    def message_new(self, msg_dict, custom_values=None):
-        return super(AccountMove, self.with_context(from_alias=True)).message_new(msg_dict, custom_values=custom_values)
-
     def _check_digitalization_mode(self, company, document_type, mode):
         if document_type in self.get_purchase_types():
             return company.extract_in_invoice_digitalization_mode == mode

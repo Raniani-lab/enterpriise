@@ -13,7 +13,7 @@ class MaintenanceRequest(models.Model):
         'worksheet.template', string="Worksheet Template",
         domain="[('res_model', '=', 'maintenance.request'), '|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]",
         help="Create templates for each type of request you have and customize their content with your own custom fields.")
-    worksheet_count = fields.Integer('Worksheer Count', compute='_compute_worksheet_count')
+    worksheet_count = fields.Integer('Worksheet Count', compute='_compute_worksheet_count')
 
     @api.depends('worksheet_template_id')
     def _compute_worksheet_count(self):

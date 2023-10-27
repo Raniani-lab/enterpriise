@@ -127,7 +127,7 @@
                             class="btn-secondary"
                             invisible="test_type not in ('register_consumed_materials', 'register_byproducts') or consumption == 'strict' or consumption in ['flexible', 'warning'] and component_qty_to_do &lt; 0"
                             barcode_trigger="continue"
-                            string="Continue Consuption"/>
+                            string="Continue Consumption"/>
                         <button name="action_print" type="object" class="btn-primary" invisible="test_type != 'print_label'" barcode_trigger="print" string="Print Labels"/>
                     </div>
                 </div>

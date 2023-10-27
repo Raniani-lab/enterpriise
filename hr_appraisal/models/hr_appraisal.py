@@ -136,15 +136,23 @@ class HrAppraisal(models.Model):
 
     @api.depends('department_id')
     def _compute_employee_feedback(self):
-        for appraisal in self.filtered(lambda a: a.state == 'new'):
-            appraisal.employee_feedback = appraisal.department_id.employee_feedback_template if appraisal.department_id.custom_appraisal_templates \
+        for appraisal in self.filtered(lambda a: a.state in ['new', 'pending']):
+            employee_template = appraisal.department_id.employee_feedback_template if appraisal.department_id.custom_appraisal_templates \
                 else appraisal.company_id.appraisal_employee_feedback_template
+            if appraisal.state == 'new':
+                appraisal.employee_feedback = employee_template
+            else:
+                appraisal.employee_feedback = appraisal.employee_feedback or employee_template
 
     @api.depends('department_id')
     def _compute_manager_feedback(self):
-        for appraisal in self.filtered(lambda a: a.state == 'new'):
-            appraisal.manager_feedback = appraisal.department_id.manager_feedback_template if appraisal.department_id.custom_appraisal_templates \
+        for appraisal in self.filtered(lambda a: a.state in ['new', 'pending']):
+            manager_template = appraisal.department_id.manager_feedback_template if appraisal.department_id.custom_appraisal_templates \
                 else appraisal.company_id.appraisal_manager_feedback_template
+            if appraisal.state == 'new':
+                appraisal.manager_feedback = manager_template
+            else:
+                appraisal.manager_feedback = appraisal.manager_feedback or manager_template
 
     @api.depends('department_id', 'company_id')
     def _compute_feedback_templates(self):

@@ -64,6 +64,8 @@ class ResCompany(models.Model):
             'date_close': employee.next_appraisal_date + relativedelta(days=days),
             'manager_ids': employee.parent_id,
             'state': 'pending',
+            'employee_feedback_published': False,
+            'manager_feedback_published': False,
         } for employee in employees]
         return self.env['hr.appraisal'].create(appraisal_values)
 

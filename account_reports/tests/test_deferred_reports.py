@@ -137,8 +137,8 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             [
                 ('EXP0 Expense 0',  1000 + 1050,        750 + 750,                   250 + 300,              0.0   ),
                 ('EXP1 Expense 1',  1225,               1050,                        175,                    0.0   ),
-                ('EXP2 Expense 2',  1680 + 225,         600 * (2 + 10/30) + 0,       600 * (14/30) + 225,    0.0   ),
-                ('Total',          5180,               3950,                        1230,                   0.0   ),
+                ('EXP2 Expense 2',  1680 ,              600 * (2 + 10/30),           600 * (14/30),          0.0   ),
+                ('Total',           4955,               3950,                        1005,                   0.0   ),
             ],
             options,
         )
@@ -180,8 +180,8 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             [
                 ('EXP0 Expense 0',  1000 + 1050,        750 + 750,                   250 + 300,              0.0   ),
                 ('EXP1 Expense 1',  1225,               1050,                        175,                    0.0   ),
-                ('EXP2 Expense 2',  1680 + 225,         600 * (2 + 10/30) + 0,       600 * (14/30) + 225,    0.0   ),
-                ('Total',          5180,               3950,                        1230,                   0.0   ),
+                ('EXP2 Expense 2',  1680 ,              600 * (2 + 10/30),           600 * (14/30),          0.0   ),
+                ('Total',           4955,               3950,                        1005,                   0.0   ),
             ],
             options,
         )
@@ -197,19 +197,14 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             options,
         )
 
-        # 2023
+        # 2023, nothing to show as all the moves have been deferred by the end of the year 2023
         options = self.get_options('2023-01-01', '2023-12-31')
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                Total            Before      Current         Later
             [   0,                  1,               2,          3,              4     ],
-            [
-                ('EXP0 Expense 0',  1000 + 1050,     0.0,        1000 + 1050,    0.0   ),
-                ('EXP1 Expense 1',  1225,            0.0,        1225,           0.0   ),
-                ('EXP2 Expense 2',  1680 + 225,      0.0,        1680 + 225,     0.0   ),
-                ('Total',          5180,            0.0,        5180,           0.0   ),
-            ],
+            [],
             options,
         )
 
@@ -274,8 +269,8 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             [
                 ('REV0 Revenue 0',  1000 + 1050,        750 + 750,                   250 + 300,              0.0   ),
                 ('REV1 Revenue 1',  1225,               1050,                        175,                    0.0   ),
-                ('REV2 Revenue 2',  1680 + 225,         600 * (2 + 10/30) + 0,       600 * (14/30) + 225,    0.0   ),
-                ('Total',          5180,               3950,                        1230,                   0.0   ),
+                ('REV2 Revenue 2',  1680 ,              600 * (2 + 10/30),           600 * (14/30),          0.0   ),
+                ('Total',           4955,               3950,                        1005,                   0.0   ),
             ],
             options,
         )
@@ -317,8 +312,8 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             [
                 ('REV0 Revenue 0',  1000 + 1050,        750 + 750,                   250 + 300,              0.0   ),
                 ('REV1 Revenue 1',  1225,               1050,                        175,                    0.0   ),
-                ('REV2 Revenue 2',  1680 + 225,         600 * (2 + 10/30) + 0,       600 * (14/30) + 225,    0.0   ),
-                ('Total',          5180,               3950,                        1230,                   0.0   ),
+                ('REV2 Revenue 2',  1680 ,              600 * (2 + 10/30),           600 * (14/30),          0.0   ),
+                ('Total',           4955,               3950,                        1005,                   0.0   ),
             ],
             options,
         )
@@ -334,19 +329,14 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             options,
         )
 
-        # 2023
+        # 2023: nothing to show since all the invoices are deferred
         options = self.get_options('2023-01-01', '2023-12-31', self.deferred_revenue_report)
         lines = self.deferred_revenue_report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                Total            Before      Current         Later
             [   0,                  1,               2,          3,              4     ],
-            [
-                ('REV0 Revenue 0',  1000 + 1050,     0.0,        1000 + 1050,    0.0   ),
-                ('REV1 Revenue 1',  1225,            0.0,        1225,           0.0   ),
-                ('REV2 Revenue 2',  1680 + 225,      0.0,        1680 + 225,     0.0   ),
-                ('Total',          5180,            0.0,        5180,           0.0   ),
-            ],
+            [],
             options,
         )
 
@@ -473,12 +463,12 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         self.assertLinesValues(
             lines,
             #   Name                Total    Before      Dec 2022    Jan 2023    Feb 2023    Mar 2023    Apr 2023 (Current)  Later
-            [   0,                  1,       2,          3,          4,          5,          6,          7,                  8,      ],
+            [   0,                  1,       2,          3,          4,          5,          6,          7,                   8,      ],
             [
                 ('EXP0 Expense 0',  2050,    0.0,        0.0,        400,        550,        550,        550,                0.0     ),
                 ('EXP1 Expense 1',  1225,    0.0,        0.0,        350,        350,        350,        175,                0.0     ),
-                ('EXP2 Expense 2',  1905,    0.0,        0.0,        200,        600,        600,        505,                0.0     ),
-                ('Total',          5180,    0.0,        0.0,        950,        1500,       1500,       1230,               0.0     ),
+                ('EXP2 Expense 2',  1680,    0.0,        0.0,        200,        600,        600,        280,                0.0     ),
+                ('Total',           4955,    0.0,        0.0,        950,        1500,       1500,       1005,                0.0     ),
             ],
             options,
         )
@@ -887,6 +877,30 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
 
         # This shouldn't raise an error like this 'The total of debits equals $1,800.01 and the total of credits equals $1,800.00.'
         self.handler._generate_deferral_entry(self.get_options('2023-04-01', '2023-04-30'))
+
+    def test_deferred_same_date(self):
+        """
+        A bug has been found where having an invoice with a start and end date on the last day
+        of the month would cause a division by zero error. This test ensures that this bug is fixed.
+        """
+        self.company.generate_deferred_expense_entries_method = 'manual'
+        self.company.deferred_amount_computation_method = 'month'
+        self.create_invoice([[self.expense_accounts[0], 600, '2023-01-30', '2023-01-30']])
+
+        # In january, the report should be empty because the invoice deferred dates are
+        # both in inside the report period
+        options = self.get_options('2023-01-01', '2023-01-31')
+        lines = self.deferred_expense_report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name              Total      Before    Current     Later
+            [   0,                  1,          2,        3,        4     ],
+            [],
+            options,
+        )
+        # This shouldn't raise a division by zero error. Nothing should be generated.
+        with self.assertRaisesRegex(UserError, 'No entry to generate.'):
+            self.handler._generate_deferral_entry(options)
 
     def test_deferred_expense_change_grouped_entries_method(self):
         """

@@ -112,7 +112,7 @@ class MarketingCampaign(models.Model):
             idref={}, mode='init', kind='data'
         )
         rendered_template = self.env['ir.qweb']._render(self.env.ref('marketing_automation.mail_template_body_welcome_template').id,
-                                                        {'company_website': self.env.company.website})
+                                                        {'db_host': self.get_base_url(), 'company_website': self.env.company.website})
         prerequisites = {
             'mailing.mailing': [{
                 'subject': _('Send welcome Email'),

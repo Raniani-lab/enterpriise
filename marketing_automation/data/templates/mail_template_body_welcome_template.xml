@@ -28,7 +28,7 @@
                                         <div class="row">
                                             <div class="col-lg-4"></div>
                                             <div class="col-lg-4" style="text-align: center;">
-                                                <a style="text-decoration:none;" target="_blank" t-att-href="company_website">
+                                                <a style="text-decoration:none;" target="_blank" t-att-href="db_host">
                                                     <img border="0" src="/mass_mailing/static/src/img/theme_default/s_default_image_header_logo.png" style="height:auto; max-width:100%;" width="180"/>
                                                     </a>
                                                 </div>
@@ -51,7 +51,7 @@
                                                 <span style="font-size: 12px; font-weight: bolder;">Customer Service</span>
                                             </p>
                                             <p style="text-align: center;">
-                                                <a role="button" href="#" class="btn btn-primary">LOGIN</a>
+                                                <a role="button" t-att-href="db_host" class="btn btn-primary">LOGIN</a>
                                             </p>
                                         </div>
                                     </div>

@@ -569,7 +569,7 @@ for record in records:
             idref={}, mode='init', kind='data'
         )
         rendered_template = self.env['ir.qweb']._render(self.env.ref('marketing_automation.mail_template_body_welcome_template').id,
-                                                                {'company_website': self.env.company.website})
+                        {'db_host': self.get_base_url(), 'company_website': self.env.company.website})
         prerequisites = {
             'mailing.mailing': [{
                 'subject': _('Welcome!'),
@@ -645,7 +645,7 @@ for record in records:
             idref={}, mode='init', kind='data'
         )
         rendered_template = self.env['ir.qweb']._render(self.env.ref('marketing_automation.mail_template_body_yellow_discount_template').id,
-                                                        {'company_website': self.env.company.website})
+                                                        {'db_host': self.get_base_url(), 'company_website': self.env.company.website})
         prerequisites = {
             'mailing.mailing': [{
                 'subject': _('Get 10% OFF'),
@@ -705,11 +705,13 @@ for record in records:
             'data/templates/mail_template_body_confirmation_template.xml',
             idref={}, mode='init', kind='data'
         )
+        rendered_template = self.env['ir.qweb']._render(self.env.ref('marketing_automation.mail_template_body_confirmation_template').id,
+                                                {'db_host': self.get_base_url()})
         prerequisites = {
             'mailing.mailing': [{
                 'subject': _('Confirmation'),
-                'body_arch': self.env.ref('marketing_automation.mail_template_body_confirmation_template').arch_db,
-                'body_html': self.env.ref('marketing_automation.mail_template_body_confirmation_template').arch_db,
+                'body_arch': rendered_template,
+                'body_html': rendered_template,
                 'mailing_model_id': self.env['ir.model']._get_id('mailing.contact'),
                 'reply_to_mode': 'update',
                 'mailing_type': 'mail',
@@ -771,14 +773,16 @@ for record in records:
             idref={}, mode='init', kind='data'
         )
 
-        welcome_rendered = self.env['ir.qweb']._render(self.env.ref('marketing_automation.mail_template_body_free_trial_template').id)
-        join_partnership_rendered = self.env['ir.qweb']._render(self.env.ref('marketing_automation.mail_template_body_join_partnership_template').id)
+        free_trial_rendered = self.env['ir.qweb']._render(self.env.ref('marketing_automation.mail_template_body_free_trial_template').id,
+                                                          {'company_website': self.env.company.website})
+        join_partnership_rendered = self.env['ir.qweb']._render(self.env.ref('marketing_automation.mail_template_body_join_partnership_template').id,
+                                                            {'company_website': self.env.company.website})
 
         prerequisites = {
             'mailing.mailing': [{
                 'subject': _('Welcome!'),
-                'body_arch': welcome_rendered,
-                'body_html': welcome_rendered,
+                'body_arch': free_trial_rendered,
+                'body_html': free_trial_rendered,
                 'mailing_model_id': self.env['ir.model']._get_id('res.partner'),
                 'reply_to_mode': 'update',
                 'mailing_type': 'mail',

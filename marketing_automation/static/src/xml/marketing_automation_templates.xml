@@ -3,7 +3,7 @@
     <t t-name="marketing.CampaignKanbanRenderer" t-inherit="web.KanbanRenderer" t-inherit-mode="primary" owl="1">
         <t t-call="web.ActionHelper" position="replace">
             <t t-if="showNoContentHelper">
-                <CampaignActionHelper noContentHelp="props.noContentHelp"/>
+                <CampaignActionHelper/>
             </t>
         </t>
     </t>
@@ -11,7 +11,7 @@
     <t t-name="marketing.CampaignListRenderer" t-inherit="web.ListRenderer" t-inherit-mode="primary" owl="1">
         <t t-call="web.ActionHelper" position="replace">
             <t t-if="showNoContentHelper">
-                <CampaignActionHelper noContentHelp="props.noContentHelp"/>
+                <CampaignActionHelper/>
             </t>
         </t>
     </t>
@@ -23,8 +23,6 @@
                     <t t-set="template_names" t-value="Object.keys(campaignTemplateData)"/>
                     <t t-foreach="template_names" t-as="template_name" t-key="template_name">
                         <t t-set="template_info" t-value="campaignTemplateData[template_name]"/>
-                        <t t-set="x" t-value="console.log(template_info)"/> 
-
                         <div class="col-12 col-md-4 col-lg-3 py-2">
                             <div class="card rounded p-1 d-flex align-items-stretch h-100 marketing-template" t-on-click.stop.prevent="() => this.onTemplateClick(template_name)">
                                 <div class="row m-0 w-100 h-100">

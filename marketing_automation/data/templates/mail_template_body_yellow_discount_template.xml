@@ -43,7 +43,7 @@
                                 <div class="row">
                                     <div class="col-lg-4 pt16 pb16">
                                         <h1>
-                                            <a target="_blank" t-att-href="company_website">
+                                            <a target="_blank" t-att-href="db_host">
                                                 <span style="color: rgb(255, 187, 0) !important; font-size: 32px" class="fa fa-1x fa-sun-o"></span>
                                             </a>
                                             <span style="font-size: 32px;">
@@ -88,7 +88,7 @@
                             </table>
                             <br/>
                             <p style="text-align:center;">
-                                <a role="button" class="btn btn-primary btn-lg" href="http://">Visit the website</a>
+                                <a role="button" class="btn btn-primary btn-lg" t-att-href="company_website">Visit the website</a>
                             </p>
                         </div>
                         <div class="s_hr pt16 pb16" data-snippet="s_hr" data-name="Separator">

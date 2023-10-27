@@ -247,10 +247,17 @@ export class ReportEditorWysiwyg extends Component {
                 this.observer = null;
             }
             this.wysiwyg = wysiwyg;
+            const odooEditor = this.wysiwyg.odooEditor;
 
             const undoRedoState = this.undoRedoState;
             undoRedoState.canUndo = false;
             undoRedoState.canRedo = false;
+
+            odooEditor.addEventListener("historyStep", () => {
+                undoRedoState.canUndo = odooEditor.historyCanUndo();
+                undoRedoState.canRedo = odooEditor.historyCanRedo();
+                this.reportEditorModel.isDirty = this.undoRedoState.canUndo;
+            })
 
             const observe = () => {
                 this.observer.observe(wysiwyg.$editable[0], {
@@ -262,7 +269,6 @@ export class ReportEditorWysiwyg extends Component {
                 });
             };
 
-            const odooEditor = this.wysiwyg.odooEditor;
             this.observer = new MutationObserver((records) =>
                 this.domChangesDirtyMutations(odooEditor, records)
             );
@@ -431,15 +437,8 @@ export class ReportEditorWysiwyg extends Component {
                     `.o_dirty[data-oe-model='ir.ui.view'][data-oe-id='${viewId}']`
                 )
             ) {
-                this.undoRedoState.canUndo = odooEditor.historyCanUndo();
-                this.undoRedoState.canRedo = odooEditor.historyCanRedo();
-                this.reportEditorModel.isDirty = this.undoRedoState.canUndo;
                 continue;
             }
-
-            this.undoRedoState.canUndo = odooEditor.historyCanUndo();
-            this.undoRedoState.canRedo = odooEditor.historyCanRedo();
-            this.reportEditorModel.isDirty = this.undoRedoState.canUndo;
             target.classList.add("o_dirty");
             target
                 .querySelectorAll(`[data-oe-model='ir.ui.view'][data-oe-id='${viewId}'].o_dirty`)

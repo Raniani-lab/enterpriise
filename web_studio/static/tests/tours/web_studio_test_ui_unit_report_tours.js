@@ -522,6 +522,10 @@ registry.category("web_tour.tours").add("web_studio.test_field_placeholder", {
             isCheck: true,
         },
         {
+            trigger: ".o-web-studio-save-report.btn-primary",
+            isCheck: true,
+        },
+        {
             trigger: ".o-web-studio-report-editor-wysiwyg iframe p:eq(0)",
             run() {
                 insertText(this.$anchor[0], "edited with odooEditor");

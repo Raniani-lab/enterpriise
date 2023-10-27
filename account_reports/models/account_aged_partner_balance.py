@@ -115,7 +115,7 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
                     'currency': currency.display_name if currency else None,
                     'account_name': query_res['account_name'][0] if len(query_res['account_name']) == 1 else None,
                     'expected_date': expected_date or None,
-                    'total': 0,
+                    'total': None,
                     'has_sublines': query_res['aml_count'] > 0,
 
                     # Needed by the custom_unfold_all_batch_data_generator, to speed-up unfold_all

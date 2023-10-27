@@ -51,6 +51,20 @@ class Record extends _Record {
     static components = { ..._Record.components, _Record: __Record };
 }
 
+function getOrderedTAs(node) {
+    const results = [];
+    while (node) {
+        const closest = node.closest("[t-foreach]");
+        if (closest) {
+            results.push(closest.getAttribute("t-as"));
+            node = closest.parentElement;
+        } else {
+            node = null;
+        }
+    }
+    return results;
+}
+
 class FieldDynamicPlaceholder extends Component {
     static components = { StudioDynamicPlaceholderPopover };
     static template = "web_studio.FieldDynamicPlaceholder";
@@ -60,7 +74,12 @@ class FieldDynamicPlaceholder extends Component {
         close: Function,
         validate: Function,
         isEditingFooterHeader: Boolean,
+        initialQwebVar: { optional: true, type: String },
     };
+
+    static defaultProps = {
+        initialQwebVar: "",
+     };
 
     setup() {
         this.state = useState({ currentVar: this.getDefaultVariable() });
@@ -102,6 +121,10 @@ class FieldDynamicPlaceholder extends Component {
     }
 
     getDefaultVariable() {
+        const initialQwebVar = this.props.initialQwebVar;
+        if (initialQwebVar && initialQwebVar in this.props.availableQwebVariables) {
+            return initialQwebVar;
+        }
         if (this.props.isEditingFooterHeader) {
             const companyVar = Object.entries(this.props.availableQwebVariables).find(
                 ([k, v]) => v.model === "res.company"
@@ -474,14 +497,9 @@ export class ReportEditorWysiwyg extends Component {
                     nodeOeContext && JSON.parse(nodeOeContext.getAttribute("oe-context"));
 
                 await this.fieldPopover.open(popoverAnchor, {
-                    availableQwebVariables: {
-                        doc: {
-                            model: resModel,
-                            in_foreach: true,
-                        },
-                        ...availableQwebVariables,
-                    },
+                    availableQwebVariables,
                     isEditingFooterHeader,
+                    initialQwebVar: getOrderedTAs(popoverAnchor)[0] || "",
                     resModel,
                     validate: (qwebVar, fieldNameChain, defaultValue = "", is_image) => {
                         this.wysiwyg.focus();

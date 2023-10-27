@@ -25,7 +25,7 @@ class PaymentToken(models.Model):
         payment_details = super()._build_display_name(
             *args, max_length=max_length, should_pad=should_pad, **kwargs
         )
-        if self.provider_code != 'sepa_direct_debit':
+        if self.provider_id.custom_mode != 'sepa_direct_debit':
             return payment_details
 
         if len(self.payment_details) <= max_length:

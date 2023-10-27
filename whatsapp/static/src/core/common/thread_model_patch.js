@@ -1,11 +1,21 @@
 /* @odoo-module */
 
 import { Thread } from "@mail/core/common/thread_model";
-import { assignDefined } from "@mail/utils/common/misc";
+import { assignDefined, assignIn } from "@mail/utils/common/misc";
 import { patch } from "@web/core/utils/patch";
 import { deserializeDateTime } from "@web/core/l10n/dates";
 
 import { toRaw } from "@odoo/owl";
+
+patch(Thread, {
+    _insert(data) {
+        const thread = super._insert(data);
+        if (thread.type === "whatsapp") {
+            assignIn(thread, data, ["anonymous_name"]);
+        }
+        return thread;
+    },
+});
 
 patch(Thread.prototype, {
     update(data) {
@@ -34,15 +44,5 @@ patch(Thread.prototype, {
             return undefined;
         }
         return toRaw(deserializeDateTime(this.whatsapp_channel_valid_until));
-    },
-
-    insert(data) {
-        const thread = super.insert(data);
-        if (thread.type === "whatsapp") {
-            if ("anonymous_name" in data) {
-                thread.anonymous_name = data.anonymous_name;
-            }
-        }
-        return thread;
     },
 });

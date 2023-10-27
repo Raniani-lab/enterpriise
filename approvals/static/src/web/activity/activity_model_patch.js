@@ -5,8 +5,8 @@ import { Activity } from "@mail/core/web/activity_model";
 import { patch } from "@web/core/utils/patch";
 
 patch(Activity, {
-    insert(data) {
-        const activity = super.insert(...arguments);
+    _insert(data) {
+        const activity = super._insert(...arguments);
         if ("approver_id" in data && "approver_status" in data) {
             if (!data.approver_id) {
                 delete activity.approval;

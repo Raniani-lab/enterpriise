@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import datetime
+
 from odoo import models, fields, _
 from odoo.tools.misc import format_date
 
@@ -18,7 +20,6 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
             'css_custom_class': 'age_partner_balance',
             'components': {
                 'AccountReportLineName': 'account_reports.AgedPartnerBalanceLineName',
-                'AccountReportLineCell': 'account_reports.AgedPartnerBalanceLineCell',
             },
         }
 
@@ -376,6 +377,40 @@ class AgedPayableCustomHandler(models.AbstractModel):
         if self.env.ref('account_reports.aged_payable_line').groupby.replace(' ', '') == 'partner_id,id':
             return self._common_custom_unfold_all_batch_data_generator('liability_payable', report, options, lines_to_expand_by_function)
         return {}
+
+    def action_audit_cell(self, options, params):
+        """ Open a list of invoices/bills and/or deferral entries for the clicked cell
+        :param dict options: the report's `options`
+        :param dict params:  a dict containing:
+                                 `calling_line_dict_id`: line id containing the optional account of the cell
+                                 `expression_label`: the expression label of the cell
+        """
+        report = self.env['account.report'].browse(options['report_id'])
+        action = self.env['ir.actions.actions']._for_xml_id('account.action_open_payment_items')
+        if options:
+            domain = [
+                ('account_id.reconcile', '=', True),
+                ('journal_id.type', '=', 'purchase'),
+                *self._build_domain_from_period(options, params['expression_label']),
+                *report._get_options_domain(options, None),
+                *report._get_audit_line_groupby_domain(params['calling_line_dict_id']),
+            ]
+            action['domain'] = domain
+        return action
+
+    def _build_domain_from_period(self, options, period):
+        if period != "total" and period[-1].isdigit():
+            period_number = int(period[-1])
+            if period_number == 0:
+                domain = [('date_maturity', '>=', options['date']['date_to'])]
+            else:
+                options_date_to = datetime.datetime.strptime(options['date']['date_to'], '%Y-%m-%d')
+                period_end = options_date_to - datetime.timedelta(30*(period_number-1)+1)
+                period_start = options_date_to - datetime.timedelta(30*(period_number))
+                domain = [('date_maturity', '>=', period_start), ('date_maturity', '<=', period_end)]
+        else:
+            domain = []
+        return domain
 
 
 class AgedReceivableCustomHandler(models.AbstractModel):

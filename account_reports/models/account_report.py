@@ -670,18 +670,6 @@ class AccountReport(models.Model):
 
         return date_from, date_to, allow_include_initial_balance
 
-    def build_domain_from_period(self, period):
-        if period != "total" and period[-1].isdigit():
-            period_number = int(period[-1])
-            if period_number == 0:
-                domain = [('date_maturity', '>=', datetime.date.today())]
-            else:
-                period_end = datetime.date.today() - datetime.timedelta(30*(period_number-1)+1)
-                period_start = datetime.date.today() - datetime.timedelta(30*(period_number))
-                domain = [('date_maturity', '>=', period_start), ('date_maturity', '<=', period_end)]
-        else:
-            domain = []
-        return domain
 
     ####################################################
     # OPTIONS: analytic filter
@@ -1642,7 +1630,7 @@ class AccountReport(models.Model):
         self.ensure_one()
 
         available_scopes = dict(self.env['account.report.expression']._fields['date_scope'].selection)
-        if date_scope not in available_scopes:
+        if date_scope and date_scope not in available_scopes: # date_scope can be passed to None explicitly to ignore the dates
             raise UserError(_("Unknown date scope: %s", date_scope))
 
         domain = [
@@ -1650,7 +1638,8 @@ class AccountReport(models.Model):
             ('company_id', 'in', self.get_report_company_ids(options)),
         ]
         domain += self._get_options_journals_domain(options)
-        domain += self._get_options_date_domain(options, date_scope)
+        if date_scope:
+            domain += self._get_options_date_domain(options, date_scope)
         domain += self._get_options_partner_domain(options)
         domain += self._get_options_all_entries_domain(options)
         domain += self._get_options_unreconciled_domain(options)
@@ -3620,14 +3609,7 @@ class AccountReport(models.Model):
         }
 
     def _get_audit_line_domain(self, column_group_options, expression, params):
-        calling_line_dict_id = params['calling_line_dict_id']
-        parsed_line_dict_id = self._parse_line_id(calling_line_dict_id)
-        groupby_domain = []
-        for markup, dummy, model_id in parsed_line_dict_id:
-            groupby_match = re.match("groupby:(?P<groupby_field>.*)", markup)
-            if groupby_match:
-                groupby_domain.append((groupby_match['groupby_field'], '=', model_id))
-
+        groupby_domain = self._get_audit_line_groupby_domain(params['calling_line_dict_id'])
         # Aggregate all domains per date scope, then create the final domain.
         audit_or_domains_per_date_scope = {}
         for expression_to_audit in expression._expand_aggregations():
@@ -3656,6 +3638,15 @@ class AccountReport(models.Model):
             ])
 
         return domain
+
+    def _get_audit_line_groupby_domain(self, calling_line_dict_id):
+        parsed_line_dict_id = self._parse_line_id(calling_line_dict_id)
+        groupby_domain = []
+        for markup, dummy, model_id in parsed_line_dict_id:
+            groupby_match = re.match("groupby:(?P<groupby_field>.*)", markup)
+            if groupby_match:
+                groupby_domain.append((groupby_match['groupby_field'], '=', model_id))
+        return groupby_domain
 
     def _get_expression_audit_aml_domain(self, expression_to_audit, options):
         """ Returns the domain used to audit a single provided expression.
@@ -3811,26 +3802,6 @@ class AccountReport(models.Model):
         action['domain'] = [('state', '=', 'draft'), ('date', '<=', options['date']['date_to'])]
         #overwrite the context to avoid default filtering on 'misc' journals
         action['context'] = {}
-        return action
-
-    def action_open_payment_items_with_options(self, options=None):
-        action = self.env['ir.actions.actions']._for_xml_id('account.action_open_payment_items')
-        if options:
-            domain = ast.literal_eval(action['domain'])
-            if options.get('domain'):
-                options_domain = ast.literal_eval(options.get('domain'))
-                domain += options_domain
-            model_info = self._get_model_info_from_id(options['line']['id'])
-            if model_info[0] == 'res.partner':
-                domain.append(('partner_id', '=', model_info[1]))
-            elif model_info[0] == 'account.move.line':
-                domain.append(('move_name', '=', self.env[model_info[0]].search([('id', '=', model_info[1])]).move_name))
-
-            if options.get('period'):
-                domain.extend(
-                    self.build_domain_from_period(options.get('period'))
-                )
-            action['domain'] = domain
         return action
 
     def _get_generated_deferral_entries_domain(self, options):

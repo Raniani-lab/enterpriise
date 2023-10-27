@@ -140,6 +140,7 @@ class ResCompany(models.Model):
 
             # Values for update/creation of closing move
             closing_vals = {
+                'company_id': self.id,# Important to specify together with the journal, for branches
                 'journal_id': self.account_tax_periodicity_journal_id.id,
                 'date': period_end,
                 'tax_closing_end_date': period_end,

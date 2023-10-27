@@ -91,7 +91,41 @@
                             </form>
                         </div>
                     </div>
+            </div>
+            <!-- ====== MODAL: Close Subscription Retention ====== -->
+            <div role="dialog" class="modal fade" id="wc-modal-close-retain" t-if="display_close" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <header class="modal-header">
+                            <h4 class="modal-title">
+                                Close Subscription <span t-field="sale_order.display_name" class="text-primary"/>
+                            </h4>
+                        </header>
+                        <main class="modal-body">
+                            <p class="fst-italic text-muted">You are about to permanently close a subscription that is valid until <span t-field="sale_order.next_invoice_date"/>.</p>
+                            <t t-foreach="close_reasons" t-as="close_reason">
+                                <t t-if="close_reason.visible_in_portal and not (close_reason.empty_retention_message or close_reason.retention_button_text == False or close_reason.retention_button_link == False)">
+                                    <div t-att-data-id="close_reason.id" class="subscription-close-message" t-field="close_reason.retention_message"></div>
+                                </t>
+                            </t>
+                        </main>
+                        <footer class="modal-footer">
+                            <t t-foreach="close_reasons" t-as="close_reason">
+                                <t t-if="close_reason.visible_in_portal and not (close_reason.empty_retention_message or close_reason.retention_button_text == False or close_reason.retention_button_link == False)">
+                                    <a
+                                        t-att-data-id="close_reason.id"
+                                        role="button"
+                                        t-att-href="close_reason.retention_button_link"
+                                        class="btn btn-primary subscription-close-link"
+                                        t-field="close_reason.retention_button_text"
+                                    ></a>
+                                </t>
+                            </t>
+                            <button class="btn btn-secondary subscription-close-finish">No thanks, close my account</button>
+                        </footer>
+                    </div>
                 </div>
+            </div>
         </div>
 
         <t id="sale_order_portal_sidebar" position="replace">

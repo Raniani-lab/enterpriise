@@ -6,7 +6,7 @@ from odoo import fields, models
 class HrEmployee(models.Model):
     _inherit = "hr.employee"
 
-    billable_time_target = fields.Float("Billing Time Target", groups="hr_timesheet.group_hr_timesheet_user")
+    billable_time_target = fields.Float("Billing Time Target", groups="hr.group_hr_user")
 
     _sql_constraints = [
         (

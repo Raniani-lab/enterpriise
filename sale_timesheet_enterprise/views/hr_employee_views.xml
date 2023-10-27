@@ -6,8 +6,8 @@
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
             <group name="application_group" position="inside">
-                <label for="billable_time_target"/>
-                <div name="billable_time_target">
+                <label for="billable_time_target" groups="hr_timesheet.group_hr_timesheet_approver"/>
+                <div name="billable_time_target" groups="hr_timesheet.group_hr_timesheet_approver">
                     <field name="billable_time_target" class="oe_inline" widget="timesheet_uom_no_toggle"/>
                 </div>
             </group>

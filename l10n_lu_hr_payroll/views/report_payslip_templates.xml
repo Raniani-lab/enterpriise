@@ -6,18 +6,18 @@
     </xpath>
 
     <xpath expr="//td[@name='company-car-model']" position="inside">
-       <span t-field="o.employee_id.l10n_lu_tax_card_number"/>
+       <span t-field="o.employee_id.l10n_lu_tax_card_number">29489284</span>
     </xpath>
 
     <xpath expr="//tr[@id='employee_info_line_6']//td[2]" position="replace">
         <td class="w-25"><strong>Company Social Security Number</strong></td>
     </xpath>
     <xpath expr="//tr[@id='employee_info_line_7']//td[2]" position="replace">
-        <td><span t-field="o.company_id.l10n_lu_official_social_security"/></td>
+        <td><span t-field="o.company_id.l10n_lu_official_social_security">123456789</span></td>
     </xpath>
 
     <xpath expr="//tr[@id='line_display']//td[2]" position="inside">
-        <span t-if="line.rate != 100"><t t-esc="line.rate"/> %</span>
+        <span t-if="line.rate != 100"><t t-out="line.rate"/> 10%</span>
     </xpath>
 </template>
 

@@ -29,7 +29,7 @@ class HrContractSalaryOffer(models.Model):
     employee_id = fields.Many2one(related="employee_contract_id.employee_id", store=True, tracking=True)
     applicant_id = fields.Many2one('hr.applicant', tracking=True)
     applicant_name = fields.Char(related='applicant_id.partner_name')
-    final_yearly_costs = fields.Monetary("Employer Budget", tracking=True)
+    final_yearly_costs = fields.Monetary("Employer Budget", group_operator="avg", tracking=True)
     job_title = fields.Char(tracking=True)
     employee_job_id = fields.Many2one('hr.job', tracking=True)
     department_id = fields.Many2one('hr.department', tracking=True)
@@ -56,6 +56,13 @@ class HrContractSalaryOffer(models.Model):
             else:
                 name = offer.employee_contract_id.employee_id.name
             offer.display_name = _("Offer [%s] for %s / Budget: %s", offer.offer_end_date or 'No end date', name, format_amount(offer.env, offer.final_yearly_costs, offer.currency_id))
+
+    def action_refuse_offer(self):
+        self.write({'state': 'refused'})
+        message = _("%s manually set the Offer to Refused", self.env.user.name)
+        for offer in self:
+            offer.message_post(body=message)
+
 
     def action_jump_to_offer(self):
         self.ensure_one()

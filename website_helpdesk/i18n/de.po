@@ -1,24 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* website_helpdesk
-#
+# 
 # Translators:
-# Friederike Fasterling-Nesselbosch, 2022
-# Martin Trigaux, 2022
+# Wil Odoo, 2023
 # Larissa Manderfeld, 2023
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:50+0000\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: website_helpdesk
@@ -28,13 +27,21 @@ msgstr "<b>Über unser Team</b>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submited
-msgid "<i class=\"fa fa-check-circle fa-1x text-success me-2\" role=\"img\" aria-label=\"Success\" title=\"Success\"/>"
-msgstr "<i class=\"fa fa-check-circle fa-1x text-success me-2\" role=\"img\" aria-label=\"Success\" title=\"Success\"/>"
+msgid ""
+"<i class=\"fa fa-check-circle fa-1x text-success me-2\" role=\"img\" aria-"
+"label=\"Success\" title=\"Success\"/>"
+msgstr ""
+"<i class=\"fa fa-check-circle fa-1x text-success me-2\" role=\"img\" aria-"
+"label=\"Success\" title=\"Success\"/>"
 
 #. module: website_helpdesk
-#: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar
-msgid "<span class=\"navbar-brand h4 my-0 me-auto\">Help Center</span>"
-msgstr "<span class=\"navbar-brand h4 my-0 me-auto\">Hilfezentrum</span>"
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.footer
+msgid ""
+"<span class=\"h4-fs\">Can't find your answer? Our support team is here to "
+"help.</span>"
+msgstr ""
+"<span class=\"h4-fs\">Sie können keine Antwort finden? Ihr Support-Team "
+"hilft Ihnen gerne.</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
@@ -84,16 +91,6 @@ msgid "<span class=\"text-600\">Search results for</span>"
 msgstr "<span class=\"text-600\">Suchergebnisse für</span>"
 
 #. module: website_helpdesk
-#: model_terms:ir.ui.view,arch_db:website_helpdesk.footer
-msgid "<span style=\"font-size: 24px;\">Can't find your answer? Our support team is here to help.</span>"
-msgstr "<span style=\"font-size: 24px;\">Sie können Ihre Antwort nicht finden? Unser Support-Team hilft Ihnen gerne weiter.</span>"
-
-#. module: website_helpdesk
-#: model_terms:ir.ui.view,arch_db:website_helpdesk.knowledge_base
-msgid "<span style=\"font-size: 48px; font-weight: bolder;\">How can we help you?</span>"
-msgstr "<span style=\"font-size: 48px; font-weight: bolder;\">Wie können wir helfen?</span>"
-
-#. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_date
 msgid "All"
 msgstr "Alle"
@@ -130,7 +127,7 @@ msgstr "Nach Datum"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_tag
 msgid "By Tags"
-msgstr "Nach Tags"
+msgstr "Nach Stichwörtern"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_type
@@ -151,8 +148,8 @@ msgstr "Kontaktieren Sie uns"
 #. odoo-python
 #: code:addons/website_helpdesk/__init__.py:0
 #, python-format
-msgid "Customer Care"
-msgstr "Kundenbetreuung"
+msgid "Customer Care (Public)"
+msgstr "Kundenbetreuung (öffentlich)"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
@@ -174,15 +171,21 @@ msgstr "Formular"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submited
 msgid "Go to the Homepage"
-msgstr ""
+msgstr "Zur Startseite"
 
 #. module: website_helpdesk
 #. odoo-python
+#: code:addons/website_helpdesk/models/helpdesk.py:0
 #: code:addons/website_helpdesk/models/helpdesk.py:0
 #: code:addons/website_helpdesk/models/website.py:0
 #, python-format
 msgid "Help"
 msgstr "Hilfe"
+
+#. module: website_helpdesk
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar
+msgid "Help Center"
+msgstr "Hilfezentrum"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
@@ -194,7 +197,7 @@ msgstr "Hilfezentrumsseite"
 #: code:addons/website_helpdesk/models/website.py:0
 #, python-format
 msgid "Helpdesk Customer Satisfaction"
-msgstr "Helpdesk Kundenzufriedenheit"
+msgstr "Kundenzufriedenheit für Kundendienst"
 
 #. module: website_helpdesk
 #. odoo-javascript
@@ -202,7 +205,12 @@ msgstr "Helpdesk Kundenzufriedenheit"
 #: model:ir.model,name:website_helpdesk.model_helpdesk_team
 #, python-format
 msgid "Helpdesk Team"
-msgstr "Helpdesk-Team"
+msgstr "Kundendienstteam"
+
+#. module: website_helpdesk
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.knowledge_base
+msgid "How can we help you?"
+msgstr "Wie können wir Ihnen helfen?"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__is_published
@@ -236,12 +244,12 @@ msgstr "Letztes Jahr"
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.search_results
 #, python-format
 msgid "No results found. Please try another search."
-msgstr "Kein Treffer, versuchen Sie es mit einem anderen Stichwort."
+msgstr "Kein Treffer gefunden. Versuchen Sie es mit einer anderen Suche."
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.knowledge_base
 msgid "Search for articles, best practices and more..."
-msgstr "Suchen Sie nach Artikeln, bewährten Verfahren und mehr..."
+msgstr "Suchen Sie nach Artikeln, bewährten Verfahren und mehr ..."
 
 #. module: website_helpdesk
 #. odoo-javascript
@@ -254,14 +262,14 @@ msgstr "Betreff"
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submit_form
 msgid "Submit Ticket"
-msgstr ""
+msgstr "Ticket einreichen"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submit_form
 msgid "Submit a Ticket"
-msgstr "Senden Sie ein Ticket"
+msgstr "Ein Ticket einreichen"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
@@ -272,23 +280,27 @@ msgstr "Stichwortfilter"
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submited
 msgid "Thank you for contacting us, our team will get right on it!"
 msgstr ""
+"Vielen Dank, dass Sie uns kontaktiert haben, unser Team wird sich sofort "
+"darum kümmern!"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,help:website_helpdesk.field_helpdesk_team__website_url
 msgid "The full URL to access the document through the website."
-msgstr "Die vollständige URL mit der das Dokument überall aufgerufen werden kann."
+msgstr ""
+"Die vollständige URL, um über die Website auf das Dokument zuzugreifen."
 
 #. module: website_helpdesk
 #. odoo-python
 #: code:addons/website_helpdesk/models/helpdesk.py:0
 #, python-format
 msgid "The team company and the website company should match"
-msgstr "Das Team-Unternehmen und das Website-Unternehmen sollten zusammenpassen"
+msgstr ""
+"Das Team-Unternehmen und das Website-Unternehmen sollten zusammenpassen"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Type Filter"
-msgstr "Typenfilter"
+msgstr "Artenfilter"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__feature_form_url
@@ -298,7 +310,7 @@ msgstr "URL für die Problemübermittlung"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submited
 msgid "View Ticket"
-msgstr ""
+msgstr "Ticket ansehen"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_published
@@ -312,6 +324,7 @@ msgid "Website"
 msgstr "Website"
 
 #. module: website_helpdesk
+#: model:ir.model,name:website_helpdesk.model_website_menu
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_menu_id
 msgid "Website Menu"
 msgstr "Website-Menü"

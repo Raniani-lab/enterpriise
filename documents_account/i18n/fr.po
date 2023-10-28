@@ -1,24 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* documents_account
-#
+# 
 # Translators:
-# Cécile Collart <cco@odoo.com>, 2022
-# Martin Trigaux, 2022
+# Wil Odoo, 2023
 # Jolien De Paepe, 2023
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:02+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
 "Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: fr\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: documents_account
@@ -26,12 +25,18 @@ msgstr ""
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
 msgid "<b>Deselect this page</b> as we plan to process all bills first."
-msgstr "<b>Désélectionnez cette page</b>, car nous prévoyons de traiter d'abord toutes les factures."
+msgstr ""
+"<b>Désélectionner cette page</b> puisque nous prévoyons de d'abord traiter "
+"toutes les factures."
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_documents_workflow_rule
-msgid "A set of condition and actions which will be available to all attachments matching the conditions"
-msgstr "Un ensemble de conditions et d'actions qui seront disponibles pour toutes les pièces jointes correspondant aux conditions"
+msgid ""
+"A set of condition and actions which will be available to all attachments "
+"matching the conditions"
+msgstr ""
+"Un ensemble de conditions et d'actions qui seront disponibles pour toutes "
+"les pièces jointes correspondant aux conditions"
 
 #. module: documents_account
 #: model:ir.model.constraint,message:documents_account.constraint_documents_account_folder_setting_journal_unique
@@ -52,8 +57,11 @@ msgstr "Espace de travail comptabilité"
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
-msgid "As this PDF contains multiple documents, let's split and process in bulk."
-msgstr "Comme ce PDF contient plusieurs documents, divisons-le et traitons-le en bloc."
+msgid ""
+"As this PDF contains multiple documents, let's split and process in bulk."
+msgstr ""
+"Comme ce PDF contient plusieurs documents, divisons-le et traitons-le en "
+"masse."
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_ir_attachment
@@ -63,7 +71,7 @@ msgstr "Pièce jointe"
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_bank_statement
 msgid "Bank Statement"
-msgstr ""
+msgstr "Relevé bancaire"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
@@ -80,7 +88,7 @@ msgstr "Vérifiez-les"
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
 msgid "Click on a card to <b>select the document</b>."
-msgstr "Cliquez sur une carte <b>pour sélectionner le document</b>."
+msgstr "Cliquez sur une carte <b>pour sélectionner le document.</b>"
 
 #. module: documents_account
 #. odoo-javascript
@@ -93,8 +101,12 @@ msgstr "Cliquez sur une vignette pour <b>prévisualiser le document</b>."
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
-msgid "Click on the <b>page separator</b>: we don't want to split these two pages as they belong to the same document."
-msgstr "Cliquez sur le <b>séparateur de pages</b> : nous ne souhaitons pas séparer ces deux pages car elles appartiennent au même document."
+msgid ""
+"Click on the <b>page separator</b>: we don't want to split these two pages "
+"as they belong to the same document."
+msgstr ""
+"Cliquez sur le <b>séparateur de pages</b> : nous ne souhaitons pas séparer "
+"ces deux pages car elles appartiennent au même document."
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_res_company
@@ -119,7 +131,7 @@ msgstr "Créer"
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.credit_note_rule
 msgid "Create Customer Credit Note"
-msgstr ""
+msgstr "Créer un avoir client"
 
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.customer_invoice_rule
@@ -129,17 +141,22 @@ msgstr "Créer une facture client"
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.misc_entry_rule
 msgid "Create Miscellaneous Operations"
-msgstr ""
+msgstr "Créer des opérations diverses"
 
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.vendor_bill_rule_financial
 msgid "Create Vendor Bill"
-msgstr ""
+msgstr "Créer une facture fournisseur"
+
+#. module: documents_account
+#: model:documents.workflow.rule,name:documents_account.documents_vendor_receipt_rule
+msgid "Create Vendor Receipt"
+msgstr "Créer un reçu fournisseur"
 
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.vendor_refund_rule
 msgid "Create Vendor Refund"
-msgstr ""
+msgstr "Créer un remboursement fournisseur"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__create_uid
@@ -164,7 +181,7 @@ msgstr "Facture client"
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_workflow_rule__display_journal_id
 msgid "Display Journal"
-msgstr ""
+msgstr "Afficher le journal"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__display_name
@@ -216,7 +233,7 @@ msgstr "ID"
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.bank_statement_rule
 msgid "Import Bank Statement"
-msgstr ""
+msgstr "Import d'un relevé bancaire"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__journal_id
@@ -258,15 +275,20 @@ msgstr "Dernière mise à jour le"
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
-msgid "Let's process documents in your Inbox.<br/><i>Tip: Use Tags to filter documents and structure your process.</i>"
-msgstr "Traitons les documents dans votre boîte de réception.<br/><i>Astuce : utilisez des étiquettes pour filtrer les documents et structurer votre processus.</i>"
+msgid ""
+"Let's process documents in your Inbox.<br/><i>Tip: Use Tags to filter "
+"documents and structure your process.</i>"
+msgstr ""
+"Traitons les documents dans votre boîte de réception.<br/><i>Astuce : "
+"utilisez des étiquettes pour filtrer les documents et structurer votre "
+"processus.</i>"
 
 #. module: documents_account
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
 msgid "Let's process these bills: turn them into vendor bills."
-msgstr "Traitons ces factures : transformons-les en factures fournisseurs."
+msgstr "Traitons ces factures : transformons-les en factures fournisseurs."
 
 #. module: documents_account
 #. odoo-javascript
@@ -279,18 +301,27 @@ msgstr "Traitons ce document, provenant de notre scanner."
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
-msgid "Let's tag this mail as legal<br/> <i>Tips: actions can be tailored to your process, according to the workspace.</i>"
-msgstr "Marquons ce courrier comme Légal<br/> <i>Astuce : les actions peuvent être adaptées à votre processus, en fonction de l'espace de travail.</i>"
+msgid ""
+"Let's tag this mail as legal<br/> <i>Tips: actions can be tailored to your "
+"process, according to the workspace.</i>"
+msgstr ""
+"Marquons cet email comme Juridique<br/> <i>Astuce : les actions peuvent être"
+" adaptées à votre processus, en fonction de l'espace de travail.</i>"
 
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_entry
 msgid "Miscellaneous Operations"
-msgstr ""
+msgstr "Opérations diverses"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_workflow_rule__move_type
 msgid "Move Type"
-msgstr ""
+msgstr "Type d'écriture"
+
+#. module: documents_account
+#: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_receipt
+msgid "Purchase Receipt"
+msgstr "Reçu d'achat"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_bank_statement_line__suspense_statement_line_id
@@ -304,12 +335,14 @@ msgstr "Demander un document à partir d'une ligne de relevé bancaire"
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
 msgid "Send this letter to the legal department, by assigning the right tags."
-msgstr "Envoyez cette lettre au service juridique, en attribuant les bonnes étiquettes."
+msgstr ""
+"Envoyez cette lettre au département juridique, en attribuant les bonnes "
+"étiquettes."
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_workflow_rule__suitable_journal_ids
 msgid "Suitable Journal"
-msgstr ""
+msgstr "Journal convenable"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__tag_ids
@@ -341,8 +374,10 @@ msgstr "Facture fournisseur"
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
-msgid "Want to become a <b>paperless company</b>? Let's discover Odoo Documents."
-msgstr "Envie de devenir une <b>société sans papier</b> ? Découvrons Odoo Documents."
+msgid ""
+"Want to become a <b>paperless company</b>? Let's discover Odoo Documents."
+msgstr ""
+"Envie de devenir une <b>société sans papier</b> ? Découvrons Odoo Documents."
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__folder_id
@@ -354,8 +389,12 @@ msgstr "Espace de travail "
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
-msgid "Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is complete. Try uploading your own documents now."
-msgstr "Waouh... 6 documents traités en quelques secondes, génial.<br/>La visite est terminée. Essayez de charger vos propres documents maintenant."
+msgid ""
+"Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is "
+"complete. Try uploading your own documents now."
+msgstr ""
+"Wouah... 6 documents traités en quelques secondes, génial !<br/>La visite "
+"est terminée. Essayez de charger vos propres documents maintenant."
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_folder

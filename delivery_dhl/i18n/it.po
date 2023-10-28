@@ -1,24 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery_dhl
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Friederike Fasterling-Nesselbosch, 2022
-# Sergio Zanchetta <primes2h@gmail.com>, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
-"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: it\n"
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: delivery_dhl
@@ -169,12 +167,12 @@ msgstr "Seleziona questa casella se il tuo pacco è soggetto a tasse doganali."
 #. module: delivery_dhl
 #: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
 msgid "Custom Data"
-msgstr ""
+msgstr "Dati personalizzati"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_custom_data_request
 msgid "Custom data for DHL requests,"
-msgstr ""
+msgstr "Dati personalizzati per richieste DHL"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__d
@@ -199,6 +197,7 @@ msgstr "Configurazione DHL"
 
 #. module: delivery_dhl
 #. odoo-python
+#: code:addons/delivery_dhl/models/delivery_dhl.py:0
 #: code:addons/delivery_dhl/models/delivery_dhl.py:0
 #, python-format
 msgid "DHL Documents"
@@ -242,12 +241,13 @@ msgstr "Metodi di spedizione DHL"
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
 msgid "DHL Site ID is missing, please modify your delivery method settings."
-msgstr "SiteID DHL mancante, modificare le impostazioni del metodo di consegna."
+msgstr ""
+"SiteID DHL mancante, modificare le impostazioni del metodo di consegna."
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_SiteID
 msgid "DHL SiteID"
-msgstr "DHL SiteID"
+msgstr "SiteID DHL"
 
 #. module: delivery_dhl
 #: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_us_dom
@@ -265,8 +265,11 @@ msgstr "DHL US -> Internationale"
 #. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
-msgid "DHL account number is missing, please modify your delivery method settings."
-msgstr "Il numero conto DHL è mancante, si prega di modificare le impostazioni del metodo di consegna."
+msgid ""
+"DHL account number is missing, please modify your delivery method settings."
+msgstr ""
+"Il numero conto DHL è mancante, si prega di modificare le impostazioni del "
+"metodo di consegna."
 
 #. module: delivery_dhl
 #. odoo-python
@@ -280,7 +283,9 @@ msgstr "DHL non supporta i prodotti con nome superiore a 75 caratteri."
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
 msgid "DHL password is missing, please modify your delivery method settings."
-msgstr "La password DHL è mancante, si prega di modificare le impostazioni del metodo di consegna."
+msgstr ""
+"La password DHL è mancante, si prega di modificare le impostazioni del "
+"metodo di consegna."
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_duty_payment
@@ -430,8 +435,12 @@ msgstr "Unità di peso per i pacchi"
 #. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
-msgid "Please define an incoterm in the associated sale order or set a default incoterm for the company in the accounting's settings."
-msgstr "Definisci un incoterm nell'ordine di vendita associato o imposta un incoterm predefinito per l'azienda nelle impostazioni della contabilità."
+msgid ""
+"Please define an incoterm in the associated sale order or set a default "
+"incoterm for the company in the accounting's settings."
+msgstr ""
+"Definisci un incoterm nell'ordine di vendita associato o imposta un incoterm"
+" predefinito per l'azienda nelle impostazioni della contabilità."
 
 #. module: delivery_dhl
 #. odoo-python
@@ -483,9 +492,10 @@ msgstr "Mittente"
 #. module: delivery_dhl
 #. odoo-python
 #: code:addons/delivery_dhl/models/delivery_dhl.py:0
+#: code:addons/delivery_dhl/models/delivery_dhl.py:0
 #, python-format
 msgid "Shipment created into DHL <br/> <b>Tracking Number: </b>%s"
-msgstr ""
+msgstr "Spedizione creata in DHL <br/> <b>Codice di tracciabilità: </b>%s"
 
 #. module: delivery_dhl
 #: model:ir.model,name:delivery_dhl.model_delivery_carrier
@@ -550,8 +560,12 @@ msgstr ""
 #. odoo-python
 #: code:addons/delivery_dhl/models/delivery_dhl.py:0
 #, python-format
-msgid "There is no price available for this shipping, you should rather try with the DHL product %s"
-msgstr "Non c'è un prezzo disponibile per questa spedizione, si dovrebbe piuttosto provare con il prodotto DHL %s"
+msgid ""
+"There is no price available for this shipping, you should rather try with "
+"the DHL product %s"
+msgstr ""
+"Non c'è un prezzo disponibile per questa spedizione, si dovrebbe piuttosto "
+"provare con il prodotto DHL %s"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__u

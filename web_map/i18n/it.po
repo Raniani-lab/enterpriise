@@ -1,33 +1,35 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* web_map
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Sergio Zanchetta <primes2h@gmail.com>, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:03+0000\n"
-"PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:22+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
-"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: it\n"
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: web_map
 #. odoo-javascript
+#: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid ""
 ".st0{opacity:0.3;enable-background:new;}\n"
 "                .st1{fill:currentColor;stroke:#1A1919;stroke-width:3;stroke-miterlimit:10;}"
 msgstr ""
+".st0{opacity:0.3;enable-background:new;}\n"
+"                .st1{fill:currentColor;stroke:#1A1919;stroke-width:3;stroke-miterlimit:10;}"
 
 #. module: web_map
 #: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
@@ -35,6 +37,8 @@ msgid ""
 "<i class=\"oi oi-arrow-right\"/>\n"
 "                                Sign up to MapBox to get a free token"
 msgstr ""
+"<i class=\"oi oi-arrow-right\"/>\n"
+"                                Registrati a MapBox per ottenere un toke gratuito"
 
 #. module: web_map
 #: model:ir.model,name:web_map.model_ir_actions_act_window_view
@@ -43,6 +47,7 @@ msgstr "Vista finestra azione"
 
 #. module: web_map
 #. odoo-javascript
+#: code:addons/web_map/static/src/map_view/map_renderer.js:0
 #: code:addons/web_map/static/src/map_view/map_renderer.js:0
 #, python-format
 msgid "Address"
@@ -55,6 +60,7 @@ msgstr "Imponibile"
 
 #. module: web_map
 #. odoo-javascript
+#: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid "Close"
@@ -107,7 +113,7 @@ msgstr "Mappa"
 #. module: web_map
 #: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
 msgid "Map Routes"
-msgstr ""
+msgstr "Mappa percorsi"
 
 #. module: web_map
 #. odoo-javascript
@@ -128,7 +134,7 @@ msgstr "Nome"
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid "Navigate to"
-msgstr ""
+msgstr "Naviga verso"
 
 #. module: web_map
 #: model:ir.model.fields,help:web_map.field_res_config_settings__map_box_token
@@ -154,7 +160,7 @@ msgstr "Nessuna"
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid "Open"
-msgstr ""
+msgstr "Apri"
 
 #. module: web_map
 #. odoo-javascript
@@ -162,6 +168,8 @@ msgstr ""
 #, python-format
 msgid "OpenStreetMap's request limit exceeded, try again later."
 msgstr ""
+"È stato superato il limite di richieste per OpenStreetMap, riprova più "
+"tardi."
 
 #. module: web_map
 #: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
@@ -199,23 +207,32 @@ msgstr "Il token inserito non è valido"
 #. module: web_map
 #. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_model.js:0
+#: code:addons/web_map/static/src/map_view/map_model.js:0
+#: code:addons/web_map/static/src/map_view/map_model.js:0
 #, python-format
-msgid "The view has switched to another provider but functionalities will be limited"
-msgstr "La vista è passata a un altro fornitore ma le funzionalità saranno limitate"
+msgid ""
+"The view has switched to another provider but functionalities will be "
+"limited"
+msgstr ""
+"La vista è passata a un altro fornitore ma le funzionalità saranno limitate"
 
 #. module: web_map
 #. odoo-python
 #: code:addons/web_map/models/res_config_settings.py:0
 #, python-format
 msgid "This referer is not authorized"
-msgstr ""
+msgstr "Questa provenienza non è autorizzata"
 
 #. module: web_map
 #. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
-msgid "To get routing on your map, you first need to set up your MapBox token. It's free."
+msgid ""
+"To get routing on your map, you first need to set up your MapBox token. It's"
+" free."
 msgstr ""
+"Per ottenere itinerari nella mappa è necessario impostare il token Mapbox. È"
+" gratuito."
 
 #. module: web_map
 #: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
@@ -306,4 +323,6 @@ msgstr "Sì"
 #: code:addons/web_map/models/models.py:0
 #, python-format
 msgid "You need to set a Contact field on this model to use the Map View"
-msgstr "Per utilizzare la vista mappa è necessario impostare un campo contatto nel modello"
+msgstr ""
+"Per utilizzare la vista mappa è necessario impostare un campo contatto nel "
+"modello"

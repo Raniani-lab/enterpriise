@@ -1,28 +1,33 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* hr_contract_reports
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-17 10:16+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__count_employee_exit
 msgid "# Departure Employee"
-msgstr "# Austritt Mitarbeiter"
+msgstr "# Austritte von Mitarbeitern"
+
+#. module: hr_contract_reports
+#: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__employee_count
+msgid "# Employees"
+msgstr "# Mitarbeiter"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__count_new_employee
@@ -38,12 +43,12 @@ msgstr "Unternehmen"
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__contract_id
 msgid "Contract"
-msgstr "Arbeitsvertrag"
+msgstr "Vertrag"
 
 #. module: hr_contract_reports
 #: model:ir.model,name:hr_contract_reports.model_hr_contract_employee_report
 msgid "Contract and Employee Analysis Report"
-msgstr "Vetrag und Mitarbeiter Analyse Bericht"
+msgstr "Analysebericht über Vertrag und Mitarbeiter"
 
 #. module: hr_contract_reports
 #: model:ir.ui.menu,name:hr_contract_reports.menu_report_contract_employee_all
@@ -54,6 +59,11 @@ msgstr "Verträge"
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__date
 msgid "Date"
 msgstr "Datum"
+
+#. module: hr_contract_reports
+#: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__contract_start
+msgid "Date First Contract Started"
+msgstr ""
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__date_end_contract
@@ -79,7 +89,7 @@ msgstr "Anzeigename"
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__age_sum
 msgid "Duration Contract"
-msgstr "Vertrag Zeitraum "
+msgstr "Vertragsdauer"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__employee_id
@@ -94,7 +104,7 @@ msgstr "Mitarbeiter"
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_search
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.hr_contract_employee_report_view_tree
 msgid "Employees Analysis"
-msgstr "Mitarbeiter Analyse "
+msgstr "Mitarbeiteranalyse"
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_search
@@ -109,7 +119,7 @@ msgstr "ID"
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_search
 msgid "Last 365 Days"
-msgstr "Die letzten 365 Tage"
+msgstr "Letzten 365 Tage"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__start_date_months
@@ -124,9 +134,9 @@ msgstr "Monate des letzten Datums dieses Monats seit 01/01/1970"
 #. module: hr_contract_reports
 #: model_terms:ir.actions.act_window,help:hr_contract_reports.contract_employee_report_action
 msgid "This report performs analysis on your contracts."
-msgstr "Dieser Report führt eine Analyse Ihrer Verträge durch."
+msgstr "Dieser Bericht führt eine Analyse Ihrer Verträge durch."
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__wage
 msgid "Wage"
-msgstr "Vergütung"
+msgstr "Lohn"

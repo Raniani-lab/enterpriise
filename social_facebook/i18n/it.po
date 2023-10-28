@@ -1,23 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* social_facebook
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Sergio Zanchetta <primes2h@gmail.com>, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:03+0000\n"
-"PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
-"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: it\n"
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: social_facebook
@@ -28,12 +27,12 @@ msgstr "<b class=\"d-block mb-2\">Pagina Facebook</b>"
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-thumbs-up me-1\" title=\"Likes\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-thumbs-up me-1\" title=\"Likes\"/>"
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_live_post__facebook_post_id
@@ -67,8 +66,12 @@ msgstr "Immagine autore"
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_res_config_settings__facebook_use_own_account
-msgid "Check this if you want to use your personal Facebook Developer Account instead of the provided one."
-msgstr "Spunta se vuoi usare il tuo account personale di Facebook per gli sviluppatori invece di quello fornito."
+msgid ""
+"Check this if you want to use your personal Facebook Developer Account "
+"instead of the provided one."
+msgstr ""
+"Spunta se vuoi usare il tuo account personale di Facebook per gli "
+"sviluppatori invece di quello fornito."
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_comments_count
@@ -127,7 +130,7 @@ msgstr "Commenti Facebook"
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.res_config_settings_view_form
 msgid "Facebook Developer Account"
-msgstr ""
+msgstr "Account sviluppatore Facebook"
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_social_account__facebook_access_token
@@ -140,8 +143,12 @@ msgstr ""
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_social_account__facebook_account_id
-msgid "Facebook Page ID provided by the Facebook API, this should never be set manually."
-msgstr "ID pagina, fornito dalle API Facebook. Non deve mai essere impostato manualmente."
+msgid ""
+"Facebook Page ID provided by the Facebook API, this should never be set "
+"manually."
+msgstr ""
+"ID pagina, fornito dalle API Facebook. Non deve mai essere impostato "
+"manualmente."
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_post_id
@@ -171,7 +178,7 @@ msgstr "Facebook non ha fornito un token di accesso valido."
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_is_event_post
 msgid "Is event post"
-msgstr ""
+msgstr "È un post evento"
 
 #. module: social_facebook
 #. odoo-javascript
@@ -205,8 +212,11 @@ msgstr "Pubblica immagine"
 #. odoo-python
 #: code:addons/social_facebook/models/social_stream_post.py:0
 #, python-format
-msgid "Post not found. It could be because the post has been deleted on the Social Platform."
-msgstr "Post non trovato, potrebbe essere stato eliminato dalla piattaforma social."
+msgid ""
+"Post not found. It could be because the post has been deleted on the Social "
+"Platform."
+msgstr ""
+"Post non trovato, potrebbe essere stato eliminato dalla piattaforma social."
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.facebook_preview
@@ -216,14 +226,14 @@ msgstr "Pubblicato dalla pagina Facebook •"
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_reach
 msgid "Reach"
-msgstr ""
+msgstr "Raggiungi"
 
 #. module: social_facebook
 #. odoo-python
 #: code:addons/social_facebook/controllers/main.py:0
 #, python-format
 msgid "Read More about Facebook Pages"
-msgstr ""
+msgstr "Scopri di più sulle pagine di Facebook"
 
 #. module: social_facebook
 #. odoo-javascript
@@ -279,6 +289,7 @@ msgstr "Non autorizzato, contattare l'amministratore."
 #. module: social_facebook
 #. odoo-python
 #: code:addons/social_facebook/models/social_stream_post.py:0
+#: code:addons/social_facebook/models/social_stream_post.py:0
 #, python-format
 msgid "Unknown"
 msgstr "Sconosciuto"
@@ -290,8 +301,12 @@ msgstr "Usare il proprio account Facebook"
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_social_media__media_type
-msgid "Used to make comparisons when we need to restrict some features to a specific media ('facebook', 'twitter', ...)."
-msgstr "Utilizzato per effettuare confronti quando è necessario limitare alcune funzionalità di un particolare social (\"Facebook\", \"Twitter\"...)."
+msgid ""
+"Used to make comparisons when we need to restrict some features to a "
+"specific media ('facebook', 'twitter', ...)."
+msgstr ""
+"Utilizzato per effettuare confronti quando è necessario limitare alcune "
+"funzionalità di un particolare social (\"Facebook\", \"Twitter\"...)."
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_user_likes
@@ -311,8 +326,12 @@ msgstr "Viste"
 #: code:addons/social_facebook/models/social_live_post.py:0
 #: code:addons/social_facebook/models/social_post.py:0
 #, python-format
-msgid "We could not upload your image, try reducing its size and posting it again (error: %s)."
-msgstr "Non abbiamo potuto caricare la tua immagine, prova a ridurne le dimensioni e a postarla di nuovo (errore: %s)."
+msgid ""
+"We could not upload your image, try reducing its size and posting it again "
+"(error: %s)."
+msgstr ""
+"Non abbiamo potuto caricare la tua immagine, prova a ridurne le dimensioni e"
+" a postarla di nuovo (errore: %s)."
 
 #. module: social_facebook
 #. odoo-python
@@ -329,6 +348,8 @@ msgid ""
 "You need to be the manager of a Facebook Page to post with Odoo Social.\n"
 " Please create one and make sure it is linked to your account."
 msgstr ""
+"Devi essere il manager di una pagina Facebook per pubblicare con Odoo Social.\n"
+"Creane una e assicurati che sia collegata al tuo account."
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.social_stream_post_view_kanban

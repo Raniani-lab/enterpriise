@@ -1,23 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery_usps
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
-"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: delivery_usps
@@ -40,7 +39,9 @@ msgstr "Vink dit aan als je account bevestigd s bij USPS"
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Company phone number is invalid. Please insert a US phone number."
-msgstr "Bedrijfstelefoonnummer is foutief. Graag een geldig US telefoonnummer in te geven."
+msgstr ""
+"Bedrijfstelefoonnummer is foutief. Graag een geldig US telefoonnummer in te "
+"geven."
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_content_type
@@ -226,15 +227,21 @@ msgstr "Pakket"
 
 #. module: delivery_usps
 #: model:ir.model.fields,help:delivery_usps.field_delivery_carrier__usps_machinable
-msgid "Please check on USPS website to ensure that your package is machinable."
-msgstr "Controleer aub op de USPS website om te verzekeren dat je pakket machinaal is."
+msgid ""
+"Please check on USPS website to ensure that your package is machinable."
+msgstr ""
+"Controleer aub op de USPS website om te verzekeren dat je pakket machinaal "
+"is."
 
 #. module: delivery_usps
 #. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
-msgid "Please choose another service (maximum weight of this service is 4 pounds)"
-msgstr "Je dient een andere dienst te kiezen (maximale gewicht van deze dienst is 4 pond)"
+msgid ""
+"Please choose another service (maximum weight of this service is 4 pounds)"
+msgstr ""
+"Je dient een andere dienst te kiezen (maximale gewicht van deze dienst is 4 "
+"pond)"
 
 #. module: delivery_usps
 #. odoo-python
@@ -261,8 +268,12 @@ msgstr "Voorzie minimaal één item om te verzend aub."
 #. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
-msgid "Please set country U.S.A in your company address, Service is only available for U.S.A"
-msgstr "Graag je land in te stellen binnen de V.S voor je bedrijf, dienst is enkel beschikbaar voor de V.S."
+msgid ""
+"Please set country U.S.A in your company address, Service is only available "
+"for U.S.A"
+msgstr ""
+"Graag je land in te stellen binnen de V.S voor je bedrijf, dienst is enkel "
+"beschikbaar voor de V.S."
 
 #. module: delivery_usps
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_first_class_mail_type__postcard
@@ -291,7 +302,9 @@ msgstr "Hoeveelheid voor elke verplaatsingsregel moet minder dan 1000 zijn."
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Recipient address cannot be found. Please check the address exists."
-msgstr "De ontvanger zijn adres kan niet gevonden worden. Controleer aub dat je ontvanger een bestaand adres heeft."
+msgstr ""
+"De ontvanger zijn adres kan niet gevonden worden. Controleer aub dat je "
+"ontvanger een bestaand adres heeft."
 
 #. module: delivery_usps
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_container__rectangular
@@ -341,14 +354,14 @@ msgstr "Levering #%s is geannuleerd."
 #: code:addons/delivery_usps/models/delivery_usps.py:0
 #, python-format
 msgid "Shipment created into USPS"
-msgstr ""
+msgstr "Verzending aangemaakt in USPS"
 
 #. module: delivery_usps
 #. odoo-python
 #: code:addons/delivery_usps/models/delivery_usps.py:0
 #, python-format
 msgid "Shipment created into USPS <br/> <b>Tracking Number: </b>%s"
-msgstr ""
+msgstr "Verzenden aangemaakt in USPS <br/> <b>Traceernummer:</b>%s"
 
 #. module: delivery_usps
 #: model:ir.model,name:delivery_usps.model_delivery_carrier
@@ -388,7 +401,9 @@ msgstr ""
 msgid ""
 "The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n"
 " %s"
-msgstr "De geschatte verzendkosten kunnen niet worden berekend omdat het gewicht ontbreekt voor de volgende product(en): %s"
+msgstr ""
+"De geschatte verzendkosten kunnen niet worden berekend omdat het gewicht "
+"ontbreekt voor de volgende product(en): %s"
 
 #. module: delivery_usps
 #. odoo-python
@@ -406,14 +421,16 @@ msgstr ""
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "The selected USPS service (%s) cannot be used to deliver this package."
-msgstr "De geselecteerde USPS dienst (%s) kan niet gebruikt worden om dit pakketje te leveren."
+msgstr ""
+"De geselecteerde USPS dienst (%s) kan niet gebruikt worden om dit pakketje "
+"te leveren."
 
 #. module: delivery_usps
 #. odoo-python
 #: code:addons/delivery_usps/models/delivery_usps.py:0
 #, python-format
 msgid "Tracking Number:"
-msgstr ""
+msgstr "Traceernummer:"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_international_regular_container
@@ -450,8 +467,12 @@ msgstr "USPS binnenlands vast bedrag envelop"
 #. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
-msgid "USPS Domestic is used only to ship inside of the U.S.A. Please change the delivery method into USPS International."
-msgstr "USPS binnenlands wordt enkel gebruikt om binnen de V.S te verzenden. Wijzig aub de verzendwijze in USPS internationaal."
+msgid ""
+"USPS Domestic is used only to ship inside of the U.S.A. Please change the "
+"delivery method into USPS International."
+msgstr ""
+"USPS binnenlands wordt enkel gebruikt om binnen de V.S te verzenden. Wijzig "
+"aub de verzendwijze in USPS internationaal."
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_first_class_mail_type
@@ -468,8 +489,12 @@ msgstr "USPS vaste prijs internationale box"
 #. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
-msgid "USPS International is used only to ship outside of the U.S.A. Please change the delivery method into USPS Domestic."
-msgstr "USPS internationaal wordt enkel gebruikt om buiten de V.S te verzenden. Wijzig aub de verzendwijze in USPS binnenland."
+msgid ""
+"USPS International is used only to ship outside of the U.S.A. Please change "
+"the delivery method into USPS Domestic."
+msgstr ""
+"USPS internationaal wordt enkel gebruikt om buiten de V.S te verzenden. "
+"Wijzig aub de verzendwijze in USPS binnenland."
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_label_file_type
@@ -507,7 +532,7 @@ msgstr "USPS grootte container"
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Your company or recipient ZIP code is incorrect."
-msgstr "Jouw bedrijf of ontvanger zijn postcode is foutief."
+msgstr "De postcode van je bedrijf of ontvanger is foutief."
 
 #. module: delivery_usps
 #: model_terms:ir.ui.view,arch_db:delivery_usps.view_delivery_carrier_form_with_provider_usps

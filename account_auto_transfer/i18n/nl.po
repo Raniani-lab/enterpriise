@@ -1,23 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* account_auto_transfer
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:02+0000\n"
-"PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:09+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
-"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: account_auto_transfer
@@ -28,7 +27,7 @@ msgstr "<span> t/m </span>"
 #. module: account_auto_transfer
 #: model:ir.model,name:account_auto_transfer.model_account_chart_template
 msgid "Account Chart Template"
-msgstr ""
+msgstr "Grootboekschema sjabloon"
 
 #. module: account_auto_transfer
 #: model:ir.model,name:account_auto_transfer.model_account_transfer_model
@@ -43,7 +42,7 @@ msgstr "Model voor overboekingsregels"
 #. module: account_auto_transfer
 #: model:ir.actions.server,name:account_auto_transfer.ir_cron_auto_transfer_ir_actions_server
 msgid "Account automatic transfers: Perform transfers"
-msgstr ""
+msgstr "Automatische boekingen: Overdrachten uitvoeren"
 
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
@@ -52,13 +51,23 @@ msgstr "Activeer"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,help:account_auto_transfer.field_account_transfer_model_line__analytic_account_ids
-msgid "Adds a condition to only transfer the sum of the lines from the origin accounts that match these analytic accounts to the destination account"
-msgstr "Voegt een voorwaarde toe om alleen de som van de regels van de oorspronkelijke rekeningen die overeenkomen met deze kostenplaatsen over te dragen naar de bestemmingsrekening"
+msgid ""
+"Adds a condition to only transfer the sum of the lines from the origin "
+"accounts that match these analytic accounts to the destination account"
+msgstr ""
+"Voegt een voorwaarde toe om alleen de som van de regels van de "
+"oorspronkelijke rekeningen die overeenkomen met deze kostenplaatsen over te "
+"dragen naar de bestemmingsrekening"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,help:account_auto_transfer.field_account_transfer_model_line__partner_ids
-msgid "Adds a condition to only transfer the sum of the lines from the origin accounts that match these partners to the destination account"
-msgstr "Voegt een voorwaarde toe om alleen de som van de regels van de oorspronkelijke rekeningen die overeenkomen met deze relatis over te dragen naar de bestemmingsrekening"
+msgid ""
+"Adds a condition to only transfer the sum of the lines from the origin "
+"accounts that match these partners to the destination account"
+msgstr ""
+"Voegt een voorwaarde toe om alleen de som van de regels van de "
+"oorspronkelijke rekeningen die overeenkomen met deze relatis over te dragen "
+"naar de bestemmingsrekening"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line__analytic_account_ids
@@ -88,8 +97,10 @@ msgstr "Automatische boeking (-%s%%)"
 #. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
-msgid "Automatic Transfer (entries with analytic account(s): %s and partner(s): %s)"
-msgstr "Automatische boeking (boekingen met kostenplaats(en): %s en relatie(s): %s)"
+msgid ""
+"Automatic Transfer (entries with analytic account(s): %s and partner(s): %s)"
+msgstr ""
+"Automatische boeking (boekingen met kostenplaats(en): %s en relatie(s): %s)"
 
 #. module: account_auto_transfer
 #. odoo-python
@@ -109,8 +120,12 @@ msgstr "Automatische boeking (boekingen met relatie(s): %s)"
 #. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
-msgid "Automatic Transfer (from account %s with analytic account(s): %s and partner(s): %s)"
-msgstr "Automatische boeking (van rekening %s met kostenplaats(en): %s en relatie(s): %s)"
+msgid ""
+"Automatic Transfer (from account %s with analytic account(s): %s and "
+"partner(s): %s)"
+msgstr ""
+"Automatische boeking (van rekening %s met kostenplaats(en): %s en "
+"relatie(s): %s)"
 
 #. module: account_auto_transfer
 #. odoo-python
@@ -184,7 +199,7 @@ msgstr "Bestemmingsrekeningen"
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__journal_id
 msgid "Destination Journal"
-msgstr "Bestemmingsdagboek"
+msgstr "Bestemming dagboek"
 
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
@@ -228,7 +243,7 @@ msgstr "ID"
 #: code:addons/account_auto_transfer/demo/account_demo.py:0
 #, python-format
 msgid "IFRS Automatic Transfers"
-msgstr ""
+msgstr "IFRS automatische boekingen"
 
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
@@ -239,6 +254,11 @@ msgstr "Dagboek"
 #: model:ir.model,name:account_auto_transfer.model_account_move
 msgid "Journal Entry"
 msgstr "Boeking"
+
+#. module: account_auto_transfer
+#: model:ir.model,name:account_auto_transfer.model_account_move_line
+msgid "Journal Item"
+msgstr "Boekingsregel"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__write_uid
@@ -262,7 +282,7 @@ msgstr "Maandelijks"
 #: code:addons/account_auto_transfer/demo/account_demo.py:0
 #, python-format
 msgid "Monthly IFRS rent expense transfer"
-msgstr ""
+msgstr "Maandelijkse IFRS-huurkostenoverdracht"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__move_ids_count
@@ -324,8 +344,12 @@ msgstr "Percent is alleen lezen"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,help:account_auto_transfer.field_account_transfer_model_line__percent
-msgid "Percentage of the sum of lines from the origin accounts will be transferred to the destination account"
-msgstr "Percentage van de som van regels van de bronrekeningen wordt overgebracht naar het bestemmingsrekening"
+msgid ""
+"Percentage of the sum of lines from the origin accounts will be transferred "
+"to the destination account"
+msgstr ""
+"Percentage van de som van regels van de bronrekeningen wordt overgebracht "
+"naar het bestemmingsrekening"
 
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
@@ -350,12 +374,12 @@ msgstr "Reeks"
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__date_start
 msgid "Start Date"
-msgstr "Startdatum"
+msgstr "Begindatum"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__state
 msgid "State"
-msgstr "Status"
+msgstr "Staat"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__date_stop
@@ -373,8 +397,12 @@ msgstr "Deze kostenplaatsfilter %s is gedupliceerd"
 #. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
-msgid "The partner filter %s in combination with the analytic filter %s is duplicated"
-msgstr "Het reatiefilter %s in combinatie met de kostenplaatsfilter %s is gedupliceerd"
+msgid ""
+"The partner filter %s in combination with the analytic filter %s is "
+"duplicated"
+msgstr ""
+"Het reatiefilter %s in combinatie met de kostenplaatsfilter %s is "
+"gedupliceerd"
 
 #. module: account_auto_transfer
 #. odoo-python
@@ -388,7 +416,7 @@ msgstr "Dit relatiefilter %s is gedupliceerd"
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "The total percentage (%s) should be less or equal to 100!"
-msgstr ""
+msgstr "Het totale percentage (%s) moet minder of gelijk zijn aan 100!"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__total_percent
@@ -403,7 +431,7 @@ msgstr "Overboekingmodel"
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
 msgid "Transfers"
-msgstr "Overboekingen"
+msgstr "Verplaatsingen"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields.selection,name:account_auto_transfer.selection__account_transfer_model__frequency__year
@@ -415,7 +443,14 @@ msgstr "Jaarlijks"
 #: code:addons/account_auto_transfer/demo/account_demo.py:0
 #, python-format
 msgid "Yearly liabilites auto transfers"
-msgstr ""
+msgstr "Automatische boekingen jaarlijkse schulden"
+
+#. module: account_auto_transfer
+#. odoo-python
+#: code:addons/account_auto_transfer/models/account_move_line.py:0
+#, python-format
+msgid "You cannot set Tax on Automatic Transfer's entries."
+msgstr "Je kan geen belastingen instellen op automatische boekingen."
 
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form

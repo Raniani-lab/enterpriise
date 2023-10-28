@@ -1,23 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* web_enterprise
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Larissa Manderfeld, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:03+0000\n"
-"PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Larissa Manderfeld, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:22+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: web_enterprise
@@ -32,14 +31,14 @@ msgstr "%s Tagen"
 #: code:addons/web_enterprise/static/src/webclient/settings_form_view/res_config_edition.xml:0
 #, python-format
 msgid "(Enterprise Edition)"
-msgstr "(Enterprise Edition)"
+msgstr "(Enterprise-Edition)"
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid ") with the instructions to follow"
-msgstr ") mit den folgenden Anweisungen"
+msgstr ") mit den zu befolgenden Anweisungen"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -50,7 +49,6 @@ msgstr "1 Monat"
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/promote_studio.xml:0
 #: code:addons/web_enterprise/static/src/views/list/list_renderer_desktop.xml:0
 #, python-format
 msgid "Add Custom Field"
@@ -58,18 +56,24 @@ msgstr "Benutzerdefiniertes Feld hinzufügen"
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/promote_studio.xml:0
-#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#: code:addons/web_enterprise/static/src/views/kanban/kanban_header_patch.js:0
 #, python-format
-msgid "Add new fields and much more with"
-msgstr "Neue Felder und vieles mehr hinzufügen mit"
+msgid "Automations"
+msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
-msgid "CLEAR"
-msgstr "LÖSCHEN"
+msgid "Build new apps from scratch"
+msgstr ""
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#, python-format
+msgid "Build new reports"
+msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -80,35 +84,43 @@ msgstr "Klicken Sie hier, um eine E-Mail zu versenden"
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/promote_studio.xml:0
-#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#: code:addons/web_enterprise/static/src/webclient/share_url/burger_menu.xml:0
+#: code:addons/web_enterprise/static/src/webclient/share_url/burger_menu.xml:0
 #, python-format
-msgid "Close"
-msgstr "Schließen"
-
-#. module: web_enterprise
-#: model:ir.model,name:web_enterprise.model_res_config_settings
-msgid "Config Settings"
-msgstr "Konfiguration"
-
-#. module: web_enterprise
-#: model:ir.model,name:web_enterprise.model_res_partner
-msgid "Contact"
-msgstr "Kontakt"
+msgid "Close menu"
+msgstr "Menü schließen"
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
-msgid "Contact your sales representative to help you to unlink your previous database"
-msgstr "Wenden Sie sich an Ihren Vertriebsmitarbeiter, damit er Ihnen hilft, die Verknüpfung mit Ihrer bisherigen Datenbank aufzuheben."
+msgid ""
+"Contact your sales representative to help you to unlink your previous "
+"database"
+msgstr ""
+"Wenden Sie sich an Ihren Vertriebsmitarbeiter, damit er Ihnen hilft, die "
+"Verknüpfung mit Ihrer bisherigen Datenbank aufzuheben."
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
-msgid "Control panel toolbar"
-msgstr "Symbolleiste des Bedienfelds"
+msgid "Create automation rules"
+msgstr ""
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#, python-format
+msgid "Customize Reports"
+msgstr ""
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#, python-format
+msgid "Customize any screen"
+msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -126,15 +138,24 @@ msgstr "Ablauf der Datenbank:"
 
 #. module: web_enterprise
 #. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#, python-format
+msgid "Define webhooks"
+msgstr ""
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#, python-format
+msgid "Discard"
+msgstr ""
+
+#. module: web_enterprise
+#. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Dismiss"
 msgstr "Verwerfen"
-
-#. module: web_enterprise
-#: model:ir.actions.server,name:web_enterprise.download_contact
-msgid "Download (vCard)"
-msgstr "Download (vCard)"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -144,16 +165,14 @@ msgid "Error reason:"
 msgstr "Fehlerursache:"
 
 #. module: web_enterprise
-#. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
-#, python-format
-msgid "FILTER"
-msgstr "FILTER"
-
-#. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_http
 msgid "HTTP Routing"
-msgstr "HTTP Routing"
+msgstr "HTTP-Routing"
+
+#. module: web_enterprise
+#: model:ir.model.fields,field_description:web_enterprise.field_res_users_settings__homemenu_config
+msgid "Home Menu Configuration"
+msgstr "Konfiguration des Startmenüs"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -164,11 +183,10 @@ msgstr "Startmenü"
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/promote_studio.xml:0
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
-msgid "Install Odoo Studio"
-msgstr "Odoo Studio installieren"
+msgid "Learn More"
+msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -182,7 +200,9 @@ msgstr "Melden Sie sich als Administrator ein, um das Problem zu korrigieren."
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Login to your Odoo.com dashboard then unlink your previous database:"
-msgstr "Loggen Sie sich in Ihr Odoo.com-Dashboard ein und heben Sie die Verknüpfung mit Ihrer bisherigen Datenbank auf:"
+msgstr ""
+"Loggen Sie sich in Ihr Odoo.com-Dashboard ein und heben Sie die Verknüpfung "
+"mit Ihrer bisherigen Datenbank auf:"
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_ui_menu
@@ -199,7 +219,6 @@ msgstr "Kein Ergebnis"
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/settings_form_view/res_config_edition.xml:0
-#: model_terms:ir.ui.view,arch_db:web_enterprise.res_config_settings_view_form
 #, python-format
 msgid "Odoo"
 msgstr "Odoo"
@@ -213,14 +232,21 @@ msgstr "Odoo Enterprise Edition Lizenz V1.0"
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/promote_studio.xml:0
-#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#: code:addons/web_enterprise/static/src/views/list/list_renderer_desktop.js:0
 #, python-format
-msgid "Odoo Studio"
-msgstr "Odoo Studio"
+msgid "Odoo Studio - Add new fields to any view"
+msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
+#: code:addons/web_enterprise/static/src/views/kanban/kanban_header_patch.js:0
+#, python-format
+msgid "Odoo Studio - Customize workflows in minutes"
+msgstr ""
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Odoo Support"
@@ -241,12 +267,10 @@ msgid "Previous view"
 msgstr "Vorherige Ansicht"
 
 #. module: web_enterprise
-#: model_terms:ir.ui.view,arch_db:web_enterprise.res_config_settings_view_form
-msgid "Progressive Web App"
-msgstr "Progressive Web-App"
-
-#. module: web_enterprise
 #. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Refresh subscription status"
@@ -254,31 +278,32 @@ msgstr "Abonnementstatus aktualisieren"
 
 #. module: web_enterprise
 #. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
+#, python-format
+msgid "Register"
+msgstr "Anmelden"
+
+#. module: web_enterprise
+#. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Register your subscription"
-msgstr "Abonnement registrieren"
+msgstr "Ihr Abonnement registrieren"
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Renew your subscription"
-msgstr "Erneuern Sie Ihr Abonnement"
+msgstr "Ihr Abonnement erneuern"
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
-msgid "SEE RESULT"
-msgstr "ERGEBNISSE ANZEIGEN"
-
-#. module: web_enterprise
-#. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/barcode_fields.xml:0
-#, python-format
-msgid "Scan barcode"
-msgstr "Barcode scannen"
+msgid "Retry"
+msgstr "Wiederholen"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -289,10 +314,36 @@ msgstr "Übermittlung der Anweisungen per E-Mail ..."
 
 #. module: web_enterprise
 #. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/share_url/share_url.js:0
+#, python-format
+msgid "Share"
+msgstr "Teilen"
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/share_url/burger_menu.xml:0
+#: code:addons/web_enterprise/static/src/webclient/share_url/burger_menu.xml:0
+#, python-format
+msgid "Share URL"
+msgstr "URL teilen"
+
+#. module: web_enterprise
+#. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
-msgid "Something went wrong while registering your database. You can try again or contact"
-msgstr "Beim Registrieren Ihrer Datenbank ist ein Fehler aufgetreten. Versuchen Sie es erneut oder kontaktieren Sie"
+msgid ""
+"Something went wrong while registering your database. You can try again or "
+"contact"
+msgstr ""
+"Beim Registrieren Ihrer Datenbank ist ein Fehler aufgetreten. Versuchen Sie "
+"es erneut oder kontaktieren Sie"
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#, python-format
+msgid "Start using Odoo Studio"
+msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -312,22 +363,33 @@ msgstr "TIPP"
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
-msgid "Thank you, your registration was successful! Your database is valid until"
-msgstr "Vielen Dank, Ihre Registrierung war erfolgreich! Ihre Datenbank ist gültig bis"
+msgid ""
+"Thank you, your registration was successful! Your database is valid until"
+msgstr ""
+"Vielen Dank, Ihre Registrierung war erfolgreich! Ihre Datenbank ist gültig "
+"bis"
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/enterprise_subscription_service.js:0
 #, python-format
-msgid "Thank you, your registration was successful! Your database is valid until %s."
-msgstr "Vielen Dank, Ihre Registrierung war erfolgreich! Ihre Datenbank ist gültig bis %s."
+msgid ""
+"Thank you, your registration was successful! Your database is valid until "
+"%s."
+msgstr ""
+"Vielen Dank, Ihre Registrierung war erfolgreich! Ihre Datenbank ist gültig "
+"bis %s."
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
-msgid "The instructions to unlink your subscription from the previous database(s) have been sent"
-msgstr "Die Anweisungen zur Aufhebung der Verknüpfung Ihres Abonnements mit der/den vorherigen Datenbank(en) wurden übermittelt"
+msgid ""
+"The instructions to unlink your subscription from the previous database(s) "
+"have been sent"
+msgstr ""
+"Die Anweisungen zur Aufhebung der Verknüpfung Ihres Abonnements mit der/den "
+"vorherigen Datenbank(en) wurden übermittelt"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -351,11 +413,6 @@ msgid "This demo database will expire in %s. "
 msgstr "Diese Demo-Datenbank läuft in %s ab."
 
 #. module: web_enterprise
-#: model_terms:ir.ui.view,arch_db:web_enterprise.res_config_settings_view_form
-msgid "This name will be used for the application when Odoo is installed through the browser."
-msgstr "Dieser Name wird für die Anwendung verwendet, wenn Odoo über den Browser installiert wird."
-
-#. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
@@ -364,50 +421,59 @@ msgstr "Um die Verknüpfung aufzulösen können Sie entweder:"
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
-#, python-format
-msgid "Today"
-msgstr "Heute"
-
-#. module: web_enterprise
-#. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Unable to send the instructions by email, please contact the"
-msgstr "Wenn Sie die Anleitung nicht per E-Mail senden können, wenden Sie sich bitte an"
+msgstr ""
+"Anleitung konnte nicht per E-Mail gesendet werden, wenden Sie sich bitte an "
+"den"
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#, python-format
+msgid "Unleash the power of Odoo Studio:"
+msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Upgrade your subscription"
-msgstr "Abonnement aktualisieren"
+msgstr "Ihr Abonnement aktualisieren"
+
+#. module: web_enterprise
+#: model:ir.model,name:web_enterprise.model_res_users_settings
+msgid "User Settings"
+msgstr "Benutzereinstellungen"
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
-msgid "View switcher"
-msgstr "Ansichtsumschalter"
-
-#. module: web_enterprise
-#: model:ir.model.fields,field_description:web_enterprise.field_res_config_settings__web_app_name
-msgid "Web App Name"
-msgstr "Name der Web-App"
-
-#. module: web_enterprise
-#. odoo-javascript
-#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
-#, python-format
-msgid "You have more users or more apps installed than your subscription allows."
-msgstr "Sie haben mehr Benutzer oder mehr Anwendungen installiert, als Ihr Abonnement zulässt."
+msgid "Want to tailor-make your Odoo?"
+msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
-msgid "You will be able to register your database once you have installed your first app."
-msgstr "Sobald Sie Ihre erste App installiert haben, können Sie Ihre Datenbank registrieren."
+msgid ""
+"You have more users or more apps installed than your subscription allows."
+msgstr ""
+"Sie haben mehr Benutzer oder mehr Anwendungen installiert, als Ihr "
+"Abonnement zulässt."
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
+#, python-format
+msgid ""
+"You will be able to register your database once you have installed your "
+"first app."
+msgstr ""
+"Sobald Sie Ihre erste App installiert haben, können Sie Ihre Datenbank "
+"registrieren."
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -432,10 +498,17 @@ msgstr "Ihr Abonnement wurde aktualisiert und ist gültig bis"
 
 #. module: web_enterprise
 #. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#, python-format
+msgid "and more!"
+msgstr ""
+
+#. module: web_enterprise
+#. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "buy a subscription"
-msgstr "Abonnement kaufen"
+msgstr "ein Abonnement kaufen"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -449,7 +522,7 @@ msgstr "oder"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "to the subscription owner (email:"
-msgstr "an den Abo-Besitzer (E-Mail:)"
+msgstr "an den Abo-Besitzer (E-Mail:"
 
 #. module: web_enterprise
 #. odoo-javascript

@@ -1,24 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* social
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Cécile Collart <cco@odoo.com>, 2022
+# Wil Odoo, 2023
 # Jolien De Paepe, 2023
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:49+0000\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
 "Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: fr\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: social
@@ -48,12 +47,12 @@ msgstr "<b>Une erreur est survenue lors de la liaison à votre compte</b>"
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
 msgid "<i class=\"fa fa-globe\" title=\"See the post\"/>"
-msgstr "<i class=\"fa fa-globe\" title=\"Voir le post\"/>"
+msgstr "<i class=\"fa fa-globe\" title=\"Voir le poste\"/>"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_http_error_view
 msgid "<i class=\"oi oi-arrow-left\"/> Go back to Odoo"
-msgstr ""
+msgstr "<i class=\"oi oi-arrow-left\"/> Retour à Odoo"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_kanban
@@ -64,8 +63,12 @@ msgstr "<small class=\"pe-1\">Clics :</small>"
 #. odoo-javascript
 #: code:addons/social/static/src/js/tours/social.js:0
 #, python-format
-msgid "<strong>Congrats! Come back in a few minutes to check your statistics.</strong>"
-msgstr "<strong>Félicitations ! Revenez dans quelques minutes pour vérifier vos statistiques.</strong>"
+msgid ""
+"<strong>Congrats! Come back in a few minutes to check your "
+"statistics.</strong>"
+msgstr ""
+"<strong>Félicitations ! Revenez dans quelques minutes pour vérifier vos "
+"statistiques.</strong>"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__message_needaction
@@ -86,7 +89,7 @@ msgstr "Activités"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr "Activité d'exception de décoration"
+msgstr "Activité exception décoration"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_state
@@ -196,8 +199,11 @@ msgstr "Nom de l'auteur"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_stream_post__author_link
-msgid "Author link to the external social.media (ex: link to the Twitter Account)."
-msgstr "Lien de l'auteur vers le social.media externe (ex: lien vers le compte Twitter)."
+msgid ""
+"Author link to the external social.media (ex: link to the Twitter Account)."
+msgstr ""
+"Lien de l'auteur vers le social.media externe (ex: lien vers le compte "
+"Twitter)."
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
@@ -236,13 +242,17 @@ msgstr "Campagnes"
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_view_utm_campaigns
-msgid "Campaigns are used to centralize your marketing efforts and track their results."
-msgstr "Les campagnes sont utilisées pour centraliser vos efforts marketing et suivre leurs résultats."
+msgid ""
+"Campaigns are used to centralize your marketing efforts and track their "
+"results."
+msgstr ""
+"Les campagnes sont utilisées pour centraliser vos efforts marketing et "
+"suivre leurs résultats."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__can_link_accounts
 msgid "Can link accounts?"
-msgstr ""
+msgstr "Peut lier des comptes ?"
 
 #. module: social
 #. odoo-javascript
@@ -309,13 +319,20 @@ msgstr "Problème de connexion "
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__social_account_handle
-msgid "Contains the social media handle of the person that created this account. E.g: '@odoo.official' for the 'Odoo' Twitter account"
-msgstr "Contient le pseudonyme de réseau social de la personne qui a créé ce compte. Ex : '@odoo.official' pour le compte Twitter 'Odoo'"
+msgid ""
+"Contains the social media handle of the person that created this account. "
+"E.g: '@odoo.official' for the 'Odoo' Twitter account"
+msgstr ""
+"Contient le pseudonyme de réseau social de la personne qui a créé ce compte."
+" Ex : '@odoo.official' pour le compte Twitter 'Odoo'"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_live_post__message
-msgid "Content of the social post message that is post-processed (links are shortened, UTMs, ...)"
-msgstr "Contenu du poste social qui est post-traité (liens raccourcis, UTM, ...)"
+msgid ""
+"Content of the social post message that is post-processed (links are "
+"shortened, UTMs, ...)"
+msgstr ""
+"Contenu du poste social qui est post-traité (liens raccourcis, UTM, ...)"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__has_streams
@@ -341,8 +358,12 @@ msgstr "Créer un post"
 #. odoo-python
 #: code:addons/social/models/social_account.py:0
 #, python-format
-msgid "Create other accounts for %(media_names)s for this company or ask %(company_names)s to share their accounts"
-msgstr "Créez d'autres comptes pour %(media_names)s pour cette société ou demandez à %(company_names)s de partager ses comptes"
+msgid ""
+"Create other accounts for %(media_names)s for this company or ask "
+"%(company_names)s to share their accounts"
+msgstr ""
+"Créez d'autres comptes pour %(media_names)s pour cette société ou demandez à"
+" %(company_names)s de partager ses comptes"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__create_uid
@@ -448,7 +469,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Edit Comment"
-msgstr "Éditer le commentaire"
+msgstr "Modifier le commentaire"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_res_config_settings__module_social_demo
@@ -457,8 +478,12 @@ msgstr "Activer le mode démo"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.res_config_settings_view_form
-msgid "Enable this option and load demo data to test the social module. This must never be used on a production database!"
-msgstr "Activer cette option et chargez des données de démonstration pour tester le module social. À ne jamais utiliser dans une base de données de production !"
+msgid ""
+"Enable this option and load demo data to test the social module. This must "
+"never be used on a production database!"
+msgstr ""
+"Activer cette option et chargez des données de démonstration pour tester le "
+"module social. À ne jamais utiliser dans une base de données de production !"
 
 #. module: social
 #. odoo-javascript
@@ -480,8 +505,12 @@ msgstr "Tendance d'engagement"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__utm_medium_id
-msgid "Every time an account is created, a utm.medium is also created and linked to the account"
-msgstr "Chaque fois qu'un compte est créé, un utm.medium est aussi créé et lié à ce compte"
+msgid ""
+"Every time an account is created, a utm.medium is also created and linked to"
+" the account"
+msgstr ""
+"Chaque fois qu'un compte est créé, un utm.medium est aussi créé et lié à ce "
+"compte"
 
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_live_post__state__failed
@@ -492,7 +521,7 @@ msgstr "Échec"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_live_post__failure_reason
 msgid "Failure Reason"
-msgstr "Raison de l'échec"
+msgstr "Motif de l'échec"
 
 #. module: social
 #: model:ir.actions.act_window,name:social.action_social_stream_post
@@ -537,7 +566,8 @@ msgstr "Date de publication formatée"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__audience
-msgid "General audience of the Social Account (Page Likes, Account Follows, ...)."
+msgid ""
+"General audience of the Social Account (Page Likes, Account Follows, ...)."
 msgstr "Public général du compte (Pages aimées, abonnés, ...)"
 
 #. module: social
@@ -650,7 +680,7 @@ msgstr "URLs des images"
 #. module: social
 #: model:ir.model.fields,help:social.field_social_stream_post__stream_post_image_ids
 msgid "Images that were shared with this post."
-msgstr "Images qui ont été partagées sur ce post."
+msgstr "Images qui ont été partagées sur cette publication."
 
 #. module: social
 #. odoo-javascript
@@ -658,6 +688,11 @@ msgstr "Images qui ont été partagées sur ce post."
 #, python-format
 msgid "Insights"
 msgstr "Statistiques"
+
+#. module: social
+#: model:ir.model.fields,field_description:social.field_social_stream_post__is_author
+msgid "Is Author"
+msgstr "Est auteur"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__message_is_follower
@@ -669,8 +704,12 @@ msgstr "Est un abonné"
 #. odoo-javascript
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
-msgid "It appears there is an issue with the Social Media link, click here to link the account again"
-msgstr "Il semblerait qu'il y ait un problème avec le lien des réseaux sociaux, cliquez ici pour lier le compte à nouveau"
+msgid ""
+"It appears there is an issue with the Social Media link, click here to link "
+"the account again"
+msgstr ""
+"Il semblerait qu'il y ait un problème avec le lien des réseaux sociaux, "
+"cliquez ici pour lier le compte à nouveau"
 
 #. module: social
 #. odoo-javascript
@@ -748,6 +787,7 @@ msgstr "Description du lien"
 #. module: social
 #. odoo-javascript
 #: code:addons/social/static/src/xml/social_templates.xml:0
+#: code:addons/social/static/src/xml/social_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social.social_stream_post_view_kanban
 #, python-format
 msgid "Link Image"
@@ -790,8 +830,12 @@ msgstr "Lier un compte"
 #: model:ir.model.fields,help:social.field_social_live_post__company_id
 #: model:ir.model.fields,help:social.field_social_stream__company_id
 #: model:ir.model.fields,help:social.field_social_stream_post__company_id
-msgid "Link an account to a company to restrict its usage or keep empty to let all companies use it."
-msgstr "Liez un compte à une entreprise pour limiter son utilisation ou laissez-le vide pour permettre à toutes les entreprises de l'utiliser."
+msgid ""
+"Link an account to a company to restrict its usage or keep empty to let all "
+"companies use it."
+msgstr ""
+"Liez un compte à une entreprise pour limiter son utilisation ou laissez-le "
+"vide pour permettre à toutes les entreprises de l'utiliser."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_live_post__live_post_link
@@ -839,7 +883,7 @@ msgstr "Longueur maximale du post"
 #: model:ir.model.fields,field_description:social.field_social_post__media_ids
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_kanban
 msgid "Media"
-msgstr "Réseau"
+msgstr "Média"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__media_type
@@ -878,8 +922,10 @@ msgstr "Message publié"
 #. odoo-python
 #: code:addons/social/models/social_post.py:0
 #, python-format
-msgid "Message posted partially. These are the ones that couldn't be posted:%s"
+msgid ""
+"Message posted partially. These are the ones that couldn't be posted:%s"
 msgstr ""
+"Message publié partiellement. Voici ceux qui n'ont pas pu être publiés : %s"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__message_ids
@@ -956,7 +1002,7 @@ msgstr "Date limite de l'activité à venir"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_summary
 msgid "Next Activity Summary"
-msgstr "Résumé d'activité suivante"
+msgstr "Résumé de l'activité suivante"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_type_id
@@ -990,7 +1036,8 @@ msgstr "Pas encore de commentaires."
 #: code:addons/social/static/src/js/stream_post_kanban_controller.js:0
 #, python-format
 msgid "No social accounts configured, please contact your administrator."
-msgstr "Aucun compte social configuré, veuillez contacter votre administrateur."
+msgstr ""
+"Aucun compte social configuré, veuillez contacter votre administrateur."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__message_needaction_counter
@@ -1018,14 +1065,16 @@ msgstr "Nombre d'erreurs"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_utm_campaign__social_engagement
-msgid "Number of interactions (likes, shares, comments ...) with the social posts"
-msgstr "Nombre d'interactions (j'aime, partages, commentaires,...) avec les posts"
+msgid ""
+"Number of interactions (likes, shares, comments ...) with the social posts"
+msgstr ""
+"Nombre d'interactions (j'aime, partages, commentaires,...) avec les posts"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_needaction_counter
 #: model:ir.model.fields,help:social.field_social_post__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Nombre de messages exigeant une action"
+msgid "Number of messages requiring action"
+msgstr "Nombre de messages nécessitant une action"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_has_error_counter
@@ -1047,21 +1096,30 @@ msgstr "Nombre de contacts avec vos posts (j'aime, commentaires, ...)."
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__stories
 msgid "Number of stories created from your posts (Shares, Re-tweets, ...)."
-msgstr "Nombre de stories créées à partir de vos posts (partages, retweets, ...)."
+msgstr ""
+"Nombre de stories créées à partir de vos posts (partages, retweets, ...)."
 
 #. module: social
 #. odoo-javascript
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
-msgid "Number of times people have engaged with your posts (likes, comments, shares,...)"
-msgstr "Nombre de fois que des personnes ont participé à vos posts (j'aime, commentaires, partages,...)"
+msgid ""
+"Number of times people have engaged with your posts (likes, comments, "
+"shares,...)"
+msgstr ""
+"Nombre de fois que des personnes ont participé à vos posts (j'aime, "
+"commentaires, partages,...)"
 
 #. module: social
 #. odoo-javascript
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
-msgid "Number of times people who have engaged with your channel have created stories on their friends' or followers' feed (Shares, Retweets...)"
-msgstr "Nombre de fois que des personnes ayant participé à votre chaîne ont créé du contenu sur le fil de leurs amis ou abonnés (Partages, retweets,..)."
+msgid ""
+"Number of times people who have engaged with your channel have created "
+"stories on their friends' or followers' feed (Shares, Retweets...)"
+msgstr ""
+"Nombre de fois que des personnes ayant participé à votre chaîne ont créé du "
+"contenu sur le fil de leurs amis ou abonnés (Partages, retweets,..)."
 
 #. module: social
 #. odoo-javascript
@@ -1073,24 +1131,32 @@ msgstr "Ou ajouter"
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__audience_trend
 msgid "Percentage of increase/decrease of the audience over a defined period."
-msgstr "Le pourcentage d'augmentation/diminution d'audience sur une période définie."
+msgstr ""
+"Le pourcentage d'augmentation/diminution d'audience sur une période définie."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__engagement_trend
-msgid "Percentage of increase/decrease of the engagement over a defined period."
-msgstr "Le pourcentage d'augmentation/diminution de l'engagement sur une période définie."
+msgid ""
+"Percentage of increase/decrease of the engagement over a defined period."
+msgstr ""
+"Le pourcentage d'augmentation/diminution de l'engagement sur une période "
+"définie."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__stories_trend
 msgid "Percentage of increase/decrease of the stories over a defined period."
-msgstr "Le pourcentage d'augmentation/diminution des stories sur une période définie."
+msgstr ""
+"Le pourcentage d'augmentation/diminution des stories sur une période "
+"définie."
 
 #. module: social
 #. odoo-python
 #: code:addons/social/models/social_post.py:0
 #, python-format
 msgid "Please specify at least one account to post into (for post ID(s) %s)."
-msgstr "Veuillez préciser au moins un compte sur lequel publier (pour les identifiants du post %s)."
+msgstr ""
+"Veuillez préciser au moins un compte sur lequel publier (pour les "
+"identifiants de post %s)."
 
 #. module: social
 #. odoo-python
@@ -1102,6 +1168,7 @@ msgstr "Publier"
 
 #. module: social
 #. odoo-javascript
+#: code:addons/social/static/src/xml/social_templates.xml:0
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_kanban
 #: model_terms:ir.ui.view,arch_db:social.social_stream_post_view_kanban
@@ -1128,7 +1195,7 @@ msgstr "Publier un lien"
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_search
 #: model_terms:ir.ui.view,arch_db:social.social_stream_post_view_search
 msgid "Post Message"
-msgstr "Publier un message"
+msgstr "Publier un post"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
@@ -1137,8 +1204,12 @@ msgstr "Publier maintenant"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_stream_post__post_link
-msgid "Post link to the external social.media (ex: link to the actual Facebook Post)."
-msgstr "Publier un lien vers le social.media externe (ex: lien vers le post Facebook réel)."
+msgid ""
+"Post link to the external social.media (ex: link to the actual Facebook "
+"Post)."
+msgstr ""
+"Publier un lien vers le social.media externe (ex: lien vers le post Facebook"
+" réel)."
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
@@ -1180,24 +1251,27 @@ msgstr "Posts par comptes"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Press Enter to post. Press Shift+Enter to insert a Line Break."
-msgstr "Appuyez sur Entrer pour publier. Appuyez sur Maj+Entrer pour insérer un saut de ligne."
+msgstr ""
+"Appuyez sur Entrer pour publier. Appuyez sur Maj+Entrer pour insérer un saut"
+" de ligne."
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
 msgid "Preview your post"
-msgstr "Prévisualiser votre post "
+msgstr "Prévisualiser votre post"
 
 #. module: social
 #. odoo-javascript
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Previous"
-msgstr "Précedent"
+msgstr "Précédent"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__post_method
 msgid "Publish your post immediately or schedule it at a later time."
-msgstr "Publiez immédiatement votre post ou planifier la publication pour plus tard."
+msgstr ""
+"Publiez immédiatement votre post ou planifier la publication pour plus tard."
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_search
@@ -1218,7 +1292,7 @@ msgstr "Date de publication"
 #: model:ir.model.fields,field_description:social.field_social_media__rating_ids
 #: model:ir.model.fields,field_description:social.field_social_post__rating_ids
 msgid "Ratings"
-msgstr ""
+msgstr "Évaluations"
 
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_live_post__state__ready
@@ -1282,14 +1356,16 @@ msgstr "Planifié"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__scheduled_date
 msgid "Scheduled Date"
-msgstr "Date prévue"
+msgstr "Date planifiée"
 
 #. module: social
 #. odoo-python
 #: code:addons/social/models/social_post.py:0
 #, python-format
 msgid "Selected accounts (%s) do not match the selected company (%s)"
-msgstr "Les comptes sélectionnés (%s) ne correspondent pas à l'entreprise sélectionnée (%s)"
+msgstr ""
+"Les comptes sélectionnés (%s) ne correspondent pas à l'entreprise "
+"sélectionnée (%s)"
 
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_post__post_method__now
@@ -1304,12 +1380,17 @@ msgstr "Séquence"
 #. module: social
 #: model:ir.model.fields,help:social.field_social_stream__sequence
 msgid "Sequence used to order streams (mainly for the 'Feed' kanban view)"
-msgstr "Séquence utilisée pour organiser les flux (pour la vue Kanban 'Feed' principalement)"
+msgstr ""
+"Séquence utilisée pour organiser les flux (pour la vue Kanban 'Feed' "
+"principalement)"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__max_post_length
-msgid "Set a maximum number of characters can be posted in post. 0 for no limit."
-msgstr "Définissez un nombre maximum de caractères pouvant être publiés dans la publication. 0 pour aucune limite."
+msgid ""
+"Set a maximum number of characters can be posted in post. 0 for no limit."
+msgstr ""
+"Définissez un nombre maximum de caractères pouvant être publiés dans la "
+"publication. 0 pour aucune limite."
 
 #. module: social
 #: model:ir.actions.act_window,name:social.action_social_global_settings
@@ -1376,7 +1457,7 @@ msgstr "Posts des réseaux sociaux"
 #: model:ir.model.fields,field_description:social.field_social_live_post__post_id
 #: model_terms:ir.ui.view,arch_db:social.social_live_post_view_form
 msgid "Social Post"
-msgstr "Post"
+msgstr "Post social"
 
 #. module: social
 #: model:ir.model,name:social.model_social_post_template
@@ -1407,7 +1488,7 @@ msgstr "Flux social"
 #: model:ir.model,name:social.model_social_stream_post
 #: model:ir.model,name:social.model_social_stream_type
 msgid "Social Stream Post"
-msgstr "Post du flux social"
+msgstr "Publication du flux social"
 
 #. module: social
 #: model:ir.model,name:social.model_social_stream_post_image
@@ -1432,10 +1513,25 @@ msgstr "Social : publier des posts programmés"
 
 #. module: social
 #. odoo-javascript
+#: code:addons/social/static/src/js/stream_post_comments_reply.js:0
+#, python-format
+msgid ""
+"Something went wrong while posting the comment. \n"
+"%s"
+msgstr ""
+"Une erreur s'est produite lors de la publication de la réaction. \n"
+"%s"
+
+#. module: social
+#. odoo-javascript
 #: code:addons/social/static/src/js/stream_post_kanban_dashboard.js:0
 #, python-format
-msgid "Sorry, you're not allowed to re-link this account, please contact your administrator."
-msgstr "Vous n'êtes pas autorisé à reconnecter ce compte, veuillez contacter votre administrateur."
+msgid ""
+"Sorry, you're not allowed to re-link this account, please contact your "
+"administrator."
+msgstr ""
+"Vous n'êtes pas autorisé à reconnecter ce compte, veuillez contacter votre "
+"administrateur."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__source_id
@@ -1444,8 +1540,12 @@ msgstr "Source"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__live_posts_by_media
-msgid "Special technical field that holds a dict containing the live posts names by media ids (used for kanban view)."
-msgstr "Champ technique spécial qui contient un dict contenant les noms des posts en direct par identifiant de média (utilisé pour la vue Kanban)."
+msgid ""
+"Special technical field that holds a dict containing the live posts names by"
+" media ids (used for kanban view)."
+msgstr ""
+"Champ technique spécial qui contient un dict contenant les noms des messages"
+" en direct par identifiant de média (utilisé pour la vue Kanban)."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__stats_link
@@ -1549,13 +1649,20 @@ msgstr "Les comptes sur lesquels ce post sera publié."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_stream_post__author_name
-msgid "The post author name based on third party information (ex: 'John Doe')."
-msgstr "Le nom de l'auteur du post basé sur des informations tierces (par ex. 'John Doe')."
+msgid ""
+"The post author name based on third party information (ex: 'John Doe')."
+msgstr ""
+"Le nom de l'auteur du post basé sur des informations tierces (par ex. 'John "
+"Doe')."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__state
-msgid "The post is considered as 'Posted' when all its sub-posts (one per social account) are either 'Failed' or 'Posted'"
-msgstr "Le post est considérée comme 'Publié' quand tous les sous-posts (une par compte) sont soit 'Echoué' ou 'Publié'"
+msgid ""
+"The post is considered as 'Posted' when all its sub-posts (one per social "
+"account) are either 'Failed' or 'Posted'"
+msgstr ""
+"Le post est considéré comme 'Publié' quand tous les sous-posts (un par "
+"compte) sont soit 'Échoué' ou 'Publié'"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_stream_post__published_date
@@ -1564,8 +1671,12 @@ msgstr "La date de publication, basée sur les informations d'un tiers."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_live_post__failure_reason
-msgid "The reason why a post is not successfully posted on the Social Media (eg: connection error, duplicated post, ...)."
-msgstr "La raison pour laquelle un post n'a pas pu être publié sur le réseau social (par ex. erreur de connexion, publications doubles,...)."
+msgid ""
+"The reason why a post is not successfully posted on the Social Media (eg: "
+"connection error, duplicated post, ...)."
+msgstr ""
+"La raison pour laquelle un post n'a pas pu être publié sur le réseau social "
+"(par ex. erreur de connexion, publications doubles,...)."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream__media_image
@@ -1584,8 +1695,12 @@ msgstr "Il y a des erreurs de publication sur les sous-posts."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__csrf_token
-msgid "This token can be used to verify that an incoming request from a social provider has not been forged."
-msgstr "Ce jeton peut être utilisé pour vérifier qu'une demande entrante d'un fournisseur social n'a pas été falsifiée."
+msgid ""
+"This token can be used to verify that an incoming request from a social "
+"provider has not been forged."
+msgstr ""
+"Ce jeton peut être utilisé pour vérifier qu'une demande entrante d'un "
+"fournisseur social n'a pas été falsifiée."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream__name
@@ -1641,15 +1756,25 @@ msgstr "Le fichier téléchargé ne semble pas être une image valide."
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.res_config_settings_view_form
-msgid "Use your own Developer Accounts on our Social app. Those credentials are provided in the developer section of your professional social media account."
-msgstr "Utiliser vos propres comptes développeur sur notre application sociale. Ces identifiants sont fournis dans la section développeur de votre compte professionnel des réseau sociaux."
+msgid ""
+"Use your own Developer Accounts on our Social app. Those credentials are "
+"provided in the developer section of your professional social media account."
+msgstr ""
+"Utiliser vos propres comptes développeur sur notre application sociale. Ces "
+"identifiants sont fournis dans la section développeur de votre compte "
+"professionnel des réseau sociaux."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__media_type
 #: model:ir.model.fields,help:social.field_social_media__media_type
 #: model:ir.model.fields,help:social.field_social_stream_post__media_type
-msgid "Used to make comparisons when we need to restrict some features to a specific media ('facebook', 'twitter', ...)."
-msgstr "Utilisé pour faire des comparaisons lorsque nous devons restreindre certaines fonctionnalités à un réseau spécifique ('facebook', 'twitter', ...)."
+msgid ""
+"Used to make comparisons when we need to restrict some features to a "
+"specific media ('facebook', 'twitter', ...)."
+msgstr ""
+"Utilisé pour faire des comparaisons lorsque nous devons restreindre "
+"certaines fonctionnalités à un réseau spécifique ('facebook', 'twitter', "
+"...)."
 
 #. module: social
 #. odoo-javascript
@@ -1677,14 +1802,19 @@ msgstr "Quand"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__published_date
-msgid "When the global post was published. The actual sub-posts published dates may be different depending on the media."
-msgstr "Quand le post global est publié. Les dates de sous-posts peuvent être différentes selon le média."
+msgid ""
+"When the global post was published. The actual sub-posts published dates may"
+" be different depending on the media."
+msgstr ""
+"Quand le post global est publié. Les dates de sous-posts peuvent être "
+"différente selon le média."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__image_ids
 #: model:ir.model.fields,help:social.field_social_post_template__image_ids
 msgid "Will attach images to your posts (if the social media supports it)."
-msgstr "Ajoutera des images à vos posts (si le réseau social le prend en charge)."
+msgstr ""
+"Ajoutera des images à vos posts (si le réseau social le prend en charge)."
 
 #. module: social
 #. odoo-javascript
@@ -1709,8 +1839,12 @@ msgstr "Écrire une réponse..."
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_post
-msgid "Write an enticing post, add images and schedule it to be posted later on multiple platforms at once."
-msgstr "Rédigez un post attrayant, ajoutez des images et programmez-le pour qu'il soit publié plus tard sur plusieurs plateformes en même temps."
+msgid ""
+"Write an enticing post, add images and schedule it to be posted later on "
+"multiple platforms at once."
+msgstr ""
+"Rédigez un post attrayant, ajoutez des images et programmez-le pour qu'il "
+"soit publié plus tard sur plusieurs plateformes en même temps."
 
 #. module: social
 #. odoo-python
@@ -1794,7 +1928,9 @@ msgstr "réponses..."
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_stream_post
 msgid "to keep an eye on your own posts and monitor all social activities."
-msgstr "pour garder un œil sur vos propres publications et surveiller toutes les activités sociales."
+msgstr ""
+"pour garder un œil sur vos propres posts et surveiller toutes les activités "
+"sociales."
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_stream

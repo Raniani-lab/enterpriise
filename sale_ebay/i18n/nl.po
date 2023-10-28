@@ -1,32 +1,34 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* sale_ebay
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
-# Jolien De Paepe, 2022
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Jolien De Paepe, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
-"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: sale_ebay
 #. odoo-python
 #: code:addons/sale_ebay/models/product.py:0
 #, python-format
-msgid " If you want to set quantity to 0, the Out Of Stock option should be enabled and the listing duration should set to Good 'Til Canceled"
-msgstr "Als je de hoeveelheid op 0 wilt zetten moet je de Niet op voorraad optie activeren en de lijstlengte moet gezet worden op 'Goed tot geannuleerd'"
+msgid ""
+" If you want to set quantity to 0, the Out Of Stock option should be enabled"
+" and the listing duration should set to Good 'Til Canceled"
+msgstr ""
+"Als je de hoeveelheid op 0 wilt zetten moet je de Niet op voorraad optie "
+"activeren en de lijstlengte moet gezet worden op 'Goed tot geannuleerd'"
 
 #. module: sale_ebay
 #. odoo-python
@@ -78,8 +80,12 @@ msgstr "Andere landen toevoegen"
 #. odoo-python
 #: code:addons/sale_ebay/models/product.py:0
 #, python-format
-msgid "All the quantities must be greater than 0 or you need to enable the Out Of Stock option."
-msgstr "Alle hoeveelheden moeten groter dan 0 zijn of je moet de optie 'Niet op voorraad' aanvinken."
+msgid ""
+"All the quantities must be greater than 0 or you need to enable the Out Of "
+"Stock option."
+msgstr ""
+"Alle hoeveelheden moeten groter dan 0 zijn of je moet de optie 'Niet op "
+"voorraad' aanvinken."
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_best_offer
@@ -220,7 +226,7 @@ msgstr "Ontwikkelaarssleutel"
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__display_name
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__display_name
 msgid "Display Name"
-msgstr "Weergavenaam"
+msgstr "Schermnaam"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_listing_duration
@@ -290,10 +296,8 @@ msgstr ""
 #, python-format
 msgid ""
 "Error Encountered.\n"
-"'%s'"
+"%r"
 msgstr ""
-"Fout opgetreden.\n"
-"'%s'"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
@@ -491,8 +495,12 @@ msgstr "Betalingsbeleid"
 #. odoo-python
 #: code:addons/sale_ebay/models/res_config_settings.py:0
 #, python-format
-msgid "Please provide your ebay production keys before enabling the account deletion notifications."
-msgstr "Geef je eBay-productiesleutels op voordat je de accountverwijderingsmeldingen inschakelt."
+msgid ""
+"Please provide your ebay production keys before enabling the account "
+"deletion notifications."
+msgstr ""
+"Geef je eBay-productiesleutels op voordat je de "
+"accountverwijderingsmeldingen inschakelt."
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -635,7 +643,7 @@ msgstr "Leveringsbeleid"
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_start_date
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_start_date
 msgid "Start Date"
-msgstr "Startdatum"
+msgstr "Begindatum"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_price
@@ -646,7 +654,7 @@ msgstr "Startprijs voor bieding"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Storage"
-msgstr ""
+msgstr "Opslag"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -684,7 +692,7 @@ msgstr "Sync nu"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Synchronization"
-msgstr ""
+msgstr "Synchronisatie"
 
 #. module: sale_ebay
 #. odoo-python
@@ -714,8 +722,12 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_subtitle
 #: model:ir.model.fields,help:sale_ebay.field_product_template__ebay_subtitle
-msgid "The subtitle is restricted to 55 characters. Fees can be claimed by eBay for this feature"
-msgstr "De subtitel is beperkt tot 55 karakters. eBay kan mogelijk extra kosten aanrekenen hiervoor"
+msgid ""
+"The subtitle is restricted to 55 characters. Fees can be claimed by eBay for"
+" this feature"
+msgstr ""
+"De subtitel is beperkt tot 55 karakters. eBay kan mogelijk extra kosten "
+"aanrekenen hiervoor"
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_title
@@ -726,22 +738,40 @@ msgstr "De titel is beperkt tot 80 karakters"
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_category_2_id
 #: model:ir.model.fields,help:sale_ebay.field_product_template__ebay_category_2_id
-msgid "The use of a secondary category is not allowed on every eBay sites. Fees can be claimed by eBay for this feature"
-msgstr "Het gebruik van een tweede categorie is niet op elke eBay website toegestaan. Extra kosten kunnen in rekening gebracht worden voor deze optie"
+msgid ""
+"The use of a secondary category is not allowed on every eBay sites. Fees can"
+" be claimed by eBay for this feature"
+msgstr ""
+"Het gebruik van een tweede categorie is niet op elke eBay website "
+"toegestaan. Extra kosten kunnen in rekening gebracht worden voor deze optie"
 
 #. module: sale_ebay
 #. odoo-python
 #: code:addons/sale_ebay/models/product.py:0
 #, python-format
-msgid "There is no last synchronization date in your System Parameters. Create a System Parameter record with the key \"ebay_last_sync\" and the value set to the date of the oldest order you wish to synchronize in the format \"YYYY-MM-DD\"."
-msgstr "Er is geen laatste synchronisatiedatum in je systeemparameters. Maak een systeemparameter-record met de sleutel \"ebay_last_sync\" en de waarde ingesteld op de datum van de oudste order die je wilt synchroniseren in het formaat \"JJJJ-MM-DD\"."
+msgid ""
+"There is no last synchronization date in your System Parameters. Create a "
+"System Parameter record with the key \"ebay_last_sync\" and the value set to"
+" the date of the oldest order you wish to synchronize in the format \"YYYY-"
+"MM-DD\"."
+msgstr ""
+"Er is geen laatste synchronisatiedatum in je systeemparameters. Maak een "
+"systeemparameter-record met de sleutel \"ebay_last_sync\" en de waarde "
+"ingesteld op de datum van de oudste order die je wilt synchroniseren in het "
+"formaat \"JJJJ-MM-DD\"."
 
 #. module: sale_ebay
 #. odoo-python
 #: code:addons/sale_ebay/models/product.py:0
 #, python-format
-msgid "This function should not be called with a range of more than 30 days, as eBay does not handle longer timespans. Instead use synchronize_orders which split in as many calls as needed."
-msgstr "Deze functie moet niet worden aangeroepen met een bereik van meer dan 30 dagen, omdat eBay geen langere tijdspannes verwerkt. Gebruik in plaats daarvan synchronize_orders, dat zoveel aanroepen doet als nodig."
+msgid ""
+"This function should not be called with a range of more than 30 days, as "
+"eBay does not handle longer timespans. Instead use synchronize_orders which "
+"split in as many calls as needed."
+msgstr ""
+"Deze functie moet niet worden aangeroepen met een bereik van meer dan 30 "
+"dagen, omdat eBay geen langere tijdspannes verwerkt. Gebruik in plaats "
+"daarvan synchronize_orders, dat zoveel aanroepen doet als nodig."
 
 #. module: sale_ebay
 #. odoo-python
@@ -813,7 +843,7 @@ msgstr "eBay"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay Account"
-msgstr ""
+msgstr "eBay Account"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_category
@@ -864,6 +894,7 @@ msgstr "eBay lijst ID"
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay Marketplace Account Deletion/Closure Notifications"
 msgstr ""
+"Meldingen over het verwijderen/beëindigen van eBay Marketplace-account"
 
 #. module: sale_ebay
 #: model:mail.activity.type,summary:sale_ebay.ebay_GDPR_notification
@@ -873,7 +904,7 @@ msgstr "Melding van eBay Odoo-connector - accountverwijdering"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay Options"
-msgstr ""
+msgstr "eBay opties"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_policy
@@ -937,8 +968,11 @@ msgstr "e-bay parameters"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "eBay requires supporting customer account deletion/closure notifications."
+msgid ""
+"eBay requires supporting customer account deletion/closure notifications."
 msgstr ""
+"eBay vereist ondersteunende meldingen over het verwijderen/beëindigen van "
+"klantenaccounts."
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_url

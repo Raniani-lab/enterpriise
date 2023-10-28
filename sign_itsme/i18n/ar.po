@@ -5,7 +5,6 @@
 # Translators:
 # Rachid Al Assir <rachidalassir@gmail.com>, 2022
 # Martin Trigaux, 2022
-# Niyas Raphy, 2022
 # Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
@@ -33,7 +32,7 @@ msgstr "<small>الاسم: قدم الطرف الموقّع هذه الهوية 
 #: code:addons/sign_itsme/static/src/js/document_signable.js:0
 #, python-format
 msgid "Confirm your identity"
-msgstr "اكد هويتك"
+msgstr "أكد هويتك "
 
 #. module: sign_itsme
 #: model:sign.item.role,name:sign_itsme.sign_item_role_itsme_customer

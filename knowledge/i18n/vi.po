@@ -44,7 +44,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__favorite_count
 msgid "#Is Favorite"
-msgstr ""
+msgstr "#Là yêu thích"
 
 #. module: knowledge
 #. odoo-python
@@ -60,7 +60,7 @@ msgstr "%s (sao chép)"
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "%s has been sent to Trash"
-msgstr ""
+msgstr "%s đã được đưa vào Thùng rác"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite
@@ -71,7 +71,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
 msgid "<i class=\"fa fa-circle-o-notch fa-2x fa-spin\" title=\"loader\" role=\"img\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-circle-o-notch fa-2x fa-spin\" title=\"bộ tải\" role=\"img\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -213,6 +213,8 @@ msgid ""
 "<i class=\"fa fa-w fa-info-circle\"/> All external users you selected won't "
 "be added to the members."
 msgstr ""
+"<i class=\"fa fa-w fa-info-circle\"/> Tất cả người dùng bên ngoài mà bạn đã "
+"chọn sẽ không được thêm vào thành viên."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
@@ -261,6 +263,10 @@ msgid ""
 "                    (/<span style=\"font-style: italic;\">checklist</span>)\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    Thêm một danh sách\n"
+"                    (/<span style=\"font-style: italic;\">danh sách</span>)\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -270,6 +276,10 @@ msgid ""
 "                    (/<span style=\"font-style: italic;\">separator</span>)\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    Thêm một dấu phân cách\n"
+"                    (/<span style=\"font-style: italic;\">dấu phân cách</span>)\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -280,6 +290,11 @@ msgid ""
 "                    to convert a text into a title\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    Sử dụng\n"
+"                    /<span style=\"font-style: italic;\">thẻ tiêu đề</span>\n"
+"                    để chuyển văn bản thành tiêu đề\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -312,6 +327,17 @@ msgid ""
 "            (<span style=\"font-style: italic;\">Drafts, Todo lists, ...</span>)\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">Riêng tư</font>\n"
+"            </span>\n"
+"        </span>\n"
+"        <span style=\"font-size: 14px;\">\n"
+"            — Đây là\n"
+"            <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">tài liệu của bạn</font></span>,\n"
+"            những thứ mà bạn muốn lưu cho riêng mình\n"
+"            (<span style=\"font-style: italic;\">Bản nháp, danh sách việc cần làm, ...</span>)\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -328,6 +354,17 @@ msgid ""
 "            </span>\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">Được chia sẻ</font>\n"
+"            </span>\n"
+"        </span>\n"
+"        <span style=\"font-size: 14px;\">\n"
+"            — Đó là những tài liệu mà bạn \n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">đã mời ai đó hoặc được mời</font>\n"
+"            </span>\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -344,6 +381,17 @@ msgid ""
 "        </span>\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">Không gian làm việc</font>\n"
+"            </span>\n"
+"        </span>\n"
+"        <span style=\"font-size: 14px;\">\n"
+"            — Các bài viết ở đây có thể được\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">cả đội ngũ của bạn</font> truy cập\n"
+"        </span>\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -358,6 +406,15 @@ msgid ""
 "            \"<span style=\"font-weight: bolder;\">/</span>\"\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            Dưới danh sách này, hãy thử sử dụng\n"
+"            <span style=\"font-weight: bolder;\">lệnh</span>\n"
+"            bằng cách\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">nhập</font>\n"
+"            </span>\n"
+"            \"<span style=\"font-weight: bolder;\">/</span>\"\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -370,6 +427,13 @@ msgid ""
 "            (<span style=\"font-style: italic;\">documentation, tips, reports, ...</span>)\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            Nội dung — Chỉ cần nhấp và\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">bắt đầu nhập</font>\n"
+"            </span>\n"
+"            (<span style=\"font-style: italic;\">tài liệu, mẹo vặt, báo cáo,...</span>)\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -385,6 +449,16 @@ msgid ""
 "            (<span style=\"font-style: italic;\">per team, topic, project, ...</span>)\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            Tập tin —\n"
+"        </span>\n"
+"        <span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">Lồng các bài viết khác</font>\n"
+"            </span>\n"
+"            vào bên dưới để nhóm lại chúng\n"
+"            (<span style=\"font-style: italic;\">theo đội ngũ, chủ đề, dự án, ...</span>)\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -398,6 +472,14 @@ msgid ""
 "            <span style=\"font-style: italic; text-decoration-line: underline;\">it</span>\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            Chọn văn bản để\n"
+"            <font class=\"bg-o-color-2\">in đậm</font>,\n"
+"            <span style=\"text-decoration-line: line-through;\">gạch ngang</span>\n"
+"            hoặc\n"
+"            <span style=\"font-weight: bolder;\">tạo kiểu</span>\n"
+"            <span style=\"font-style: italic; text-decoration-line: underline;\">cho văn bản đó</span>\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -408,6 +490,11 @@ msgid ""
 "            to share documents that are frequently needed\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            Sử dụng\n"
+"            /<span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">tệp</font></span>\n"
+"            để chia sẻ các tài liệu thường xuyên cần đến\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -434,6 +521,13 @@ msgid ""
 "        <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">Sections</font></span>:\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Bài viết</font>\n"
+"        </span>\n"
+"        được lưu trong các\n"
+"        <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">Phần</font></span> khác nhau:\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -454,6 +548,21 @@ msgid ""
 "        to share it with everyone.\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        Một quy trình làm việc tối ưu là viết bản nháp của bạn trong chế độ\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Riêng tư</font>\n"
+"        </span>\n"
+"        và khi hoàn tất, di chuyển nó từ\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Riêng tư</font>\n"
+"        </span>\n"
+"        sang\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Không gian làm việc</font>\n"
+"        </span>\n"
+"        để chia sẻ với mọi người.\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -474,6 +583,21 @@ msgid ""
 "        it.\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        Và xin nhắc lại là để di chuyển một\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Bài viết</font>\n"
+"        </span>\n"
+"        từ\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Phần</font> này\n"
+"        </span>\n"
+"        sang phần khác, bạn chỉ cần\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Kéo &amp; Thả</font>\n"
+"        </span>\n"
+"        it.\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -505,6 +629,10 @@ msgid ""
 "        <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">Articles</font></span>.\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        Đó là các\n"
+"        <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">Bài viết</font></span> của bạn.\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -521,6 +649,17 @@ msgid ""
 "        them\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        Để thay đổi cách tổ chức\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Bài viết</font>\n"
+"        </span>\n"
+"        bạn có thể\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Kéo &amp; Thả</font>\n"
+"        </span>\n"
+"        chúng một cách đơn giản\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -548,13 +687,15 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "<span style=\"font-size: 14px;\">And voilà, it is that simple.</span>"
-msgstr ""
+msgstr "<span style=\"font-size: 14px;\">Và vậy đó, chỉ đơn giản thế thôi.</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid ""
 "<span style=\"font-size: 14px;\">Check this box to indicate it's done</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Đánh dấu ô này để cho biết đã hoàn "
+"tất</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -562,11 +703,13 @@ msgid ""
 "<span style=\"font-size: 14px;\">Click anywhere, and just start "
 "typing</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Nhấp vào bất kỳ đâu, rồi chỉ cần bắt đầu "
+"nhập</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "<span style=\"font-size: 14px;\">Each of them can be used both as:</span>"
-msgstr ""
+msgstr "<span style=\"font-size: 14px;\">Đều có thể được sử dụng như:</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -600,6 +743,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "<span style=\"font-size: 14px;\">Press Ctrl-Z to undo any change</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Bấm Ctrl-Z để hoàn tác mọi thay đổi</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -608,6 +752,9 @@ msgid ""
 "    <br/>\n"
 "    <span style=\"font-size: 14px;\">Ready to give it a spin?</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Trang riêng tư này là nơi bạn được thoả sức sáng tạo.</span>\n"
+"    <br/>\n"
+"    <span style=\"font-size: 14px;\">Bạn đã sẵn sàng thử chưa?</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -628,6 +775,9 @@ msgid ""
 "            <font class=\"text-o-color-1\">YouTube</font>\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-1\">YouTube</font>\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -635,6 +785,8 @@ msgid ""
 "<span style=\"font-weight: bolder;\"><font class=\"text-o-"
 "color-1\">Facebook</font></span>"
 msgstr ""
+"<span style=\"font-weight: bolder;\"><font class=\"text-o-"
+"color-1\">Facebook</font></span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -642,13 +794,15 @@ msgid ""
 "<span style=\"font-weight: bolder;\"><font class=\"text-o-"
 "color-1\">Twitter</font></span>"
 msgstr ""
+"<span style=\"font-weight: bolder;\"><font class=\"text-o-"
+"color-1\">Twitter</font></span>"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Access Restricted. May not be shared with everyone from"
-msgstr ""
+msgstr "Hạn chế truy cập. Có thể không được chia sẻ với mọi người từ"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_needaction
@@ -700,23 +854,25 @@ msgid ""
 "Add articles in your list of favorites by clicking on the <i class=\"fa fa-"
 "star-o\"></i> next to the article name."
 msgstr ""
+"Thêm bài viết vào danh sách yêu thích của bạn bằng cách nhấp vào <i "
+"class=\"fa fa-star-o\"></i> bên cạnh tên bài viết. "
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/table_of_content_behavior/table_of_content_behavior.xml:0
 #, python-format
 msgid "Add headings in this Article to create a Table of Content"
-msgstr ""
+msgstr "Thêm thẻ tiêu đề trong Bài viết này để tạo Mục lục"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
 msgid "Add people or email addresses"
-msgstr ""
+msgstr "Thêm người hoặc địa chỉ email"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "Add people or email addresses..."
-msgstr ""
+msgstr "Thêm người hoặc địa chỉ email..."
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_member_action
@@ -724,6 +880,8 @@ msgid ""
 "Adding members allows you to share Articles while granting specific access "
 "rights<br>(can write, can read, ...)."
 msgstr ""
+"Việc thêm thành viên cho phép bạn chia sẻ Bài viết và đồng thời cấp các "
+"quyền truy cập cụ thể<br>(có thể viết, có thể đọc,...)."
 
 #. module: knowledge
 #. odoo-javascript
@@ -744,7 +902,7 @@ msgstr "Người quản trị"
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "Advanced Search"
-msgstr ""
+msgstr "Tìm kiếm nâng cao"
 
 #. module: knowledge
 #. odoo-javascript
@@ -811,6 +969,8 @@ msgid ""
 "Are you sure you want to remove your member? By leaving an article, you may "
 "lose access to it."
 msgstr ""
+"Bạn có chắc chắn muốn xóa quyền thành viên của mình không? Khi rời khỏi một "
+"bài viết, bạn có thể mất quyền truy cập vào bài viết đó."
 
 #. module: knowledge
 #. odoo-javascript
@@ -827,6 +987,9 @@ msgid ""
 "Are you sure you want to restore access? This means this article will now "
 "inherit any access set on its parent articles."
 msgstr ""
+"Bạn có chắc chắn muốn khôi phục quyền truy cập không? Điều này đồng nghĩa "
+"với việc bài viết này giờ đây sẽ kế thừa mọi quyền truy cập được thiết lập "
+"trên các bài viết cha của nó."
 
 #. module: knowledge
 #. odoo-javascript
@@ -854,6 +1017,8 @@ msgid ""
 "Are you sure you want to set your permission to \"none\"? If you do, you "
 "will no longer have access to the article."
 msgstr ""
+"Bạn có chắc chắn muốn đặt quyền của mình thành \"không\" không? Nếu thực "
+"hiện thao tác này, bạn sẽ không còn quyền truy cập vào bài viết."
 
 #. module: knowledge
 #. odoo-javascript
@@ -875,22 +1040,24 @@ msgid ""
 "Article '%s' should always have a writer: inherit write permission, or have "
 "a member with write access"
 msgstr ""
+"Bài viết '%s' phải luôn có người viết: kế thừa quyền viết hoặc thêm thành "
+"viên có quyền viết"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_properties_definition
 msgid "Article Item Properties"
-msgstr ""
+msgstr "Thuộc tính mục bài viết"
 
 #. module: knowledge
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_item_action
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
 msgid "Article Items"
-msgstr ""
+msgstr "Mục bài viết"
 
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_article_member
 msgid "Article Member"
-msgstr ""
+msgstr "Thành viên bài viết"
 
 #. module: knowledge
 #. odoo-javascript
@@ -902,22 +1069,22 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_url
 msgid "Article URL"
-msgstr ""
+msgstr "URL bài viết"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__cover_image_id
 msgid "Article cover"
-msgstr ""
+msgstr "Ảnh bìa bài viết"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_article_item_parent
 msgid "Article items must have a parent."
-msgstr ""
+msgstr "Các mục bài viết phải có cha."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
 msgid "Article not found"
-msgstr ""
+msgstr "Không tìm thấy bài viết"
 
 #. module: knowledge
 #. odoo-javascript
@@ -939,18 +1106,20 @@ msgstr "Bài viết"
 msgid ""
 "Articles %s cannot be updated as this would create a recursive hierarchy."
 msgstr ""
+"Không thể cập nhật các bài viết %s vì điều này sẽ tạo ra một hệ thống phân "
+"cấp đệ quy."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__article_ids
 msgid "Articles using cover"
-msgstr ""
+msgstr "Bài viết sử dụng ảnh bìa"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "As a reader, you can't leave a Workspace article"
-msgstr ""
+msgstr "Là người đọc, bạn không thể để lại bài viết trên Không gian làm việc"
 
 #. module: knowledge
 #. odoo-javascript
@@ -959,6 +1128,8 @@ msgstr ""
 msgid ""
 "As an administrator, you can always modify this article and its members."
 msgstr ""
+"Với vai trò quản trị viên, bạn luôn có thể sửa đổi bài viết này và các thành"
+" viên của bài viết."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_attachment_count
@@ -986,7 +1157,7 @@ msgstr "Thân"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_can_read
 msgid "Can Read"
-msgstr ""
+msgstr "Có thể đọc"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_can_write
@@ -998,14 +1169,14 @@ msgstr "Có thể viết"
 #: code:addons/knowledge/models/knowledge_article_member.py:0
 #, python-format
 msgid "Can not update the article or partner of a member."
-msgstr ""
+msgstr "Không thể cập nhật bài viết hoặc đối tác của thành viên."
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/models/knowledge_article_favorite.py:0
 #, python-format
 msgid "Can not update the article or user of a favorite."
-msgstr ""
+msgstr "Không thể cập nhật bài viết hoặc người dùng của mục yêu thích."
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__inherited_permission__read
@@ -1013,7 +1184,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article_member__permission__read
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_invite__permission__read
 msgid "Can read"
-msgstr ""
+msgstr "Có thể đọc"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__inherited_permission__write
@@ -1040,6 +1211,8 @@ msgid ""
 "Cannot create an article under article %(parent_name)s which is a non-"
 "private parent"
 msgstr ""
+"Không thể tạo một bài viết thuộc bài viết %(parent_name)s không phải bài "
+"viết riêng tư"
 
 #. module: knowledge
 #. odoo-python
@@ -1049,6 +1222,8 @@ msgid ""
 "Cannot move %(article_name)s as a root of the 'shared' section since access "
 "rights can not be inferred without a parent."
 msgstr ""
+"Không thể di chuyển %(article_name)s làm bài viết gốc của phần 'được chia "
+"sẻ' vì không thể suy ra quyền truy cập nếu không có cha."
 
 #. module: knowledge
 #. odoo-javascript
@@ -1062,12 +1237,12 @@ msgstr "Phân loại"
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Change Permission"
-msgstr ""
+msgstr "Thay đổi quyền"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__child_ids
 msgid "Child Articles and Items"
-msgstr ""
+msgstr "Hạng mục và bài viết con"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1111,35 +1286,35 @@ msgstr "Sao chép vào Clipboard"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__attachment_url
 msgid "Cover URL"
-msgstr ""
+msgstr "URL ảnh bìa"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__attachment_id
 msgid "Cover attachment"
-msgstr ""
+msgstr "Tệp đính kèm ảnh bìa"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__cover_image_url
 msgid "Cover url"
-msgstr ""
+msgstr "URL ảnh bìa"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/xml/knowledge_command_palette.xml:0
 #, python-format
 msgid "Create \""
-msgstr ""
+msgstr "Tạo \""
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_item_action
 msgid "Create a new article item"
-msgstr ""
+msgstr "Tạo một hạng mục bài viết mới"
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_action
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "Create an article"
-msgstr ""
+msgstr "Tạo một bài viết"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
@@ -1185,21 +1360,23 @@ msgid ""
 "Default permission for all internal users. (External users can still have "
 "access to this article if they are added to its members)"
 msgstr ""
+"Quyền mặc định cho tất cả người dùng nội bộ. (Người dùng bên ngoài vẫn có "
+"thể truy cập vào bài viết này nếu họ được thêm làm thành viên của bài viết)"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__deletion_date
 msgid "Deletion Date"
-msgstr ""
+msgstr "Ngày xoá"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_permission_on_desync
 msgid "Desynchronized articles must have internal permission."
-msgstr ""
+msgstr "Các bài viết huỷ đồng bộ phải có quyền nội bộ."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_desynchronized
 msgid "Desyncronized with parents"
-msgstr ""
+msgstr "Huỷ đồng bộ hóa với cha"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1221,7 +1398,7 @@ msgstr "Tên hiển thị"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Diving in"
-msgstr ""
+msgstr "Bước đầu tìm hiểu"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1243,7 +1420,7 @@ msgstr "Nhân bản"
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Embed a View"
-msgstr ""
+msgstr "Nhúng một chế độ xem"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1274,6 +1451,8 @@ msgid ""
 "Error: The given action is not an act_window. This action can not be used to"
 " create an embedded view or a view link"
 msgstr ""
+"Lỗi: Hành động đã cho không phải là act_window. Không thể sử dụng hành động "
+"này để tạo chế độ xem được nhúng hoặc liên kết chế độ xem"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1291,12 +1470,12 @@ msgstr "Yêu thích"
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_article_favorite
 msgid "Favorite Article"
-msgstr ""
+msgstr "Bài viết yêu thích"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__favorite_ids
 msgid "Favorite Articles"
-msgstr ""
+msgstr "Bài viết yêu thích"
 
 #. module: knowledge
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_favorite_action
@@ -1331,7 +1510,7 @@ msgstr "Font biểu tượng ví dụ: fa-tasks"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__full_width
 msgid "Full width"
-msgstr ""
+msgstr "Trải hết chiều rộng"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite
@@ -1355,7 +1534,7 @@ msgstr "Khách"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_has_access
 msgid "Has Access"
-msgstr ""
+msgstr "Có quyền truy cập"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__has_message
@@ -1365,27 +1544,27 @@ msgstr "Có tin nhắn"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_has_write_access
 msgid "Has Write Access"
-msgstr ""
+msgstr "Có quyền viết"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__has_item_children
 msgid "Has article item children?"
-msgstr ""
+msgstr "Có con của hạng mục bài viết?"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__has_article_children
 msgid "Has normal article children?"
-msgstr ""
+msgstr "Có bài viết con bình thường?"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__have_share_partners
 msgid "Have Share Partners"
-msgstr ""
+msgstr "Có đối tác chia sẻ"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Hello there"
-msgstr ""
+msgstr "Xin chào"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -1437,6 +1616,8 @@ msgstr "Nếu đánh dấu thì một số thông điệp có lỗi."
 msgid ""
 "If set, this article won't inherit access rules from its parents anymore."
 msgstr ""
+"Nếu cài đặt, bài viết này sẽ không kế thừa các quy tắc truy cập từ bài viết "
+"cha của nó."
 
 #. module: knowledge
 #. odoo-javascript
@@ -1449,12 +1630,12 @@ msgstr "Chỉ số"
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__inherited_permission
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__article_permission
 msgid "Inherited Permission"
-msgstr ""
+msgstr "Quyền được kế thừa"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__inherited_permission_parent_id
 msgid "Inherited Permission Parent Article"
-msgstr ""
+msgstr "Bài viết cha có quyền được kế thừa"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1475,42 +1656,42 @@ msgstr "Chèn Link"
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Insert a Kanban View"
-msgstr ""
+msgstr "Chèn chế độ xem Kanban"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Insert a Kanban view of article items"
-msgstr ""
+msgstr "Chèn chế độ xem kanban của các hạng mục bài viết"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Insert a List View"
-msgstr ""
+msgstr "Chèn chế độ xem danh sách"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Insert a List view of article items"
-msgstr ""
+msgstr "Chèn chế độ xem danh sách của các hạng mục bài viết"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/external_embedded_view_favorite_menu/insert_embedded_view.xml:0
 #, python-format
 msgid "Insert link in article"
-msgstr ""
+msgstr "Chèn liên kết vào bài viết"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/external_embedded_view_favorite_menu/insert_embedded_view.xml:0
 #, python-format
 msgid "Insert view in article"
-msgstr ""
+msgstr "Chèn chế độ xem vào bài viết"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1525,7 +1706,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__internal_permission
 #, python-format
 msgid "Internal Permission"
-msgstr ""
+msgstr "Quyền nội bộ"
 
 #. module: knowledge
 #. odoo-python
@@ -1548,7 +1729,7 @@ msgstr "Mời tham gia"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_favorite__is_article_active
 msgid "Is Article Active"
-msgstr ""
+msgstr "Là bài viết đang hoạt động"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_user_favorite
@@ -1563,7 +1744,7 @@ msgstr "Trở thành người theo dõi"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_article_item
 msgid "Is Item?"
-msgstr ""
+msgstr "Là hạng mục?"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_properties_is_empty
@@ -1575,14 +1756,14 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Item Kanban"
-msgstr ""
+msgstr "Kanban hạng mục"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Item List"
-msgstr ""
+msgstr "Danh sách hạng mục"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1607,24 +1788,24 @@ msgstr "Bài viết kiến thức"
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_cover
 msgid "Knowledge Cover"
-msgstr ""
+msgstr "Ảnh bìa kiến thức"
 
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_invite
 msgid "Knowledge Invite Wizard"
-msgstr ""
+msgstr "Công cụ mời Kiến thức"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_trash
 msgid "Last Edit Date"
-msgstr ""
+msgstr "Ngày chỉnh sửa lần cuối"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__last_edition_uid
 msgid "Last Edited by"
-msgstr ""
+msgstr "Được chỉnh sửa lần cuối bởi"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -1634,7 +1815,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__last_edition_date
 msgid "Last Edited on"
-msgstr ""
+msgstr "Chỉnh sửa lần cuối vào"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article____last_update
@@ -1670,14 +1851,14 @@ msgstr "Cập nhật lần cuối vào"
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Leave Article"
-msgstr ""
+msgstr "Rời khỏi bài viết"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg/knowledge_article_link.js:0
 #, python-format
 msgid "Link an Article"
-msgstr ""
+msgstr "Liên kết một bài viết"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1711,6 +1892,8 @@ msgid ""
 "Logging changes from %(partner_name)s without write access on article "
 "%(article_name)s due to hierarchy tree update"
 msgstr ""
+"Ghi nhật ký thay đổi từ %(partner_name)s không có quyền viết trên bài viết "
+"%(article_name)s do cập nhật cây phân cấp"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_main_attachment_id
@@ -1745,7 +1928,7 @@ msgstr "Thông tin thành viên"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__root_article_id
 msgid "Menu Article"
-msgstr ""
+msgstr "Bài viết menu"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_has_error
@@ -1762,7 +1945,7 @@ msgstr "Thông báo"
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.js:0
 #, python-format
 msgid "Missing File"
-msgstr ""
+msgstr "Thiếu tệp"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1776,14 +1959,14 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.xml:0
 #, python-format
 msgid "Move Article"
-msgstr ""
+msgstr "Chuyển bài viết"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.js:0
 #, python-format
 msgid "Move an Article"
-msgstr ""
+msgstr "Chuyển một bài viết"
 
 #. module: knowledge
 #. odoo-python
@@ -1793,6 +1976,8 @@ msgid ""
 "Move to target of %(article_name)s is ambiguous, you should specify the "
 "category."
 msgstr ""
+"Mục tiêu chuyển đến của %(article_name)s không rõ ràng, bạn cần xác định "
+"danh mục."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__my_activity_date_deadline
@@ -1821,7 +2006,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/xml/knowledge_editor.xml:0
 #, python-format
 msgid "Nest articles under this one to generate a structure"
-msgstr ""
+msgstr "Lồng các bài viết trong bài viết này để tạo ra một cấu trúc"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_calendar_event_id
@@ -1848,31 +2033,31 @@ msgstr "Kiểu hoạt động kế tiếp"
 #: code:addons/knowledge/static/src/xml/knowledge_command_palette.xml:0
 #, python-format
 msgid "No Article found."
-msgstr ""
+msgstr "Không tìm thấy bài viết nào."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "No Article found. Create \"%s\""
-msgstr ""
+msgstr "Không tìm thấy bài viết nào. Tạo \"%s\""
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "No Article in Trash"
-msgstr ""
+msgstr "Không có bài viết nào trong thùng rác"
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_favorite_action
 msgid "No Favorites yet!"
-msgstr ""
+msgstr "Không có mục yêu thích nào!"
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_member_action
 msgid "No Members yet!"
-msgstr ""
+msgstr "Chưa có thành viên nào!"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__inherited_permission__none
@@ -1880,24 +2065,24 @@ msgstr ""
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article_member__permission__none
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_invite__permission__none
 msgid "No access"
-msgstr ""
+msgstr "Không có quyền truy cập"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree_frontend
 msgid "No article found"
-msgstr ""
+msgstr "Không tìm thấy bài viết nào"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "No article found."
-msgstr ""
+msgstr "Không tìm thấy bài viết nào."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "No article yet."
-msgstr ""
+msgstr "Chưa có bài viết nào."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_needaction_counter
@@ -1922,7 +2107,7 @@ msgstr "Số lượng tin gửi đi bị lỗi"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Odoo Survival Guide"
-msgstr ""
+msgstr "Hướng dẫn sinh tồn của Odoo"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1935,7 +2120,7 @@ msgstr "Đồng ý"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Onboarding.pdf"
-msgstr ""
+msgstr "Onboarding.pdf"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1945,6 +2130,8 @@ msgid ""
 "Oops, the file %s could not be found. Please replace this file box by a new "
 "one to re-upload the file."
 msgstr ""
+"Rất tiếc, không tìm thấy tập tin %s. Vui lòng thay thế ô tệp này bằng ô tệp "
+"mới để tải lại tệp lên."
 
 #. module: knowledge
 #. odoo-javascript
@@ -1957,7 +2144,7 @@ msgstr "Mở"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__parent_id
 msgid "Parent Article"
-msgstr ""
+msgstr "Bài viết cha"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__parent_path
@@ -1974,7 +2161,7 @@ msgstr "Đối tác"
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__permission
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__permission
 msgid "Permission"
-msgstr ""
+msgstr "Quyền"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2013,14 +2200,14 @@ msgstr "Refresh"
 #: code:addons/knowledge/static/src/components/knowledge_emoji_picker_remove_action_view/knowledge_emoji_picker_remove_action_view.xml:0
 #, python-format
 msgid "Remove Icon"
-msgstr ""
+msgstr "Xoá biểu tượng"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Remove Member"
-msgstr ""
+msgstr "Gỡ thành viên"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2049,24 +2236,24 @@ msgstr "Khôi phục"
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Restore Access"
-msgstr ""
+msgstr "Khôi phục quyền truy cập"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Restrict Access"
-msgstr ""
+msgstr "Hạn chế quyền truy cập"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_desync_on_root
 msgid "Root articles cannot be desynchronized."
-msgstr ""
+msgstr "Không thể huỷ đồng bộ bài viết gốc."
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_permission_on_root
 msgid "Root articles must have internal permission."
-msgstr ""
+msgstr "Bài viết gốc phải có quyền nội bộ."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_has_sms_error
@@ -2081,19 +2268,19 @@ msgstr "Tìm kiếm"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_favorite_view_search
 msgid "Search Favorites"
-msgstr ""
+msgstr "Tìm kiếm mục yêu thích"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/xml/chatter_topbar.xml:0
 #, python-format
 msgid "Search Knowledge Articles"
-msgstr ""
+msgstr "Tìm kiếm bài viết kiến thức"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_member_view_search
 msgid "Search Members"
-msgstr ""
+msgstr "Tìm kiếm thành viên"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2106,14 +2293,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
 msgid "Search an article..."
-msgstr ""
+msgstr "Tìm kiếm một bài viết..."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "Search for an article..."
-msgstr ""
+msgstr "Tìm kiếm một bài viết..."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__category
@@ -2125,14 +2312,14 @@ msgstr "Mục"
 #: code:addons/knowledge/static/src/components/cover_selector/knowledge_cover_dialog.js:0
 #, python-format
 msgid "Select a cover"
-msgstr ""
+msgstr "Chọn một ảnh bìa"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/external_embedded_view_insertion/views_renderers_patches.js:0
 #, python-format
 msgid "Select an article"
-msgstr ""
+msgstr "Chọn một bài viết"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2160,7 +2347,7 @@ msgstr "Đã chia sẻ"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree_frontend
 msgid "Shared with you"
-msgstr ""
+msgstr "Được chia sẻ với bạn"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2181,7 +2368,7 @@ msgstr ""
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Some articles have been sent to Trash"
-msgstr ""
+msgstr "Một số bài viết đã được đưa vào thùng rác"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2208,7 +2395,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Table Of Content"
-msgstr ""
+msgstr "Mục lục"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2231,14 +2418,14 @@ msgstr ""
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "The Article you are trying to access has been deleted"
-msgstr ""
+msgstr "Bài viết bạn đang cố truy cập đã bị xóa"
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "The article '%s' needs at least one member with 'Write' access."
-msgstr ""
+msgstr "Bài viết '%s' cần ít nhất một thành viên có quyền 'Viết'."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
@@ -2246,6 +2433,7 @@ msgid ""
 "The article you are trying the read has either been removed or you do not "
 "have access to it."
 msgstr ""
+"Bài viết bạn đang cố đọc đã bị xóa hoặc bạn không có quyền truy cập vào nó."
 
 #. module: knowledge
 #. odoo-python
@@ -2264,6 +2452,8 @@ msgid ""
 "The operation was interrupted because the page or the record changed. Please"
 " try again later."
 msgstr ""
+"Hoạt động bị gián đoạn do trang hoặc tập dữ liệu đã thay đổi. Vui lòng thử "
+"lại sau."
 
 #. module: knowledge
 #. odoo-python
@@ -2271,26 +2461,28 @@ msgstr ""
 #: code:addons/knowledge/controllers/main.py:0
 #, python-format
 msgid "The selected member does not exists or has been already deleted."
-msgstr ""
+msgstr "Thành viên được chọn không tồn tại hoặc đã bị xóa."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__sequence
 msgid ""
 "The sequence is computed only among the articles that have the same parent."
-msgstr ""
+msgstr "Trình tự chỉ được tính trong số các bài viết có cùng cha."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__root_article_id
 msgid ""
 "The subject is the title of the highest parent in the article hierarchy."
 msgstr ""
+"Chủ đề là tiêu đề của bài viết cha cao nhất trong hệ thống phân cấp bài "
+"viết."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0
 #, python-format
 msgid "The view does not exist or you are not allowed to access to it."
-msgstr ""
+msgstr "Chế độ xem không tồn tại hoặc bạn không được phép truy cập vào nó."
 
 #. module: knowledge
 #. odoo-python
@@ -2300,30 +2492,32 @@ msgid ""
 "This Article cannot be unfolded. Either you lost access to it or it has been"
 " deleted."
 msgstr ""
+"Không thể hiển thị bài viết này. Hoặc bạn đã mất quyền truy cập bài viết "
+"hoặc bài viết đã bị xóa."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "This Article is in Trash and will be deleted on the"
-msgstr ""
+msgstr "Bài viết này đang nằm trong thùng rác và sẽ bị xóa vào ngày"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "This article is archived."
-msgstr ""
+msgstr "Bài viết này đã được lưu trữ."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/article_behavior/article_behavior.js:0
 #, python-format
 msgid "This article was deleted or you don't have the rights to access it."
-msgstr ""
+msgstr "Bài viết này đã bị xóa hoặc bạn không có quyền truy cập bài viết."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/xml/knowledge_frontend.xml:0
 #, python-format
 msgid "This view is only available for internal users"
-msgstr ""
+msgstr "Chế độ xem này chỉ khả dụng với người dùng nội bộ"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__name
@@ -2334,23 +2528,25 @@ msgstr "Tiêu đề"
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "To be sure to stay updated, follow us on"
 msgstr ""
+"Để chắc chắn bạn luôn cập nhật thông tin kịp thời, hãy theo dõi chúng tôi "
+"trên"
 
 #. module: knowledge
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_action_trashed
 msgid "Trash"
-msgstr ""
+msgstr "Thùng rác"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__to_delete
 #: model:ir.ui.menu,name:knowledge.knowledge_article_menu_trashed
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
 msgid "Trashed"
-msgstr ""
+msgstr "Đã chuyển vào thùng rác"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_trash
 msgid "Trashed articles must be archived."
-msgstr ""
+msgstr "Các bài viết trong thùng rác phải được lưu trữ."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
@@ -2362,7 +2558,7 @@ msgstr ""
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Trying to remove wrong member."
-msgstr ""
+msgstr "Đang cố gắng gỡ thành viên không phù hợp."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__activity_exception_decoration
@@ -2424,6 +2620,8 @@ msgid ""
 "Used to categozie articles in UI, depending on their main permission "
 "definitions."
 msgstr ""
+"Được sử dụng để phân loại các bài viết trong giao diện người dùng, tùy thuộc"
+" vào định nghĩa quyền chính của chúng."
 
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_res_users
@@ -2435,24 +2633,24 @@ msgstr "Người dùng"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_favorite_sequence
 msgid "User Favorite Sequence"
-msgstr ""
+msgstr "Trình tự yêu thích của người dùng"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "User Permission"
-msgstr ""
+msgstr "Quyền của người dùng"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_favorite_unique_article_user
 msgid "User already has this article in favorites."
-msgstr ""
+msgstr "Người dùng đã có bài viết này trong danh sách yêu thích."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_permission
 msgid "User permission"
-msgstr ""
+msgstr "Quyền của người dùng"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__website_message_ids
@@ -2469,14 +2667,14 @@ msgstr "Lịch sử thông tin liên lạc website"
 #: code:addons/knowledge/models/res_users.py:0
 #, python-format
 msgid "Welcome %s"
-msgstr ""
+msgstr "Chào mừng %s"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.xml:0
 #, python-format
 msgid "What do you want to manage?"
-msgstr ""
+msgstr "Bạn muốn quản lý thứ gì?"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__is_locked
@@ -2484,6 +2682,8 @@ msgid ""
 "When locked, users cannot write on the body or change the title, even if "
 "they have write access on the article."
 msgstr ""
+"Khi bị khóa, người dùng không thể viết vào phần nội dung hoặc thay đổi tiêu "
+"đề, ngay cả khi họ có quyền viết đối với bài viết đó."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__to_delete
@@ -2493,6 +2693,10 @@ msgid ""
 "                parameter can be used to modify the number of days. \n"
 "                (default is 30)"
 msgstr ""
+"Khi bị đưa vào thùng rác, các bài viết sẽ được gắn cờ để xóa\n"
+"                sau vài ngày kể từ lần chỉnh sửa cuối cùng. Bạn có thể sử dụng tham số\n"
+"                cấu hình knowledge_article_trash_limit_days để sửa đổi số ngày.\n"
+"                (mặc định là 30)"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__full_width
@@ -2500,6 +2704,8 @@ msgid ""
 "When set, the article body will take the full width available on the article"
 " page. Otherwise, the body will have large horizontal margins."
 msgstr ""
+"Khi cài đặt, nội dung bài viết sẽ trải hết chiều rộng có sẵn trên trang bài "
+"viết. Nếu không, phần nội dung sẽ có lề ngang lớn."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -2519,7 +2725,7 @@ msgstr "Không gian làm việc"
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_member_unique_article_partner
 msgid "You already added this partner on this article."
-msgstr ""
+msgstr "Bạn đã thêm đối tác này vào bài viết."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
@@ -2531,7 +2737,7 @@ msgstr ""
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "You are not allowed to make '%(article_name)s' private."
-msgstr ""
+msgstr "Bạn không được phép chuyển '%(article_name)s' thành riêng tư."
 
 #. module: knowledge
 #. odoo-python
@@ -2540,20 +2746,21 @@ msgstr ""
 msgid ""
 "You are not allowed to move '%(article_name)s' under '%(parent_name)s'."
 msgstr ""
+"Bạn không được phép chuyển '%(article_name)s' vào dưới '%(parent_name)s'."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "You can't leave an article for which you are the last writer"
-msgstr ""
+msgstr "Bạn không thể rời khỏi bài viết mà bạn là người viết cuối cùng"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "You can't remove the last writer of the article"
-msgstr ""
+msgstr "Bạn không thể gỡ người viết cuối cùng của bài viết"
 
 #. module: knowledge
 #. odoo-python
@@ -2561,27 +2768,29 @@ msgstr ""
 #, python-format
 msgid "You cannot add or remove this article to your favorites"
 msgstr ""
+"Bạn không thể thêm hoặc xóa bài viết này vào/khỏi danh sách yêu thích của "
+"bạn"
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/controllers/main.py:0
 #, python-format
 msgid "You cannot change the internal permission of this article."
-msgstr ""
+msgstr "Bạn không thể thay đổi quyền nội bộ của bài viết này."
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/controllers/main.py:0
 #, python-format
 msgid "You cannot change the permission of this member."
-msgstr ""
+msgstr "Bạn không thể thay đổi quyền của thành viên này."
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/models/knowledge_cover.py:0
 #, python-format
 msgid "You cannot create a new Knowledge Cover from here."
-msgstr ""
+msgstr "Bạn không thể tạo Ảnh bìa Kiến thức mới từ đây."
 
 #. module: knowledge
 #. odoo-python
@@ -2589,6 +2798,7 @@ msgstr ""
 #, python-format
 msgid "You cannot create an article under articles on which you cannot write"
 msgstr ""
+"Bạn không thể tạo một bài viết thuộc về những bài viết mà bạn không thể viết"
 
 #. module: knowledge
 #. odoo-python
@@ -2597,13 +2807,15 @@ msgstr ""
 msgid ""
 "You cannot move an article under %(parent_name)s as you cannot write on it"
 msgstr ""
+"Bạn không thể chuyển một bài viết vào dưới %(parent_name)s bạn không thể "
+"viết lên bài viết đó"
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "You have to be editor on %(article_name)s to add members."
-msgstr ""
+msgstr "Bạn phải là biên tập viên trên %(article_name)s để thêm thành viên."
 
 #. module: knowledge
 #. odoo-python
@@ -2612,6 +2824,8 @@ msgstr ""
 msgid ""
 "You have to be editor on %(article_name)s to change its internal permission."
 msgstr ""
+"Bạn phải là biên tập viên trên %(article_name)s để thay đổi quyền nội bộ của"
+" bài viết đó."
 
 #. module: knowledge
 #. odoo-python
@@ -2620,6 +2834,8 @@ msgstr ""
 msgid ""
 "You have to be editor on %(article_name)s to modify members permissions."
 msgstr ""
+"Bạn phải là biên tập viên trên %(article_name)s để chỉnh sửa quyền của thành"
+" viên."
 
 #. module: knowledge
 #. odoo-python
@@ -2629,6 +2845,8 @@ msgid ""
 "You have to be editor on %(article_name)s to remove or exclude member "
 "%(member_name)s."
 msgstr ""
+"Bạn phải là biên tập viên trên %(article_name)s để gỡ hoặc loại thành viên "
+"%(member_name)s."
 
 #. module: knowledge
 #. odoo-python
@@ -2636,52 +2854,53 @@ msgstr ""
 #, python-format
 msgid "You have to be editor on %(article_name)s to restore it."
 msgstr ""
+"Bạn phải là biên tập viên trên %(article_name)s để khôi phục bài viết đó."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "and the following child article(s) have"
-msgstr ""
+msgstr "và (các) bài viết con sau đây có"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "articles"
-msgstr ""
+msgstr "bài viết"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "been sent to Trash.<br/><br/>"
-msgstr ""
+msgstr "đã được đưa vào thùng rác.<br/><br/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "cover"
-msgstr "bìa sách"
+msgstr "ảnh bìa"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "e.g. Buildings"
-msgstr ""
+msgstr "VD: Toà nhà"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "e.g. Todos"
-msgstr ""
+msgstr "VD: Việc cần làm"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "has"
-msgstr ""
+msgstr "has"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "have"
-msgstr ""
+msgstr "have"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite
@@ -2696,7 +2915,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "loader"
-msgstr ""
+msgstr "bộ tải"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__none
@@ -2711,17 +2930,17 @@ msgstr "hoặc"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "pdf"
-msgstr ""
+msgstr "pdf"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__read
 msgid "read"
-msgstr ""
+msgstr "đọc"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "to unleash the power of Knowledge !"
-msgstr ""
+msgstr "giải phóng tiềm lực Kiến thức!"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__write

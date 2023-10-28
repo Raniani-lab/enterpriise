@@ -305,7 +305,7 @@ msgstr "Перенести в электронную таблицу"
 #: code:addons/spreadsheet_edition/static/src/assets/list_view/insert_list_spreadsheet_menu.xml:0
 #, python-format
 msgid "Insert list in spreadsheet"
-msgstr ""
+msgstr "Вставить список в таблицу"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -357,28 +357,28 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/ir_ui_menu/index.js:0
 #, python-format
 msgid "Link an Odoo menu"
-msgstr ""
+msgstr "Вставить ссылку на меню"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/assets/insert_action_link_menu/insert_action_link_menu.xml:0
 #, python-format
 msgid "Link menu in spreadsheet"
-msgstr ""
+msgstr "Вставить ссылку на меню в таблицу"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/chart/odoo_menu/chart_panel.xml:0
 #, python-format
 msgid "Link to Odoo menu"
-msgstr ""
+msgstr "Привязать к меню"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/list/side_panels/listing_details_side_panel.xml:0
 #, python-format
 msgid "List Name"
-msgstr ""
+msgstr "Название списка"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -702,7 +702,7 @@ msgstr "Выберите таблицу, чтобы вставить %s."
 #: code:addons/spreadsheet_edition/static/src/assets/components/ir_menu_selector/ir_menu_selector.js:0
 #, python-format
 msgid "Select an Odoo menu to link in your spreadsheet"
-msgstr ""
+msgstr "Выбрать меню, чтобы вставить ссылку в таблицу"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -842,7 +842,7 @@ msgstr "ссылки"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "list"
-msgstr ""
+msgstr "список"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

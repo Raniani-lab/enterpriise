@@ -10,6 +10,7 @@
 # F Hariri <fhari1234@gmail.com>, 2023
 # Hanna Kheradroosta, 2023
 # Martin Trigaux, 2023
+# Hamid Ahmadimoghaddam, 2023
 # 
 msgid ""
 msgstr ""
@@ -17,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Hamid Ahmadimoghaddam, 2023\n"
 "Language-Team: Persian (https://app.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -148,12 +149,12 @@ msgstr "موضوع مصوبه"
 #: model:ir.model.fields,field_description:approvals.field_approval_request__approval_type
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "Approval Type"
-msgstr "نوع تایید"
+msgstr "نوع مصوبه"
 
 #. module: approvals
 #: model:ir.model,name:approvals.model_approval_category_approver
 msgid "Approval Type Approver"
-msgstr ""
+msgstr "تصویب کننده نوع مصوبه"
 
 #. module: approvals
 #: model:ir.ui.menu,name:approvals.approvals_menu_root
@@ -212,12 +213,12 @@ msgstr "تصویب‌کننده"
 #, python-format
 msgid ""
 "Approver Sequence can only be activated with at least 1 minimum approver."
-msgstr ""
+msgstr "توالی تصویب کنندگان فقط با حداقل 1 تصویب کننده قابل فعال است."
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__user_ids
 msgid "Approver Users"
-msgstr ""
+msgstr "کاربران تصویب کننده"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
@@ -235,7 +236,7 @@ msgstr "تایید ‌کنندگان"
 #: model:ir.model.fields,field_description:approvals.field_approval_category__approver_sequence
 #: model:ir.model.fields,field_description:approvals.field_approval_request__approver_sequence
 msgid "Approvers Sequence?"
-msgstr ""
+msgstr "توالی تصویب کنندگان"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
@@ -311,7 +312,7 @@ msgstr "دسته بندی"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__category_approver
 msgid "Category Approver"
-msgstr ""
+msgstr "تصویب کننده دسته بندی"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__sequence_code
@@ -615,6 +616,7 @@ msgstr ""
 msgid ""
 "If checked, the approvers have to approve in sequence (one after the other)."
 msgstr ""
+"در صورت انتخاب، تصویب کنندگان میبایست به ترتیب (یکی پس از دیگری) تصویب کنند."
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__image
@@ -862,7 +864,7 @@ msgstr "تعداد درخواست‌ها برای معتبرسازی"
 #. module: approvals
 #: model:res.groups,name:approvals.group_approval_user
 msgid "Officer : Approve all requests"
-msgstr ""
+msgstr "مسئول: تصویب همه درخواست‌ها"
 
 #. module: approvals
 #: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_amount__optional
@@ -1052,6 +1054,8 @@ msgstr "ارسال ‌شده"
 #: model:res.groups,comment:approvals.group_approval_user
 msgid "The user will be able to access all requests and approve/refuse them."
 msgstr ""
+"کاربر به تمامی درخواست‌ها دسترسی خواهد داشت و میتواند آنها را تصویب یا رد "
+"نماید."
 
 #. module: approvals
 #: model:res.groups,comment:approvals.group_approval_manager
@@ -1153,7 +1157,7 @@ msgstr "خارج‌شدن"
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You cannot approve before the previous approver."
-msgstr ""
+msgstr "امکان تصویب پیش از تصویب کننده قبلی وجود ندارد."
 
 #. module: approvals
 #. odoo-python
@@ -1161,7 +1165,7 @@ msgstr ""
 #, python-format
 msgid ""
 "You cannot assign the same approver multiple times on the same request."
-msgstr ""
+msgstr "امکان تعیین مجدد تصویب کننده یکسان بر روی یک درخواست واحد وجود ندارد."
 
 #. module: approvals
 #. odoo-python
@@ -1171,6 +1175,7 @@ msgid ""
 "You cannot unlink an attachment which is linked to a validated, refused or "
 "cancelled approval request."
 msgstr ""
+"امکان حذف پیوست متصل به یک درخواست مصوبه تأیید، رد و یا لغو شده وجود ندارد."
 
 #. module: approvals
 #. odoo-python
@@ -1196,7 +1201,7 @@ msgstr "حداقل مصوبات شما از مجموع تایید کنندگان
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "e.g. Brussels"
-msgstr "به عنوان مثال، بروکسل"
+msgstr "به عنوان مثال، تهران"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form

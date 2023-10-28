@@ -69,7 +69,7 @@ msgstr "Chia sẻ lên trang web"
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.website_knowledge_article_tree_frontend
 msgid "Shared with you"
-msgstr ""
+msgstr "Được chia sẻ với bạn"
 
 #. module: website_knowledge
 #: model:ir.model.fields,help:website_knowledge.field_knowledge_article__website_url

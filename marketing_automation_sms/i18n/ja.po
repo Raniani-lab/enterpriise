@@ -24,7 +24,7 @@ msgstr ""
 #. module: marketing_automation_sms
 #: model:ir.model.fields,field_description:marketing_automation_sms.field_marketing_campaign__mailing_sms_count
 msgid "# SMS Mailings"
-msgstr ""
+msgstr "SMSメール数"
 
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form
@@ -73,7 +73,7 @@ msgstr "クリック済"
 #: code:addons/marketing_automation_sms/models/marketing_activity.py:0
 #, python-format
 msgid "Exception in SMS Marketing: %s"
-msgstr ""
+msgstr "SMSマーケティングの例外: %s"
 
 #. module: marketing_automation_sms
 #: model:ir.model,name:marketing_automation_sms.model_mailing_trace
@@ -94,7 +94,7 @@ msgstr "マーケティング活動"
 #. module: marketing_automation_sms
 #: model:ir.actions.act_window,name:marketing_automation_sms.mail_mass_mailing_action_marketing_automation_sms
 msgid "Marketing Automation SMS"
-msgstr ""
+msgstr "マーケティング自動化SMS"
 
 #. module: marketing_automation_sms
 #: model:ir.model,name:marketing_automation_sms.model_marketing_campaign
@@ -115,13 +115,13 @@ msgstr "メール一括配信"
 #: code:addons/marketing_automation_sms/models/marketing_trace.py:0
 #, python-format
 msgid "Parent activity SMS bounced"
-msgstr ""
+msgstr "親活動SMSバウンス"
 
 #. module: marketing_automation_sms
 #: code:addons/marketing_automation_sms/models/marketing_trace.py:0
 #, python-format
 msgid "Parent activity SMS clicked"
-msgstr ""
+msgstr "親活動SMSクリック"
 
 #. module: marketing_automation_sms
 #: model:ir.model.fields.selection,name:marketing_automation_sms.selection__marketing_activity__activity_type__sms
@@ -141,7 +141,7 @@ msgstr "SMS内容"
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.mailing_mailing_view_form_marketing_activity
 msgid "SMS Options"
-msgstr ""
+msgstr "SMSオプション"
 
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form
@@ -157,14 +157,14 @@ msgstr "SMSテンプレート"
 #: code:addons/marketing_automation_sms/models/marketing_activity.py:0
 #, python-format
 msgid "SMS canceled"
-msgstr ""
+msgstr "SMSが取消されました"
 
 #. module: marketing_automation_sms
 #: code:addons/marketing_automation_sms/models/mailing_trace.py:0
 #: code:addons/marketing_automation_sms/models/marketing_activity.py:0
 #, python-format
 msgid "SMS failed"
-msgstr ""
+msgstr "SMS失敗"
 
 #. module: marketing_automation_sms
 #: model:ir.model.fields.selection,name:marketing_automation_sms.selection__marketing_activity__trigger_type__sms_bounce

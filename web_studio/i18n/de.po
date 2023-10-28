@@ -166,13 +166,12 @@ msgstr "Eine Regel kann nur einmal pro Datensatz genehmigt/abgelehnt werden."
 #: model:ir.model.constraint,message:web_studio.constraint_studio_approval_rule_method_or_action_together
 msgid "A rule must apply to an action or a method (but not both)."
 msgstr ""
-"Eine Regel muss für eine Handlung oder eine Methode gelten (nicht für "
-"beides)."
+"Eine Regel muss für eine Aktion oder eine Methode gelten (nicht für beides)."
 
 #. module: web_studio
 #: model:ir.model.constraint,message:web_studio.constraint_studio_approval_rule_method_or_action_not_null
 msgid "A rule must apply to an action or a method."
-msgstr "Eine Regel muss für eine Handlung oder eine Methode gelten."
+msgstr "Eine Regel muss für eine Aktion oder eine Methode gelten."
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_ir_model__abstract

@@ -788,7 +788,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post__link_url
 msgid "Link URL"
-msgstr ""
+msgstr "連結網址"
 
 #. module: social
 #. odoo-javascript

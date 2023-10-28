@@ -52,7 +52,7 @@ msgstr "已取消"
 #. module: documents_hr_recruitment
 #: model_terms:ir.ui.view,arch_db:documents_hr_recruitment.res_config_settings_view_form
 msgid "Centralize files attached to applications and job positions"
-msgstr ""
+msgstr "集中附加到應用程式和工作位置的文件"
 
 #. module: documents_hr_recruitment
 #: model:ir.model,name:documents_hr_recruitment.model_res_company
@@ -72,7 +72,7 @@ msgstr "建立"
 #. module: documents_hr_recruitment
 #: model:documents.workflow.rule,name:documents_hr_recruitment.documents_applicant_rule
 msgid "Create an Applicant"
-msgstr ""
+msgstr "建立申請人"
 
 #. module: documents_hr_recruitment
 #: model_terms:ir.ui.view,arch_db:documents_hr_recruitment.res_config_settings_view_form
@@ -89,7 +89,7 @@ msgstr "文件"
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__documents_recruitment_settings
 msgid "Documents Recruitment Settings"
-msgstr ""
+msgstr "文件招聘設置"
 
 #. module: documents_hr_recruitment
 #: model:documents.tag,name:documents_hr_recruitment.documents_recruitment_new_tag
@@ -110,27 +110,27 @@ msgstr "招聘"
 #. module: documents_hr_recruitment
 #: model:documents.tag,name:documents_hr_recruitment.documents_recruitment_plans_tag
 msgid "Recruitment Reserve"
-msgstr ""
+msgstr "招聘保留"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__recruitment_tag_ids
 msgid "Recruitment Tag"
-msgstr ""
+msgstr "招聘標籤"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_config_settings__recruitment_tag_ids
 msgid "Recruitment Tags"
-msgstr ""
+msgstr "招聘標籤"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__recruitment_folder_id
 msgid "Recruitment Workspace"
-msgstr ""
+msgstr "招聘工作區"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_config_settings__recruitment_folder_id
 msgid "Recruitment default workspace"
-msgstr ""
+msgstr "招聘預設工作區"
 
 #. module: documents_hr_recruitment
 #: model:documents.facet,name:documents_hr_recruitment.documents_recruitment_documents_facet

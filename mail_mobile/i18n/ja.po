@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Ryoko Tsuda <ryoko@quartile.co>, 2022
+# Junko Augias, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Ryoko Tsuda <ryoko@quartile.co>, 2022\n"
+"Last-Translator: Junko Augias, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,6 +29,7 @@ msgid ""
 " emails. The links will always open in a normal browser, even for users who "
 "have the Android/iOS app installed."
 msgstr ""
+"動的なモバイルアプリ検出リンクがインストールに問題を引き起こす場合は、これをチェックして下さい。これにより、送信メール内のリンクの自動ラッピングが停止されます。Android/iOSアプリをインストールしているユーザでも、リンクは常に通常のブラウザで開きます。"
 
 #. module: mail_mobile
 #: model:ir.model,name:mail_mobile.model_res_config_settings
@@ -75,7 +77,7 @@ msgstr "携帯電話"
 #: model:ir.model.fields,field_description:mail_mobile.field_res_partner__ocn_token
 #: model:ir.model.fields,field_description:mail_mobile.field_res_users__ocn_token
 msgid "OCN Token"
-msgstr ""
+msgstr "OCNトークン"
 
 #. module: mail_mobile
 #: model:ir.model.fields,field_description:mail_mobile.field_res_config_settings__enable_ocn
@@ -91,4 +93,4 @@ msgstr "アンドロイド及びiOSアプリで通知を受け取る"
 #: model:ir.model.fields,help:mail_mobile.field_res_partner__ocn_token
 #: model:ir.model.fields,help:mail_mobile.field_res_users__ocn_token
 msgid "Used for sending notification to registered devices"
-msgstr ""
+msgstr "登録済デバイスに通知を送信するのに使用されます"

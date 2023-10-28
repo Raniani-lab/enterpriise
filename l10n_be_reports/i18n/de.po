@@ -42,7 +42,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
 msgid "0.00"
-msgstr ""
+msgstr "0,00"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -50,6 +50,8 @@ msgid ""
 "0.00\n"
 "                                                <br/><br/>"
 msgstr ""
+"0,00\n"
+"                                                <br/><br/>"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -289,57 +291,57 @@ msgstr "28 - Immobilisations financières"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.10"
-msgstr ""
+msgstr "281.10"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.11"
-msgstr ""
+msgstr "281.11"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.12"
-msgstr ""
+msgstr "281.12"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.13"
-msgstr ""
+msgstr "281.13"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.14"
-msgstr ""
+msgstr "281.14"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.15"
-msgstr ""
+msgstr "281.15"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.16"
-msgstr ""
+msgstr "281.16"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.17"
-msgstr ""
+msgstr "281.17"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.18"
-msgstr ""
+msgstr "281.18"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.20"
-msgstr ""
+msgstr "281.20"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.30"
-msgstr ""
+msgstr "281.30"
 
 #. module: l10n_be_reports
 #: model:res.partner.category,name:l10n_be_reports.res_partner_tag_281_50
@@ -446,7 +448,7 @@ msgstr "Verzeichnis 325 Assistent"
 #. module: l10n_be_reports
 #: model:ir.actions.report,name:l10n_be_reports.action_report_325_form_pdf
 msgid "325 PDF"
-msgstr ""
+msgstr "325 PDF"
 
 #. module: l10n_be_reports
 #: model:ir.actions.act_window,name:l10n_be_reports.action_open_325_tree_view
@@ -560,7 +562,7 @@ msgstr "49 - Comptes de régularisation et d'attente"
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_regularisation0
 msgid "490/1/6 - Comptes de régularisation"
-msgstr ""
+msgstr "490/1/6 - Comptes de régularisation"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_regularisation1
@@ -631,6 +633,8 @@ msgid ""
 "635/8 - Provisions pour risques et charges: dotations (utilisations et "
 "reprises)"
 msgstr ""
+"635/8 - Provisions pour risques et charges: dotations (utilisations et "
+"reprises)"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_autres_charges0
@@ -1018,7 +1022,7 @@ msgstr "Saldo"
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_ec_sales_report_handler
 msgid "Belgian EC Sales Report Custom Handler"
-msgstr ""
+msgstr "Belgischer EG-Verkaufslistenbericht Benutzerdefinierter Handler"
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_reports_periodic_vat_xml_export
@@ -1028,7 +1032,7 @@ msgstr "Belgischer Assistent für den Export periodischer MwSt.-Berichte"
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_tax_report_handler
 msgid "Belgian Tax Report Custom Handler"
-msgstr ""
+msgstr "Belgischer Steuerbericht Benutzerdefinierter Handler"
 
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.account_financial_report_be_balancesheet0
@@ -1314,7 +1318,7 @@ msgstr "Niederländisch"
 #: code:addons/l10n_be_reports/models/account_sales_report.py:0
 #, python-format
 msgid "EC Sales List Audit"
-msgstr ""
+msgstr "Prüfung der EG-Verkaufsliste"
 
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.belgian_ec_sales_report
@@ -1774,7 +1778,7 @@ msgstr "Nr. 3"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
 msgid "NÉANT"
-msgstr ""
+msgstr "NÉANT"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_view_form
@@ -2049,7 +2053,7 @@ msgstr "TOTAL DU PASSIF"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "TOTAUX"
-msgstr ""
+msgstr "TOTAUX"
 
 #. module: l10n_be_reports
 #: model:account.report.column,name:l10n_be_reports.account_financial_report_ec_sales_tax
@@ -2066,7 +2070,7 @@ msgstr "Technisches Feld zum Speichern aller Formulardateien."
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__is_test
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325_wizard__is_test
 msgid "Test Form"
-msgstr ""
+msgstr "Testformular"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325_wizard__sender_id

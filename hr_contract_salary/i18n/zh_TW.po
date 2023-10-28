@@ -1058,7 +1058,7 @@ msgstr ""
 msgid ""
 "No signature template defined on the contract. Please contact the HR "
 "responsible."
-msgstr ""
+msgstr "合約上沒有定義簽名範本。請聯絡人力資源負責人。"
 
 #. module: hr_contract_salary
 #. odoo-javascript

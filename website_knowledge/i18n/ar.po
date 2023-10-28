@@ -29,7 +29,7 @@ msgstr "<i class=\"fa fa-globe fa-2x\" title=\"المشاركة على الوي�
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form
 msgid "Anyone can view"
-msgstr "يمكن لأي شخص المشاهدة"
+msgstr "يمكن لأي شخص عرضه "
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form

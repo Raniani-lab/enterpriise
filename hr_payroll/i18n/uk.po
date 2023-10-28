@@ -1635,7 +1635,7 @@ msgstr "Створені розрахункові листки"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "Give insurance card to new registered employees"
-msgstr ""
+msgstr "Видайте картку страхування новим зареєстрованим працівникам"
 
 #. module: hr_payroll
 #. odoo-python

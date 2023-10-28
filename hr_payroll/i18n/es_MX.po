@@ -1633,6 +1633,7 @@ msgstr "Recibos de nómina generados"
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "Give insurance card to new registered employees"
 msgstr ""
+"Proporcionar tarjeta de seguro médico a los nuevos empleados registrados"
 
 #. module: hr_payroll
 #. odoo-python

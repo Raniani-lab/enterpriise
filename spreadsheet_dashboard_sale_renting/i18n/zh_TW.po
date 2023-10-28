@@ -49,7 +49,7 @@ msgstr "客戶"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Daily Rentals"
-msgstr ""
+msgstr "每日租賃"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -94,7 +94,7 @@ msgstr "會計期間"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Picked-up Qty"
-msgstr ""
+msgstr "已取貨數量"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -132,28 +132,28 @@ msgstr "報價單"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Customer"
-msgstr ""
+msgstr "按客戶劃分的租賃分析"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Product"
-msgstr ""
+msgstr "按產品劃分的租賃分析"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Product Category"
-msgstr ""
+msgstr "按產品類別劃分的租賃分析"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Salesman"
-msgstr ""
+msgstr "按銷售人員劃分的租賃分析"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -167,7 +167,7 @@ msgstr "租賃安排"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Returned Qty"
-msgstr ""
+msgstr "已交還數量"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -222,14 +222,14 @@ msgstr "主要銷售人員"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "rental stats - current"
-msgstr ""
+msgstr "租賃狀態：目前"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "rental stats - previous"
-msgstr ""
+msgstr "租賃狀態：之前"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript

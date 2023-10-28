@@ -466,7 +466,7 @@ msgstr "Tidak diketahui"
 #. module: social_youtube
 #: model:ir.model.fields.selection,name:social_youtube.selection__social_post__youtube_video_privacy__unlisted
 msgid "Unlisted"
-msgstr ""
+msgstr "Unlisted"
 
 #. module: social_youtube
 #. odoo-javascript
@@ -580,7 +580,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:social_youtube.selection__social_media__media_type__youtube
 #: model:social.media,name:social_youtube.social_media_youtube
 msgid "YouTube"
-msgstr ""
+msgstr "YouTube"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_access_token
@@ -686,7 +686,7 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_video
 msgid "YouTube Video"
-msgstr ""
+msgstr "Video YouTube"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_description

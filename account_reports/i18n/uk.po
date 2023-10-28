@@ -3144,7 +3144,7 @@ msgstr "Баланс бухгалтерської книги в Odoo датов�
 msgid ""
 "The company's chart of account does not match the report's chart of "
 "accounts."
-msgstr ""
+msgstr "План рахунків компанії не відповідає плану рахунків звіту."
 
 #. module: account_reports
 #. odoo-python

@@ -275,7 +275,7 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/controllers/main.py:0
 #, python-format
 msgid "Missing or invalid IBAN."
-msgstr ""
+msgstr "欠番または無効なIBAN"
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -332,7 +332,7 @@ msgstr "SMSを再送"
 #: code:addons/payment_sepa_direct_debit/models/payment_provider.py:0
 #, python-format
 msgid "Restricted to countries in the SEPA zone. Forbidden countries: %s"
-msgstr ""
+msgstr "SEPAゾーンの国に限られています。禁止国: %s"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model,name:payment_sepa_direct_debit.model_sdd_mandate
@@ -400,12 +400,12 @@ msgstr "SMS配信"
 #: model:mail.template,description:payment_sepa_direct_debit.mail_template_sepa_notify_validation
 msgid ""
 "Send the SEPA mandate in attachement, to partners who signed a new mandate"
-msgstr ""
+msgstr "新しい委任状に署名した取引先に、添付ファイルでSEPA委任状を送付して下さい。"
 
 #. module: payment_sepa_direct_debit
 #: model:mail.template,description:payment_sepa_direct_debit.mail_template_sepa_notify_debit
 msgid "Sent to the customer to indicate their account will be charged"
-msgstr ""
+msgstr "口座から引落されることを伝えるために顧客に送信。"
 
 #. module: payment_sepa_direct_debit
 #. odoo-javascript
@@ -441,7 +441,7 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/models/payment_provider.py:0
 #, python-format
 msgid "The bank account of the journal is not a valid IBAN."
-msgstr ""
+msgstr "仕訳帳の銀行口座は有効なIBANではありません。"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_sdd_mandate__signed_on
@@ -453,14 +453,14 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/models/payment_transaction.py:0
 #, python-format
 msgid "The mandate is invalid."
-msgstr ""
+msgstr "委任状が無効です"
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
 #: code:addons/payment_sepa_direct_debit/models/payment_provider.py:0
 #, python-format
 msgid "The mandate owner and customer do not match."
-msgstr ""
+msgstr "委任の所有者と顧客が一致しません。"
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -525,7 +525,7 @@ msgstr "この決済プロバイダーのテクニカルコード。"
 #: code:addons/payment_sepa_direct_debit/models/payment_transaction.py:0
 #, python-format
 msgid "The token is not linked to a mandate."
-msgstr ""
+msgstr "トークンは委任状にリンクしていません。"
 
 #. module: payment_sepa_direct_debit
 #. odoo-python

@@ -394,8 +394,8 @@ msgstr "Retweets"
 #, python-format
 msgid "Replies from Tweets older than 7 days must be accessed on Twitter.com"
 msgstr ""
-"Se debe acceder a las respuestas de los tweets de más de 7 días desde "
-"Twitter.com"
+"Acceda a las respuestas de los tweets con un tiempo de publicación mayor a 7"
+" días desde Twitter.com"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream__twitter_searched_keyword

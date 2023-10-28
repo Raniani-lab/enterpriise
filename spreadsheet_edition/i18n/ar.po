@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Mehjabin Farsana, 2022
 # Niyas Raphy, 2022
+# Mehjabin Farsana, 2022
 # Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
@@ -60,7 +60,7 @@ msgstr "هل أنت متأكد أنك تريد حذف هذا المحور؟"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Automatically filter on the current period"
-msgstr "تلقائيًا فلتر في الفترة الحالية"
+msgstr "تصفية الفترة الحالية تلقائياً "
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -82,7 +82,7 @@ msgstr "قبل السابق"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_panel.xml:0
 #, python-format
 msgid "Blank spreadsheet"
-msgstr "فارغ الجداول الممتدة"
+msgstr "جدول بيانات فارغ"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -99,12 +99,12 @@ msgstr "إلغاء "
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
 #, python-format
 msgid "Clear history"
-msgstr "تاريخ واضح"
+msgstr "مسح السجل "
 
 #. module: spreadsheet_edition
 #: model:ir.model,name:spreadsheet_edition.model_spreadsheet_collaborative_mixin
 msgid "Collaboration on spreadsheets"
-msgstr "التعاون على الجداول الممتدة"
+msgstr "التعاون في جداول البيانات "
 
 #. module: spreadsheet_edition
 #: model:ir.model,name:spreadsheet_edition.model_spreadsheet_revision
@@ -246,7 +246,7 @@ msgstr "تحرير"
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
 msgid "Edit domain"
-msgstr "يحرر نطاق"
+msgstr "تحرير النطاق "
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -393,7 +393,7 @@ msgstr "إنشاء نسخة "
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Match this filter to a field for each data source"
-msgstr "تطابق هذا فلتر إلى حقل لكل مصدر بيانات"
+msgstr "قم بمطابقة عامل التصفية هذا مع حقل لكل مصدر للبيانات "
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -466,7 +466,7 @@ msgstr "التالي"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_panel.xml:0
 #, python-format
 msgid "No preview"
-msgstr "لا معاينة"
+msgstr "لا توجد معاينة "
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -478,21 +478,21 @@ msgstr "موافق"
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__parent_revision_id
 msgid "Parent Revision"
-msgstr "المراجعة الريسية "
+msgstr "المراجعة الرئيسية "
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.xml:0
 #, python-format
 msgid "Period offset"
-msgstr "تعويض الفترة"
+msgstr "إزاحة الفترة "
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "Period offset applied to this source"
-msgstr "تم تطبيق تعويض الفترة على هذا المصدر"
+msgstr "تم تطبيق إزاحة الفترة على هذا المصدر "
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -582,7 +582,7 @@ msgstr "تحديث القيم "
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Related model"
-msgstr "المرتبطة نموذج"
+msgstr "النموذج ذو الصلة "
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -710,7 +710,7 @@ msgstr "اختر عدد السجلات لإدراجها "
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/index.js:0
 #, python-format
 msgid "Set as filter"
-msgstr "جلس مثل فلتر"
+msgstr "التعيين كعامل تصفية "
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -770,7 +770,7 @@ msgstr "النص"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Time range"
-msgstr "وقت نطاق"
+msgstr "النطاق الزمني"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

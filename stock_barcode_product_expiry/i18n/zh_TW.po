@@ -23,7 +23,7 @@ msgstr ""
 #. module: stock_barcode_product_expiry
 #: model_terms:ir.ui.view,arch_db:stock_barcode_product_expiry.stock_move_line_product_selector
 msgid "<i class=\"fa fa-fw fa-lg fa-calendar me-3\" title=\"Expiration Date\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-calendar me-3\" title=\"到期日\"/>"
 
 #. module: stock_barcode_product_expiry
 #: model_terms:ir.ui.view,arch_db:stock_barcode_product_expiry.stock_move_line_product_selector
@@ -32,6 +32,9 @@ msgid ""
 "                        This lot is expired\n"
 "                    </span>"
 msgstr ""
+"<span class=\"fa fa-exclamation-triangle text-danger ms-4\" attrs=\"{'invisible': ['|', ('is_expired', '=', False), ('picking_type_use_existing_lots', '=', False)]}\">\n"
+"                        此批次已過期\n"
+"                    </span>"
 
 #. module: stock_barcode_product_expiry
 #: model:ir.model,name:stock_barcode_product_expiry.model_stock_move_line

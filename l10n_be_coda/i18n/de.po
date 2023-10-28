@@ -1443,21 +1443,21 @@ msgstr "Einkauf von Gold/Stücken"
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "Purchase of petrol coupons"
-msgstr ""
+msgstr "Einkauf von Tankgutscheinen"
 
 #. module: l10n_be_coda
 #. odoo-python
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "Purchase of securities"
-msgstr ""
+msgstr "Einkauf von Sicherheiten"
 
 #. module: l10n_be_coda
 #. odoo-python
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "Purchase of traveller’s cheque"
-msgstr ""
+msgstr "Einkauf von Reiseschecks"
 
 #. module: l10n_be_coda
 #. odoo-python
@@ -1500,7 +1500,7 @@ msgstr "Erstattung"
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "Reimbursement of cheque-related costs"
-msgstr ""
+msgstr "Erstattung von scheckbezogenen Kosten"
 
 #. module: l10n_be_coda
 #. odoo-python
@@ -1685,7 +1685,7 @@ msgstr ""
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "SEPA B2B"
-msgstr ""
+msgstr "SEPA B2B"
 
 #. module: l10n_be_coda
 #. odoo-python

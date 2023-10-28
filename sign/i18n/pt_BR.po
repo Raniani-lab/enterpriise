@@ -3518,6 +3518,8 @@ msgstr ""
 #, python-format
 msgid "The uploaded file is not a valid PDF. Please upload a valid PDF file."
 msgstr ""
+"O arquivo carregado não é um PDF válido. Faça o upload de um arquivo PDF "
+"válido."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests

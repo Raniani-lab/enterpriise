@@ -5,6 +5,7 @@
 # Translators:
 # Emily Jia <eji@odoo.com>, 2023
 # Martin Trigaux, 2023
+# Chloe Wang, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2023-04-14 07:13+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Chloe Wang, 2023\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,4 +38,4 @@ msgstr "产品变体"
 msgid ""
 "The lines with a kit have been replaced with their components. Please check "
 "the picking before the final validation."
-msgstr ""
+msgstr "已用组件替换了带套件的线路。请在最终验证前检查拣货情况。"

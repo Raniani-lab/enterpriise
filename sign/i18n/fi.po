@@ -3541,6 +3541,8 @@ msgstr ""
 #, python-format
 msgid "The uploaded file is not a valid PDF. Please upload a valid PDF file."
 msgstr ""
+"Ladattu tiedosto ei ole kelvollinen PDF-tiedosto. Lataa kelvollinen PDF-"
+"tiedosto."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests

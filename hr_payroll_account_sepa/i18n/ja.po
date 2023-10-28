@@ -43,7 +43,7 @@ msgstr "確認"
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_run_view_form
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_view_form
 msgid "Create Payment Report"
-msgstr ""
+msgstr "支払報告を作成"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip_run_sepa_wizard__create_uid
@@ -73,27 +73,27 @@ msgstr "従業員"
 #: code:addons/hr_payroll_account_sepa/models/hr_payslip.py:0
 #, python-format
 msgid "Employees With Invalid Bank Accounts"
-msgstr ""
+msgstr "無効な銀行口座を持つ従業員"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,help:hr_payroll_account_sepa.field_hr_payslip__sepa_export
 msgid "Export file related to this payslip"
-msgstr ""
+msgstr "この給与明細に関連したファイルをエクスポート"
 
 #. module: hr_payroll_account_sepa
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_view_form
 msgid "Exported File"
-msgstr ""
+msgstr "エクスポート済ファイル"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,help:hr_payroll_account_sepa.field_hr_payslip_run__sepa_export
 msgid "Exported SEPA .xml file"
-msgstr ""
+msgstr "エクスポート済SEPA .xml ファイル"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,help:hr_payroll_account_sepa.field_hr_payslip_run__sepa_export_filename
 msgid "Exported SEPA .xml file name"
-msgstr ""
+msgstr "エクスポート済SEPA .xml ファイル名"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip__sepa_export_filename
@@ -115,12 +115,12 @@ msgstr "生成日"
 #. module: hr_payroll_account_sepa
 #: model:ir.model,name:hr_payroll_account_sepa.model_hr_payslip_run_sepa_wizard
 msgid "HR Payslip Run SEPA Wizard"
-msgstr ""
+msgstr "人事給与明細実施SEPAウィザード"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model,name:hr_payroll_account_sepa.model_hr_payslip_sepa_wizard
 msgid "HR Payslip SEPA Wizard"
-msgstr ""
+msgstr "人事給与明細SEPAウィザード"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip_run_sepa_wizard__id
@@ -137,6 +137,8 @@ msgid ""
 "Invalid bank account for the following employees:\n"
 "%s"
 msgstr ""
+"以下の従業員用の銀行口座が無効です:\n"
+"%s"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip_run_sepa_wizard____last_update
@@ -159,7 +161,7 @@ msgstr "最終更新日"
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,help:hr_payroll_account_sepa.field_hr_payslip__sepa_export_filename
 msgid "Name of the export file generated for this payslip"
-msgstr ""
+msgstr "この給与明細用に生成されたエキスポートファイル名"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model,name:hr_payroll_account_sepa.model_hr_payslip
@@ -175,20 +177,20 @@ msgstr "給与明細書のバッチ"
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip__sepa_export
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip_run__sepa_export
 msgid "SEPA File"
-msgstr ""
+msgstr "SEPAファイル"
 
 #. module: hr_payroll_account_sepa
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_run_sepa_view_form
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_sepa_view_form
 msgid "Select a bank journal."
-msgstr ""
+msgstr "銀行仕訳帳を選択"
 
 #. module: hr_payroll_account_sepa
 #. odoo-python
 #: code:addons/hr_payroll_account_sepa/models/hr_payslip.py:0
 #, python-format
 msgid "Some employees (%s) don't have a bank account."
-msgstr ""
+msgstr "銀行口座を持っていない従業員(%s)がいます。"
 
 #. module: hr_payroll_account_sepa
 #. odoo-python

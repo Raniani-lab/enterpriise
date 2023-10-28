@@ -382,7 +382,7 @@ msgstr "地址區塊"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Aggregate"
-msgstr ""
+msgstr "綜合計算"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1358,7 +1358,7 @@ msgstr "預設值"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Default value"
-msgstr ""
+msgstr "預設值"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3594,7 +3594,7 @@ msgstr "排序"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Sorting"
-msgstr ""
+msgstr "排序"
 
 #. module: web_studio
 #. odoo-javascript

@@ -113,14 +113,14 @@ msgstr "給与明細書の発効日の期間を使うために、空白にして
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__not_computed_in_net
 msgid "Not computed in net accountably"
-msgstr ""
+msgstr "正味で計算されていません"
 
 #. module: hr_payroll_account
 #. odoo-python
 #: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
 #, python-format
 msgid "One of the contract for these payslips has no structure type."
-msgstr ""
+msgstr "これらの給与明細の契約書の1つには、構造タイプがありません。"
 
 #. module: hr_payroll_account
 #. odoo-python
@@ -148,7 +148,7 @@ msgstr "給与仕訳"
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_salary_rule
 msgid "Salary Rule"
-msgstr ""
+msgstr "給与規則"
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_payroll_structure
@@ -161,7 +161,7 @@ msgstr "給与体系"
 #, python-format
 msgid ""
 "The Expense Journal \"%s\" has not properly configured the default Account!"
-msgstr ""
+msgstr "経費仕訳帳 \"%s\" はデフォルト勘定科目を正しく設定していません。"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,help:hr_payroll_account.field_hr_salary_rule__not_computed_in_net
@@ -171,3 +171,4 @@ msgid ""
 "in the accounting. For example, if you want to display the value of your "
 "representation fees, you can check this field."
 msgstr ""
+"このフィールドを使用すると、会計レベルの'正味給与'規則でこの規則の値を削除して、会計でこの規則の値を明示的に表示することができます。例えば、代理人報酬の値を表示したい場合は、このフィールドをチェックします。"

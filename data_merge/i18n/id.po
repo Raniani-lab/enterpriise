@@ -33,7 +33,7 @@ msgstr "%s (salinan)"
 #: code:addons/data_merge/static/src/views/data_merge_list_view.js:0
 #, python-format
 msgid "%s records have been merged"
-msgstr ""
+msgstr "%s record telah digabung"
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.data_merge_duplicate
@@ -41,6 +41,8 @@ msgid ""
 "' deduplication rule.<br/>\n"
 "You can merge them"
 msgstr ""
+"' peraturan deduplikasi.<br/>\n"
+"Anda dapat menggabungkan mereka"
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_model_form
@@ -48,6 +50,8 @@ msgid ""
 "<span attrs=\"{'invisible': [('custom_merge_method', '=', False)]}\">Model "
 "specific</span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('custom_merge_method', '=', False)]}\">Model "
+"spesifik</span>"
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_model_form
@@ -57,12 +61,12 @@ msgstr "<span class=\"me-1\">Setiap</span>"
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_model_form
 msgid "<span class=\"oe_inline\">%</span>"
-msgstr ""
+msgstr "<span class=\"oe_inline\">%</span>"
 
 #. module: data_merge
 #: model:ir.model.constraint,message:data_merge.constraint_data_merge_rule_uniq_model_id_field_id
 msgid "A field can only appear once!"
-msgstr ""
+msgstr "Field hanya dapat muncul sekali!"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__active
@@ -90,13 +94,15 @@ msgid ""
 "Are you sure that you want to merge the selected records in their respective"
 " group?"
 msgstr ""
+"Apakah Anda yakin ingin menggabungkan record terpilih di kelompok mereka "
+"masing-masing?"
 
 #. module: data_merge
 #. odoo-javascript
 #: code:addons/data_merge/static/src/views/data_merge_list_view.js:0
 #, python-format
 msgid "Are you sure that you want to merge these records?"
-msgstr ""
+msgstr "Apakah Anda yakin ingin menggabungkan record-record ini?"
 
 #. module: data_merge
 #: model:ir.model.fields.selection,name:data_merge.selection__data_merge_model__merge_mode__automatic
@@ -107,14 +113,14 @@ msgstr "Otomatis"
 #: model:ir.model.fields,field_description:data_merge.field_ir_model__is_merge_enabled
 #: model_terms:ir.ui.view,arch_db:data_merge.ir_model_view_search
 msgid "Can Be Merged"
-msgstr ""
+msgstr "Dapat Digabungkan"
 
 #. module: data_merge
 #. odoo-python
 #: code:addons/data_merge/models/data_merge_rule.py:0
 #, python-format
 msgid "Case/Accent Insensitive Match"
-msgstr ""
+msgstr "Tidak Peka Huruf Kecil/Besar atau Tekanan"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__company_id
@@ -125,7 +131,7 @@ msgstr "Perusahaan"
 #: model_terms:ir.actions.act_window,help:data_merge.action_data_merge_record
 #: model_terms:ir.actions.act_window,help:data_merge.action_data_merge_record_notification
 msgid "Configure rules to identify duplicate records"
-msgstr ""
+msgstr "Konfigurasikan peraturan untuk mengidentifikasi record duplikat"
 
 #. module: data_merge
 #: model:ir.model,name:data_merge.model_res_partner
@@ -137,6 +143,8 @@ msgstr "Kontak"
 msgid ""
 "Contextual menu action that redirects to the deduplicate view of data_merge."
 msgstr ""
+"Menu action kontekstual yang mengalihkan ulang ke tampilan deduplikasi dari"
+"  data_merge."
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__record_create_uid
@@ -167,24 +175,24 @@ msgstr "Dibuat pada"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__mix_by_company
 msgid "Cross-Company"
-msgstr ""
+msgstr "Cross-Company"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__custom_merge_method
 msgid "Custom Merge Method"
-msgstr ""
+msgstr "Metode Penggabungan Kustom"
 
 #. module: data_merge
 #: model:ir.actions.server,name:data_merge.ir_cron_cleanup_ir_actions_server
 #: model:ir.cron,cron_name:data_merge.ir_cron_cleanup
 msgid "Data Merge: Cleanup Records"
-msgstr ""
+msgstr "Penggabungan Data: Cleanup Record"
 
 #. module: data_merge
 #: model:ir.actions.server,name:data_merge.ir_cron_find_duplicates_ir_actions_server
 #: model:ir.cron,cron_name:data_merge.ir_cron_find_duplicates
 msgid "Data Merge: Find Duplicate Records"
-msgstr ""
+msgstr "Penggabungan Data: Cari Record Duplikat"
 
 #. module: data_merge
 #: model:ir.model.fields.selection,name:data_merge.selection__data_merge_model__notify_frequency_period__days
@@ -197,18 +205,18 @@ msgstr "Hari"
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_model_form
 #, python-format
 msgid "Deduplicate"
-msgstr ""
+msgstr "Deduplikasi"
 
 #. module: data_merge
 #: model:ir.ui.menu,name:data_merge.menu_data_merge_config_rules_deduplication
 #: model:ir.ui.menu,name:data_merge.menu_data_merge_group
 msgid "Deduplication"
-msgstr ""
+msgstr "Deduplikasi"
 
 #. module: data_merge
 #: model:ir.model,name:data_merge.model_data_merge_group
 msgid "Deduplication Group"
-msgstr ""
+msgstr "Deduplikasi Kelompok"
 
 #. module: data_merge
 #: model:ir.model,name:data_merge.model_data_merge_model
@@ -216,31 +224,31 @@ msgstr ""
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__model_id
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_rule__model_id
 msgid "Deduplication Model"
-msgstr ""
+msgstr "Model Deduplikasi"
 
 #. module: data_merge
 #: model:ir.model,name:data_merge.model_data_merge_record
 msgid "Deduplication Record"
-msgstr ""
+msgstr "Record Deduplikasi"
 
 #. module: data_merge
 #: model:ir.model,name:data_merge.model_data_merge_rule
 msgid "Deduplication Rule"
-msgstr ""
+msgstr "Peraturan Deduplikasi"
 
 #. module: data_merge
 #: model:ir.actions.act_window,name:data_merge.action_data_merge_config
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__rule_ids
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_model_form
 msgid "Deduplication Rules"
-msgstr ""
+msgstr "Peraturan-Peraturan Deduplikasi"
 
 #. module: data_merge
 #. odoo-python
 #: code:addons/data_merge/models/data_merge_model.py:0
 #, python-format
 msgid "Deduplication is forbidden on the model: %s"
-msgstr ""
+msgstr "Deduplikasi dilarang pada model: %s"
 
 #. module: data_merge
 #: model:ir.model.fields.selection,name:data_merge.selection__data_merge_model__removal_mode__delete
@@ -255,12 +263,12 @@ msgstr "Perbedaan"
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_data_merge_record__differences
 msgid "Differences with the master record"
-msgstr ""
+msgstr "Perbedaan dengan record master"
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.ir_model_view_form
 msgid "Disable Merge"
-msgstr ""
+msgstr "Nonaktifkan Penggabungan"
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_record_list
@@ -284,7 +292,7 @@ msgstr "Nama Tampilan"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__divergent_fields
 msgid "Divergent Fields"
-msgstr ""
+msgstr "Divergent Fields"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__domain
@@ -294,7 +302,7 @@ msgstr "Ruang Lingkup"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__removal_mode
 msgid "Duplicate Removal"
-msgstr ""
+msgstr "Penghapusan Duplikasi"
 
 #. module: data_merge
 #: model:ir.actions.act_window,name:data_merge.action_data_merge_record
@@ -308,33 +316,35 @@ msgstr "Duplikat"
 msgid ""
 "Duplicates with a similarity below this threshold will not be suggested"
 msgstr ""
+"Duplikat-Duplikat dengan kesamaan di bawah ambang batas ini tidak akan "
+"disarankan"
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.ir_model_view_form
 msgid "Enable Merge"
-msgstr ""
+msgstr "Aktifkan Penggabungan"
 
 #. module: data_merge
 #. odoo-python
 #: code:addons/data_merge/models/data_merge_rule.py:0
 #, python-format
 msgid "Exact Match"
-msgstr ""
+msgstr "Cocok Sempurna"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__field_values
 msgid "Field Values"
-msgstr ""
+msgstr "Field Values"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_ir_model__hide_merge_action
 msgid "Hide merge action button"
-msgstr ""
+msgstr "Sembunyikkan tombol action merge"
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.data_merge_duplicate
 msgid "I've identified"
-msgstr ""
+msgstr "Saya mengidentifikasi"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__id
@@ -351,6 +361,8 @@ msgid ""
 "If True, the generic data merge tool is available in the contextual menu of "
 "this model."
 msgstr ""
+"Bila True, tool merge data generik jadi tersedia pada menu kontekstual model"
+" ini."
 
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_data_merge_model__is_contextual_merge_action
@@ -358,6 +370,8 @@ msgid ""
 "If True, this record is used for contextual menu action \"Merge\" on the "
 "target model."
 msgstr ""
+"Bila True, record ini digunakan untuk menu kontekstual action \"Merge\" pada"
+" model sasaran."
 
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_ir_model__hide_merge_action
@@ -365,21 +379,23 @@ msgid ""
 "If the model already has a custom merge method, the class attribute `_merge_disabled` is set to true on\n"
 "             that model and the generic data merge action should not be available on that model."
 msgstr ""
+"Bila model sudah memiliki metode merge custom, atribut kelas `_merge_disabled` ditetapkan true pada\n"
+"             model tersebut dan action merge data generik harusnya tidak tersedia pada model tersebut."
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__is_deleted
 msgid "Is Deleted"
-msgstr ""
+msgstr "Apakah Dihapus"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__is_discarded
 msgid "Is Discarded"
-msgstr ""
+msgstr "Apakah DIbuang"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__is_master
 msgid "Is Master"
-msgstr ""
+msgstr "Apakah Master"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group____last_update
@@ -413,12 +429,14 @@ msgstr "Terakhir diperbarui pada"
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_data_merge_record__used_in
 msgid "List of other models referencing this record"
-msgstr ""
+msgstr "List model-model lain yang mereferensikan record ini"
 
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_data_merge_model__notify_user_ids
 msgid "List of users to notify when there are new records to merge"
 msgstr ""
+"List user-user untuk dinotifikasi saat terdapat record-record baru untuk "
+"digabung"
 
 #. module: data_merge
 #: model:ir.model.fields.selection,name:data_merge.selection__data_merge_model__merge_mode__manual
@@ -430,7 +448,7 @@ msgstr "Manual"
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "Manual Selection - %s"
-msgstr ""
+msgstr "Pemilihan Manual - %s"
 
 #. module: data_merge
 #. odoo-javascript
@@ -459,39 +477,39 @@ msgstr "Gabung"
 #. module: data_merge
 #: model:ir.ui.menu,name:data_merge.ir_model_menu_merge_action_manager
 msgid "Merge Action Manager"
-msgstr ""
+msgstr "Manajer Action Merge"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_rule__match_mode
 msgid "Merge If"
-msgstr ""
+msgstr "Merge Bila"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__merge_mode
 msgid "Merge Mode"
-msgstr ""
+msgstr "Mode Merge"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_ir_model__ref_merge_ir_act_server_id
 msgid "Merge Server Action"
-msgstr ""
+msgstr "Server Action Merge"
 
 #. module: data_merge
 #: model:ir.actions.act_window,name:data_merge.ir_model_action_merge
 msgid "Merge action Manager"
-msgstr ""
+msgstr "Manajer action Merge"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__is_contextual_merge_action
 msgid "Merge action attached"
-msgstr ""
+msgstr "Action merge terlampir"
 
 #. module: data_merge
 #. odoo-python
 #: code:addons/data_merge/models/data_merge_model.py:0
 #, python-format
 msgid "Missing required PostgreSQL extension: unaccent"
-msgstr ""
+msgstr "Kurang ekstensi PostgreSQL yang dibutuhkan: unaccent"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__res_model_id
@@ -533,7 +551,7 @@ msgstr "Nama"
 #: model_terms:ir.actions.act_window,help:data_merge.action_data_merge_record_notification
 #, python-format
 msgid "No duplicates found"
-msgstr ""
+msgstr "Tidak ada duplikat yang ditemukan"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__notify_frequency
@@ -556,7 +574,7 @@ msgstr "Notifikasi User"
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "Query Failed."
-msgstr ""
+msgstr "Query Gagal."
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__record_ids
@@ -566,7 +584,7 @@ msgstr "Catatan"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__group_id
 msgid "Record Group"
-msgstr ""
+msgstr "Record Kelompok"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__res_id
@@ -582,19 +600,19 @@ msgstr "Record-Record"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__records_to_merge_count
 msgid "Records To Merge Count"
-msgstr ""
+msgstr "Jumlah Record Untuk Dimerge"
 
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_data_merge_model__domain
 msgid "Records eligible for the deduplication process"
-msgstr ""
+msgstr "Record yang memenuhi syarat untuk proses deduplikasi"
 
 #. module: data_merge
 #. odoo-python
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "Records must be of the same model"
-msgstr ""
+msgstr "Record harus merupakan model yang sama"
 
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_data_merge_model__merge_threshold
@@ -602,6 +620,8 @@ msgid ""
 "Records with a similarity percentage above this threshold will be "
 "automatically merged"
 msgstr ""
+"Record dengan persentase kemiripan di atas ambang batas ini akan secara "
+"otomatis digabung"
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_record_search
@@ -611,7 +631,7 @@ msgstr "Aturan"
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_model_form
 msgid "Select a model to configure deduplication rules"
-msgstr ""
+msgstr "Pilih model untuk mengonfigurasi peraturan deduplikasi"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_rule__sequence
@@ -621,28 +641,31 @@ msgstr "Urutan"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__similarity
 msgid "Similarity %"
-msgstr ""
+msgstr "Kemiripan %"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__merge_threshold
 msgid "Similarity Threshold"
-msgstr ""
+msgstr "Ambang Batas Kemiripan"
 
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_data_merge_group__similarity
 msgid ""
 "Similarity coefficient based on the amount of text fields exactly in common."
 msgstr ""
+"Koefisien kemiripan berdasarkan pada jumlah field teks yang persis sama."
 
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_data_merge_model__rule_ids
 msgid "Suggest to merge records matching at least one of these rules"
 msgstr ""
+"Disarankan untuk menggabungkan record yang cocok dengan setidaknya salah "
+"satu peraturan ini"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__create_threshold
 msgid "Suggestion Threshold"
-msgstr ""
+msgstr "Ambang Batas yang Disarankan"
 
 #. module: data_merge
 #: model:ir.model.constraint,message:data_merge.constraint_data_merge_model_check_notif_freq
@@ -654,38 +677,38 @@ msgstr "Frekuensi frekuensi harus lebih besar dari 0"
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "The referenced record does not exist"
-msgstr ""
+msgstr "Record yang direferensikan tidak tersedia"
 
 #. module: data_merge
 #. odoo-javascript
 #: code:addons/data_merge/static/src/views/data_merge_list_view.js:0
 #, python-format
 msgid "The selected records have been merged"
-msgstr ""
+msgstr "Record-record yang dipilih telah digabung"
 
 #. module: data_merge
 #. odoo-python
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "The target model does not exists."
-msgstr ""
+msgstr "Model sasaran tidak tersedia."
 
 #. module: data_merge
 #. odoo-python
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "There is not referenced record"
-msgstr ""
+msgstr "Tidak ada record yang direferensikan"
 
 #. module: data_merge
 #: model:ir.model.constraint,message:data_merge.constraint_data_merge_model_uniq_name
 msgid "This name is already taken"
-msgstr ""
+msgstr "Nama ini sudah diambil"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_rule__field_id
 msgid "Unique ID Field"
-msgstr ""
+msgstr "Field ID Uni"
 
 #. module: data_merge
 #. odoo-javascript
@@ -697,12 +720,12 @@ msgstr "Batalkan pilihan"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__record_write_uid
 msgid "Updated By"
-msgstr ""
+msgstr "Diupdate Oleh"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__record_write_date
 msgid "Updated On"
-msgstr ""
+msgstr "Diupdate Pada"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__used_in
@@ -718,18 +741,20 @@ msgstr "Minggu"
 #: model:ir.model.fields,help:data_merge.field_data_merge_model__mix_by_company
 msgid "When enabled, duplicates across different companies will be suggested"
 msgstr ""
+"Saat diaktifkan, duplikat-duplikat di perusahaan-perusahaan yang berbeda "
+"akan disarankan"
 
 #. module: data_merge
 #. odoo-python
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "You must select at least two %s in order to merge them."
-msgstr ""
+msgstr "Anda harus memilih setidaknya dua %s untuk menggabungkan mereka."
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.data_merge_duplicate
 msgid "duplicate records with the '"
-msgstr ""
+msgstr "duplikat record dengan '"
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.data_merge_duplicate
@@ -739,9 +764,9 @@ msgstr "here"
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.data_merge_merged
 msgid "merged into"
-msgstr ""
+msgstr "gabung menjadi"
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.data_merge_main
 msgid "merged into this one"
-msgstr ""
+msgstr "digabung ke ini"

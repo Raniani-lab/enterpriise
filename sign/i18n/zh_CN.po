@@ -3432,7 +3432,7 @@ msgstr ""
 #: code:addons/sign/wizard/sign_duplicate_template_with_pdf.py:0
 #, python-format
 msgid "The uploaded file is not a valid PDF. Please upload a valid PDF file."
-msgstr ""
+msgstr "已上传文件不是有效 PDF 文件。请上传一个有效 PDF 文件。"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests

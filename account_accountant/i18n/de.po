@@ -2282,7 +2282,7 @@ msgstr "verbleibend)"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "seconds per transaction."
-msgstr "Sekunden pro Transkation."
+msgstr "Sekunden pro Transaktion."
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__tax_line

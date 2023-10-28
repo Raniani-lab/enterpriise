@@ -9,7 +9,7 @@
 # Marcos Rodrigues, 2022
 # Martin Trigaux, 2022
 # Kevilyn Rosa, 2023
-# adrianojprado <adrianojprado@gmail.com>, 2023
+# Adriano Prado <adrianojprado@gmail.com>, 2023
 # Layna Nascimento, 2023
 # 
 msgid ""
@@ -1698,6 +1698,14 @@ msgstr "Valor Original"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__parent_id
 msgid "Parent"
 msgstr "Superior (Conta-pai)"
+
+#. module: account_asset
+#. odoo-python
+#: code:addons/account_asset/models/account_asset.py:0
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
+#, python-format
+msgid "Parent Asset"
+msgstr "Ativo principal"
 
 #. module: account_asset
 #. odoo-python

@@ -42,7 +42,7 @@ msgstr "一組條件和操作，可用於與條件匹配的所有附件"
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
 msgid "Centralize files attached to products"
-msgstr ""
+msgstr "集中附加到產品的文件"
 
 #. module: documents_product
 #: model:ir.model,name:documents_product.model_res_company
@@ -62,7 +62,7 @@ msgstr "建立"
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_sheet_tag
 msgid "DataSheets"
-msgstr ""
+msgstr "數據表"
 
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
@@ -77,12 +77,12 @@ msgstr "文件"
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__documents_product_settings
 msgid "Documents Product Settings"
-msgstr ""
+msgstr "文件產品設置"
 
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_msds_tag
 msgid "MSDS"
-msgstr ""
+msgstr "MSDS"
 
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_new_tag
@@ -114,7 +114,7 @@ msgstr "產品款式"
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_folder
 msgid "Product Workspace"
-msgstr ""
+msgstr "產品工作區"
 
 #. module: documents_product
 #: model:ir.model.fields.selection,name:documents_product.selection__documents_workflow_rule__create_model__product_template
@@ -129,7 +129,7 @@ msgstr "產品"
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_specs_tag
 msgid "Specs"
-msgstr ""
+msgstr "規格"
 
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
@@ -139,4 +139,4 @@ msgstr "工作空間"
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_folder
 msgid "product default workspace"
-msgstr ""
+msgstr "產品預設工作區"

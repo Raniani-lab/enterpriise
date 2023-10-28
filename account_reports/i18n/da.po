@@ -2798,7 +2798,7 @@ msgstr "Regler"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
 msgid "Running Balance"
-msgstr ""
+msgstr "Løbende balance"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -2830,7 +2830,7 @@ msgstr "Søg konto"
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "Search line"
-msgstr ""
+msgstr "Søgelinje"
 
 #. module: account_reports
 #. odoo-javascript
@@ -3092,6 +3092,15 @@ msgstr ""
 #, python-format
 msgid "The Book balance in Odoo dated today"
 msgstr "Bogsaldo i Odoo dateret til i dag"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid ""
+"The company's chart of account does not match the report's chart of "
+"accounts."
+msgstr ""
 
 #. module: account_reports
 #. odoo-python

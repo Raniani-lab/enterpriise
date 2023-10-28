@@ -28,14 +28,14 @@ msgstr ""
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
 msgid "%s - %s"
-msgstr ""
+msgstr "%s - %s"
 
 #. module: industry_fsm_sale
 #. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "<b>Invoice your time and material</b> to your customer."
-msgstr ""
+msgstr "顧客に<b>タイムアンドマテリアルを請求</b> しましょう。"
 
 #. module: industry_fsm_sale
 #. odoo-python
@@ -52,6 +52,15 @@ msgid ""
 "                            in your profile from where to draw stock.\n"
 "                        </p>"
 msgstr ""
+"<p class=\"o_view_nocontent_smiling_face\">\n"
+"                            プロダクトがありません。作成しましょう！\n"
+"                        </p><p>\n"
+"                            タスクを完了するために使用しているプロダクトを追跡し、商品代金を顧客に請求しましょう。\n"
+"                            ヒント: キットを使用すれば、複数のプロダクトを1回で追加できます。\n"
+"                        </p><p>\n"
+"                            タスクが完了としてマークされると在庫が自動的に更新されます。プロフィールで在庫を出荷する倉庫を\n"
+"選ぶだけです。\n"
+"                        </p>"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit_sale_timesheet
@@ -61,6 +70,10 @@ msgid ""
 "updated.\" attrs=\"{'invisible': ['|', ('partner_id', '=', False), "
 "('is_task_phone_update', '=', False)]}\"/>"
 msgstr ""
+"<span class=\"fa fa-exclamation-triangle text-warning oe_edit_only\" "
+"title=\"By saving this change, the customer phone number will also be "
+"updated.\" attrs=\"{'invisible': ['|', ('partner_id', '=', False), "
+"('is_task_phone_update', '=', False)]}\"/>"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
@@ -71,7 +84,7 @@ msgstr "<span>値引%</span>"
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_sharing_project_task_inherit_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
 msgid "<span>Products</span>"
-msgstr ""
+msgstr "<span>プロダクト</span>"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
@@ -91,7 +104,7 @@ msgstr "<strong>合計</strong>"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "<strong>Untaxed amount</strong>"
-msgstr ""
+msgstr "<strong>税抜金額</strong>"
 
 #. module: industry_fsm_sale
 #. odoo-python
@@ -99,12 +112,12 @@ msgstr ""
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
 msgid "A customer should be set on the task to generate a worksheet."
-msgstr ""
+msgstr "ワークシートを作成するには、顧客をタスクに設定する必要があります。"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 msgid "Added Products"
-msgstr ""
+msgstr "追加済プロダクト"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
@@ -114,14 +127,14 @@ msgstr "金額"
 #. module: industry_fsm_sale
 #: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_fsm_imply_task_rate
 msgid "An FSM project must be billed at task rate or employee rate."
-msgstr ""
+msgstr "FSMプロジェクトは、タスクレートまたは従業員レートで請求される必要があります。"
 
 #. module: industry_fsm_sale
 #. odoo-python
 #: code:addons/industry_fsm_sale/wizard/sale_make_invoice_advance.py:0
 #, python-format
 msgid "An invoice has been created: %s"
-msgstr ""
+msgstr "請求書が作成されました: %s"
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_account_analytic_line
@@ -145,14 +158,14 @@ msgstr "ブロック済"
 msgid ""
 "By saving this change, all timesheet entries will be linked to the selected "
 "Sales Order Item without distinction."
-msgstr ""
+msgstr "この変更を保存することで、全てのタイムシートエントリは区別なく選択された販売オーダ項目にリンクされます。"
 
 #. module: industry_fsm_sale
 #. odoo-python
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
 msgid "Choose Products"
-msgstr ""
+msgstr "プロダクトを選択"
 
 #. module: industry_fsm_sale
 #. odoo-javascript
@@ -161,7 +174,7 @@ msgstr ""
 msgid ""
 "Choose a <b>name</b> for your product <i>(e.g. Bolts, Screws, Boiler, "
 "etc.).</i>"
-msgstr ""
+msgstr "プロダクト用に <b>名前</b>を選択して下さい。<i>(例: ボルト、スクリュー、ボイラーなど)</i>"
 
 #. module: industry_fsm_sale
 #. odoo-javascript
@@ -171,6 +184,7 @@ msgid ""
 "Click on your product to add it to your <b>list of materials</b>. <i>Tip: "
 "for large quantities, click on the number to edit it directly.</i>"
 msgstr ""
+"プロダクトをクリックして、<b>材料リスト</b>に追加して下さい。<i>ヒント: 数量が多い場合は、数をクリックして直接編集して下さい</i>"
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_res_config_settings
@@ -182,7 +196,7 @@ msgstr "コンフィグ設定"
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Confirm the creation of your <b>invoice</b>."
-msgstr ""
+msgstr " <b>請求書</b>の作成を確認して下さい。"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_list_fsm_sale_inherit
@@ -198,7 +212,7 @@ msgstr "新規見積を作成する"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_view_form_inherit
 msgid "Create new quotations directly from tasks"
-msgstr ""
+msgstr "タスクから直接新規見積書を作成して下さい"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__currency_id
@@ -208,17 +222,17 @@ msgstr "通貨"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order_line__delivered_price_subtotal
 msgid "Delivered Subtotal"
-msgstr ""
+msgstr "配達済小計"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order_line__delivered_price_total
 msgid "Delivered Total"
-msgstr ""
+msgstr "配達済合計"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order_line__delivered_price_tax
 msgid "Delivered Total Tax"
-msgstr ""
+msgstr "配達済合計税"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
@@ -228,12 +242,12 @@ msgstr "説明"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__display_create_invoice_primary
 msgid "Display Create Invoice Primary"
-msgstr ""
+msgstr "請求書作成プライマリを表示"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__display_create_invoice_secondary
 msgid "Display Create Invoice Secondary"
-msgstr ""
+msgstr "請求書作成セカンダリを表示"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
@@ -254,7 +268,7 @@ msgstr "追加見積"
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_report_project_task_user_fsm
 msgid "FSM Tasks Analysis"
-msgstr ""
+msgstr "FSMタスク分析"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
@@ -269,7 +283,7 @@ msgstr "フィールドサービス"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__fsm_partner_price_currency_id
 msgid "Fsm Partner Price Currency"
-msgstr ""
+msgstr "FSM取引先価格通貨"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields.selection,name:industry_fsm_sale.selection__report_project_task_user_fsm__invoice_status__invoiced
@@ -336,36 +350,36 @@ msgstr "請求書"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__is_task_phone_update
 msgid "Is Task Phone Update"
-msgstr ""
+msgstr "タスク電話更新"
 
 #. module: industry_fsm_sale
 #. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Let's <b>track the material</b> you use for your task."
-msgstr ""
+msgstr "タスクに使用する<b>材料を追跡</b>しましょう。"
 
 #. module: industry_fsm_sale
 #. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Let's create a new <b>product</b>."
-msgstr ""
+msgstr "新規<b>プロダクト</b>を作成しましょう。"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__material_line_product_count
 msgid "Material Line Product Count"
-msgstr ""
+msgstr "材料明細プロダクト数"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__material_line_total_price
 msgid "Material Line Total Price"
-msgstr ""
+msgstr "材料明細合計額"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__fsm_quantity
 msgid "Material Quantity"
-msgstr ""
+msgstr "材料数量"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
@@ -375,7 +389,7 @@ msgstr "新規見積"
 #. module: industry_fsm_sale
 #: model_terms:ir.actions.act_window,help:industry_fsm_sale.product_action_fsm
 msgid "No products found. Let's create one!"
-msgstr ""
+msgstr "プロダクトが見つかりません。作成しましょう！"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.actions.act_window,help:industry_fsm_sale.project_task_action_to_invoice_fsm
@@ -390,17 +404,17 @@ msgstr "請求対象なし"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__invoice_count
 msgid "Number of invoices"
-msgstr ""
+msgstr "請求書数"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__fsm_partner_price
 msgid "Partner Price"
-msgstr ""
+msgstr "取引先価格"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__portal_quotation_count
 msgid "Portal Quotation Count"
-msgstr ""
+msgstr "ポータル見積数"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
@@ -487,7 +501,7 @@ msgstr "見積もり数"
 #: code:addons/industry_fsm_sale/models/sale_order.py:0
 #, python-format
 msgid "Quotation created: %s"
-msgstr ""
+msgstr "見積書が作成されました: %s"
 
 #. module: industry_fsm_sale
 #. odoo-python
@@ -578,7 +592,7 @@ msgstr "タスクの繰り返し"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,help:industry_fsm_sale.field_sale_order__task_id
 msgid "Task from which this quotation have been created"
-msgstr ""
+msgstr "この見積書が作成されたタスク"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_search_fsm_inherit_sale
@@ -594,19 +608,19 @@ msgstr "税"
 #. module: industry_fsm_sale
 #: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_material_imply_billable
 msgid "The material can be allowed only when the task can be billed."
-msgstr ""
+msgstr "その材料は、タスクが課金可能な場合にのみ許可されます。"
 
 #. module: industry_fsm_sale
 #: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_timesheet_product_required_if_billable_and_timesheets_and_fsm_projects
 msgid ""
 "The timesheet product is required when the fsm project can be billed and "
 "timesheets are allowed."
-msgstr ""
+msgstr "タイムシートプロダクトは、FSMプロジェクトが請求可能でタイムシートが許可されている場合に必要です。"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.portal_my_task
 msgid "Time &amp; Material"
-msgstr ""
+msgstr "タイム &amp; マテリアル"
 
 #. module: industry_fsm_sale
 #: model:ir.actions.act_window,name:industry_fsm_sale.project_task_action_to_invoice_fsm
@@ -626,7 +640,7 @@ msgstr "合計価格"
 #. module: industry_fsm_sale
 #: model_terms:ir.actions.act_window,help:industry_fsm_sale.product_action_fsm
 msgid "Track and bill the material used to complete your tasks."
-msgstr ""
+msgstr "タスクを完了するために使用された材料を記録して下さい。"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_view_form_inherit
@@ -649,21 +663,21 @@ msgstr "アップセリングの機会"
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Use the breadcrumbs to navigate to your <b>list of products</b>."
-msgstr ""
+msgstr "パンくずリストを使用して<b>プロダクトリスト</b>に戻りましょう。"
 
 #. module: industry_fsm_sale
 #. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Use the breadcrumbs to return to your <b>task</b>."
-msgstr ""
+msgstr "パンくずリストを使って<b>タスク</b>に戻りましょう。"
 
 #. module: industry_fsm_sale
 #. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Wait for the invoice to show up"
-msgstr ""
+msgstr "請求書が表示されるまでお待ち下さい。"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__warning_message

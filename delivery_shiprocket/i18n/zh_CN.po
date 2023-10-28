@@ -281,7 +281,7 @@ msgstr "获取 Shiprocket 频道失败，请稍后再试。"
 #. module: delivery_shiprocket
 #: model:ir.model.fields,field_description:delivery_shiprocket.field_delivery_carrier__shiprocket_manifests_generate
 msgid "Generate Manifest"
-msgstr ""
+msgstr "生成模块描述"
 
 #. module: delivery_shiprocket
 #: model:ir.model.fields,help:delivery_shiprocket.field_delivery_carrier__shiprocket_access_token
@@ -365,7 +365,7 @@ msgstr "在 Shiprocket 中必须提供包裹长度、宽度和高度。"
 #: code:addons/delivery_shiprocket/models/delivery_carrier.py:0
 #, python-format
 msgid "Manifest generated of %s"
-msgstr ""
+msgstr "%s生成模块描述"
 
 #. module: delivery_shiprocket
 #. odoo-python
@@ -463,7 +463,7 @@ msgstr "ShipRocket"
 #. module: delivery_shiprocket
 #: model:delivery.carrier,name:delivery_shiprocket.delivery_carrier_shiprocket
 msgid "ShipRocket Domestic"
-msgstr ""
+msgstr "ShipRocket Domestic"
 
 #. module: delivery_shiprocket
 #: model:ir.model,name:delivery_shiprocket.model_delivery_carrier

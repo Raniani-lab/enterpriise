@@ -62,7 +62,7 @@ msgstr "<strong>Firmenwagen</strong>"
 #. module: l10n_be_hr_payroll_fleet
 #: model:hr.salary.rule,name:l10n_be_hr_payroll_fleet.cp200_employees_salary_co2_fee
 msgid "Accounting: CO2 Fee (Employer)"
-msgstr ""
+msgstr "Buchhaltung: CO2-Gebühren (Mitarbeiter)"
 
 #. module: l10n_be_hr_payroll_fleet
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll_fleet.field_fleet_vehicle__atn
@@ -146,7 +146,7 @@ msgstr "Katalogwert (MwSt. incl.)"
 #. module: l10n_be_hr_payroll_fleet
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll_fleet.field_hr_contract__bike_id
 msgid "Company Bike"
-msgstr ""
+msgstr "Firmenfahrrad"
 
 #. module: l10n_be_hr_payroll_fleet
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll_fleet.field_hr_contract__company_bike_depreciated_cost

@@ -1632,7 +1632,7 @@ msgstr "Fiches de paie générées"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "Give insurance card to new registered employees"
-msgstr ""
+msgstr "Donner une carte d'assurances aux nouveaux employés enregistrés"
 
 #. module: hr_payroll
 #. odoo-python

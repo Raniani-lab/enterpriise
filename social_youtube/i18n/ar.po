@@ -334,28 +334,28 @@ msgstr "إلغاء "
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_revoke_youtube_view_form
 msgid "Revoke & Delete"
-msgstr "إبطال وإلغاء "
+msgstr "إلغاء وحذف "
 
 #. module: social_youtube
 #. odoo-python
 #: code:addons/social_youtube/models/social_account.py:0
 #, python-format
 msgid "Revoke Account"
-msgstr "سحب او إبطال حساب "
+msgstr "إلغاء الحساب "
 
 #. module: social_youtube
 #: model:ir.actions.act_window,name:social_youtube.social_account_revoke_youtube_action
 #: model:ir.model,name:social_youtube.model_social_account_revoke_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_revoke_youtube_view_form
 msgid "Revoke YouTube Account"
-msgstr "إبطال حساب يوتيوب "
+msgstr "إلغاء حساب يوتيوب "
 
 #. module: social_youtube
 #. odoo-python
 #: code:addons/social_youtube/models/social_account.py:0
 #, python-format
 msgid "Revoking access tokens is currently limited to YouTube accounts only."
-msgstr "إبطال رموز الوصول أصبح ممكناً في حسابات يوتيوب فقط. "
+msgstr "يمكن إلغاء رموز الوصول في حسابات يوتيوب فقط. "
 
 #. module: social_youtube
 #. odoo-javascript

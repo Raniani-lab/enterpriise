@@ -23,7 +23,7 @@ msgstr ""
 #. module: hr_expense_predict_product
 #: model:ir.model.fields.selection,name:hr_expense_predict_product.selection__hr_expense__predicted_category__accommodation
 msgid "Accommodation"
-msgstr ""
+msgstr "宿泊"
 
 #. module: hr_expense_predict_product
 #: model:ir.model,name:hr_expense_predict_product.model_hr_expense
@@ -48,17 +48,17 @@ msgstr "その他"
 #. module: hr_expense_predict_product
 #: model:ir.model.fields.selection,name:hr_expense_predict_product.selection__hr_expense__predicted_category__parking
 msgid "Parking"
-msgstr ""
+msgstr "駐車場"
 
 #. module: hr_expense_predict_product
 #: model:ir.model.fields,field_description:hr_expense_predict_product.field_hr_expense__predicted_category
 msgid "Predicted Category"
-msgstr ""
+msgstr "予想カテゴリ"
 
 #. module: hr_expense_predict_product
 #: model:ir.model.fields.selection,name:hr_expense_predict_product.selection__hr_expense__predicted_category__toll
 msgid "Toll"
-msgstr ""
+msgstr "通行料金"
 
 #. module: hr_expense_predict_product
 #: model:ir.model.fields.selection,name:hr_expense_predict_product.selection__hr_expense__predicted_category__transport

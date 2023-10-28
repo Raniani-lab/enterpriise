@@ -1604,7 +1604,7 @@ msgstr "生成的薪资单"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "Give insurance card to new registered employees"
-msgstr ""
+msgstr "向新注册员工发放保险卡"
 
 #. module: hr_payroll
 #. odoo-python

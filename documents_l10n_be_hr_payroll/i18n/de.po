@@ -25,7 +25,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents_l10n_be_hr_payroll.l10n_be_281_45_form_wizard
 #: model_terms:ir.ui.view,arch_db:documents_l10n_be_hr_payroll.l10n_be_individual_account_view_form
 msgid "\"Documents\" app settings"
-msgstr "Konfiguration der \"Dokumenten\"-App"
+msgstr "Konfiguration der „Dokumente“-App"
 
 #. module: documents_l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:documents_l10n_be_hr_payroll.l10n_be_281_10_form_wizard

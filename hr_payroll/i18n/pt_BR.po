@@ -1627,7 +1627,7 @@ msgstr "Holerites gerados"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "Give insurance card to new registered employees"
-msgstr ""
+msgstr "Dê o cartão de seguro saúde a novos funcionários registrados"
 
 #. module: hr_payroll
 #. odoo-python

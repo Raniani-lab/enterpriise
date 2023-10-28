@@ -28,7 +28,7 @@ msgstr ""
 #. module: social_demo
 #: model:product.template,name:social_demo.product_product_4_product_template
 msgid "Desk"
-msgstr ""
+msgstr "Meja"
 
 #. module: social_demo
 #: model:product.template,name:social_demo.product_product_4b_product_template

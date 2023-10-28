@@ -32,12 +32,12 @@ msgstr "<span class=\"fa fa-warning\" title=\"Invalid minimum approvals\"/>"
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "<span>From: </span>"
-msgstr ""
+msgstr "<span>以下から: </span>"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "<span>to: </span>"
-msgstr ""
+msgstr "<span>以下へ: </span>"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_needaction
@@ -78,7 +78,7 @@ msgstr "活動種別アイコン"
 #: model:ir.model.fields,help:approvals.field_approval_category__has_product
 #: model:ir.model.fields,help:approvals.field_approval_request__has_product
 msgid "Additional products that should be specified on the request."
-msgstr ""
+msgstr "申請で特定されるべき追加プロダクト"
 
 #. module: approvals
 #: model:res.groups,name:approvals.group_approval_manager
@@ -109,14 +109,14 @@ msgstr "金額"
 #: model:ir.model.fields,help:approvals.field_approval_category__has_reference
 #: model:ir.model.fields,help:approvals.field_approval_request__has_reference
 msgid "An additional reference that should be specified on the request."
-msgstr ""
+msgstr "申請で特定されるべき追加参照"
 
 #. module: approvals
 #. odoo-python
 #: code:addons/approvals/models/approval_category.py:0
 #, python-format
 msgid "An user may not be in the approver list multiple times."
-msgstr ""
+msgstr "ユーザは、承認者リストに複数回登録することはできません。"
 
 #. module: approvals
 #: model:mail.activity.type,name:approvals.mail_activity_data_approval
@@ -209,12 +209,12 @@ msgstr "承認者"
 #, python-format
 msgid ""
 "Approver Sequence can only be activated with at least 1 minimum approver."
-msgstr ""
+msgstr "承認者シーケンスは、最低1名の承認者がある場合のみ有効化可能です。"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__user_ids
 msgid "Approver Users"
-msgstr ""
+msgstr "承認者ユーザ"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
@@ -264,7 +264,7 @@ msgstr "自動付番"
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "Back To Draft"
-msgstr ""
+msgstr "ドラフトに戻る"
 
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_borrow_items
@@ -279,7 +279,7 @@ msgstr "出張"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__change_request_owner
 msgid "Can Change Request Owner"
-msgstr ""
+msgstr "申請オーナを変更可能"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__can_edit
@@ -308,7 +308,7 @@ msgstr "カテゴリ"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__category_approver
 msgid "Category Approver"
-msgstr ""
+msgstr "カテゴリ承認者"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__sequence_code
@@ -390,7 +390,7 @@ msgstr "日付終了"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__date_start
 msgid "Date start"
-msgstr ""
+msgstr "開始日"
 
 #. module: approvals
 #. odoo-javascript
@@ -442,12 +442,12 @@ msgstr "ドロップダウンメニュー"
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "E.g: Expenses Paris business trip"
-msgstr ""
+msgstr "例: パリ出張経費"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
 msgid "Edit Request"
-msgstr ""
+msgstr "編集要求"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__manager_approval
@@ -457,12 +457,12 @@ msgstr "従業員のマネジャー"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__existing_request_user_ids
 msgid "Existing Request User"
-msgstr ""
+msgstr "既存の要求ユーザ"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category_approver__existing_user_ids
 msgid "Existing User"
-msgstr ""
+msgstr "既存ユーザ"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
@@ -622,17 +622,17 @@ msgstr "画像"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__invalid_minimum
 msgid "Invalid Minimum"
-msgstr ""
+msgstr "無効最小"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__invalid_minimum_warning
 msgid "Invalid Minimum Warning"
-msgstr ""
+msgstr "無効最小警告"
 
 #. module: approvals
 #: model:ir.model.fields.selection,name:approvals.selection__approval_category__manager_approval__approver
 msgid "Is Approver"
-msgstr ""
+msgstr "承認者である"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_is_follower
@@ -642,7 +642,7 @@ msgstr "フォロー中　"
 #. module: approvals
 #: model:ir.model.fields.selection,name:approvals.selection__approval_category__manager_approval__required
 msgid "Is Required Approver"
-msgstr ""
+msgstr "必要な承認者である"
 
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_job_referral_award
@@ -680,7 +680,7 @@ msgstr "最終更新日"
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action_all
 msgid "Let's go to the"
-msgstr ""
+msgstr "以下に行きましょう:"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__location
@@ -748,7 +748,7 @@ msgstr "自分の未レビュー承認"
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_search_view_search
 msgid "My Request"
-msgstr ""
+msgstr "自分の申請"
 
 #. module: approvals
 #: model:ir.actions.act_window,name:approvals.approval_request_action
@@ -853,7 +853,7 @@ msgstr "配信エラーのメッセージ数"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__request_to_validate_count
 msgid "Number of requests to validate"
-msgstr ""
+msgstr "検証する申請数"
 
 #. module: approvals
 #: model:res.groups,name:approvals.group_approval_user
@@ -1047,7 +1047,7 @@ msgstr "申請済"
 #. module: approvals
 #: model:res.groups,comment:approvals.group_approval_user
 msgid "The user will be able to access all requests and approve/refuse them."
-msgstr ""
+msgstr "ユーザは全ての申請にアクセスし、承認/拒否することができます。"
 
 #. module: approvals
 #: model:res.groups,comment:approvals.group_approval_manager
@@ -1061,7 +1061,7 @@ msgstr "このユーザーは承認設定にアクセスできます。"
 msgid ""
 "This request needs to be approved by your manager. There is no manager "
 "linked to your employee profile."
-msgstr ""
+msgstr "この申請はマネジャーの承認が必要です。あなたの従業員プロファイルにはマネジャーはリンクされていません。"
 
 #. module: approvals
 #. odoo-python
@@ -1070,7 +1070,7 @@ msgstr ""
 msgid ""
 "This request needs to be approved by your manager. There is no user linked "
 "to your manager."
-msgstr ""
+msgstr "この申請はマネジャーの承認が必要です。あなたのマネジャーにリンクされているユーザがいません。"
 
 #. module: approvals
 #. odoo-python
@@ -1079,7 +1079,7 @@ msgstr ""
 msgid ""
 "This request needs to be approved by your manager. Your manager is not in "
 "the approvers list."
-msgstr ""
+msgstr "この申請はマネジャーの承認が必要です。あなたのマネジャーは承認リストに入っていません。"
 
 #. module: approvals
 #. odoo-javascript
@@ -1124,7 +1124,7 @@ msgstr "ユーザ"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__user_status
 msgid "User Status"
-msgstr ""
+msgstr "ユーザステータス"
 
 #. module: approvals
 #: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__waiting
@@ -1136,14 +1136,14 @@ msgstr "待機中"
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
 msgid "Withdraw"
-msgstr ""
+msgstr "取下げる"
 
 #. module: approvals
 #. odoo-python
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You cannot approve before the previous approver."
-msgstr ""
+msgstr "前の承認者より前に承認することはできません。"
 
 #. module: approvals
 #. odoo-python
@@ -1151,7 +1151,7 @@ msgstr ""
 #, python-format
 msgid ""
 "You cannot assign the same approver multiple times on the same request."
-msgstr ""
+msgstr "同じ申請に対して同じ承認者を複数回割当てることはできません。"
 
 #. module: approvals
 #. odoo-python
@@ -1167,14 +1167,14 @@ msgstr "検証、拒否、またはキャンセルされた承認依頼にリン
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You have to add at least %s approvers to confirm your request."
-msgstr ""
+msgstr "申請を確定するには少なくとも%s承認を追加する必要があります。"
 
 #. module: approvals
 #. odoo-python
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You have to attach at lease one document."
-msgstr ""
+msgstr "少なくとも1つのドキュメントを添付して下さい。、"
 
 #. module: approvals
 #. odoo-python
@@ -1186,12 +1186,12 @@ msgstr "あなたの最小承認は、デフォルトの承認者の合計を超
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "e.g. Brussels"
-msgstr ""
+msgstr "例: ブリュッセル"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "e.g. Procurement"
-msgstr ""
+msgstr "例: 調達"
 
 #. module: approvals
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action
@@ -1203,4 +1203,4 @@ msgstr "メニュー"
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action_all
 msgid "new request"
-msgstr ""
+msgstr "新規申請"

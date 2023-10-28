@@ -60,6 +60,11 @@ msgid "Date"
 msgstr "日付"
 
 #. module: hr_contract_reports
+#: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__contract_start
+msgid "Date First Contract Started"
+msgstr ""
+
+#. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__date_end_contract
 msgid "Date Last Contract Ended"
 msgstr "最後の契約終了日"

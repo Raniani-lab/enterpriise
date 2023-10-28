@@ -1739,7 +1739,7 @@ msgstr "Custom Handler Laporan Pajak Umum (Pajak -> Akun)"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Go to report configuration"
-msgstr ""
+msgstr "Pergi ke konfigurasi laporan"
 
 #. module: account_reports
 #. odoo-python
@@ -1896,7 +1896,7 @@ msgstr "Sertakan entri yang belum terbit"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "Including Analytic Simulations"
-msgstr ""
+msgstr "Termasuk Simulasi Analitik"
 
 #. module: account_reports
 #. odoo-python
@@ -1982,6 +1982,28 @@ msgstr "Masukkan catatan kaki disini"
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "Intra-community taxes are applied on"
 msgstr "Pajak intra-community diterapkan pada"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Invalid domain formula in expression %r of line %r: %s"
+msgstr "Formula domain tidak valid di expression %r dari baris %r: %s"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Invalid method %r"
+msgstr "Metode tidak valid %r"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Invalid subformula in expression %r of line %r: %s"
+msgstr "Subformula di expression %r dari baris %r tidak valid: %s"
 
 #. module: account_reports
 #. odoo-python
@@ -3065,6 +3087,8 @@ msgid ""
 "The 'load more limit' setting of this report is too low to display all the "
 "lines of the entry you're trying to show."
 msgstr ""
+"Pengaturan 'muat lebih banyak' untuk laporan ini terlalu rendah untuk "
+"menampilkan baris dari entri yang Anda ingin tunjukkan."
 
 #. module: account_reports
 #. odoo-python
@@ -3081,6 +3105,15 @@ msgstr ""
 #, python-format
 msgid "The Book balance in Odoo dated today"
 msgstr "Saldo Buku di Odoo dengan tanggal hari ini"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid ""
+"The company's chart of account does not match the report's chart of "
+"accounts."
+msgstr ""
 
 #. module: account_reports
 #. odoo-python
@@ -3523,6 +3556,8 @@ msgstr "Anda sedang menggunakan kurs custom."
 #, python-format
 msgid "You can't open a tax report from a move without a VAT closing date."
 msgstr ""
+"Anda tidak dapat membuka laporan paja kdari pergerakkan tanpa tanggal "
+"closing PPN."
 
 #. module: account_reports
 #. odoo-python
@@ -3537,6 +3572,15 @@ msgstr ""
 "menghapus carryover sehingga berdampak pada laporan pajak periode yang "
 "dikunci. Untuk melakukan reset, Anda harus terlebih dahulu memodifikasi "
 "tanggal kunci spt Anda."
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_multicurrency_revaluation_report.py:0
+#, python-format
+msgid "You need to activate more than one currency to access this report."
+msgstr ""
+"Anda harus mengaktifkan lebih dari satu mata uang untuk mengakses laporan "
+"ini."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template

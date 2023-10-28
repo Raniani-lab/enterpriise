@@ -35,7 +35,7 @@ msgstr "日曆活動"
 #: code:addons/appointment_crm/static/src/views/appointment_calendar/appointment_crm_calendar_controller.xml:0
 #, python-format
 msgid "Click in your calendar to pick meeting time proposals for"
-msgstr ""
+msgstr "在日曆中單擊以選擇會議時間建議"
 
 #. module: appointment_crm
 #: model:ir.model.fields,field_description:appointment_crm.field_appointment_type__lead_create
@@ -47,7 +47,7 @@ msgstr "建立商機"
 msgid ""
 "For each scheduled appointment, create a new opportunity and assign it to "
 "the responsible user."
-msgstr ""
+msgstr "對於每個已安排的預約，創建一個新商機並將其分配給負責的用戶。"
 
 #. module: appointment_crm
 #: model:ir.model.fields,help:appointment_crm.field_appointment_type__opportunity_id
@@ -69,4 +69,4 @@ msgstr "商機"
 #. module: appointment_crm
 #: model:ir.model.fields,field_description:appointment_crm.field_appointment_type__opportunity_id
 msgid "Opportunity/Lead"
-msgstr ""
+msgstr "銷售機會/潛在客戶"

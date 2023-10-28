@@ -127,7 +127,7 @@ msgstr "Niet aftrekbaar percentage"
 #: model:account.report,name:account_disallowed_expenses.disallowed_expenses_report
 #: model:ir.actions.client,name:account_disallowed_expenses.action_account_report_de
 msgid "Disallowed Expenses Report"
-msgstr "Net-toegestane kostenrapportage"
+msgstr "Niet-toegestane kostenrapportage"
 
 #. module: account_disallowed_expenses
 #: model:ir.model.constraint,message:account_disallowed_expenses.constraint_account_disallowed_expenses_category_unique_code_in_country

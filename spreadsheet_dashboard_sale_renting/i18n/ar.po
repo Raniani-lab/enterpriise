@@ -215,7 +215,7 @@ msgstr "أهم المنتجات"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Salespeople"
-msgstr "كبار مندوبي المبيعات"
+msgstr "أعلى مندوبي المبيعات "
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript

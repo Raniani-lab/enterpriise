@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Ryoko Tsuda <ryoko@quartile.co>, 2023
+# Junko Augias, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Ryoko Tsuda <ryoko@quartile.co>, 2023\n"
+"Last-Translator: Junko Augias, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,7 +35,7 @@ msgstr "経費"
 #. module: hr_payroll_expense
 #: model:ir.model.fields,field_description:hr_payroll_expense.field_hr_payslip__expenses_count
 msgid "Expenses Count"
-msgstr ""
+msgstr "経費数"
 
 #. module: hr_payroll_expense
 #: model:hr.salary.rule,name:hr_payroll_expense.hr_salary_rule_expense_refund
@@ -44,7 +45,7 @@ msgstr "経費精算"
 #. module: hr_payroll_expense
 #: model:ir.model.fields,help:hr_payroll_expense.field_hr_payslip__expense_sheet_ids
 msgid "Expenses to reimburse to employee."
-msgstr ""
+msgstr "従業員に返金する経費"
 
 #. module: hr_payroll_expense
 #: model:ir.model,name:hr_payroll_expense.model_hr_payslip
@@ -59,21 +60,21 @@ msgstr "給与明細"
 #. module: hr_payroll_expense
 #: model:ir.model.fields,field_description:hr_payroll_expense.field_hr_expense_sheet__refund_in_payslip
 msgid "Reimburse In Next Payslip"
-msgstr ""
+msgstr "次回給与明細で払戻"
 
 #. module: hr_payroll_expense
 #: code:addons/hr_payroll_expense/models/hr_payslip.py:0
 #, python-format
 msgid "Reimbursed Expenses"
-msgstr ""
+msgstr "返金済経費"
 
 #. module: hr_payroll_expense
 #: model_terms:ir.ui.view,arch_db:hr_payroll_expense.hr_expense_sheet_view_form_inherit_payroll
 msgid "Report in Next Payslip"
-msgstr ""
+msgstr "次回の給与明細で報告"
 
 #. module: hr_payroll_expense
 #: code:addons/hr_payroll_expense/models/hr_expense_sheet.py:0
 #, python-format
 msgid "Your expense (%s) will be added to your next payslip."
-msgstr ""
+msgstr "あなたの経費(%s)は次回の給与明細に追加されます"

@@ -106,7 +106,7 @@ msgstr "<b>字節</b>"
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
 msgid "<b>Deselect this page</b> as we plan to process all bills first."
-msgstr ""
+msgstr "<b>取消選擇此頁面</b>，因為我們計劃先處理所有賬單。"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
@@ -188,7 +188,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.documents_document_res_partner_view
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "<span class=\"o_stat_text\">Documents</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">文件</span>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
@@ -616,12 +616,12 @@ msgstr "您確定要刪除此記錄嗎？"
 #, python-format
 msgid ""
 "As this PDF contains multiple documents, let's split and process in bulk."
-msgstr ""
+msgstr "由於此 PDF 包含多個文件檔，所以讓我們分拆並批量處理吧。"
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_afv
 msgid "Ask for Validation"
-msgstr ""
+msgstr "請求驗證"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_marketing_assets
@@ -730,7 +730,7 @@ msgstr "類別"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__checksum
 msgid "Checksum/SHA1"
-msgstr "Checksum/SHA1"
+msgstr "校驗碼/SHA1"
 
 #. module: documents
 #. odoo-python
@@ -744,14 +744,14 @@ msgstr ""
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
 msgid "Click on a card to <b>select the document</b>."
-msgstr ""
+msgstr "按下卡片以<b>選擇文件</b>。"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
 msgid "Click on a thumbnail to <b>preview the document</b>."
-msgstr ""
+msgstr "按下縮圖以<b>預覽文件</b>。"
 
 #. module: documents
 #. odoo-javascript
@@ -760,7 +760,7 @@ msgstr ""
 msgid ""
 "Click on the <b>page separator</b>: we don't want to split these two pages "
 "as they belong to the same document."
-msgstr ""
+msgstr "按下<b>分頁符號</b>：我們不想分拆這兩個頁面，因為它們屬於同一個文件。"
 
 #. module: documents
 #. odoo-javascript
@@ -925,7 +925,7 @@ msgstr ""
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_deprecate
 msgid "Deprecate"
-msgstr ""
+msgstr "棄用"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_status_deprecated
@@ -1064,12 +1064,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model,name:documents.model_documents_share
 msgid "Documents Share"
-msgstr ""
+msgstr "文件共享‎"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder
 msgid "Documents Workspace"
-msgstr ""
+msgstr "文件工作區"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_mixin
@@ -1422,7 +1422,7 @@ msgstr "是關注人"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__is_shared
 msgid "Is Shared"
-msgstr ""
+msgstr "被分享"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_internal_knowledge
@@ -1488,7 +1488,7 @@ msgstr "Legal"
 msgid ""
 "Let's process documents in your Inbox.<br/><i>Tip: Use Tags to filter "
 "documents and structure your process.</i>"
-msgstr ""
+msgstr "讓我們處理收件箱中的文件。<br/><span>提示：使用標籤以篩選文件並組織流程。</span>"
 
 #. module: documents
 #. odoo-javascript
@@ -1502,7 +1502,7 @@ msgstr ""
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
 msgid "Let's process this document, coming from our scanner."
-msgstr ""
+msgstr "讓我們處理這個文件，由我們的掃瞄器開始。"
 
 #. module: documents
 #. odoo-javascript
@@ -1511,7 +1511,7 @@ msgstr ""
 msgid ""
 "Let's tag this mail as legal<br/> <i>Tips: actions can be tailored to your "
 "process, according to the workspace.</i>"
-msgstr ""
+msgstr "讓我們把這封郵件標記為法律法件。<br/><span>提示：根據工作空間，動作可以根據你的流程進行調整。</span>"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__user_specific
@@ -1590,7 +1590,7 @@ msgstr "主要附件"
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_mad
 msgid "Mark As Draft"
-msgstr ""
+msgstr "標記為草稿"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__remove_activities
@@ -2130,7 +2130,7 @@ msgstr ""
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
 msgid "Send this letter to the legal department, by assigning the right tags."
-msgstr ""
+msgstr "通過分配正確的標籤，把這封信寄到法律部門。"
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_legal
@@ -2254,7 +2254,7 @@ msgstr "分享"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__document_ids
 msgid "Shared Documents"
-msgstr ""
+msgstr "共享文件"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__tag_ids
@@ -2631,7 +2631,7 @@ msgstr "影片"
 #, python-format
 msgid ""
 "Want to become a <b>paperless company</b>? Let's discover Odoo Documents."
-msgstr ""
+msgstr "想成為一家<b>無紙化公司</b>嗎？我們來看看Odoo文檔。"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__website_message_ids
@@ -2691,7 +2691,7 @@ msgstr ""
 msgid ""
 "Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is "
 "complete. Try uploading your own documents now."
-msgstr ""
+msgstr "哇！6个文檔在幾秒鐘內處理完畢。<br/>導覽結束。現在嘗試上載您自己的文檔。"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form

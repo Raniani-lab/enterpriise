@@ -1324,7 +1324,7 @@ msgstr "Filled by"
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Final Validation"
-msgstr "Final Validation"
+msgstr "最終確認"
 
 #. module: sign
 #. odoo-javascript
@@ -1885,7 +1885,7 @@ msgstr "我的需求"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "My Templates"
-msgstr "My Templates"
+msgstr "我的範本"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_request_my_requests_action
@@ -2475,7 +2475,7 @@ msgstr "儲存"
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Saved"
-msgstr "Saved"
+msgstr "已儲存"
 
 #. module: sign
 #. odoo-python
@@ -2634,7 +2634,7 @@ msgstr "在簽名請求顯示標準條款及條件"
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 #, python-format
 msgid "Sign"
-msgstr "簽字"
+msgstr "簽名"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_config_settings__use_sign_terms
@@ -2891,7 +2891,7 @@ msgstr "Signature Started"
 #. module: sign
 #: model:ir.model,name:sign.model_sign_template
 msgid "Signature Template"
-msgstr "Signature Template"
+msgstr "簽名範本"
 
 #. module: sign
 #. odoo-javascript
@@ -4113,7 +4113,7 @@ msgstr "mark it"
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "next"
-msgstr "next"
+msgstr "下一個"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree

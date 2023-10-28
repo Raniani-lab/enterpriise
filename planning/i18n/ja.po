@@ -34,7 +34,7 @@ msgstr "%s (コピー)"
 #. module: planning
 #: model:ir.actions.report,print_report_name:planning.report_planning_slot
 msgid "'Planning'"
-msgstr ""
+msgstr "'計画'"
 
 #. module: planning
 #. odoo-python
@@ -46,7 +46,7 @@ msgstr "(%s days span)"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
 msgid ".&amp;nbsp;"
-msgstr ""
+msgstr ".&amp;nbsp;"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -118,7 +118,7 @@ msgstr "<b class=\"tip_title\">ヒント：計画をより早く記録する</b>
 #: code:addons/planning/static/src/js/tours/planning.js:0
 #, python-format
 msgid "<b>Congratulations!</b></br> You are now a master of planning."
-msgstr ""
+msgstr "<b>おめでとうございます！</b></br>これであなたは計画の達人です。"
 
 #. module: planning
 #. odoo-javascript
@@ -129,13 +129,15 @@ msgid ""
 " duplicate it instead.</i> <b>Adjust the size</b> of the shift to modify its"
 " period."
 msgstr ""
+"シフトを<b>ドラッグ&ドロップ</b>してリスケジュールしましょう。 <i>ヒント: CTRL (または "
+"Cmd)キーを押して、代わりにそれを複製します。</i> シフト<b>サイズを調整</b>してその期間を修正します。"
 
 #. module: planning
 #. odoo-javascript
 #: code:addons/planning/static/src/js/tours/planning.js:0
 #, python-format
 msgid "<b>Publish & send</b> your employee's planning."
-msgstr ""
+msgstr "従業員の計画を<b>公開&送信</b>しましょう。 "
 
 #. module: planning
 #: model:mail.template,body_html:planning.email_template_planning_planning
@@ -317,7 +319,7 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_kanban
 msgid "<i class=\"me-1 fa fa-clock-o\" role=\"img\" aria-label=\"Date\" title=\"Date\"/>"
-msgstr ""
+msgstr "<i class=\"me-1 fa fa-clock-o\" role=\"img\" aria-label=\"Date\" title=\"Date\"/>"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -337,6 +339,8 @@ msgid ""
 "<span class=\"align-middle\" attrs=\"{'invisible': [('overlap_slot_count', "
 "'=', 0)]}\">for this resource at the same time.</span>"
 msgstr ""
+"<span class=\"align-middle\" attrs=\"{'invisible': [('overlap_slot_count', "
+"'=', 0)]}\">同時にこのリソース用に</span>"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -346,7 +350,7 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_form
 msgid "<span class=\"ms-2 flex-shrink-1\"> Working hours</span>"
-msgstr ""
+msgstr "<span class=\"ms-2 flex-shrink-1\">勤務時間 </span>"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.res_config_settings_view_form
@@ -448,17 +452,17 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "<span>Doris Cole <span class=\"text-muted\">(Bartender)</span></span>"
-msgstr ""
+msgstr "<span>Doris Cole <span class=\"text-muted\">(バーテンダー)</span></span>"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "<span>Eli Lambert <span class=\"text-muted\">(Waiter)</span></span>"
-msgstr ""
+msgstr "<span>Eli Lambert <span class=\"text-muted\">(ウェイター)</span></span>"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "<span>Jeffrey Kelly <span class=\"text-muted\">(Bartender)</span></span>"
-msgstr ""
+msgstr "<span>Jeffrey Kelly <span class=\"text-muted\">(バーテンダー)</span></span>"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.res_config_settings_view_form
@@ -468,7 +472,7 @@ msgstr "<span>ヶ月先</span>"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_gantt
 msgid "<strong>Allocated Time — </strong>"
-msgstr ""
+msgstr "<strong>割当時間 — </strong>"
 
 #. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_recurrency_check_until_limit
@@ -544,7 +548,7 @@ msgstr "割り当てられた時間(%)"
 #. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_slot_check_allocated_hours_positive
 msgid "Allocated hours and allocated time percentage cannot be negative."
-msgstr ""
+msgstr "割当時間と割当時間率は負であってはいけません。"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__allocation_type
@@ -583,7 +587,7 @@ msgstr ""
 msgid ""
 "Analyze the allocation of your resources across roles, projects, and sales "
 "orders, and estimate future needs."
-msgstr ""
+msgstr "役割、プロジェクト、販売オーダにまたがるリソースの割当てを分析し、将来のニーズを予測します。"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_form
@@ -607,7 +611,7 @@ msgstr "本当にこのシフトを削除しますか？"
 msgid ""
 "As there is no running contract during this period, this resource is not "
 "expected to work a shift. Planned hours:"
-msgstr ""
+msgstr "この期間は契約がないため、このリソースにはシフト勤務がありません。予定時間:"
 
 #. module: planning
 #. odoo-javascript
@@ -618,6 +622,8 @@ msgid ""
 "open shifts for the roles you will be needing to complete a mission. Then, "
 "assign those open shifts to the resources that are available.</i>"
 msgstr ""
+"<b>リソース</b>を割当するか、今のところオープンにしておきましょう。 <i>ヒント: "
+"任務完了するために必要な役割用に、オープンシフトを作成します。そして、それらのオープンシフトを、利用可能なリソースに割当てます。"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_resource_resource__avatar_128
@@ -627,7 +633,7 @@ msgstr "アバター 128"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "Bartender"
-msgstr ""
+msgstr "バーテンダー"
 
 #. module: planning
 #: model:ir.model,name:planning.model_hr_employee_base
@@ -687,7 +693,7 @@ msgstr "会社"
 msgid ""
 "Company linked to the material resource. Leave empty for the resource to be "
 "available in every company."
-msgstr ""
+msgstr "材料リソースにリンクされている会社。全ての会社でリソースが利用可能な場合は空のままにします。"
 
 #. module: planning
 #: model:ir.model,name:planning.model_res_config_settings
@@ -775,7 +781,7 @@ msgstr "日"
 #: model:ir.model.fields,field_description:planning.field_res_company__planning_self_unassign_days_before
 #: model:ir.model.fields,field_description:planning.field_res_config_settings__planning_self_unassign_days_before
 msgid "Days before shift for unassignment"
-msgstr ""
+msgstr "シフト割当解除までの日数"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.res_config_settings_view_form
@@ -785,7 +791,7 @@ msgstr "期日"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__unassign_deadline
 msgid "Deadline for unassignment"
-msgstr ""
+msgstr "割当解除の締切"
 
 #. module: planning
 #: model:ir.model.fields,help:planning.field_planning_planning__self_unassign_days_before
@@ -793,7 +799,7 @@ msgstr ""
 #: model:ir.model.fields,help:planning.field_res_company__planning_self_unassign_days_before
 #: model:ir.model.fields,help:planning.field_res_config_settings__planning_self_unassign_days_before
 msgid "Deadline in days for shift unassignment"
-msgstr ""
+msgstr "シフト割当解除期限までの日数"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_hr_employee__default_planning_role_id
@@ -805,7 +811,7 @@ msgstr "デフォルトの計画の役割"
 msgid ""
 "Define a work email address for the following employees so they will receive"
 " the planning."
-msgstr ""
+msgstr "以下の従業員に業務用のEメールアドレスを定義し、予定を受取れるようにして下さい。"
 
 #. module: planning
 #: model:ir.model.fields,help:planning.field_planning_slot__role_id
@@ -814,6 +820,7 @@ msgid ""
 "Create open shifts for the roles you need to complete a mission. Then, "
 "assign those open shifts to the resources that are available."
 msgstr ""
+"リソースが果たす役割を定義します(例：シェフ、バーテンダー、ウェイター...)ミッションを完了するために必要な役割のオープンシフトを作成します。次に、これらのオープンシフトを利用可能なリソースに割当てます。"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -822,6 +829,7 @@ msgid ""
 "Create open shifts for the roles you will be needing to complete a mission. "
 "Then, assign those open shifts to the resources that are available."
 msgstr ""
+"リソースが果たす役割を定義します(例：シェフ、バーテンダー、ウェイター...)ミッションを完了するために必要となるだろう役割のオープンシフトを作成します。次に、これらのオープンシフトを利用可能なリソースに割当てます。"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_kanban

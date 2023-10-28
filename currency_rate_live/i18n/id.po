@@ -32,17 +32,17 @@ msgstr ""
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__boc
 msgid "Bank Of Canada"
-msgstr ""
+msgstr "Bank Of Canada"
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__cbegy
 msgid "Central Bank of Egypt"
-msgstr ""
+msgstr "Central Bank of Egypt"
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__mindicador
 msgid "Chilean mindicador.cl"
-msgstr ""
+msgstr "Chilean mindicador.cl"
 
 #. module: currency_rate_live
 #: model:ir.model,name:currency_rate_live.model_res_company
@@ -58,7 +58,7 @@ msgstr "Pengaturan Konfigurasi"
 #: model:ir.actions.server,name:currency_rate_live.ir_cron_currency_update_ir_actions_server
 #: model:ir.cron,cron_name:currency_rate_live.ir_cron_currency_update
 msgid "Currency: rate update"
-msgstr ""
+msgstr "Mata uang: kurs diupdate"
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__daily
@@ -68,12 +68,12 @@ msgstr "Harian"
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__ecb
 msgid "European Central Bank"
-msgstr ""
+msgstr "European Central Bank"
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__fta
 msgid "Federal Tax Administration (Switzerland)"
-msgstr ""
+msgstr "Federal Tax Administration (Switzerland)"
 
 #. module: currency_rate_live
 #: model_terms:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
@@ -94,7 +94,7 @@ msgstr "Manual"
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__banxico
 msgid "Mexican Bank"
-msgstr ""
+msgstr "Mexican Bank"
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__monthly
@@ -104,12 +104,12 @@ msgstr "Bulanan"
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__bnr
 msgid "National Bank Of Romania"
-msgstr ""
+msgstr "National Bank Of Romania"
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__nbp
 msgid "National Bank of Poland"
-msgstr ""
+msgstr "National Bank of Poland"
 
 #. module: currency_rate_live
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_company__currency_next_execution_date
@@ -125,7 +125,7 @@ msgstr "Next Run"
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__bcrp
 msgid "SUNAT (replaces Bank of Peru)"
-msgstr ""
+msgstr "SUNAT (replaces Bank of Peru)"
 
 #. module: currency_rate_live
 #: model_terms:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
@@ -136,17 +136,17 @@ msgstr "Jasa"
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_company__currency_provider
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_config_settings__currency_provider
 msgid "Service Provider"
-msgstr ""
+msgstr "Penyedia Layanan"
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__tcmb
 msgid "Turkey Republic Central Bank"
-msgstr ""
+msgstr "Turkey Republic Central Bank"
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__cbuae
 msgid "UAE Central Bank"
-msgstr ""
+msgstr "UAE Central Bank"
 
 #. module: currency_rate_live
 #. odoo-python
@@ -156,6 +156,8 @@ msgid ""
 "Unable to connect to the online exchange rate platform. The web service may "
 "be temporary down. Please try again in a moment."
 msgstr ""
+"Tidak dapat menghubungi platform kurs online. Layanan website mungkin "
+"sementara mati. Silakan coba lagi nanti."
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__weekly
@@ -170,8 +172,10 @@ msgid ""
 "Your main currency (%s) is not supported by this exchange rate provider. "
 "Please choose another one."
 msgstr ""
+"Mata uang utama (%s) tidak didukung oleh penyedia nilai tukar ini. Silakan "
+"coba yang lain."
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__xe_com
 msgid "xe.com"
-msgstr ""
+msgstr "xe.com"

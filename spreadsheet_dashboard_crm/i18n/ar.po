@@ -61,7 +61,7 @@ msgstr "متوسط حجم الصفقة "
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Average deal size"
-msgstr "معدل حجم الصفقة"
+msgstr "متوسط حجم الصفقة "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -84,14 +84,14 @@ msgstr "المدينة"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Close Rate"
-msgstr "سعر الإغلاق"
+msgstr "معدل الإغلاق "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Close rate"
-msgstr "سعر الإغلاق"
+msgstr "معدل الإغلاق "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -105,14 +105,14 @@ msgstr "مغلق"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed count"
-msgstr "العد مغلق"
+msgstr "عدد الصفقات الرابحة "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed revenue"
-msgstr "الإيرادات المغلقة"
+msgstr "الإيرادات المحققة "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -153,21 +153,21 @@ msgstr "أيام حتى التعيين "
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to Win"
-msgstr "أيام للفوز"
+msgstr "أيام حتى الفوز "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to assign"
-msgstr "أيام ل كلف"
+msgstr "أيام حتى التعيين "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to win"
-msgstr "أيام للفوز"
+msgstr "أيام حتى الفوز "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -188,14 +188,14 @@ msgstr "إقفال متوقع"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected count"
-msgstr "المتوقع عدد"
+msgstr "العدد المتوقع "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected revenue"
-msgstr "المتوقع إيرادات"
+msgstr "الإيرادات المتوقعة "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -210,7 +210,7 @@ msgstr "المؤشرات الرئيسية للأداء "
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Leads by Month"
-msgstr "يؤدي بواسطة شهر"
+msgstr "العملاء المهتمون حسب الشهر "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -218,7 +218,7 @@ msgstr "يؤدي بواسطة شهر"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Lost Reason"
-msgstr "سبب الخسارة"
+msgstr "سبب الضياع "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -249,7 +249,7 @@ msgstr "الفرصة "
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Percentage closed"
-msgstr "النسبة المئوية المغلقة"
+msgstr "نسبة الصفقات الرابحة "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -264,7 +264,7 @@ msgstr "الفترة"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Pipeline Stages"
-msgstr "مراحل خطوط الأنابيب"
+msgstr "مراحل مخطط سير العمل "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -400,7 +400,7 @@ msgstr "أهم أسباب الضياع"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Mediums"
-msgstr "أفضل الوسطاء"
+msgstr "أفضل الأوساط "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -423,7 +423,7 @@ msgstr "أعلى فريق المبيعات "
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Salespeople"
-msgstr "كبار مندوبي المبيعات"
+msgstr "أعلى مندوبي المبيعات "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -613,7 +613,7 @@ msgstr "أعلى فريق مبيعات "
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top salespeople"
-msgstr "كبار مندوبي المبيعات"
+msgstr "أعلى مندوبي المبيعات "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript

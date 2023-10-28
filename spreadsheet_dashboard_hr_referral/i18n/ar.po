@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Niyas Raphy, 2022
 # Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
@@ -300,7 +299,7 @@ msgstr "أعلى المناصب الوظيفية "
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Mediums"
-msgstr "أفضل الوسطاء"
+msgstr "أفضل الأوساط "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript

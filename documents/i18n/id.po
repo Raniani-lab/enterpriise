@@ -2645,7 +2645,7 @@ msgstr "Sudah Divalidasi"
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_Videos
 msgid "Videos"
-msgstr ""
+msgstr "Video-Video"
 
 #. module: documents
 #. odoo-javascript

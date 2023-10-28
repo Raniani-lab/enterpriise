@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Niyas Raphy, 2022
 # Mehjabin Farsana, 2022
 # Malaz Abuidris <msea@odoo.com>, 2023
 # 
@@ -41,7 +40,7 @@ msgstr "الإيرادات المتوقعة  حسب المرحلة "
 #: code:addons/documents_spreadsheet_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Loss Reasons"
-msgstr "أسباب الخسارة"
+msgstr "أسباب الضياع "
 
 #. module: documents_spreadsheet_crm
 #. odoo-javascript

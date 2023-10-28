@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Niyas Raphy, 2022
 # Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
@@ -34,7 +33,7 @@ msgstr "الموظف"
 #. module: timesheet_grid_holidays
 #: model:ir.model,name:timesheet_grid_holidays.model_hr_timesheet_merge_wizard
 msgid "Merge Timesheets"
-msgstr "دمج سجل النشاط"
+msgstr "دمج الجداول الزمنية "
 
 #. module: timesheet_grid_holidays
 #. odoo-python

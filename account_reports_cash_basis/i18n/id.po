@@ -29,7 +29,7 @@ msgstr "Laporan Akuntansi"
 #. module: account_reports_cash_basis
 #: model_terms:ir.ui.view,arch_db:account_reports_cash_basis.search_template_extra_options
 msgid "Accrual Basis"
-msgstr ""
+msgstr "Basis Akrual"
 
 #. module: account_reports_cash_basis
 #: model:ir.model.fields,field_description:account_reports_cash_basis.field_account_report__filter_cash_basis

@@ -778,7 +778,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Admin"
-msgstr ""
+msgstr "管理員"
 
 #. module: knowledge
 #. odoo-javascript

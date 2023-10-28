@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Wil Odoo, 2023
 # Tony Ng, 2023
 # 
 msgid ""
@@ -36,22 +37,22 @@ msgstr "建立"
 #: code:addons/documents_sign/models/workflow.py:0
 #, python-format
 msgid "New templates"
-msgstr ""
+msgstr "新範本"
 
 #. module: documents_sign
 #: model:ir.model.fields.selection,name:documents_sign.selection__documents_workflow_rule__create_model__sign_template_direct
 msgid "PDF to Sign"
-msgstr ""
+msgstr "要簽署的 PDF"
 
 #. module: documents_sign
 #: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_directly
 msgid "Sign"
-msgstr "簽字"
+msgstr "簽名"
 
 #. module: documents_sign
 #: model:ir.model.fields.selection,name:documents_sign.selection__documents_workflow_rule__create_model__sign_template_new
 msgid "Signature PDF Template"
-msgstr ""
+msgstr "簽名 PDF 範本"
 
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_request
@@ -61,14 +62,14 @@ msgstr "簽名請求"
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_template
 msgid "Signature Template"
-msgstr "Signature Template"
+msgstr "簽名範本"
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_template__documents_tag_ids
 msgid "Signed Document Tags"
-msgstr ""
+msgstr "已簽名文件標籤"
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_template__folder_id
 msgid "Signed Document Workspace"
-msgstr ""
+msgstr "已簽名文件工作區"

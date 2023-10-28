@@ -1117,7 +1117,7 @@ msgstr "Aktivitätstypen"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_user_type
 msgid "Activity User Type"
-msgstr "Aktivität Benutzertyp"
+msgstr "Benutzertyp der Aktivität"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__partner_ids
@@ -1271,7 +1271,7 @@ msgstr "Schlechter Zustand"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__filter_pre_domain
 msgid "Before Update Domain"
-msgstr "Bereich vor Aktualisierung"
+msgstr "Domain vor Aktualisierung"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__binding_model_id

@@ -228,7 +228,7 @@ class AccountReport(models.Model):
                     'name': group.display_name,
                     'title': group.display_name,
                     'selected': selected,
-                    'journal_types': set(remaining_journals.mapped('type')),
+                    'journal_types': list(set(remaining_journals.mapped('type'))),
                 })
                 if selected:
                     company_vals['selected_journal_groups'] |= group

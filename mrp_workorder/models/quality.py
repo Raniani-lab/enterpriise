@@ -404,7 +404,6 @@ class QualityCheck(models.Model):
             'move_id': self.move_id.id,
             'product_id': self.move_id.product_id.id,
             'location_dest_id': location_dest_id.id,
-            'reserved_uom_qty': 0,
             'product_uom_id': move_uom.id,
             'lot_id': self.lot_id.id,
             'company_id': self.move_id.company_id.id,

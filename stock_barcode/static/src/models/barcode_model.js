@@ -832,6 +832,14 @@ export default class BarcodeModel extends EventBus {
         try {
             const parsedBarcode = this.parser.parse_barcode(barcode);
             if (parsedBarcode.length) { // With the GS1 nomenclature, the parsed result is a list.
+                const productRule = parsedBarcode.find(bc => bc.rule.type === "product");
+                this.gs1Filters = {};
+                if (productRule) {
+                    const product = await this.cache.getRecordByBarcode(productRule.value, 'product.product');
+                    if(product){
+                        this.gs1Filters['stock.lot'] = {product_id: product.id};
+                    }
+                }
                 for (const data of parsedBarcode) {
                     const parsedData = await this._processGs1Data(data);
                     Object.assign(result, parsedData);
@@ -948,7 +956,7 @@ export default class BarcodeModel extends EventBus {
             }
         } else if (rule.type === 'lot') {
             if (this.useExistingLots) {
-                result.lot = await this.cache.getRecordByBarcode(value, 'stock.lot');
+                result.lot = await this.cache.getRecordByBarcode(value, 'stock.lot', false, this.gs1Filters);
             }
             if (!result.lot) { // No existing lot found, set a lot name.
                 result.lotName = value;

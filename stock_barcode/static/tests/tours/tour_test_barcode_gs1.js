@@ -619,6 +619,32 @@ tour.register('test_gs1_reserved_delivery', {test:true}, [
     { trigger: '.o_notification.border-success' },
 ]);
 
+tour.register('test_gs1_delivery_ambiguous_serial_number', {test:true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-00-00',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan 01057115440019521524071010304',
+    },
+    {
+        trigger: '.o_barcode_line .qty-done:contains(1)',
+        run: function () {
+            helper.assertLinesCount(1);
+            const $line = helper.getLine({barcode: '05711544001952'});
+            helper.assertLineIsHighlighted($line, true);
+            helper.assertLineQty($line, '1');
+        }
+    },
+    // Validates the transfer.
+    {
+        trigger: '.o_validate_page.btn-success',
+        run: 'scan O-BTN.validate',
+    },
+    { trigger: '.o_notification.border-success' },
+]);
+
 tour.register('test_gs1_receipt_conflicting_barcodes_1', {test: true}, [
     {
         trigger: '.o_barcode_client_action',

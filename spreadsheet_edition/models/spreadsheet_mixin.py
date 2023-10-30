@@ -305,7 +305,7 @@ class SpreadsheetMixin(models.AbstractModel):
     def get_spreadsheet_history(self, from_snapshot=False):
         """Fetch the spreadsheet history.
          - if from_snapshot is provided, then provides the last snapshot and the revisions since then
-         - otherwise, returns the empty skeleton of the spreasheet with all the revisions since its creation
+         - otherwise, returns the empty skeleton of the spreadsheet with all the revisions since its creation
         """
         self.ensure_one()
         self._check_collaborative_spreadsheet_access("read")
@@ -313,11 +313,15 @@ class SpreadsheetMixin(models.AbstractModel):
 
         if from_snapshot:
             data = spreadsheet_sudo._get_spreadsheet_snapshot()
-            revisions = spreadsheet_sudo._build_spreadsheet_messages()
-
+            revisions = self.spreadsheet_revision_ids
         else:
             data = json.loads(self.spreadsheet_data)
-            revisions = [
+            revisions = self.with_context(active_test=False).spreadsheet_revision_ids
+
+        return {
+            "name": spreadsheet_sudo.display_name,
+            "data": data,
+            "revisions": [
                 dict(
                     json.loads(rev.commands),
                     id=rev.id,
@@ -327,13 +331,8 @@ class SpreadsheetMixin(models.AbstractModel):
                     nextRevisionId=rev.revision_id,
                     timestamp=rev.create_date,
                 )
-                for rev in self.with_context(active_test=False).spreadsheet_revision_ids
-            ]
-
-        return {
-            "name": spreadsheet_sudo.display_name,
-            "data": data,
-            "revisions": revisions,
+                for rev in revisions
+            ],
         }
 
     def rename_revision(self, revision_id, name):

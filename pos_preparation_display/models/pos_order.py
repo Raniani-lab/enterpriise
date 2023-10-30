@@ -23,7 +23,7 @@ class PosOrder(models.Model):
             if not line.skip_change:
                 # This is a strange way of doing things but it is imposed by what was done in the frontend.
                 # as this method is a copy of the method updateLastOrderChanges in the frontend.
-                note = line.note or ''
+                note = line.note if hasattr(line, 'note') and line.note else '' # FIXME after oxp
                 line_key = f'{line.uuid} - {note}'
 
                 if line_key in changes:
@@ -51,7 +51,8 @@ class PosOrder(models.Model):
         if line_key not in changes:
             return True
         for line in self.lines:
-            if line.uuid == changes[line_key]['line_uuid'] and (line.note or '') == changes[line_key]['note']:
+            note = line.note if hasattr(line, 'note') and line.note else '' # FIXME after oxp
+            if line.uuid == changes[line_key]['line_uuid'] and note == changes[line_key]['note']:
                 return True
         return False
 
@@ -125,15 +126,14 @@ class PosOrder(models.Model):
         # When one of them has changed, we add the change.
         for orderline in self.lines:
             product = orderline.product_id
-            note = orderline.note
-            product_key = f'{product.id} - {orderline.full_product_name} - {note}'
+            note = orderline.note if hasattr(orderline, 'note') and orderline.note else '' # FIXME after oxp
             line_key = f'{orderline.uuid} - {note}'
             if len(prepa_category_ids) == 0 or set(product.pos_categ_ids.ids).intersection(prepa_category_ids) or self.is_child_of_any(product.pos_categ_ids, prepa_category_ids):
                 quantity = orderline.qty
                 quantity_diff = quantity - old_changes[line_key]['quantity'] if line_key in old_changes else quantity
 
                 if quantity_diff and not orderline.skip_change:
-                    changes[product_key] = {
+                    changes[line_key] = {
                         'name': orderline.full_product_name,
                         'product_id': product.id,
                         'attribute_value_ids': orderline.attribute_value_ids.ids,
@@ -145,10 +145,10 @@ class PosOrder(models.Model):
         # was last sent to the preparation tools. If so we add this to the changes.
 
         for line_key, line_resume in old_changes.items():
-            if not self.lines.filtered(lambda line: line.uuid == line_resume['line_uuid'] and line.note == line_resume['note']):
-                product_key = f"{line_resume['product_id']} - {line_resume['name']} - {line_resume['note']}"
-                if not changes.get(product_key):
-                    changes[product_key] = {
+            if not self.lines.filtered(lambda line: line.uuid == line_resume['line_uuid'] and (line.note if hasattr(line, 'note') and line.note else '') == line_resume['note']):
+                line_key = f"{line_resume['line_uuid']} - {line_resume['note']}"
+                if not changes.get(line_key):
+                    changes[line_key] = {
                         'product_id': line_resume['product_id'],
                         'name': line_resume['name'],
                         'note': line_resume['note'],
@@ -156,7 +156,7 @@ class PosOrder(models.Model):
                         'quantity': -line_resume['quantity'],
                     }
                 else:
-                    changes[product_key]['quantity'] -= line_resume['quantity']
+                    changes[line_key]['quantity'] -= line_resume['quantity']
 
         return changes
 

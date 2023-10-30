@@ -38,6 +38,7 @@
             <form string="Picking Details">
                 <field name="show_allocation" invisible="1"/>
                 <field name="company_id" invisible="1"/>
+                <field name="picking_type_code" invisible="1"/>
                 <group>
                     <button name="action_view_reception_report" string="Allocation" type="object"
                         context="{'default_picking_ids': [id]}"
@@ -49,6 +50,8 @@
                     <field name="origin" readonly="1" invisible="not origin"/>
                     <field name="state" readonly="1" invisible="not state"/>
                     <field name="priority" readonly="1" invisible="not priority"/>
+                    <field name="location_id" options="{'no_create': True}" groups="stock.group_stock_multi_locations" invisible="picking_type_code == 'incoming'" readonly="state == 'done'"/>
+                    <field name="location_dest_id" options="{'no_create': True}" groups="stock.group_stock_multi_locations" invisible="picking_type_code == 'outgoing'" readonly="state == 'done'"/>
                     <field name="owner_id" readonly="1" invisible="not owner_id" groups="stock.group_tracking_owner"/>
                     <field name="company_id" readonly="1" groups="base.group_multi_company"/>
                     <field name="move_ids" readonly="1" invisible="not move_ids">

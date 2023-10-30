@@ -10,7 +10,11 @@
             <t t-foreach="columnHeaders" t-as="columnHeader" t-key="columnHeader_index">
                 <tr>
                     <!-- First empty column -->
-                    <th/>
+                    <th>
+                        <t t-if="columnHeader_first and controller.options.companies.length > 1">
+                            <span class="companies_header" t-out="controller.options.companies.map(company => company.name).join(', ')"/>
+                        </t>
+                    </th>
 
                     <!-- Other columns -->
                     <t t-foreach="columnHeader" t-as="header" t-key="header_index">

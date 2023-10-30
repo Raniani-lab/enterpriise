@@ -12,6 +12,7 @@ import { DataSources } from "@spreadsheet/data_sources/data_sources";
 import { initCallbackRegistry } from "@spreadsheet/o_spreadsheet/init_callbacks";
 import { RecordFileStore } from "../image/record_file_store";
 import { useSpreadsheetCurrencies, useSpreadsheetLocales, useSpreadsheetThumbnail } from "../hooks";
+import { useSpreadsheetPrint } from "@spreadsheet/hooks";
 
 const { createCurrencyFormat } = spreadsheet.helpers;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
@@ -72,10 +73,13 @@ export class AbstractSpreadsheetAction extends Component {
                 };
             },
         });
+
+        const print = useSpreadsheetPrint(() => this.model);
         useSubEnv({
             download: this.download.bind(this),
             downloadAsJson: this.downloadAsJson.bind(this),
             showHistory: this.showHistory.bind(this),
+            print,
         });
         this.state = useState({
             spreadsheetName: UNTITLED_SPREADSHEET_NAME,

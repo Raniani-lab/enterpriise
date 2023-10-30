@@ -22,6 +22,9 @@
             ('remove', 'spreadsheet_edition/static/src/bundle/actions/control_panel/spreadsheet_breadcrumbs.xml'),
             ('remove', 'spreadsheet_edition/static/src/bundle/pivot/pivot.xml'),
         ],
+        'spreadsheet.assets_print': [
+            'spreadsheet_edition/static/src/print_assets/**/*',
+        ],
         'web.assets_backend': [
             'spreadsheet_edition/static/src/**/*.scss',
             'spreadsheet_edition/static/src/bundle/pivot/pivot.xml',

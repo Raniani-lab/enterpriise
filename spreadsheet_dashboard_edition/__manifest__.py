@@ -22,6 +22,9 @@
             'spreadsheet_dashboard_edition/static/src/**/*.scss',
             'spreadsheet_dashboard_edition/static/src/**/*.xml',
         ],
+        'spreadsheet.assets_print': [
+            'spreadsheet_dashboard_edition/static/src/print_assets/**/*',
+        ],
         'web.qunit_suite_tests': [
             'spreadsheet_dashboard_edition/static/tests/**/*',
         ],

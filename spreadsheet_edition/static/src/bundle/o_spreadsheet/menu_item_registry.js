@@ -147,3 +147,11 @@ topbarMenuRegistry.addChild("reinsert_list", ["data"], {
     isVisible: (env) => env.model.getters.getListIds().length,
     icon: "o-spreadsheet-Icon.INSERT_LIST",
 });
+
+topbarMenuRegistry.addChild("print", ["file"], {
+    name: _t("Print"),
+    sequence: 60,
+    isVisible: (env) => env.print,
+    execute: (env) => env.print(),
+    icon: "o-spreadsheet-Icon.PRINT",
+});

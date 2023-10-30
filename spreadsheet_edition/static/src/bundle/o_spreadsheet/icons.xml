@@ -94,4 +94,7 @@
       />
     </svg>
   </t>
+  <t t-name="o-spreadsheet-Icon.PRINT">
+    <i class="fa fa-print text-center o-icon"/>
+  </t>
 </templates>

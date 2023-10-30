@@ -32,7 +32,7 @@ class AccountReport(models.AbstractModel):
         options['include_analytic_without_aml'] = (previous_options or {}).get('include_analytic_without_aml', False)
         previous_analytic_accounts = (previous_options or {}).get('analytic_accounts_groupby', [])
         analytic_account_ids = [int(x) for x in previous_analytic_accounts]
-        selected_analytic_accounts = self.env['account.analytic.account'].search(
+        selected_analytic_accounts = self.env['account.analytic.account'].with_context(active_test=False).search(
             [('id', 'in', analytic_account_ids)])
         options['analytic_accounts_groupby'] = selected_analytic_accounts.ids
         options['selected_analytic_account_groupby_names'] = selected_analytic_accounts.mapped('name')

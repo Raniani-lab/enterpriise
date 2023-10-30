@@ -344,5 +344,5 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
             # remind user to submit EC Sales Report if any ec sales related taxes
             warnings['l10n_be_reports.tax_report_warning_ec_sales_reminder'] = {}
 
-        if failed_controls:
+        if failed_controls and warnings is not None:
             warnings['l10n_be_reports.tax_report_warning_checks'] = {'failed_controls': failed_controls, 'alert_type': 'danger'}

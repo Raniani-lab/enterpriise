@@ -1,10 +1,10 @@
 {
-    "version": 12,
+    "version": 14,
     "sheets": [
         {
             "id": "sheet1",
             "name": "Dashboard",
-            "colNumber": 10,
+            "colNumber": 9,
             "rowNumber": 86,
             "rows": {
                 "6": {
@@ -68,56 +68,59 @@
                 },
                 "8": {
                     "size": 100
-                },
-                "9": {
-                    "size": 100
                 }
             },
             "merges": [],
             "cells": {
                 "A7": {
                     "style": 1,
-                    "content": "[Monthly recurring revenue](odoo://view/{\"viewType\":\"graph\",\"action\":{\"domain\":[[\"event_type\",\"!=\",\"3_transfer\"]],\"context\":{\"group_by\":[],\"graph_measure\":\"mrr_change_normalized\",\"graph_mode\":\"line\",\"graph_groupbys\":[\"event_date:month\"],\"graph_order\":null,\"graph_stacked\":true,\"graph_cumulated\":false},\"modelName\":\"sale.order.log.report\",\"views\":[[false,\"graph\"],[false,\"list\"],[false,\"pivot\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"MRR Analysis\"})",
+                    "content": "[MRR by Products](odoo://view/{\"viewType\":\"graph\",\"action\":{\"domain\":[],\"context\":{\"group_by\":[\"event_type\"],\"graph_measure\":\"mrr_change_normalized\",\"graph_mode\":\"pie\",\"graph_groupbys\":[\"event_type\"]},\"modelName\":\"sale.order.log.report\",\"views\":[[false,\"graph\"],[false,\"list\"],[false,\"pivot\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"MRR Analysis\"})",
                     "border": 1
                 },
                 "A19": {
                     "style": 1,
-                    "content": "[Monthly growth](odoo://view/{\"viewType\":\"graph\",\"action\":{\"domain\":[[\"event_type\",\"!=\",\"3_transfer\"]],\"context\":{\"group_by\":[\"event_date:month\",\"event_type\"],\"graph_measure\":\"mrr_change_normalized\",\"graph_mode\":\"bar\",\"graph_groupbys\":[\"event_date:month\",\"event_type\"],\"graph_order\":null,\"graph_stacked\":true},\"modelName\":\"sale.order.log.report\",\"views\":[[false,\"graph\"],[false,\"list\"],[false,\"pivot\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"MRR Growth\"})",
+                    "content": "[MRR by Country](odoo://view/{\"viewType\":\"graph\",\"action\":{\"domain\":[],\"context\":{\"group_by\":[\"country_id\"],\"graph_measure\":\"mrr_change_normalized\",\"graph_mode\":\"pie\",\"graph_groupbys\":[\"country_id\"]},\"modelName\":\"sale.order.log.report\",\"views\":[[false,\"graph\"],[false,\"list\"],[false,\"pivot\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"MRR Analysis\"})",
                     "border": 1
                 },
                 "A32": {
                     "style": 1,
-                    "content": "[Top Quotations](odoo://view/{\"viewType\":\"list\",\"action\":{\"domain\":[\"&\",[\"subscription_state\",\"in\",[\"1_draft\",\"2_renewal\",\"3_progress\",\"4_paused\",\"5_renewed\",\"6_churn\"]],[\"subscription_state\",\"in\",[\"1_draft\",\"2_renewal\"]]],\"context\":{\"group_by\":[]},\"modelName\":\"sale.order\",\"views\":[[false,\"list\"],[false,\"kanban\"],[false,\"form\"],[false,\"pivot\"],[false,\"graph\"],[false,\"cohort\"],[false,\"activity\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"Quotations\"})",
+                    "content": "[Top Quotations](odoo://view/{\"viewType\":\"list\",\"action\":{\"domain\":[\"&\",[\"subscription_state\",\"in\",[\"1_draft\",\"2_renewal\",\"3_progress\",\"4_paused\",\"5_renewed\",\"6_churn\"]],\"|\",[\"subscription_state\",\"=\",\"3_progress\"],[\"subscription_state\",\"=\",\"4_paused\"]],\"context\":{\"group_by\":[]},\"modelName\":\"sale.order\",\"views\":[[false,\"list\"],[false,\"kanban\"],[false,\"calendar\"],[false,\"form\"],[false,\"pivot\"],[false,\"graph\"],[false,\"cohort\"],[false,\"activity\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"Quotations\"})",
                     "border": 1
                 },
                 "A33": {
                     "style": 2,
                     "content": "=_t(\"Quotes\")",
-                    "border": 2
+                    "border": 3
                 },
                 "A34": {
                     "style": 3,
-                    "content": "=ODOO.LIST(2,1,\"name\")"
+                    "content": "=ODOO.LIST(2,1,\"name\")",
+                    "border": 4
                 },
                 "A35": {
                     "style": 4,
-                    "content": "=ODOO.LIST(2,2,\"name\")"
+                    "content": "=ODOO.LIST(2,2,\"name\")",
+                    "border": 5
                 },
                 "A36": {
                     "style": 3,
-                    "content": "=ODOO.LIST(2,3,\"name\")"
+                    "content": "=ODOO.LIST(2,3,\"name\")",
+                    "border": 5
                 },
                 "A37": {
                     "style": 4,
-                    "content": "=ODOO.LIST(2,4,\"name\")"
+                    "content": "=ODOO.LIST(2,4,\"name\")",
+                    "border": 5
                 },
                 "A38": {
                     "style": 3,
-                    "content": "=ODOO.LIST(2,5,\"name\")"
+                    "content": "=ODOO.LIST(2,5,\"name\")",
+                    "border": 5
                 },
                 "A39": {
                     "style": 4,
-                    "content": "=ODOO.LIST(2,6,\"name\")"
+                    "content": "=ODOO.LIST(2,6,\"name\")",
+                    "border": 5
                 },
                 "A40": {
                     "style": 3,
@@ -292,11 +295,12 @@
                 "B33": {
                     "style": 2,
                     "content": "=_t(\"Customer\")",
-                    "border": 2
+                    "border": 3
                 },
                 "B34": {
                     "style": 6,
-                    "content": "=ODOO.LIST(2,1,\"partner_id\")"
+                    "content": "=ODOO.LIST(2,1,\"partner_id\")",
+                    "border": 2
                 },
                 "B35": {
                     "content": "=ODOO.LIST(2,2,\"partner_id\")"
@@ -387,29 +391,16 @@
                     "style": 6
                 },
                 "B75": {
-                    "style": 6,
-                    "format": 1
-                },
-                "B76": {
-                    "format": 1
+                    "style": 6
                 },
                 "B77": {
-                    "style": 6,
-                    "format": 1
-                },
-                "B78": {
-                    "format": 1
+                    "style": 6
                 },
                 "B79": {
-                    "style": 6,
-                    "format": 1
-                },
-                "B80": {
-                    "format": 1
+                    "style": 6
                 },
                 "B81": {
-                    "style": 6,
-                    "format": 1
+                    "style": 6
                 },
                 "C32": {
                     "style": 5,
@@ -418,51 +409,42 @@
                 "C33": {
                     "style": 7,
                     "content": "=_t(\"Salesperson\")",
-                    "border": 2
+                    "border": 3
                 },
                 "C34": {
                     "style": 6,
-                    "format": 1,
-                    "content": "=ODOO.LIST(2,1,\"user_id\")"
+                    "content": "=ODOO.LIST(2,1,\"user_id\")",
+                    "border": 2
                 },
                 "C35": {
-                    "format": 1,
                     "content": "=ODOO.LIST(2,2,\"user_id\")"
                 },
                 "C36": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.LIST(2,3,\"user_id\")"
                 },
                 "C37": {
-                    "format": 1,
                     "content": "=ODOO.LIST(2,4,\"user_id\")"
                 },
                 "C38": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.LIST(2,5,\"user_id\")"
                 },
                 "C39": {
-                    "format": 1,
                     "content": "=ODOO.LIST(2,6,\"user_id\")"
                 },
                 "C40": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.LIST(2,7,\"user_id\")"
                 },
                 "C41": {
-                    "format": 1,
                     "content": "=ODOO.LIST(2,8,\"user_id\")"
                 },
                 "C42": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.LIST(2,9,\"user_id\")"
                 },
                 "C43": {
-                    "format": 1,
                     "content": "=ODOO.LIST(2,10,\"user_id\")"
                 },
                 "C45": {
@@ -476,47 +458,37 @@
                 },
                 "C47": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(5,\"order_reference\",\"#template_id\",1)"
                 },
                 "C48": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(5,\"order_reference\",\"#template_id\",2)"
                 },
                 "C49": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(5,\"order_reference\",\"#template_id\",3)"
                 },
                 "C50": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(5,\"order_reference\",\"#template_id\",4)"
                 },
                 "C51": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(5,\"order_reference\",\"#template_id\",5)"
                 },
                 "C52": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(5,\"order_reference\",\"#template_id\",6)"
                 },
                 "C53": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(5,\"order_reference\",\"#template_id\",7)"
                 },
                 "C54": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(5,\"order_reference\",\"#template_id\",8)"
                 },
                 "C55": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(5,\"order_reference\",\"#template_id\",9)"
                 },
                 "C56": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(5,\"order_reference\",\"#template_id\",10)"
                 },
                 "C58": {
@@ -530,47 +502,37 @@
                 },
                 "C60": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(6,\"order_reference\",\"#team_id\",1)"
                 },
                 "C61": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(6,\"order_reference\",\"#team_id\",2)"
                 },
                 "C62": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(6,\"order_reference\",\"#team_id\",3)"
                 },
                 "C63": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(6,\"order_reference\",\"#team_id\",4)"
                 },
                 "C64": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(6,\"order_reference\",\"#team_id\",5)"
                 },
                 "C65": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(6,\"order_reference\",\"#team_id\",6)"
                 },
                 "C66": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(6,\"order_reference\",\"#team_id\",7)"
                 },
                 "C67": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(6,\"order_reference\",\"#team_id\",8)"
                 },
                 "C68": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(6,\"order_reference\",\"#team_id\",9)"
                 },
                 "C69": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(6,\"order_reference\",\"#team_id\",10)"
                 },
                 "C71": {
@@ -584,47 +546,37 @@
                 },
                 "C73": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(9,\"order_reference\",\"#plan_id\",1)"
                 },
                 "C74": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(9,\"order_reference\",\"#plan_id\",2)"
                 },
                 "C75": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(9,\"order_reference\",\"#plan_id\",3)"
                 },
                 "C76": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(9,\"order_reference\",\"#plan_id\",4)"
                 },
                 "C77": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(9,\"order_reference\",\"#plan_id\",5)"
                 },
                 "C78": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(9,\"order_reference\",\"#plan_id\",6)"
                 },
                 "C79": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(9,\"order_reference\",\"#plan_id\",7)"
                 },
                 "C80": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(9,\"order_reference\",\"#plan_id\",8)"
                 },
                 "C81": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(9,\"order_reference\",\"#plan_id\",9)"
                 },
                 "C82": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(9,\"order_reference\",\"#plan_id\",10)"
                 },
                 "D32": {
@@ -634,11 +586,12 @@
                 "D33": {
                     "style": 7,
                     "content": "=_t(\"MRR\")",
-                    "border": 2
+                    "border": 3
                 },
                 "D34": {
                     "style": 6,
-                    "content": "=ODOO.LIST(2,1,\"recurring_monthly\")"
+                    "content": "=ODOO.LIST(2,1,\"recurring_monthly\")",
+                    "border": 2
                 },
                 "D35": {
                     "content": "=ODOO.LIST(2,2,\"recurring_monthly\")"
@@ -802,6 +755,16 @@
                 },
                 "D82": {
                     "content": "=ODOO.PIVOT(9,\"price_subtotal\",\"#plan_id\",10)"
+                },
+                "F7": {
+                    "style": 1,
+                    "content": "[MRR by Recurrence](odoo://view/{\"viewType\":\"graph\",\"action\":{\"domain\":[],\"context\":{\"group_by\":[\"plan_id\"],\"graph_measure\":\"mrr_change_normalized\",\"graph_mode\":\"pie\",\"graph_groupbys\":[\"plan_id\"]},\"modelName\":\"sale.order.log.report\",\"views\":[[false,\"graph\"],[false,\"list\"],[false,\"pivot\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"MRR Analysis\"})",
+                    "border": 1
+                },
+                "F19": {
+                    "style": 1,
+                    "content": "[MRR by Sales Team](odoo://view/{\"viewType\":\"graph\",\"action\":{\"domain\":[],\"context\":{\"group_by\":[\"team_id\"],\"graph_measure\":\"mrr_change_normalized\",\"graph_mode\":\"pie\",\"graph_groupbys\":[\"team_id\"]},\"modelName\":\"sale.order.log.report\",\"views\":[[false,\"graph\"],[false,\"list\"],[false,\"pivot\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"MRR Analysis\"})",
+                    "border": 1
                 },
                 "F32": {
                     "style": 1,
@@ -1059,29 +1022,16 @@
                     "style": 6
                 },
                 "G49": {
-                    "style": 6,
-                    "format": 1
-                },
-                "G50": {
-                    "format": 1
+                    "style": 6
                 },
                 "G51": {
-                    "style": 6,
-                    "format": 1
-                },
-                "G52": {
-                    "format": 1
+                    "style": 6
                 },
                 "G53": {
-                    "style": 6,
-                    "format": 1
-                },
-                "G54": {
-                    "format": 1
+                    "style": 6
                 },
                 "G55": {
-                    "style": 6,
-                    "format": 1
+                    "style": 6
                 },
                 "G58": {
                     "style": 5,
@@ -1095,29 +1045,16 @@
                     "style": 6
                 },
                 "G62": {
-                    "style": 6,
-                    "format": 1
-                },
-                "G63": {
-                    "format": 1
+                    "style": 6
                 },
                 "G64": {
-                    "style": 6,
-                    "format": 1
-                },
-                "G65": {
-                    "format": 1
+                    "style": 6
                 },
                 "G66": {
-                    "style": 6,
-                    "format": 1
-                },
-                "G67": {
-                    "format": 1
+                    "style": 6
                 },
                 "G68": {
-                    "style": 6,
-                    "format": 1
+                    "style": 6
                 },
                 "G71": {
                     "style": 5,
@@ -1131,29 +1068,16 @@
                     "style": 6
                 },
                 "G75": {
-                    "style": 6,
-                    "format": 1
-                },
-                "G76": {
-                    "format": 1
+                    "style": 6
                 },
                 "G77": {
-                    "style": 6,
-                    "format": 1
-                },
-                "G78": {
-                    "format": 1
+                    "style": 6
                 },
                 "G79": {
-                    "style": 6,
-                    "format": 1
-                },
-                "G80": {
-                    "format": 1
+                    "style": 6
                 },
                 "G81": {
-                    "style": 6,
-                    "format": 1
+                    "style": 6
                 },
                 "H32": {
                     "style": 5,
@@ -1166,47 +1090,37 @@
                 },
                 "H34": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.LIST(1,1,\"user_id\")"
                 },
                 "H35": {
-                    "format": 1,
                     "content": "=ODOO.LIST(1,2,\"user_id\")"
                 },
                 "H36": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.LIST(1,3,\"user_id\")"
                 },
                 "H37": {
-                    "format": 1,
                     "content": "=ODOO.LIST(1,4,\"user_id\")"
                 },
                 "H38": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.LIST(1,5,\"user_id\")"
                 },
                 "H39": {
-                    "format": 1,
                     "content": "=ODOO.LIST(1,6,\"user_id\")"
                 },
                 "H40": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.LIST(1,7,\"user_id\")"
                 },
                 "H41": {
-                    "format": 1,
                     "content": "=ODOO.LIST(1,8,\"user_id\")"
                 },
                 "H42": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.LIST(1,9,\"user_id\")"
                 },
                 "H43": {
-                    "format": 1,
                     "content": "=ODOO.LIST(1,10,\"user_id\")"
                 },
                 "H45": {
@@ -1220,47 +1134,37 @@
                 },
                 "H47": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(4,\"order_reference\",\"#product_id\",1)"
                 },
                 "H48": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(4,\"order_reference\",\"#product_id\",2)"
                 },
                 "H49": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(4,\"order_reference\",\"#product_id\",3)"
                 },
                 "H50": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(4,\"order_reference\",\"#product_id\",4)"
                 },
                 "H51": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(4,\"order_reference\",\"#product_id\",5)"
                 },
                 "H52": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(4,\"order_reference\",\"#product_id\",6)"
                 },
                 "H53": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(4,\"order_reference\",\"#product_id\",7)"
                 },
                 "H54": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(4,\"order_reference\",\"#product_id\",8)"
                 },
                 "H55": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(4,\"order_reference\",\"#product_id\",9)"
                 },
                 "H56": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(4,\"order_reference\",\"#product_id\",10)"
                 },
                 "H58": {
@@ -1281,7 +1185,6 @@
                 },
                 "H62": {
                     "style": 6,
-                    "format": 2,
                     "content": "=ODOO.PIVOT(7,\"order_reference\",\"#user_id\",3)"
                 },
                 "H63": {
@@ -1319,47 +1222,37 @@
                 },
                 "H73": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(8,\"order_reference\",\"#country_id\",1)"
                 },
                 "H74": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(8,\"order_reference\",\"#country_id\",2)"
                 },
                 "H75": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(8,\"order_reference\",\"#country_id\",3)"
                 },
                 "H76": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(8,\"order_reference\",\"#country_id\",4)"
                 },
                 "H77": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(8,\"order_reference\",\"#country_id\",5)"
                 },
                 "H78": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(8,\"order_reference\",\"#country_id\",6)"
                 },
                 "H79": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(8,\"order_reference\",\"#country_id\",7)"
                 },
                 "H80": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(8,\"order_reference\",\"#country_id\",8)"
                 },
                 "H81": {
                     "style": 6,
-                    "format": 1,
                     "content": "=ODOO.PIVOT(8,\"order_reference\",\"#country_id\",9)"
                 },
                 "H82": {
-                    "format": 1,
                     "content": "=ODOO.PIVOT(8,\"order_reference\",\"#country_id\",10)"
                 },
                 "I32": {
@@ -1580,26 +1473,8 @@
                 "D20": {
                     "border": 2
                 },
-                "E7": {
-                    "border": 1
-                },
-                "E8": {
-                    "border": 2
-                },
-                "E19": {
-                    "border": 1
-                },
-                "E20": {
-                    "border": 2
-                },
-                "F7": {
-                    "border": 1
-                },
                 "F8": {
                     "border": 2
-                },
-                "F19": {
-                    "border": 1
                 },
                 "F20": {
                     "border": 2
@@ -1645,7 +1520,7 @@
             "figures": [
                 {
                     "id": "51823220-f22b-4359-8711-579a249c91bb",
-                    "x": 0,
+                    "x": 31,
                     "y": 0,
                     "width": 200,
                     "height": 120,
@@ -1663,27 +1538,8 @@
                     }
                 },
                 {
-                    "id": "9a38934c-b454-4a4b-88aa-17d1b80dbf5f",
-                    "x": 210,
-                    "y": 0,
-                    "width": 200,
-                    "height": 120,
-                    "tag": "chart",
-                    "data": {
-                        "baselineColorDown": "#DC6965",
-                        "baselineColorUp": "#00A04A",
-                        "baselineMode": "percentage",
-                        "title": "New MRR",
-                        "type": "scorecard",
-                        "background": "#EFEFEF",
-                        "baseline": "Data!E4",
-                        "baselineDescr": "",
-                        "keyValue": "Data!B4"
-                    }
-                },
-                {
                     "id": "67858d0e-b5ba-4a3c-bf9e-c0fceaeedf65",
-                    "x": 420,
+                    "x": 273,
                     "y": 0,
                     "width": 200,
                     "height": 120,
@@ -1696,99 +1552,84 @@
                         "type": "scorecard",
                         "background": "#EFEFEF",
                         "baseline": "Data!B6",
-                        "baselineDescr": "/subscription",
+                        "baselineDescr": "/sub.",
                         "keyValue": "Data!B5"
                     }
                 },
                 {
-                    "id": "d43375c1-73a6-42a2-8dbd-0f13c285824f",
-                    "x": 630,
-                    "y": 0,
-                    "width": 200,
-                    "height": 120,
-                    "tag": "chart",
-                    "data": {
-                        "baselineColorDown": "#DC6965",
-                        "baselineColorUp": "#00A04A",
-                        "baselineMode": "text",
-                        "title": "Churn",
-                        "type": "scorecard",
-                        "background": "#EFEFEF",
-                        "baseline": "Data!D9",
-                        "baselineDescr": "MRR",
-                        "keyValue": "Data!B8"
-                    }
-                },
-                {
-                    "id": "dd71a4bf-329b-4c50-a912-83101d69dce1",
-                    "x": 841,
-                    "y": 0,
-                    "width": 200,
-                    "height": 120,
-                    "tag": "chart",
-                    "data": {
-                        "baselineColorDown": "#DC6965",
-                        "baselineColorUp": "#00A04A",
-                        "baselineMode": "text",
-                        "title": "Cust. Lifetime",
-                        "type": "scorecard",
-                        "background": "#EFEFEF",
-                        "baseline": "Data!D11",
-                        "baselineDescr": "since last period",
-                        "keyValue": "Data!B10"
-                    }
-                },
-                {
-                    "id": "97df8021-f6a9-4111-8e58-dd60f65850f5",
-                    "x": 0,
-                    "y": 181,
-                    "width": 1000,
-                    "height": 230,
+                    "id": "2461b920-4fdd-4b3f-8bc5-8e33bd818987",
+                    "x": 523,
+                    "y": 178,
+                    "width": 477,
+                    "height": 238,
                     "tag": "chart",
                     "data": {
                         "title": "",
                         "background": "#FFFFFF",
-                        "legendPosition": "none",
+                        "legendPosition": "bottom",
                         "metaData": {
                             "groupBy": [
-                                "event_date:month"
+                                "plan_id"
                             ],
-                            "measure": "mrr_change_normalized",
+                            "measure": "recurring_monthly",
                             "order": null,
-                            "resModel": "sale.order.log.report"
+                            "resModel": "sale.subscription.report"
                         },
                         "searchParams": {
                             "comparison": null,
-                            "context": {},
+                            "context": {
+                                "search_default_filter_progress": 1,
+                                "search_default_filter_paused": 1,
+                                "search_default_recurring": 1,
+                                "search_default_non_recurring": 0
+                            },
                             "domain": [
+                                "&",
+                                "&",
                                 [
-                                    "event_type",
-                                    "!=",
-                                    "3_transfer"
+                                    "is_subscription",
+                                    "=",
+                                    true
+                                ],
+                                [
+                                    "subscription_state",
+                                    "not in",
+                                    [
+                                        "2_renewal",
+                                        "5_renewed"
+                                    ]
+                                ],
+                                "&",
+                                [
+                                    "subscription_state",
+                                    "=",
+                                    "3_progress"
+                                ],
+                                [
+                                    "product_tmpl_id.recurring_invoice",
+                                    "=",
+                                    true
                                 ]
                             ],
-                            "groupBy": [],
+                            "groupBy": [
+                                "plan_id"
+                            ],
                             "orderBy": []
                         },
-                        "type": "odoo_line",
-                        "verticalAxisPosition": "left",
-                        "stacked": true,
+                        "type": "odoo_pie",
                         "fieldMatching": {
-                            "13d30fda-b14d-4a56-b186-25468af3b1e9": {
-                                "chain": "first_contract_date",
-                                "type": "date",
-                                "offset": 0
-                            },
                             "e6db018b-19ec-42c3-b29e-11b1e3910916": {
                                 "chain": "country_id",
                                 "type": "many2one"
                             },
-                            "dbb716a1-5977-47ee-a53e-ca5716303433": {},
+                            "dbb716a1-5977-47ee-a53e-ca5716303433": {
+                                "chain": "product_tmpl_id",
+                                "type": "many2one"
+                            },
                             "7d95fe28-fd13-4805-948c-95742e7d6733": {
                                 "chain": "partner_id",
                                 "type": "many2one"
                             },
-                            "27e323f4-cd70-4345-82fa-dfc855707bc1": {},
                             "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
                                 "chain": "team_id",
                                 "type": "many2one"
@@ -1797,16 +1638,115 @@
                                 "chain": "user_id",
                                 "type": "many2one"
                             },
-                            "ec466626-f54a-4955-9611-eaa2719f1afb": {},
-                            "85d94827-6ce2-429c-9775-ef646cfddb6b": {}
+                            "ec466626-f54a-4955-9611-eaa2719f1afb": {
+                                "chain": "source_id",
+                                "type": "many2one"
+                            },
+                            "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+                                "chain": "medium_id",
+                                "type": "many2one"
+                            }
                         }
                     }
                 },
                 {
-                    "id": "f5531f0e-9271-4cae-955b-f70cf50b2776",
+                    "id": "c46976a6-c6b7-4f5a-89c0-278e1178dcb6",
                     "x": 0,
-                    "y": 474,
-                    "width": 1000,
+                    "y": 178,
+                    "width": 473,
+                    "height": 238,
+                    "tag": "chart",
+                    "data": {
+                        "title": "",
+                        "background": "#FFFFFF",
+                        "legendPosition": "bottom",
+                        "metaData": {
+                            "groupBy": [
+                                "product_id"
+                            ],
+                            "measure": "recurring_monthly",
+                            "order": null,
+                            "resModel": "sale.subscription.report"
+                        },
+                        "searchParams": {
+                            "comparison": null,
+                            "context": {
+                                "search_default_filter_progress": 1,
+                                "search_default_filter_paused": 1,
+                                "search_default_recurring": 1,
+                                "search_default_non_recurring": 0
+                            },
+                            "domain": [
+                                "&",
+                                "&",
+                                [
+                                    "is_subscription",
+                                    "=",
+                                    true
+                                ],
+                                [
+                                    "subscription_state",
+                                    "not in",
+                                    [
+                                        "2_renewal",
+                                        "5_renewed"
+                                    ]
+                                ],
+                                "&",
+                                [
+                                    "subscription_state",
+                                    "=",
+                                    "3_progress"
+                                ],
+                                [
+                                    "product_tmpl_id.recurring_invoice",
+                                    "=",
+                                    true
+                                ]
+                            ],
+                            "groupBy": [
+                                "product_id"
+                            ],
+                            "orderBy": []
+                        },
+                        "type": "odoo_pie",
+                        "fieldMatching": {
+                            "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+                                "chain": "country_id",
+                                "type": "many2one"
+                            },
+                            "dbb716a1-5977-47ee-a53e-ca5716303433": {
+                                "chain": "product_tmpl_id",
+                                "type": "many2one"
+                            },
+                            "7d95fe28-fd13-4805-948c-95742e7d6733": {
+                                "chain": "partner_id",
+                                "type": "many2one"
+                            },
+                            "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+                                "chain": "team_id",
+                                "type": "many2one"
+                            },
+                            "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+                                "chain": "user_id",
+                                "type": "many2one"
+                            },
+                            "ec466626-f54a-4955-9611-eaa2719f1afb": {
+                                "chain": "source_id",
+                                "type": "many2one"
+                            },
+                            "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+                                "chain": "medium_id",
+                                "type": "many2one"
+                            }
+                        }
+                    }
+                },
+                {
+                    "id": "38f6014f-c8a5-41e7-8cba-c8682b567473",
+                    "x": 0,
+                    "y": 472,
+                    "width": 473,
                     "height": 270,
                     "tag": "chart",
                     "data": {
@@ -1815,48 +1755,67 @@
                         "legendPosition": "bottom",
                         "metaData": {
                             "groupBy": [
-                                "event_date:month",
-                                "event_type"
+                                "country_id"
                             ],
-                            "measure": "mrr_change_normalized",
+                            "measure": "recurring_monthly",
                             "order": null,
-                            "resModel": "sale.order.log.report"
+                            "resModel": "sale.subscription.report"
                         },
                         "searchParams": {
                             "comparison": null,
                             "context": {
-                                "search_default_group_by_event_date": 1,
-                                "search_default_group_by_event_type": 1
+                                "search_default_filter_progress": 1,
+                                "search_default_filter_paused": 1,
+                                "search_default_recurring": 1,
+                                "search_default_non_recurring": 0
                             },
                             "domain": [
+                                "&",
+                                "&",
                                 [
-                                    "event_type",
-                                    "!=",
-                                    "3_transfer"
+                                    "is_subscription",
+                                    "=",
+                                    true
+                                ],
+                                [
+                                    "subscription_state",
+                                    "not in",
+                                    [
+                                        "2_renewal",
+                                        "5_renewed"
+                                    ]
+                                ],
+                                "&",
+                                [
+                                    "subscription_state",
+                                    "=",
+                                    "3_progress"
+                                ],
+                                [
+                                    "product_tmpl_id.recurring_invoice",
+                                    "=",
+                                    true
                                 ]
                             ],
-                            "groupBy": [],
+                            "groupBy": [
+                                "country_id"
+                            ],
                             "orderBy": []
                         },
-                        "type": "odoo_bar",
-                        "verticalAxisPosition": "left",
-                        "stacked": true,
+                        "type": "odoo_pie",
                         "fieldMatching": {
-                            "13d30fda-b14d-4a56-b186-25468af3b1e9": {
-                                "chain": "first_contract_date",
-                                "type": "date",
-                                "offset": 0
-                            },
                             "e6db018b-19ec-42c3-b29e-11b1e3910916": {
                                 "chain": "country_id",
                                 "type": "many2one"
                             },
-                            "dbb716a1-5977-47ee-a53e-ca5716303433": {},
+                            "dbb716a1-5977-47ee-a53e-ca5716303433": {
+                                "chain": "product_tmpl_id",
+                                "type": "many2one"
+                            },
                             "7d95fe28-fd13-4805-948c-95742e7d6733": {
                                 "chain": "partner_id",
                                 "type": "many2one"
                             },
-                            "27e323f4-cd70-4345-82fa-dfc855707bc1": {},
                             "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
                                 "chain": "team_id",
                                 "type": "many2one"
@@ -1865,15 +1824,155 @@
                                 "chain": "user_id",
                                 "type": "many2one"
                             },
-                            "ec466626-f54a-4955-9611-eaa2719f1afb": {},
-                            "85d94827-6ce2-429c-9775-ef646cfddb6b": {}
+                            "ec466626-f54a-4955-9611-eaa2719f1afb": {
+                                "chain": "source_id",
+                                "type": "many2one"
+                            },
+                            "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+                                "chain": "medium_id",
+                                "type": "many2one"
+                            }
                         }
+                    }
+                },
+                {
+                    "id": "a1de0db0-db97-4b9f-b581-f103544da310",
+                    "x": 523,
+                    "y": 472,
+                    "width": 477,
+                    "height": 268,
+                    "tag": "chart",
+                    "data": {
+                        "title": "",
+                        "background": "#FFFFFF",
+                        "legendPosition": "bottom",
+                        "metaData": {
+                            "groupBy": [
+                                "team_id"
+                            ],
+                            "measure": "recurring_monthly",
+                            "order": null,
+                            "resModel": "sale.subscription.report"
+                        },
+                        "searchParams": {
+                            "comparison": null,
+                            "context": {
+                                "search_default_filter_progress": 1,
+                                "search_default_filter_paused": 1,
+                                "search_default_recurring": 1,
+                                "search_default_non_recurring": 0
+                            },
+                            "domain": [
+                                "&",
+                                "&",
+                                [
+                                    "is_subscription",
+                                    "=",
+                                    true
+                                ],
+                                [
+                                    "subscription_state",
+                                    "not in",
+                                    [
+                                        "2_renewal",
+                                        "5_renewed"
+                                    ]
+                                ],
+                                "&",
+                                [
+                                    "subscription_state",
+                                    "=",
+                                    "3_progress"
+                                ],
+                                [
+                                    "product_tmpl_id.recurring_invoice",
+                                    "=",
+                                    true
+                                ]
+                            ],
+                            "groupBy": [
+                                "team_id"
+                            ],
+                            "orderBy": []
+                        },
+                        "type": "odoo_pie",
+                        "fieldMatching": {
+                            "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+                                "chain": "country_id",
+                                "type": "many2one"
+                            },
+                            "dbb716a1-5977-47ee-a53e-ca5716303433": {
+                                "chain": "product_tmpl_id",
+                                "type": "many2one"
+                            },
+                            "7d95fe28-fd13-4805-948c-95742e7d6733": {
+                                "chain": "partner_id",
+                                "type": "many2one"
+                            },
+                            "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+                                "chain": "team_id",
+                                "type": "many2one"
+                            },
+                            "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+                                "chain": "user_id",
+                                "type": "many2one"
+                            },
+                            "ec466626-f54a-4955-9611-eaa2719f1afb": {
+                                "chain": "source_id",
+                                "type": "many2one"
+                            },
+                            "85d94827-6ce2-429c-9775-ef646cfddb6b": {
+                                "chain": "medium_id",
+                                "type": "many2one"
+                            }
+                        }
+                    }
+                },
+                {
+                    "id": "096cbdfa-ca41-4fb7-abec-12773c2f4e9b",
+                    "x": 525,
+                    "y": 0,
+                    "width": 200,
+                    "height": 120,
+                    "tag": "chart",
+                    "data": {
+                        "baselineColorDown": "#DC6965",
+                        "baselineColorUp": "#00A04A",
+                        "baselineMode": "text",
+                        "title": "Cust. Lifespan",
+                        "type": "scorecard",
+                        "background": "#EFEFEF",
+                        "baselineDescr": "Month(s)",
+                        "keyValue": "Data!D10"
+                    }
+                },
+                {
+                    "id": "c89ec529-8055-4dee-b7ba-8a1e8680f82b",
+                    "x": 762,
+                    "y": 0,
+                    "width": 200,
+                    "height": 120,
+                    "tag": "chart",
+                    "data": {
+                        "baselineColorDown": "#DC6965",
+                        "baselineColorUp": "#00A04A",
+                        "baselineMode": "text",
+                        "title": "Cust. Lifetime Value",
+                        "type": "scorecard",
+                        "background": "#EFEFEF",
+                        "baselineDescr": "",
+                        "keyValue": "Data!D11"
                     }
                 }
             ],
             "filterTables": [],
             "areGridLinesVisible": true,
-            "isVisible": true
+            "isVisible": true,
+            "headerGroups": {
+                "ROW": [],
+                "COL": []
+            },
+            "dataValidationRules": []
         },
         {
             "id": "eae01f9c-c461-4489-ade4-957ef2459d40",
@@ -1957,14 +2056,14 @@
                     "content": "=ODOO.PIVOT(11,\"order_reference\")"
                 },
                 "B8": {
-                    "format": 3,
-                    "content": "=B7/B5"
+                    "format": 1,
+                    "content": "=B7/(B5+B7)"
                 },
                 "B9": {
                     "content": "=ODOO.PIVOT(12,\"price_subtotal\")"
                 },
                 "B10": {
-                    "format": 4,
+                    "format": 2,
                     "content": "=1/B8"
                 },
                 "B11": {
@@ -2016,6 +2115,7 @@
                 },
                 "D10": {
                     "style": 8,
+                    "format": 3,
                     "content": "=IFERROR(FORMAT.LARGE.NUMBER(B10))"
                 },
                 "D11": {
@@ -2071,7 +2171,12 @@
             "figures": [],
             "filterTables": [],
             "areGridLinesVisible": true,
-            "isVisible": true
+            "isVisible": true,
+            "headerGroups": {
+                "ROW": [],
+                "COL": []
+            },
+            "dataValidationRules": []
         }
     ],
     "entities": {},
@@ -2107,48 +2212,64 @@
         }
     },
     "formats": {
-        "1": "0",
-        "2": "[$$]#,##0.00",
-        "3": "0.00%",
-        "4": "#,##0.00"
+        "1": "0.00%",
+        "2": "#,##0.00"
     },
     "borders": {
         "1": {
-            "bottom": [
-                "thin",
-                "#000"
-            ]
+            "bottom": {
+                "style": "thin",
+                "color": "#000"
+            }
         },
         "2": {
-            "top": [
-                "thin",
-                "#000"
-            ]
+            "top": {
+                "style": "thin",
+                "color": "#000"
+            }
+        },
+        "3": {
+            "top": {
+                "style": "thin",
+                "color": "#000"
+            },
+            "bottom": {
+                "style": "thin",
+                "color": "#2D7E84"
+            }
+        },
+        "4": {
+            "top": {
+                "style": "thin",
+                "color": "#2D7E84"
+            },
+            "left": {
+                "style": "thin",
+                "color": "#2D7E84"
+            }
+        },
+        "5": {
+            "left": {
+                "style": "thin",
+                "color": "#2D7E84"
+            }
         }
     },
     "revisionId": "START_REVISION",
+    "uniqueFigureIds": true,
     "settings": {
         "locale": {
             "name": "English (US)",
             "code": "en_US",
             "thousandsSeparator": ",",
             "decimalSeparator": ".",
-            "dateFormat": "mm/dd/yyyy",
-            "timeFormat": "hh:mm:ss",
+            "dateFormat": "m/d/yyyy",
+            "timeFormat": "hh:mm:ss a",
             "formulaArgSeparator": ","
         }
     },
-    "uniqueFigureIds": true,
-    "odooVersion": 5,
+    "odooVersion": 6,
     "globalFilters": [
-        {
-            "id": "13d30fda-b14d-4a56-b186-25468af3b1e9",
-            "type": "date",
-            "label": "Period",
-            "defaultValue": "last_three_months",
-            "rangeType": "relative",
-            "defaultsToCurrentPeriod": false
-        },
         {
             "id": "e6db018b-19ec-42c3-b29e-11b1e3910916",
             "type": "relation",
@@ -2172,14 +2293,6 @@
             "defaultValue": [],
             "defaultValueDisplayNames": [],
             "modelName": "res.partner"
-        },
-        {
-            "id": "27e323f4-cd70-4345-82fa-dfc855707bc1",
-            "type": "relation",
-            "label": "Category",
-            "defaultValue": [],
-            "defaultValueDisplayNames": [],
-            "modelName": "product.category"
         },
         {
             "id": "b75963ca-ab5f-4da5-9c90-67526517e5e7",
@@ -2246,11 +2359,6 @@
                 "order": "desc"
             },
             "fieldMatching": {
-                "13d30fda-b14d-4a56-b186-25468af3b1e9": {
-                    "chain": "first_contract_date",
-                    "type": "date",
-                    "offset": 0
-                },
                 "e6db018b-19ec-42c3-b29e-11b1e3910916": {
                     "chain": "country_id",
                     "type": "many2one"
@@ -2260,7 +2368,6 @@
                     "chain": "partner_id",
                     "type": "many2one"
                 },
-                "27e323f4-cd70-4345-82fa-dfc855707bc1": {},
                 "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
                     "chain": "team_id",
                     "type": "many2one"
@@ -2314,11 +2421,6 @@
                 "order": "desc"
             },
             "fieldMatching": {
-                "13d30fda-b14d-4a56-b186-25468af3b1e9": {
-                    "chain": "first_contract_date",
-                    "type": "date",
-                    "offset": 0
-                },
                 "e6db018b-19ec-42c3-b29e-11b1e3910916": {
                     "chain": "country_id",
                     "type": "many2one"
@@ -2329,10 +2431,6 @@
                 },
                 "7d95fe28-fd13-4805-948c-95742e7d6733": {
                     "chain": "partner_id",
-                    "type": "many2one"
-                },
-                "27e323f4-cd70-4345-82fa-dfc855707bc1": {
-                    "chain": "categ_id",
                     "type": "many2one"
                 },
                 "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
@@ -2388,11 +2486,6 @@
                 "order": "asc"
             },
             "fieldMatching": {
-                "13d30fda-b14d-4a56-b186-25468af3b1e9": {
-                    "chain": "first_contract_date",
-                    "type": "date",
-                    "offset": 0
-                },
                 "e6db018b-19ec-42c3-b29e-11b1e3910916": {
                     "chain": "country_id",
                     "type": "many2one"
@@ -2402,7 +2495,6 @@
                     "chain": "partner_id",
                     "type": "many2one"
                 },
-                "27e323f4-cd70-4345-82fa-dfc855707bc1": {},
                 "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
                     "chain": "team_id",
                     "type": "many2one"
@@ -2461,11 +2553,6 @@
                 "order": "desc"
             },
             "fieldMatching": {
-                "13d30fda-b14d-4a56-b186-25468af3b1e9": {
-                    "chain": "date",
-                    "type": "datetime",
-                    "offset": 0
-                },
                 "e6db018b-19ec-42c3-b29e-11b1e3910916": {
                     "chain": "country_id",
                     "type": "many2one"
@@ -2476,10 +2563,6 @@
                 },
                 "7d95fe28-fd13-4805-948c-95742e7d6733": {
                     "chain": "partner_id",
-                    "type": "many2one"
-                },
-                "27e323f4-cd70-4345-82fa-dfc855707bc1": {
-                    "chain": "categ_id",
                     "type": "many2one"
                 },
                 "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
@@ -2504,10 +2587,8 @@
             "colGroupBys": [],
             "context": {
                 "params": {
-                    "action": 1586,
                     "model": "sale.subscription.report",
-                    "view_type": "pivot",
-                    "menu_id": 1073
+                    "view_type": "pivot"
                 },
                 "search_default_group_by_product": 1,
                 "search_default_filter_progress": 1,
@@ -2552,11 +2633,6 @@
                 "order": "desc"
             },
             "fieldMatching": {
-                "13d30fda-b14d-4a56-b186-25468af3b1e9": {
-                    "chain": "date",
-                    "type": "datetime",
-                    "offset": 0
-                },
                 "e6db018b-19ec-42c3-b29e-11b1e3910916": {
                     "chain": "country_id",
                     "type": "many2one"
@@ -2567,10 +2643,6 @@
                 },
                 "7d95fe28-fd13-4805-948c-95742e7d6733": {
                     "chain": "partner_id",
-                    "type": "many2one"
-                },
-                "27e323f4-cd70-4345-82fa-dfc855707bc1": {
-                    "chain": "categ_id",
                     "type": "many2one"
                 },
                 "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
@@ -2595,10 +2667,8 @@
             "colGroupBys": [],
             "context": {
                 "params": {
-                    "action": 1586,
                     "model": "sale.subscription.report",
-                    "view_type": "pivot",
-                    "menu_id": 1073
+                    "view_type": "pivot"
                 },
                 "search_default_group_by_product": 1,
                 "search_default_filter_progress": 1,
@@ -2643,11 +2713,6 @@
                 "order": "desc"
             },
             "fieldMatching": {
-                "13d30fda-b14d-4a56-b186-25468af3b1e9": {
-                    "chain": "date",
-                    "type": "datetime",
-                    "offset": 0
-                },
                 "e6db018b-19ec-42c3-b29e-11b1e3910916": {
                     "chain": "country_id",
                     "type": "many2one"
@@ -2658,10 +2723,6 @@
                 },
                 "7d95fe28-fd13-4805-948c-95742e7d6733": {
                     "chain": "partner_id",
-                    "type": "many2one"
-                },
-                "27e323f4-cd70-4345-82fa-dfc855707bc1": {
-                    "chain": "categ_id",
                     "type": "many2one"
                 },
                 "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
@@ -2728,11 +2789,6 @@
                 "order": "desc"
             },
             "fieldMatching": {
-                "13d30fda-b14d-4a56-b186-25468af3b1e9": {
-                    "chain": "date",
-                    "type": "datetime",
-                    "offset": 0
-                },
                 "e6db018b-19ec-42c3-b29e-11b1e3910916": {
                     "chain": "country_id",
                     "type": "many2one"
@@ -2743,10 +2799,6 @@
                 },
                 "7d95fe28-fd13-4805-948c-95742e7d6733": {
                     "chain": "partner_id",
-                    "type": "many2one"
-                },
-                "27e323f4-cd70-4345-82fa-dfc855707bc1": {
-                    "chain": "categ_id",
                     "type": "many2one"
                 },
                 "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
@@ -2813,11 +2865,6 @@
                 "order": "desc"
             },
             "fieldMatching": {
-                "13d30fda-b14d-4a56-b186-25468af3b1e9": {
-                    "chain": "date",
-                    "type": "datetime",
-                    "offset": 0
-                },
                 "e6db018b-19ec-42c3-b29e-11b1e3910916": {
                     "chain": "country_id",
                     "type": "many2one"
@@ -2828,10 +2875,6 @@
                 },
                 "7d95fe28-fd13-4805-948c-95742e7d6733": {
                     "chain": "partner_id",
-                    "type": "many2one"
-                },
-                "27e323f4-cd70-4345-82fa-dfc855707bc1": {
-                    "chain": "categ_id",
                     "type": "many2one"
                 },
                 "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
@@ -2898,11 +2941,6 @@
                 "order": "desc"
             },
             "fieldMatching": {
-                "13d30fda-b14d-4a56-b186-25468af3b1e9": {
-                    "chain": "date",
-                    "type": "datetime",
-                    "offset": 0
-                },
                 "e6db018b-19ec-42c3-b29e-11b1e3910916": {
                     "chain": "country_id",
                     "type": "many2one"
@@ -2913,10 +2951,6 @@
                 },
                 "7d95fe28-fd13-4805-948c-95742e7d6733": {
                     "chain": "partner_id",
-                    "type": "many2one"
-                },
-                "27e323f4-cd70-4345-82fa-dfc855707bc1": {
-                    "chain": "categ_id",
                     "type": "many2one"
                 },
                 "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
@@ -2967,7 +3001,20 @@
             "rowGroupBys": [],
             "name": "Subscription Analysis",
             "sortedColumn": null,
-            "fieldMatching": {}
+            "fieldMatching": {
+                "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+                    "chain": "country_id",
+                    "type": "many2one"
+                },
+                "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+                    "chain": "team_id",
+                    "type": "many2one"
+                },
+                "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+                    "chain": "user_id",
+                    "type": "many2one"
+                }
+            }
         },
         "11": {
             "colGroupBys": [],
@@ -2999,7 +3046,20 @@
             "rowGroupBys": [],
             "name": "Subscription Analysis",
             "sortedColumn": null,
-            "fieldMatching": {}
+            "fieldMatching": {
+                "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+                    "chain": "country_id",
+                    "type": "many2one"
+                },
+                "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+                    "chain": "team_id",
+                    "type": "many2one"
+                },
+                "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+                    "chain": "user_id",
+                    "type": "many2one"
+                }
+            }
         },
         "12": {
             "colGroupBys": [],
@@ -3031,7 +3091,20 @@
             "rowGroupBys": [],
             "name": "Subscription Analysis",
             "sortedColumn": null,
-            "fieldMatching": {}
+            "fieldMatching": {
+                "e6db018b-19ec-42c3-b29e-11b1e3910916": {
+                    "chain": "country_id",
+                    "type": "many2one"
+                },
+                "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
+                    "chain": "team_id",
+                    "type": "many2one"
+                },
+                "4181e8e3-2e7e-42be-a88b-f24acb7d03e7": {
+                    "chain": "user_id",
+                    "type": "many2one"
+                }
+            }
         }
     },
     "pivotNextId": 13,
@@ -3093,11 +3166,6 @@
             "id": "1",
             "name": "Subscriptions by Monthly Recurring",
             "fieldMatching": {
-                "13d30fda-b14d-4a56-b186-25468af3b1e9": {
-                    "chain": "create_date",
-                    "type": "datetime",
-                    "offset": 0
-                },
                 "e6db018b-19ec-42c3-b29e-11b1e3910916": {
                     "chain": "country_id",
                     "type": "many2one"
@@ -3107,7 +3175,6 @@
                     "chain": "message_partner_ids",
                     "type": "many2many"
                 },
-                "27e323f4-cd70-4345-82fa-dfc855707bc1": {},
                 "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
                     "chain": "team_id",
                     "type": "many2one"
@@ -3140,38 +3207,48 @@
                 "subscription_state"
             ],
             "domain": [
-                [
-                    "is_subscription",
-                    "=",
-                    true
-                ],
+                "&",
                 [
                     "subscription_state",
                     "in",
                     [
                         "1_draft",
-                        "2_renewal"
+                        "2_renewal",
+                        "3_progress",
+                        "4_paused",
+                        "5_renewed",
+                        "6_churn"
                     ]
+                ],
+                "|",
+                [
+                    "subscription_state",
+                    "=",
+                    "3_progress"
+                ],
+                [
+                    "subscription_state",
+                    "=",
+                    "4_paused"
                 ]
             ],
             "model": "sale.order",
             "context": {
-                "search_default_my_subscriptions": 1
+                "default_subscription_state": "1_draft"
             },
             "orderBy": [
+                {
+                    "name": "recurring_monthly",
+                    "asc": false
+                },
                 {
                     "name": "id",
                     "asc": false
                 }
             ],
             "id": "2",
-            "name": "Quotations by ID",
+            "name": "Quotations by Monthly Recurring",
             "fieldMatching": {
-                "13d30fda-b14d-4a56-b186-25468af3b1e9": {
-                    "chain": "create_date",
-                    "type": "datetime",
-                    "offset": 0
-                },
                 "e6db018b-19ec-42c3-b29e-11b1e3910916": {
                     "chain": "country_id",
                     "type": "many2one"
@@ -3181,7 +3258,6 @@
                     "chain": "message_partner_ids",
                     "type": "many2many"
                 },
-                "27e323f4-cd70-4345-82fa-dfc855707bc1": {},
                 "b75963ca-ab5f-4da5-9c90-67526517e5e7": {
                     "chain": "team_id",
                     "type": "many2one"
@@ -3201,13 +3277,13 @@
             }
         }
     },
-    "listNextId": 14,
+    "listNextId": 15,
     "chartOdooMenusReferences": {
         "51823220-f22b-4359-8711-579a249c91bb": "sale_subscription.menu_sale_subscription_analysis",
-        "9a38934c-b454-4a4b-88aa-17d1b80dbf5f": "sale_subscription.menu_sale_subscription_analysis",
         "67858d0e-b5ba-4a3c-bf9e-c0fceaeedf65": "sale_subscription.menu_sale_subscription_analysis",
-        "d43375c1-73a6-42a2-8dbd-0f13c285824f": "sale_subscription.menu_sale_subscription_analysis",
-        "97df8021-f6a9-4111-8e58-dd60f65850f5": "sale_subscription.menu_sale_subscription_root",
-        "f5531f0e-9271-4cae-955b-f70cf50b2776": "sale_subscription.menu_sale_subscription_root"
+        "2461b920-4fdd-4b3f-8bc5-8e33bd818987": "sale_subscription.menu_sale_subscription_root",
+        "c46976a6-c6b7-4f5a-89c0-278e1178dcb6": "sale_subscription.menu_sale_subscription_root",
+        "38f6014f-c8a5-41e7-8cba-c8682b567473": "sale_subscription.menu_sale_subscription_root",
+        "a1de0db0-db97-4b9f-b581-f103544da310": "sale_subscription.menu_sale_subscription_root"
     }
 }

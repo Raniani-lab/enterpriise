@@ -12,7 +12,6 @@ import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { setCellContent, selectCell, setSelection } from "@spreadsheet/../tests/utils/commands";
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 import { getCell, getCellContent, getCellValue } from "@spreadsheet/../tests/utils/getters";
-import { MockSpreadsheetCollaborativeChannel } from "@spreadsheet_edition/../tests/utils/mock_spreadsheet_collaborative_channel";
 
 const { topbarMenuRegistry } = spreadsheet.registries;
 const { toZone } = spreadsheet.helpers;
@@ -275,28 +274,27 @@ QUnit.module(
                 name: "My template spreadsheet",
                 spreadsheet_data: JSON.stringify(data),
             });
-            patchWithCleanup(MockSpreadsheetCollaborativeChannel.prototype, {
-                sendMessage(message) {
-                    if (message.type === "SNAPSHOT") {
-                        assert.step("snapshot");
-                        assert.deepEqual(
-                            message.data.sheets[0].cells.A1.content,
-                            '=ODOO.PIVOT(1,"probability","foo","1")'
-                        );
-                    }
-                },
-            });
             const { model } = await createSpreadsheet({
                 spreadsheetId: 3000,
                 serverData,
                 convert_from_template: true,
+                mockRPC: function (route, { method, model, args }) {
+                    if (model === "documents.document" && method === "write") {
+                        assert.step("reset data");
+                        const data = JSON.parse(args[1].spreadsheet_data);
+                        assert.deepEqual(
+                            data.sheets[0].cells.A1.content,
+                            '=ODOO.PIVOT(1,"probability","foo","1")'
+                        );
+                    }
+                },
             });
             assert.strictEqual(
                 getCellContent(model, "A1"),
                 '=ODOO.PIVOT(1,"probability","foo","1")'
             );
             await nextTick();
-            assert.verifySteps(["snapshot"]);
+            assert.verifySteps(["reset data"]);
         });
 
         QUnit.test("menu > download as json", async function (assert) {

@@ -90,7 +90,7 @@ class HrEmployee(models.Model):
     l10n_ch_spouse_sv_as_number = fields.Char(string="Spouse SV-AS-Number", groups="hr.group_hr_user")
     l10n_ch_spouse_work_canton = fields.Selection(string="Spouse Work Canton", selection=CANTONS, groups="hr.group_hr_user")
     l10n_ch_spouse_work_start_date = fields.Date(string="Spouse Work Start Date", groups="hr.group_hr_user")
-    l10n_ch_children = fields.One2many('l10n.ch.hr.employee.children', 'employee_id')
+    l10n_ch_children = fields.One2many('l10n.ch.hr.employee.children', 'employee_id', groups="hr_payroll.group_hr_payroll_user")
     l10n_ch_has_withholding_tax = fields.Boolean(
         string="Pay Withholding Taxes", compute='_compute_l10n_ch_has_withholding_tax', store=True, readonly=False, groups="hr.group_hr_user")
     l10n_ch_residence_category = fields.Selection([

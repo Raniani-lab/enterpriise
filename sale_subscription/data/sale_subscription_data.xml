@@ -97,7 +97,18 @@
             <field name="nextcall" eval="(datetime.now() + timedelta(minutes=9)).strftime('%Y-%m-%d %H:%M:%S')"/>
         </record>
 
-        <!-- Alerts -->
+        <!-- Subscription Plan -->
+        <record id="subscription_plan_month" model="sale.subscription.plan" forcecreate="0">
+            <field name="name">Monthly</field>
+            <field name="billing_period_value">1</field>
+            <field name="billing_period_unit">month</field>
+        </record>
+
+        <record id="subscription_plan_year" model="sale.subscription.plan" forcecreate="0">
+            <field name="name">Yearly</field>
+            <field name="billing_period_value">1</field>
+            <field name="billing_period_unit">year</field>
+        </record>
 
     </data>
 

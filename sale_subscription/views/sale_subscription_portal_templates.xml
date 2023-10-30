@@ -24,6 +24,7 @@
                             <h4 class="modal-title">
                                 Change Plan for <span t-field="sale_order.display_name" class="text-primary"/>
                             </h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
                         </header>
                         <form method="post" t-attf-action="/my/subscriptions/#{sale_order.id}/change_plan?access_token=#{sale_order.access_token}">
                             <input class="d-none" name="csrf_token" t-att-value="request.csrf_token()"/>
@@ -37,7 +38,6 @@
                             </main>
                             <footer class="modal-footer">
                                 <button class="btn btn-primary">Submit</button>
-                                <button class="btn btn-secondary" special="cancel">Cancel</button>
                             </footer>
                         </form>
                     </div>
@@ -109,8 +109,8 @@
                         </header>
                         <main class="modal-body">
                             <!-- ======  Manage Payment methods ====== -->
-                            <div t-if="providers" id="payment_method" class="text-start">
-                                <t t-call="payment.manage">
+                            <div t-if="providers_sudo" id="payment_method" class="text-start">
+                                <t t-call="payment.form">
                                     <t t-set="assign_token_route"
                                        t-value="'/my/subscriptions/assign_token/' + str(sale_order.id)"/>
                                     <t t-set="landing_route"
@@ -149,7 +149,7 @@
         <div id="introduction" position="before">
             <div class="alert alert-danger text-center" role="alert" t-if="sale_order.subscription_state == '3_progress' and sale_order.next_invoice_date &lt; datetime.date.today()">
                 Your subscription is expired, will be closed soon.
-                <a t-if="(providers or tokens) and sale_order.amount_total> 0" href="#payment_message">Pay now</a>
+                <a t-if="(providers_sudo or tokens_sudo) and sale_order.amount_total> 0" href="#payment_message">Pay now</a>
                 <t t-else="">Pay now</t>
             </div>
         </div>
@@ -189,13 +189,13 @@
 
         <tbody id="sale_info_table" position="replace">
             <tbody style="white-space:nowrap">
-                <tr t-if="sale_order.sale_order_template_id">
+                <tr t-if="sale_order.plan_id">
                     <th class="text-end pb-0">Recurring Plan:</th>
                     <td class="w-100 pb-0 text-wrap"><span t-field="sale_order.sudo().plan_id.name"/></td>
                     <td>
                         <a role="button" class="link-primary" data-bs-toggle="modal" data-bs-target="#wc-modal-change-plan" href="#"
                                 t-if="sale_order.is_subscription and sale_order.plan_id.related_plan_id and sale_order._can_be_edited_on_portal()">
-                        (Change Plan)
+                            (Change Plan)
                         </a>
                     </td>
                 </tr>
@@ -234,7 +234,7 @@
                 <div t-if="company_mismatch">
                     <t t-call="payment.company_mismatch_warning"/>
                 </div>
-                <div class="clearfix" t-elif="(providers_sudo or tokens) and sale_order.amount_total> 0">
+                <div class="clearfix" t-elif="(providers_sudo or tokens_sudo) and sale_order.amount_total> 0">
                     <h3 class="mb-1">Anticipate payment</h3>
                     <div t-if="sale_order.get_portal_last_transaction().state == 'pending'">
                         <div class="alert alert-warning m-1 mt-3">
@@ -267,10 +267,10 @@
                         <div t-if="sale_order.payment_token_id">Payment method:
                             <t t-out ="sale_order.payment_token_id._build_display_name(max_length=14)"/>
                         </div>
-                        <t t-if="sale_order.subscription_state in ['3_progress', '6_churn']">
+                        <t t-if="sale_order.subscription_state in ['3_progress', '4_paused', '6_churn']">
                             <!-- User is logged in under the partner set on the subscription -->
-                            <t t-if="enable_manage_payment_form">
-                                <a role="button" class="mt-2 btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#payment_managing" href="#">
+                            <t t-if="enable_token_management">
+                                <a role="button" class="mt-2 btn btn-secondary w-100" t-att-href="token_management_url">
                                     <t t-if="sale_order.payment_token_id">Manage Payment Method</t>
                                     <t t-else="">Set Payment Method</t>
                                 </a>
@@ -282,15 +282,15 @@
                                     disabled="true"
                                     role="button"
                                     class="mt-2 btn btn-secondary w-100">
-                                Manage Payment Methods
+                                Manage Payment Method
                             </button>
                             <!-- User is logged out -->
-                            <a t-else="providers or tokens"
+                            <a t-else="providers_sudo or tokens_sudo"
                                title="You must be logged in to manage your payment methods."
                                t-attf-href="/web/login?redirect={{sale_order.get_portal_url()}}"
                                role="button"
                                class="mt-2 btn btn-secondary w-100">
-                                Manage Payment Methods
+                                Manage Payment Method
                             </a>
                         </t>
                         <!-- Download -->
@@ -333,10 +333,10 @@
                            t-elif="sale_order.user_quantity and sale_order.sale_order_option_ids and not sale_order._can_be_edited_on_portal() and sale_order.subscription_state in ['3_progress', '4_paused']">
                             Add Quantity
                         </a>
-                        <button role="button" class="mt8 btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#wc-modal-close-init" href="#"
-                                t-if="sale_order.user_closable and sale_order.subscription_state in ['3_progress', '4_paused']" >
+                        <a role="button" class="mt8 btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#wc-modal-close-init" href="#"
+                           t-if="sale_order.user_closable and sale_order.subscription_state in ['3_progress', '4_paused']">
                             Close Subscription
-                        </button>
+                        </a>
                     </div>
                     <div t-if="sale_order.user_id" class="flex-grow-1 mt8">
                         <div t-if="sale_order.user_id">

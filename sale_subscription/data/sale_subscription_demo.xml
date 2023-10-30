@@ -24,7 +24,9 @@
             <field name="name">6 Months</field>
             <field name="billing_period_value">6</field>
             <field name="billing_period_unit">month</field>
-            <field name="user_closable">False</field>
+            <field name="user_closable">True</field>
+            <field name="user_quantity">True</field>
+            <field name="user_extend">True</field>
         </record>
 
         <record id="subscription_plan_year" model="sale.subscription.plan">

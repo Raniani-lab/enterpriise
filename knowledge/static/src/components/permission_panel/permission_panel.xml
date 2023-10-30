@@ -68,7 +68,7 @@
                 </div>
             </div>
             <div class="dropdown-divider" t-if="isInternalUser"/>
-            <div t-if="state.user_is_admin || (props.record.data.user_permission === 'write' and isInternalUser)" class="o_knowledge_share_panel_invite d-flex align-items-center px-3 py-1">
+            <div t-if="state.user_is_admin || (props.record.data.user_permission === 'write' and isInternalUser)" class="o_knowledge_share_panel_invite d-flex align-items-center px-3 pt-1 pb-2">
                 <div class="o_knowledge_share_panel_icon rounded-circle d-flex flex-shrink-0 justify-content-center align-items-center bg-light">
                     <i class="fa fa-user-plus fs-3" title="Invite People"/>
                 </div>
@@ -78,7 +78,7 @@
                 </button>
             </div>
             <t t-foreach="state.members" t-as="member" t-key="member_index">
-                <div t-attf-class="d-flex align-items-center px-3 py-1 {{ this.isLoggedUser(member) ? 'active' : '' }}">
+                <div class="d-flex align-items-center px-3 py-1">
                     <div class="flex-shrink-0">
                         <t t-if="isInternalUser">
                             <img class="o_knowledge_share_panel_image rounded" t-if="member.partner_id"
@@ -90,7 +90,10 @@
                         </t>
                     </div>
                     <div class="flex-grow-1 min-w-0 px-3">
-                        <div t-out="member.partner_name" class="text-truncate"/>
+                        <div t-attf-class="text-truncate {{ this.isLoggedUser(member) ? 'd-sm-flex align-items-sm-center fw-bold text-primary' : '' }}">
+                            <t t-out="member.partner_name"/>
+                            <span t-if="this.isLoggedUser(member)" class="badge d-none d-sm-block ms-1 rounded-pill text-bg-primary">You</span>
+                        </div>
                         <div class="text-truncate text-muted">
                             <span t-if="member.partner_share">Guest</span>
                             <span t-if="state.user_is_admin and this.isLoggedUser(member)"><i class="fa fa-cog pe-1" title="Administrator"/>Admin</span>
@@ -109,26 +112,37 @@
                                         and (state.user_is_admin || props.record.data.user_permission === 'write' || this.isLoggedUser(member))"
                                  class="d-flex align-items-center me-2 fs-4">
                                 <!-- Special cases if self member -->
-                                <i t-if="isInternalUser and this.isLoggedUser(member) and ((state.category === 'shared' and !member.is_unique_writer) || state.category !== 'shared')"
-                                   class="fa fa-w fa-sign-out o_delete text-danger" title="Leave Article"
-                                   t-on-click="event => this._onRemoveMember(event, member)" type="button">
-                                </i>
-                                <i t-elif="this.isLoggedUser(member) and props.record.data.user_permission === 'read' and state.category === 'workspace' and !state.user_is_admin"
-                                   class="fa fa-w fa-sign-out o_delete" disabled="True" type="button"
-                                   title="As a reader, you can't leave a Workspace article" >
-                                </i>
-                                <i t-elif="this.isLoggedUser(member) and member.is_unique_writer"
-                                   class="fa fa-w fa-sign-out o_delete" disabled="True" type="button"
-                                   title="You can't leave an article for which you are the last writer">
-                                </i>
+                                <button t-if="isInternalUser and this.isLoggedUser(member) and ((state.category === 'shared' and !member.is_unique_writer) || state.category !== 'shared')"
+                                    class="o_delete btn btn-danger"
+                                    t-on-click="event => this._onRemoveMember(event, member)"
+                                    title="Leave Article">
+                                    <i class="fa fa-fw fa-sign-out"/>
+                                </button>
+                                <button t-elif="this.isLoggedUser(member) and props.record.data.user_permission === 'read' and state.category === 'workspace' and !state.user_is_admin"
+                                    class="o_delete btn btn-danger"
+                                    title="As a reader, you can't leave a Workspace article"
+                                    disabled="True">
+                                    <i class="fa fa-fw fa-sign-out"/>
+                                </button>
+                                <button t-elif="this.isLoggedUser(member) and member.is_unique_writer"
+                                    class="o_delete btn btn-danger"
+                                    title="You can't leave an article for which you are the last writer"
+                                    disabled="True">
+                                    <i class="fa fa-fw fa-sign-out"></i>
+                                </button>
                                 <!-- Normal case: can remove member (unique writer)? -->
-                                <i t-elif="member.is_unique_writer and isInternalUser"
-                                   class="fa fa-w fa-times o_delete" disabled="True" type="button"
-                                   title="You can't remove the last writer of the article">
-                                </i>
-                                <i t-elif="isInternalUser" class="fa fa-w fa-times o_delete text-danger" title="Remove Member"
-                                   t-on-click="event => this._onRemoveMember(event, member)" type="button">
-                                </i>
+                                <button t-elif="member.is_unique_writer and isInternalUser"
+                                    class="o_delete o_remove btn btn-danger"
+                                    title="You can't remove the last writer of the article"
+                                    disabled="True">
+                                    <i class="fa fa-fw fa-times"/>
+                                </button>
+                                <button t-elif="isInternalUser"
+                                    class="o_delete o_remove btn btn-danger"
+                                    title="Remove Member"
+                                    t-on-click="event => this._onRemoveMember(event, member)">
+                                    <i class="fa fa-fw fa-times"/>
+                                </button>
 
                             </div>
                             <select t-attf-class="o_permission form-select rounded {{ member.partner_share || !isInternalUser ? 'o_knowledge_share_partner' : '' }}"

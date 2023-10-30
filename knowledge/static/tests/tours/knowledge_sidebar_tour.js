@@ -491,11 +491,11 @@ registry.category("web_tour.tours").add('knowledge_sidebar_tour', {
     // Make remove member button visible
     trigger: '.o_knowledge_share_panel:not(:has(.fa-spin))',
     run: () => {
-        document.querySelector('.o_knowledge_share_panel .o_delete.fa-times').style.display = 'block';
+        document.querySelector('.o_knowledge_share_panel .o_delete.o_remove').style.display = 'block';
     },
 }, {
     // Click on the delete member button
-    trigger: '.o_knowledge_share_panel .o_delete.fa-times',
+    trigger: '.o_knowledge_share_panel .o_delete.o_remove',
 }, {
     // Confirm restriction
     trigger: '.modal-footer .btn-primary',
@@ -550,11 +550,11 @@ registry.category("web_tour.tours").add('knowledge_sidebar_tour', {
     // Make remove member button visible
     trigger: '.o_knowledge_share_panel:not(:has(.fa-spin))',
     run: () => {
-        document.querySelector('.o_knowledge_share_panel .o_delete.fa-times').style.display = 'block';
+        document.querySelector('.o_knowledge_share_panel .o_delete.o_remove').style.display = 'block';
     },
 }, {
     // Remove member
-    trigger: '.o_knowledge_share_panel .o_delete.fa-times',
+    trigger: '.o_knowledge_share_panel .o_delete.o_remove',
 }, {
     // Check that article moved to private
     trigger: 'section[data-section="private"] .o_article:contains("Shared Article")',

@@ -6089,6 +6089,13 @@ msgid "Write the next Newsletter"
 msgstr ""
 
 #. module: knowledge
+#. odoo-javascript
+#: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
+#, python-format
+msgid "You"
+msgstr ""
+
+#. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_member_unique_article_partner
 msgid "You already added this partner on this article."
 msgstr ""

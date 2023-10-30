@@ -4346,7 +4346,7 @@ class AccountReport(models.Model):
             lines_with_totals_below = []
             totals_below_stack = []
             for line_dict in lines:
-                while totals_below_stack and not line_dict['id'].startswith(totals_below_stack[-1]['parent_id']):
+                while totals_below_stack and not line_dict['id'].startswith(totals_below_stack[-1]['parent_id'] + '|'):
                     lines_with_totals_below.append(totals_below_stack.pop())
 
                 lines_with_totals_below.append(line_dict)

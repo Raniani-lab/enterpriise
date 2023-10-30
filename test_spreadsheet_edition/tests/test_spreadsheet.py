@@ -24,6 +24,22 @@ class SpreadsheetMixinTest(SpreadsheetTestCase):
         copy = spreadsheet.copy({"spreadsheet_revision_ids": []})
         self.assertFalse(copy.spreadsheet_revision_ids)
 
+    def test_reset_spreadsheet_data(self):
+        spreadsheet = self.env["spreadsheet.test"].create({})
+        # one revision before the snapshot (it's archived by the snapshot)
+        spreadsheet.dispatch_spreadsheet_message(self.new_revision_data(spreadsheet))
+        self.snapshot(
+            spreadsheet,
+            spreadsheet.server_revision_id, "snapshot-revision-id", {"sheets": [], "revisionId": "snapshot-revision-id"},
+        )
+        # one revision after the snapshot
+        spreadsheet.dispatch_spreadsheet_message(self.new_revision_data(spreadsheet))
+        spreadsheet.spreadsheet_data = r"{}"
+        self.assertFalse(spreadsheet.spreadsheet_snapshot)
+        self.assertFalse(
+            spreadsheet.with_context(active_test=True).spreadsheet_revision_ids,
+        )
+
     def test_company_currency(self):
         spreadsheet = self.env["spreadsheet.test"].create({})
         company_eur = self.env["res.company"].create({"currency_id": self.env.ref("base.EUR").id, "name": "EUR"})

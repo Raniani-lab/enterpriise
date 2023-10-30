@@ -17,11 +17,6 @@ class SpreadsheetDashboard(models.Model):
             },
         }
 
-    def write(self, vals):
-        if "spreadsheet_binary_data" in vals:
-            self._delete_collaborative_data()
-        return super().write(vals)
-
     def get_readonly_dashboard(self):
         self.ensure_one()
         data = self.join_spreadsheet_session()

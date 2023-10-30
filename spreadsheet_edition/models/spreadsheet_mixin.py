@@ -45,6 +45,11 @@ class SpreadsheetMixin(models.AbstractModel):
                 else:
                     spreadsheet.server_revision_id = snapshot.get("revisionId", "START_REVISION")
 
+    def write(self, vals):
+        if "spreadsheet_binary_data" in vals and not self.env.context.get("preserve_spreadsheet_revisions"):
+            self._delete_collaborative_data()
+        return super().write(vals)
+
     def copy(self, default=None):
         self.ensure_one()
         new_spreadsheet = super().copy(default)
@@ -285,7 +290,8 @@ class SpreadsheetMixin(models.AbstractModel):
 
     def _delete_collaborative_data(self):
         self.spreadsheet_snapshot = False
-        self.with_context(active_test=False).spreadsheet_revision_ids.unlink()
+        self._check_collaborative_spreadsheet_access("write")
+        self.with_context(active_test=False).sudo().spreadsheet_revision_ids.unlink()
 
     def unlink(self):
         """ Override unlink to delete spreadsheet revision. This cannot be

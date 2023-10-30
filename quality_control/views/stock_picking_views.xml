@@ -16,7 +16,6 @@
                 <button string="Quality Checks" name="check_quality" type="object" class="oe_highlight" data-hotkey="shift+z"
                         invisible="not quality_check_todo or state in ('done', 'cancel')" groups="quality.group_quality_user"/>
                 <button name="button_quality_alert" groups="quality.group_quality_user" type="object" string="Quality Alert" context="{'default_picking_id': id}" class="oe_highlight" invisible="not quality_check_fail or quality_alert_count != 0" data-hotkey="shift+q"/>
-                <button name="button_quality_alert" groups="quality.group_quality_user" type="object" string="Quality Alert" context="{'default_picking_id': id}" invisible="not check_ids or quality_check_fail and quality_alert_count == 0" data-hotkey="shift+q"/>
             </xpath>
             <div name="button_box" position="inside">
                 <button name="open_quality_alert_picking" groups="quality.group_quality_user" type="object" class="oe_stat_button" icon="fa-bell" invisible="quality_alert_count == 0">

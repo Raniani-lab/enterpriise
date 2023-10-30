@@ -252,6 +252,10 @@ export default class BarcodeMRPModel extends BarcodePickingModel {
         return defaultValues
     }
 
+    _shouldSearchForAnotherLot(barcodeData, filters) {
+        return !barcodeData.match && filters['stock.lot'];
+    }
+
     _shouldCreateLineOnExceed(line) {
         if (line.finalProduct) {
             return false;

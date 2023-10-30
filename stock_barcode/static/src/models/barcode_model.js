@@ -905,8 +905,7 @@ export default class BarcodeModel extends EventBus {
         }
         try {
             barcodeData = await this._parseBarcode(barcode, filters);
-            if (!barcodeData.match && filters['stock.lot'] &&
-                !this.canCreateNewLot && this.useExistingLots) {
+            if (this._shouldSearchForAnotherLot(barcodeData, filters)) {
                 // Retry to parse the barcode without filters in case it matches an existing
                 // record that can't be found because of the filters
                 const lot = await this.cache.getRecordByBarcode(barcode, 'stock.lot');
@@ -1320,6 +1319,11 @@ export default class BarcodeModel extends EventBus {
             }
         }
         return foundLine;
+    }
+
+    _shouldSearchForAnotherLot(barcodeData, filters) {
+        return !barcodeData.match && filters['stock.lot'] &&
+            !this.canCreateNewLot && this.useExistingLots
     }
 
     _shouldSearchForAnotherLine(line, barcodeData) {

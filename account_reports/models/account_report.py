@@ -718,7 +718,7 @@ class AccountReport(models.Model):
         if self.user_has_groups('analytic.group_analytic_accounting'):
             previous_analytic_accounts = (previous_options or {}).get('analytic_accounts', [])
             analytic_account_ids = [int(x) for x in previous_analytic_accounts]
-            selected_analytic_accounts = self.env['account.analytic.account'].search([('id', 'in', analytic_account_ids)])
+            selected_analytic_accounts = self.env['account.analytic.account'].with_context(active_test=False).search([('id', 'in', analytic_account_ids)])
 
             options['display_analytic'] = True
             options['analytic_accounts'] = selected_analytic_accounts.ids
@@ -738,7 +738,7 @@ class AccountReport(models.Model):
 
         selected_partner_ids = [int(partner) for partner in previous_partner_ids]
         # search instead of browse so that record rules apply and filter out the ones the user does not have access to
-        selected_partners = selected_partner_ids and self.env['res.partner'].search([('id', 'in', selected_partner_ids)]) or self.env['res.partner']
+        selected_partners = selected_partner_ids and self.env['res.partner'].with_context(active_test=False).search([('id', 'in', selected_partner_ids)]) or self.env['res.partner']
         options['selected_partner_ids'] = selected_partners.mapped('name')
         options['partner_ids'] = selected_partners.ids
 

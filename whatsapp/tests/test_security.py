@@ -14,6 +14,8 @@ class WhatsAppSecurityCase(WhatsAppCommon):
         super().setUpClass()
         cls.user_employee2 = mail_new_test_user(
             cls.env,
+            company_id=cls.company_admin.id,
+            email='user.employee.2@test.mycompany.com',
             groups='base.group_user',
             login='company_1_test_employee_2',
         )
@@ -90,6 +92,7 @@ class WhatsAppControllerSecurity(MockIncomingWhatsApp, WhatsAppSecurityCase):
 class WhatsAppDiscussSecurity(WhatsAppSecurityCase):
 
     @users('admin')
+    @mute_logger('odoo.addons.base.models.ir_rule')
     def test_member_creation(self):
         channel_channel, channel_wa = self.env['discuss.channel'].create([
             {
@@ -112,17 +115,19 @@ class WhatsAppDiscussSecurity(WhatsAppSecurityCase):
                 default_rtc_session_ids=[(0, 0, {'is_screen_sharing_on': True})]
             ).whatsapp_channel_join_and_pin()
 
-@tagged('security')
-class WhatsAppMessageSecurity(WhatsAppSecurityCase):
-    def test_message_signup_token(self):
-        """Assert the template values sent to the whatsapp API are not fetched as sudo/SUPERUSER,
-        even when going through the cron/queue"""
 
-        # As group_system,
-        # create a template to send signup links to new users through whatsapp
-        # It sounds relatively reasonable as valid use case that an admin wants to send user invitation links
-        # to his database through a whatsapp message
-        env = self.env(user=self.env.ref('base.user_admin'))
+@tagged('wa_message', 'security')
+class WhatsAppMessageSecurity(WhatsAppSecurityCase):
+
+    @mute_logger('odoo.addons.base.models.ir_model')
+    def test_message_signup_token(self):
+        """Assert the template values sent to the whatsapp API are not fetched
+        as sudo/SUPERUSER, even when going through the cron/queue. """
+
+        # As group_system, create a template to send signup links to new users
+        # through whatsapp.It sounds relatively reasonable as valid use case
+        # that an admin wants to send user invitation links through a WA message
+        env = self.env(user=self.user_admin)
         whatsapp_template_signup = env['whatsapp.template'].create({
             'name': 'foo',
             'body': 'Signup link: {{1}}',
@@ -149,23 +154,23 @@ class WhatsAppMessageSecurity(WhatsAppSecurityCase):
         # - to get and send the CSRF token.
         # Given the extra overhead, and the fact this is not what we are testing here,
         # just call directly `res.users.reset_password` as sudo, as the `/web/reset_password` route does
-        env['res.users'].sudo().reset_password(env.ref('base.user_admin').login)
+        env['res.users'].sudo().reset_password(self.user_admin.login)
 
-        # As whatsapp_admin,
-        # take the opportunity of the above whatsapp template to try to use it against the admin,
-        # and retrieve his signup token, allowing the whatsapp_admin to change the password of the system admin.
+        # As whatsapp_admin, take the opportunity of the above whatsapp template
+        # to try to use it against the admin, and retrieve his signup token, allowing
+        # the whatsapp_admin to change the password of the system admin
         env = self.env(user=self.user_wa_admin)
         # Ensure the whatsapp admin can indeed not read the signup url directly
         with self.assertRaisesRegex(exceptions.AccessError, "You are not allowed to modify 'User'"):
             env.ref('base.user_admin').partner_id.signup_url
 
         # Now, try to access the signup url of the admin user through a message sent to whatsapp.
-        mail_message = env.ref('base.user_admin').partner_id.message_post(body='foo')
+        mail_message = self.user_admin.partner_id.message_post(body='foo')
         whatsapp_message = env['whatsapp.message'].create({
             'mail_message_id': mail_message.id,
+            'mobile_number': '+32478000000',
             'wa_account_id': whatsapp_template_signup.wa_account_id.id,
             'wa_template_id': whatsapp_template_signup.id,
-            'mobile_number': '+32478000000',
         })
 
         # Flush before calling the cron, to write in database pending writes
@@ -194,6 +199,7 @@ class WhatsAppMessageSecurity(WhatsAppSecurityCase):
         # as the cron wrote on the message using another cursor
         whatsapp_message.invalidate_recordset()
         self.assertEqual(whatsapp_message.failure_reason, "Not able to get the value of field 'signup_url'")
+
 
 @tagged('wa_template', 'security')
 class WhatsAppTemplateSecurity(WhatsAppSecurityCase):

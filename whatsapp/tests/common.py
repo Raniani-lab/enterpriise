@@ -24,6 +24,17 @@ class MockOutgoingWhatsApp(common.BaseCase):
         self._init_wa_mock()
         wa_msg_origin = WhatsAppMessage.create
 
+        # ------------------------------------------------------------
+        # Whatsapp API
+        # ------------------------------------------------------------
+
+        def _send_whatsapp(number, *, send_vals, **kwargs):
+            if send_vals:
+                msg_uid = f'test_wa_{time.time():.9f}'
+                self._wa_msg_sent.append(msg_uid)
+                return msg_uid
+            raise WhatsAppError("Please make sure to define a template before proceeding.")
+
         def _upload_whatsapp_document(attachment):
             if attachment:
                 return {
@@ -38,12 +49,9 @@ class MockOutgoingWhatsApp(common.BaseCase):
                 }
             raise WhatsAppError("Please ensure you are using the correct file type and try again.")
 
-        def _send_whatsapp(number, *, send_vals, **kwargs):
-            if send_vals:
-                msg_uid = f'test_wa_{time.time():.9f}'
-                self._wa_msg_sent.append(msg_uid)
-                return msg_uid
-            raise WhatsAppError("Please make sure to define a template before proceeding.")
+        # ------------------------------------------------------------
+        # Whatsapp Models
+        # ------------------------------------------------------------
 
         def _wa_message_create(model, *args, **kwargs):
             res = wa_msg_origin(model, *args, **kwargs)
@@ -102,7 +110,7 @@ class MockIncomingWhatsApp(common.HttpCase):
             message_data=message_data,
             headers={
                 "Content-Type": "application/json",
-                "X-Hub-Signature-256": "sha256=%s" % message_signature,
+                "X-Hub-Signature-256": f"sha256={message_signature}",
             }
         )
 
@@ -230,19 +238,18 @@ class WhatsAppCase(MockOutgoingWhatsApp):
         self._assertWAMessage(whatsapp_message, status=status, fields_values=fields_values, attachment_values=attachment_values)
 
     # ------------------------------------------------------------
-    # OTHER MODELS ASSERTS
+    # TEMPLATE ASSERTS
     # ------------------------------------------------------------
 
-    def assertTemplateVariables(self, template, expected_variables):
-        for expected in expected_variables:
-            exp_name, exp_line_type, exp_field_type, exp_vals = expected
+    def assertWATemplateVariables(self, template, expected_variables):
+        for (exp_name, exp_line_type, exp_field_type, exp_vals) in expected_variables:
             with self.subTest(exp_name=exp_name):
                 tpl_variable = template.variable_ids.filtered(
                     lambda v: v.name == exp_name
                 )
                 self.assertTrue(tpl_variable)
-                self.assertEqual(tpl_variable.line_type, exp_line_type)
                 self.assertEqual(tpl_variable.field_type, exp_field_type)
+                self.assertEqual(tpl_variable.line_type, exp_line_type)
                 for fname, fvalue in (exp_vals or {}).items():
                     self.assertEqual(tpl_variable[fname], fvalue)
 
@@ -252,6 +259,7 @@ class WhatsAppCommon(MailCommon, WhatsAppCase):
 
     @classmethod
     def setUpClass(cls):
+        """ Note that MailCommon is multi-company by default """
         super().setUpClass()
 
         # phone-specific test data

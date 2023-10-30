@@ -126,10 +126,6 @@ Welcome to {{4}} office''',
 
         self.assertWAMessage()
 
-        # Test that the WhatsApp message fails validation when a phone number button with an invalid number is added.
-        with self.assertRaises(exceptions.UserError):
-            self._add_button_to_template(self.template_basic, name="test call fail", call_number='91 12345 12345', button_type='phone_number')
-
     @users('employee')
     def test_composer_tpl_button_url(self):
         self._add_button_to_template(self.template_basic, name="test url", website_url='https://www.odoo.com/', button_type='url')
@@ -140,7 +136,3 @@ Welcome to {{4}} office''',
             composer.action_send_whatsapp_template()
 
         self.assertWAMessage()
-
-        # Test that the WhatsApp message fails validation when a URL button with an invalid URL is added.
-        with self.assertRaises(exceptions.ValidationError):
-            self._add_button_to_template(self.template_basic, name="test url fail", website_url='odoo.com', button_type='url')

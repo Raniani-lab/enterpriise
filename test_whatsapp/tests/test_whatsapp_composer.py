@@ -65,18 +65,23 @@ Welcome to {{4}} office''',
         ])
 
     @users('employee')
-    def test_composer_send_basic(self):
-        """ Test basic sending, without rendering """
+    def test_composer_tpl_base(self):
+        """ Test basic sending, with template, without rendering """
         template = self.template_basic.with_user(self.env.user)
         test_record = self.test_base_records[0]
         composer = self._instanciate_wa_composer_from_records(template, test_record)
         with self.mockWhatsappGateway():
             composer.action_send_whatsapp_template()
-        self.assertWAMessageFromRecord(test_record, fields_values={'body': f'<p>{template.body}</p>'})
+        self.assertWAMessageFromRecord(
+            test_record,
+            fields_values={
+                'body': f'<p>{template.body}</p>',
+            },
+        )
 
     @users('employee')
-    def test_composer_send_dynamic_cplx(self):
-        """ Test sending with rendering """
+    def test_composer_tpl_base_rendering(self):
+        """ Test sending with template and rendering """
         free_text = 'Odoo In'
         template = self.template_dynamic_cplx.with_user(self.env.user)
         test_record = self.test_base_records[0]
@@ -92,10 +97,13 @@ Welcome to {{4}} office''',
         )
 
     @users('employee')
-    def test_composer_send_header_attachments(self):
+    def test_composer_tpl_header_attachments(self):
         """ Send a template with a header attachment set through the composer."""
         doc_attach_clone = self.document_attachment.copy({'name': 'pdf_clone.pdf'})
-        self.template_dynamic.write({'header_type': 'document', 'header_attachment_ids': [(6, 0, self.document_attachment.ids)]})
+        self.template_dynamic.write({
+            'header_attachment_ids': [(6, 0, self.document_attachment.ids)],
+            'header_type': 'document',
+        })
 
         test_record = self.test_base_records[0].with_env(self.env)
         composer = self._instanciate_wa_composer_from_records(self.template_dynamic, test_record)
@@ -104,12 +112,16 @@ Welcome to {{4}} office''',
             composer.action_send_whatsapp_template()
         self.assertWAMessageFromRecord(
             test_record,
-            fields_values={'body': f'<p>Hello {test_record.name}</p>'},
-            attachment_values={'name': 'pdf_clone.pdf'},
+            attachment_values={
+                'name': 'pdf_clone.pdf',
+            },
+            fields_values={
+                'body': f'<p>Hello {test_record.name}</p>',
+            },
         )
 
     @users('employee')
-    def test_composer_send_header_various(self):
+    def test_composer_tpl_header_various(self):
         """ Test sending with rendering, including header """
         sample_text = 'Header Free Text'
 
@@ -141,8 +153,8 @@ Welcome to {{4}} office''',
         ):
             with self.subTest(header_type=header_type):
                 self.template_dynamic.write({
-                    'header_type': header_type,
                     'header_attachment_ids': [(5, 0, 0)],
+                    'header_type': header_type,
                     **template_upd_values,
                 })
                 template = self.template_dynamic.with_user(self.env.user)
@@ -150,7 +162,9 @@ Welcome to {{4}} office''',
                 with self.mockWhatsappGateway():
                     composer.action_send_whatsapp_template()
 
-                fields_values = {'body': f'<p>Hello {self.test_base_records[0].name}</p>'}
+                fields_values = {
+                    'body': f'<p>Hello {self.test_base_records[0].name}</p>',
+                }
                 fields_values.update(**(check_values or {}))
                 self.assertWAMessageFromRecord(
                     self.test_base_records[0],

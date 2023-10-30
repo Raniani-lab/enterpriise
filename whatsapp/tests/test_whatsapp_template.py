@@ -9,6 +9,29 @@ from odoo.tests import tagged, users
 class WhatsAppTemplate(WhatsAppCommon):
 
     @users('user_wa_admin')
+    def test_button_validation(self):
+        template = self.env['whatsapp.template'].create({
+            'body': 'Hello World',
+            'name': 'Test-basic',
+            'status': 'approved',
+            'wa_account_id': self.whatsapp_account.id,
+        })
+
+        # Test that the WhatsApp message fails validation when a phone number button with an invalid number is added.
+        with self.assertRaises(exceptions.UserError):
+            self._add_button_to_template(
+                template, button_type="phone_number",
+                call_number="91 12345 12345", name="test call fail",
+            )
+
+        # Test that the WhatsApp message fails validation when a URL button with an invalid URL is added.
+        with self.assertRaises(exceptions.ValidationError):
+            self._add_button_to_template(
+                template, button_type='url',
+                name="test url fail", website_url="odoo.com",
+            )
+
+    @users('user_wa_admin')
     def test_template_preview(self):
         """ Test preview feature from template itself """
         template = self.env['whatsapp.template'].create({
@@ -40,29 +63,29 @@ class WhatsAppTemplate(WhatsAppCommon):
             self.assertIn(expected_var, template_preview.preview_whatsapp)
 
     @users('user_wa_admin')
-    def test_template_type_dynamic_header(self):
+    def test_template_header_type_dynamic_text(self):
         """ Test dynamic text header """
         template = self.env['whatsapp.template'].create({
+            'header_text': 'Header {{1}}',
             'header_type': 'text',
             'name': 'Header Text',
-            'header_text': 'Header {{1}}',
             'wa_account_id': self.whatsapp_account.id,
         })
-        self.assertTemplateVariables(
+        self.assertWATemplateVariables(
             template,
             [('{{1}}', 'header', 'free_text', {'demo_value': 'Sample Value'})]
         )
 
         template = self.env['whatsapp.template'].create({
+            'header_text': 'Header {{1}}',
             'header_type': 'text',
             'name': 'Header Text 2',
-            'header_text': 'Header {{1}}',
             'variable_ids': [
                     (0, 0, {'name': '{{1}}', 'line_type': 'header', 'field_type': 'free_text', 'demo_value': 'Dynamic'}),
                 ],
             'wa_account_id': self.whatsapp_account.id,
         })
-        self.assertTemplateVariables(
+        self.assertWATemplateVariables(
             template,
             [('{{1}}', 'header', 'free_text', {'demo_value': 'Dynamic'})]
         )
@@ -78,14 +101,14 @@ class WhatsAppTemplate(WhatsAppCommon):
                 })
 
     @users('user_wa_admin')
-    def test_template_type_location(self):
+    def test_template_header_type_location(self):
         """ Test location header type """
         template = self.env['whatsapp.template'].create({
             'header_type': 'location',
             'name': 'Header Location',
             'wa_account_id': self.whatsapp_account.id,
         })
-        self.assertTemplateVariables(
+        self.assertWATemplateVariables(
             template,
             [('name', 'location', 'free_text', {'demo_value': 'Sample Value'}),
              ('address', 'location', 'free_text', {'demo_value': 'Sample Value'}),
@@ -105,7 +128,7 @@ class WhatsAppTemplate(WhatsAppCommon):
                 ],
             'wa_account_id': self.whatsapp_account.id,
         })
-        self.assertTemplateVariables(
+        self.assertWATemplateVariables(
             template,
             [('name', 'location', 'free_text', {'demo_value': 'LocName'}),
              ('address', 'location', 'free_text', {'demo_value': 'Gandhinagar, Gujarat'}),

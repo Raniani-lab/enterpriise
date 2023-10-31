@@ -14,6 +14,7 @@ O-CMD.PREV
 O-CMD.NEXT
 O-CMD.PAGER-FIRST
 O-CMD.PAGER-LAST
+O-BTN.return
 BARCODES
 
 cat > barcodes_actions_header.ps << HEADER
@@ -31,6 +32,7 @@ cat > barcodes_actions_header.ps << HEADER
 (NEXT PAGE) 89 230 showTitle
 (FIRST PAGE) 348 230 showTitle
 (LAST PAGE) 89 123 showTitle
+(RETURN) 348 123 showTitle
 
 HEADER
 

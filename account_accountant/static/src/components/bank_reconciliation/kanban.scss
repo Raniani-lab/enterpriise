@@ -170,6 +170,10 @@
                 .bank_rec_widget_form_discuss_anchor, .bank_rec_widget_form_transaction_details_anchor{
                     padding: 0 20px;
                 }
+
+                .o_form_label {
+                    text-wrap: nowrap;
+                }
             }
 
             .o_notebook {

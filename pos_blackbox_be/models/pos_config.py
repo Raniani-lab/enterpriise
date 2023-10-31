@@ -163,3 +163,8 @@ class PosConfig(models.Model):
             raise ValidationError(_("Automatic Receipt Printing must be activated"))
         if not self.iface_print_skip_screen:
             raise ValidationError(_("Skip Preview Screen must be activated"))
+
+    def _get_special_products_ids(self):
+        res = super()._get_special_products_ids()
+        res += [self.env.ref('pos_blackbox_be.product_product_work_in').id, self.env.ref('pos_blackbox_be.product_product_work_out').id]
+        return res

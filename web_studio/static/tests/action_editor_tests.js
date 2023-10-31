@@ -216,7 +216,7 @@ QUnit.module("ActionEditor", (hooks) => {
             if (route === "/web_studio/edit_action") {
                 assert.deepEqual(
                     args.args.groups_id[0],
-                    [6, false, [4]],
+                    [4, 4],
                     "group admin should be applied on action"
                 );
                 return Promise.resolve(true);

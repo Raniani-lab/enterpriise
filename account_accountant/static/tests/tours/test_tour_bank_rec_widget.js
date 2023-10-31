@@ -163,6 +163,11 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget',
             run: () => {},
         },
         {
+            content: "Wait to avoid non-deterministic errors on the next step",
+            trigger: "div[name='line_ids'] td:contains('Tax Received')",
+            run: () => {},
+        },
+        {
             content: "Validate",
             extra_trigger: "button.btn-primary:contains('Validate')",
             trigger: "button:contains('Validate')",

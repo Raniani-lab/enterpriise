@@ -33,7 +33,7 @@ export class AccountReportCarryoverPopover extends Component {
                 context: this.props.context,
             }
         );
-
+        this.props.close()
         return this.actionService.doAction(viewCarryoverLinesAction);
     }
 }

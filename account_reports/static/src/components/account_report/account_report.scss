@@ -146,6 +146,7 @@
     .line_cell {
         > .wrapper {
             display: flex;
+            align-items: center;
 
             > .content { display: flex }
         }

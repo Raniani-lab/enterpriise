@@ -14,7 +14,7 @@
             <div class="wrapper">
                 <t t-if="props.cell.info_popup_data">
                     <a
-                        class="fa fa-question-circle"
+                        class="fa fa-question-circle me-2"
                         t-on-click="(ev) => this.carryoverPopover(ev)"
                     />
                 </t>

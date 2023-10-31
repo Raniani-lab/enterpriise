@@ -32,6 +32,16 @@ msgid "'Worksheet_%s' % object.name"
 msgstr ""
 
 #. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "15.3 cm"
+msgstr ""
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "2023-08-15"
+msgstr ""
+
+#. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
 msgid ""
 "<i class=\"fa fa-envelope-o\" role=\"img\" aria-label=\"Domain alias\" "
@@ -204,6 +214,11 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__stock_move_line__check_state__pass
 msgid "All checks passed"
+msgstr ""
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "All parameters passed."
 msgstr ""
 
 #. module: quality_control
@@ -505,6 +520,21 @@ msgid "Is Last Check"
 msgstr ""
 
 #. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "John Doe"
+msgstr ""
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "LT-00045"
+msgstr ""
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "Laptop XYZ"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__write_uid
 msgid "Last Updated by"
 msgstr ""
@@ -712,6 +742,7 @@ msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
 msgid "Passed"
 msgstr ""
 
@@ -794,6 +825,11 @@ msgid "Products"
 msgstr ""
 
 #. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "QC-00123"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__qty_failed
 msgid "Qty Failed"
 msgstr ""
@@ -807,6 +843,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/quality_control/models/quality.py:0
 #: code:addons/quality_control/models/quality.py:0
+#: model:ir.actions.server,name:quality_control.action_qualtity_alert
 #: model:ir.model,name:quality_control.model_quality_alert
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_calendar
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search_inherit_quality_control
@@ -1169,6 +1206,11 @@ msgid "Transfer"
 msgstr ""
 
 #. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "Transfer-987"
+msgstr ""
+
+#. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Type"
 msgstr ""
@@ -1182,6 +1224,16 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
 msgid "Validate"
+msgstr ""
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "Value near threshold."
+msgstr ""
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "Visual Check"
 msgstr ""
 
 #. module: quality_control

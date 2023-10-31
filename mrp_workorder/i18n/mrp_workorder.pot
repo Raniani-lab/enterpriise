@@ -624,6 +624,14 @@ msgid "Image/PDF"
 msgstr ""
 
 #. module: mrp_workorder
+#: model:ir.model.fields,help:mrp_workorder.field_mrp_workorder__move_line_id
+#: model:ir.model.fields,help:mrp_workorder.field_quality_check__move_line_id
+msgid ""
+"In case of Quality Check by Quantity, Move Line on which the Quality Check "
+"applies"
+msgstr ""
+
+#. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
 msgid "Instruction"
 msgstr ""

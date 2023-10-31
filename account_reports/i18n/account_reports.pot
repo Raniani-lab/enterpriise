@@ -496,8 +496,8 @@ msgid "At Date"
 msgstr ""
 
 #. module: account_reports
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #: code:addons/account_reports/static/src/components/journal_report/line/line.xml:0
 #: code:addons/account_reports/static/src/components/journal_report/line/line.xml:0
@@ -591,8 +591,8 @@ msgid "Bank and Cash Accounts"
 msgstr ""
 
 #. module: account_reports
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/account_reports/models/account_general_ledger.py:0
 #: code:addons/account_reports/static/src/components/journal_report/line/line.xml:0
 #: model_terms:ir.ui.view,arch_db:account_reports.journal_report_pdf_export_main_table_body
@@ -1519,8 +1519,8 @@ msgid "Function to Call"
 msgstr ""
 
 #. module: account_reports
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/account_reports/models/account_report.py:0
 #: code:addons/account_reports/models/account_trial_balance_report.py:0
 #: code:addons/account_reports/static/src/components/multicurrency_revaluation_report/line_name.xml:0
@@ -1902,8 +1902,9 @@ msgid "Journal Item"
 msgstr ""
 
 #. module: account_reports
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
+#: code:addons/account_reports/models/account_deferred_reports.py:0
 #: code:addons/account_reports/models/account_report.py:0
 #: code:addons/account_reports/models/account_trial_balance_report.py:0
 #: code:addons/account_reports/static/src/components/aged_partner_balance/line_name/line_name.xml:0
@@ -1960,8 +1961,8 @@ msgid "LIABILITIES + EQUITY"
 msgstr ""
 
 #. module: account_reports
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/account_reports/static/src/components/account_report/line/popover/debug_popover.xml:0
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
 #: model:account.report.column,name:account_reports.journal_report_partner_name
@@ -2157,8 +2158,8 @@ msgid ""
 msgstr ""
 
 #. module: account_reports
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/account_reports/models/account_general_ledger.py:0
 #: code:addons/account_reports/models/account_journal_report.py:0
 #: code:addons/account_reports/static/src/components/journal_report/line/line.xml:0
@@ -2722,8 +2723,8 @@ msgid "Same Period Last Year"
 msgstr ""
 
 #. module: account_reports
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/account_reports/models/account_report.py:0
 #: code:addons/account_reports/static/src/components/account_report/footnote/dialog/footnote_dialog.xml:0
 #: code:addons/account_reports/static/src/components/aged_partner_balance/dialog/expected_date_dialog.xml:0
@@ -2822,8 +2823,8 @@ msgid "Tags"
 msgstr ""
 
 #. module: account_reports
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/account_reports/models/account_general_ledger.py:0
 #: code:addons/account_reports/static/src/components/journal_report/line/line.xml:0
 #: model_terms:ir.ui.view,arch_db:account_reports.journal_report_pdf_export_main_table_body

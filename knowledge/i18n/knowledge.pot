@@ -2779,13 +2779,6 @@ msgid ""
 msgstr ""
 
 #. module: knowledge
-#. odoo-javascript
-#: code:addons/knowledge/static/src/components/topbar/topbar.xml:0
-#, python-format
-msgid "Delete"
-msgstr ""
-
-#. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
@@ -4247,8 +4240,8 @@ msgid "Nest articles under this one to generate a structure"
 msgstr ""
 
 #. module: knowledge
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/static/src/components/topbar/topbar.xml:0
 #: code:addons/knowledge/static/src/js/knowledge_controller.js:0
@@ -4974,6 +4967,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_trash
 #, python-format
 msgid "Restore"
 msgstr ""
@@ -5170,6 +5164,14 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
 msgid "Send as Message"
+msgstr ""
+
+#. module: knowledge
+#. odoo-javascript
+#: code:addons/knowledge/static/src/components/topbar/topbar.xml:0
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
+#, python-format
+msgid "Send to Trash"
 msgstr ""
 
 #. module: knowledge
@@ -5780,8 +5782,8 @@ msgid "Unsupported search operation"
 msgstr ""
 
 #. module: knowledge
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/static/src/components/sidebar/sidebar_row.xml:0

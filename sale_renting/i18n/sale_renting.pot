@@ -61,8 +61,23 @@ msgid ""
 msgstr ""
 
 #. module: sale_renting
+#: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
+msgid "123 Main St"
+msgstr ""
+
+#. module: sale_renting
 #: model:sale.temporal.recurrence,name:sale_renting.recurrence_2_weeks
 msgid "2 Weeks"
+msgstr ""
+
+#. module: sale_renting
+#: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
+msgid "2023-08-01"
+msgstr ""
+
+#. module: sale_renting
+#: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
+msgid "2023-08-10"
 msgstr ""
 
 #. module: sale_renting
@@ -73,6 +88,11 @@ msgstr ""
 #. module: sale_renting
 #: model:sale.temporal.recurrence,name:sale_renting.recurrence_3_year
 msgid "3 years"
+msgstr ""
+
+#. module: sale_renting
+#: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
+msgid "456 Other St"
 msgstr ""
 
 #. module: sale_renting
@@ -614,6 +634,16 @@ msgid "Is overdue"
 msgstr ""
 
 #. module: sale_renting
+#: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
+msgid "Jane Doe"
+msgstr ""
+
+#. module: sale_renting
+#: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
+msgid "John Doe"
+msgstr ""
+
+#. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_product_pricing__write_uid
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__write_uid
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard_line__write_uid
@@ -901,6 +931,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 msgid "Product"
+msgstr ""
+
+#. module: sale_renting
+#: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
+msgid "Product A"
 msgstr ""
 
 #. module: sale_renting
@@ -1228,6 +1263,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_report_search_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Salesperson"
+msgstr ""
+
+#. module: sale_renting
+#: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
+msgid "Sample Document"
 msgstr ""
 
 #. module: sale_renting

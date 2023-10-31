@@ -429,8 +429,8 @@ msgid "Manual Selection - %s"
 msgstr ""
 
 #. module: data_merge
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/data_merge/models/ir_model.py:0
 #: code:addons/data_merge/static/src/views/data_merge_list_view.xml:0
 #: model:ir.actions.server,name:data_merge.merge_action_crm_lost_reason

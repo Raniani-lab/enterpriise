@@ -983,7 +983,21 @@ msgstr ""
 #. odoo-python
 #: code:addons/appointment/models/calendar_event.py:0
 #, python-format
+msgid "Appointment canceled"
+msgstr ""
+
+#. module: appointment
+#. odoo-python
+#: code:addons/appointment/models/calendar_event.py:0
+#, python-format
 msgid "Appointment canceled by: %(partners)s"
+msgstr ""
+
+#. module: appointment
+#. odoo-python
+#: code:addons/appointment/models/calendar_event.py:0
+#, python-format
+msgid "Appointment re-booked"
 msgstr ""
 
 #. module: appointment
@@ -2694,8 +2708,8 @@ msgid "Share Availabilities"
 msgstr ""
 
 #. module: appointment
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/appointment/models/appointment_type.py:0
 #: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.js:0
 #, python-format

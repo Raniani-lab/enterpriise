@@ -83,8 +83,8 @@ msgstr ""
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_job_employee_referral_kanban
 msgid ""
-"<span title=\"My Link to Share\"><i class=\"fa fa-lg fa-link text-"
-"secondary\" role=\"img\" aria-label=\"My Link to Share\"/></span>"
+"<span title=\"My Link to Share\"><i class=\"fa fa-lg fa-link\" role=\"img\" "
+"aria-label=\"My Link to Share\"/></span>"
 msgstr ""
 
 #. module: hr_referral

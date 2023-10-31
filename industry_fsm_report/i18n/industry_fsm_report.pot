@@ -22,6 +22,26 @@ msgid ""
 msgstr ""
 
 #. module: industry_fsm_report
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
+msgid "10 days"
+msgstr ""
+
+#. module: industry_fsm_report
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
+msgid "10:00"
+msgstr ""
+
+#. module: industry_fsm_report
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
+msgid "2023-01-01"
+msgstr ""
+
+#. module: industry_fsm_report
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
+msgid "5 days"
+msgstr ""
+
+#. module: industry_fsm_report
 #. odoo-javascript
 #: code:addons/industry_fsm_report/static/src/js/tours/industry_fsm_report_tour.js:0
 #, python-format
@@ -285,8 +305,28 @@ msgid "Is Worksheet sent"
 msgstr ""
 
 #. module: industry_fsm_report
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
+msgid "Jane Worker"
+msgstr ""
+
+#. module: industry_fsm_report
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
+msgid "Jane smith"
+msgstr ""
+
+#. module: industry_fsm_report
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
+msgid "Manage SME"
+msgstr ""
+
+#. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_task_worksheet_template_4
 msgid "Manufacturer"
+msgstr ""
+
+#. module: industry_fsm_report
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
+msgid "Marc Demo"
 msgstr ""
 
 #. module: industry_fsm_report

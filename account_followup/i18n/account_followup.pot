@@ -52,6 +52,11 @@ msgid "15 Days"
 msgstr ""
 
 #. module: account_followup
+#: model_terms:ir.ui.view,arch_db:account_followup.followup_filter_info_template
+msgid "2023-09-06"
+msgstr ""
+
+#. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line2
 msgid "30 Days"
 msgstr ""
@@ -205,7 +210,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
 msgid ""
 "<strong>\n"
-"                                Payment Reminder\n"
+"                                Pending Invoices\n"
 "                            </strong>"
 msgstr ""
 
@@ -249,8 +254,18 @@ msgid "Activity Type"
 msgstr ""
 
 #. module: account_followup
+#: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
+msgid "Add a note"
+msgstr ""
+
+#. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Add contacts to notify..."
+msgstr ""
+
+#. module: account_followup
+#: model_terms:ir.ui.view,arch_db:account_followup.followup_filter_info_template
+msgid "Address"
 msgstr ""
 
 #. module: account_followup
@@ -416,6 +431,11 @@ msgid "Define follow-up levels and their related actions"
 msgstr ""
 
 #. module: account_followup
+#: model_terms:ir.ui.view,arch_db:account_followup.followup_filter_info_template
+msgid "Demo Ref"
+msgstr ""
+
+#. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__name
 msgid "Description"
 msgstr ""
@@ -542,15 +562,15 @@ msgid "Follow-up Steps"
 msgstr ""
 
 #. module: account_followup
+#: model_terms:ir.ui.view,arch_db:account_followup.report_followup_print_all
+msgid "Follow-up details"
+msgstr ""
+
+#. module: account_followup
 #. odoo-python
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "Follow-up letter generated"
-msgstr ""
-
-#. module: account_followup
-#: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
-msgid "Follow-up message"
 msgstr ""
 
 #. module: account_followup
@@ -606,6 +626,11 @@ msgstr ""
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Invoices"
+msgstr ""
+
+#. module: account_followup
+#: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
+msgid "Invoices Analysis"
 msgstr ""
 
 #. module: account_followup
@@ -671,6 +696,11 @@ msgstr ""
 #: code:addons/account_followup/wizard/followup_missing_information.py:0
 #, python-format
 msgid "Missing information"
+msgstr ""
+
+#. module: account_followup
+#: model_terms:ir.ui.view,arch_db:account_followup.line_template
+msgid "Name"
 msgstr ""
 
 #. module: account_followup
@@ -931,11 +961,6 @@ msgid ""
 msgstr ""
 
 #. module: account_followup
-#: model_terms:ir.ui.view,arch_db:account_followup.followup_filter_info_template
-msgid "Today's date"
-msgstr ""
-
-#. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_tree_view
 msgid "Total"
 msgstr ""
@@ -980,6 +1005,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__unreconciled_aml_ids
 #: model:ir.model.fields,field_description:account_followup.field_res_users__unreconciled_aml_ids
 msgid "Unreconciled Aml"
+msgstr ""
+
+#. module: account_followup
+#: model_terms:ir.ui.view,arch_db:account_followup.followup_filter_info_template
+msgid "VAT"
 msgstr ""
 
 #. module: account_followup

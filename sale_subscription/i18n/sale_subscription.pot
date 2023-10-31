@@ -638,7 +638,7 @@ msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
-#: code:addons/sale_subscription/controller/portal.py:0
+#: code:addons/sale_subscription/controllers/portal.py:0
 #, python-format
 msgid "A renewal has been created by the client."
 msgstr ""
@@ -772,7 +772,7 @@ msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
-#: code:addons/sale_subscription/controller/portal.py:0
+#: code:addons/sale_subscription/controllers/portal.py:0
 #, python-format
 msgid "An upsell has been created by the client."
 msgstr ""
@@ -1015,7 +1015,6 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_change_customer_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_wizard_view_form
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_so_portal_template
 msgid "Cancel"
 msgstr ""
 
@@ -1099,6 +1098,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_so_portal_template
 msgid "Close"
 msgstr ""
 
@@ -2147,11 +2147,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_sidebar
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
 msgid "Manage Payment Method"
-msgstr ""
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_sidebar
-msgid "Manage Payment Methods"
 msgstr ""
 
 #. module: sale_subscription

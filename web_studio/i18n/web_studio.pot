@@ -831,8 +831,8 @@ msgid "Cohort"
 msgstr ""
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/calendar/calendar_editor_sidebar.xml:0
@@ -861,8 +861,8 @@ msgid "Companies"
 msgstr ""
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
@@ -1133,8 +1133,8 @@ msgid "DIFF"
 msgstr ""
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
@@ -1269,8 +1269,8 @@ msgid "Descending"
 msgstr ""
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
@@ -1617,8 +1617,8 @@ msgid "Filter"
 msgstr ""
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/controllers/main.py:0
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
@@ -1916,8 +1916,8 @@ msgid ""
 msgstr ""
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
 #, python-format
@@ -2486,8 +2486,8 @@ msgid "None"
 msgstr ""
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
@@ -2868,8 +2868,8 @@ msgid "Reporting views"
 msgstr ""
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/controllers/main.py:0
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
@@ -2917,8 +2917,8 @@ msgid "Reset report"
 msgstr ""
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
@@ -3391,8 +3391,8 @@ msgid "Tabs"
 msgstr ""
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
@@ -3439,8 +3439,8 @@ msgid "The field %s does not exist."
 msgstr ""
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/studio_approval.py:0
 #: code:addons/web_studio/static/src/approval/approval_hook.js:0
 #, python-format
@@ -3586,6 +3586,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/navbar/navbar.js:0
 #: code:addons/web_studio/static/src/client_action/studio_home_menu/studio_home_menu.js:0
+#: code:addons/web_studio/static/src/studio_service.js:0
 #, python-format
 msgid "This action is not editable by Studio"
 msgstr ""
@@ -3744,8 +3745,8 @@ msgid "Uses:"
 msgstr ""
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog.xml:0
 #, python-format

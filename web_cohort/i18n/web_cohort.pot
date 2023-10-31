@@ -35,8 +35,8 @@ msgid "Action Window View"
 msgstr ""
 
 #. module: web_cohort
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_cohort/controllers/main.py:0
 #: code:addons/web_cohort/static/src/cohort_renderer.xml:0
 #, python-format

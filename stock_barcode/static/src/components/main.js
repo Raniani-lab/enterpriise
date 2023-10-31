@@ -2,7 +2,7 @@
 
 import { _t } from "@web/core/l10n/translation";
 import { Chatter } from "@mail/core/web/chatter";
-
+import { COMMANDS } from "@barcodes/barcode_handlers";
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
 import BarcodeQuantModel from '@stock_barcode/models/barcode_quant_model';
 import GroupedLineComponent from '@stock_barcode/components/grouped_line';
@@ -17,6 +17,10 @@ import { ManualBarcodeScanner } from './manual_barcode';
 import { url } from '@web/core/utils/urls';
 import { utils as uiUtils } from "@web/core/ui/ui_service";
 import { Component, EventBus, onPatched, onWillStart, useState, useSubEnv } from "@odoo/owl";
+
+// Lets `barcodeGenericHandlers` knows those commands exist so it doesn't warn when scanned.
+COMMANDS["O-CMD.MAIN-MENU"] = () => {};
+COMMANDS["O-CMD.cancel"] = () => {};
 
 const bus = new EventBus();
 

@@ -101,9 +101,9 @@
             <p class="o_view_nocontent_smiling_face">
                 Create a new subscription plan
             </p><p>
-                Create subscriptions plan blah blah blah
+                Create subscriptions plan
             </p><p>
-                blah blah bis
+                Subscription plans are used to configure the recurring, invoicing, and self-service behavior of subscriptions.
             </p>
         </field>
     </record>

@@ -2044,7 +2044,7 @@
             }]"/>
         <field name="is_template">True</field>
         <field name="template_name">Sprint Calendar</field>
-        <field name="template_description">Manage your team schedule for the upcomming sprint.</field>
+        <field name="template_description">Manage your team schedule for the upcoming sprint.</field>
         <field name="template_sequence">0</field>
         <field name="template_category_id" ref="knowledge_article_template_category_product_management"/>
         <field name="template_body" type="html">

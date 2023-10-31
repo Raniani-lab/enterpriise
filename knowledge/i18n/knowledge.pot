@@ -3990,7 +3990,7 @@ msgstr ""
 
 #. module: knowledge
 #: model:knowledge.article,template_description:knowledge.knowledge_article_template_sprint_calendar
-msgid "Manage your team schedule for the upcomming sprint."
+msgid "Manage your team schedule for the upcoming sprint."
 msgstr ""
 
 #. module: knowledge
@@ -4240,8 +4240,8 @@ msgid "Nest articles under this one to generate a structure"
 msgstr ""
 
 #. module: knowledge
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/static/src/components/topbar/topbar.xml:0
 #: code:addons/knowledge/static/src/js/knowledge_controller.js:0
@@ -4268,11 +4268,6 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/item_calendar_props_dialog/item_calendar_props_dialog.js:0
 #, python-format
 msgid "New property could not be created."
-msgstr ""
-
-#. module: knowledge
-#: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
 msgstr ""
 
 #. module: knowledge
@@ -5782,8 +5777,8 @@ msgid "Unsupported search operation"
 msgstr ""
 
 #. module: knowledge
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/static/src/components/sidebar/sidebar_row.xml:0

@@ -663,6 +663,11 @@ msgid "ARR Change (normalized)"
 msgstr ""
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__is_abandoned_cart
+msgid "Abandoned Cart"
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Action"
 msgstr ""
@@ -1281,7 +1286,7 @@ msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_plan
-msgid "Create subscriptions plan blah blah blah"
+msgid "Create subscriptions plan"
 msgstr ""
 
 #. module: sale_subscription
@@ -2371,6 +2376,11 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_plan_view_form
 msgid "No automatic mail"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
+msgid "No thanks, close my account"
 msgstr ""
 
 #. module: sale_subscription
@@ -3514,6 +3524,13 @@ msgid "Subscription is too expensive"
 msgstr ""
 
 #. module: sale_subscription
+#: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_plan
+msgid ""
+"Subscription plans are used to configure the recurring, invoicing, and self-"
+"service behavior of subscriptions."
+msgstr ""
+
+#. module: sale_subscription
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_3
 msgid "Subscription reached its end date"
 msgstr ""
@@ -4119,21 +4136,11 @@ msgid "Use Calendar"
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
-msgid "Use employee work schedule"
-msgstr ""
-
-#. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_filtered
 msgid ""
 "Use subscriptions to follow tasks, issues, timesheets or invoicing based on\n"
 "                work done, expenses and/or sales orders. Odoo will automatically manage\n"
 "                the alerts for the renewal of the subscriptions to the right salesperson."
-msgstr ""
-
-#. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
-msgid "Use the user's working schedule."
 msgstr ""
 
 #. module: sale_subscription
@@ -4158,11 +4165,6 @@ msgstr ""
 msgid ""
 "Want recurring billing via subscription management? Get started by clicking "
 "here"
-msgstr ""
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__warehouse_id
-msgid "Warehouse"
 msgstr ""
 
 #. module: sale_subscription
@@ -4197,6 +4199,11 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__webhook_uuid
 msgid "Webhook UUID"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__website_id
+msgid "Website"
 msgstr ""
 
 #. module: sale_subscription
@@ -4479,11 +4486,6 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 msgid "archived product(s)"
-msgstr ""
-
-#. module: sale_subscription
-#: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_plan
-msgid "blah blah bis"
 msgstr ""
 
 #. module: sale_subscription

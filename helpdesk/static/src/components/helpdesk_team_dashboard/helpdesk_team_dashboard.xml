@@ -53,7 +53,7 @@
                                    title="My Tickets"
                                    context="{'search_default_urgent_priority': True}"
                                    t-on-click="onActionClicked"
-                                   data-hotkey="u"
+                                   data-hotkey="o"
                                 >
                                     <span class="d-block mb-0 fs-2" t-out="state.dashboardValues.my_urgent.count"/>
                                     Urgent

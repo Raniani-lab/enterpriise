@@ -366,7 +366,7 @@ class WhatsAppMessage(models.Model):
                     error = statuses['errors'][0] if statuses.get('errors') else None
                     if error:
                         whatsapp_message_id._handle_error(whatsapp_error_code=error['code'],
-                                                          error_message=f"{error['code']} : f{error['title']}")
+                                                          error_message=f"{error['code']} : {error['title']}")
 
     def _update_message_fetched_seen(self):
         """ Update message status for the whatsapp recipient. """

@@ -883,7 +883,18 @@ QUnit.module('LegacyViews', {
     QUnit.test('empty gantt with sample data and default_group_by (switch view)', async function (assert) {
         assert.expect(7);
 
-       const views = {
+        const initialDate = new moment();
+        patchWithCleanup(SampleServer.prototype, {
+            /**
+             * Sometimes, it can happen that none of the generated dates is in
+             * the interval. To fix that, we simply return the initial date.
+             */
+            _getRandomDate(format) {
+                return initialDate.format(format);
+            },
+        })
+
+        const views = {
             'tasks,false,gantt': '<gantt date_start="start" date_stop="stop" sample="1" default_group_by="project_id"/>',
             'tasks,false,list': '<list/>',
             'tasks,false,search': '<search/>',
@@ -898,6 +909,7 @@ QUnit.module('LegacyViews', {
             res_model: 'tasks',
             type: 'ir.actions.act_window',
             views: [[false, 'gantt'], [false, 'list']],
+            context: { initialDate: initialDate.format() }
         });
 
         // the gantt view should be in sample mode

@@ -256,7 +256,7 @@ class TransferModel(models.Model):
         query.order = None
         self.line_ids.analytic_account_ids.ids and query.add_where('(NOT analytic_distribution ?| array[%s] OR analytic_distribution IS NULL)', [[str(account_id) for account_id in self.line_ids.analytic_account_ids.ids]])
         query_string, query_param = query.select('SUM(balance) AS balance', 'account_id')
-        query_string = f"{query_string} GROUP BY account_id"
+        query_string = f"{query_string} GROUP BY account_id ORDER BY account_id"
         self._cr.execute(query_string, query_param)
         # balance = debit - credit
         # --> balance > 0 means a debit so it should be credited on the source account
@@ -373,7 +373,7 @@ class TransferModelLine(models.Model):
                 query.add_where('account_move_line.analytic_distribution ?| array[%s]', [[str(account_id) for account_id in transfer_model_line.analytic_account_ids.ids]])
             query.order = None
             query_string, query_param = query.select('array_agg("account_move_line".id) AS ids', 'SUM(balance) AS balance', 'account_id')
-            query_string = f"{query_string} GROUP BY account_id"
+            query_string = f"{query_string} GROUP BY account_id ORDER BY account_id"
             self._cr.execute(query_string, query_param)
             total_balances_by_account = [expense for expense in self._cr.dictfetchall()]
 

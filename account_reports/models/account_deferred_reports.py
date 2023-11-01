@@ -33,11 +33,13 @@ class DeferredReportCustomHandler(models.AbstractModel):
             ('move_id.date', '<=', options['date']['date_to']),
         ]
         domain += [  # Exclude if entirely inside the period
-            '!', '&', '&', '&',
+            '!', '&', '&', '&', '&', '&',
             ('deferred_start_date', '>=', options['date']['date_from']),
             ('deferred_start_date', '<=', options['date']['date_to']),
             ('deferred_end_date', '>=', options['date']['date_from']),
             ('deferred_end_date', '<=', options['date']['date_to']),
+            ('move_id.date', '>=', options['date']['date_from']),
+            ('move_id.date', '<=', options['date']['date_to']),
         ]
         if filter_already_generated:
             domain += [

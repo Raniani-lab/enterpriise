@@ -111,17 +111,6 @@
             </div>
         </t>
 
-        <!-- Group by -->
-        <t t-if="options.get('groupby_fields')">
-            <div class="row">
-                <t t-set="group_by_value" t-value="opt['selected'] for opt in options['groupby_fields']"/>
-                <t t-if="group_by_value">
-                    <div class="col-3">Group by:</div>
-                    <div class="col-9 o_text_muted" t-out="group_by_value"/>
-                </t>
-            </div>
-        </t>
-
         <!-- Currency -->
         <t t-if="options.get('company_currency')">
             <div class="row">

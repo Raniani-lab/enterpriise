@@ -18,8 +18,8 @@ odoo.define('timesheet_grid.GroupByNoDateMixin', function (require) {
             const anchor_date = moment(this.context.grid_anchor);
             const range = this.currentRange.name;
             return {
-                start: anchor_date.startOf(range).format('YYYY-MM-DD'),
-                end: anchor_date.endOf(range).format('YYYY-MM-DD'),
+                start: anchor_date.clone().startOf(range).locale('en').format('YYYY-MM-DD'),
+                end: anchor_date.clone().endOf(range).locale('en').format('YYYY-MM-DD'),
             }
         },
 

@@ -933,13 +933,19 @@ class AccountMove(models.Model):
         invoice_values_list = []
         for invoice_values in pay_results['invoice_results']:
             invoice = invoice_values['invoice']
+
+            inv_cfdi_values = self.env['l10n_mx_edi.document']._get_company_cfdi_values(invoice.company_id)
+            invoice._l10n_mx_edi_add_invoice_cfdi_values(inv_cfdi_values)
+
+            # Apply the percentage paid to the tax amounts.
             if invoice.amount_total:
                 percentage_paid = abs(invoice_values['reconciled_amount'] / invoice.amount_total)
             else:
                 percentage_paid = 0.0
-
-            inv_cfdi_values = self.env['l10n_mx_edi.document']._get_company_cfdi_values(invoice.company_id)
-            invoice._l10n_mx_edi_add_invoice_cfdi_values(inv_cfdi_values, percentage_paid=percentage_paid)
+            for key in ('retenciones_list', 'traslados_list'):
+                for tax_values in inv_cfdi_values[key]:
+                    for tax_key in ('base', 'importe'):
+                        tax_values[tax_key] = invoice.currency_id.round(tax_values[tax_key] * percentage_paid)
 
             # 'equivalencia' (rate) is a conditional attribute used to express the exchange rate according to the currency
             # registered in the document related. It is required when the currency of the related document is different

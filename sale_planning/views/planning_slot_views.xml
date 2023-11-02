@@ -154,7 +154,7 @@
         <field name="domain">[('start_datetime', '!=', False), ('end_datetime', '!=', False)]</field>
         <field name="context">{
             'search_default_group_by_employee': 1, 'planning_expand_employee': 1, 'planning_expand_role': 1,
-            'planning_expand_sale_line_id': 1,
+            'planning_expand_sale_line_id': 1, 'planning_expand_resource': 1,
         }</field>
     </record>
 

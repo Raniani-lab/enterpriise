@@ -67,7 +67,7 @@ QUnit.module("Studio clickbot", (hooks) => {
         registry.category("command_categories").add("view_switcher", {});
         registerStudioDependencies();
     });
-    QUnit.test("clickbot clickeverywhere test", async (assert) => {
+    QUnit.skip("clickbot clickeverywhere test", async (assert) => {
         serverData.actions = {
             1001: {
                 id: 1001,

@@ -60,20 +60,20 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
         await nextTick();
         // prettier-ignore
         assert.deepEqual(getEvaluatedGrid(model, "A1:B4"), [
-            ["Pivot #1",    "Total"],
-            ["",            "Probability"],
-            ["xphone",      10],
-            ["Total",       10],
+            ["(#1) Partner Pivot",  "Total"],
+            ["",                    "Probability"],
+            ["xphone",              10],
+            ["Total",               10],
         ])
         await root.execute(env);
         await nextTick();
         // prettier-ignore
         assert.deepEqual(getEvaluatedGrid(model, "A1:B5"), [
-            ["Pivot #1",    "Total"],
-            ["",            "Probability"],
-            ["xphone",      10],
-            ["xpad",        121],
-            ["Total",       131],
+            ["(#1) Partner Pivot",  "Total"],
+            ["",                    "Probability"],
+            ["xphone",              10],
+            ["xpad",                121],
+            ["Total",               131],
         ])
     });
 

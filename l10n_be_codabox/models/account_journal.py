@@ -45,6 +45,9 @@ class AccountJournal(models.Model):
         coda_companies = self.env['res.company'].search([
             ('l10n_be_codabox_is_connected', '=', True),
         ])
+        if not coda_companies:
+            _logger.info("L10BeCodabox: No company is connected to Codabox.")
+            return
         imported_statements = sum(len(self._l10n_be_codabox_fetch_coda_transactions(company)) for company in coda_companies)
         _logger.info("L10BeCodabox: %s bank statements were imported.", imported_statements)
 
@@ -63,22 +66,22 @@ class AccountJournal(models.Model):
         try:
             response = session.post(f"{get_iap_endpoint(self.env)}/{method}", json={"params": params}, timeout=(10, 600))
             result = response.json().get("result", {})
-            error_msg = result.get("error")
-            if error_msg:
-                if error_msg in ("error_connection_not_found", "error_consent_not_valid"):
+            error = result.get("error")
+            if error:
+                if error.get("type") in ("error_connection_not_found", "error_consent_not_valid"):
                     # We should only commit the resetting of the connection state and not the whole transaction
                     # therefore we rollback and commit only our change
                     self.env.cr.rollback()
                     company.l10n_be_codabox_is_connected = False
                     self.env.cr.commit()
-                raise UserError(get_error_msg(error_msg))
+                raise UserError(get_error_msg(error))
             return result.get(file_type, [])
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-            raise UserError(get_error_msg("error_connecting_iap"))
+            raise UserError(get_error_msg({"type": "error_connecting_iap"}))
 
     def _l10n_be_codabox_fetch_coda_transactions(self, company):
         if not company.vat or not company.l10n_be_codabox_is_connected:
-            raise UserError(get_error_msg("error_codabox_not_configured"))
+            raise UserError(get_error_msg({"type": "error_codabox_not_configured"}))
 
         # Fetch last bank statement date for each journal, and take the oldest one as from_date
         # for Codabox. If any Codabox journal has no bank statement, take 3 months ago as from_date
@@ -97,8 +100,8 @@ class AccountJournal(models.Model):
                 ], order="date DESC", limit=1).date
             if last_date:
                 latest_bank_stmt_dates.append(last_date)
-            else:
-                latest_bank_stmt_dates.append(fields.Date.today() - relativedelta(months=3))
+        if not latest_bank_stmt_dates:
+            latest_bank_stmt_dates.append(fields.Date.today() - relativedelta(months=3))
         statement_ids_all = []
         skipped_bank_accounts = set()
         session = requests.Session()
@@ -133,7 +136,7 @@ class AccountJournal(models.Model):
     def l10n_be_codabox_manually_fetch_soda_transactions(self):
         self.ensure_one()
         if not self.company_id.vat or not self.company_id.l10n_be_codabox_is_connected:
-            raise UserError(get_error_msg("error_codabox_not_configured"))
+            raise UserError(get_error_msg({"type": "error_codabox_not_configured"}))
         if self != self.company_id.l10n_be_codabox_soda_journal:
             raise UserError(_("This journal is not configured as the Codabox SODA journal in the Settings"))
 

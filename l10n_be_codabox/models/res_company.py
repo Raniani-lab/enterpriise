@@ -11,18 +11,24 @@ from odoo.addons.l10n_be_codabox.const import get_error_msg, get_iap_endpoint
 class ResCompany(models.Model):
     _inherit = "res.company"
 
-    l10n_be_codabox_fiduciary_vat = fields.Char(string="Fiduciary VAT")
+    l10n_be_codabox_fiduciary_vat = fields.Char(string="Fiduciary VAT", compute="_compute_l10n_be_codabox_fiduciary_vat", store=True, readonly=False)
     l10n_be_codabox_iap_token = fields.Char(string="IAP Access Token")
     l10n_be_codabox_is_connected = fields.Boolean(string="Codabox Is Connected")
     l10n_be_codabox_soda_journal = fields.Many2one("account.journal", string="Journal in which SODA's will be imported", domain="[('type', '=', 'bank')]")
+
+    @api.depends("account_representative_id.vat")
+    def _compute_l10n_be_codabox_fiduciary_vat(self):
+        for company in self:
+            fidu_vat = re.sub("[^0-9]", "", company.account_representative_id.vat or "")
+            company.l10n_be_codabox_fiduciary_vat = company.l10n_be_codabox_fiduciary_vat or fidu_vat
 
     @api.model
     def _l10_be_codabox_call_iap(self, url, params):
         response = requests.post(url, json={"params": params}, timeout=10)
         result = response.json().get("result", {})
-        error_msg = result.get("error")
-        if error_msg:
-            raise UserError(get_error_msg(error_msg))
+        error = result.get("error")
+        if error:
+            raise UserError(get_error_msg(error))
         return result
 
     def _l10n_be_codabox_verify_prerequisites(self):
@@ -57,7 +63,7 @@ class ResCompany(models.Model):
                     "target": "self",
                 }
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-            raise UserError(get_error_msg("error_connecting_iap"))
+            raise UserError(get_error_msg({"type": "error_connecting_iap"}))
 
     def _l10n_be_codabox_revoke(self):
         self._l10n_be_codabox_verify_prerequisites()
@@ -73,4 +79,4 @@ class ResCompany(models.Model):
             self.l10n_be_codabox_is_connected = False
             self.l10n_be_codabox_iap_token = False
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-            raise UserError(get_error_msg("error_connecting_iap"))
+            raise UserError(get_error_msg({"type": "error_connecting_iap"}))

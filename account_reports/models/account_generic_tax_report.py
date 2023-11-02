@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import ast
 from collections import defaultdict
 
 from odoo import models, api, fields, Command, _
@@ -581,6 +582,8 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
             action['res_id'] = moves.id
         else:
             action['domain'] = [('id', 'in', moves.ids)]
+            action['context'] = dict(ast.literal_eval(action['context']))
+            action['context'].pop('search_default_posted', None)
         return action
 
     def _generate_tax_closing_entries(self, report, options, closing_moves=None, companies=None):

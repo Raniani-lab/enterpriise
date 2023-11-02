@@ -1517,11 +1517,12 @@ export class GanttRenderer extends Component {
             } else {
                 const level = this.calculatePillsLevel(rowPills);
                 span = level * baseSpan;
+                if(!this.isTouchDevice){
+                    span += 4;
+                }
             }
-            // We want to keep enough space to be able to click directly on a cell
-            span += 4;
         }
-        if (progressBar && this.isTouchDevice && (!rowPills.length || span === baseSpan + 4)) {
+        if (progressBar && this.isTouchDevice && (!rowPills.length || span === baseSpan)) {
             // In mobile: rows span over 2 rows to alllow progressbars to properly display
             span += ROW_SPAN;
         }

@@ -1185,16 +1185,7 @@ class Payslip(models.Model):
         return 0
 
     def _get_representation_fees_threshold(self, localdict):
-        self.ensure_one()
-        contract = self.contract_id
-        result = 0
-        if contract.job_id.l10n_be_custom_representation_fees:
-            for fee in ['homeworking', 'phone', 'internet', 'car_management']:
-                result += self._rule_parameter(f'cp200_representation_fees_{fee}') if contract.job_id[f'l10n_be_custom_representation_fees_{fee}'] else 0
-        else:
-            result = self._rule_parameter('cp200_representation_fees_threshold')
-
-        return result
+        return self._rule_parameter('cp200_representation_fees_threshold')
 
     def _get_representation_fees(self, localdict):
         self.ensure_one()

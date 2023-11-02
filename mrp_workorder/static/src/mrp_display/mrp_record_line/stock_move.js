@@ -50,7 +50,7 @@ export class StockMove extends Component {
     }
 
     get uom() {
-        if (this.displayUOM) {
+        if (this.props.displayUOM) {
             return this.props.record.data.product_uom[1];
         }
         return this.toConsumeQuantity === 1 ? _t("Unit") : _t("Units");

@@ -3,7 +3,7 @@
 import { registry } from "@web/core/registry";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { registerStudioDependencies } from "./helpers";
-import { makeDeferred, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { makeDeferred, patchDate, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { browser } from "@web/core/browser/browser";
 
 let serverData;
@@ -67,7 +67,8 @@ QUnit.module("Studio clickbot", (hooks) => {
         registry.category("command_categories").add("view_switcher", {});
         registerStudioDependencies();
     });
-    QUnit.skip("clickbot clickeverywhere test", async (assert) => {
+    QUnit.test("clickbot clickeverywhere test", async (assert) => {
+        patchDate(2017, 9, 8, 15, 35, 11); // October 8 2017, 15:35:11
         serverData.actions = {
             1001: {
                 id: 1001,
@@ -150,7 +151,6 @@ QUnit.module("Studio clickbot", (hooks) => {
             'Clicking on: menu item "App1"',
             "Clicking on: entering studio",
             "Clicking on: leaving studio",
-            "Clicking on: Control Panel menu",
             "Testing 2 filters",
             'Clicking on: filter "Not Bar"',
             'Clicking on: filter "Date"',
@@ -159,7 +159,6 @@ QUnit.module("Studio clickbot", (hooks) => {
             "Clicking on: kanban view switcher",
             "Clicking on: entering studio",
             "Clicking on: leaving studio",
-            "Clicking on: Control Panel menu",
             "Testing 2 filters",
             'Clicking on: filter "Not Bar"',
             'Clicking on: filter "Date"',
@@ -170,7 +169,6 @@ QUnit.module("Studio clickbot", (hooks) => {
             'Clicking on: menu item "App2"',
             "Clicking on: entering studio",
             "Clicking on: leaving studio",
-            "Clicking on: Control Panel menu",
             "Testing 2 filters",
             'Clicking on: filter "Not Bar"',
             'Clicking on: filter "Date"',
@@ -179,7 +177,6 @@ QUnit.module("Studio clickbot", (hooks) => {
             'Clicking on: menu item "menu 1"',
             "Clicking on: entering studio",
             "Clicking on: leaving studio",
-            "Clicking on: Control Panel menu",
             "Testing 2 filters",
             'Clicking on: filter "Not Bar"',
             'Clicking on: filter "Date"',
@@ -188,7 +185,6 @@ QUnit.module("Studio clickbot", (hooks) => {
             'Clicking on: menu item "menu 2"',
             "Clicking on: entering studio",
             "Clicking on: leaving studio",
-            "Clicking on: Control Panel menu",
             "Testing 2 filters",
             'Clicking on: filter "Not Bar"',
             'Clicking on: filter "Date"',

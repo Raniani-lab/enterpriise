@@ -79,8 +79,10 @@ QUnit.module("Knowledge - Collaboration", (hooks) => {
         // Synchronize history of p2 with the one from p1
         await peers.p1.openDataChannel(peers.p2);
 
-        assert.equal(getCleanedValue(peers.p1), `<p>as1[]</p><div name="b1"><p>b1</p></div><p><br></p>`);
-        assert.equal(getCleanedValue(peers.p2), `<p>as1</p><div name="b1"><p>b1</p></div><p><br>[]</p>`);
+        const value1 = await getCleanedValue(peers.p1);
+        assert.equal(value1, `<p>as1[]</p><div name="b1"><p>b1</p></div><p><br></p>`);
+        const value2 = await getCleanedValue(peers.p2);
+        assert.equal(value2, `<p>as1</p><div name="b1"><p>b1</p></div><p><br>[]</p>`);
         // The method should have been called twice:
         // - once for the insertion outside of the collaboration.
         // - a second time when the editable of p2 is resynchronized with the

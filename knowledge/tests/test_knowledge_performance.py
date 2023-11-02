@@ -120,3 +120,9 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
         with self.assertQueryCount(employee=24):  # knowledge: 23
             writable_article = self.workspace_children[1].with_env(self.env)
             writable_article.move_to(parent_id=writable_article.parent_id.id, before_article_id=before_id)
+
+    @users('employee')
+    @warmup
+    def test_get_user_sorted_articles(self):
+        with self.assertQueryCount(employee=18):
+            self.env['knowledge.article'].get_user_sorted_articles('')

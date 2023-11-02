@@ -2,7 +2,7 @@
 
 import { patch } from "@web/core/utils/patch";
 import { Wysiwyg } from '@web_editor/js/wysiwyg/wysiwyg';
-import { insert, createPeers, removePeers } from '@web_editor/../tests/test_wysiwyg_collaboration';
+import { createPeers, removePeers } from '@web_editor/../tests/test_wysiwyg_collaboration';
 
 /**
  * Returns a cleaned html value as it would be saved in the database,
@@ -67,7 +67,7 @@ QUnit.module("Knowledge - Collaboration", (hooks) => {
         await peers.p1.focus();
         await peers.p2.focus();
 
-        await peers.p1.makeStep(insert('s1'));
+        await peers.p1.wysiwyg.odooEditor.execCommand('insert', 's1');
 
         const behaviorEl = peers.p2.document.createElement('DIV');
         const paragraph = peers.p2.document.createElement('P');

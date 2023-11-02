@@ -1949,8 +1949,9 @@ class AccountReport(models.Model):
         if record_id is None:
             raise UserError(_("'Open General Ledger' caret option is only available form report lines targetting accounts."))
 
-        account_line_id = self._get_generic_line_id('account.account', record_id)
-        gl_options = self.env.ref('account_reports.general_ledger_report').get_options(options)
+        general_ledger = self.env.ref('account_reports.general_ledger_report')
+        account_line_id = general_ledger._get_generic_line_id('account.account', record_id)
+        gl_options = general_ledger.get_options(options)
         gl_options['unfolded_lines'] = [account_line_id]
 
         action_vals = self.env['ir.actions.actions']._for_xml_id('account_reports.action_account_report_general_ledger')

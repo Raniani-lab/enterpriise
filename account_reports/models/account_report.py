@@ -911,7 +911,7 @@ class AccountReport(models.Model):
 
         def compute_group_totals(line, group=None):
             return [
-                hierarchy_total + (column.get('no_format') or 0.0)
+                hierarchy_total + (column.get('no_format') or 0.0) if isinstance(hierarchy_total, float) else hierarchy_total
                 for hierarchy_total, column
                 in zip(hierarchy[group]['totals'], line['columns'])
             ]
@@ -963,7 +963,7 @@ class AccountReport(models.Model):
         def create_hierarchy_dict():
             return defaultdict(lambda: {
                 'lines': [],
-                'totals': [0.0 for column in options['columns']],
+                'totals': [('' if column.get('figure_type') == 'string' else 0.0) for column in options['columns']],
                 'child_groups': self.env['account.group'],
             })
 

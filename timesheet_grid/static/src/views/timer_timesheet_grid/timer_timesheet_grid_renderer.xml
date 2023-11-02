@@ -98,7 +98,7 @@
         <xpath expr="//div[hasclass('o_grid_bar_chart_total_title')]/span" position="attributes">
             <attribute name="t-att-class">{
                 'text-success' : column.grandTotal === column._dataPoint.data.workingHours.daily[column.value],
-                'text-danger' : column.grandTotal lt column._dataPoint.data.workingHours.daily[column.value],
+                'text-danger' : (column.grandTotal lt column._dataPoint.data.workingHours.daily[column.value]) or (getUnavailableClass(column) === 'o_grid_unavailable' and column.grandTotal gt 0),
                 'text-warning' : column.grandTotal gt column._dataPoint.data.workingHours.daily[column.value],
             }</attribute>
         </xpath>

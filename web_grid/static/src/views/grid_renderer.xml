@@ -53,7 +53,8 @@
                  t-att-class="{
                     'o_grid_cell_overlay_today bg-info': column.isToday,
                     'o_grid_cell_overlay bg-700' : !column.isToday,
-                }"/>
+                 }"
+                 t-attf-class="{{getUnavailableClass(column)}}"/>
             <span class="z-index-1 text-center" t-out="column.title"/>
         </div>
         <div t-if="!props.options.hideLineTotal"
@@ -90,8 +91,8 @@
                 class="o_grid_section o_grid_highlightable position-relative d-flex align-items-center justify-content-center fw-bold"
                 t-att-class="{
                     'border-top bg-info bg-opacity-50' : column.isToday,
-                    'text-bg-200 border-top' : !column.isToday,
-                    'text-opacity-25' : getUnavailableClass(column) === 'o_grid_unavailable'
+                    'bg-200 border-top' : !column.isToday,
+                    'bg-opacity-75' : getUnavailableClass(column) === 'o_grid_unavailable'
                 }"
                 t-att-data-row="section.id"
                 t-att-data-column="column.id"
@@ -101,13 +102,14 @@
             >
                 <div class="position-absolute top-0 start-0 w-100 h-100"
                     t-att-class="{
-                       'o_grid_cell_overlay_today bg-info' : column.isToday,
+                       'o_grid_cell_overlay_today bg-info bg-opacity-25' : column.isToday,
                        'o_grid_cell_overlay bg-700' : !column.isToday,
                     }"
+                    t-attf-class="{{getUnavailableClass(column)}}"
                 />
                 <div class="o_grid_cell_readonly position-relative d-flex justify-content-center align-items-center w-100 h-100">
-                    <span class="z-index-1" t-att-class="{
-                            'text-opacity-25' : section.cells[column.id].value === 0
+                    <span class="z-index-1 text-900" t-att-class="{
+                            'text-opacity-25' : section.cells[column.id].value === 0 or getUnavailableClass(column) === 'o_grid_unavailable',
                           }"
                           t-out="formatValue(section.cells[column.id].value)"
                     />
@@ -175,7 +177,6 @@
                  'text-900': !isEven and row.cells[column.id].value &gt;= 0,
                  'fst-italic': row.isAdditionalRow,
                  'text-danger': row.cells[column.id].value lt 0,
-                 'text-opacity-25': getUnavailableClass(column, { section, row }) === 'o_grid_unavailable',
              }"
              t-att-data-row="row.id"
              t-att-data-column="column.id"
@@ -189,10 +190,11 @@
                     'o_grid_cell_overlay_today bg-info bg-opacity-25' : column.isToday,
                     'o_grid_cell_overlay bg-700' : !column.isToday,
                  }"
+                 t-attf-class="{{getUnavailableClass(column)}}"
             />
             <div class="o_grid_cell_readonly position-relative d-flex justify-content-center align-items-center w-100 h-100">
                 <span t-att-class="{
-                          'text-opacity-25': row.cells[column.id].value === 0,
+                          'text-900 text-opacity-25': row.cells[column.id].value === 0,
                       }"
                       t-esc="formatValue(row.cells[column.id].value)"
                 />
@@ -249,6 +251,7 @@
                     'o_grid_cell_overlay_today bg-info bg-opacity-25' : column.isToday,
                     'o_grid_cell_overlay bg-700' : !column.isToday,
                  }"
+                 t-attf-class="{{getUnavailableClass(column)}}"
             />
         </div>
         <div class="o_grid_add_line position-md-sticky end-0 text-bg-200"
@@ -262,7 +265,6 @@
             <div class=""
                  t-att-class="{
                     'bg-view': isEven,
-                    'bg-100': !isEven,
                     'z-index-1 position-md-sticky start-0': !props.model.useSampleModel,
                  }"
                  t-attf-style="grid-row: {{rowPosition}}; grid-column: {{columnsGap}};"/>
@@ -272,7 +274,7 @@
             <div t-foreach="props.columns"
                  t-as="column"
                  t-key="column.id"
-                 class="o_grid_row o_grid_column_total o_grid_highlightable"
+                 class="o_grid_row o_grid_column_total o_grid_highlightable position-relative"
                  t-att-class="{
                     'bg-view': isEven and column.grandTotal &gt;= 0,
                     'text-danger': column.grandTotal lt 0,
@@ -281,16 +283,22 @@
                  t-att-data-grid-column="column_index + 1 + columnsGap"
                  t-attf-style="grid-row: {{rowPosition}}; grid-column: {{column_index + 1 + columnsGap}};"
             >
+                <div class="position-absolute top-0 start-0 w-100 h-100"
+                     t-att-class="{
+                        'o_grid_cell_overlay_today bg-info bg-opacity-25' : column.isToday,
+                        'o_grid_cell_overlay bg-700' : !column.isToday,
+                     }"
+                     t-attf-class="{{getUnavailableClass(column)}}"/>
                 <t t-set="grandTotal"
                    t-value="grandTotal + column.grandTotal"
                 />
                 <div class="h-100 d-flex justify-content-center align-items-center"
                      t-if="column.grandTotal !== 0">
-                    <div class="o_grid_bar_chart_total_title"
-                         t-att-class="{
-                            'text-opacity-25' : getUnavailableClass(column) === 'o_grid_unavailable'
-                         }">
-                        <span class="fs-5 fw-bolder">
+                    <div class="o_grid_bar_chart_total_title">
+                        <span class="fs-5 fw-bolder"
+                              t-att-class="{
+                                'text-danger' : getUnavailableClass(column) === 'o_grid_unavailable' and column.grandTotal gt 0
+                              }">
                             <t t-esc="formatValue(column.grandTotal)"/>
                         </span>
                     </div>

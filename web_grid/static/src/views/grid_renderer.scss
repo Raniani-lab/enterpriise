@@ -28,8 +28,12 @@ $o-web-grid-cell-minwidth: 10ch;
 
     .o_grid_row, .o_grid_section, .o_grid_column_title {
         &:not(.o_grid_highlighted) {
-            > .o_grid_cell_overlay, > .o_grid_cell_overlay_total {
+            > .o_grid_cell_overlay:not(.o_grid_unavailable), > .o_grid_cell_overlay_total {
                 --bg-opacity: 0;
+            }
+
+            > .o_grid_cell_overlay.o_grid_unavailable {
+                --bg-opacity: .05;
             }
         }
     }

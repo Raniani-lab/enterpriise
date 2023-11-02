@@ -400,7 +400,7 @@ QUnit.module("Views", (hooks) => {
         assert.containsN(
             target,
             ".o_grid_row.o_grid_highlightable > div.bg-info",
-            2,
+            3,
             "The cell in the column of the current should have `bg-info` class as the header"
         );
         assert.containsN(target, ".o_grid_row.o_grid_row_title.o_grid_highlightable", 2);

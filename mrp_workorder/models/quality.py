@@ -293,12 +293,12 @@ class QualityCheck(models.Model):
         for check in self:
             if check.test_type in ('register_byproducts', 'register_consumed_materials'):
                 if check.quality_state == 'none':
-                    completed_lines = check.workorder_id.move_line_ids.filtered(lambda l: l.lot_id) if check.component_id.tracking != 'none' else check.workorder_id.move_line_ids
+                    completed_lines = check.workorder_id.move_line_ids.filtered(lambda l: l.picked and (check.component_id.tracking == 'none' or l.lot_id))
                     if check.move_id.additional:
                         qty = check.workorder_id.qty_remaining
                     else:
                         qty = check.workorder_id.qty_producing
-                    check.component_remaining_qty = self._prepare_component_quantity(check.move_id, qty) - sum(completed_lines.mapped('qty_done'))
+                    check.component_remaining_qty = self._prepare_component_quantity(check.move_id, qty) - sum(completed_lines.mapped('quantity'))
                 check.component_uom_id = check.move_id.product_uom
 
     def action_print(self):

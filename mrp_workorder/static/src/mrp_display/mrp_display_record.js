@@ -142,7 +142,14 @@ export class MrpDisplayRecord extends Component {
 
     get byProducts() {
         if (this.resModel === "mrp.workorder") {
-            return [];
+            const checks = this.props.record.data.check_ids.records;
+            const checked_byproducts = checks.reduce((result, current) => {
+                if(current.data.test_type === "register_byproducts") {
+                    return [...result, current.data.component_id[0]];
+                }
+                return result;
+            }, []);
+            return this.props.production.data.move_byproduct_ids.records.filter((bp) => !checked_byproducts.includes(bp.data.product_id[0]) && (bp.data.operation_id[0] === undefined || bp.data.operation_id[0] == this.props.record.data.operation_id[0]));
         }
         return this.props.record.data.move_byproduct_ids.records;
     }
@@ -215,7 +222,7 @@ export class MrpDisplayRecord extends Component {
             if (subRecord.data.test_type === "register_production") {
                 props.quantityToProduce = this.quantityToProduce;
             } else if (subRecord.data.test_type === "register_byproducts") {
-                const relatedMove = this.byproductMoves.find(
+                const relatedMove = this.props.production.data.move_byproduct_ids.records.find(
                     (move) => move.data.product_id[0] === subRecord.data.component_id?.[0]
                 );
                 if (relatedMove) {

@@ -1489,7 +1489,7 @@ class AccountReport(models.Model):
         allowed_country_variant_ids = {}
         all_variants = self._get_variants(options['variants_source_id'])
         for variant in all_variants.filtered(lambda x: x._is_available_for(options)):
-            if not self.root_report_id and variant != self: # Non-route reports don't reroute the variant when computing their options
+            if not self.root_report_id and variant != self and variant.active: # Non-route reports don't reroute the variant when computing their options
                 allowed_variant_ids.add(variant.id)
                 if variant.country_id:
                     allowed_country_variant_ids.setdefault(variant.country_id.id, []).append(variant.id)

@@ -103,10 +103,10 @@
                 </sheet>
                 <footer class="justify-content-between">
                     <div class="btn-group">
-                        <button class="btn btn-primary" special="save" data-hotkey="q">Save</button>
-                        <button class="btn btn-secondary" special="cancel" data-hotkey="x">Discard</button>
+                        <button class="btn btn-primary me-2 rounded w-auto" special="save" data-hotkey="q">Save</button>
+                        <button class="btn btn-secondary rounded w-auto" special="cancel" data-hotkey="x">Discard</button>
                     </div>
-                    <button class="btn btn-outline-danger text-uppercase" type="object" name="action_delete_folder" data-hotkey="d">Delete</button>
+                    <button class="btn btn-outline-danger text-uppercase rounded w-auto" type="object" name="action_delete_folder" data-hotkey="d">Delete</button>
                 </footer>
             </form>
         </field>

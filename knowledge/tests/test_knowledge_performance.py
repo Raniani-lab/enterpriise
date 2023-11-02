@@ -114,6 +114,11 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
             writable_article = self.workspace_children[1].with_env(self.env)
             writable_article.move_to(parent_id=writable_article.parent_id.id, before_article_id=before_id)
 
+    @users('employee')
+    @warmup
+    def test_get_user_sorted_articles(self):
+        with self.assertQueryCount(employee=19):
+            self.env['knowledge.article'].get_user_sorted_articles('')
 
 @tagged('knowledge_performance', 'post_install', '-at_install')
 class KnowledgePerformancePermissionCase(KnowledgeArticlePermissionsCase):

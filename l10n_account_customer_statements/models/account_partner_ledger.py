@@ -7,11 +7,6 @@ from odoo.exceptions import UserError
 class PartnerLedgerCustomHandler(models.AbstractModel):
     _inherit = 'account.partner.ledger.report.handler'
 
-    def _get_custom_display_config(self):
-        res = super()._get_custom_display_config()
-        res['templates']['AccountReportLineName'] = 'l10n_account_customer_statements.CustomerStatementsPartnerLedgerLineName'
-        return res
-
     @api.model
     def action_print_customer_statements(self, options, params):
         """ Print the customer statements for a specific customer.

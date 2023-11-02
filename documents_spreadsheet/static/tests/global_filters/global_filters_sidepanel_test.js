@@ -1805,5 +1805,39 @@ QUnit.module(
             assert.equal(filters[0].id, LAST_YEAR_GLOBAL_FILTER.id);
             assert.equal(filters[1].id, THIS_YEAR_GLOBAL_FILTER.id);
         });
+
+        QUnit.test("Can clear a field matching an invalid field", async function (assert) {
+            const { model } = await createSpreadsheetFromPivotView();
+            await addGlobalFilter(
+                model,
+                {
+                    id: "42",
+                    type: "text",
+                    label: "Text Filter",
+                    defaultValue: "",
+                    name: "test",
+                },
+                {
+                    pivot: {
+                        1: { chain: "not_a_field", type: "" },
+                    },
+                }
+            );
+            await openGlobalFilterSidePanel();
+            await click(target, "i.o_side_panel_filter_icon.fa-cog");
+            await click(target, ".o_side_panel_collapsible_title"); // uncollapse the field matching
+            assert.containsOnce(target, ".o_model_field_selector_warning");
+            assert.equal(
+                target.querySelector(".o_spreadsheet_field_matching .o_model_field_selector")
+                    .textContent,
+                "not_a_field"
+            );
+            await click(target, ".o_model_field_selector .fa.fa-times");
+            assert.equal(
+                target.querySelector(".o_spreadsheet_field_matching .o_model_field_selector")
+                    .textContent,
+                ""
+            );
+        });
     }
 );

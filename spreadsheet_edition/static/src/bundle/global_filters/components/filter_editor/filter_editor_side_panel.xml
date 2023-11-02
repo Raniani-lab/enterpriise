@@ -43,6 +43,7 @@
                             path="getModelField(object.fieldMatch)"
                             resModel="object.model()"
                             readonly="false"
+                            allowEmpty="true"
                             isDebugMode="!!env.debug"
                             update="(path, fieldInfo) => props.selectField(object_index, path, fieldInfo.fieldDef)"
                             filter.bind="props.filterModelFieldSelectorField"

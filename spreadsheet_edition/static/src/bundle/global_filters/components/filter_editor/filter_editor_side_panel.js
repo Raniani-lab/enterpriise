@@ -37,7 +37,7 @@ export class AbstractFilterEditorSidePanel extends Component {
             label: undefined,
         });
         this.fieldMatchings = useState([]);
-        this._wrongFieldMatchingsSet = new Set();
+        this._wrongFieldMatchingsSet = useState(new Set());
         this.getters = this.env.model.getters;
         this.orm = useService("orm");
         this.notification = useService("notification");
@@ -177,32 +177,24 @@ export class AbstractFilterEditorSidePanel extends Component {
     onSelectedField(index, chain, field) {
         //ensure index type to use it in a set
         index = toNumber(index);
-        if (!chain || !field) {
+        if (!chain) {
+            this._wrongFieldMatchingsSet.delete(index);
             this.fieldMatchings[index].fieldMatch = {};
             return;
+        }
+        if (!field) {
+            this._wrongFieldMatchingsSet.add(index);
         }
         const fieldName = chain;
         this.fieldMatchings[index].fieldMatch = {
             chain: fieldName,
-            type: field.type,
+            type: field?.type || "",
         };
-        if (!this.matchingRelation(field) || !field.searchable) {
+        if (!field || !this.matchingRelation(field) || !field.searchable) {
             this._wrongFieldMatchingsSet.add(index);
         } else {
             this._wrongFieldMatchingsSet.delete(index);
         }
-    }
-
-    /**
-     *
-     * @param {FieldMatching} fieldMatch
-     * @returns
-     */
-    getModelField(fieldMatch) {
-        if (!fieldMatch || !fieldMatch.chain) {
-            return "";
-        }
-        return fieldMatch.chain;
     }
 
     onSave() {

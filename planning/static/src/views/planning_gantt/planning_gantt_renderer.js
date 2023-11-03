@@ -224,7 +224,9 @@ export class PlanningGanttRenderer extends GanttRenderer {
         const showEmployeeAvatar =
             !isResourceMaterial && isGroupedByResource && fromServer && Boolean(employeeId);
         if (showEmployeeAvatar) {
-            this.rowsWithAvatar[row.id] = { resModel: employeeModel, resId: employeeId, displayName: name };
+            const { fields } = this.model.metaData;
+            const resModel = employeeModel || fields.employee_id.relation;
+            this.rowsWithAvatar[row.id] = { resModel, resId: employeeId, displayName: name };
         }
         return super.processRow(...arguments);
     }

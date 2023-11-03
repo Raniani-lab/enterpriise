@@ -94,7 +94,7 @@
                 <div class="d-inline-flex" invisible="maintenance_for == 'equipment'">
                     <field name="block_workcenter" nolabel="1" class="ms-0" style="width: fit-content;"/>
                 </div>
-                <field name="recurring_leaves_count" invisible="maintenance_for == 'equipment' or not recurring_maintenance or not block_workcenter"/>
+                <field name="recurring_leaves_count" invisible="maintenance_for == 'equipment' or not recurring_maintenance or not block_workcenter" groups="base.group_no_one"/>
             </xpath>
         </field>
     </record>

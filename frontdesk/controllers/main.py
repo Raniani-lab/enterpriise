@@ -85,8 +85,9 @@ class Frontdesk(http.Controller):
         vals = {'state': 'checked_in'}
         if visitor:
             if kwargs.get('drink_ids'):
-                visitor.sudo().write({'drink_ids': [(4, drink_id) for drink_id in kwargs.get('drink_ids')]})
-                return visitor._notify_to_people()
+                visitor_sudo = visitor.sudo()
+                visitor_sudo.write({'drink_ids': [(4, drink_id) for drink_id in kwargs.get('drink_ids')]})
+                return visitor_sudo._notify_to_people()
             return visitor.sudo().write(vals)
         else:
             vals.update({

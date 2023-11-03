@@ -32,7 +32,7 @@
     </t>
 
     <t t-name="knowledge.ArticlesTree">
-        <div t-attf-class="o_knowledge_tree flex-fill position-relative o_scroll_view d-flex flex-column mx-3 #{state.dragging ? 'o_dragging' : ''}">
+        <div t-attf-class="o_knowledge_tree flex-fill position-relative o_scroll_view d-flex flex-column px-3 #{state.dragging ? 'o_dragging' : ''}">
             <div t-ref="favoriteTree" t-if="state.favoriteIds.length" class="o_favorite_container">
                 <KnowledgeSidebarFavoriteSection rootIds="state.favoriteIds" unfoldedIds="unfoldedFavoritesIds" record="props.record"/>
             </div>
@@ -41,16 +41,16 @@
                 <KnowledgeSidebarSharedSection rootIds="state.sharedIds" unfoldedIds="unfoldedArticlesIds" record="props.record"/>
                 <KnowledgeSidebarPrivateSection rootIds="state.privateIds" unfoldedIds="unfoldedArticlesIds" record="props.record"/>
                 <!-- Trash is a "o_section" so that one can drop articles in the trash -->
-                <div t-if="isInternalUser" class="o_section o_knowledge_sidebar_trash w-100 p-2 position-sticky bg-view mt-auto">
+                <div t-if="isInternalUser" class="o_section o_knowledge_sidebar_trash w-100 py-2 position-sticky bg-view mt-auto">
                     <a t-if="!state.dragging" href="#" role="button" t-on-click="browseTemplates"
-                        class="o_knowledge_load_template_btn btn btn-light w-100 fw-normal text-black text-start text-truncate">
+                        class="o_knowledge_load_template_btn btn btn-light d-block fw-normal text-black text-start text-truncate">
                         <i class="fa fa-fw fs-6 fa-image me-1"/>
                         <span>Browse Templates</span>
                     </a>
-                    <div role="button" class="btn btn-light w-100 fw-normal text-black text-start text-truncate"
+                    <div role="button" class="btn btn-light d-block fw-normal text-black text-start text-truncate"
                         t-on-click="() => actionService.doAction('knowledge.knowledge_article_action_trashed')">
-                        <i class="fa fa-fw fa-trash"/>
-                        <span class="ps-2 flex-grow-1">
+                        <i class="fa fa-fw fa-trash me-1"/>
+                        <span class="flex-grow-1">
                             <t t-if="state.dragging">Drop here to delete this article</t>
                             <t t-else="">Open the Trash</t>
                         </span>

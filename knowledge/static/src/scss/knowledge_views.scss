@@ -158,6 +158,10 @@
                 display: none;
             }
             bottom: 0px;
+
+            .btn {
+                margin-left: $input-btn-padding-x * -1;
+            }
         }
 
         .o_knowledge_tree.o_dragging {

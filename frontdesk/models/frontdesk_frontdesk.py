@@ -110,6 +110,21 @@ class Frontdesk(models.Model):
             'target': 'new',
         }
 
+    def action_open_visitors(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _("Visitors"),
+            'res_model': 'frontdesk.visitor',
+            'view_mode': 'tree,form,kanban,graph,pivot,calendar,gantt',
+            'context': {
+                "search_default_state_is_planned": 1,
+                "search_default_state_is_checked_in": 1,
+                "search_default_today": 1
+            },
+            'domain': [('station_id.id', '=', self.id)],
+        }
+
     def _get_frontdesk_field(self):
         return ['description', 'host_selection', 'drink_offer', 'self_check_in', 'theme',
           'drink_ids', 'ask_email', 'ask_phone', 'ask_company', 'authenticate_guest']

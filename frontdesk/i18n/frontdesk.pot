@@ -819,6 +819,8 @@ msgid "Visitor Properties"
 msgstr ""
 
 #. module: frontdesk
+#. odoo-python
+#: code:addons/frontdesk/models/frontdesk_frontdesk.py:0
 #: model:ir.actions.act_window,name:frontdesk.action_frontdesk_visitor
 #: model:ir.actions.act_window,name:frontdesk.action_frontdesk_visitors_report
 #: model:ir.model.fields,field_description:frontdesk.field_frontdesk_frontdesk__visitor_ids
@@ -829,6 +831,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:frontdesk.frontdesk_visitor_report_view_graph
 #: model_terms:ir.ui.view,arch_db:frontdesk.frontdesk_visitor_view_graph
 #: model_terms:ir.ui.view,arch_db:frontdesk.frontdesk_visitor_view_pivot
+#, python-format
 msgid "Visitors"
 msgstr ""
 

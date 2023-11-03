@@ -108,8 +108,8 @@
                     <t t-name="kanban-menu">
                         <a role="menuitem" class="dropdown-item" name="action_open_kiosk"
                             type="object">Kiosk</a>
-                        <a role="menuitem" class="dropdown-item" name="%(action_frontdesk_visitor)d"
-                            type="action">Visitors</a>
+                        <a role="menuitem" class="dropdown-item" name="action_open_visitors"
+                            type="object">Visitors</a>
                         <a role="menuitem" class="dropdown-item" name="%(action_frontdesk_station_report)d"
                             type="action">Statistics</a>
                         <a role="menuitem" type="edit" class="dropdown-item">Configuration</a>

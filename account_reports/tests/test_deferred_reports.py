@@ -948,6 +948,40 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         with self.assertRaisesRegex(UserError, 'No entry to generate.'):
             self.handler._generate_deferral_entry(options_february)
 
+    def test_deferred_same_date(self):
+        """
+        A bug has been found where having an invoice with a start and end date on the last day
+        of the month would cause a division by zero error. This test ensures that this bug is fixed.
+        Here, the deferred dates are not inside the report period.
+        """
+        self.company.generate_deferred_expense_entries_method = 'manual'
+        self.company.deferred_amount_computation_method = 'month'
+        self.create_invoice([[self.expense_accounts[0], 1000, '2023-10-30', '2023-10-30']])
+
+        options_sept = self.get_options('2023-09-01', '2023-09-30')
+        lines = self.deferred_expense_report._get_lines(options_sept)
+        self.assertLinesValues(
+            lines,
+            #   Name              Total      Before    Current     Later
+            [   0,                  1,          2,        3,        4     ],
+            [
+                ('EXP0 Expense 0',  1000,       0,        0,       1000   ),
+                ('Total',           1000,       0,        0,       1000   ),
+            ],
+            options_sept,
+        )
+
+        generated_entries = self.handler._generate_deferral_entry(options_sept)
+
+        deferral_move = generated_entries[0]
+        self.assertEqual(deferral_move.date, fields.Date.to_date('2023-09-30'))
+        expected_values = [
+            # Account                         Debit       Credit
+            [self.expense_accounts[0],          0,        1000],
+            [self.deferral_account,          1000,           0],
+        ]
+        self.assert_invoice_lines(deferral_move, expected_values)
+
     def test_deferred_expense_change_grouped_entries_method(self):
         """
         Test the change of the deferred expense method from on_validation to manual

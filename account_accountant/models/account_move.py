@@ -125,11 +125,12 @@ class AccountMove(models.Model):
         Returns the amount to defer for the given period taking into account the deferred method (day/month).
         """
         if method == 'day':
-            amount_per_day = balance / ((line_end - line_start).days + 1)  # +1 because the end date is included
+            amount_per_day = balance / (line_end - line_start).days
             return (period_end - period_start).days * amount_per_day if period_end > line_start else 0
         else:
-            amount_per_month = balance / self._get_deferred_diff_dates(line_end + relativedelta(days=1), line_start)  # +1 because the end date is included
-            return self._get_deferred_diff_dates(period_end, period_start) * amount_per_month if period_end > line_start and period_end > period_start else 0
+            amount_per_month = balance / self._get_deferred_diff_dates(line_end, line_start)
+            nb_months_period = self._get_deferred_diff_dates(period_end, period_start)
+            return nb_months_period * amount_per_month if period_end > line_start and period_end > period_start else 0
 
     @api.model
     def _get_deferred_amounts_by_line(self, lines, periods):
@@ -164,16 +165,15 @@ class AccountMove(models.Model):
                     or len(periods) <= 1
                     or i not in (1, len(periods) - 1)
                 ):
-                    # We are adding 1 day to `period_end` because the end date should be included when:
+                    # We are subtracting 1 day to `period_start` because the start date should be included when:
                     # - in the 'Later' period if the deferral has not started yet (line_start, line_end)
                     # - we only have one period
                     # - not in the 'Before' or 'Later' period
-                    period_end += relativedelta(days=1)
-
+                    period_start -= relativedelta(days=1)
                 columns[period] = self._get_deferred_period_amount(
                     self.env.company.deferred_amount_computation_method,
                     period_start, period_end,
-                    line_start, line_end,
+                    line_start - relativedelta(days=1), line_end,  # -1 because we want to include the start date
                     line['balance']
                 )
 

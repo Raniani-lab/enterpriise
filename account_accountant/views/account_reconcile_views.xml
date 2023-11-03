@@ -11,8 +11,8 @@
                        filter_domain="['|', '|', '|', ('name', 'ilike', self), ('ref', 'ilike', self), ('account_id', 'ilike', self), ('partner_id', 'ilike', self)]"/>
                 <field name="name"/>
                 <field name="ref"/>
-                <field name="date"/>
                 <field name="invoice_date"/>
+                <field name="date"/>
                 <field name="balance" string="Amount" filter_domain="['|', ('credit', '=', self), ('debit', '=', self)]"/>
                 <field name="account_id"/>
                 <field name="account_type"/>
@@ -54,8 +54,8 @@
                     <button name="action_reconcile" type="object" string="Reconcile" groups="account.group_account_user"/>
                 </header>
                 <field name="move_id" column_invisible="True"/>
-                <field name="date" readonly="1"/>
                 <field name="invoice_date" string="Invoice Date" optional="hide"/>
+                <field name="date" readonly="1"/>
                 <field name="company_id" column_invisible="True"/>
                 <field name="company_id" groups="base.group_multi_company" readonly="1" optional="hide"/>
                 <field name="journal_id" readonly="1" options='{"no_open":True}' optional="hide"/>

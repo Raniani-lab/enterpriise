@@ -344,8 +344,8 @@
                     <field name="name"
                            string="Journal Item"
                            filter_domain="['|', '|', '|', '|', '|', ('name', 'ilike', self), ('ref', 'ilike', self), ('partner_id', 'ilike', self), ('amount_residual', 'ilike', self), ('amount_residual_currency', 'ilike', self), ('discount_amount_currency', 'ilike', self)]"/>
-                    <field name="date"/>
                     <field name="invoice_date"/>
+                    <field name="date"/>
                     <field name="account_id"/>
                     <field name="partner_id"/>
                     <field name="journal_id"/>
@@ -388,8 +388,8 @@
                            optional="hidden"/>
                     <field name="partner_id"
                            optional="show"/>
-                    <field name="date"/>
                     <field name="invoice_date" string="Invoice Date" optional="hide"/>
+                    <field name="date"/>
                     <field name="move_id"/>
                     <field name="name"/>
                     <field name="date_maturity" optional="hidden"/>

@@ -361,14 +361,16 @@
                             </div>
                         </t>
                     </div>
-                    <div t-if="staff_user.email" class="d-flex align-items-center py-1 px-0 bg-transparent border-0">
-                        <i class="fa fa-envelope fa-fw text-muted"/>
-                        <span class="ms-2 overflow-hidden text-truncate"><t t-out="staff_user.email"/></span>
-                    </div>
-                    <div t-if="staff_user.partner_id.phone" class="d-flex align-items-center py-1 px-0 bg-transparent border-0">
-                        <i class="fa fa-phone fa-fw text-muted"/>
-                        <span class="ms-2" t-out="staff_user.partner_id.phone"/>
-                    </div>
+                    <t t-if="staff_user">
+                        <div t-if="staff_user.email" class="d-flex align-items-center py-1 px-0 bg-transparent border-0">
+                            <i class="fa fa-envelope fa-fw text-muted"/>
+                            <span class="ms-2 overflow-hidden text-truncate"><t t-out="staff_user.email"/></span>
+                        </div>
+                        <div t-if="staff_user.partner_id.phone" class="d-flex align-items-center py-1 px-0 bg-transparent border-0">
+                            <i class="fa fa-phone fa-fw text-muted"/>
+                            <span class="ms-2" t-out="staff_user.partner_id.phone"/>
+                        </div>
+                    </t>
                 </div>
             </div>
         </t>

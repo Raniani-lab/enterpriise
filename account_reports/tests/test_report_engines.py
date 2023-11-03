@@ -949,7 +949,7 @@ class TestReportEngines(TestAccountReportsCommon):
                 self.assertEqual(moves.line_ids.filtered_domain(action_dict['domain']), expected_amls)
 
     def test_engine_aggregation_cross_report(self):
-        self._create_test_account_moves([
+        moves = self._create_test_account_moves([
             self._prepare_test_account_move_line(1.0, account_code='100000', date='2020-01-01'),
             self._prepare_test_account_move_line(2.0, account_code='100000', date='2021-01-01'),
             self._prepare_test_account_move_line(3.0, account_code='200000', date='2020-01-01'),
@@ -1031,9 +1031,11 @@ class TestReportEngines(TestAccountReportsCommon):
         )
 
         # Check main_report
+        main_report_options = self._generate_options(main_report, '2021-01-01', '2021-01-01')
+        main_report_lines = main_report._get_lines(main_report_options)
         self.assertLinesValues(
             # pylint: disable=bad-whitespace
-            main_report._get_lines(self._generate_options(main_report, '2021-01-01', '2021-01-01')),
+            main_report_lines,
             [   0,                                      1],
             [
                 ('main_report_line_1',                4.0),
@@ -1044,6 +1046,19 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('main_report_line_6',               27.0),
             ],
         )
+
+        # Check redirection.
+        expected_amls_to_test = [
+            ('main_report_line_1', moves[1].line_ids[1]),
+            ('main_report_line_2', moves[1].line_ids[1] + moves[0].line_ids[1]),
+        ]
+
+        for report_line_name, expected_amls in expected_amls_to_test:
+            report_line = main_report.line_ids.filtered(lambda x: x.name == report_line_name)
+            report_line_dict = [x for x in main_report_lines if x['name'] == report_line.name][0]
+            with self.subTest(report_line=report_line.name):
+                action_dict = main_report.action_audit_cell(main_report_options, self._get_audit_params_from_report_line(main_report_options, report_line, report_line_dict))
+                self.assertEqual(moves.line_ids.filtered_domain(action_dict['domain']), expected_amls)
 
     def test_engine_aggregation_expansion(self):
         report = self._create_report([

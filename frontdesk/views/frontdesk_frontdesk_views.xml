@@ -116,13 +116,13 @@
                     </t>
                     <t t-name="kanban-box">
                         <div>
-                            <div class="o_kanban_card_content ps-3">
-                                <div class="o_kanban_card_header">
+                            <div class="o_kanban_card_content">
+                                <div class="o_kanban_card_header d-flex gap-1 align-items-baseline">
+                                    <field name="is_favorite" widget="boolean_favorite" nolabel="1"/>
                                     <div class="o_kanban_card_header_title mb16">
                                         <div class="o_primary">
                                             <field name="name"/>
                                         </div>
-                                        <field name="is_favorite" widget="boolean_favorite" nolabel="1"/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -149,7 +149,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="oe_kanban_footer ps-3">
+                            <div class="oe_kanban_footer">
                                 <div class="o_kanban_record_bottom mt-3">
                                     <div class="oe_kanban_bottom_left">
                                         <field name="latest_check_in"/>

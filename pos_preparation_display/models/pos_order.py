@@ -7,6 +7,7 @@ import json
 class PosOrder(models.Model):
     _inherit = 'pos.order'
 
+    @api.model
     def create_from_ui(self, orders, draft=False):
         orders = super().create_from_ui(orders, draft=draft)
         order_ids = self.browse([order['id'] for order in orders])

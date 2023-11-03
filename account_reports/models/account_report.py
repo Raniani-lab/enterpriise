@@ -1342,6 +1342,16 @@ class AccountReport(models.Model):
     ####################################################
     # OPTIONS: BUTTONS
     ####################################################
+
+    def action_open_report_form(self, options, params):
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.report',
+            'view_mode': 'form',
+            'views': [(False, 'form')],
+            'res_id': self.id,
+        }
+
     def _init_options_buttons(self, options, previous_options=None):
         options['buttons'] = [
             {'name': _('PDF'), 'sequence': 10, 'action': 'export_file', 'action_param': 'export_to_pdf', 'file_export_type': _('PDF'), 'branch_allowed': True},

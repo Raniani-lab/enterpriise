@@ -82,7 +82,7 @@
                     <sheet>
                         <div class="oe_title">
                             <h1>
-                                <field name="name" placeholder="Report"/>
+                                <field name="name" placeholder="Report Name"/>
                             </h1>
                         </div>
 
@@ -90,7 +90,7 @@
                             <group>
                                 <field name="root_report_id" domain="[('root_report_id', '=', None)]"/>
                                 <field name="availability_condition" required="1" invisible="not root_report_id"/>
-                                <field name="use_sections"/>
+                                <field name="use_sections" invisible="line_ids"/>
                             </group>
                             <group>
                                 <field name="active" widget="boolean_toggle"/>

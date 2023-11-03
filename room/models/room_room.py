@@ -26,8 +26,8 @@ class Room(models.Model):
     next_booking_start = fields.Datetime("Next Booking Start", compute="_compute_next_booking_start")
     room_booking_url = fields.Char("Room Booking URL", compute="_compute_room_booking_url")
     # Frontend design fields
-    bookable_background_color = fields.Char("Available Background Color", default="#5ae67d")
-    booked_background_color = fields.Char("Booked Background Color", default="#d92b2b")
+    bookable_background_color = fields.Char("Available Background Color", default="#83c5be")
+    booked_background_color = fields.Char("Booked Background Color", default="#dd2d4a")
     room_background_image = fields.Image("Background Image")
 
     _sql_constraints = [

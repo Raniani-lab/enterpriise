@@ -135,10 +135,8 @@ export class RoomBookingForm extends Component {
      * - {Boolean} isInSelectedInterval: if the slot is between the selected start and end dates
      * - {Boolean} canBeEndDate: if the slot can be selected as the end date
      * - {Boolean} isBooked: if the slot is already booked
-     * - {String} description: Description to show in the slot ("start" for the selected start,
-     *            "stop" for the selected end, or the duration of the booking for the slots that
-     *            can be selected as end date
-     * )
+     * - {String} description: Description to show in the slot the duration of the booking for
+     *            the slots that can be selected as end date
      */
     get slots() {
         const intervals = [];
@@ -192,11 +190,9 @@ export class RoomBookingForm extends Component {
             if (this.state.bookingEnd && interval.contains(this.state.bookingEnd)) {
                 // Slot is the selected end (first condition in case start and stop are
                 // in the same slot)
-                slot.description = _t("Stop");
                 isInSelectedInterval = false;
             } else if (this.state.bookingStart && interval.contains(this.state.bookingStart)) {
                 // Slot is the selected start
-                slot.description = _t("Start");
                 slot.isInSelectedInterval = true;
                 // Following slots until the next booking can be selected as end date
                 canBeEndDate = true;

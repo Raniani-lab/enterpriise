@@ -6,7 +6,7 @@ import { Component, useState, xml } from "@odoo/owl";
 
 export class RoomBookingRemainingTime extends Component {
     static template = xml`
-        <div class="o_room_remaining_time my-5 border border-2 rounded-circle py-4 text-center bg-dark"
+        <div class="o_room_remaining_time mt-5 w-100 rounded py-3 bg-black-25 display-4 text-center text-white"
              t-out="state.remainingTime.toFormat('hh:mm:ss')"/>
     `;
     static props = {

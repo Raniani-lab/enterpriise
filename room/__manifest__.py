@@ -30,6 +30,22 @@
             'room/static/src/room_booking_gantt_view/**/*',
         ],
         'room.assets_room_booking': [
+            # 1 Define room variables (takes priority)
+            "room/static/src/room_booking/primary_variables.scss",
+            "room/static/src/room_booking/bootstrap_overridden.scss",
+
+            #2 Load variables, Bootstrap and UI icons bundles
+            ('include', 'web._assets_helpers'),
+            ('include', 'web._assets_backend_helpers'),
+            'web/static/src/scss/pre_variables.scss',
+            'web/static/lib/bootstrap/scss/_variables.scss',
+            ('include', 'web._assets_bootstrap_backend'),
+            "web/static/src/libs/fontawesome/css/font-awesome.css",
+            "web/static/lib/odoo_ui_icons/*",
+            'web/static/src/legacy/scss/ui.scss',
+            'web/static/src/scss/base_frontend.scss',
+
+            # Room's specific assets
             'room/static/src/room_booking/**/*',
         ],
     },

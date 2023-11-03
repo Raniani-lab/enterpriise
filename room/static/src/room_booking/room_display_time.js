@@ -5,7 +5,7 @@ import { useInterval } from "@room/room_booking/useInterval";
 import { Component, useState, xml } from "@odoo/owl";
 
 export class RoomDisplayTime extends Component {
-    static template = xml`<div class="fs-1 py-3" t-out="state.currentTime.toFormat('T DDDD')"/>`;
+    static template = xml`<div class="d-flex flex-column justify-content-center"><span class="display-6" t-out="state.currentTime.toFormat('T')"/><span class="smaller" t-out="state.currentTime.toFormat('DDDD')"/></div>`;
 
     setup() {
         this.state = useState({ currentTime: luxon.DateTime.now() });

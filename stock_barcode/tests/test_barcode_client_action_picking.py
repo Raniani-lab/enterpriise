@@ -501,6 +501,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
 
         # Checks move lines values after delivery was completed.
         self.assertEqual(delivery_picking.state, "done")
+        # ensure that SNs not scanned by validation time are removed
+        self.assertEqual(len(delivery_picking.move_line_ids), 2)
         move_line_1 = delivery_picking.move_line_ids[0]
         move_line_2 = delivery_picking.move_line_ids[1]
         self.assertEqual(move_line_1.lot_id, sn3)

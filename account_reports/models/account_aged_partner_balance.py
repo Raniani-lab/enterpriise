@@ -356,6 +356,39 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
             aml.partner_id._message_log(body=move_msg)
             aml.move_id._message_log(body=move_msg)
 
+    def aged_partner_balance_audit(self, options, params, journal_type):
+        """ Open a list of invoices/bills and/or deferral entries for the clicked cell
+        :param dict options: the report's `options`
+        :param dict params:  a dict containing:
+                                 `calling_line_dict_id`: line id containing the optional account of the cell
+                                 `expression_label`: the expression label of the cell
+        """
+        report = self.env['account.report'].browse(options['report_id'])
+        action = self.env['ir.actions.actions']._for_xml_id('account.action_open_payment_items')
+        if options:
+            domain = [
+                ('account_id.reconcile', '=', True),
+                ('journal_id.type', '=', journal_type),
+                *self._build_domain_from_period(options, params['expression_label']),
+                *report._get_options_domain(options, None),
+                *report._get_audit_line_groupby_domain(params['calling_line_dict_id']),
+            ]
+            action['domain'] = domain
+        return action
+
+    def _build_domain_from_period(self, options, period):
+        if period != "total" and period[-1].isdigit():
+            period_number = int(period[-1])
+            if period_number == 0:
+                domain = [('date_maturity', '>=', options['date']['date_to'])]
+            else:
+                options_date_to = datetime.datetime.strptime(options['date']['date_to'], '%Y-%m-%d')
+                period_end = options_date_to - datetime.timedelta(30*(period_number-1)+1)
+                period_start = options_date_to - datetime.timedelta(30*(period_number))
+                domain = [('date_maturity', '>=', period_start), ('date_maturity', '<=', period_end)]
+        else:
+            domain = []
+        return domain
 
 class AgedPayableCustomHandler(models.AbstractModel):
     _name = 'account.aged.payable.report.handler'
@@ -379,39 +412,7 @@ class AgedPayableCustomHandler(models.AbstractModel):
         return {}
 
     def action_audit_cell(self, options, params):
-        """ Open a list of invoices/bills and/or deferral entries for the clicked cell
-        :param dict options: the report's `options`
-        :param dict params:  a dict containing:
-                                 `calling_line_dict_id`: line id containing the optional account of the cell
-                                 `expression_label`: the expression label of the cell
-        """
-        report = self.env['account.report'].browse(options['report_id'])
-        action = self.env['ir.actions.actions']._for_xml_id('account.action_open_payment_items')
-        if options:
-            domain = [
-                ('account_id.reconcile', '=', True),
-                ('journal_id.type', '=', 'purchase'),
-                *self._build_domain_from_period(options, params['expression_label']),
-                *report._get_options_domain(options, None),
-                *report._get_audit_line_groupby_domain(params['calling_line_dict_id']),
-            ]
-            action['domain'] = domain
-        return action
-
-    def _build_domain_from_period(self, options, period):
-        if period != "total" and period[-1].isdigit():
-            period_number = int(period[-1])
-            if period_number == 0:
-                domain = [('date_maturity', '>=', options['date']['date_to'])]
-            else:
-                options_date_to = datetime.datetime.strptime(options['date']['date_to'], '%Y-%m-%d')
-                period_end = options_date_to - datetime.timedelta(30*(period_number-1)+1)
-                period_start = options_date_to - datetime.timedelta(30*(period_number))
-                domain = [('date_maturity', '>=', period_start), ('date_maturity', '<=', period_end)]
-        else:
-            domain = []
-        return domain
-
+        return super().aged_partner_balance_audit(options, params, 'purchase')
 
 class AgedReceivableCustomHandler(models.AbstractModel):
     _name = 'account.aged.receivable.report.handler'
@@ -433,3 +434,6 @@ class AgedReceivableCustomHandler(models.AbstractModel):
         if self.env.ref('account_reports.aged_receivable_line').groupby.replace(' ', '') == 'partner_id,id':
             return self._common_custom_unfold_all_batch_data_generator('asset_receivable', report, options, lines_to_expand_by_function)
         return {}
+
+    def action_audit_cell(self, options, params):
+        return super().aged_partner_balance_audit(options, params, 'sale')

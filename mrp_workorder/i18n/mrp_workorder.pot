@@ -89,8 +89,8 @@ msgid "Add By-product"
 msgstr ""
 
 #. module: mrp_workorder
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/mrp_workorder/models/mrp_production.py:0
 #: code:addons/mrp_workorder/models/mrp_workorder.py:0
 #: code:addons/mrp_workorder/static/src/mrp_display/dialog/mrp_menu_dialog.xml:0
@@ -122,8 +122,8 @@ msgid "Add Workorder"
 msgstr ""
 
 #. module: mrp_workorder
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/mrp_workorder/models/mrp_workorder.py:0
 #: code:addons/mrp_workorder/static/src/mrp_display/dialog/mrp_menu_dialog.xml:0
 #, python-format

@@ -2207,8 +2207,8 @@ msgid "The shift has successfully been sent."
 msgstr ""
 
 #. module: planning
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/planning/static/src/views/planning_hooks.js:0
 #: code:addons/planning/wizard/planning_send.py:0
 #, python-format

@@ -746,6 +746,13 @@ msgid "Requires a selected field"
 msgstr ""
 
 #. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/text_filter_editor_side_panel.xml:0
+#, python-format
+msgid "Restrict values to a range"
+msgstr ""
+
+#. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__revision_id
 msgid "Revision"
 msgstr ""

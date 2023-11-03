@@ -3466,8 +3466,8 @@ msgid "Ticket created"
 msgstr ""
 
 #. module: helpdesk
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk_team.py:0
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0

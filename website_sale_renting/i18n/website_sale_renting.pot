@@ -433,10 +433,3 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.suggested_products_list
 msgid "from"
 msgstr ""
-
-#. module: website_sale_renting
-#: model_terms:ir.ui.view,arch_db:website_sale_renting.products
-msgid ""
-"hasLeftColumn or "
-"is_view_active('website_sale_renting.shop_rental_datepicker_opt')"
-msgstr ""

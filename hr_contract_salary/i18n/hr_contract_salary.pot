@@ -28,6 +28,13 @@ msgid "# Signatures"
 msgstr ""
 
 #. module: hr_contract_salary
+#. odoo-python
+#: code:addons/hr_contract_salary/models/hr_contract_salary_offer.py:0
+#, python-format
+msgid "%s manually set the Offer to Refused"
+msgstr ""
+
+#. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,helper:hr_contract_salary.hr_contract_salary_personal_info_name
 msgid "(Lastname Firstname)"
 msgstr ""
@@ -1442,6 +1449,8 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.actions.act_window,name:hr_contract_salary.hr_contract_salary_offer_action
+#: model:ir.actions.act_window,name:hr_contract_salary.hr_contract_salary_offer_recruitment_action
+#: model:ir.ui.menu,name:hr_contract_salary.menu_hr_contract_salary_job_offer
 #: model:ir.ui.menu,name:hr_contract_salary.menu_salary_package_offer
 msgid "Offers"
 msgstr ""
@@ -1626,7 +1635,14 @@ msgid "Red"
 msgstr ""
 
 #. module: hr_contract_salary
+#: model:ir.actions.server,name:hr_contract_salary.action_refuse_salary_offer
+msgid "Refuse"
+msgstr ""
+
+#. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_offer__state__refused
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_offer_view_form
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_offer_view_search
 msgid "Refused"
 msgstr ""
 

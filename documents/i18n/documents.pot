@@ -471,8 +471,8 @@ msgid "Action Needed"
 msgstr ""
 
 #. module: documents
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #: model:ir.ui.menu,name:documents.workflow_rules_menu
@@ -1252,8 +1252,8 @@ msgid "Document: Document Request"
 msgstr ""
 
 #. module: documents
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/models/res_partner.py:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
@@ -2018,8 +2018,8 @@ msgid "Move to trash"
 msgstr ""
 
 #. module: documents
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/static/src/views/form/folder_form_controller.js:0
 #: code:addons/documents/static/src/views/list/folder_list_controller.js:0

@@ -2708,8 +2708,8 @@ msgid "Share Availabilities"
 msgstr ""
 
 #. module: appointment
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/appointment/models/appointment_type.py:0
 #: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.js:0
 #, python-format

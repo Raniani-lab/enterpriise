@@ -172,8 +172,8 @@ msgid "Backspace"
 msgstr ""
 
 #. module: voip
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/voip/models/voip_queue_mixin.py:0
 #: code:addons/voip/static/src/softphone/correspondence_details.xml:0
 #: code:addons/voip/static/src/softphone/softphone.js:0

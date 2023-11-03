@@ -16,11 +16,22 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: spreadsheet_dashboard_sale_subscription
+#: model:spreadsheet.dashboard,name:spreadsheet_dashboard_sale_subscription.spreadsheet_dashboard_mrr_evolution
+msgid "MRR Evolution"
+msgstr ""
+
+#. module: spreadsheet_dashboard_sale_subscription
+#: model:spreadsheet.dashboard,name:spreadsheet_dashboard_sale_subscription.spreadsheet_dashboard_retention
+msgid "Retention"
+msgstr ""
+
+#. module: spreadsheet_dashboard_sale_subscription
 #: model:spreadsheet.dashboard,name:spreadsheet_dashboard_sale_subscription.spreadsheet_dashboard_salesperson
 msgid "Salesperson"
 msgstr ""
 
 #. module: spreadsheet_dashboard_sale_subscription
 #: model:spreadsheet.dashboard,name:spreadsheet_dashboard_sale_subscription.spreadsheet_dashboard_subscriptions
+#: model:spreadsheet.dashboard.group,name:spreadsheet_dashboard_sale_subscription.spreadsheet_dashboard_group_subscriptions
 msgid "Subscriptions"
 msgstr ""

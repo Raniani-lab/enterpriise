@@ -135,6 +135,11 @@ msgid "Config Settings"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
+#: model:ir.ui.menu,name:sale_timesheet_enterprise.hr_timesheet_menu_configuration_settings
+msgid "Configuration"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_hr_timesheet_tip__create_uid
 msgid "Created by"
 msgstr ""

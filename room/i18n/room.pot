@@ -294,7 +294,9 @@ msgstr ""
 
 #. module: room
 #: model:ir.model.fields,help:room.field_room_booking__message_has_error
+#: model:ir.model.fields,help:room.field_room_booking__message_has_sms_error
 #: model:ir.model.fields,help:room.field_room_room__message_has_error
+#: model:ir.model.fields,help:room.field_room_room__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -522,6 +524,12 @@ msgid "Rooms"
 msgstr ""
 
 #. module: room
+#: model:ir.model.fields,field_description:room.field_room_booking__message_has_sms_error
+#: model:ir.model.fields,field_description:room.field_room_room__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: room
 #. odoo-javascript
 #: code:addons/room/static/src/room_booking/room_booking_form/room_booking_form.xml:0
 #, python-format
@@ -606,4 +614,16 @@ msgstr ""
 #. module: room
 #: model_terms:ir.ui.view,arch_db:room.room_room_view_kanban
 msgid "Until"
+msgstr ""
+
+#. module: room
+#: model:ir.model.fields,field_description:room.field_room_booking__website_message_ids
+#: model:ir.model.fields,field_description:room.field_room_room__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: room
+#: model:ir.model.fields,help:room.field_room_booking__website_message_ids
+#: model:ir.model.fields,help:room.field_room_room__website_message_ids
+msgid "Website communication history"
 msgstr ""

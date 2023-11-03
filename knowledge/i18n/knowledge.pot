@@ -2506,7 +2506,7 @@ msgstr ""
 
 #. module: knowledge
 #. odoo-javascript
-#: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
+#: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.js:0
 #, python-format
 msgid "Content copied to clipboard."
 msgstr ""
@@ -4268,6 +4268,11 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/item_calendar_props_dialog/item_calendar_props_dialog.js:0
 #, python-format
 msgid "New property could not be created."
+msgstr ""
+
+#. module: knowledge
+#: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
 msgstr ""
 
 #. module: knowledge

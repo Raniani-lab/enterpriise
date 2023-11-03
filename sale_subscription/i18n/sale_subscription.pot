@@ -4136,11 +4136,21 @@ msgid "Use Calendar"
 msgstr ""
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
+msgid "Use employee work schedule"
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_filtered
 msgid ""
 "Use subscriptions to follow tasks, issues, timesheets or invoicing based on\n"
 "                work done, expenses and/or sales orders. Odoo will automatically manage\n"
 "                the alerts for the renewal of the subscriptions to the right salesperson."
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
+msgid "Use the user's working schedule."
 msgstr ""
 
 #. module: sale_subscription
@@ -4165,6 +4175,11 @@ msgstr ""
 msgid ""
 "Want recurring billing via subscription management? Get started by clicking "
 "here"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__warehouse_id
+msgid "Warehouse"
 msgstr ""
 
 #. module: sale_subscription

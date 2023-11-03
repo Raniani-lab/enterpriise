@@ -75,9 +75,9 @@ patch(PosStore.prototype, {
         };
 
         return new Promise(async (resolve, reject) => {
-            fdm.addListener(data => data.status === "ok" ? resolve(data) : reject(data));
+            fdm.addListener((data) => (data.status === "ok" ? resolve(data) : reject(data)));
             await fdm.action({
-                action: 'registerReceipt',
+                action: "registerReceipt",
                 high_level_message: data,
             });
         });
@@ -99,22 +99,22 @@ patch(PosStore.prototype, {
     getReceiptHeaderData() {
         const result = super.getReceiptHeaderData(...arguments);
         const order = this.get_order();
-        if(this.useBlackBoxSweden()) {
+        if (this.useBlackBoxSweden()) {
             result.receipt_type = order.receipt_type;
             result.blackboxDate = order.blackbox_date;
             result.posIdentifier = this.config.name;
             result.isReprint = order.isReprint;
             result.orderSequence = order.sequence_number;
-            if(order.isReprint) {
-                result.type = "COPY"
-            } else if(order.isProfo) {
-                result.type = "PRO FORMA"
+            if (order.isReprint) {
+                result.type = "COPY";
+            } else if (order.isProfo) {
+                result.type = "PRO FORMA";
             } else {
                 result.type = (order.amount_total < 0 ? "return" : "") + "receipt";
             }
         }
         return result;
-    }
+    },
 });
 
 patch(Order.prototype, {
@@ -127,7 +127,7 @@ patch(Order.prototype, {
     },
     async add_product(product, options) {
         if (this.pos.useBlackBoxSweden() && product.taxes_id.length === 0) {
-             this.pos.env.services.popup.add(ErrorPopup, {
+            this.pos.env.services.popup.add(ErrorPopup, {
                 title: _t("POS error"),
                 body: _t("Product has no tax associated with it."),
             });
@@ -135,21 +135,21 @@ patch(Order.prototype, {
             this.pos.useBlackBoxSweden() &&
             !this.pos.taxes_by_id[product.taxes_id[0]].sweden_identification_letter
         ) {
-             this.pos.env.services.popup.add(ErrorPopup, {
-                'title': _t("POS error"),
-                'body': _t(
+            this.pos.env.services.popup.add(ErrorPopup, {
+                title: _t("POS error"),
+                body: _t(
                     "Product has an invalid tax amount. Only 25%, 12%, 6% and 0% are allowed."
                 ),
             });
         } else if (this.pos.useBlackBoxSweden() && this.pos.get_order().is_refund) {
-             this.pos.env.services.popup.add(ErrorPopup, {
-                'title': _t("POS error"),
-                'body': _t("Cannot modify a refund order."),
+            this.pos.env.services.popup.add(ErrorPopup, {
+                title: _t("POS error"),
+                body: _t("Cannot modify a refund order."),
             });
         } else if (this.pos.useBlackBoxSweden() && this.hasNegativeAndPositiveProducts(product)) {
-             this.pos.env.services.popup.add(ErrorPopup, {
-                'title': _t("POS error"),
-                'body': _t("You can only make positive or negative order. You cannot mix both."),
+            this.pos.env.services.popup.add(ErrorPopup, {
+                title: _t("POS error"),
+                body: _t("You can only make positive or negative order. You cannot mix both."),
             });
         } else {
             return super.add_product(...arguments);
@@ -166,9 +166,10 @@ patch(Order.prototype, {
         this.is_refund = json.is_refund || false;
     },
     export_as_JSON() {
-        let json = super.export_as_JSON(...arguments);
-        if(!this.pos.useBlackBoxSweden())
+        const json = super.export_as_JSON(...arguments);
+        if (!this.pos.useBlackBoxSweden()) {
             return json;
+        }
 
         return Object.assign(json, {
             receipt_type: this.receipt_type,
@@ -195,30 +196,39 @@ patch(Order.prototype, {
         return false;
     },
     export_for_printing() {
-        let result = super.export_for_printing(...arguments);
-        if(!this.pos.useBlackBoxSweden())
-            return result
+        const result = super.export_for_printing(...arguments);
+        if (!this.pos.useBlackBoxSweden()) {
+            return result;
+        }
 
         const order = this.pos.get_order();
+        result.orderlines = result.orderlines.map((l) => ({
+            ...l,
+            price: l.price + " " + l.taxLetter,
+        }));
+        result.tax_details = result.tax_details.map((t) => ({
+            ...t,
+            tax: { ...t.tax, letter: t.tax.sweden_identification_letter },
+        }));
         result.useBlackBoxSweden = true;
         result.blackboxSeData = {
-            "posID": this.pos.config.name,
-            "orderSequence": order.sequence_number,
-            "unitID": order.blackbox_unit_id,
-            "blackboxSignature": order.blackbox_signature,
-            "isReprint": order.isReprint,
-            "originalOrderDate": deserializeDateTime(
-                order.creation_date
-            ).toFormat("HH:mm dd/MM/yyyy"),
-            "productLines": order.orderlines.filter((orderline) => {
+            posID: this.pos.config.name,
+            orderSequence: order.sequence_number,
+            unitID: order.blackbox_unit_id,
+            blackboxSignature: order.blackbox_signature,
+            isReprint: order.isReprint,
+            originalOrderDate: deserializeDateTime(order.creation_date).toFormat(
+                "HH:mm dd/MM/yyyy"
+            ),
+            productLines: order.orderlines.filter((orderline) => {
                 return orderline.product_type !== "service";
             }),
-            "serviceLines": order.orderlines.filter((orderline) => {
+            serviceLines: order.orderlines.filter((orderline) => {
                 return orderline.product_type === "service";
-            })
-        }
+            }),
+        };
         return result;
-    }
+    },
 });
 
 patch(Orderline.prototype, {
@@ -230,11 +240,13 @@ patch(Orderline.prototype, {
         });
         return to_return;
     },
-    getLineTaxLetter() {
-        if(this.pos.useBlackBoxSweden()) {
-            let taxId = Object.values(this.get_tax_details())[0]?.id;
-            return this.pos.taxes_by_id[taxId]?.sweden_identification_letter;
+    getDisplayData() {
+        if (!this.pos.useBlackBoxSweden()) {
+            return super.getDisplayData(...arguments);
         }
-        return super.getLineTaxLetter();
-    }
+        return {
+            ...super.getDisplayData(...arguments),
+            taxLetter: this.pos.taxes_by_id[this.product.taxes_id[0]]?.sweden_identification_letter,
+        };
+    },
 });

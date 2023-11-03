@@ -233,6 +233,14 @@ patch(Order.prototype, {
         result.useBlackboxBe = Boolean(this.pos.useBlackBoxBe());
         if (this.pos.useBlackBoxBe()) {
             const order = this.pos.get_order();
+            result.orderlines = result.orderlines.map((l) => ({
+                ...l,
+                price: l.price + " " + l.taxLetter,
+            }));
+            result.tax_details = result.tax_details.map((t) => ({
+                ...t,
+                tax: { ...t.tax, letter: t.tax.identification_letter },
+            }));
             result.blackboxBeData = {
                 "pluHash": order.blackbox_plu_hash,
                 "receipt_type": order.receipt_type,
@@ -442,11 +450,16 @@ patch(Orderline.prototype, {
 
         return json;
     },
-    getLineTaxLetter() {
-        if (this.pos.useBlackBoxBe()) {
-            let taxId = Object.values(this.get_tax_details())[0]?.id;
-            return this.pos.taxes_by_id[taxId]?.identification_letter;
+    getDisplayData() {
+        if (!this.pos.useBlackBoxBe()) {
+            return super.getDisplayData();
         }
-        return super.getLineTaxLetter();
-    }
+        return {
+            ...super.getDisplayData(),
+            taxLetter: this.getLineTaxLetter(),
+        };
+    },
+    getLineTaxLetter() {
+        return this.pos.taxes_by_id[this.product.taxes_id[0]]?.identification_letter;
+    },
 });

@@ -129,6 +129,7 @@ class PosOrder(models.Model):
                     "account_move",
                     "picking_id",
                     "invoice_id",
+                    "last_order_preparation_change",
                 ]
 
                 for field in values:

@@ -111,7 +111,7 @@
             <field name="binding_view_types">form</field>
             <field name="code">
 if records:
-    records._create_menu_item_for_report()
+    action = records._create_menu_item_for_report()
             </field>
         </record>
 

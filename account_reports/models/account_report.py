@@ -77,28 +77,61 @@ class AccountReport(models.Model):
                         custom_handler_model._name
                     ))
 
+    def unlink(self):
+        for report in self:
+            action, menuitem = report._get_existing_menuitem()
+            menuitem.unlink()
+            action.unlink()
+        return super().unlink()
+
+    def write(self, vals):
+        if 'active' in vals:
+            for report in self:
+                dummy, menuitem = report._get_existing_menuitem()
+                menuitem.active = vals['active']
+        return super().write(vals)
+
     ####################################################
     # MENU MANAGEMENT
     ####################################################
+
+    def _get_existing_menuitem(self):
+        self.ensure_one()
+        action = self.env['ir.actions.client'] \
+            .search([('name', '=', self.name), ('tag', '=', 'account_report')]) \
+            .filtered(lambda act: ast.literal_eval(act.context).get('report_id') == self.id)
+        menuitem = self.env['ir.ui.menu'] \
+            .with_context({'active_test': False, 'ir.ui.menu.full_list': True}) \
+            .search([('action', '=', f'ir.actions.client,{action.id}')])
+        return action, menuitem
 
     def _create_menu_item_for_report(self):
         """ Adds a default menu item for this report. This is called by an action on the report, for reports created manually by the user.
         """
         self.ensure_one()
 
-        action = self.env['ir.actions.client'].create({
-            'name': self.name,
-            'tag': 'account_report',
-            'context': {'report_id': self.id},
-        })
+        action, menuitem = self._get_existing_menuitem()
 
-        menu_item_vals = {
+        if menuitem:
+            raise UserError(_("This report already has a menuitem."))
+
+        if not action:
+            action = self.env['ir.actions.client'].create({
+                'name': self.name,
+                'tag': 'account_report',
+                'context': {'report_id': self.id},
+            })
+
+        self.env['ir.ui.menu'].create({
             'name': self.name,
             'parent_id': self.env['ir.model.data']._xmlid_to_res_id('account.menu_finance_reports'),
             'action': f'ir.actions.client,{action.id}',
-        }
+        })
 
-        self.env['ir.ui.menu'].create(menu_item_vals)
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
 
     ####################################################
     # OPTIONS: journals

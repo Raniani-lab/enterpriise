@@ -42,8 +42,6 @@ export class AccountReportListRenderer extends ListRenderer {
             nestInterval: 10,
             onDrop: (ctx) => this.onDrop(ctx),
         });
-
-        console.log(this);
     }
 
     //------------------------------------------------------------------------------------------------------------------

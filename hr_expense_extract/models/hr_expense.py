@@ -34,10 +34,6 @@ class HrExpense(models.Model):
         endpoint = self.env['ir.config_parameter'].sudo().get_param('iap_extract_endpoint', 'https://extract.api.odoo.com')
         return iap_tools.iap_jsonrpc(endpoint + '/api/extract/expense/2/' + pathinfo, params=params)
 
-    def attach_document(self, **kwargs):
-        """when an attachment is uploaded, send the attachment to iap-extract if this is the first attachment"""
-        self._autosend_for_digitization()
-
     def _autosend_for_digitization(self):
         if self.env.company.expense_extract_show_ocr_option_selection == 'auto_send':
             self.filtered('extract_can_show_send_button')._send_batch_for_digitization()

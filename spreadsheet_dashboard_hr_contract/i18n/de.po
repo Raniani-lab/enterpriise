@@ -25,28 +25,28 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Avg Duration"
-msgstr ""
+msgstr "Durchschn. Dauer"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Avg contract duration"
-msgstr ""
+msgstr "Durchschn. Vertragsdauer"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Avg. Salary"
-msgstr ""
+msgstr "Durchschn. Gehalt"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Cancelled contracts"
-msgstr ""
+msgstr "Abgebrochene Verträge"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
@@ -69,14 +69,14 @@ msgstr "Verträge"
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Departed"
-msgstr ""
+msgstr "Austritt"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Departed employees"
-msgstr ""
+msgstr "Mitarbeiteraustritte"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
@@ -92,14 +92,14 @@ msgstr "Abteilung"
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Departure Reason"
-msgstr ""
+msgstr "Austrittsgrund"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Departure employees"
-msgstr ""
+msgstr "Austritte von Mitarbeitern"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
@@ -117,7 +117,7 @@ msgstr "Mitarbeiter"
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Employee Contract by Status"
-msgstr ""
+msgstr "Arbeitsvertrag nach Status"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
@@ -137,7 +137,7 @@ msgstr "Mitarbeiter"
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Employees Analysis"
-msgstr ""
+msgstr "Mitarbeiteranalyse"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
@@ -151,7 +151,7 @@ msgstr "Mitarbeiteranalyse nach Abteilung"
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Expired contracts"
-msgstr ""
+msgstr "Abgelaufene Verträge"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
@@ -172,28 +172,28 @@ msgstr "Stelle"
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "New + Running"
-msgstr ""
+msgstr "Neu + Laufend"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "New Employees Over Time"
-msgstr ""
+msgstr "Überstunden neuer Mitarbeiter"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "New Employees Over Time by Departure Date (Month)"
-msgstr ""
+msgstr "Überstunden neuer Mitarbeiter nach Austrittsdatum (Monat)"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "New Employees Over Time by Departure Reason"
-msgstr ""
+msgstr "Überstunden neuer Mitarbeiter nach Austrittsgrund"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
@@ -201,7 +201,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "New Employees Over Time by First Contract Date (Month)"
-msgstr ""
+msgstr "Überstunden neuer Mitarbeiter nach Datum des ersten Vertrags (Monat)"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
@@ -215,7 +215,7 @@ msgstr "Neue Mitarbeiter nach Monat"
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "New contracts"
-msgstr ""
+msgstr "Neue Verträge"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
@@ -230,7 +230,7 @@ msgstr "Neue Mitarbeiter"
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Reason"
-msgstr ""
+msgstr "Grund"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
@@ -251,7 +251,7 @@ msgstr "Diesen Monat"
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Today"
-msgstr ""
+msgstr "Heute"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
@@ -279,18 +279,18 @@ msgstr "Gesamtdauer"
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Turnover Rate"
-msgstr ""
+msgstr "Mitarbeiterfluktuation"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Turnover by Month"
-msgstr ""
+msgstr "Mitarbeiterfluktuation nach Monat"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Turnover rate"
-msgstr ""
+msgstr "Mitarbeiterfluktuation"

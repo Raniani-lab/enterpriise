@@ -1,41 +1,42 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* currency_rate_live
-#
+# 
 # Translators:
-# Piotr Strębski <strebski@gmail.com>, 2022
-# Dariusz Żbikowski <darek@krokus.com.pl>, 2022
-# Maksym <ms@myodoo.pl>, 2022
-# Martin Trigaux, 2022
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2022
-# Tomasz Leppich <t.leppich@gmail.com>, 2022
-# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2022
-# Paweł Wodyński <pw@myodoo.pl>, 2022
-# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:02+0000\n"
-"PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
-"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: pl\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 #. module: currency_rate_live
 #: model_terms:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
-msgid "<i title=\"Update now\" role=\"img\" aria-label=\"Update now\" class=\"fa fa-fw fa-refresh\"/>"
-msgstr "<i title=\"Update now\" role=\"img\" aria-label=\"Update now\" class=\"fa fa-fw fa-refresh\"/>"
+msgid ""
+"<i title=\"Update now\" role=\"img\" aria-label=\"Update now\" class=\"fa "
+"fa-fw fa-refresh\"/>"
+msgstr ""
+"<i title=\"Zaktualizuj teraz\" role=\"img\" aria-label=\"Zaktualizuj teraz\""
+" class=\"fa fa-fw fa-refresh\"/>"
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__boc
 msgid "Bank Of Canada"
 msgstr "Bank Kanady"
+
+#. module: currency_rate_live
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__bbr
+msgid "Central Bank of Brazil"
+msgstr ""
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__cbegy
@@ -61,6 +62,11 @@ msgstr "Ustawienia konfiguracji"
 #: model:ir.actions.server,name:currency_rate_live.ir_cron_currency_update_ir_actions_server
 msgid "Currency: rate update"
 msgstr "Waluta: aktualizacja stawek"
+
+#. module: currency_rate_live
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__cnb
+msgid "Czech National Bank"
+msgstr ""
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__daily
@@ -127,7 +133,7 @@ msgstr "Kolejna aktualizacja"
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__bcrp
 msgid "SUNAT (replaces Bank of Peru)"
-msgstr ""
+msgstr "SUNAT (zastępuje Bank Peru)"
 
 #. module: currency_rate_live
 #: model_terms:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
@@ -154,8 +160,12 @@ msgstr "Bank Centralny ZEA"
 #. odoo-python
 #: code:addons/currency_rate_live/models/res_config_settings.py:0
 #, python-format
-msgid "Unable to connect to the online exchange rate platform. The web service may be temporary down. Please try again in a moment."
-msgstr "Nie można połączyć się z internetową platformą kursów walut. Usługa sieci Web może być tymczasowo niedostępna. Spróbuj ponownie za chwilę."
+msgid ""
+"Unable to connect to the online exchange rate platform. The web service may "
+"be temporary down. Please try again in a moment."
+msgstr ""
+"Nie można połączyć się z internetową platformą kursów walut. Usługa sieci "
+"Web może być tymczasowo niedostępna. Spróbuj ponownie za chwilę."
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__weekly
@@ -166,8 +176,12 @@ msgstr "Tygodniowo"
 #. odoo-python
 #: code:addons/currency_rate_live/models/res_config_settings.py:0
 #, python-format
-msgid "Your main currency (%s) is not supported by this exchange rate provider. Please choose another one."
-msgstr "Twoja główna waluta (%s) nie jest obsługiwana przez tą giełde walut. Prosze wybrać inną."
+msgid ""
+"Your main currency (%s) is not supported by this exchange rate provider. "
+"Please choose another one."
+msgstr ""
+"Twoja główna waluta (%s) nie jest obsługiwana przez tą giełde walut. Prosze "
+"wybrać inną."
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__xe_com

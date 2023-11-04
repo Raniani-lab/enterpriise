@@ -2,12 +2,19 @@
 # This file contains the translation of the following modules:
 # 	* whatsapp
 # 
+# Translators:
+# Martin Trigaux, 2023
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2023
+# Wil Odoo, 2023
+# Jolien De Paepe, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +36,7 @@ msgstr ""
 #: code:addons/whatsapp/models/whatsapp_template.py:0
 #, python-format
 msgid "%(original_name)s (copy)"
-msgstr ""
+msgstr "%(original_name)s (kopie)"
 
 #. module: whatsapp
 #. odoo-python
@@ -92,12 +99,12 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__token
 msgid "Access Token"
-msgstr ""
+msgstr "Toegangstoken"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__wa_account_id
 msgid "Account"
-msgstr ""
+msgstr "Account"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__account_uid
@@ -108,18 +115,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__message_needaction
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Actie gevraagd"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__active
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__active
 msgid "Active"
-msgstr ""
+msgstr "Actief"
 
 #. module: whatsapp
 #: model:res.groups,name:whatsapp.group_whatsapp_admin
 msgid "Administrator"
-msgstr ""
+msgstr "Beheerder"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__af
@@ -156,22 +163,22 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__app_uid
 msgid "App ID"
-msgstr ""
+msgstr "App ID"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__app_secret
 msgid "App Secret"
-msgstr ""
+msgstr "App geheim"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__model_id
 msgid "Applies to"
-msgstr ""
+msgstr "Heeft betrekking op"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__status__approved
 msgid "Approved"
-msgstr ""
+msgstr "Goedgekeurd"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__ar
@@ -184,18 +191,18 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_form
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Gearchiveerd"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_composer__attachment_id
 msgid "Attachment"
-msgstr ""
+msgstr "Bijlage"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__message_attachment_count
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Aantal bijlagen"
 
 #. module: whatsapp
 #. odoo-python
@@ -207,7 +214,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__template_type__authentication
 msgid "Authentication"
-msgstr ""
+msgstr "Authenticatie"
 
 #. module: whatsapp
 #: model:ir.model.fields,help:whatsapp.field_whatsapp_template__template_type
@@ -225,7 +232,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model,name:whatsapp.model_base
 msgid "Base"
-msgstr ""
+msgstr "Basis"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__bn
@@ -236,7 +243,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_message__body
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template_variable__line_type__body
 msgid "Body"
-msgstr ""
+msgstr "Inhoud"
 
 #. module: whatsapp
 #. odoo-python
@@ -254,12 +261,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_variable__button_id
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template_variable__line_type__button
 msgid "Button"
-msgstr ""
+msgstr "Knop"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_button__name
 msgid "Button Text"
-msgstr ""
+msgstr "Knop tekst"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_composer__button_dynamic_url_1
@@ -286,7 +293,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__button_ids
 msgid "Buttons"
-msgstr ""
+msgstr "Knoppen"
 
 #. module: whatsapp
 #. odoo-python
@@ -318,7 +325,7 @@ msgstr ""
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_message_view_form
 msgid "Cancel"
-msgstr ""
+msgstr "Annuleren"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_message_view_tree
@@ -328,7 +335,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_message__state__cancel
 msgid "Cancelled"
-msgstr ""
+msgstr "Geannuleerd"
 
 #. module: whatsapp
 #. odoo-python
@@ -345,17 +352,17 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__template_type
 msgid "Category"
-msgstr ""
+msgstr "Categorie"
 
 #. module: whatsapp
 #: model:ir.model,name:whatsapp.model_discuss_channel_member
 msgid "Channel Member"
-msgstr ""
+msgstr "Kanaallid"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_discuss_channel__channel_type
 msgid "Channel Type"
-msgstr ""
+msgstr "Kanaaltype"
 
 #. module: whatsapp
 #: model:ir.model.fields,help:whatsapp.field_discuss_channel__channel_type
@@ -363,6 +370,9 @@ msgid ""
 "Chat is private and unique between 2 persons. Group is private among invited"
 " persons. Channel can be freely joined (depending on its configuration)."
 msgstr ""
+"Chat is privé en uniek tussen 2 personen. Groep is privé tussen uitgenodigde"
+" personen. Kanaal kan vrij toegankelijk zijn (afhankelijk van de "
+"configuratie)."
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__zh_cn
@@ -383,12 +393,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_composer_view_form
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_preview_view_form
 msgid "Close"
-msgstr ""
+msgstr "Afsluiten"
 
 #. module: whatsapp
 #: model:ir.ui.menu,name:whatsapp.whatsapp_configuration_menu
 msgid "Configuration"
-msgstr ""
+msgstr "Configuratie"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.res_config_settings_view_form
@@ -405,17 +415,17 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model,name:whatsapp.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Contact"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_account_view_form
 msgid "Control"
-msgstr ""
+msgstr "Controle"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_message_view_search
 msgid "Create Date"
-msgstr ""
+msgstr "Aanmaakdatum"
 
 #. module: whatsapp
 #: model_terms:ir.actions.act_window,help:whatsapp.whatsapp_template_action
@@ -431,7 +441,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_button__create_uid
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_variable__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Aangemaakt door"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__create_date
@@ -442,7 +452,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_button__create_date
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_variable__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Aangemaakt op"
 
 #. module: whatsapp
 #. odoo-python
@@ -469,12 +479,12 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__status__deleted
 msgid "Deleted"
-msgstr ""
+msgstr "Verwijderen"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_message__state__delivered
 msgid "Delivered"
-msgstr ""
+msgstr "Geleverd"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_message_view_search
@@ -493,7 +503,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__status__disabled
 msgid "Disabled"
-msgstr ""
+msgstr "Uitgeschakeld"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_form
@@ -503,7 +513,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model,name:whatsapp.model_discuss_channel
 msgid "Discussion Channel"
-msgstr ""
+msgstr "Chatkanaal"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__display_name
@@ -514,22 +524,22 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_button__display_name
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_variable__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Schermnaam"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__header_type__document
 msgid "Document"
-msgstr ""
+msgstr "Document"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_composer__res_ids
 msgid "Document IDs"
-msgstr ""
+msgstr "Document IDs"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_composer__res_model
 msgid "Document Model Name"
-msgstr ""
+msgstr "Document modelnaam"
 
 #. module: whatsapp
 #. odoo-python
@@ -548,12 +558,12 @@ msgstr ""
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_account_view_form
 msgid "Documentation"
-msgstr ""
+msgstr "Documentatie"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__status__draft
 msgid "Draft"
-msgstr ""
+msgstr "Concept"
 
 #. module: whatsapp
 #: model:ir.model.constraint,message:whatsapp.constraint_whatsapp_template_unique_name_account_template
@@ -585,7 +595,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__en
 msgid "English"
-msgstr ""
+msgstr "Engels"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__en_gb
@@ -600,7 +610,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__error_msg
 msgid "Error Message"
-msgstr ""
+msgstr "Foutbericht"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__et
@@ -610,7 +620,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_message__state__error
 msgid "Failed"
-msgstr ""
+msgstr "Mislukt"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_message_view_search
@@ -620,12 +630,12 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_message__failure_reason
 msgid "Failure Reason"
-msgstr ""
+msgstr "Reden mislukt"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_message__failure_type
 msgid "Failure Type"
-msgstr ""
+msgstr "Storingstype"
 
 #. module: whatsapp
 #. odoo-python
@@ -637,7 +647,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_variable__field_name
 msgid "Field"
-msgstr ""
+msgstr "Veld"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template_variable__field_type__field
@@ -677,13 +687,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__message_follower_ids
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Volgers"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__message_partner_ids
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Volgers (Relaties)"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__footer_text
@@ -693,7 +703,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template_variable__field_type__free_text
 msgid "Free Text"
-msgstr ""
+msgstr "Vrije tekst"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_composer__free_text_1
@@ -767,7 +777,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__fr
 msgid "French"
-msgstr ""
+msgstr "Frans"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__ka
@@ -777,7 +787,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__de
 msgid "German"
-msgstr ""
+msgstr "Duits"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__el
@@ -787,13 +797,13 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__quality__green
 msgid "Green"
-msgstr ""
+msgstr "Groen"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_message_view_search
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Groeperen op"
 
 #. module: whatsapp
 #: model:ir.model.constraint,message:whatsapp.constraint_discuss_channel_group_public_id_check
@@ -816,7 +826,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__has_message
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Heeft bericht"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__ha
@@ -826,7 +836,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template_variable__line_type__header
 msgid "Header"
-msgstr ""
+msgstr "Kop"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_composer__header_text_1
@@ -883,13 +893,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_button__id
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_variable__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: whatsapp
 #: model:ir.model.fields,help:whatsapp.field_whatsapp_account__message_needaction
 #: model:ir.model.fields,help:whatsapp.field_whatsapp_template__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Indien aangevinkt vragen nieuwe berichten je aandacht."
 
 #. module: whatsapp
 #: model:ir.model.fields,help:whatsapp.field_whatsapp_account__message_has_error
@@ -897,7 +907,7 @@ msgstr ""
 #: model:ir.model.fields,help:whatsapp.field_whatsapp_template__message_has_error
 #: model:ir.model.fields,help:whatsapp.field_whatsapp_template__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Indien aangevinkt hebben sommige berichten een leveringsfout."
 
 #. module: whatsapp
 #: model:ir.model.fields,help:whatsapp.field_res_users_settings__is_discuss_sidebar_category_whatsapp_open
@@ -914,7 +924,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__header_type__image
 msgid "Image"
-msgstr ""
+msgstr "Afbeelding"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__status__in_appeal
@@ -924,12 +934,12 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_message__state__outgoing
 msgid "In Queue"
-msgstr ""
+msgstr "In wachtrij"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_message__message_type__inbound
 msgid "Inbound"
-msgstr ""
+msgstr "Inkomend"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__id
@@ -974,7 +984,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__message_is_follower
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Is een volger"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_composer__is_header_free_text
@@ -994,7 +1004,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__ja
 msgid "Japanese"
-msgstr ""
+msgstr "Japans"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__kn
@@ -1024,7 +1034,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__lang_code
 msgid "Language"
-msgstr ""
+msgstr "Taal"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__lo
@@ -1034,7 +1044,7 @@ msgstr ""
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_message_view_search
 msgid "Last Month"
-msgstr ""
+msgstr "Vorige maand"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__write_uid
@@ -1045,7 +1055,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_button__write_uid
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_variable__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Laatst bijgewerkt door"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__write_date
@@ -1056,17 +1066,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_button__write_date
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_variable__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Laatst bijgewerkt op"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_message_view_search
 msgid "Last Week"
-msgstr ""
+msgstr "Vorige week"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_message_view_search
 msgid "Last Year"
-msgstr ""
+msgstr "Vorige jaar"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__lv
@@ -1090,7 +1100,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template_variable__line_type__location
 #, python-format
 msgid "Location"
-msgstr ""
+msgstr "Locatie"
 
 #. module: whatsapp
 #. odoo-python
@@ -1126,7 +1136,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_message__mail_message_id
 msgid "Mail Message"
-msgstr ""
+msgstr "Mail bericht"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__ms
@@ -1146,7 +1156,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__template_type__marketing
 msgid "Marketing"
-msgstr ""
+msgstr "Marketing"
 
 #. module: whatsapp
 #. odoo-python
@@ -1172,7 +1182,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model,name:whatsapp.model_mail_message
 msgid "Message"
-msgstr ""
+msgstr "Bericht"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__templates_count
@@ -1183,7 +1193,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__message_has_error
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Bericht afleverfout"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_composer__preview_whatsapp
@@ -1201,15 +1211,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_message__message_type
 msgid "Message Type"
-msgstr ""
-
-#. module: whatsapp
-#: model:ir.model.fields,help:whatsapp.field_mail_mail__message_type
-#: model:ir.model.fields,help:whatsapp.field_mail_message__message_type
-msgid ""
-"Message type: email for email message, notification for system message, "
-"comment for other messages such as user replies"
-msgstr ""
+msgstr "Bericht type"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__message_ids
@@ -1217,12 +1219,12 @@ msgstr ""
 #: model:ir.ui.menu,name:whatsapp.whatsapp_message_menu
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_form
 msgid "Messages"
-msgstr ""
+msgstr "Berichten"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__messages_count
 msgid "Messages Count"
-msgstr ""
+msgstr "Berichten tellen"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_message__failure_type__account
@@ -1237,12 +1239,12 @@ msgstr ""
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_search
 msgid "Model"
-msgstr ""
+msgstr "Model"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_variable__model
 msgid "Model Name"
-msgstr ""
+msgstr "Modelnaam"
 
 #. module: whatsapp
 #: model:ir.model.fields,help:whatsapp.field_whatsapp_template__model_id
@@ -1252,7 +1254,7 @@ msgstr ""
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_search
 msgid "My Templates"
-msgstr ""
+msgstr "Mijn sjablonen"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__name
@@ -1260,7 +1262,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_account_view_form
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_form
 msgid "Name"
-msgstr ""
+msgstr "Naam"
 
 #. module: whatsapp
 #: model_terms:ir.actions.act_window,help:whatsapp.whatsapp_message_action
@@ -1272,7 +1274,7 @@ msgstr ""
 #: code:addons/whatsapp/static/src/core/web/channel_selector_patch.js:0
 #, python-format
 msgid "No results found"
-msgstr ""
+msgstr "Geen resultaten gevonden"
 
 #. module: whatsapp
 #. odoo-python
@@ -1286,7 +1288,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__header_type__none
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__quality__none
 msgid "None"
-msgstr ""
+msgstr "Geen"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__nb
@@ -1319,13 +1321,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__message_needaction_counter
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Aantal acties"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__message_has_error_counter
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "Aantal fouten"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_composer__number_of_free_text
@@ -1341,13 +1343,13 @@ msgstr ""
 #: model:ir.model.fields,help:whatsapp.field_whatsapp_account__message_needaction_counter
 #: model:ir.model.fields,help:whatsapp.field_whatsapp_template__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "Aantal berichten die actie vereisen"
 
 #. module: whatsapp
 #: model:ir.model.fields,help:whatsapp.field_whatsapp_account__message_has_error_counter
 #: model:ir.model.fields,help:whatsapp.field_whatsapp_template__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Aantal berichten met leveringsfout"
 
 #. module: whatsapp
 #. odoo-python
@@ -1380,7 +1382,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_message__message_type__outbound
 msgid "Outbound"
-msgstr ""
+msgstr "Uitgaand"
 
 #. module: whatsapp
 #. odoo-python
@@ -1392,12 +1394,12 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__status__paused
 msgid "Paused"
-msgstr ""
+msgstr "Gepauseerd"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__status__pending
 msgid "Pending"
-msgstr ""
+msgstr "In behandeling"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__status__pending_deletion
@@ -1412,7 +1414,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_composer__phone
 msgid "Phone"
-msgstr ""
+msgstr "Telefoon"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__phone_field
@@ -1422,7 +1424,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_discuss_channel__whatsapp_number
 msgid "Phone Number"
-msgstr ""
+msgstr "Telefoonnummer"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__phone_uid
@@ -1449,7 +1451,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_variable__name
 msgid "Placeholder"
-msgstr ""
+msgstr "Placeholder"
 
 #. module: whatsapp
 #. odoo-python
@@ -1481,7 +1483,7 @@ msgstr ""
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_form
 msgid "Preview"
-msgstr ""
+msgstr "Preview"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_preview_view_form
@@ -1501,7 +1503,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__quality
 msgid "Quality"
-msgstr ""
+msgstr "Kwaliteit"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template_button__button_type__quick_reply
@@ -1512,12 +1514,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__rating_ids
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__rating_ids
 msgid "Ratings"
-msgstr ""
+msgstr "Beoordelingen"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_message__state__read
 msgid "Read"
-msgstr ""
+msgstr "Lezen"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_message_view_search
@@ -1534,7 +1536,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_message__state__received
 msgid "Received"
-msgstr ""
+msgstr "Ontvangen"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_account_view_form
@@ -1544,12 +1546,12 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__quality__red
 msgid "Red"
-msgstr ""
+msgstr "Rood"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__status__rejected
 msgid "Rejected"
-msgstr ""
+msgstr "Afgewezen"
 
 #. module: whatsapp
 #. odoo-python
@@ -1561,7 +1563,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__model
 msgid "Related Document Model"
-msgstr ""
+msgstr "Gerelateerde documentmodel"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_mail_mail__wa_message_ids
@@ -1577,17 +1579,17 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__report_id
 msgid "Report"
-msgstr ""
+msgstr "Rapport"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_form
 msgid "Reset to draft"
-msgstr ""
+msgstr "Reset naar concept"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_message_view_tree
 msgid "Retry"
-msgstr ""
+msgstr "Opnieuw proberen"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__ro
@@ -1603,7 +1605,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__message_has_sms_error
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "SMS fout bij versturen"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_variable__demo_value
@@ -1651,7 +1653,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_message__state__sent
 msgid "Sent"
-msgstr ""
+msgstr "Verzonden"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_message_view_search
@@ -1680,7 +1682,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__sequence
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_button__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Reeks"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__sr
@@ -1737,7 +1739,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_message__state
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_message_view_search
 msgid "State"
-msgstr ""
+msgstr "Staat"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template_button__url_type__static
@@ -1748,7 +1750,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__status
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_search
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_form
@@ -1763,7 +1765,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__sv
 msgid "Swedish"
-msgstr ""
+msgstr "Zweeds"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_form
@@ -1789,7 +1791,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_composer__wa_template_id
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_message_view_search
 msgid "Template"
-msgstr ""
+msgstr "Sjabloon"
 
 #. module: whatsapp
 #. odoo-python
@@ -1824,12 +1826,12 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__template_name
 msgid "Template Name"
-msgstr ""
+msgstr "Sjabloonnaam"
 
 #. module: whatsapp
 #: model:ir.actions.act_window,name:whatsapp.whatsapp_preview_action_from_template
 msgid "Template Preview"
-msgstr ""
+msgstr "Sjabloon preview"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__header_attachment_ids
@@ -1875,7 +1877,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_account_view_form
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_search
 msgid "Templates"
-msgstr ""
+msgstr "Sjablonen"
 
 #. module: whatsapp
 #. odoo-python
@@ -1887,7 +1889,7 @@ msgstr ""
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_account_view_form
 msgid "Test Connection"
-msgstr ""
+msgstr "Test verbinding"
 
 #. module: whatsapp
 #. odoo-python
@@ -1899,7 +1901,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__header_type__text
 msgid "Text"
-msgstr ""
+msgstr "Tekst"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__th
@@ -1986,7 +1988,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_button__button_type
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_variable__field_type
 msgid "Type"
-msgstr ""
+msgstr "Soort"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__uk
@@ -2021,6 +2023,19 @@ msgid "Url Type"
 msgstr ""
 
 #. module: whatsapp
+#: model:ir.model.fields,help:whatsapp.field_mail_mail__message_type
+#: model:ir.model.fields,help:whatsapp.field_mail_message__message_type
+msgid ""
+"Used to categorize message generator\n"
+"'email': generated by an incoming email e.g. mailgateway\n"
+"'comment': generated by user input e.g. through discuss or composer\n"
+"'email_outgoing': generated by a mailing\n"
+"'notification': generated by system e.g. tracking messages\n"
+"'auto_comment': generated by automated notification mechanism e.g. acknowledgment\n"
+"'user_notification': generated for a specific recipient"
+msgstr ""
+
+#. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template_variable__field_type__user_mobile
 msgid "User Mobile"
 msgstr ""
@@ -2033,7 +2048,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model,name:whatsapp.model_res_users_settings
 msgid "User Settings"
-msgstr ""
+msgstr "Gebruikersinstellingen"
 
 #. module: whatsapp
 #: model:ir.module.category,description:whatsapp.module_whatsapp
@@ -2065,7 +2080,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__allowed_user_ids
 msgid "Users"
-msgstr ""
+msgstr "Gebruikers"
 
 #. module: whatsapp
 #. odoo-python
@@ -2104,7 +2119,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_button__variable_ids
 msgid "Variable"
-msgstr ""
+msgstr "Variabel"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_variable__line_type
@@ -2119,7 +2134,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__header_type__video
 msgid "Video"
-msgstr ""
+msgstr "Video"
 
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__lang_code__vi
@@ -2154,18 +2169,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__website_message_ids
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Websiteberichten"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_template_button__website_url
 msgid "Website URL"
-msgstr ""
+msgstr "Website URL"
 
 #. module: whatsapp
 #: model:ir.model.fields,help:whatsapp.field_whatsapp_account__website_message_ids
 #: model:ir.model.fields,help:whatsapp.field_whatsapp_template__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Website communicatie geschiedenis"
 
 #. module: whatsapp
 #. odoo-javascript
@@ -2252,7 +2267,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_form
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_tree
 msgid "WhatsApp Template"
-msgstr ""
+msgstr "Sjabloon WhatsApp"
 
 #. module: whatsapp
 #: model:ir.model,name:whatsapp.model_whatsapp_template_button
@@ -2300,7 +2315,7 @@ msgstr ""
 #. module: whatsapp
 #: model:ir.model.fields.selection,name:whatsapp.selection__whatsapp_template__quality__yellow
 msgid "Yellow"
-msgstr ""
+msgstr "Geel"
 
 #. module: whatsapp
 #. odoo-python
@@ -2383,32 +2398,32 @@ msgstr ""
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_account_view_form
 msgid "e.g. 00112233445566778899aabbccddeeff"
-msgstr ""
+msgstr "bijv. 00112233445566778899aabbccddeeff"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_account_view_form
 msgid "e.g. 123456789012345"
-msgstr ""
+msgstr "bijv. 123456789012345"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_account_view_form
 msgid "e.g. EGTRWHRTHETHWRBTEJETHGQEGWRHWR"
-msgstr ""
+msgstr "bijv. EGTRWHRTHETHWRBTEJETHGQEGWRHWR"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_form
 msgid "e.g. Invitation for {{1}}"
-msgstr ""
+msgstr "bijv. Uitnodiging voor {{1}}"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_account_view_form
 msgid "e.g. Odoo"
-msgstr ""
+msgstr "bijv. Odoo"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_form
 msgid "placeholder=\"e.g. https://www.example.com\"/&gt;"
-msgstr ""
+msgstr "placeholder=\"e.g. https://www.example.com\"/&gt;"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_composer_view_form

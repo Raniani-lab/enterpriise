@@ -2,12 +2,17 @@
 # This file contains the translation of the following modules:
 # 	* whatsapp_event
 # 
+# Translators:
+# Wil Odoo, 2023
+# Jolien De Paepe, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:22+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,33 +23,33 @@ msgstr ""
 #. module: whatsapp_event
 #: model:ir.model.fields,field_description:whatsapp_event.field_event_registration__date_range
 msgid "Date Range"
-msgstr ""
+msgstr "Datumbereik"
 
 #. module: whatsapp_event
 #: model:ir.model,name:whatsapp_event.model_event_mail
 msgid "Event Automated Mailing"
-msgstr ""
+msgstr "Evenement geautomatiseerde e-mail"
 
 #. module: whatsapp_event
 #: model:ir.model,name:whatsapp_event.model_event_registration
 msgid "Event Registration"
-msgstr ""
+msgstr "Evenementinschrijving"
 
 #. module: whatsapp_event
 #: model:ir.model,name:whatsapp_event.model_event_type_mail
 msgid "Mail Scheduling on Event Category"
-msgstr ""
+msgstr "E-mail planner op soort evenement"
 
 #. module: whatsapp_event
 #: model:ir.model,name:whatsapp_event.model_event_mail_registration
 msgid "Registration Mail Scheduler"
-msgstr ""
+msgstr "Evenement inschrijvingen e-mail planner"
 
 #. module: whatsapp_event
 #: model:ir.model.fields,field_description:whatsapp_event.field_event_mail__notification_type
 #: model:ir.model.fields,field_description:whatsapp_event.field_event_type_mail__notification_type
 msgid "Send"
-msgstr ""
+msgstr "Verzenden"
 
 #. module: whatsapp_event
 #: model:ir.model.fields.selection,name:whatsapp_event.selection__event_mail__notification_type__whatsapp
@@ -55,7 +60,7 @@ msgstr ""
 #. module: whatsapp_event
 #: model:ir.model,name:whatsapp_event.model_whatsapp_template
 msgid "WhatsApp Template"
-msgstr ""
+msgstr "Sjabloon WhatsApp"
 
 #. module: whatsapp_event
 #: model:ir.model,name:whatsapp_event.model_whatsapp_template_variable

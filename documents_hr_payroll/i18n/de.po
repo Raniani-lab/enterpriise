@@ -33,6 +33,15 @@ msgid ""
 "    </tbody></table>\n"
 "                "
 msgstr ""
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
+"        <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
+"            Hallo <t t-esc=\"object.name\"></t>, eine neue Vereinbarungsdatei liegt für Sie bereit.<br><br>\n"
+"            Das PDF finden Sie in Ihrem Mitarbeiterportal.<br><br>\n"
+"            Einen schönen Tag!<br>\n"
+"            Die Personalabteilung\n"
+"        </td></tr>\n"
+"    </tbody></table>\n"
+"                "
 
 #. module: documents_hr_payroll
 #: model:ir.model,name:documents_hr_payroll.model_res_company
@@ -55,6 +64,8 @@ msgstr "Dokument"
 #, python-format
 msgid "Document posting is not properly set in configuration"
 msgstr ""
+"Die Dokumentveröffentlichung wurde nicht korrekt in der Konfiguration "
+"eingestellt"
 
 #. module: documents_hr_payroll
 #. odoo-python
@@ -97,14 +108,14 @@ msgstr "Mitarbeiter"
 #. module: documents_hr_payroll
 #: model:ir.model,name:documents_hr_payroll.model_hr_contract
 msgid "Employee Contract"
-msgstr ""
+msgstr "Arbeitsvertrag"
 
 #. module: documents_hr_payroll
 #. odoo-python
 #: code:addons/documents_hr_payroll/models/hr_payroll_employee_declaration.py:0
 #, python-format
 msgid "PDFs are gonna be posted in Documents shortly"
-msgstr ""
+msgstr "PDFs werden in Kürze in Dokumente veröffentlicht."
 
 #. module: documents_hr_payroll
 #: model:ir.model,name:documents_hr_payroll.model_hr_payslip
@@ -121,12 +132,12 @@ msgstr "Personalabrechnung"
 #. module: documents_hr_payroll
 #: model:ir.model,name:documents_hr_payroll.model_hr_payroll_declaration_mixin
 msgid "Payroll Declaration Mixin"
-msgstr ""
+msgstr "Mixin für Personalabrechnungsvereinbarung"
 
 #. module: documents_hr_payroll
 #: model:ir.model,name:documents_hr_payroll.model_hr_payroll_employee_declaration
 msgid "Payroll Employee Declaration"
-msgstr ""
+msgstr "Personalabrechnungsvereinbarung mit Mitarbeiter"
 
 #. module: documents_hr_payroll
 #: model_terms:ir.ui.view,arch_db:documents_hr_payroll.res_config_settings_view_form
@@ -136,7 +147,7 @@ msgstr "Personalabrechnung Arbeitsbereich"
 #. module: documents_hr_payroll
 #: model:mail.template,name:documents_hr_payroll.mail_template_new_declaration
 msgid "Payroll: New Declaration"
-msgstr ""
+msgstr "Personalabrechnung: Neue Vereinbarung"
 
 #. module: documents_hr_payroll
 #: model:ir.model.fields,field_description:documents_hr_payroll.field_res_config_settings__documents_hr_payslips_tags
@@ -151,29 +162,29 @@ msgstr "Gehaltsabrechnungen"
 #. module: documents_hr_payroll
 #: model:ir.model.fields,field_description:documents_hr_payroll.field_hr_payroll_employee_declaration__pdf_to_post
 msgid "Pdf To Post"
-msgstr ""
+msgstr "Zu veröffentlichendes PDF"
 
 #. module: documents_hr_payroll
 #: model_terms:ir.ui.view,arch_db:documents_hr_payroll.hr_payroll_employee_declaration_view_tree
 msgid "Post PDFs"
-msgstr ""
+msgstr "PDFs veröffentlichen"
 
 #. module: documents_hr_payroll
 #: model:ir.model.fields.selection,name:documents_hr_payroll.selection__hr_payroll_employee_declaration__state__pdf_posted
 msgid "Posted PDF"
-msgstr ""
+msgstr "Veröffentlichtes PDF"
 
 #. module: documents_hr_payroll
 #: model:ir.model.fields.selection,name:documents_hr_payroll.selection__hr_payroll_employee_declaration__state__pdf_to_post
 msgid "Queued PDF posting"
-msgstr ""
+msgstr "PDF-Veröffentlichung in der Warteschlange"
 
 #. module: documents_hr_payroll
 #: model:ir.model.fields,field_description:documents_hr_payroll.field_hr_payroll_employee_declaration__state
 msgid "State"
-msgstr ""
+msgstr "Status"
 
 #. module: documents_hr_payroll
 #: model:mail.template,subject:documents_hr_payroll.mail_template_new_declaration
 msgid "{{ object.name }}, a new declaration file is available for you"
-msgstr ""
+msgstr "{{ object.name }}, eine neue Vereinbarungsdatei liegt für Sie bereit"

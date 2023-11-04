@@ -24,7 +24,7 @@ msgstr ""
 #: code:addons/whatsapp_pos/static/src/xml/receipt_screen/receipt_screen_patch.xml:0
 #, python-format
 msgid "(Both will be sent by WhatsApp)"
-msgstr ""
+msgstr "(Beide werden per WhatsApp gesendet)"
 
 #. module: whatsapp_pos
 #: model:ir.model,name:whatsapp_pos.model_res_config_settings
@@ -43,55 +43,55 @@ msgstr "Ungültige Nummer"
 #: code:addons/whatsapp_pos/models/res_config_settings.py:0
 #, python-format
 msgid "Invoice Whatsapp template should have a phone field"
-msgstr ""
+msgstr "Die Whatsapp-Rechnungsvorlage sollte ein Telefonfeld haben"
 
 #. module: whatsapp_pos
 #: model:ir.model.fields,field_description:whatsapp_pos.field_pos_config__invoice_template_id
 #: model:ir.model.fields,field_description:whatsapp_pos.field_res_config_settings__pos_invoice_template_id
 msgid "Invoice template"
-msgstr ""
+msgstr "Rechnungsvorlage"
 
 #. module: whatsapp_pos
 #: model:ir.model,name:whatsapp_pos.model_pos_config
 msgid "Point of Sale Configuration"
-msgstr ""
+msgstr "Kassensystem-Konfiguration"
 
 #. module: whatsapp_pos
 #: model:ir.model,name:whatsapp_pos.model_pos_order
 msgid "Point of Sale Orders"
-msgstr ""
+msgstr "Kassenaufträge"
 
 #. module: whatsapp_pos
 #. odoo-python
 #: code:addons/whatsapp_pos/models/res_config_settings.py:0
 #, python-format
 msgid "Receipt Whatsapp template should have Image Header Type"
-msgstr ""
+msgstr "WhatsApp-Vorlage für Kassenbons sollte einen Kopfbildtyp haben"
 
 #. module: whatsapp_pos
 #. odoo-python
 #: code:addons/whatsapp_pos/models/res_config_settings.py:0
 #, python-format
 msgid "Receipt Whatsapp template should have a phone field"
-msgstr ""
+msgstr "WhatsApp-Vorlage für Kassenbons sollte ein Telefonfeld haben"
 
 #. module: whatsapp_pos
 #: model:ir.model.fields,field_description:whatsapp_pos.field_pos_config__receipt_template_id
 #: model:ir.model.fields,field_description:whatsapp_pos.field_res_config_settings__pos_receipt_template_id
 msgid "Receipt template"
-msgstr ""
+msgstr "Kassenbonvorlage"
 
 #. module: whatsapp_pos
 #: model_terms:ir.ui.view,arch_db:whatsapp_pos.res_config_settings_view_form
 msgid "Send receipts Using WhatsApp"
-msgstr ""
+msgstr "Kassenbons per WhatsApp versenden"
 
 #. module: whatsapp_pos
 #. odoo-javascript
 #: code:addons/whatsapp_pos/static/src/js/receipt_screen/receipt_screen_patch.js:0
 #, python-format
 msgid "Sending in progress"
-msgstr ""
+msgstr "Versand in Arbeit"
 
 #. module: whatsapp_pos
 #. odoo-javascript
@@ -99,23 +99,25 @@ msgstr ""
 #, python-format
 msgid "Something went wrong, please check the number and try again."
 msgstr ""
+"Etwas ist schiefgelaufen, bitte überprüfen Sie die Nummer und versuchen Sie "
+"es erneut."
 
 #. module: whatsapp_pos
 #: model:ir.model.fields,field_description:whatsapp_pos.field_pos_config__whatsapp_enabled
 #: model:ir.model.fields,field_description:whatsapp_pos.field_res_config_settings__pos_whatsapp_enabled
 msgid "WhatsApp Enabled"
-msgstr ""
+msgstr "WhatsApp aktiviert"
 
 #. module: whatsapp_pos
 #. odoo-javascript
 #: code:addons/whatsapp_pos/static/src/xml/receipt_screen/receipt_screen_patch.xml:0
 #, python-format
 msgid "WhatsApp Receipt"
-msgstr ""
+msgstr "WhatsApp-Kassenbon"
 
 #. module: whatsapp_pos
 #. odoo-javascript
 #: code:addons/whatsapp_pos/static/src/js/receipt_screen/receipt_screen_patch.js:0
 #, python-format
 msgid "WhatsApp sent"
-msgstr ""
+msgstr "WhatsApp gesendet"

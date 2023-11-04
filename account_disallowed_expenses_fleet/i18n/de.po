@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +25,7 @@ msgstr ""
 #: code:addons/account_disallowed_expenses_fleet/report/account_disallowed_expenses_report.py:0
 #, python-format
 msgid "Accounts missing a disallowed expense category"
-msgstr ""
+msgstr "Den Konten fehlt eine Kategorie für unzulässige Spesen"
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_disallowed_expenses_rate__company_id
@@ -40,6 +41,11 @@ msgstr "Erstellt von"
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_disallowed_expenses_rate__create_date
 msgid "Created on"
 msgstr "Erstellt am"
+
+#. module: account_disallowed_expenses_fleet
+#: model:ir.model,name:account_disallowed_expenses_fleet.model_account_deferred_report_handler
+msgid "Deferred Expense Report Custom Handler"
+msgstr "Bericht über Aktive Rechnungsabgrenzung Benutzerdefinierter Handler"
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_account_disallowed_expenses_category
@@ -74,6 +80,8 @@ msgstr "ID"
 msgid ""
 "It looks like Journal Items concerning vehicles are missing. Please check if"
 msgstr ""
+"Buchungszeilen in Bezug auf Fahrzeuge scheinen zu fehlen. Bitte prüfen Sie, "
+"ob"
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_account_move_line
@@ -133,11 +141,11 @@ msgstr "Fahrzeugaufteilung"
 #: code:addons/account_disallowed_expenses_fleet/static/src/components/disallowed_expenses_report/warnings.xml:0
 #, python-format
 msgid "need a Disallowed Expense Category."
-msgstr ""
+msgstr "eine Kategorie für unzulässige Spesen benötigen."
 
 #. module: account_disallowed_expenses_fleet
 #. odoo-javascript
 #: code:addons/account_disallowed_expenses_fleet/static/src/components/disallowed_expenses_report/warnings.xml:0
 #, python-format
 msgid "these accounts"
-msgstr ""
+msgstr "diese Konten"

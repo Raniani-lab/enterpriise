@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -108,7 +109,7 @@ msgstr "Camera"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_select_printers_wizard
 msgid "Cancel"
-msgstr ""
+msgstr "Annuleren"
 
 #. module: iot
 #. odoo-javascript
@@ -408,7 +409,7 @@ msgstr "IoT apparaat"
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_ir_actions_report__device_ids
 msgid "IoT Devices"
-msgstr ""
+msgstr "IoT toestellen"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__is_scanner
@@ -559,7 +560,7 @@ msgstr "Even geduld"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_select_printers_wizard
 msgid "Print"
-msgstr ""
+msgstr "Afdrukken"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__printer
@@ -574,7 +575,7 @@ msgstr "Rapportageprinter"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_select_printers_wizard
 msgid "Printers"
-msgstr ""
+msgstr "Printers"
 
 #. module: iot
 #: model:ir.model,name:iot.model_publisher_warranty_contract
@@ -622,7 +623,7 @@ msgstr "Herstarten"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_select_printers_wizard
 msgid "Sales Details"
-msgstr ""
+msgstr "Verkoopdetails"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__scale
@@ -728,7 +729,7 @@ msgstr "USB"
 #: code:addons/iot/static/src/client_action/delete_local_storage.xml:0
 #, python-format
 msgid "Unlink"
-msgstr ""
+msgstr "Link verwijderen"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_keyboard_layout__variant

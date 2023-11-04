@@ -1,23 +1,24 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* hr_contract_sign
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
+# Wil Odoo, 2023
 # Thi Huong Nguyen, 2023
-#
+# Trần Hà <tranthuha13590@gmail.com>, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:02+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Thi Huong Nguyen, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Trần Hà <tranthuha13590@gmail.com>, 2023\n"
 "Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
-"Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: hr_contract_sign
@@ -56,6 +57,16 @@ msgid "<span class=\"o_stat_text\">Signature Requests</span>"
 msgstr "<span class=\"o_stat_text\">Yêu cầu chữ ký</span>"
 
 #. module: hr_contract_sign
+#: model:ir.model,name:hr_contract_sign.model_mail_activity_plan_template
+msgid "Activity plan template"
+msgstr "Mẫu kế hoạch hoạt động"
+
+#. module: hr_contract_sign
+#: model:ir.model,name:hr_contract_sign.model_mail_activity_schedule
+msgid "Activity schedule plan Wizard"
+msgstr "Tính năng kế hoạch hoạt động"
+
+#. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 msgid "Attach a file"
 msgstr "Đính kèm một tập tin"
@@ -63,7 +74,7 @@ msgstr "Đính kèm một tập tin"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__attachment_ids
 msgid "Attachment"
-msgstr "Đính kèm"
+msgstr "Tệp đính kèm"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__contract_id
@@ -106,7 +117,7 @@ msgid "Document Signature"
 msgstr "Chữ ký tài liệu"
 
 #. module: hr_contract_sign
-#: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__sign_template_id
+#: model:ir.model.fields,field_description:hr_contract_sign.field_mail_activity_plan_template__sign_template_id
 msgid "Document to sign"
 msgstr ""
 
@@ -129,13 +140,13 @@ msgstr ""
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__mail_to
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,help:hr_contract_sign.field_hr_contract_sign_document_wizard__mail_to
 msgid ""
 "Email used to send the signature request.\n"
-"                - Public takes the email defined in \"work email\"\n"
+"                - Work takes the email defined in \"work email\"\n"
 "                - Private takes the email defined in Private Information\n"
 "                - If the selected email is not defined, the available one will be used."
 msgstr ""
@@ -152,15 +163,19 @@ msgstr "Hợp đồng nhân viên"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__employee_role_id
-#: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__employee_role_id
+#: model:ir.model.fields,field_description:hr_contract_sign.field_mail_activity_plan_template__employee_role_id
 msgid "Employee Role"
 msgstr "Vai trò nhân viên"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,help:hr_contract_sign.field_hr_contract_sign_document_wizard__employee_role_id
-#: model:ir.model.fields,help:hr_contract_sign.field_hr_plan_activity_type__employee_role_id
-msgid "Employee's role on the templates to sign. The same role must be present in all the templates"
-msgstr "Vai trò nhân viên trong mẫu cần ký. Vai trò giống nhau phải xuất hiện trong tất cả các mẫu"
+#: model:ir.model.fields,help:hr_contract_sign.field_mail_activity_plan_template__employee_role_id
+msgid ""
+"Employee's role on the templates to sign. The same role must be present in "
+"all the templates"
+msgstr ""
+"Vai trò nhân viên trong mẫu cần ký. Vai trò giống nhau phải xuất hiện trong "
+"tất cả các mẫu"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__employee_ids
@@ -183,19 +198,24 @@ msgid "ID"
 msgstr "ID"
 
 #. module: hr_contract_sign
-#: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__is_signature_request
+#: model:ir.model.fields,field_description:hr_contract_sign.field_mail_activity_plan_template__is_signature_request
 msgid "Is Signature Request"
 msgstr ""
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__write_uid
 msgid "Last Updated by"
-msgstr "Last Updated by"
+msgstr "Cập nhật lần cuối bởi"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__write_date
 msgid "Last Updated on"
 msgstr "Cập nhật lần cuối vào"
+
+#. module: hr_contract_sign
+#: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__mail_displayed
+msgid "Mail Displayed"
+msgstr ""
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
@@ -205,14 +225,18 @@ msgstr ""
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__message
 msgid "Message"
-msgstr "Thông báo"
+msgstr "Tin nhắn"
 
 #. module: hr_contract_sign
 #. odoo-python
 #: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
 #, python-format
-msgid "No appropriate template could be found, please make sure you configured them properly."
-msgstr "Không tìm thấy mẫu thích hợp, vui lòng bảo đảm bạn đã đặt cấu hình đúng cách."
+msgid ""
+"No appropriate template could be found, please make sure you configured them"
+" properly."
+msgstr ""
+"Không tìm thấy mẫu thích hợp, vui lòng bảo đảm bạn đã đặt cấu hình đúng "
+"cách."
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
@@ -237,16 +261,6 @@ msgid "Optional Message..."
 msgstr "Tin nhắn tùy chọn..."
 
 #. module: hr_contract_sign
-#: model:ir.model,name:hr_contract_sign.model_hr_plan_wizard
-msgid "Plan Wizard"
-msgstr "Plan Wizard"
-
-#. module: hr_contract_sign
-#: model:ir.model,name:hr_contract_sign.model_hr_plan_activity_type
-msgid "Plan activity type"
-msgstr "Plan activity type"
-
-#. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__possible_template_ids
 msgid "Possible Template"
 msgstr ""
@@ -254,12 +268,7 @@ msgstr ""
 #. module: hr_contract_sign
 #: model:ir.model.fields.selection,name:hr_contract_sign.selection__hr_contract_sign_document_wizard__mail_to__private
 msgid "Private"
-msgstr ""
-
-#. module: hr_contract_sign
-#: model:ir.model.fields.selection,name:hr_contract_sign.selection__hr_contract_sign_document_wizard__mail_to__public
-msgid "Public"
-msgstr ""
+msgstr "Riêng tư"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract__sign_request_ids
@@ -270,12 +279,12 @@ msgstr "Chữ ký được yêu cầu"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__responsible_id
 msgid "Responsible"
-msgstr "Phụ trách"
+msgstr "Người phụ trách"
 
 #. module: hr_contract_sign
-#: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__responsible_count
+#: model:ir.model.fields,field_description:hr_contract_sign.field_mail_activity_plan_template__responsible_count
 msgid "Responsible Count"
-msgstr ""
+msgstr "Số người phụ trách"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
@@ -296,7 +305,7 @@ msgstr ""
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__sign_template_responsible_ids
-#: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__sign_template_responsible_ids
+#: model:ir.model.fields,field_description:hr_contract_sign.field_mail_activity_plan_template__sign_template_responsible_ids
 msgid "Sign Template Responsible"
 msgstr "Phụ trách mẫu ký"
 
@@ -307,26 +316,23 @@ msgstr "Tài liệu ký trong hợp đồng"
 
 #. module: hr_contract_sign
 #. odoo-python
-#: code:addons/hr_contract_sign/wizard/hr_plan_wizard.py:0
+#: code:addons/hr_contract_sign/wizard/mail_activity_schedule.py:0
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_history_view_form
-#: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_sign_view_form
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_employee_sign_view_form
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 #, python-format
 msgid "Signature Request"
-msgstr "Yêu cầu Chữ ký"
+msgstr "Yêu cầu chữ ký"
 
 #. module: hr_contract_sign
-#. odoo-python
-#: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
-#, python-format
-msgid "Signature Request - %s"
-msgstr "Yêu cầu chữ ký - %s"
+#: model:ir.actions.server,name:hr_contract_sign.action_signature_request_wizard
+msgid "Signature request"
+msgstr "Signature request"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__subject
 msgid "Subject"
-msgstr "Chủ đề"
+msgstr "Tiêu đề"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__template_warning
@@ -337,13 +343,20 @@ msgstr "Cảnh báo mẫu"
 #. odoo-python
 #: code:addons/hr_contract_sign/models/hr_contract.py:0
 #, python-format
-msgid "This sign request has been canceled due to the cancellation of the related contract."
+msgid ""
+"This sign request has been canceled due to the cancellation of the related "
+"contract."
 msgstr ""
 
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_res_users
 msgid "User"
 msgstr "Người dùng"
+
+#. module: hr_contract_sign
+#: model:ir.model.fields.selection,name:hr_contract_sign.selection__hr_contract_sign_document_wizard__mail_to__work
+msgid "Work"
+msgstr ""
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
@@ -354,13 +367,16 @@ msgstr "Viết email hoặc tìm kiếm liên hệ..."
 #. odoo-python
 #: code:addons/hr_contract_sign/models/hr_contract.py:0
 #, python-format
-msgid "You can't delete a contract linked to a signed document, archive it instead."
-msgstr "Bạn không thể xóa hợp đồng được liên kết với một tài liệu đã ký, hãy lưu trữ thay vì xóa."
+msgid ""
+"You can't delete a contract linked to a signed document, archive it instead."
+msgstr ""
+"Bạn không thể xóa hợp đồng được liên kết với một tài liệu đã ký, hãy lưu trữ"
+" thay vì xóa."
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_history_view_form
 msgid "document"
-msgstr "chứng từ"
+msgstr "tài liệu"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_history_view_form

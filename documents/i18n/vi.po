@@ -1,25 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* documents
-#
+# 
 # Translators:
-# Dao Nguyen <trucdao.uel@gmail.com>, 2022
-# Martin Trigaux, 2022
-# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2023
+# Wil Odoo, 2023
 # Thi Huong Nguyen, 2023
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
 "Last-Translator: Thi Huong Nguyen, 2023\n"
 "Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
-"Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: documents
@@ -27,11 +25,6 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid " + Add a tag"
-msgstr ""
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.share_page
-msgid "#{document_is_url and 'Link to ' or 'Download '}#{document.name}"
 msgstr ""
 
 #. module: documents
@@ -56,13 +49,37 @@ msgid "%s file(s) not moved because they are locked by another user"
 msgstr "%s file(s) not moved because they are locked by another user"
 
 #. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "%s new document(s) created"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "%s page(s) deleted"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "(Remaining pages"
+msgstr ""
+
+#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid ", expired on"
 msgstr ", hết hạn vào ngày"
 
 #. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
-msgid ". Scanned files will appear automatically in your workspace. Then, process your documents in bulk with the split tool: launch user defined actions, request a signature, convert to vendor bills with AI, etc."
+msgid ""
+". Scanned files will appear automatically in your workspace. Then, process "
+"your documents in bulk with the split tool: launch user defined actions, "
+"request a signature, convert to vendor bills with AI, etc."
 msgstr ""
 
 #. module: documents
@@ -81,11 +98,6 @@ msgid "<b class=\"tip_title\">Tip: Become a paperless company</b>"
 msgstr "<b class=\"tip_title\">Mẹo: Trở thành công ty không giấy</b>"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.format_file_size
-msgid "<b>Bytes</b>"
-msgstr "<b>Bytes</b>"
-
-#. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
@@ -93,19 +105,11 @@ msgid "<b>Deselect this page</b> as we plan to process all bills first."
 msgstr "<b>Deselect this page</b> as we plan to process all bills first."
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.format_file_size
-msgid "<b>Gb</b>"
-msgstr "<b>Gb</b>"
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.format_file_size
-msgid "<b>Kb</b>"
-msgstr "<b>Kb</b>"
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.format_file_size
-msgid "<b>Mb</b>"
-msgstr "<b>Mb</b>"
+#: model_terms:ir.ui.view,arch_db:documents.share_files_page
+msgid ""
+"<br/>\n"
+"                    is sharing content with you"
+msgstr ""
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -114,41 +118,28 @@ msgstr "<br/>Cung cấp bởi"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
-msgid "<i class=\"fa fa fa-folder text-odoo me-2\" title=\"Workspace\"/>"
+msgid "<i class=\"fa fa fa-folder text-primary me-2\" title=\"Workspace\"/>"
 msgstr ""
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.share_page
+#: model_terms:ir.ui.view,arch_db:documents.share_workspace_page
 msgid "<i class=\"fa fa-download fa-fw\"/>  Download All"
 msgstr "<i class=\"fa fa-download fa-fw\"/>Tải xuống tất cả"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.share_single
-msgid "<i class=\"fa fa-download fa-fw\"/> Download"
-msgstr "<i class=\"fa fa-download fa-fw\"/>Tải về"
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
-msgid "<i class=\"fa fa-globe\" title=\"Document url\"/>"
-msgstr "<i class=\"fa fa-globe\" title=\"Document url\"/>"
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.share_single
-msgid "<i class=\"fa fa-link\"/> Go to URL"
-msgstr "<i class=\"fa fa-link\"/>Đi đến URL"
-
-#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
-msgid "<i class=\"fa fa-lock oe_inline\" title=\"Locked\" attrs=\"{'invisible': [('lock_uid', '=', False)]}\"/>"
+msgid "<i class=\"fa fa-lock oe_inline\" title=\"Locked\" invisible=\"not lock_uid\"/>"
 msgstr ""
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
-msgid "<i class=\"fa fa-tag o_documents_tag_color ms-2\" attrs=\"{'invisible': [('tag_ids', '=', [])]}\" title=\"Tags\"/>"
+msgid ""
+"<i class=\"fa fa-tag o_documents_tag_color ms-2\" invisible=\"not tag_ids\" "
+"title=\"Tags\"/>"
 msgstr ""
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.share_page
+#: model_terms:ir.ui.view,arch_db:documents.share_workspace_page
 msgid "<i class=\"fa fa-upload\"/>  Upload"
 msgstr "<i class=\"fa fa-upload\"/>Tải lên"
 
@@ -169,7 +160,7 @@ msgid "<span class=\"o_stat_text\">Related <br/> Record</span>"
 msgstr "<span class=\"o_stat_text\">Related <br/> Record</span>"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.share_page
+#: model_terms:ir.ui.view,arch_db:documents.share_workspace_page
 msgid "<span title=\"Requested Document\">Requested Document</span>"
 msgstr "<span title=\"Requested Document\">Requested Document</span>"
 
@@ -402,24 +393,33 @@ msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_defaults
-msgid "A Python dictionary that will be evaluated to provide default values when creating new records for this alias."
-msgstr "Python dictionary sẽ được biểu thị/đánh giá để cung cấp các giá trị mặc định khi tạo mới các bản ghi cho bí danh này."
+msgid ""
+"A Python dictionary that will be evaluated to provide default values when "
+"creating new records for this alias."
+msgstr ""
+"Một từ điển Python sẽ được đánh giá để cung cấp giá trị mặc định khi tạo tập"
+" dữ liệu mới cho bí danh này. "
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_rule
-msgid "A set of condition and actions which will be available to all attachments matching the conditions"
-msgstr "Loạt các điều kiện và hành động có sẵn cho tất cả các tệp đính kèm phù hợp với các điều kiện"
+msgid ""
+"A set of condition and actions which will be available to all attachments "
+"matching the conditions"
+msgstr ""
+"Một tập hợp điều kiện và hành động khả dụng cho tất cả tệp đính kèm phù hợp "
+"với điều kiện."
 
 #. module: documents
 #. odoo-python
 #: code:addons/documents/models/documents_folder.py:0
 #, python-format
-msgid "A workspace cannot have one of his child defined as Parent Workspace in order to avoid a recursion issue."
+msgid ""
+"A workspace cannot have one of his child defined as Parent Workspace in "
+"order to avoid a recursion issue."
 msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__parent_folder_id
-#: model:ir.model.fields,help:documents.field_documents_folder_deletion_wizard__parent_folder_id
 msgid "A workspace will inherit the tags of its parent workspace"
 msgstr "A workspace will inherit the tags of its parent workspace"
 
@@ -456,7 +456,7 @@ msgstr "Token truy cập"
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__action
 #, python-format
 msgid "Action"
-msgstr "Thực hiện"
+msgstr "Hành động"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__name
@@ -492,6 +492,9 @@ msgstr "Hành động"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__active
+#: model:ir.model.fields,field_description:documents.field_documents_folder__active
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_tree
 msgid "Active"
 msgstr "Đang hoạt động"
 
@@ -499,7 +502,7 @@ msgstr "Đang hoạt động"
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_ids
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Activities"
-msgstr "Các hoạt động"
+msgstr "Hoạt động"
 
 #. module: documents
 #: model:ir.model,name:documents.model_mail_activity
@@ -511,7 +514,7 @@ msgstr "Hoạt động"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr "Hành động ngoại lệ"
+msgstr "Hoạt động ngoại lệ"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_note
@@ -526,12 +529,12 @@ msgstr "Trạng thái hoạt động"
 #. module: documents
 #: model:ir.model,name:documents.model_mail_activity_type
 msgid "Activity Type"
-msgstr "Kiểu hoạt động"
+msgstr "Loại hoạt động"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_type_icon
 msgid "Activity Type Icon"
-msgstr "Biểu tượng kiểu hoạt động"
+msgstr "Biểu tượng loại hoạt động"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_type_id
@@ -575,7 +578,7 @@ msgstr "Thêm file mới"
 #. module: documents
 #: model:res.groups,name:documents.group_documents_manager
 msgid "Administrator"
-msgstr "Người quản trị"
+msgstr "Quản trị viên"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_ads
@@ -590,27 +593,37 @@ msgstr "Bí danh"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_contact
 msgid "Alias Contact Security"
-msgstr "An ninh về bí danh liên hệ"
+msgstr "Bảo mật bí danh liên hệ "
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__alias_domain_id
+msgid "Alias Domain"
+msgstr "Miền bí danh"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__alias_domain
+msgid "Alias Domain Name"
+msgstr "Tên miền bí danh"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__alias_full_name
+msgid "Alias Email"
+msgstr "Email bí danh"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_name
 msgid "Alias Name"
-msgstr "Alias Name"
+msgstr "Tên bí danh"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_status
 msgid "Alias Status"
-msgstr ""
-
-#. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_share__alias_domain
-msgid "Alias domain"
-msgstr "Alias domain"
+msgstr "Trạng thái bí danh"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_status
 msgid "Alias status assessed on the last message received."
-msgstr ""
+msgstr "Trạng thái bí danh được ước tính trong tin nhắn đã nhận gần đây nhất."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_model_id
@@ -622,7 +635,7 @@ msgstr "Mô hình bí danh"
 #: code:addons/documents/controllers/documents.py:0
 #, python-format
 msgid "All files uploaded"
-msgstr "All files uploaded"
+msgstr "Tất cả tệp đã được tải lên"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__action
@@ -643,13 +656,25 @@ msgstr "Đã liên kết tài liệu"
 
 #. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
-msgid "An easy way to process incoming mails is to configure your scanner to send PDFs to"
+msgid ""
+"An easy way to process incoming mails is to configure your scanner to send "
+"PDFs to"
 msgstr ""
 
 #. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
-msgid "An easy way to process incoming mails is to configure your scanner to send PDFs to your workspace email. Scanned files will appear automatically in your workspace. Then, process your documents in bulk with the split tool: launch user defined actions, request a signature, convert to vendor bills with AI, etc."
-msgstr "An easy way to process incoming mails is to configure your scanner to send PDFs to your workspace email. Scanned files will appear automatically in your workspace. Then, process your documents in bulk with the split tool: launch user defined actions, request a signature, convert to vendor bills with AI, etc."
+msgid ""
+"An easy way to process incoming mails is to configure your scanner to send "
+"PDFs to your workspace email. Scanned files will appear automatically in "
+"your workspace. Then, process your documents in bulk with the split tool: "
+"launch user defined actions, request a signature, convert to vendor bills "
+"with AI, etc."
+msgstr ""
+"Một cách xử lý email nhận được dễ dàng là cấu hình máy quét gửi tệp PDF tới "
+"email của không gian làm việc. Các tệp được quét sẽ hiện tự động trong không"
+" gian làm việc. Sau đó, xử lý tài liệu hàng loạt bằng công cụ tách: khởi "
+"chạy tác vụ do người dùng xác định, yêu cầu chữ ký, chuyển thành hóa đơn mua"
+" hàng bằng AI,..."
 
 #. module: documents
 #. odoo-javascript
@@ -659,11 +684,7 @@ msgid "An error occured while uploading."
 msgstr "Đã xảy ra lỗi khi tải lên."
 
 #. module: documents
-#. odoo-javascript
-#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
-#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
-#, python-format
 msgid "Archive"
 msgstr "Lưu trữ"
 
@@ -676,16 +697,57 @@ msgstr "File lưu trữ gốc ban đầu"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
-#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Archived"
-msgstr "Đã lưu"
+msgstr "Đã lưu trữ"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_search
+msgid "Archived Workspace"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "Are you sure that you want to delete the focused page ?"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "Are you sure that you want to delete the selected page(s)"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "Are you sure that you want to delete this page ?"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/documents_model_mixin.js:0
+#, python-format
+msgid "Are you sure you want to permanently erase the document?"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/documents_model_mixin.js:0
+#, python-format
+msgid "Are you sure you want to permanently erase the documents?"
+msgstr ""
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
-msgid "As this PDF contains multiple documents, let's split and process in bulk."
-msgstr "As this PDF contains multiple documents, let's split and process in bulk."
+msgid ""
+"As this PDF contains multiple documents, let's split and process in bulk."
+msgstr ""
+"As this PDF contains multiple documents, let's split and process in bulk."
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_afv
@@ -700,19 +762,19 @@ msgstr "Tài sản"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Attached To"
-msgstr "Đính kèm ở"
+msgstr "Đính kèm với"
 
 #. module: documents
 #: model:ir.model,name:documents.model_ir_attachment
 #: model:ir.model.fields,field_description:documents.field_documents_document__attachment_id
 msgid "Attachment"
-msgstr "Đính kèm"
+msgstr "Tệp đính kèm"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_attachment_count
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_attachment_count
 msgid "Attachment Count"
-msgstr "Số lượng tập tin đính kèm"
+msgstr "Số lượng tệp đính kèm"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__description
@@ -731,8 +793,14 @@ msgstr "Attachment Type"
 
 #. module: documents
 #: model_terms:documents.folder,description:documents.documents_finance_folder
-msgid "Automate your inbox using scanned documents or emails sent to <span class=\"o_folder_description_alias\"><strong>inbox-financial</strong> email alias</span>."
-msgstr "Tự động hóa hộp thư đến sử dụng tài liệu được quét hoặc email gửi tới <span class=\"o_folder_description_alias\">bí danh <strong>email tài chính</strong></span>."
+msgid ""
+"Automate your inbox using scanned documents or emails sent to <span "
+"class=\"o_folder_description_alias\"><strong>inbox-financial</strong> email "
+"alias</span>."
+msgstr ""
+"Tự động hóa hộp thư đến sử dụng tài liệu được quét hoặc email gửi tới <span "
+"class=\"o_folder_description_alias\">bí danh <strong>email tài "
+"chính</strong></span>."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__available_rule_ids
@@ -765,18 +833,35 @@ msgid "By defining a folder, the upload activities will generate a document"
 msgstr "By defining a folder, the upload activities will generate a document"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.format_file_size
+msgid "Bytes"
+msgstr "Bytes"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__can_upload
 msgid "Can Upload"
 msgstr "Có thể tải lên"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
+#. odoo-javascript
+#: code:addons/documents/static/src/views/hooks.js:0
+#, python-format
+msgid "Can't share documents of different workspaces."
+msgstr ""
+
+#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_link_to_record_form_view
-#: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
-#: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
-#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Cancel"
 msgstr "Hủy"
+
+#. module: documents
+#. odoo-python
+#: code:addons/documents/models/documents_folder.py:0
+#, python-format
+msgid ""
+"Cannot move folder under the given parent as this would create a recursive "
+"hierarchy"
+msgstr ""
 
 #. module: documents
 #: model_terms:documents.folder,description:documents.documents_internal_folder
@@ -806,6 +891,12 @@ msgid "Choose a record to link"
 msgstr "Chọn hồ sơ để tạo liên kết"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
+msgid "Choose or Configure Email Servers"
+msgstr ""
+
+#. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
@@ -823,8 +914,12 @@ msgstr "Click on a thumbnail to <b>preview the document</b>."
 #. odoo-javascript
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
-msgid "Click on the <b>page separator</b>: we don't want to split these two pages as they belong to the same document."
-msgstr "Click on the <b>page separator</b>: we don't want to split these two pages as they belong to the same document."
+msgid ""
+"Click on the <b>page separator</b>: we don't want to split these two pages "
+"as they belong to the same document."
+msgstr ""
+"Click on the <b>page separator</b>: we don't want to split these two pages "
+"as they belong to the same document."
 
 #. module: documents
 #. odoo-javascript
@@ -832,6 +927,13 @@ msgstr "Click on the <b>page separator</b>: we don't want to split these two pag
 #, python-format
 msgid "Close"
 msgstr "Đóng"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
+#, python-format
+msgid "Close split tools"
+msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__company_id
@@ -850,15 +952,14 @@ msgid "Conditions"
 msgstr "Điều kiện"
 
 #. module: documents
+#: model:ir.model,name:documents.model_res_config_settings
+msgid "Config Settings"
+msgstr "Cài đặt cấu hình"
+
+#. module: documents
 #: model:ir.ui.menu,name:documents.Config
 msgid "Configuration"
 msgstr "Cấu hình"
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.share_view_form
-#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
-msgid "Configure Email Servers"
-msgstr "Định cấu hình máy chủ email"
 
 #. module: documents
 #: model:ir.model,name:documents.model_res_partner
@@ -886,7 +987,7 @@ msgstr "Hợp đồng"
 #: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
 #, python-format
 msgid "Control panel buttons"
-msgstr "Thanh công cụ bảng điều khiển"
+msgstr "Nút bảng điều khiển"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_model
@@ -912,7 +1013,6 @@ msgstr "Tạo một hoạt động mới"
 #: model:ir.model.fields,field_description:documents.field_documents_document__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_folder__create_uid
-#: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_share__create_uid
@@ -927,7 +1027,6 @@ msgstr "Được tạo bởi"
 #: model:ir.model.fields,field_description:documents.field_documents_document__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_folder__create_date
-#: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_share__create_date
@@ -950,7 +1049,7 @@ msgstr "Tiêu chí"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_bounced_content
 msgid "Custom Bounced Message"
-msgstr "Tin nhắn bị trả lại tùy chỉnh"
+msgstr "Tin nhắn bị trả lại tuỳ chỉnh"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_request_wizard__activity_date_deadline_range_type__days
@@ -962,7 +1061,7 @@ msgstr "Ngày"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_defaults
 msgid "Default Values"
-msgstr "Giá trị mặc định"
+msgstr "Giá trị Mặc định"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -971,9 +1070,19 @@ msgid "Default values for uploaded documents"
 msgstr "Giá trị mặc định cho các tài liệu được tải lên"
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_folder__deletion_delay
+#: model:ir.model.fields,help:documents.field_res_config_settings__deletion_delay
+msgid "Delay after permanent deletion of the document in the trash (days)"
+msgstr ""
+
+#. module: documents
 #. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_exit_dialog/pdf_exit_dialog.xml:0
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
+#: code:addons/documents/static/src/views/form/folder_form_controller.js:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
-#: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
+#: code:addons/documents/static/src/views/list/documents_list_controller.js:0
+#: code:addons/documents/static/src/views/list/folder_list_controller.js:0
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 #: model_terms:ir.ui.view,arch_db:documents.share_view_tree
 #, python-format
@@ -981,8 +1090,33 @@ msgid "Delete"
 msgstr "Xoá"
 
 #. module: documents
-#: model:ir.actions.act_window,name:documents.documents_folder_deletion_wizard_action
-msgid "Delete Confirmation"
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "Delete focused or selected pages"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/documents_model_mixin.js:0
+#: code:addons/documents/static/src/views/documents_model_mixin.js:0
+#, python-format
+msgid "Delete permanently"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_res_config_settings__deletion_delay
+msgid "Deletion Delay"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_folder__deletion_delay
+msgid "Deletion delay"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
+msgid "Deletion delay (days)"
 msgstr ""
 
 #. module: documents
@@ -1002,8 +1136,15 @@ msgid "Description"
 msgstr "Mô tả"
 
 #. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/documents_model_mixin.js:0
+#: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
+#: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
+#: model_terms:ir.ui.view,arch_db:documents.folder_deletion_form
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_form
+#, python-format
 msgid "Discard"
 msgstr "Huỷ bỏ"
 
@@ -1011,7 +1152,6 @@ msgstr "Huỷ bỏ"
 #: model:ir.model.fields,field_description:documents.field_documents_document__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_facet__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_folder__display_name
-#: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_share__display_name
@@ -1026,6 +1166,13 @@ msgstr "Tên hiển thị"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "Do you really want to unlink this record?"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_exit_dialog/pdf_exit_dialog.xml:0
+#, python-format
+msgid "Do you want to exit without saving or gather pages into one document ?"
 msgstr ""
 
 #. module: documents
@@ -1060,11 +1207,14 @@ msgstr "Yêu cầu tài liệu"
 
 #. module: documents
 #: model:mail.template,subject:documents.mail_template_document_request
-msgid "Document Request {{ object.name != False and ': '+ object.name or '' }}"
-msgstr "Yêu cầu tài liệu {{ object.name != False and ': '+ object.name or '' }}"
+msgid ""
+"Document Request {{ object.name != False and ': '+ object.name or '' }}"
+msgstr ""
+"Yêu cầu tài liệu {{ object.name != False and ': '+ object.name or '' }}"
 
 #. module: documents
 #. odoo-python
+#: code:addons/documents/models/documents_document.py:0
 #: code:addons/documents/models/documents_document.py:0
 #: code:addons/documents/models/mail_activity.py:0
 #, python-format
@@ -1124,11 +1274,6 @@ msgid "Documents"
 msgstr "Tài liệu"
 
 #. module: documents
-#: model:ir.model,name:documents.model_documents_folder_deletion_wizard
-msgid "Documents Folder Deletion Wizard"
-msgstr ""
-
-#. module: documents
 #: model:ir.model,name:documents.model_documents_link_to_record_wizard
 msgid "Documents Link to Record"
 msgstr "Tài liệu liên kết với hồ sơ"
@@ -1167,12 +1312,19 @@ msgstr "Miền"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__action__download
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
+#: model_terms:ir.ui.view,arch_db:documents.share_files_page
 #, python-format
 msgid "Download"
 msgstr "Tải xuống"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.share_page
+#: model_terms:ir.ui.view,arch_db:documents.share_workspace_page
+msgid "Download #{document.name}"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_files_page
+#: model_terms:ir.ui.view,arch_db:documents.share_workspace_page
 msgid "Download all files"
 msgstr "Download all files"
 
@@ -1180,6 +1332,11 @@ msgstr "Download all files"
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__action__downloadupload
 msgid "Download and Upload"
 msgstr "Tải xuống và tải lên"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_files_page
+msgid "Download file"
+msgstr ""
 
 #. module: documents
 #. odoo-javascript
@@ -1204,11 +1361,18 @@ msgstr "Loại thời hạn"
 
 #. module: documents
 #. odoo-javascript
+#: code:addons/documents/static/src/views/form/folder_form_controller.js:0
+#, python-format
+msgid "Duplicate"
+msgstr "Nhân bản"
+
+#. module: documents
+#. odoo-javascript
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
 #, python-format
 msgid "Edit"
-msgstr "Sửa"
+msgstr "Chỉnh sửa"
 
 #. module: documents
 #. odoo-javascript
@@ -1218,14 +1382,15 @@ msgid "Edit the linked record"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__alias_email
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Email Alias"
-msgstr "Bí danh Email"
+msgstr "Bí danh email"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__email_cc
 msgid "Email cc"
-msgstr "Email CC"
+msgstr "Email cc"
 
 #. module: documents
 #. odoo-javascript
@@ -1237,9 +1402,30 @@ msgid "Error"
 msgstr "Lỗi"
 
 #. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "Escape Preview/Deselect/Exit"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__excluded_tag_ids
 msgid "Excluded Tags"
 msgstr "Excluded Tags"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_exit_dialog/pdf_exit_dialog.js:0
+#, python-format
+msgid "Exit Split Tools"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_exit_dialog/pdf_exit_dialog.xml:0
+#, python-format
+msgid "Exit without saving"
+msgstr ""
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_expense
@@ -1250,6 +1436,14 @@ msgstr "Chi phí"
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__state__expired
 msgid "Expired"
 msgstr "Đã hết hạn"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/list/documents_list_controller.js:0
+#: code:addons/documents/static/src/views/list/folder_list_controller.js:0
+#, python-format
+msgid "Export"
+msgstr "Xuất"
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_facet_name_unique
@@ -1270,12 +1464,12 @@ msgstr "Tệp"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__datas
 msgid "File Content (base64)"
-msgstr "Nội dung tập tin (base64)"
+msgstr "Nội dung Tệp (base64)"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__raw
 msgid "File Content (raw)"
-msgstr "Nội dung tập tin (raw)"
+msgstr "Nội dung Tệp (raw)"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__file_extension
@@ -1286,12 +1480,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__file_size
 msgid "File Size"
-msgstr "Dung lượng tập tin"
+msgstr "Dung lượng Tệp"
 
 #. module: documents
 #: model:ir.model,name:documents.model_ir_binary
 msgid "File streaming helper model for controllers"
-msgstr "Mô hình trợ giúp phát trực tuyến tệp cho bộ điều khiển"
+msgstr "Mô hình hỗ trợ dòng tệp cho bộ điều khiển"
 
 #. module: documents
 #. odoo-python
@@ -1304,6 +1498,19 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 msgid "Files Centralization"
 msgstr "Files Centralization"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.folder_deletion_form
+msgid "Files will be sent to trash and deleted forever after"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/form/folder_form_controller.js:0
+#: code:addons/documents/static/src/views/list/folder_list_controller.js:0
+#, python-format
+msgid "Files will be sent to trash and deleted forever after %s days."
+msgstr ""
 
 #. module: documents
 #: model:documents.folder,name:documents.documents_finance_folder
@@ -1326,7 +1533,34 @@ msgid "Fiscal years"
 msgstr "Fiscal years"
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__folder_id
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "Focus first page of next group"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "Focus first page of previous group"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "Focus next page"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "Focus previous page"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_mail_activity_type__folder_id
 msgid "Folder"
 msgstr "Thư mục"
@@ -1346,12 +1580,24 @@ msgstr "Người theo dõi (Đối tác)"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr "Font biểu tượng ví dụ: fa-tasks"
+msgstr "Font biểu tượng, ví dụ: fa-tasks"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Future Activities"
-msgstr "Hoạt động tương lai"
+msgstr "Hoạt động trong tương lai"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_exit_dialog/pdf_exit_dialog.xml:0
+#, python-format
+msgid "Gather in one document"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.format_file_size
+msgid "Gb"
+msgstr ""
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1361,8 +1607,12 @@ msgstr "Nhóm theo"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__read_group_ids
-msgid "Groups able to see the workspace and read its documents without create/edit rights."
-msgstr "Groups able to see the workspace and read its documents without create/edit rights."
+msgid ""
+"Groups able to see the workspace and read its documents without create/edit "
+"rights."
+msgstr ""
+"Groups able to see the workspace and read its documents without create/edit "
+"rights."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__group_ids
@@ -1392,7 +1642,6 @@ msgstr "Lịch sử"
 #: model:ir.model.fields,field_description:documents.field_documents_document__id
 #: model:ir.model.fields,field_description:documents.field_documents_facet__id
 #: model:ir.model.fields,field_description:documents.field_documents_folder__id
-#: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__id
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__id
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__id
 #: model:ir.model.fields,field_description:documents.field_documents_share__id
@@ -1404,8 +1653,11 @@ msgstr "ID"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_parent_thread_id
-msgid "ID of the parent record holding the alias (example: project holding the task creation alias)"
-msgstr "ID của bản ghi cha mà chứa bí danh (ví dụ: dự án chứa bí danh để tạo nhiệm vụ)"
+msgid ""
+"ID of the parent record holding the alias (example: project holding the task"
+" creation alias)"
+msgstr ""
+"ID của tập dữ liệu cha chứa bí danh (ví dụ: dự án chứa bí danh tạo nhiệm vụ)"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_exception_icon
@@ -1415,13 +1667,13 @@ msgstr "Biểu tượng"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr "Biểu tượng để chỉ ra một hoạt động ngoại lệ."
+msgstr "Biểu tượng cho thấy một hoạt động ngoại lệ."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_needaction
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Nếu chọn, các tin nhắn mới yêu cầu sự có mặt của bạn."
+msgstr "Nếu chọn, bạn cần chú ý tới các tin nhắn mới."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_has_error
@@ -1429,12 +1681,16 @@ msgstr "Nếu chọn, các tin nhắn mới yêu cầu sự có mặt của bạ
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr "Nếu đánh dấu thì một số thông điệp có lỗi."
+msgstr "Nếu chọn, một số tin nhắn sẽ có lỗi gửi."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_bounced_content
-msgid "If set, this content will automatically be sent out to unauthorized users instead of the default message."
-msgstr "Nếu được cài, nội dung này sẽ tự động được gửi đến người dùng chưa xác thực thay vì thông báo mặc định."
+msgid ""
+"If set, this content will automatically be sent out to unauthorized users "
+"instead of the default message."
+msgstr ""
+"Nếu được cài đặt, nội dung này sẽ tự động được gửi đến người dùng chưa được "
+"cấp quyền thay vì tin nhắn mặc định."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1460,13 +1716,17 @@ msgstr ""
 
 #. module: documents
 #: model_terms:documents.folder,description:documents.documents_internal_folder
-msgid "Incoming letters sent to <span class=\"o_folder_description_alias\">inbox email alias</span> will be added to your inbox automatically."
-msgstr "Thư gửi tới <span class=\"o_folder_description_alias\">bí danh email nhận</span> sẽ được tự động thêm vào hộp thư đến."
+msgid ""
+"Incoming letters sent to <span class=\"o_folder_description_alias\">inbox "
+"email alias</span> will be added to your inbox automatically."
+msgstr ""
+"Thư gửi tới <span class=\"o_folder_description_alias\">bí danh email "
+"nhận</span> sẽ được tự động thêm vào hộp thư đến."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__index_content
 msgid "Indexed Content"
-msgstr "Nội dung được đánh chỉ mục"
+msgstr "Nội dung được lập chỉ mục"
 
 #. module: documents
 #: model:documents.folder,name:documents.documents_internal_folder
@@ -1487,7 +1747,7 @@ msgstr "Is Favorited"
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_is_follower
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_is_follower
 msgid "Is Follower"
-msgstr "Trở thành người theo dõi"
+msgstr "Là người theo dõi"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__is_shared
@@ -1500,6 +1760,25 @@ msgid "Is considered multipage"
 msgstr ""
 
 #. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/search/documents_search_model.js:0
+#, python-format
+msgid "Items in trash will be deleted forever after %s days."
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/documents_model_mixin.js:0
+#, python-format
+msgid "Items moved to the trash will be deleted forever after %s days."
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.format_file_size
+msgid "Kb"
+msgstr ""
+
+#. module: documents
 #: model:documents.facet,name:documents.documents_internal_knowledge
 msgid "Knowledge"
 msgstr "Kiến thức"
@@ -1508,7 +1787,6 @@ msgstr "Kiến thức"
 #: model:ir.model.fields,field_description:documents.field_documents_document__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_facet__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_folder__write_uid
-#: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_share__write_uid
@@ -1516,13 +1794,12 @@ msgstr "Kiến thức"
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__write_uid
 msgid "Last Updated by"
-msgstr "Last Updated by"
+msgstr "Cập nhật lần cuối bởi"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_facet__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_folder__write_date
-#: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_share__write_date
@@ -1535,7 +1812,7 @@ msgstr "Cập nhật lần cuối vào"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Late Activities"
-msgstr "Hoạt động trễ"
+msgstr "Hoạt động chậm trễ"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_knowledge_legal
@@ -1546,8 +1823,12 @@ msgstr "Hợp pháp"
 #. odoo-javascript
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
-msgid "Let's process documents in your Inbox.<br/><i>Tip: Use Tags to filter documents and structure your process.</i>"
-msgstr "Let's process documents in your Inbox.<br/><i>Tip: Use Tags to filter documents and structure your process.</i>"
+msgid ""
+"Let's process documents in your Inbox.<br/><i>Tip: Use Tags to filter "
+"documents and structure your process.</i>"
+msgstr ""
+"Let's process documents in your Inbox.<br/><i>Tip: Use Tags to filter "
+"documents and structure your process.</i>"
 
 #. module: documents
 #. odoo-javascript
@@ -1567,8 +1848,12 @@ msgstr "Let's process this document, coming from our scanner."
 #. odoo-javascript
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
-msgid "Let's tag this mail as legal<br/> <i>Tips: actions can be tailored to your process, according to the workspace.</i>"
-msgstr "Hãy gắn thẻ pháp lý cho thư này<br/> <i>Mẹo: có thể điều chỉnh tác vụ cho phù hợp với quy trình, tùy theo không gian làm việc.</i>"
+msgid ""
+"Let's tag this mail as legal<br/> <i>Tips: actions can be tailored to your "
+"process, according to the workspace.</i>"
+msgstr ""
+"Hãy gắn thẻ pháp lý cho thư này<br/> <i>Mẹo: có thể điều chỉnh tác vụ cho "
+"phù hợp với quy trình, tùy theo không gian làm việc.</i>"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__user_specific
@@ -1581,10 +1866,7 @@ msgid "Limit Write Groups to the documents of which they are owner."
 msgstr "Giới hạn chỉ cho nhóm ghi truy cập tài liệu mà họ sở hữu."
 
 #. module: documents
-#. odoo-javascript
-#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #: model_terms:ir.ui.view,arch_db:documents.documents_link_to_record_form_view
-#, python-format
 msgid "Link"
 msgstr "Liên kết"
 
@@ -1601,9 +1883,19 @@ msgid "Link to record"
 msgstr "Liên kết với hồ sơ"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
+msgid "Links cannot be shared and therefore will be excluded."
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__state__live
 msgid "Live"
 msgstr "Trực tiếp"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__alias_incoming_local
+msgid "Local-part based incoming detection"
+msgstr "Phát hiện gửi đến dựa trên phần cục bộ"
 
 #. module: documents
 #. odoo-javascript
@@ -1656,16 +1948,26 @@ msgid "Marketing"
 msgstr "Marketing"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.format_file_size
+msgid "Mb"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_note
+msgid "Message"
+msgstr "Tin nhắn"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_has_error
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error
 msgid "Message Delivery error"
-msgstr "Thông báo gửi đi gặp lỗi"
+msgstr "Lỗi gửi tin nhắn"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_ids
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_ids
 msgid "Messages"
-msgstr "Thông báo"
+msgstr "Tin nhắn"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__mimetype
@@ -1681,7 +1983,7 @@ msgstr "Thông tin khác"
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__model_id
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Model"
-msgstr "Model"
+msgstr "Mô hình"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__accessible_model_ids
@@ -1701,13 +2003,39 @@ msgid "Move To Inbox"
 msgstr "Move To Inbox"
 
 #. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
+#, python-format
+msgid "Move this page to trash"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__folder_id
 msgid "Move to Workspace"
 msgstr "Move to Workspace"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
-msgid "Move to parent workspace"
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
+#: code:addons/documents/static/src/views/documents_model_mixin.js:0
+#: code:addons/documents/static/src/views/documents_model_mixin.js:0
+#: code:addons/documents/static/src/views/form/folder_form_controller.js:0
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#: code:addons/documents/static/src/views/list/folder_list_controller.js:0
+#: model_terms:ir.ui.view,arch_db:documents.folder_deletion_form
+#, python-format
+msgid "Move to trash"
+msgstr ""
+
+#. module: documents
+#. odoo-python
+#. odoo-javascript
+#: code:addons/documents/models/documents_folder.py:0
+#: code:addons/documents/static/src/views/form/folder_form_controller.js:0
+#: code:addons/documents/static/src/views/list/folder_list_controller.js:0
+#, python-format
+msgid "Move to trash?"
 msgstr ""
 
 #. module: documents
@@ -1720,12 +2048,12 @@ msgstr "Nhiều giá trị"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "My Activities"
-msgstr ""
+msgstr "Hoạt động của tôi"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__my_activity_date_deadline
 msgid "My Activity Deadline"
-msgstr "Hạn chót hoạt động"
+msgstr "Hạn chót hoạt động của tôi"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1792,12 +2120,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr "Sự kiện lịch hoạt động tiếp theo"
+msgstr "Sự kiện theo lịch cho hoạt động tiếp theo"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr "Hạn chót cho hành động kế tiếp"
+msgstr "Hạn chót cho hoạt động tiếp theo"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_summary
@@ -1807,10 +2135,18 @@ msgstr "Tóm tắt hoạt động tiếp theo"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_type_id
 msgid "Next Activity Type"
-msgstr "Kiểu hoạt động kế tiếp"
+msgstr "Loại hoạt động tiếp theo"
 
 #. module: documents
 #. odoo-javascript
+#: code:addons/documents/static/src/views/helper/documents_action_helper.xml:0
+#, python-format
+msgid "No alias configured"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
 #: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
 #, python-format
 msgid "No document has been selected"
@@ -1841,7 +2177,6 @@ msgid "Not attached"
 msgstr "Not attached"
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_note
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_note
 msgid "Note"
 msgstr "Ghi chú"
@@ -1853,22 +2188,27 @@ msgid "Number of Actions"
 msgstr "Số lượng hành động"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__links_count
+msgid "Number of Links"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_has_error_counter
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
 msgid "Number of errors"
-msgstr "Số lỗi"
+msgstr "Số lượng lỗi"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_needaction_counter
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Số thông báo cần xử lý"
+msgid "Number of messages requiring action"
+msgstr "Số tin nhắn cần xử lý"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_has_error_counter
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "Số lượng tin gửi đi bị lỗi"
+msgstr "Số tin nhắn bị gửi lỗi"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -1894,8 +2234,14 @@ msgstr "Open chatter"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_force_thread_id
-msgid "Optional ID of a thread (record) to which all incoming messages will be attached, even if they did not reply to it. If set, this will disable the creation of new records completely."
-msgstr "ID tuỳ chọn của một chủ đề/bản ghi (thread) mà tất cả các thông điệp gửi đến sẽ được gắn/đính vào, thậm chí khi không có người trả lời. Nếu được thiết lập, điều này sẽ vô hiệu hoàn toàn việc tạo mới bản ghi."
+msgid ""
+"Optional ID of a thread (record) to which all incoming messages will be "
+"attached, even if they did not reply to it. If set, this will disable the "
+"creation of new records completely."
+msgstr ""
+"ID tùy chọn của một luồng (tập dữ liệu) tập hợp tất cả tin nhắn nhận được, "
+"thậm chí nếu đó là tin nhắn không có phản hồi. Nếu cài đặt, điều này sẽ tắt "
+"hoàn toàn việc tạo các tập dữ liệu mới. "
 
 #. module: documents
 #. odoo-javascript
@@ -1922,20 +2268,23 @@ msgstr "Chỉ sở hữu tài liệu (Ghi)"
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_folder_check_user_specific
-msgid "Own Documents Only may not be enabled for write groups if it is not enabled for read groups."
-msgstr "Chỉ sở hữu tài liệu có thể không được bật cho nhóm ghi nếu tính năng này cũng không được bật cho nhóm đọc."
+msgid ""
+"Own Documents Only may not be enabled for write groups if it is not enabled "
+"for read groups."
+msgstr ""
+"Chỉ sở hữu tài liệu có thể không được bật cho nhóm ghi nếu tính năng này "
+"cũng không được bật cho nhóm đọc."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__owner_id
-#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__owner_id
-#: model:ir.model.fields,field_description:documents.field_documents_share__alias_user_id
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__requestee_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_owner_id
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Owner"
 msgstr "Người phụ trách"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.share_page
+#: model_terms:ir.ui.view,arch_db:documents.share_workspace_page
 msgid "Owner: #{document.owner_id.name}"
 msgstr ""
 
@@ -1945,11 +2294,6 @@ msgid "PDF/Document"
 msgstr "PDF/Document"
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__parent_folder_id
-msgid "Parent Folder"
-msgstr ""
-
-#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_model_id
 msgid "Parent Model"
 msgstr "Mô hình cha"
@@ -1957,12 +2301,12 @@ msgstr "Mô hình cha"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__parent_path
 msgid "Parent Path"
-msgstr "Path cha"
+msgstr "Tuyến cha"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr "Parent Record Thread ID"
+msgstr "ID luồng tập dữ liệu cha"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__parent_folder_id
@@ -1972,8 +2316,14 @@ msgstr "Parent Workspace"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_parent_model_id
-msgid "Parent model holding the alias. The model holding the alias reference is not necessarily the model given by alias_model_id (example: project (parent_model) and task (model))"
-msgstr "Parent model giữ bí danh. Model giữ tham chiếu bí danh không nhất thiết là model được đưa ra bởi alias_model_id (ví dụ: project (parent_model) và task (model))"
+msgid ""
+"Parent model holding the alias. The model holding the alias reference is not"
+" necessarily the model given by alias_model_id (example: project "
+"(parent_model) and task (model))"
+msgstr ""
+"Mô hình cha chứa bí danh này. Mô hình chứa tham chiếu bí danh không nhất "
+"thiết phải là mô hình được đưa ra bởi alias_model_id (Ví dụ: dự án "
+"(parent_model) và nhiệm vụ (model))"
 
 #. module: documents
 #. odoo-javascript
@@ -1996,9 +2346,9 @@ msgid ""
 "- followers: only followers of the related document or members of following channels\n"
 msgstr ""
 "Chính sách cho phép đăng tin nhắn lên tài liệu sử dụng cổng email.\n"
-"- mọi người: Mọi người có thể đăng\n"
-"- đối tác: Chỉ các đối tác đã xác thực\n"
-"- người theo dõi: Chỉ những người ở trong danh sách dõi theo của tài liệu hoặc thành viên của các kênh sau đây\n"
+"- mọi người: mọi người có thể đăng\n"
+"- đối tác: chỉ các đối tác đã xác thực\n"
+"- người theo dõi: chỉ những người theo dõi của tài liệu liên quan hoặc thành viên của kênh đang theo dõi\n"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_document__thumbnail_status__present
@@ -2019,7 +2369,7 @@ msgstr "Dự án"
 #: model:ir.model.fields,field_description:documents.field_documents_document__rating_ids
 #: model:ir.model.fields,field_description:documents.field_documents_share__rating_ids
 msgid "Ratings"
-msgstr ""
+msgstr "Đánh giá"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
@@ -2039,7 +2389,7 @@ msgstr "Bản ghi"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_force_thread_id
 msgid "Record Thread ID"
-msgstr "Record Thread ID"
+msgstr "ID luồng tập dữ liệu"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain_folder_id
@@ -2062,13 +2412,15 @@ msgstr ""
 
 #. module: documents
 #: model:mail.template,subject:documents.mail_template_document_request_reminder
-msgid "Reminder to upload your document{{ object.name and ' : ' + object.name or '' }}"
+msgid ""
+"Reminder to upload your document{{ object.name and ' : ' + object.name or ''"
+" }}"
 msgstr ""
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_workflow_action__action__remove
 msgid "Remove"
-msgstr "Gỡ"
+msgstr "Xóa"
 
 #. module: documents
 #. odoo-javascript
@@ -2115,9 +2467,15 @@ msgstr "Yêu cầu tệp tin"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
-#: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "Requested"
 msgstr "Requested"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_request_page
+msgid ""
+"Requested\n"
+"                                ∙"
+msgstr ""
 
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_md
@@ -2132,30 +2490,30 @@ msgstr "Required Tags"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__res_model_name
 msgid "Res Model Name"
-msgstr "Res Model Name"
+msgstr "Tên mô hình res"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__res_id
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__res_id
 msgid "Resource ID"
-msgstr "ID Tài nguyên"
+msgstr "ID nguồn lực"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__res_model
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__res_model
 msgid "Resource Model"
-msgstr "Resource Model"
+msgstr "Mô hình nguồn lực"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__res_name
 msgid "Resource Name"
-msgstr "Tên tài nguyên"
+msgstr "Tên nguồn lực"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_user_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_user_id
 msgid "Responsible"
-msgstr "Phụ trách"
+msgstr "Người phụ trách"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_user_id
@@ -2163,7 +2521,12 @@ msgid "Responsible User"
 msgstr "Người phụ trách"
 
 #. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/form/folder_form_controller.js:0
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#: code:addons/documents/static/src/views/list/folder_list_controller.js:0
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
+#, python-format
 msgid "Restore"
 msgstr "Khôi phục"
 
@@ -2191,9 +2554,52 @@ msgstr "Lịch làm việc"
 
 #. module: documents
 #. odoo-javascript
-#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
+#: code:addons/documents/static/src/views/kanban/documents_kanban_renderer.js:0
+#: code:addons/documents/static/src/views/list/documents_list_renderer.js:0
 #, python-format
-msgid "Select/Unselect All: Shift + A"
+msgid "Select all"
+msgstr "Chọn tất cả"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "Select focused page"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "Select next page"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "Select next pages of the group"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "Select previous page"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "Select previous pages of the group"
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "Select/Deselect all pages"
 msgstr ""
 
 #. module: documents
@@ -2201,7 +2607,8 @@ msgstr ""
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
 msgid "Send this letter to the legal department, by assigning the right tags."
-msgstr "Send this letter to the legal department, by assigning the right tags."
+msgstr ""
+"Send this letter to the legal department, by assigning the right tags."
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_legal
@@ -2242,8 +2649,15 @@ msgid "Set Tags"
 msgstr "Đặt tag"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
+msgid "Set deletion delay for documents in the Trash"
+msgstr ""
+
+#. module: documents
 #: model:mail.template,description:documents.mail_template_document_request_reminder
-msgid "Set reminders in activities to notify users who didn't upload their requested document"
+msgid ""
+"Set reminders in activities to notify users who didn't upload their "
+"requested document"
 msgstr ""
 
 #. module: documents
@@ -2256,7 +2670,7 @@ msgstr "Set the activity on the document owner"
 #: model:ir.actions.act_window,name:documents.settings_action
 #: model:ir.ui.menu,name:documents.settings_menu
 msgid "Settings"
-msgstr "Thiết lập"
+msgstr "Cài đặt"
 
 #. module: documents
 #. odoo-javascript
@@ -2345,14 +2759,20 @@ msgstr "Shares & Emails"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Show all records which has next action date is before today"
-msgstr "Hiển thị tất cả dữ liệu có ngày xử lý tiếp theo trước ngày hôm nay"
+msgstr ""
+"Hiển thị tất cả tập dữ liệu có ngày xử lý tiếp theo trước ngày hôm nay"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "Size"
-msgstr "Kích thước"
+msgstr "Quy mô"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_files_page
+msgid "Size:"
+msgstr "Kích thước:"
 
 #. module: documents
 #. odoo-javascript
@@ -2375,16 +2795,26 @@ msgstr "Mô hình cụ thể được liên kết"
 #. odoo-javascript
 #: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "Split"
 msgstr "Tách"
 
 #. module: documents
 #. odoo-javascript
-#: code:addons/documents/static/src/attachments/attachment_viewer_patch.xml:0
+#: code:addons/documents/static/src/attachments/document_file_viewer.xml:0
+#: code:addons/documents/static/src/attachments/document_file_viewer.xml:0
 #, python-format
 msgid "Split PDF"
 msgstr "Split PDF"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
+#, python-format
+msgid "Split selected pages"
+msgstr ""
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_finance_status
@@ -2402,9 +2832,16 @@ msgid ""
 "Planned: Future activities."
 msgstr ""
 "Trạng thái dựa trên hoạt động\n"
-"Quá hạn: Ngày đến hạn phải được chuyển\n"
+"Quá hạn: Hạn chót hạn đã qua\n"
 "Hôm nay: Hôm nay là ngày phải thực hiện\n"
-"Kế hoạch: Các hoạt động trong tương lai."
+"Kế hoạch: Cần thực hiện trong tương lai."
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_exit_dialog/pdf_exit_dialog.xml:0
+#, python-format
+msgid "Stay here"
+msgstr "Ở đây"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__children_folder_ids
@@ -2415,7 +2852,7 @@ msgstr "Sub workspaces"
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_summary
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_summary
 msgid "Summary"
-msgstr "Tổng kết"
+msgstr "Tóm tắt"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_tag
@@ -2424,7 +2861,7 @@ msgstr "Tổng kết"
 #: model:ir.model.fields,field_description:documents.field_mail_activity_type__tag_ids
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_search
 msgid "Tag"
-msgstr "Tag"
+msgstr "Thẻ"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__facet_ids
@@ -2440,12 +2877,12 @@ msgstr "Danh mục thẻ"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_form
 msgid "Tag Name"
-msgstr "Tên Từ khóa"
+msgstr "Tên thẻ"
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_tag_facet_name_unique
 msgid "Tag already exists for this facet"
-msgstr "Tag đã tồn tại cho \bfacet này"
+msgstr "Tag đã tồn tại cho \\bfacet này"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__facet_ids
@@ -2465,12 +2902,12 @@ msgstr "Tag categories defined for this workspace"
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 #, python-format
 msgid "Tags"
-msgstr "Tag"
+msgstr "Thẻ"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_internal_template
 msgid "Templates"
-msgstr "Các mẫu"
+msgstr "Mẫu"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_template_text
@@ -2483,19 +2920,36 @@ msgid "Text shown when hovering on this tag category or its tags"
 msgstr "Text shown when hovering on this tag category or its tags"
 
 #. module: documents
+#: model:ir.model.constraint,message:documents.constraint_res_config_settings_check_deletion_delay
+msgid "The deletion delay should be positive."
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/hooks.js:0
+#, python-format
+msgid "The links and requested documents are not shareable."
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_model_id
-msgid "The model (Odoo Document Kind) to which this alias corresponds. Any incoming email that does not reply to an existing record will cause the creation of a new record of this model (e.g. a Project Task)"
-msgstr "Model (kiểu tài liệu Odoo) mà bí danh này ứng với nó. Bất kỳ tin nhắn email nào không phản hồi lại một bản ghi có sẵn sẽ tự động tạo một bản ghi mới cho model này (vd: tạo mới một nhiệm vụ dự án nếu model là project.task)"
+msgid ""
+"The model (Odoo Document Kind) to which this alias corresponds. Any incoming"
+" email that does not reply to an existing record will cause the creation of "
+"a new record of this model (e.g. a Project Task)"
+msgstr ""
+"Mô hình (Loại tài liệu Odoo) mà bí danh này tương tác. Mọi email đến mà "
+"không phải là email trả lời một tập dữ liệu hiện có sẽ tạo ra một tập dữ "
+"liệu mới trong mô hình này. (ví dụ: Nhiệm vụ dự án) "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_name
-msgid "The name of the email alias, e.g. 'jobs' if you want to catch emails for <jobs@example.odoo.com>"
-msgstr "Tên của bí danh email, vd 'vieclam' nếu bạn muốn bắt tin nhắn gửi đến địa chỉ email <vieclam@vidu.odoo.com>"
-
-#. module: documents
-#: model:ir.model.fields,help:documents.field_documents_share__alias_user_id
-msgid "The owner of records created upon receiving emails on this alias. If this field is not set the system will attempt to find the right owner based on the sender (From) address, or will use the Administrator account if no system user is found for that address."
-msgstr "Chủ sở hữu của các bản ghi được tạo khi nhận email trên bí danh này. Nếu trường nàykhông được đặt, hệ thống sẽ cố gắng tìm đúng chủ sở hữu dựa trênđịa chỉ người gửi (Từ) hoặc sẽ sử dụng tài khoản quản trị viên nếu không cóngười dùng hệ thống nào được tìm thấy cho địa chỉ đó."
+msgid ""
+"The name of the email alias, e.g. 'jobs' if you want to catch emails for "
+"<jobs@example.odoo.com>"
+msgstr ""
+"Tên của bí danh email, ví dụ: 'jobs' nếu bạn muốn nhận email gửi đến địa chỉ"
+" <jobs@example.odoo.com>"
 
 #. module: documents
 #. odoo-javascript
@@ -2503,6 +2957,13 @@ msgstr "Chủ sở hữu của các bản ghi được tạo khi nhận email tr
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "The share url has been copied to your clipboard."
+msgstr ""
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
+#, python-format
+msgid "The share url has been copied to your clipboard. Links were excluded."
 msgstr ""
 
 #. module: documents
@@ -2521,10 +2982,25 @@ msgid "This attachment will only be available for the selected user groups"
 msgstr "This attachment will only be available for the selected user groups"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.share_single
+#: model_terms:ir.ui.view,arch_db:documents.document_request_page
 msgid ""
 "This document has been requested.\n"
 "                <b onclick=\"document.querySelector('.o_request_upload').click()\" style=\"cursor:pointer;\">Upload it</b>."
+msgstr ""
+
+#. module: documents
+#. odoo-python
+#: code:addons/documents/models/documents_document.py:0
+#, python-format
+msgid "This file has been restored"
+msgstr ""
+
+#. module: documents
+#. odoo-python
+#: code:addons/documents/models/documents_document.py:0
+#, python-format
+msgid ""
+"This file has been sent to the trash and will be deleted forever on the %s"
 msgstr ""
 
 #. module: documents
@@ -2569,14 +3045,21 @@ msgstr "Để xác nhận"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Today Activities"
-msgstr "Các hoạt động hôm nay"
+msgstr "Hoạt động hôm nay"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
 #, python-format
 msgid "Toggle Dropdown"
-msgstr ""
+msgstr "Chuyển đổi menu thả xuống"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/kanban/documents_kanban_renderer.js:0
+#, python-format
+msgid "Toggle favorite"
+msgstr "Toggle favorite"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__tooltip
@@ -2584,6 +3067,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_form
 msgid "Tooltip"
 msgstr "Tooltip"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/search/documents_search_model.js:0
+#, python-format
+msgid "Trash"
+msgstr "Thùng rác"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__is_editable_attachment
@@ -2599,7 +3089,7 @@ msgstr "Loại"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr "Loại hoạt động ngoại lệ trên hồ sơ."
+msgstr "Loại hoạt động ngoại lệ trong tập dữ liệu."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__url
@@ -2607,22 +3097,27 @@ msgstr "Loại hoạt động ngoại lệ trên hồ sơ."
 #: model:ir.model.fields.selection,name:documents.selection__documents_document__type__url
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
-#: model_terms:ir.ui.view,arch_db:documents.share_page
-#: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "URL"
 msgstr "URL"
 
 #. module: documents
-#. odoo-javascript
-#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#. odoo-python
+#: code:addons/documents/models/documents_document.py:0
 #, python-format
-msgid "Un-archive"
-msgstr "Hủy lưu trữ"
+msgid ""
+"URL %s does not seem complete, as it does not begin with http(s):// or "
+"ftp://"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__url_preview_image
+msgid "URL Preview Image"
+msgstr ""
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 msgid "Unlock"
-msgstr "Hủy khoá"
+msgstr "Mở khoá"
 
 #. module: documents
 #. odoo-javascript
@@ -2634,14 +3129,16 @@ msgstr "Chưa đặt tên"
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
-#: model_terms:ir.ui.view,arch_db:documents.share_page
+#: model_terms:ir.ui.view,arch_db:documents.share_workspace_page
 #, python-format
 msgid "Upload"
 msgstr "Tải lên"
 
 #. module: documents
 #: model_terms:ir.actions.act_window,help:documents.document_action
-msgid "Upload <span class=\"fw-normal\">a file or</span> drag <span class=\"fw-normal\">it here.</span>"
+msgid ""
+"Upload <span class=\"fw-normal\">a file or</span> drag <span class=\"fw-"
+"normal\">it here.</span>"
 msgstr ""
 
 #. module: documents
@@ -2696,6 +3193,11 @@ msgid "Validated"
 msgstr "Đã xác nhận"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_files_page
+msgid "Validity date:"
+msgstr ""
+
+#. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_Videos
 msgid "Videos"
 msgstr "Video"
@@ -2704,20 +3206,22 @@ msgstr "Video"
 #. odoo-javascript
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
-msgid "Want to become a <b>paperless company</b>? Let's discover Odoo Documents."
-msgstr "Want to become a <b>paperless company</b>? Let's discover Odoo Documents."
+msgid ""
+"Want to become a <b>paperless company</b>? Let's discover Odoo Documents."
+msgstr ""
+"Want to become a <b>paperless company</b>? Let's discover Odoo Documents."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__website_message_ids
 #: model:ir.model.fields,field_description:documents.field_documents_share__website_message_ids
 msgid "Website Messages"
-msgstr "Thông báo Website"
+msgstr "Thông báo trên trang web"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__website_message_ids
 #: model:ir.model.fields,help:documents.field_documents_share__website_message_ids
 msgid "Website communication history"
-msgstr "Lịch sử thông tin liên lạc website"
+msgstr "Lịch sử trao đổi qua trang web"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_request_wizard__activity_date_deadline_range_type__weeks
@@ -2727,8 +3231,10 @@ msgid "Weeks"
 msgstr "Tuần"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
-msgid "What do you want to do with the files in the workspace?"
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_exit_dialog/pdf_exit_dialog.xml:0
+#, python-format
+msgid "What do you want to do with the remaining pages ?"
 msgstr ""
 
 #. module: documents
@@ -2750,7 +3256,7 @@ msgstr "Quy tắc quy trình công việc"
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_search
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_tree
 msgid "Workspace"
-msgstr "Không gian làm việc"
+msgstr "Khu vực làm việc"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.folder_action
@@ -2763,8 +3269,12 @@ msgstr "Workspaces"
 #. odoo-javascript
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
-msgid "Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is complete. Try uploading your own documents now."
-msgstr "Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is complete. Try uploading your own documents now."
+msgid ""
+"Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is "
+"complete. Try uploading your own documents now."
+msgstr ""
+"Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is "
+"complete. Try uploading your own documents now."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
@@ -2783,8 +3293,19 @@ msgstr "Viết một tooltip cho hành động"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__attachment_type
-msgid "You can either upload a file from your computer or copy/paste an internet link to your file."
-msgstr "Bạn có thể tải tệp lên từ máy tính hoặc sao chép / dán liên kết internet vào tệp của bạn."
+msgid ""
+"You can either upload a file from your computer or copy/paste an internet "
+"link to your file."
+msgstr ""
+"Bạn có thể tải tệp lên từ máy tính hoặc sao chép/dán liên kết internet vào "
+"tệp của bạn."
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
+#, python-format
+msgid "You cannot upload content in this workspace"
+msgstr ""
 
 #. module: documents
 #. odoo-python
@@ -2815,7 +3336,13 @@ msgid "Youtube Video"
 msgstr "Youtube Video"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.folder_deletion_form
+msgid "days."
+msgstr "ngày."
+
+#. module: documents
 #. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "delete"
@@ -2826,12 +3353,12 @@ msgstr "xóa"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "document"
-msgstr "chứng từ"
+msgstr "tài liệu"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
-#: model_terms:ir.ui.view,arch_db:documents.share_page
+#: model_terms:ir.ui.view,arch_db:documents.share_workspace_page
 #, python-format
 msgid "documents"
 msgstr "documents"
@@ -2845,6 +3372,7 @@ msgstr "tài liệu được chọn"
 
 #. module: documents
 #. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "download"
@@ -2883,16 +3411,15 @@ msgid "e.g. Validate document"
 msgstr "VD: Xác nhận tài liệu"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
+msgid "e.g. domain.com"
+msgstr "VD: domain.com"
+
+#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
 msgid "e.g. https://www.youtube.com/watch?v=CP96yVnXNrY"
 msgstr "e.g. https://www.youtube.com/watch?v=CP96yVnXNrY"
-
-#. module: documents
-#. odoo-javascript
-#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
-#, python-format
-msgid "fa fa-folder text-odoo"
-msgstr ""
 
 #. module: documents
 #. odoo-javascript
@@ -2902,10 +3429,8 @@ msgid "file_extension"
 msgstr ""
 
 #. module: documents
-#. odoo-javascript
-#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
-#, python-format
-msgid "folder_id"
+#: model_terms:ir.ui.view,arch_db:documents.share_files_page
+msgid "files"
 msgstr ""
 
 #. module: documents
@@ -2916,26 +3441,6 @@ msgstr "is_readonly_model"
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
-#, python-format
-msgid "name"
-msgstr "tên"
-
-#. module: documents
-#. odoo-javascript
-#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
-#, python-format
-msgid "owner_id"
-msgstr ""
-
-#. module: documents
-#. odoo-javascript
-#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
-#, python-format
-msgid "partner_id"
-msgstr ""
-
-#. module: documents
-#. odoo-javascript
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "restore"
@@ -2943,6 +3448,7 @@ msgstr "restore"
 
 #. module: documents
 #. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_page/pdf_page.xml:0
 #: code:addons/documents/static/src/owl/components/pdf_page/pdf_page.xml:0
 #, python-format
 msgid "select"
@@ -2957,7 +3463,7 @@ msgstr "đã chọn"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
-#: model_terms:ir.ui.view,arch_db:documents.share_page
+#: model_terms:ir.ui.view,arch_db:documents.share_workspace_page
 msgid "shared by"
 msgstr "được chia sẻ bởi"
 
@@ -2974,10 +3480,3 @@ msgstr "mã trạng thái: %s, tin nhắn: %s"
 #, python-format
 msgid "unnamed"
 msgstr "không tên"
-
-#. module: documents
-#. odoo-javascript
-#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
-#, python-format
-msgid "url"
-msgstr "url"

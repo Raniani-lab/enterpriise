@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:21+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -335,7 +336,7 @@ msgstr "Productieanalyse"
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__qty_demanded
 msgid "Quantity Demanded"
-msgstr ""
+msgstr "Gevraagde hoeveelheid"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__qty_produced
@@ -346,7 +347,7 @@ msgstr "Hoeveelheid geproduceerd"
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,help:mrp_account_enterprise.field_mrp_report__yield_rate
 msgid "Ratio of quantity produced over quantity demanded"
-msgstr ""
+msgstr "Verhouding tussen geproduceerde hoeveelheid en gevraagde hoeveelheid"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
@@ -412,7 +413,7 @@ msgstr "Totale duur (minuten) van bewerkingen voor productieorder"
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,help:mrp_account_enterprise.field_mrp_report__qty_demanded
 msgid "Total quantity demanded in product's UoM"
-msgstr ""
+msgstr "Totaal gevraagde hoeveelheid in de maateenheid van het product"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,help:mrp_account_enterprise.field_mrp_report__qty_produced
@@ -422,7 +423,7 @@ msgstr "Totale geproduceerde hoeveelheid in de maateenheid van het product"
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__yield_rate
 msgid "Yield Percentage(%)"
-msgstr ""
+msgstr "Opbrengstpercentage(%)"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure

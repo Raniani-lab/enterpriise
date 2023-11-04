@@ -3,7 +3,9 @@
 # 	* sale_renting
 # 
 # Translators:
+# Martin Trigaux, 2023
 # Wil Odoo, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,27 +29,29 @@ msgid ""
 "\n"
 "%(from_date)s to %(to_date)s"
 msgstr ""
+"\n"
+"%(from_date)s tot %(to_date)s"
 
 #. module: sale_renting
 #. odoo-python
 #: code:addons/sale_renting/models/product_template.py:0
 #, python-format
 msgid "%(amount)s (fixed)"
-msgstr ""
+msgstr "%(amount)s (vast)"
 
 #. module: sale_renting
 #. odoo-python
 #: code:addons/sale_renting/models/product_pricing.py:0
 #, python-format
 msgid "%(amount)s / %(duration)s"
-msgstr ""
+msgstr "%(amount)s / %(duration)s"
 
 #. module: sale_renting
 #. odoo-python
 #: code:addons/sale_renting/models/sale_order_recurrence.py:0
 #, python-format
 msgid "%(duration)s %(unit)s"
-msgstr ""
+msgstr "%(duration)s %(unit)s"
 
 #. module: sale_renting
 #. odoo-python
@@ -67,9 +71,24 @@ msgstr ""
 "%s' %(object.name)) or 'Order - %s' % (object.name)"
 
 #. module: sale_renting
+#: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
+msgid "123 Main St"
+msgstr "123 Main St"
+
+#. module: sale_renting
 #: model:sale.temporal.recurrence,name:sale_renting.recurrence_2_weeks
 msgid "2 Weeks"
 msgstr "2 weken"
+
+#. module: sale_renting
+#: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
+msgid "2023-08-01"
+msgstr "01-08-2023"
+
+#. module: sale_renting
+#: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
+msgid "2023-08-10"
+msgstr "10-08-2023"
 
 #. module: sale_renting
 #: model:sale.temporal.recurrence,name:sale_renting.recurrence_3_hours
@@ -79,12 +98,17 @@ msgstr "3 uren"
 #. module: sale_renting
 #: model:sale.temporal.recurrence,name:sale_renting.recurrence_3_year
 msgid "3 years"
-msgstr ""
+msgstr "3 jaar"
+
+#. module: sale_renting
+#: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
+msgid "456 Other St"
+msgstr "456 Other St"
 
 #. module: sale_renting
 #: model:sale.temporal.recurrence,name:sale_renting.recurrence5_year
 msgid "5 Years"
-msgstr ""
+msgstr "5 jaar"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_kanban
@@ -104,6 +128,9 @@ msgid ""
 "                    <span invisible=\"duration_days in [0,1]\"> days </span>\n"
 "                    <span invisible=\"duration_days == 0 or remaining_hours == 0\">and </span>"
 msgstr ""
+"<span invisible=\"duration_days != 1\"> dag </span>\n"
+"                    <span invisible=\"duration_days in [0,1]\"> dagen </span>\n"
+"                    <span invisible=\"duration_days == 0 or remaining_hours == 0\">en </span>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
@@ -111,6 +138,8 @@ msgid ""
 "<span invisible=\"remaining_hours != 1\"> hour </span>\n"
 "                    <span invisible=\"remaining_hours in [0,1]\"> hours </span>"
 msgstr ""
+"<span invisible=\"remaining_hours != 1\"> uur </span>\n"
+"                    <span invisible=\"remaining_hours in [0,1]\"> uren </span>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
@@ -145,12 +174,12 @@ msgstr "<strong>Status — </strong>"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_temporal_recurrence__active
 msgid "Active"
-msgstr ""
+msgstr "Actief"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_template_form_view_rental
 msgid "Add a price"
-msgstr ""
+msgstr "Voeg een prijs toe"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
@@ -298,7 +327,7 @@ msgstr "Maak verhuurorders"
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.sale_temporal_recurrence_action
 msgid "Create a new period"
-msgstr ""
+msgstr "Maak een nieuwe periode"
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_order_action
@@ -308,7 +337,7 @@ msgstr "Maak een nieuwe offerte, de eerste stap van een nieuwe verhuur!"
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.product_pricing_action
 msgid "Create a new recurrence"
-msgstr ""
+msgstr "Een nieuwe herhaling aanmaken"
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.action_rental_report
@@ -358,7 +387,7 @@ msgstr "Valuta"
 #: model:ir.model.fields,field_description:sale_renting.field_product_product__product_pricing_ids
 #: model:ir.model.fields,field_description:sale_renting.field_product_template__product_pricing_ids
 msgid "Custom Pricings"
-msgstr ""
+msgstr "Prijzen op maat"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__partner_id
@@ -393,7 +422,7 @@ msgstr "Klanten"
 #. module: sale_renting
 #: model:sale.temporal.recurrence,name:sale_renting.recurrence_daily
 msgid "Daily"
-msgstr ""
+msgstr "Dagelijks"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__price
@@ -427,7 +456,7 @@ msgstr "Datum"
 #: code:addons/sale_renting/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Day"
-msgstr ""
+msgstr "Dag"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_temporal_recurrence__unit__day
@@ -476,12 +505,12 @@ msgstr "Duur"
 #: model:ir.model.fields,field_description:sale_renting.field_product_pricing__name
 #: model:ir.model.fields,field_description:sale_renting.field_sale_temporal_recurrence__duration_display
 msgid "Duration Display"
-msgstr ""
+msgstr "Duurweergave"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__duration_days
 msgid "Duration in days"
-msgstr ""
+msgstr "Duur in dagen"
 
 #. module: sale_renting
 #. odoo-javascript
@@ -500,7 +529,7 @@ msgstr "Verwachte retour"
 #: code:addons/sale_renting/models/sale_order_line.py:0
 #, python-format
 msgid "Expected: %(date)s"
-msgstr ""
+msgstr "Verwacht: %(date)s"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_product_product__extra_daily
@@ -530,7 +559,7 @@ msgstr "Boete per uur te laat"
 #: model:ir.model.fields,help:sale_renting.field_product_product__display_price
 #: model:ir.model.fields,help:sale_renting.field_product_template__display_price
 msgid "First rental pricing of the product"
-msgstr ""
+msgstr "Eerste verhuurprijs van het product"
 
 #. module: sale_renting
 #. odoo-javascript
@@ -549,7 +578,7 @@ msgstr "Groeperen op"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__show_update_duration
 msgid "Has Duration Changed"
-msgstr ""
+msgstr "Duur is gewijzigd"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__has_pickable_lines
@@ -571,7 +600,7 @@ msgstr "Heeft retourregels"
 #: code:addons/sale_renting/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Hour"
-msgstr ""
+msgstr "Uur"
 
 #. module: sale_renting
 #: model:sale.temporal.recurrence,name:sale_renting.recurrence_hourly
@@ -618,6 +647,16 @@ msgstr "Is verhuur"
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__is_late
 msgid "Is overdue"
 msgstr "Is vervallen"
+
+#. module: sale_renting
+#: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
+msgid "Jane Doe"
+msgstr "Jane Doe"
+
+#. module: sale_renting
+#: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
+msgid "John Doe"
+msgstr "John Doe"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_product_pricing__write_uid
@@ -682,18 +721,20 @@ msgid ""
 "Minimum duration before this rule is applied. If set to 0, it represents a "
 "fixedrental price."
 msgstr ""
+"Minimale duur voordat deze regel wordt toegepast. Indien ingesteld op 0, "
+"vertegenwoordigt dit een vaste verhuurprijs."
 
 #. module: sale_renting
 #. odoo-python
 #: code:addons/sale_renting/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Month"
-msgstr ""
+msgstr "Maand"
 
 #. module: sale_renting
 #: model:sale.temporal.recurrence,name:sale_renting.recurrence_monthly
 msgid "Monthly"
-msgstr ""
+msgstr "Maandelijks"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_temporal_recurrence__unit__month
@@ -709,7 +750,7 @@ msgstr "Mijn orders"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_temporal_recurrence__name
 msgid "Name"
-msgstr ""
+msgstr "Naam"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__next_action_date
@@ -732,7 +773,7 @@ msgid ""
 "Once the quotation is confirmed, it becomes a rental order.<br> You will be "
 "able to create an invoice and collect the payment."
 msgstr ""
-"Zodra de offerte is bevestigd, wordt het een huurorder. <br>Je kunt een "
+"Zodra de offerte is bevestigd, wordt het een verhuurorder. <br>Je kunt een "
 "factuur maken en de betaling innen."
 
 #. module: sale_renting
@@ -740,7 +781,7 @@ msgstr ""
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Once the rental is done, you can register the return."
-msgstr "Zodra de huur is voltooid, kan je de retour registreren."
+msgstr "Zodra de verhuur is voltooid, kan je de retour registreren."
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__order_id
@@ -797,18 +838,18 @@ msgstr "Per uur"
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_pricelist_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_template_form_view_rental
 msgid "Period"
-msgstr ""
+msgstr "Periode"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.sale_temporal_recurrence_view_form
 #: model_terms:ir.ui.view,arch_db:sale_renting.sale_temporal_recurrence_view_tree
 msgid "Periodicity"
-msgstr ""
+msgstr "Frequentie"
 
 #. module: sale_renting
 #: model:ir.actions.act_window,name:sale_renting.sale_temporal_recurrence_action
 msgid "Periods"
-msgstr ""
+msgstr "Periode"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_order_wizard
@@ -874,7 +915,7 @@ msgstr "Ophalen:"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_product_pricing__price
 msgid "Price"
-msgstr ""
+msgstr "Prijs"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_product_pricelist
@@ -886,7 +927,7 @@ msgstr "Prijslijst"
 #: model:ir.actions.act_window,name:sale_renting.product_pricing_action
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_pricing_tree
 msgid "Prices"
-msgstr ""
+msgstr "Prijzen"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_template_form_view_rental
@@ -896,7 +937,7 @@ msgstr "Prijzen"
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_product_pricing
 msgid "Pricing rule of rental products"
-msgstr ""
+msgstr "Prijsregel voor verhuuproducten"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_product_template
@@ -910,6 +951,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 msgid "Product"
 msgstr "Product"
+
+#. module: sale_renting
+#: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
+msgid "Product A"
+msgstr "Product A"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__categ_id
@@ -978,7 +1024,7 @@ msgstr "Hoeveelheid momenteel verhuurd"
 #. module: sale_renting
 #: model:sale.temporal.recurrence,name:sale_renting.recurrence_quarterly
 msgid "Quarterly"
-msgstr ""
+msgstr "Per kwartaal"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_order__rental_status__draft
@@ -1005,12 +1051,12 @@ msgstr "Offertes"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
 msgid "Recompute all prices based on this duration"
-msgstr ""
+msgstr "Herbereken alle prijzen op basis van deze duur"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__remaining_hours
 msgid "Remaining duration in hours"
-msgstr ""
+msgstr "Resterende duur in uren"
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.rental_menu_root
@@ -1054,13 +1100,13 @@ msgstr "Verhuurorders"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_pricelist_view
 msgid "Rental Pricelist Rules"
-msgstr ""
+msgstr "Regels verhuurprijslijst"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__rental_return_date
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__return_date
 msgid "Rental Return Date"
-msgstr ""
+msgstr "Datum retour"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_rental_schedule
@@ -1071,7 +1117,7 @@ msgstr "Verhuurplanning"
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__rental_start_date
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__start_date
 msgid "Rental Start Date"
-msgstr ""
+msgstr "Startdatum verhuur"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__rental_status
@@ -1092,7 +1138,7 @@ msgstr "Verhuur wizardregel"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
 msgid "Rental period"
-msgstr ""
+msgstr "Verhuurperiode"
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_sale_renting_periods
@@ -1103,24 +1149,24 @@ msgstr "Verhuurperiodes"
 #: model:ir.model.fields,field_description:sale_renting.field_product_product__display_price
 #: model:ir.model.fields,field_description:sale_renting.field_product_template__display_price
 msgid "Rental price"
-msgstr ""
+msgstr "Verhuurprijs"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_template_form_view_rental
 msgid "Rental prices"
-msgstr ""
+msgstr "Verhuurprijzen"
 
 #. module: sale_renting
 #. odoo-python
 #: code:addons/sale_renting/models/sale_order.py:0
 #, python-format
 msgid "Rental prices have been recomputed with the new period."
-msgstr ""
+msgstr "De verhuurprijzen zijn opnieuw berekend met de nieuwe periode."
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_pricelist_view
 msgid "Rental rules"
-msgstr ""
+msgstr "Verhuurregels"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_order_wizard_line
@@ -1135,12 +1181,12 @@ msgstr "Verhuur"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_product_pricing__recurrence_id
 msgid "Renting Period"
-msgstr ""
+msgstr "Verhuurperiode"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_product_pricelist__product_pricing_ids
 msgid "Renting Price Rules"
-msgstr ""
+msgstr "Verhuurprijsregels"
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_rental_reporting
@@ -1199,7 +1245,7 @@ msgstr "Geretourneerd"
 #: code:addons/sale_renting/models/sale_order_line.py:0
 #, python-format
 msgid "Returned: %(date)s"
-msgstr ""
+msgstr "Geretourneerd: %(date)s"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_temporal_recurrence
@@ -1239,6 +1285,11 @@ msgid "Salesperson"
 msgstr "Verkoper"
 
 #. module: sale_renting
+#: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
+msgid "Sample Document"
+msgstr "Voorbeelddocument"
+
+#. module: sale_renting
 #. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
@@ -1265,18 +1316,20 @@ msgid ""
 "Select Variants of the Product for which this rule applies.Leave empty if "
 "this rule applies for any variant of this template."
 msgstr ""
+"Selecteer Varianten van het Product waarvoor deze regel geldt. Laat leeg als"
+" deze regel geldt voor elke variant van deze sjabloon."
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_product_pricing__product_template_id
 msgid "Select products on which this pricing will be applied."
-msgstr ""
+msgstr "Selecteer producten waarop deze prijs wordt toegepast."
 
 #. module: sale_renting
 #. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Select the rental dates and check the price."
-msgstr ""
+msgstr "Selecteer de verhuurdata en bekijk de prijs."
 
 #. module: sale_renting
 #. odoo-javascript
@@ -1329,17 +1382,18 @@ msgstr "Som van dagelijks opgehaald aantal"
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_sale_order__duration_days
 msgid "The duration in days of the rental period."
-msgstr ""
+msgstr "De duur van de verhuurperiode in dagen."
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_sale_order__remaining_hours
 msgid "The leftover hours of the rental period."
-msgstr ""
+msgstr "De resterende uren van de verhuurperiode."
 
 #. module: sale_renting
 #: model:ir.model.constraint,message:sale_renting.constraint_sale_temporal_recurrence_temporal_recurrence_duration
 msgid "The pricing duration has to be greater or equal to 0."
 msgstr ""
+"De toepassingsduur van deze prijs moet groter zijn dan of gelijk zijn aan 0."
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_res_company__extra_product
@@ -1351,7 +1405,7 @@ msgstr ""
 #: model:ir.model.fields,help:sale_renting.field_rental_order_wizard__is_late
 #: model:ir.model.fields,help:sale_renting.field_sale_order__is_late
 msgid "The products haven't been picked-up or returned in time"
-msgstr ""
+msgstr "De producten zijn niet op tijd opgehaald of geretourneerd"
 
 #. module: sale_renting
 #. odoo-javascript
@@ -1364,6 +1418,8 @@ msgstr "De verhuurconfiguratie is hier beschikbaar."
 #: model:ir.model.constraint,message:sale_renting.constraint_sale_order_rental_period_coherence
 msgid "The rental start date must be before the rental return date if any."
 msgstr ""
+"De startdatum van de verhuur moet voor de eventuele einddatum van de verhuur"
+" vallen, "
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_order_today_pickup_action
@@ -1403,6 +1459,8 @@ msgid ""
 "This will update the unit price of all rental products based on the new "
 "period."
 msgstr ""
+"Dit zal de eenheidsprijs van alle verhuurproducten bijwerken op basis van de"
+" nieuwe periode."
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
@@ -1410,7 +1468,7 @@ msgid ""
 "Those values are applied to any new rental product and can be changed on "
 "product forms."
 msgstr ""
-"Deze waarden worden toegepast op elk nieuw huurproduct en kunnen worden "
+"Deze waarden worden toegepast op elk nieuw verhuurproduct en kunnen worden "
 "gewijzigd op productformulieren."
 
 #. module: sale_renting
@@ -1449,7 +1507,7 @@ msgstr "Maateenheid"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
 msgid "Update Rental Prices"
-msgstr ""
+msgstr "Verhuurprijzen bijwerken"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_wizard_view_form
@@ -1481,7 +1539,7 @@ msgstr ""
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_pricelist_view
 msgid "Variants"
-msgstr ""
+msgstr "Varianten"
 
 #. module: sale_renting
 #. odoo-javascript
@@ -1499,12 +1557,12 @@ msgstr ""
 #: code:addons/sale_renting/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Week"
-msgstr ""
+msgstr "Week"
 
 #. module: sale_renting
 #: model:sale.temporal.recurrence,name:sale_renting.recurrence_weekly
 msgid "Weekly"
-msgstr ""
+msgstr "Wekelijks"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_temporal_recurrence__unit__week
@@ -1516,12 +1574,12 @@ msgstr "Weken"
 #: code:addons/sale_renting/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Year"
-msgstr ""
+msgstr "Jaar"
 
 #. module: sale_renting
 #: model:sale.temporal.recurrence,name:sale_renting.recurrence_yearly
 msgid "Yearly"
-msgstr ""
+msgstr "Jaarlijks"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_temporal_recurrence__unit__year
@@ -1543,6 +1601,8 @@ msgstr ""
 #, python-format
 msgid "You can not have a time-based rule for products that are not rentable."
 msgstr ""
+"Je kan geen op tijd gebaseerde regel instellen voor producten die niet "
+"verhuurbaar zijn."
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_order_today_pickup_action
@@ -1554,7 +1614,7 @@ msgid ""
 msgstr ""
 "Je kan op een langere periode zoeken met behulp van de bovenstaande filters\n"
 "                <br>\n"
-"                of een nieuwe huurorder aanmaken."
+"                of een nieuwe verhuurorder aanmaken."
 
 #. module: sale_renting
 #. odoo-python
@@ -1571,6 +1631,8 @@ msgid ""
 "You cannot have multiple pricing for the same variant, recurrence and "
 "pricelist"
 msgstr ""
+"Je kunt niet meerdere prijzen hebben voor dezelfde variant, herhaling en "
+"prijslijst"
 
 #. module: sale_renting
 #: model:ir.model.constraint,message:sale_renting.constraint_sale_order_line_rental_stock_coherence
@@ -1590,7 +1652,7 @@ msgstr "Je bent klaar met je eerste verhuur. Gefeliciteerd!"
 #: code:addons/sale_renting/models/product_pricing.py:0
 #, python-format
 msgid "all variants"
-msgstr ""
+msgstr "alle varianten"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form

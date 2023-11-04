@@ -1,33 +1,34 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* sale_ebay
-#
+# 
 # Translators:
-# Pornvibool Tippayawat <pornvibool.t@gmail.com>, 2022
-# Khwunchai Jaengsawang <khwunchai.j@ku.th>, 2022
-# Martin Trigaux, 2022
-# Wichanon Jamwutthipreecha, 2022
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Wichanon Jamwutthipreecha, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
-"Language: th\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: th\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: sale_ebay
 #. odoo-python
 #: code:addons/sale_ebay/models/product.py:0
 #, python-format
-msgid " If you want to set quantity to 0, the Out Of Stock option should be enabled and the listing duration should set to Good 'Til Canceled"
-msgstr "หากคุณต้องการกำหนดจำนวนเป็น 0 ควรเปิดใช้งานตัวเลือกสินค้าหมดสต๊อก และระยะเวลาในรายการควรตั้งค่าเป็น \"ดี\" จนกว่าจะยกเลิก"
+msgid ""
+" If you want to set quantity to 0, the Out Of Stock option should be enabled"
+" and the listing duration should set to Good 'Til Canceled"
+msgstr ""
+"หากคุณต้องการกำหนดจำนวนเป็น 0 ควรเปิดใช้งานตัวเลือกสินค้าหมดสต๊อก "
+"และระยะเวลาในรายการควรตั้งค่าเป็น \"ดี\" จนกว่าจะยกเลิก"
 
 #. module: sale_ebay
 #. odoo-python
@@ -79,7 +80,9 @@ msgstr "เพิ่มประเทศอื่น ๆ "
 #. odoo-python
 #: code:addons/sale_ebay/models/product.py:0
 #, python-format
-msgid "All the quantities must be greater than 0 or you need to enable the Out Of Stock option."
+msgid ""
+"All the quantities must be greater than 0 or you need to enable the Out Of "
+"Stock option."
 msgstr "ปริมาณทั้งหมดต้องมากกว่า 0 หรือคุณต้องเปิดใช้งานตัวเลือกสินค้าหมด"
 
 #. module: sale_ebay
@@ -293,10 +296,8 @@ msgstr ""
 #, python-format
 msgid ""
 "Error Encountered.\n"
-"'%s'"
+"%r"
 msgstr ""
-"พบข้อผิดพลาด\n"
-"'%s'"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
@@ -433,7 +434,7 @@ msgstr "สถานที่"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_account_deletion_endpoint
 msgid "Marketplace account deletion notification endpoint"
-msgstr "จุดสิ้นสุดการแจ้งเตือนการลบบัญชี Marketplace"
+msgstr "จุดสิ้นสุดการแจ้งเตือนการลบบัญชีตลาดการซื้อขาย"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -494,8 +495,11 @@ msgstr "นโยบายการชำระเงิน"
 #. odoo-python
 #: code:addons/sale_ebay/models/res_config_settings.py:0
 #, python-format
-msgid "Please provide your ebay production keys before enabling the account deletion notifications."
-msgstr "โปรดระบุรหัสการผลิต ebay ของคุณก่อนที่จะเปิดใช้งานการแจ้งเตือนการลบบัญชี"
+msgid ""
+"Please provide your ebay production keys before enabling the account "
+"deletion notifications."
+msgstr ""
+"โปรดระบุรหัสการผลิต ebay ของคุณก่อนที่จะเปิดใช้งานการแจ้งเตือนการลบบัญชี"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -543,12 +547,12 @@ msgstr "การผลิต"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_app_id
 msgid "Production App Key"
-msgstr "Production App Key"
+msgstr "รหัสแอปการผลิต"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_cert_id
 msgid "Production Cert Key"
-msgstr "Production Cert Key"
+msgstr "รหัสใบรับรองการผลิต"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_token
@@ -611,12 +615,12 @@ msgstr "Sandbox"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sandbox_app_id
 msgid "Sandbox App Key"
-msgstr "Sandbox App Key"
+msgstr "รหัสแอป Sandbox"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sandbox_cert_id
 msgid "Sandbox Cert Key"
-msgstr "Sandbox Cert Key"
+msgstr "รหัสใบรับรอง Sandbox"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sandbox_token
@@ -649,7 +653,7 @@ msgstr "ราคาเริ่มต้นสำหรับการประ
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Storage"
-msgstr ""
+msgstr "อุปกรณ์จัดเก็บ"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -687,7 +691,7 @@ msgstr "ซิงค์เลย"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Synchronization"
-msgstr ""
+msgstr "การซิงโครไนซ์"
 
 #. module: sale_ebay
 #. odoo-python
@@ -717,8 +721,12 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_subtitle
 #: model:ir.model.fields,help:sale_ebay.field_product_template__ebay_subtitle
-msgid "The subtitle is restricted to 55 characters. Fees can be claimed by eBay for this feature"
-msgstr "คำบรรยายถูกจำกัดไว้ที่ 55 ตัวอักษร eBay สามารถเรียกเก็บค่าธรรมเนียมสำหรับฟีเจอร์นี้"
+msgid ""
+"The subtitle is restricted to 55 characters. Fees can be claimed by eBay for"
+" this feature"
+msgstr ""
+"คำบรรยายถูกจำกัดไว้ที่ 55 ตัวอักษร eBay "
+"สามารถเรียกเก็บค่าธรรมเนียมสำหรับฟีเจอร์นี้"
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_title
@@ -729,22 +737,40 @@ msgstr "ชื่อเรื่องถูกจำกัดไว้ที่
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_category_2_id
 #: model:ir.model.fields,help:sale_ebay.field_product_template__ebay_category_2_id
-msgid "The use of a secondary category is not allowed on every eBay sites. Fees can be claimed by eBay for this feature"
-msgstr "ไม่อนุญาตให้ใช้หมวดหมู่รองทในทุกไซต์ของ eBay สามารถเรียกเก็บค่าธรรมเนียมสำหรับฟีเจอร์นี้"
-
-#. module: sale_ebay
-#. odoo-python
-#: code:addons/sale_ebay/models/product.py:0
-#, python-format
-msgid "There is no last synchronization date in your System Parameters. Create a System Parameter record with the key \"ebay_last_sync\" and the value set to the date of the oldest order you wish to synchronize in the format \"YYYY-MM-DD\"."
-msgstr "ไม่มีวันที่ซิงโครไนซ์ครั้งล่าสุดในระบบพารามิเตอร์ของคุณ สร้างบันทึกระบบพารามิเตอร์ด้วยคีย์ \"ebay_last_sync\" และตั้งค่าเป็นวันที่ของลำดับที่เก่าที่สุดที่คุณต้องการซิงโครไนซ์ในรูปแบบ \"YYYY-MM-DD\""
-
-#. module: sale_ebay
-#. odoo-python
-#: code:addons/sale_ebay/models/product.py:0
-#, python-format
-msgid "This function should not be called with a range of more than 30 days, as eBay does not handle longer timespans. Instead use synchronize_orders which split in as many calls as needed."
+msgid ""
+"The use of a secondary category is not allowed on every eBay sites. Fees can"
+" be claimed by eBay for this feature"
 msgstr ""
+"ไม่อนุญาตให้ใช้หมวดหมู่รองทในทุกไซต์ของ eBay "
+"สามารถเรียกเก็บค่าธรรมเนียมสำหรับฟีเจอร์นี้"
+
+#. module: sale_ebay
+#. odoo-python
+#: code:addons/sale_ebay/models/product.py:0
+#, python-format
+msgid ""
+"There is no last synchronization date in your System Parameters. Create a "
+"System Parameter record with the key \"ebay_last_sync\" and the value set to"
+" the date of the oldest order you wish to synchronize in the format \"YYYY-"
+"MM-DD\"."
+msgstr ""
+"ไม่มีวันที่ซิงโครไนซ์ครั้งล่าสุดในระบบพารามิเตอร์ของคุณ "
+"สร้างบันทึกระบบพารามิเตอร์ด้วยคีย์ \"ebay_last_sync\" "
+"และตั้งค่าเป็นวันที่ของลำดับที่เก่าที่สุดที่คุณต้องการซิงโครไนซ์ในรูปแบบ "
+"\"YYYY-MM-DD\""
+
+#. module: sale_ebay
+#. odoo-python
+#: code:addons/sale_ebay/models/product.py:0
+#, python-format
+msgid ""
+"This function should not be called with a range of more than 30 days, as "
+"eBay does not handle longer timespans. Instead use synchronize_orders which "
+"split in as many calls as needed."
+msgstr ""
+"ไม่ควรเรียกใช้ฟังก์ชันนี้โดยมีช่วงเวลาที่มากกว่า 30 วัน เนื่องจาก eBay "
+"ไม่รองรับระยะเวลาที่นานกว่านี้ได้ ให้ใช้ synchronize_orders "
+"ซึ่งแบ่งการโทรได้มากเท่าที่ต้องการแทน"
 
 #. module: sale_ebay
 #. odoo-python
@@ -763,7 +789,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_title
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_title
 msgid "Title"
-msgstr "ชื่อเรื่อง"
+msgstr "คำนำหน้าชื่อ"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_stock_picking
@@ -816,7 +842,7 @@ msgstr "eBay"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay Account"
-msgstr ""
+msgstr "บัญชี eBay"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_category
@@ -866,7 +892,7 @@ msgstr "รายการไอดี eBay "
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay Marketplace Account Deletion/Closure Notifications"
-msgstr ""
+msgstr "การแจ้งเตือนการลบ/ปิดบัญชีตลาดการซื้อขายของ eBay"
 
 #. module: sale_ebay
 #: model:mail.activity.type,summary:sale_ebay.ebay_GDPR_notification
@@ -876,7 +902,7 @@ msgstr "การแจ้งเตือนตัวเชื่อมต่อ
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay Options"
-msgstr ""
+msgstr "ตัวเลือก eBay"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_policy
@@ -940,8 +966,9 @@ msgstr "eBay พารามิเตอร์"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "eBay requires supporting customer account deletion/closure notifications."
-msgstr ""
+msgid ""
+"eBay requires supporting customer account deletion/closure notifications."
+msgstr "eBay จำเป็นต้องรองรับการแจ้งเตือนการลบ/ปิดบัญชีลูกค้า"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_url

@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:21+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -69,7 +70,7 @@ msgstr "<strong class=\"mr16\">Subtotaal</strong>"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "<strong>Amount Due: </strong>"
-msgstr ""
+msgstr "<strong>Verschuldigd bedrag: </strong>"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
@@ -103,7 +104,7 @@ msgstr "Toegevoegde producten"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "Amount"
-msgstr ""
+msgstr "Bedrag"
 
 #. module: industry_fsm_sale
 #: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_fsm_imply_task_rate
@@ -166,6 +167,9 @@ msgid ""
 "Click on a product to add it to your <b>list of materials</b>. <i>Tip: for "
 "large quantities, click on the number to edit it directly.</i>"
 msgstr ""
+"Klik op een product om het toe te voegen aan je <b>materialenlijst</b>. "
+"<i>Tip: klik voor grote hoeveelheden op het aantal om het onmiddellijk aan "
+"te passen.</i>"
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_res_config_settings
@@ -230,7 +234,7 @@ msgstr "Toon maak factuur secundair"
 #: code:addons/industry_fsm_sale/models/sale_order.py:0
 #, python-format
 msgid "Extra Quotation Created: %s"
-msgstr ""
+msgstr "Extra offerte aangemaakt: %s"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_quotations
@@ -532,7 +536,7 @@ msgstr ""
 #: code:addons/industry_fsm_sale/models/sale_order.py:0
 #, python-format
 msgid "This Sales Order has been created from Task: %s"
-msgstr ""
+msgstr "Deze verkooporder is gemaakt van taak: %s"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.portal_my_task

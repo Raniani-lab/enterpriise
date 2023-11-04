@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -125,8 +126,8 @@ msgstr "<br/>Aangeboden door"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
-msgid "<i class=\"fa fa fa-folder text-odoo me-2\" title=\"Workspace\"/>"
-msgstr "<i class=\"fa fa fa-folder text-odoo me-2\" title=\"Werkruimte\"/>"
+msgid "<i class=\"fa fa fa-folder text-primary me-2\" title=\"Workspace\"/>"
+msgstr ""
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_workspace_page
@@ -691,8 +692,8 @@ msgid "Action Needed"
 msgstr "Actie gevraagd"
 
 #. module: documents
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #: model:ir.ui.menu,name:documents.workflow_rules_menu
@@ -809,17 +810,17 @@ msgstr "Alias contact beveiliging"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_domain_id
 msgid "Alias Domain"
-msgstr ""
+msgstr "Aliasdomein"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_domain
 msgid "Alias Domain Name"
-msgstr ""
+msgstr "Aliasdomeinnaam"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_full_name
 msgid "Alias Email"
-msgstr ""
+msgstr "E-mailalias"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_name
@@ -1052,7 +1053,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "Bytes"
-msgstr ""
+msgstr "Bytes"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__can_upload
@@ -1172,7 +1173,7 @@ msgstr "Voorwaarden"
 #. module: documents
 #: model:ir.model,name:documents.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Configuratie instellingen"
 
 #. module: documents
 #: model:ir.ui.menu,name:documents.Config
@@ -1472,8 +1473,8 @@ msgid "Document: Document Request"
 msgstr "Document: Documentaanvraag"
 
 #. module: documents
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/models/res_partner.py:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
@@ -1584,7 +1585,7 @@ msgstr "Vervalsoort"
 #: code:addons/documents/static/src/views/form/folder_form_controller.js:0
 #, python-format
 msgid "Duplicate"
-msgstr ""
+msgstr "Dupliceren"
 
 #. module: documents
 #. odoo-javascript
@@ -1663,7 +1664,7 @@ msgstr "Vervallen"
 #: code:addons/documents/static/src/views/list/folder_list_controller.js:0
 #, python-format
 msgid "Export"
-msgstr ""
+msgstr "Exporteren"
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_facet_name_unique
@@ -2121,7 +2122,7 @@ msgstr "Live"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_incoming_local
 msgid "Local-part based incoming detection"
-msgstr ""
+msgstr "Lokale deelgebaseerde inkomende detectie"
 
 #. module: documents
 #. odoo-javascript
@@ -2181,7 +2182,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_note
 msgid "Message"
-msgstr ""
+msgstr "Bericht"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_has_error
@@ -2255,8 +2256,8 @@ msgid "Move to trash"
 msgstr ""
 
 #. module: documents
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/static/src/views/form/folder_form_controller.js:0
 #: code:addons/documents/static/src/views/list/folder_list_controller.js:0
@@ -3003,7 +3004,7 @@ msgstr "Grootte"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_files_page
 msgid "Size:"
-msgstr ""
+msgstr "Omvang:"
 
 #. module: documents
 #. odoo-javascript
@@ -3310,7 +3311,7 @@ msgstr "Tooltip"
 #: code:addons/documents/static/src/views/search/documents_search_model.js:0
 #, python-format
 msgid "Trash"
-msgstr ""
+msgstr "Prullenbak"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__is_editable_attachment
@@ -3582,7 +3583,7 @@ msgstr "Youtube video"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_deletion_form
 msgid "days."
-msgstr ""
+msgstr "dagen."
 
 #. module: documents
 #. odoo-javascript
@@ -3658,7 +3659,7 @@ msgstr "bijv. Document bevestigen"
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "e.g. domain.com"
-msgstr ""
+msgstr "bijv. domain.com"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view

@@ -49,7 +49,7 @@ msgstr "Basis"
 #: code:addons/web_grid/static/src/views/grid_arch_parser.js:0
 #, python-format
 msgid "Count"
-msgstr ""
+msgstr "Aantal"
 
 #. module: web_grid
 #. odoo-javascript
@@ -129,5 +129,7 @@ msgstr "Bekijk"
 #. module: web_grid
 #: model:ir.model.fields,field_description:web_grid.field_ir_actions_act_window_view__view_mode
 #: model:ir.model.fields,field_description:web_grid.field_ir_ui_view__type
+#: model:ir.model.fields,field_description:web_grid.field_website_controller_page__type
+#: model:ir.model.fields,field_description:web_grid.field_website_page__type
 msgid "View Type"
 msgstr "Soort weergave"

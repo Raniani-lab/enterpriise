@@ -1,23 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* social_facebook
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Raymond Yu <cl_yu@hotmail.com>, 2022
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:03+0000\n"
-"PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Raymond Yu <cl_yu@hotmail.com>, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
-"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: social_facebook
@@ -67,7 +66,9 @@ msgstr "作者图像"
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_res_config_settings__facebook_use_own_account
-msgid "Check this if you want to use your personal Facebook Developer Account instead of the provided one."
+msgid ""
+"Check this if you want to use your personal Facebook Developer Account "
+"instead of the provided one."
 msgstr "如果你想使用你的个人Facebook开发者账户而不是提供的账户，请勾选此项。"
 
 #. module: social_facebook
@@ -140,7 +141,9 @@ msgstr ""
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_social_account__facebook_account_id
-msgid "Facebook Page ID provided by the Facebook API, this should never be set manually."
+msgid ""
+"Facebook Page ID provided by the Facebook API, this should never be set "
+"manually."
 msgstr "由Facebook API提供的Facebook页面ID，这不应该被手动设置。"
 
 #. module: social_facebook
@@ -205,7 +208,9 @@ msgstr "文章图像"
 #. odoo-python
 #: code:addons/social_facebook/models/social_stream_post.py:0
 #, python-format
-msgid "Post not found. It could be because the post has been deleted on the Social Platform."
+msgid ""
+"Post not found. It could be because the post has been deleted on the Social "
+"Platform."
 msgstr "没有找到帖子。这可能是因为该帖子在社交平台上已经被删除。"
 
 #. module: social_facebook
@@ -223,7 +228,7 @@ msgstr "到达"
 #: code:addons/social_facebook/controllers/main.py:0
 #, python-format
 msgid "Read More about Facebook Pages"
-msgstr ""
+msgstr "了解更多关于 Facebook 页面的信息"
 
 #. module: social_facebook
 #. odoo-javascript
@@ -279,6 +284,7 @@ msgstr "未经授权。请联系你的管理员。"
 #. module: social_facebook
 #. odoo-python
 #: code:addons/social_facebook/models/social_stream_post.py:0
+#: code:addons/social_facebook/models/social_stream_post.py:0
 #, python-format
 msgid "Unknown"
 msgstr "未知"
@@ -290,7 +296,9 @@ msgstr "使用你自己的Facebook账户"
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_social_media__media_type
-msgid "Used to make comparisons when we need to restrict some features to a specific media ('facebook', 'twitter', ...)."
+msgid ""
+"Used to make comparisons when we need to restrict some features to a "
+"specific media ('facebook', 'twitter', ...)."
 msgstr "当我们需要将某些功能限制在特定的媒体（'facebook', 'twitter', ...）时，用于进行比较。"
 
 #. module: social_facebook
@@ -311,7 +319,9 @@ msgstr "查看"
 #: code:addons/social_facebook/models/social_live_post.py:0
 #: code:addons/social_facebook/models/social_post.py:0
 #, python-format
-msgid "We could not upload your image, try reducing its size and posting it again (error: %s)."
+msgid ""
+"We could not upload your image, try reducing its size and posting it again "
+"(error: %s)."
 msgstr "我们无法上传您的图像，请尝试缩小其尺寸并再次发布（错误：%s）。"
 
 #. module: social_facebook
@@ -329,6 +339,8 @@ msgid ""
 "You need to be the manager of a Facebook Page to post with Odoo Social.\n"
 " Please create one and make sure it is linked to your account."
 msgstr ""
+"您必须是 Facebook 页面的管理者，才能使用 Odoo Social 发布信息。\n"
+" 请创建一个页面并确保将其链接到您的账户。"
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.social_stream_post_view_kanban

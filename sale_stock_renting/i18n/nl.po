@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:21+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,6 +55,8 @@ msgid ""
 "A new rental period will not propagate to stock pickings. You may need to "
 "manually change that."
 msgstr ""
+"Een nieuwe huurperiode wordt niet overgenomen in de voorraad. Mogelijks moet"
+" je dat handmatig wijzigen."
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,help:sale_stock_renting.field_res_company__padding_time
@@ -239,7 +242,7 @@ msgstr "Verhuurverplaatsing:"
 #: model:ir.model.fields,field_description:sale_stock_renting.field_res_config_settings__group_rental_stock_picking
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form
 msgid "Rental pickings"
-msgstr ""
+msgstr "Verhuurpickings"
 
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_rental_order_wizard_line
@@ -254,7 +257,7 @@ msgstr "Gereserveerde partij"
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_stock_return_picking
 msgid "Return Picking"
-msgstr ""
+msgstr "Retourpicking"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_order_wizard_line__returnable_lot_ids
@@ -270,7 +273,7 @@ msgstr "Geretourneerde partij"
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Verkooporder"
 
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_sale_order_line
@@ -300,12 +303,12 @@ msgstr "Serienummers"
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_stock_move
 msgid "Stock Move"
-msgstr ""
+msgstr "Voorraadverplaatsing"
 
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_stock_rule
 msgid "Stock Rule"
-msgstr ""
+msgstr "Voorraadregel"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,help:sale_stock_renting.field_product_product__preparation_time
@@ -349,12 +352,12 @@ msgstr "Niet beschikbare partij"
 #. module: sale_stock_renting
 #: model:res.groups,name:sale_stock_renting.group_rental_stock_picking
 msgid "Use pickings for rental orders"
-msgstr ""
+msgstr "Gebruik pickings voor verhuurorders"
 
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form
 msgid "Use stock pickings for rental orders"
-msgstr ""
+msgstr "Gebruik voorraadpickings voor verhuurorders"
 
 #. module: sale_stock_renting
 #. odoo-javascript

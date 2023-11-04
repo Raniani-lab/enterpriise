@@ -3,6 +3,7 @@
 # 	* industry_fsm
 # 
 # Translators:
+# Jolien De Paepe, 2023
 # Wil Odoo, 2023
 # 
 msgid ""
@@ -48,6 +49,26 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<div>\n"
+"    <t t-set=\"date_begin\" t-value=\"format_datetime(object.planned_date_begin, tz=object.partner_id.tz, lang_code=object.partner_id.lang)\"></t>\n"
+"\n"
+"    <t t-set=\"date_end\" t-value=\"format_datetime(object.date_deadline, tz=object.partner_id.tz, lang_code=object.partner_id.lang)\"></t>\n"
+"\n"
+"    Beste <t t-out=\"object.partner_id.name or 'customer'\">klant</t>,<br><br>\n"
+"    <t t-if=\"date_begin and date_end\">\n"
+"        De interventie met betrekking tot <t t-out=\"object.name or ''\">het onderhoud van je verwarmingsketel</t> is gepland van <t t-out=\"date_begin or ''\">05/31/2021 12:30:00</t> tot <t t-out=\"date_end or ''\">05/31/2021 14:30:00</t>.\n"
+"    </t>\n"
+"    <t t-else=\"\">\n"
+"        De interventie met betrekking tot <t t-out=\"object.name or ''\">het onderhoud van je verwarmingsketel</t> is gepland.\n"
+"    </t>\n"
+"    <br><br>\n"
+"    Vriendelijke groeten,\n"
+"    <t t-if=\"user.signature\">\n"
+"        <br>\n"
+"        <t t-out=\"user.signature or ''\">--<br>Mitchell Admin</t>\n"
+"    </t>\n"
+"</div>\n"
+"        "
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.portal_task_sign_button
@@ -61,6 +82,10 @@ msgid ""
 "title=\"By saving this change, the customer phone number will also be "
 "updated.\" invisible=\"not partner_id or not is_task_phone_update\"/>"
 msgstr ""
+"<span class=\"fa fa-exclamation-triangle text-warning oe_edit_only\" "
+"title=\"Door deze wijziging op te slaan, wordt ook het telefoonnummer van de"
+" klant bijgewerkt.\" invisible=\"not partner_id or not "
+"is_task_phone_update\"/>"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_task
@@ -80,7 +105,7 @@ msgstr "Actief"
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.mail_activity_plan_menu_config_task
 msgid "Activity Plan"
-msgstr ""
+msgstr "Activiteitsplan"
 
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_config_activity_type
@@ -573,7 +598,7 @@ msgstr "Gepland"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_list_fsm
 msgid "Planned Date"
-msgstr ""
+msgstr "Datum gepland"
 
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_planning
@@ -620,7 +645,7 @@ msgstr "Eigenschappen"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__rating_last_value
 msgid "Rating (/5)"
-msgstr ""
+msgstr "Beoordeling (/5)"
 
 #. module: industry_fsm
 #. odoo-javascript
@@ -644,9 +669,24 @@ msgid "Remaining Hours Percentage"
 msgstr "Percentage Resterende Uren"
 
 #. module: industry_fsm
+#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__remaining_hours_so
+msgid "Remaining Hours on SO"
+msgstr "Resterende uren op verkooporder"
+
+#. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_reporting
 msgid "Reporting"
 msgstr "Rapportages"
+
+#. module: industry_fsm
+#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__sale_order_id
+msgid "Sales Order"
+msgstr "Verkooporder"
+
+#. module: industry_fsm
+#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__sale_line_id
+msgid "Sales Order Item"
+msgstr "Verkooporderregel"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_fsm_planning_groupby_project
@@ -909,7 +949,7 @@ msgstr "Gebruiker"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "View Itinerary"
-msgstr ""
+msgstr "Route bekijken"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard_line__wizard_id
@@ -954,6 +994,11 @@ msgid ""
 "format_datetime(object.date_deadline, tz=object.partner_id.tz, "
 "lang_code=object.partner_id.lang) or '' }}"
 msgstr ""
+"Je interventie is gepland {{ object.planned_date_begin and "
+"object.date_deadline and 'van ' + format_datetime(object.planned_date_begin,"
+" tz=object.partner_id.tz, lang_code=object.partner_id.lang) + ' tot ' + "
+"format_datetime(object.date_deadline, tz=object.partner_id.tz, "
+"lang_code=object.partner_id.lang) or '' }}"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.quick_create_task_form_fsm_inherited

@@ -1,23 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* hr_contract_sign
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Tony Ng, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:02+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Tony Ng, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
-"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: hr_contract_sign
@@ -56,6 +55,16 @@ msgid "<span class=\"o_stat_text\">Signature Requests</span>"
 msgstr ""
 
 #. module: hr_contract_sign
+#: model:ir.model,name:hr_contract_sign.model_mail_activity_plan_template
+msgid "Activity plan template"
+msgstr ""
+
+#. module: hr_contract_sign
+#: model:ir.model,name:hr_contract_sign.model_mail_activity_schedule
+msgid "Activity schedule plan Wizard"
+msgstr ""
+
+#. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 msgid "Attach a file"
 msgstr "附加一個文件"
@@ -83,7 +92,7 @@ msgstr "Copy to"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__create_uid
 msgid "Created by"
-msgstr "創立者"
+msgstr "建立人員"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__create_date
@@ -93,7 +102,7 @@ msgstr "建立於"
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 msgid "Discard"
-msgstr "取消"
+msgstr "捨棄"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__display_name
@@ -106,7 +115,7 @@ msgid "Document Signature"
 msgstr ""
 
 #. module: hr_contract_sign
-#: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__sign_template_id
+#: model:ir.model.fields,field_description:hr_contract_sign.field_mail_activity_plan_template__sign_template_id
 msgid "Document to sign"
 msgstr ""
 
@@ -126,13 +135,13 @@ msgstr ""
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__mail_to
 msgid "Email"
-msgstr ""
+msgstr "電郵地址"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,help:hr_contract_sign.field_hr_contract_sign_document_wizard__mail_to
 msgid ""
 "Email used to send the signature request.\n"
-"                - Public takes the email defined in \"work email\"\n"
+"                - Work takes the email defined in \"work email\"\n"
 "                - Private takes the email defined in Private Information\n"
 "                - If the selected email is not defined, the available one will be used."
 msgstr ""
@@ -149,14 +158,16 @@ msgstr "員工契約"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__employee_role_id
-#: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__employee_role_id
+#: model:ir.model.fields,field_description:hr_contract_sign.field_mail_activity_plan_template__employee_role_id
 msgid "Employee Role"
 msgstr ""
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,help:hr_contract_sign.field_hr_contract_sign_document_wizard__employee_role_id
-#: model:ir.model.fields,help:hr_contract_sign.field_hr_plan_activity_type__employee_role_id
-msgid "Employee's role on the templates to sign. The same role must be present in all the templates"
+#: model:ir.model.fields,help:hr_contract_sign.field_mail_activity_plan_template__employee_role_id
+msgid ""
+"Employee's role on the templates to sign. The same role must be present in "
+"all the templates"
 msgstr ""
 
 #. module: hr_contract_sign
@@ -177,10 +188,10 @@ msgstr ""
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__id
 msgid "ID"
-msgstr "ID"
+msgstr "識別號"
 
 #. module: hr_contract_sign
-#: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__is_signature_request
+#: model:ir.model.fields,field_description:hr_contract_sign.field_mail_activity_plan_template__is_signature_request
 msgid "Is Signature Request"
 msgstr ""
 
@@ -193,6 +204,11 @@ msgstr "最後更新者"
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__write_date
 msgid "Last Updated on"
 msgstr "最後更新於"
+
+#. module: hr_contract_sign
+#: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__mail_displayed
+msgid "Mail Displayed"
+msgstr ""
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
@@ -208,7 +224,9 @@ msgstr "消息"
 #. odoo-python
 #: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
 #, python-format
-msgid "No appropriate template could be found, please make sure you configured them properly."
+msgid ""
+"No appropriate template could be found, please make sure you configured them"
+" properly."
 msgstr ""
 
 #. module: hr_contract_sign
@@ -226,22 +244,12 @@ msgstr ""
 #. module: hr_contract_sign
 #: model:sign.template,redirect_url_text:hr_contract_sign.template_sign_termination
 msgid "Open Link"
-msgstr "Open Link"
+msgstr "開啟連結"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 msgid "Optional Message..."
 msgstr "Optional Message..."
-
-#. module: hr_contract_sign
-#: model:ir.model,name:hr_contract_sign.model_hr_plan_wizard
-msgid "Plan Wizard"
-msgstr "規劃嚮導"
-
-#. module: hr_contract_sign
-#: model:ir.model,name:hr_contract_sign.model_hr_plan_activity_type
-msgid "Plan activity type"
-msgstr "計畫活動類型"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__possible_template_ids
@@ -251,18 +259,13 @@ msgstr ""
 #. module: hr_contract_sign
 #: model:ir.model.fields.selection,name:hr_contract_sign.selection__hr_contract_sign_document_wizard__mail_to__private
 msgid "Private"
-msgstr ""
-
-#. module: hr_contract_sign
-#: model:ir.model.fields.selection,name:hr_contract_sign.selection__hr_contract_sign_document_wizard__mail_to__public
-msgid "Public"
-msgstr ""
+msgstr "私人"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract__sign_request_ids
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_employee__sign_request_ids
 msgid "Requested Signatures"
-msgstr "Requested Signatures"
+msgstr "請求的簽名"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__responsible_id
@@ -270,7 +273,7 @@ msgid "Responsible"
 msgstr "負責人"
 
 #. module: hr_contract_sign
-#: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__responsible_count
+#: model:ir.model.fields,field_description:hr_contract_sign.field_mail_activity_plan_template__responsible_count
 msgid "Responsible Count"
 msgstr "Responsible Count"
 
@@ -293,7 +296,7 @@ msgstr ""
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__sign_template_responsible_ids
-#: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__sign_template_responsible_ids
+#: model:ir.model.fields,field_description:hr_contract_sign.field_mail_activity_plan_template__sign_template_responsible_ids
 msgid "Sign Template Responsible"
 msgstr ""
 
@@ -304,21 +307,18 @@ msgstr ""
 
 #. module: hr_contract_sign
 #. odoo-python
-#: code:addons/hr_contract_sign/wizard/hr_plan_wizard.py:0
+#: code:addons/hr_contract_sign/wizard/mail_activity_schedule.py:0
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_history_view_form
-#: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_sign_view_form
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_employee_sign_view_form
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 #, python-format
 msgid "Signature Request"
-msgstr "Signature Request"
+msgstr "簽名請求"
 
 #. module: hr_contract_sign
-#. odoo-python
-#: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
-#, python-format
-msgid "Signature Request - %s"
-msgstr "Signature Request - %s"
+#: model:ir.actions.server,name:hr_contract_sign.action_signature_request_wizard
+msgid "Signature request"
+msgstr ""
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__subject
@@ -334,13 +334,20 @@ msgstr ""
 #. odoo-python
 #: code:addons/hr_contract_sign/models/hr_contract.py:0
 #, python-format
-msgid "This sign request has been canceled due to the cancellation of the related contract."
+msgid ""
+"This sign request has been canceled due to the cancellation of the related "
+"contract."
 msgstr ""
 
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_res_users
 msgid "User"
 msgstr "使用者"
+
+#. module: hr_contract_sign
+#: model:ir.model.fields.selection,name:hr_contract_sign.selection__hr_contract_sign_document_wizard__mail_to__work
+msgid "Work"
+msgstr ""
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
@@ -351,7 +358,8 @@ msgstr "Write email or search contact..."
 #. odoo-python
 #: code:addons/hr_contract_sign/models/hr_contract.py:0
 #, python-format
-msgid "You can't delete a contract linked to a signed document, archive it instead."
+msgid ""
+"You can't delete a contract linked to a signed document, archive it instead."
 msgstr ""
 
 #. module: hr_contract_sign
@@ -362,4 +370,4 @@ msgstr "單據"
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_history_view_form
 msgid "documents"
-msgstr ""
+msgstr "文件"

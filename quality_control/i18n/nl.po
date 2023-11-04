@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,6 +35,16 @@ msgstr "% van verplaatsingen"
 #: model:ir.actions.report,print_report_name:quality_control.quality_check_report_internal
 msgid "'Worksheet_%s' % object.name"
 msgstr "'Worksheet_%s' % object.name"
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "15.3 cm"
+msgstr ""
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "2023-08-15"
+msgstr "15-08-2023"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
@@ -219,6 +230,11 @@ msgid "All checks passed"
 msgstr "Alle controles geslaagd"
 
 #. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "All parameters passed."
+msgstr ""
+
+#. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Archived"
 msgstr "Gearchiveerd"
@@ -231,7 +247,7 @@ msgstr "Gemiddelde"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_wizard_form_failure
 msgid "Back"
-msgstr ""
+msgstr "Terug"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__check_ids
@@ -274,7 +290,7 @@ msgstr "Configuratie"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_wizard_form_failure
 msgid "Confirm"
-msgstr ""
+msgstr "Bevestigen"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_wizard_form_failure
@@ -408,7 +424,7 @@ msgstr "Bepaalt of slechts een fractie van de partij moet worden getest"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
 msgid "Discard"
-msgstr ""
+msgstr "Negeren"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__display_name
@@ -521,6 +537,21 @@ msgstr "Instructies"
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__is_last_check
 msgid "Is Last Check"
 msgstr "Is laatste controle"
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "John Doe"
+msgstr "John Doe"
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "LT-00045"
+msgstr ""
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "Laptop XYZ"
+msgstr ""
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__write_uid
@@ -733,6 +764,7 @@ msgstr "Geslaagd"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
 msgid "Passed"
 msgstr "Geslaagd"
 
@@ -815,6 +847,11 @@ msgid "Products"
 msgstr "Producten"
 
 #. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "QC-00123"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__qty_failed
 msgid "Qty Failed"
 msgstr ""
@@ -828,6 +865,7 @@ msgstr "Kwaliteit"
 #. odoo-python
 #: code:addons/quality_control/models/quality.py:0
 #: code:addons/quality_control/models/quality.py:0
+#: model:ir.actions.server,name:quality_control.action_qualtity_alert
 #: model:ir.model,name:quality_control.model_quality_alert
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_calendar
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search_inherit_quality_control
@@ -1196,6 +1234,11 @@ msgid "Transfer"
 msgstr "Verplaatsing"
 
 #. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "Transfer-987"
+msgstr ""
+
+#. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Type"
 msgstr "Soort"
@@ -1210,6 +1253,16 @@ msgstr "Maateenheid"
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
 msgid "Validate"
 msgstr "Bevestigen"
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "Value near threshold."
+msgstr ""
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
+msgid "Visual Check"
+msgstr ""
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__warning_message
@@ -1272,4 +1325,4 @@ msgstr "bijv. De QA-masters"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
 msgid "e.g. domain.com"
-msgstr ""
+msgstr "bijv. domain.com"

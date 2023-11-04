@@ -97,14 +97,14 @@ msgstr "Das Dokument wird digitalisiert"
 #: code:addons/iap_extract/models/extract_mixin.py:0
 #, python-format
 msgid "Document sent for digitization"
-msgstr ""
+msgstr "Dokument zur Digitalisierung versendet"
 
 #. module: iap_extract
 #. odoo-python
 #: code:addons/iap_extract/models/extract_mixin.py:0
 #, python-format
 msgid "Documents sent for digitization"
-msgstr ""
+msgstr "Dokumente zur Digitalisierung versendet"
 
 #. module: iap_extract
 #: model:ir.model.fields,field_description:iap_extract.field_extract_mixin__extract_error_message
@@ -159,6 +159,7 @@ msgstr "Falls markiert, erfordern neue Nachrichten Ihre Aufmerksamkeit."
 
 #. module: iap_extract
 #: model:ir.model.fields,help:iap_extract.field_extract_mixin__message_has_error
+#: model:ir.model.fields,help:iap_extract.field_extract_mixin__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 "Falls markiert, weisen einige Nachrichten einen Zustellungsfehler auf."
@@ -216,14 +217,14 @@ msgstr "Keine Extraktion erforderlich"
 #: model:ir.model.fields.selection,name:iap_extract.selection__hr_applicant__extract_state__not_enough_credit
 #: model:ir.model.fields.selection,name:iap_extract.selection__hr_expense__extract_state__not_enough_credit
 msgid "Not enough credits"
-msgstr ""
+msgstr "Nicht genug Guthaben"
 
 #. module: iap_extract
 #. odoo-python
 #: code:addons/iap_extract/models/extract_mixin.py:0
 #, python-format
 msgid "Not enough credits for data extraction"
-msgstr ""
+msgstr "Nicht ausreichend Guthaben für Datenextraktion"
 
 #. module: iap_extract
 #: model:ir.model.fields,field_description:iap_extract.field_extract_mixin__message_needaction_counter
@@ -238,7 +239,7 @@ msgstr "Anzahl der Fehler"
 #. module: iap_extract
 #: model:ir.model.fields,help:iap_extract.field_extract_mixin__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr "Anzahl der Meldungen, die eine Aktion erfordern"
+msgstr "Anzahl der Nachrichten, die eine Aktion erfordern"
 
 #. module: iap_extract
 #: model:ir.model.fields,help:iap_extract.field_extract_mixin__message_has_error_counter
@@ -248,7 +249,12 @@ msgstr "Anzahl der Nachrichten mit Zustellungsfehler"
 #. module: iap_extract
 #: model:ir.model.fields,field_description:iap_extract.field_extract_mixin__rating_ids
 msgid "Ratings"
-msgstr ""
+msgstr "Bewertungen"
+
+#. module: iap_extract
+#: model:ir.model.fields,field_description:iap_extract.field_extract_mixin__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "SMS-Zustellungsfehler"
 
 #. module: iap_extract
 #. odoo-python
@@ -272,6 +278,7 @@ msgstr "Server ist nicht verfügbar. Bitte versuchen Sie es später"
 #, python-format
 msgid "Some documents were skipped as they were already digitized"
 msgstr ""
+"Einige Dokumente wurden übersprungen, da sie bereits digitalisiert wurden"
 
 #. module: iap_extract
 #. odoo-python
@@ -304,7 +311,7 @@ msgstr "Das Dokument wurde abgelehnt, weil es zu klein ist"
 #: code:addons/iap_extract/models/extract_mixin.py:0
 #, python-format
 msgid "The selected documents are already digitized"
-msgstr ""
+msgstr "Die ausgewählten Dokumente sind bereits digitalisiert"
 
 #. module: iap_extract
 #: model:ir.model.fields.selection,name:iap_extract.selection__account_move__extract_state__to_validate
@@ -338,6 +345,16 @@ msgid "Waiting validation"
 msgstr "Wartende Validierung"
 
 #. module: iap_extract
+#: model:ir.model.fields,field_description:iap_extract.field_extract_mixin__website_message_ids
+msgid "Website Messages"
+msgstr "Website-Nachrichten"
+
+#. module: iap_extract
+#: model:ir.model.fields,help:iap_extract.field_extract_mixin__website_message_ids
+msgid "Website communication history"
+msgstr "Website-Kommunikationsverlauf"
+
+#. module: iap_extract
 #. odoo-python
 #: code:addons/iap_extract/models/extract_mixin.py:0
 #, python-format
@@ -352,7 +369,7 @@ msgstr ""
 #: code:addons/iap_extract/models/extract_mixin.py:0
 #, python-format
 msgid "Your document contains too many pages"
-msgstr ""
+msgstr "Ihr Dokument enthält zu viele Seiten"
 
 #. module: iap_extract
 #: model:ir.model.fields.selection,name:iap_extract.selection__account_move__extract_state__extract_not_ready

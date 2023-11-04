@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Marianna Ciofani, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:22+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -59,21 +60,21 @@ msgstr "Aggiungi campo personalizzato"
 #: code:addons/web_enterprise/static/src/views/kanban/kanban_header_patch.js:0
 #, python-format
 msgid "Automations"
-msgstr ""
+msgstr "Automazioni"
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
 msgid "Build new apps from scratch"
-msgstr ""
+msgstr "Crea nuove app da zero"
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
 msgid "Build new reports"
-msgstr ""
+msgstr "Crea nuovi resoconti"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -106,21 +107,21 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
 msgid "Create automation rules"
-msgstr ""
+msgstr "Crea regole per l'automazione"
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
 msgid "Customize Reports"
-msgstr ""
+msgstr "Personalizza resoconti"
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
 msgid "Customize any screen"
-msgstr ""
+msgstr "Personalizza qualsiasi schermo"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -141,14 +142,14 @@ msgstr "Scadenza database:"
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
 msgid "Define webhooks"
-msgstr ""
+msgstr "Definisci i webhook"
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
 msgid "Discard"
-msgstr ""
+msgstr "Abbandona"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -186,7 +187,7 @@ msgstr "Menu principale"
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
 msgid "Learn More"
-msgstr ""
+msgstr "Scopri di più"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -234,14 +235,14 @@ msgstr "Odoo Enterprise Edition License V1.0"
 #: code:addons/web_enterprise/static/src/views/list/list_renderer_desktop.js:0
 #, python-format
 msgid "Odoo Studio - Add new fields to any view"
-msgstr ""
+msgstr "Odoo Studio - Aggiungi nuovi campi ad ogni vista"
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/views/kanban/kanban_header_patch.js:0
 #, python-format
 msgid "Odoo Studio - Customize workflows in minutes"
-msgstr ""
+msgstr "Odoo Studio - Personalizza i flussi di lavoro in pochi minuti"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -342,7 +343,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
 msgid "Start using Odoo Studio"
-msgstr ""
+msgstr "Inizia ad utilizzare Odoo Studio"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -430,7 +431,7 @@ msgstr "Impossibile inviare le istruzioni via e-mail, contatta"
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
 msgid "Unleash the power of Odoo Studio:"
-msgstr ""
+msgstr "Scopri il potere di Odoo Studio:"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -449,7 +450,7 @@ msgstr "Impostazioni utente"
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
 msgid "Want to tailor-make your Odoo?"
-msgstr ""
+msgstr "Vuoi personalizzare il tuo Odoo?"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -498,7 +499,7 @@ msgstr "Il tuo abbonamento è stato aggiornato ed è valido fino a"
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
 msgid "and more!"
-msgstr ""
+msgstr "e molto altro!"
 
 #. module: web_enterprise
 #. odoo-javascript

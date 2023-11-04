@@ -48,6 +48,8 @@ msgstr "Antworten"
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.knowledge_base_forum_card
 msgid "Ask questions and discuss tips with fellow members in a forum"
 msgstr ""
+"Stellen Sie Fragen und diskutieren Sie Tipps mit anderen Mitgliedern in "
+"einem Forum"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.footer
@@ -57,7 +59,7 @@ msgstr "Community fragen"
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.knowledge_base_forum_card
 msgid "Ask the community"
-msgstr ""
+msgstr "Die Community fragen"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__can_share_forum
@@ -107,7 +109,7 @@ msgstr "Anzeigename"
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_forum_forum__filter_for_helpdesk_wizard
 msgid "Filter For Helpdesk Wizard"
-msgstr ""
+msgstr "Assistent zum Filtern für Kundendienst"
 
 #. module: website_helpdesk_forum
 #: model:ir.model,name:website_helpdesk_forum.model_forum_forum
@@ -195,7 +197,7 @@ msgstr "Zuletzt aktualisiert am"
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.knowledge_base_forum_card
 msgid "Most voted"
-msgstr ""
+msgstr "Am häufigsten zugestimmt"
 
 #. module: website_helpdesk_forum
 #. odoo-python
@@ -207,7 +209,7 @@ msgstr "Keine Beiträge mit diesem Ticket verknüpft."
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.knowledge_base_forum_card
 msgid "Quick Links"
-msgstr ""
+msgstr "Schnellzugriffe"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_select_forum_wizard_view_form
@@ -246,6 +248,8 @@ msgstr "Stichwörter"
 msgid ""
 "These are the top posts in the forums associated with this helpdesk team"
 msgstr ""
+"Dies sind die wichtigsten Beiträge in den Foren, die mit diesem "
+"Kundendienstteam verbunden sind"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_forum_post__ticket_id

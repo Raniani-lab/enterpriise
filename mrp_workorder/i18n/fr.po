@@ -3,8 +3,8 @@
 # 	* mrp_workorder
 # 
 # Translators:
-# Wil Odoo, 2023
 # Jolien De Paepe, 2023
+# Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Jolien De Paepe, 2023\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,7 +55,7 @@ msgstr "<span class=\"o_stat_text\">Instructions</span>"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "<span invisible=\"employee_name\">Log In </span>"
-msgstr ""
+msgstr "<span invisible=\"employee_name\">Se connecter </span>"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_bom__activity_ids
@@ -94,8 +94,8 @@ msgid "Add By-product"
 msgstr "Ajouter sous-produit"
 
 #. module: mrp_workorder
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/mrp_workorder/models/mrp_production.py:0
 #: code:addons/mrp_workorder/models/mrp_workorder.py:0
 #: code:addons/mrp_workorder/static/src/mrp_display/dialog/mrp_menu_dialog.xml:0
@@ -127,8 +127,8 @@ msgid "Add Workorder"
 msgstr "Ajouter un ordre de travail"
 
 #. module: mrp_workorder
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/mrp_workorder/models/mrp_workorder.py:0
 #: code:addons/mrp_workorder/static/src/mrp_display/dialog/mrp_menu_dialog.xml:0
 #, python-format
@@ -165,7 +165,7 @@ msgstr "Tous les employés autorisés"
 #: code:addons/mrp_workorder/static/src/mrp_display/control_panel.js:0
 #, python-format
 msgid "All MO"
-msgstr ""
+msgstr "Tous les OF"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__allow_producing_quantity_change
@@ -208,7 +208,7 @@ msgstr "Rapport de vue d'ensemble de la nomenclature"
 #: code:addons/mrp_workorder/static/src/mrp_display/dialog/mrp_menu_dialog.xml:0
 #, python-format
 msgid "Back"
-msgstr ""
+msgstr "Retour"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder___barcode_scanned
@@ -226,7 +226,7 @@ msgstr "Nomenclature"
 #: code:addons/mrp_workorder/static/src/components/viewer.xml:0
 #, python-format
 msgid "Binary file"
-msgstr ""
+msgstr "Fichier binaire"
 
 #. module: mrp_workorder
 #. odoo-javascript
@@ -307,7 +307,7 @@ msgstr "Fermer"
 #: code:addons/mrp_workorder/static/src/mrp_display/mrp_display_record.xml:0
 #, python-format
 msgid "Close Production"
-msgstr ""
+msgstr "Fermer la production"
 
 #. module: mrp_workorder
 #: model:product.attribute,name:mrp_workorder.product_attribute_color_radio
@@ -353,7 +353,7 @@ msgstr "Configuration"
 #: code:addons/mrp_workorder/static/src/mrp_display/dialog/mrp_workcenter_dialog.xml:0
 #, python-format
 msgid "Confirm"
-msgstr ""
+msgstr "Confirmer"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__connected_employee_ids
@@ -383,19 +383,14 @@ msgstr "Continuer"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_check_view_form_tablet
 msgid "Continue Consumption"
-msgstr ""
-
-#. module: mrp_workorder
-#: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_check_view_form_tablet
-msgid "Continue Consuption"
-msgstr ""
+msgstr "Continuer la consommation"
 
 #. module: mrp_workorder
 #. odoo-javascript
 #: code:addons/mrp_workorder/static/src/mrp_display/dialog/mrp_quality_check_confirmation_dialog.xml:0
 #, python-format
 msgid "Continue consumption"
-msgstr ""
+msgstr "Continuer la consommation"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,help:mrp_workorder.field_mrp_workorder_additional_product__product_uom_category_id
@@ -417,7 +412,7 @@ msgstr "Coût"
 #: code:addons/mrp_workorder/static/src/components/viewer.js:0
 #, python-format
 msgid "Could not display the selected %s"
-msgstr ""
+msgstr "Impossible d'afficher le %s sélectionné"
 
 #. module: mrp_workorder
 #: model_terms:ir.actions.act_window,help:mrp_workorder.mrp_stock_picking_type_action
@@ -568,7 +563,7 @@ msgstr "Échec"
 #: code:addons/mrp_workorder/static/src/mrp_display/dialog/mrp_quality_check_confirmation_dialog.xml:0
 #, python-format
 msgid "Fill in worksheet"
-msgstr ""
+msgstr "Compléter la feuille de travail"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__finished_lot_id
@@ -629,6 +624,8 @@ msgid ""
 "If this checkbox is ticked, the serial numbers lines for this operation type"
 " will be pre-filled in the shop floor."
 msgstr ""
+"Si cette case est cochée, les lignes de numéros de série pour ce type "
+"d'opération seront préremplies dans l'atelier."
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__worksheet_document
@@ -707,14 +704,14 @@ msgstr "L'utilisateur actuel travaille-t-il ?"
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_additional_product__write_uid
 #: model:ir.model.fields,field_description:mrp_workorder.field_propose_change__write_uid
 msgid "Last Updated by"
-msgstr "Dernière mise à jour par"
+msgstr "Mis à jour par"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_production_additional_workorder__write_date
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_additional_product__write_date
 #: model:ir.model.fields,field_description:mrp_workorder.field_propose_change__write_date
 msgid "Last Updated on"
-msgstr "Dernière mise à jour le"
+msgstr "Mis à jour le"
 
 #. module: mrp_workorder
 #. odoo-javascript
@@ -745,22 +742,24 @@ msgstr "Lot/série"
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_report_mrp_report_mo_overview
 msgid "MO Overview Report"
-msgstr ""
+msgstr "Rapport de vue d'ensemble des OF"
 
 #. module: mrp_workorder
 #: model:res.groups,name:mrp_workorder.group_mrp_wo_tablet_timer
 msgid "Manage Work Order timer on Shop Floor"
-msgstr ""
+msgstr "Gérer le minuteur des ordres de travail dans l'atelier"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.res_config_settings_view_form
 msgid "Manage your manufacturing orders from the shop floor app"
-msgstr ""
+msgstr "Gérer vos ordres de fabrication dans l'application Atelier"
 
 #. module: mrp_workorder
 #: model:res.groups,name:mrp_workorder.group_mrp_wo_shop_floor
 msgid "Manage your manufacturing orders from the shop floor display app"
 msgstr ""
+"Gérer vos ordres de fabrication à partir de l'application de visualisation "
+"de l'atelier"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
@@ -824,7 +823,7 @@ msgstr "Échéance de mon activité"
 #: code:addons/mrp_workorder/static/src/mrp_display/control_panel.js:0
 #, python-format
 msgid "My WO"
-msgstr ""
+msgstr "Mes ordres de travail"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_mrp_production_workorder_form_view_filter_my_work_orders
@@ -975,7 +974,7 @@ msgstr "PDF"
 #: code:addons/mrp_workorder/static/src/components/viewer.xml:0
 #, python-format
 msgid "PDF file"
-msgstr ""
+msgstr "Fichier PDF"
 
 #. module: mrp_workorder
 #. odoo-javascript
@@ -1052,7 +1051,7 @@ msgstr ""
 #: code:addons/mrp_workorder/models/mrp_workorder.py:0
 #, python-format
 msgid "Please unblock the work center to start the work order"
-msgstr ""
+msgstr "Débloquez le poste de travail pour lancer l'ordre de travail"
 
 #. module: mrp_workorder
 #. odoo-python
@@ -1064,7 +1063,7 @@ msgstr "Veuillez charger une image."
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_stock_picking_type__prefill_lot_tablet
 msgid "Pre-fill Lot/Serial Numbers in Shop Floor"
-msgstr ""
+msgstr "Préremplir les lots/numéros de série dans l'atelier"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__previous_check_id
@@ -1206,7 +1205,7 @@ msgstr "Quantité"
 #: code:addons/mrp_workorder/static/src/mrp_display/dialog/mrp_register_production_dialog.xml:0
 #, python-format
 msgid "Quantity Produced"
-msgstr ""
+msgstr "Quantité produite"
 
 #. module: mrp_workorder
 #. odoo-python
@@ -1240,7 +1239,7 @@ msgstr "Enregistrer la production"
 #: code:addons/mrp_workorder/static/src/mrp_display/mrp_display_record.js:0
 #, python-format
 msgid "Register Production: %s"
-msgstr ""
+msgstr "Enregistrer la production : %s"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__additional
@@ -1288,14 +1287,14 @@ msgstr "Résultat"
 #: code:addons/mrp_workorder/static/src/mrp_display/mrp_display.js:0
 #, python-format
 msgid "STARTED work on workorder %s"
-msgstr ""
+msgstr "DÉBUT du travail sur l'ordre de travail %s"
 
 #. module: mrp_workorder
 #. odoo-javascript
 #: code:addons/mrp_workorder/static/src/mrp_display/mrp_display.js:0
 #, python-format
 msgid "STOPPED work on workorder %s"
-msgstr ""
+msgstr "ARRÊT du travail sur l'ordre de travail %s"
 
 #. module: mrp_workorder
 #. odoo-javascript
@@ -1317,7 +1316,7 @@ msgstr "Sélectionner un employé"
 #: code:addons/mrp_workorder/static/src/mrp_display/mrp_display.js:0
 #, python-format
 msgid "Select Work Centers for this station"
-msgstr ""
+msgstr "Sélectionnez des postes de travail pour cette station"
 
 #. module: mrp_workorder
 #. odoo-javascript
@@ -1363,7 +1362,7 @@ msgstr "Atelier"
 #: code:addons/mrp_workorder/static/src/mrp_display/mrp_display.xml:0
 #, python-format
 msgid "Shop Floor Control Panel"
-msgstr ""
+msgstr "Panneau de contrôle de l'atelier"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_routing_workcenter_tree_view_inherited
@@ -1380,7 +1379,7 @@ msgstr "Montrer le minuteur sur l'écran des ordres de travail"
 #: code:addons/mrp_workorder/static/src/components/viewer.xml:0
 #, python-format
 msgid "Slides viewer"
-msgstr ""
+msgstr "Slides viewer"
 
 #. module: mrp_workorder
 #: model:product.template,description_sale:mrp_workorder.product_template_stool
@@ -1558,6 +1557,9 @@ msgid ""
 "Track work orders, show instructions and record operations: quality control,"
 " serial numbers, quantities consumed, etc. from here"
 msgstr ""
+"Suivez les ordres de travail, affichez les instructions et enregistrez des "
+"opérations : contrôle qualité, numéros de série, quantités consommées, etc. "
+"à partir d'ici"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_additional_product__product_tracking
@@ -1592,7 +1594,7 @@ msgstr "Débloquer"
 #: code:addons/mrp_workorder/static/src/mrp_display/mrp_display_record.xml:0
 #, python-format
 msgid "Undo"
-msgstr ""
+msgstr "Annuler"
 
 #. module: mrp_workorder
 #. odoo-javascript
@@ -1602,7 +1604,7 @@ msgstr ""
 #: code:addons/mrp_workorder/static/src/mrp_display/mrp_record_line/stock_move.js:0
 #, python-format
 msgid "Unit"
-msgstr ""
+msgstr "Unité"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
@@ -1616,7 +1618,7 @@ msgstr "Unité de mesure"
 #: code:addons/mrp_workorder/static/src/mrp_display/mrp_record_line/stock_move.js:0
 #, python-format
 msgid "Units"
-msgstr ""
+msgstr "Unités"
 
 #. module: mrp_workorder
 #: model:ir.actions.server,name:mrp_workorder.production_order_unplan_server_action
@@ -1837,6 +1839,8 @@ msgid ""
 "You need to complete Quality Checks using the Shop Floor before marking Work"
 " Order as Done."
 msgstr ""
+"Vous devez compléter les contrôles qualité dans l'application Atelier avant "
+"de marquer l'ordre de travail comme fait."
 
 #. module: mrp_workorder
 #. odoo-python
@@ -1863,7 +1867,7 @@ msgstr "Vous devez être connecté pour traiter cet ordre de travail."
 #: code:addons/mrp_workorder/models/mrp_production.py:0
 #, python-format
 msgid "You need to supply a Lot/Serial Number for the final product."
-msgstr ""
+msgstr "Vous devez fournir un lot/numéro de série pour le produit fini."
 
 #. module: mrp_workorder
 #. odoo-python
@@ -1886,6 +1890,7 @@ msgstr "Vous devez toujours effectuer les contrôles qualité !"
 #, python-format
 msgid "Your suggestion to delete the %s step was succesfully created."
 msgstr ""
+"Votre suggestion de supprimer l'étape %s a été mise en œuvre avec succès. "
 
 #. module: mrp_workorder
 #: model:ir.model.fields.selection,name:mrp_workorder.selection__quality_point__test_report_type__zpl

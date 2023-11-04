@@ -1,24 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* snailmail_account_followup
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Niyas Raphy, 2022
-# Malaz Abuidris <msea@odoo.com>, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:03+0000\n"
-"PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
-"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. module: snailmail_account_followup
@@ -38,7 +36,7 @@ msgstr "عن طريق البريد "
 #. module: snailmail_account_followup
 #: model:ir.model,name:snailmail_account_followup.model_res_partner
 msgid "Contact"
-msgstr "جهة اتصال "
+msgstr "جهة الاتصال"
 
 #. module: snailmail_account_followup
 #: model:ir.model,name:snailmail_account_followup.model_account_followup_followup_line
@@ -79,5 +77,9 @@ msgstr "معالج لإرسال التذكيرات اليدوية إلى الع�
 #. odoo-python
 #: code:addons/snailmail_account_followup/models/account_followup_report.py:0
 #, python-format
-msgid "You are trying to send a letter by post, but no follow-up contact has any address set"
-msgstr "أنت تحاول إرسال رسالة عبر البريد، ولكن ليس لجهات الاتصال المتابعة عناوين بريد معدّة "
+msgid ""
+"You are trying to send a letter by post, but no follow-up contact has any "
+"address set"
+msgstr ""
+"أنت تحاول إرسال رسالة عبر البريد، ولكن ليس لجهات الاتصال المتابعة عناوين "
+"بريد معدّة "

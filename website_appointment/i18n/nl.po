@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:22+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,6 +38,8 @@ msgid ""
 "<i class=\"fa fa-video-camera fa-fw me-1 fs-5 text-muted\"/>\n"
 "                                <span class=\"o_not_editable\">Online</span>"
 msgstr ""
+"<i class=\"fa fa-video-camera fa-fw me-1 fs-5 text-muted\"/>\n"
+"                                <span class=\"o_not_editable\">Online</span>"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_pages_kanban_view
@@ -52,6 +55,8 @@ msgstr "<span class=\"text-bg-success\">Gepubliceerd</span>"
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_select_operator
 msgid "<span>See all availabilities <i class=\"fa fa-long-arrow-right\"/></span>"
 msgstr ""
+"<span>Bekijk alle beschikbaarheden <i class=\"fa fa-long-arrow-"
+"right\"/></span>"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_select_operator
@@ -95,7 +100,7 @@ msgstr "Afspraak"
 #. module: website_appointment
 #: model:ir.model,name:website_appointment.model_appointment_invite
 msgid "Appointment Invite"
-msgstr ""
+msgstr "Afspraak uitnodigen"
 
 #. module: website_appointment
 #: model:ir.actions.act_window,name:website_appointment.action_appointment_pages_list
@@ -134,7 +139,7 @@ msgstr "Maak een afspraak"
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_progress_bar
 msgid "Booked"
-msgstr ""
+msgstr "Geboekt"
 
 #. module: website_appointment
 #: model:ir.model.fields,field_description:website_appointment.field_appointment_invite__can_publish
@@ -155,7 +160,7 @@ msgstr "Kies wie je gaat ontmoeten"
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.website_calendar_index_topbar
 msgid "Choose your appointment"
-msgstr ""
+msgstr "Kies je afspraak"
 
 #. module: website_appointment
 #. odoo-javascript
@@ -172,7 +177,7 @@ msgstr "Cover eigenschappen"
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_progress_bar
 msgid "Date &amp; time"
-msgstr ""
+msgstr "Datum &amp; tijd"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_progress_bar
@@ -180,11 +185,13 @@ msgid ""
 "Details<span class=\"d-inline-block mx-sm-3 fa fa-angle-right text-muted "
 "fs-5\"/>"
 msgstr ""
+"Details<span class=\"d-inline-block mx-sm-3 fa fa-angle-right text-muted "
+"fs-5\"/>"
 
 #. module: website_appointment
 #: model:ir.model.fields,field_description:website_appointment.field_appointment_invite__appointment_type_warning_msg
 msgid "Different Website Message"
-msgstr ""
+msgstr "Verschillend websitebericht"
 
 #. module: website_appointment
 #. odoo-javascript
@@ -212,7 +219,7 @@ msgstr "Nieuwe afspraaksoort"
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointments_cards
 msgid "No result for \""
-msgstr ""
+msgstr "Geen resultaten voor \""
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_progress_bar
@@ -241,7 +248,7 @@ msgstr "Gepubliceerd"
 #: model:ir.model.fields,help:website_appointment.field_appointment_invite__website_id
 #: model:ir.model.fields,help:website_appointment.field_appointment_type__website_id
 msgid "Restrict publishing to this website."
-msgstr ""
+msgstr "Publiceren op deze website beperken."
 
 #. module: website_appointment
 #: model:ir.model.fields,field_description:website_appointment.field_appointment_type__is_seo_optimized
@@ -258,17 +265,17 @@ msgstr "Plan een afspraak"
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_validated
 msgid "Schedule another appointment"
-msgstr ""
+msgstr "Plan nog een afspraak"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.website_calendar_index_topbar
 msgid "Search..."
-msgstr ""
+msgstr "Zoeken..."
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointments_cards
 msgid "See all appointments <i class=\"fa fa-long-arrow-right\"/>"
-msgstr ""
+msgstr "Bekijk alle afspraken <i class=\"fa fa-long-arrow-right\"/>"
 
 #. module: website_appointment
 #: model:ir.model.fields,field_description:website_appointment.field_appointment_type__seo_name
@@ -293,6 +300,7 @@ msgid ""
 "The following appointment type(s) are not compatible with the website "
 "chosen: "
 msgstr ""
+"De volgende afspraaksoort(en) zijn niet verenigbaar met de gekozen website:"
 
 #. module: website_appointment
 #: model:ir.model.fields,help:website_appointment.field_appointment_invite__website_url
@@ -304,7 +312,7 @@ msgstr ""
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointments_cards
 msgid "There is currently no appointment available"
-msgstr ""
+msgstr "Er is momenteel geen afspraak beschikbaar"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_type_view_form

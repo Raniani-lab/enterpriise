@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Marianna Ciofani, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:21+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,7 +32,7 @@ msgstr "%(field name)s da %(order)s"
 #: code:addons/spreadsheet_edition/static/src/bundle/actions/version_history/version_history_action.js:0
 #, python-format
 msgid "%(name)s (restored from %(timestamp)s)"
-msgstr ""
+msgstr "%(name)s (ripristinato da %(timestamp)s)"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -66,14 +67,14 @@ msgstr "%(sortName)s (in ordine descrescente)"
 #: code:addons/spreadsheet_edition/static/src/bundle/actions/control_panel/spreadsheet_control_panel.js:0
 #, python-format
 msgid "- dates: %s"
-msgstr ""
+msgstr "- date: %s"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/actions/control_panel/spreadsheet_control_panel.js:0
 #, python-format
 msgid "- numbers: %s"
-msgstr ""
+msgstr "- numberi: %s"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__active
@@ -120,7 +121,7 @@ msgstr "Filtra automaticamente sul periodo attuale"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/relation_filter_editor_side_panel.xml:0
 #, python-format
 msgid "Automatically filter on the current user"
-msgstr ""
+msgstr "Filtra automaticamente sull'utente attuale"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -190,7 +191,7 @@ msgstr "Data creazione"
 #: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/odoo_line/odoo_line_config_panel.xml:0
 #, python-format
 msgid "Cumulative data"
-msgstr ""
+msgstr "Dati cumulativi"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -204,7 +205,7 @@ msgstr "Valuta"
 #: code:addons/spreadsheet_edition/static/src/bundle/version_history/side_panel/version_history_item.js:0
 #, python-format
 msgid "Current Version"
-msgstr ""
+msgstr "Versione corrente"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -259,6 +260,9 @@ msgid ""
 "Difference between user locale (%(user_locale)s) and spreadsheet locale "
 "(%(spreadsheet_locale)s). This spreadsheet is using the formats below:"
 msgstr ""
+"Differenza tra le impostazioni locali dell'utente (%(user_locale)s) e le "
+"impostazioni locali dei fogli di calcolo (%(spreadsheet_locale)s). Questo "
+"foglio di lavoro utilizza il seguente formato:"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -356,7 +360,7 @@ msgstr "Filtri"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/date_filter_editor_side_panel.js:0
 #, python-format
 msgid "From / To"
-msgstr ""
+msgstr "Da/per"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__id
@@ -470,7 +474,7 @@ msgstr "Proprietà elenco"
 #: code:addons/spreadsheet_edition/static/src/bundle/version_history/side_panel/version_history_side_panel.xml:0
 #, python-format
 msgid "Load More"
-msgstr ""
+msgstr "Carica di più"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -506,21 +510,21 @@ msgstr "Voci di menù"
 #: code:addons/spreadsheet_edition/static/src/bundle/list/plugins/list_autofill_plugin.js:0
 #, python-format
 msgid "Missing list #%s"
-msgstr ""
+msgstr "Elenco mancante #%s"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/plugins/pivot_autofill_plugin.js:0
 #, python-format
 msgid "Missing pivot"
-msgstr ""
+msgstr "Pivot mancante"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/plugins/pivot_autofill_plugin.js:0
 #, python-format
 msgid "Missing pivot #%s"
-msgstr ""
+msgstr "Pivot mancante #%s"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -545,7 +549,7 @@ msgstr "Mese"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/date_filter_editor_side_panel.js:0
 #, python-format
 msgid "Month / Quarter"
-msgstr ""
+msgstr "Mese/trimestre"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -559,7 +563,7 @@ msgstr "Nome del %s:"
 #: code:addons/spreadsheet_edition/static/src/bundle/version_history/side_panel/version_history_item.js:0
 #, python-format
 msgid "Name this version"
-msgstr ""
+msgstr "Nomina questa versione"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -605,7 +609,7 @@ msgstr "Nessun'anteprima"
 #: code:addons/spreadsheet_edition/static/src/bundle/actions/version_history/version_history_action.js:0
 #, python-format
 msgid "Odoo Spreadsheet"
-msgstr ""
+msgstr "Fogli di calcolo Odoo"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__parent_revision_id
@@ -750,6 +754,13 @@ msgid "Requires a selected field"
 msgstr "Richiede un campo selezionato"
 
 #. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_editor/text_filter_editor_side_panel.xml:0
+#, python-format
+msgid "Restrict values to a range"
+msgstr ""
+
+#. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__revision_id
 msgid "Revision"
 msgstr "Revisione"
@@ -757,7 +768,7 @@ msgstr "Revisione"
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__name
 msgid "Revision name"
-msgstr ""
+msgstr "Nome revisione"
 
 #. module: spreadsheet_edition
 #: model:ir.actions.act_window,name:spreadsheet_edition.spreadsheet_revision_action
@@ -822,7 +833,7 @@ msgstr "Vedi proprietà pivot"
 #: code:addons/spreadsheet_edition/static/src/bundle/version_history/index.js:0
 #, python-format
 msgid "See version history"
-msgstr ""
+msgstr "Vedi cronologia versione"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -857,7 +868,7 @@ msgstr "Seleziona i record da inserire"
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_dashboard_share__server_revision_id
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_mixin__server_revision_id
 msgid "Server Revision"
-msgstr ""
+msgstr "Revisione server"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -871,7 +882,7 @@ msgstr "Imposta come filtro"
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
 #, python-format
 msgid "Snapshot"
-msgstr ""
+msgstr "Snapshot"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -951,6 +962,8 @@ msgid ""
 "The history of your spreadsheet is corrupted and you are likely missing "
 "recent revisions. This feature cannot be used."
 msgstr ""
+"La cronologia del tuo foglio di calcolo è danneggiata e stai perdendo le "
+"revisioni più recenti. Questa funzionalità non può essere utilizzata."
 
 #. module: spreadsheet_edition
 #. odoo-python
@@ -960,6 +973,8 @@ msgid ""
 "The operation could not be applied because of a concurrent update. Please "
 "try again."
 msgstr ""
+"Non è stato possibile applicare l'operazione a causa di un aggiornamento "
+"simultaneo. Prova di nuovo."
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -970,13 +985,16 @@ msgid ""
 "\n"
 "Would you like to load the more recent modifications?"
 msgstr ""
+"Alcune revisioni mancanti non permettono di ripristinare l'intera cronologia.\n"
+"\n"
+"Vorresti caricare modifiche più recenti?"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/version_history/side_panel/version_history_side_panel.xml:0
 #, python-format
 msgid "There are no prior revisions for this spreadsheet."
-msgstr ""
+msgstr "Non ci sono revisioni precedenti per questo foglio di calcolo."
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -999,7 +1017,7 @@ msgstr "Totale"
 #: code:addons/spreadsheet_edition/static/src/bundle/version_history/index.js:0
 #, python-format
 msgid "Version History"
-msgstr ""
+msgstr "Cronologia versione"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

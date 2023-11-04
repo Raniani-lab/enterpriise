@@ -3,6 +3,8 @@
 # 	* web_studio
 # 
 # Translators:
+# Martin Trigaux, 2023
+# Jolien De Paepe, 2023
 # Wil Odoo, 2023
 # 
 msgid ""
@@ -103,7 +105,7 @@ msgstr "\" is mislukt"
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "%(rule_string)s (%(model_name)s)"
-msgstr ""
+msgstr "%(rule_string)s (%(model_name)s)"
 
 #. module: web_studio
 #. odoo-python
@@ -235,7 +237,7 @@ msgstr "Actie ter goedkeuring:"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
 #, python-format
 msgid "Action to run"
-msgstr ""
+msgstr "Uit te voeren actie"
 
 #. module: web_studio
 #. odoo-javascript
@@ -325,7 +327,7 @@ msgstr "Knop toevoegen"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
 #, python-format
 msgid "Add a button"
-msgstr ""
+msgstr "Knop toevoegen"
 
 #. module: web_studio
 #. odoo-javascript
@@ -435,13 +437,15 @@ msgstr ""
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__group_id
 #, python-format
 msgid "Allowed Group"
-msgstr ""
+msgstr "Toegestane groep"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_studio_approval_rule__responsible_id
 msgid ""
 "An activity will be assigned to this user when an approval is requested"
 msgstr ""
+"Een activiteit wordt toegewezen aan deze gebruiker wanneer een goedkeuring "
+"wordt aangevraagd"
 
 #. module: web_studio
 #. odoo-python
@@ -449,6 +453,7 @@ msgstr ""
 #, python-format
 msgid "An approval for '%(rule_name)s' has been requested on %(record_name)s"
 msgstr ""
+"Een goedkeuring voor '%(rule_name)s' is aangevraagd op %(record_name)s"
 
 #. module: web_studio
 #. odoo-javascript
@@ -495,7 +500,7 @@ msgstr ""
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "Approvals missing"
-msgstr ""
+msgstr "Ontbrekende goedkeuringen"
 
 #. module: web_studio
 #. odoo-javascript
@@ -622,7 +627,7 @@ msgstr "Automatisch aangevulde velden"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_base_automation
 msgid "Automation Rule"
-msgstr ""
+msgstr "Automatiseringsregel"
 
 #. module: web_studio
 #. odoo-javascript
@@ -704,7 +709,7 @@ msgstr "Bedrijf kop/voettekst"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.js:0
 #, python-format
 msgid "Buttons Properties"
-msgstr ""
+msgstr "Eigenschappen knoppen"
 
 #. module: web_studio
 #. odoo-javascript
@@ -719,7 +724,7 @@ msgstr "Agenda"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
 #, python-format
 msgid "Call a method"
-msgstr ""
+msgstr "Roep een methode aan"
 
 #. module: web_studio
 #. odoo-javascript
@@ -758,14 +763,14 @@ msgstr "Kan worden goedgekeurd"
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "Can't patch 'create', 'write' and 'unlink'."
-msgstr ""
+msgstr "Kan 'create', 'write' en 'unlink' niet patchen."
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "Can't patch private methods."
-msgstr ""
+msgstr "Kan privé methodes niet patchen."
 
 #. module: web_studio
 #. odoo-javascript
@@ -836,7 +841,7 @@ msgstr "Kies een app naam"
 #: code:addons/web_studio/static/src/client_action/menu_creator/menu_creator.xml:0
 #, python-format
 msgid "Choose the name of the menu"
-msgstr ""
+msgstr "Kies de naam van de menu"
 
 #. module: web_studio
 #. odoo-javascript
@@ -871,8 +876,8 @@ msgid "Cohort"
 msgstr "Cohort"
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/calendar/calendar_editor_sidebar.xml:0
@@ -901,8 +906,8 @@ msgid "Companies"
 msgstr "Bedrijven"
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
@@ -949,7 +954,7 @@ msgstr "Configureer model"
 #: code:addons/web_studio/static/src/client_action/menu_creator/menu_creator.xml:0
 #, python-format
 msgid "Configure model"
-msgstr ""
+msgstr "Configureer model"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1170,11 +1175,11 @@ msgstr "Wijzigingen"
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_xml/report_editor_xml.xml:0
 #, python-format
 msgid "DIFF"
-msgstr ""
+msgstr "DIFF"
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
@@ -1310,8 +1315,8 @@ msgid "Descending"
 msgstr "Aflopend"
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
@@ -1340,7 +1345,7 @@ msgstr "Schakel weergave uit"
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_snackbar.xml:0
 #, python-format
 msgid "Discard"
-msgstr ""
+msgstr "Negeren"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1555,12 +1560,12 @@ msgstr "Fout"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
 #, python-format
 msgid "Exclusive Approval"
-msgstr ""
+msgstr "Exclusieve goedkeuring"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__exclusive_user
 msgid "Exclusive approval"
-msgstr ""
+msgstr "Exclusieve goedkeuring"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1661,8 +1666,8 @@ msgid "Filter"
 msgstr "Filter"
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/controllers/main.py:0
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
@@ -1706,6 +1711,8 @@ msgid ""
 "For compatibility purpose with base_automation,approvals on 'create', "
 "'write' and 'unlink' methods are forbidden."
 msgstr ""
+"Voor compatibiliteit met base_automation, zijn goedkeuringen op 'create', "
+"'write' en 'unlink' methoden verboden."
 
 #. module: web_studio
 #. odoo-javascript
@@ -1720,7 +1727,7 @@ msgstr "Formulier"
 #: code:addons/web_studio/static/src/client_action/xml_resource_editor/xml_resource_editor.xml:0
 #, python-format
 msgid "Format"
-msgstr ""
+msgstr "Formatteer"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1878,6 +1885,8 @@ msgid ""
 "Header and footer are shared with other reports which may be impacted by the"
 " reset."
 msgstr ""
+"De koptekst en de voettekst worden gedeeld met andere rapporten die mogelijk"
+" worden beïnvloed door de reset."
 
 #. module: web_studio
 #. odoo-javascript
@@ -1968,8 +1977,8 @@ msgstr ""
 "Als je geen nieuw model wilt maken, moet je een bestaand model selecteren."
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
 #, python-format
@@ -2009,7 +2018,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
 #, python-format
 msgid "Include header and footer"
-msgstr ""
+msgstr "Met koptekst en voettekst"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_ui_menu__is_studio_configuration
@@ -2080,7 +2089,7 @@ msgstr "Is standaard weergave"
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "It lacks a method to check."
-msgstr ""
+msgstr "Er ontbreekt een methode om dit te controleren."
 
 #. module: web_studio
 #. odoo-javascript
@@ -2116,7 +2125,7 @@ msgstr "Omschrijving"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
 #, python-format
 msgid "Label of the button"
-msgstr ""
+msgstr "Label van de knop"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__write_uid
@@ -2137,7 +2146,7 @@ msgstr "Laatst bijgewerkt op"
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_xml/report_editor_xml.xml:0
 #, python-format
 msgid "Leave DIFF"
-msgstr ""
+msgstr "Laat DIFF"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2267,7 +2276,7 @@ msgstr "Methode"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
 #, python-format
 msgid "Method to run"
-msgstr ""
+msgstr "Uit te voeren methode"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2326,7 +2335,7 @@ msgstr "Modellen"
 #: code:addons/web_studio/static/src/client_action/xml_resource_editor/xml_resource_editor.xml:0
 #, python-format
 msgid "Modified by:"
-msgstr ""
+msgstr "Gewijzigd door:"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_module_module
@@ -2544,8 +2553,8 @@ msgid "None"
 msgstr "Geen"
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
@@ -2558,7 +2567,7 @@ msgstr "Notities"
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__notification_order
 #, python-format
 msgid "Notification Order"
-msgstr ""
+msgstr "Notificatie order"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__entries_count
@@ -2920,7 +2929,7 @@ msgstr "Rapportnaam"
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
 #, python-format
 msgid "Report preview not available"
-msgstr ""
+msgstr "Voorbeeld van het rapport is niet beschikbaar"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2930,8 +2939,8 @@ msgid "Reporting views"
 msgstr "Rapportage weergaven"
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/controllers/main.py:0
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
@@ -2962,12 +2971,12 @@ msgstr "Reset afbeelding"
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.reset_view_arch_wizard_view
 msgid "Reset View"
-msgstr ""
+msgstr "Reset weergave"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_reset_view_arch_wizard
 msgid "Reset View Architecture Wizard"
-msgstr ""
+msgstr "Herstel weergave architectuur wizard"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2979,8 +2988,8 @@ msgid "Reset report"
 msgstr "Rapport resetten"
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
@@ -3066,7 +3075,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
 #, python-format
 msgid "Run a Server Action"
-msgstr ""
+msgstr "Serveractie uitvoeren"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3293,6 +3302,8 @@ msgid ""
 "Some records were skipped because approvals were missing to"
 "                                    proceed with your request: "
 msgstr ""
+"Sommige records zijn overgeslagen omdat er goedkeuringen ontbraken om door "
+"te gaan met je verzoek:"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3416,7 +3427,7 @@ msgstr "Studio goedkeuringsregel"
 #: model:ir.actions.act_window,name:web_studio.studio_approval_rule_action
 #: model:ir.ui.menu,name:web_studio.menu_studio_approval_rule
 msgid "Studio Approval Rules"
-msgstr ""
+msgstr "Studio goedkeuringsregels"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_ir_ui_menu__is_studio_configuration
@@ -3463,8 +3474,8 @@ msgid "Tabs"
 msgstr "Tabs"
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
@@ -3511,8 +3522,8 @@ msgid "The field %s does not exist."
 msgstr "Het veld %s bestaat niet."
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/studio_approval.py:0
 #: code:addons/web_studio/static/src/approval/approval_hook.js:0
 #, python-format
@@ -3545,14 +3556,14 @@ msgstr "Het icoon is niet gelinkt aan een bijlage"
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The method %s does not exist on the model %s."
-msgstr ""
+msgstr "De methode %s bestaat niet op het model %s."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.js:0
 #, python-format
 msgid "The method %s is private."
-msgstr ""
+msgstr "De methode %s is privé."
 
 #. module: web_studio
 #. odoo-python
@@ -3569,7 +3580,7 @@ msgstr "Het model %s bestaat niet."
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The model %s doesn't exist."
-msgstr ""
+msgstr "Het model %s bestaat niet."
 
 #. module: web_studio
 #. odoo-python
@@ -3598,6 +3609,8 @@ msgstr "Het gerelateerde veld van een knop moet een many2one zijn tot %s."
 #, python-format
 msgid "The report is in error. Only editing the XML sources is permitted"
 msgstr ""
+"Het rapport bevat een foutmelding. Alleen het bewerken van XML-bronnen is "
+"toegestaan"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3636,13 +3649,15 @@ msgid ""
 "There is no record on which this report can be previewed. Create at least "
 "one record to preview the report."
 msgstr ""
+"Er is geen record waarop dit rapport kan worden bekeken. Maak ten minste één"
+" record om een voorbeeld van het rapport te bekijken."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
 #, python-format
 msgid "There is no record to preview"
-msgstr ""
+msgstr "Er is geen record om te bekijken"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_studio_approval_rule__users_to_notify
@@ -3650,6 +3665,8 @@ msgid ""
 "These users will receive a notification via internal note when an approval "
 "is requested"
 msgstr ""
+"Deze gebruikers ontvangen een notificatie via een interne notitie wanneer "
+"een goedkeuring is aangevraagd"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3662,6 +3679,7 @@ msgstr "Derde status"
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/navbar/navbar.js:0
 #: code:addons/web_studio/static/src/client_action/studio_home_menu/studio_home_menu.js:0
+#: code:addons/web_studio/static/src/studio_service.js:0
 #, python-format
 msgid "This action is not editable by Studio"
 msgstr "Deze actie is niet wijzigbaar met Studio"
@@ -3701,6 +3719,8 @@ msgid ""
 "This message will be displayed to users that cannot proceed without this "
 "approval"
 msgstr ""
+"Dit bericht wordt weergegeven aan gebruikers die niet verder kunnen zonder "
+"deze goedkeuring"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3784,6 +3804,9 @@ msgid ""
 "notifications for an approval request will only be sent once rules from "
 "previous levels have been validated"
 msgstr ""
+"Gebruik dit veld om validatie op meerdere niveaus in te stellen. Volgende "
+"activiteiten en meldingen voor een goedkeuringsaanvraag worden alleen "
+"verzonden als de regels van de vorige niveaus zijn gevalideerd."
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
@@ -3817,18 +3840,18 @@ msgstr "Gebruiker is geen lid van de geselecteerde groep."
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__users_to_notify
 #, python-format
 msgid "Users to notify"
-msgstr ""
+msgstr "Te verwittigen gebruikers"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/xml_resource_editor/xml_resource_editor.xml:0
 #, python-format
 msgid "Uses:"
-msgstr ""
+msgstr "Gebruikt:"
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog.xml:0
 #, python-format
@@ -3870,14 +3893,14 @@ msgstr "Wachten op goedkeuring"
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "Webhook Automations"
-msgstr ""
+msgstr "Webhook automatiseringen"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Webhooks"
-msgstr ""
+msgstr "Webhooks"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3905,7 +3928,7 @@ msgstr "Welkom bij"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
 #, python-format
 msgid "What should the button do"
-msgstr ""
+msgstr "Wat moet de knop doen"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4002,7 +4025,7 @@ msgstr "dropdown"
 #: code:addons/web_studio/static/src/client_action/menu_creator/menu_creator.xml:0
 #, python-format
 msgid "e.g. Properties"
-msgstr ""
+msgstr "Bijv. Eigenschappen"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4080,4 +4103,4 @@ msgstr "x_studio_"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog.xml:0
 #, python-format
 msgid "{{ item.isInEdition ? 'Add selection' : 'Edit selection' }}"
-msgstr ""
+msgstr "{{ item.isInEdition ? 'Add selection' : 'Edit selection' }}"

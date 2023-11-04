@@ -1,41 +1,35 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* sale_ebay
-#
+# 
 # Translators:
-# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2022
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2022
-# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2022
-# Andrzej Wiśniewski <a.wisniewski@hadron.eu.com>, 2022
-# Dawid Prus, 2022
-# Wojciech Warczakowski <w.warczakowski@gmail.com>, 2022
-# Maksym <ms@myodoo.pl>, 2022
-# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2022
-# Martin Trigaux, 2022
-# Dariusz Żbikowski <darek@krokus.com.pl>, 2022
-# Paweł Wodyński <pw@myodoo.pl>, 2022
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2022
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Piotr Szlązak <szlazakpiotr@gmail.com>, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
-"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: pl\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 #. module: sale_ebay
 #. odoo-python
 #: code:addons/sale_ebay/models/product.py:0
 #, python-format
-msgid " If you want to set quantity to 0, the Out Of Stock option should be enabled and the listing duration should set to Good 'Til Canceled"
-msgstr "Jeśli chcesz ustawić wartość na 0, opcja \"Brak w magazynie\" powinna być włączona, a czas aukcji powinien być ustawiony na \"Dobry, do czasu anulowania\""
+msgid ""
+" If you want to set quantity to 0, the Out Of Stock option should be enabled"
+" and the listing duration should set to Good 'Til Canceled"
+msgstr ""
+"Jeśli chcesz ustawić wartość na 0, opcja \"Brak w magazynie\" powinna być "
+"włączona, a czas aukcji powinien być ustawiony na \"Dobry, do czasu "
+"anulowania\""
 
 #. module: sale_ebay
 #. odoo-python
@@ -81,14 +75,18 @@ msgstr "Aktywuj inne waluty"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Add other countries"
-msgstr ""
+msgstr "Dodaj inne kraje"
 
 #. module: sale_ebay
 #. odoo-python
 #: code:addons/sale_ebay/models/product.py:0
 #, python-format
-msgid "All the quantities must be greater than 0 or you need to enable the Out Of Stock option."
-msgstr "Wszystkie ilości muszą być większe niż 0 lub trzeba włączyć opcję Brak w magazynie."
+msgid ""
+"All the quantities must be greater than 0 or you need to enable the Out Of "
+"Stock option."
+msgstr ""
+"Wszystkie ilości muszą być większe niż 0 lub trzeba włączyć opcję Brak w "
+"magazynie."
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_best_offer
@@ -245,6 +243,8 @@ msgid ""
 "Ebay Synchronisation could not confirm because of the following error:\n"
 "%s"
 msgstr ""
+"Synchronizacja Ebay nie mogła zostać potwierdzona z powodu następującego błędu:\n"
+"%s"
 
 #. module: sale_ebay
 #. odoo-python
@@ -254,21 +254,23 @@ msgid ""
 "Ebay could not synchronize order:\n"
 "%s"
 msgstr ""
+"Ebay nie mógł zsynchronizować zamówienia:\n"
+"%s"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_orders_sync_ir_actions_server
 msgid "Ebay: get new orders"
-msgstr ""
+msgstr "Ebay: otrzymywanie nowych zamówień"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_orders_recovery
 msgid "Ebay: orders recovery"
-msgstr ""
+msgstr "Ebay: odzyskiwanie zamówień"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_stock_sync_ir_actions_server
 msgid "Ebay: synchronise stock"
-msgstr ""
+msgstr "Ebay: synchronizacja zapasów"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_categories_ir_actions_server
@@ -297,10 +299,8 @@ msgstr ""
 #, python-format
 msgid ""
 "Error Encountered.\n"
-"'%s'"
+"%r"
 msgstr ""
-"Wystąpił błąd.\n"
-"'%s'"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
@@ -325,7 +325,7 @@ msgstr "Galeria Plus"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Generate Token"
-msgstr ""
+msgstr "Generowanie tokena"
 
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__gtc
@@ -345,7 +345,7 @@ msgstr "ID"
 #: model:ir.model.fields,help:sale_ebay.field_res_country__ebay_available
 #: model:ir.model.fields,help:sale_ebay.field_res_currency__ebay_available
 msgid "If activated, can be used for eBay."
-msgstr ""
+msgstr "Jeśli zostanie aktywowana, może być używana w serwisie eBay."
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -437,7 +437,7 @@ msgstr "Miejsce"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_account_deletion_endpoint
 msgid "Marketplace account deletion notification endpoint"
-msgstr ""
+msgstr "Punkt końcowy powiadomienia o usunięciu konta w usłudze Marketplace"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -498,8 +498,12 @@ msgstr "Polityka płatności"
 #. odoo-python
 #: code:addons/sale_ebay/models/res_config_settings.py:0
 #, python-format
-msgid "Please provide your ebay production keys before enabling the account deletion notifications."
+msgid ""
+"Please provide your ebay production keys before enabling the account "
+"deletion notifications."
 msgstr ""
+"Przed włączeniem powiadomień o usunięciu konta należy podać klucze "
+"produkcyjne ebay."
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -537,7 +541,7 @@ msgstr "Wariant produktu"
 #: code:addons/sale_ebay/models/sale_order.py:0
 #, python-format
 msgid "Product created from eBay transaction %s"
-msgstr ""
+msgstr "Produkt utworzony na podstawie transakcji w serwisie eBay %s"
 
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__res_config_settings__ebay_domain__prod
@@ -568,7 +572,7 @@ msgstr "Publikuj na eBay"
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_quantity
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_quantity
 msgid "Quantity On eBay"
-msgstr ""
+msgstr "Ilość w serwisie eBay"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_quantity_sold
@@ -579,7 +583,7 @@ msgstr "Ilość sprzedana"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Relist Item"
-msgstr "realistyczny element"
+msgstr "wystaw ponownie element"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_seller_return_policy_id
@@ -605,12 +609,12 @@ msgstr "Zespół sprzedaży"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Sales Team to manage eBay sales"
-msgstr ""
+msgstr "Zespół sprzedaży do zarządzania sprzedażą w serwisie eBay"
 
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__res_config_settings__ebay_domain__sand
 msgid "Sandbox"
-msgstr "Sandbox"
+msgstr "Piaskownica (Sandbox)"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sandbox_app_id
@@ -630,7 +634,7 @@ msgstr "Żeton piaskownicy"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Sell on eBay"
-msgstr ""
+msgstr "Sprzedaż w serwisie eBay"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_seller_shipping_policy_id
@@ -653,7 +657,7 @@ msgstr "Cena wywoławcza na aukcję"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Storage"
-msgstr ""
+msgstr "Magazynowanie"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -715,12 +719,18 @@ msgid ""
 "The python 'cryptography' module is not installed on your server.\n"
 "It is necessary to support eBay account deletion notifications, please contact your system administrator to install it."
 msgstr ""
+"Moduł Python 'cryptography' nie jest zainstalowany na Twoim serwerze.\n"
+"Jest on niezbędny do obsługi powiadomień o usunięciu konta eBay, skontaktuj się z administratorem systemu, aby go zainstalować."
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_subtitle
 #: model:ir.model.fields,help:sale_ebay.field_product_template__ebay_subtitle
-msgid "The subtitle is restricted to 55 characters. Fees can be claimed by eBay for this feature"
-msgstr "Podtytuł jest ograniczony do 55 znaków. Właściciel serwisu eBay może żądać zapłaty za tę funkcję"
+msgid ""
+"The subtitle is restricted to 55 characters. Fees can be claimed by eBay for"
+" this feature"
+msgstr ""
+"Podtytuł jest ograniczony do 55 znaków. Właściciel serwisu eBay może żądać "
+"zapłaty za tę funkcję"
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_title
@@ -731,22 +741,41 @@ msgstr "Tytuł jest ograniczony do 80 znaków"
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_category_2_id
 #: model:ir.model.fields,help:sale_ebay.field_product_template__ebay_category_2_id
-msgid "The use of a secondary category is not allowed on every eBay sites. Fees can be claimed by eBay for this feature"
-msgstr "Używanie kategorii dodatkowej nie jest dozwolone na każdej stronie serwisu eBay. Właściciel serwisu eBay może żądać zapłaty za tę funkcję"
+msgid ""
+"The use of a secondary category is not allowed on every eBay sites. Fees can"
+" be claimed by eBay for this feature"
+msgstr ""
+"Używanie kategorii dodatkowej nie jest dozwolone na każdej stronie serwisu "
+"eBay. Właściciel serwisu eBay może żądać zapłaty za tę funkcję"
 
 #. module: sale_ebay
 #. odoo-python
 #: code:addons/sale_ebay/models/product.py:0
 #, python-format
-msgid "There is no last synchronization date in your System Parameters. Create a System Parameter record with the key \"ebay_last_sync\" and the value set to the date of the oldest order you wish to synchronize in the format \"YYYY-MM-DD\"."
+msgid ""
+"There is no last synchronization date in your System Parameters. Create a "
+"System Parameter record with the key \"ebay_last_sync\" and the value set to"
+" the date of the oldest order you wish to synchronize in the format \"YYYY-"
+"MM-DD\"."
 msgstr ""
+"W parametrach systemu nie ma daty ostatniej synchronizacji. Utwórz rekord "
+"parametru systemowego z kluczem \"ebay_last_sync\" i wartością ustawioną na "
+"datę najstarszego zamówienia, które chcesz zsynchronizować w formacie "
+"\"RRRR-MM-DD\"."
 
 #. module: sale_ebay
 #. odoo-python
 #: code:addons/sale_ebay/models/product.py:0
 #, python-format
-msgid "This function should not be called with a range of more than 30 days, as eBay does not handle longer timespans. Instead use synchronize_orders which split in as many calls as needed."
+msgid ""
+"This function should not be called with a range of more than 30 days, as "
+"eBay does not handle longer timespans. Instead use synchronize_orders which "
+"split in as many calls as needed."
 msgstr ""
+"Ta funkcja nie powinna być wywoływana z zakresem dłuższym niż 30 dni, "
+"ponieważ eBay nie obsługuje dłuższych przedziałów czasowych. Zamiast tego "
+"należy użyć funkcji synchronize_orders, która dzieli się na tyle wywołań, "
+"ile potrzeba."
 
 #. module: sale_ebay
 #. odoo-python
@@ -757,6 +786,9 @@ msgid ""
 "\n"
 "However, personal information might remain in linked documents, please review them according to laws that apply."
 msgstr ""
+"To jest automatyczne powiadomienie, ponieważ otrzymano od eBay prośbę o usunięcie konta \"%s(%s)\". Konto zostało już zanonimizowane, a dostęp do portalu odebrany (jeśli taki istniał).\n"
+"\n"
+"Dane osobowe mogą jednak pozostać w powiązanych dokumentach, prosimy o ich sprawdzenie zgodnie z obowiązującymi przepisami."
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_title
@@ -789,7 +821,7 @@ msgstr "Użyj serwisu eBay"
 #: model:ir.model.fields,field_description:sale_ebay.field_res_country__ebay_available
 #: model:ir.model.fields,field_description:sale_ebay.field_res_currency__ebay_available
 msgid "Use on eBay"
-msgstr ""
+msgstr "Użyj w serwisie eBay"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
@@ -799,7 +831,7 @@ msgstr "Warianty"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_verification_token
 msgid "Verification Token"
-msgstr ""
+msgstr "Token weryfikacyjny"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_zip_code
@@ -820,7 +852,7 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_category
 msgid "eBay Category"
-msgstr ""
+msgstr "Kategoria eBay"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_description
@@ -832,13 +864,13 @@ msgstr "Opis eBay"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_domain
 msgid "eBay Environment"
-msgstr ""
+msgstr "eBay Środowisko"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_fixed_price
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_fixed_price
 msgid "eBay Fixed Price"
-msgstr ""
+msgstr "Stała cena eBay"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__ebay_id
@@ -850,12 +882,12 @@ msgstr "eBay ID"
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_item_condition
 msgid "eBay Item Condition"
-msgstr ""
+msgstr "Stan przedmiotu eBay"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_link_listing
 msgid "eBay Link Listing"
-msgstr ""
+msgstr "Lista linków eBay"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_link_listing__ebay_id
@@ -870,7 +902,7 @@ msgstr ""
 #. module: sale_ebay
 #: model:mail.activity.type,summary:sale_ebay.ebay_GDPR_notification
 msgid "eBay Odoo connector notification - account deletion"
-msgstr ""
+msgstr "Powiadomienie konektora eBay Odoo - usunięcie konta"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -880,12 +912,12 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_policy
 msgid "eBay Policy"
-msgstr ""
+msgstr "Polityka eBay"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_site
 msgid "eBay Site"
-msgstr ""
+msgstr "Strona eBay"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_listing_status
@@ -912,7 +944,7 @@ msgstr "Witryna eBay"
 #. module: sale_ebay
 #: model:mail.activity.type,name:sale_ebay.ebay_GDPR_notification
 msgid "eBay connector: account deletion notification"
-msgstr ""
+msgstr "Konektor eBay: powiadomienie o usunięciu konta"
 
 #. module: sale_ebay
 #. odoo-python
@@ -939,7 +971,8 @@ msgstr "Parametry eBay"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "eBay requires supporting customer account deletion/closure notifications."
+msgid ""
+"eBay requires supporting customer account deletion/closure notifications."
 msgstr ""
 
 #. module: sale_ebay
@@ -951,39 +984,39 @@ msgstr "eBay url"
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_end_items_listings
 msgid "eBay: End product listings"
-msgstr ""
+msgstr "eBay: Zakończ listę produktów"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_list_items
 msgid "eBay: List products"
-msgstr ""
+msgstr "eBay: Lista produktów"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_relist_items
 msgid "eBay: Relist products"
-msgstr ""
+msgstr "eBay: Wystaw ponownie produkty"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_revise_items
 msgid "eBay: Revise products"
-msgstr ""
+msgstr "eBay: Zmień produkty"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_unlink_items_listings
 msgid "eBay: Unlink product listings"
-msgstr ""
+msgstr "eBay: Odłącz listy produktów"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_ebay_update_carrier
 msgid "eBay: Update carrier information"
-msgstr ""
+msgstr "eBay: Aktualizacja informacji o przewoźniku"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_currency
 msgid "ebay Currency"
-msgstr ""
+msgstr "ebay Waluta"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sales_team
 msgid "ebay Sales Team"
-msgstr ""
+msgstr "Zespół sprzedaży ebay"

@@ -1,23 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery_easypost
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Malaz Abuidris <msea@odoo.com>, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
-"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. module: delivery_easypost
@@ -42,8 +41,8 @@ msgstr ""
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_stock_package_type_form_inherit_easypost
-msgid "<span attrs=\"{'invisible': [('package_carrier_type', '!=', 'easypost')]}\">Inches</span>"
-msgstr "<span attrs=\"{'invisible': [('package_carrier_type', '!=', 'easypost')]}\">إنش</span>"
+msgid "<span invisible=\"package_carrier_type != 'easypost'\">Inches</span>"
+msgstr ""
 
 #. module: delivery_easypost
 #. odoo-python
@@ -67,7 +66,7 @@ msgstr "مفاتيح الواجهة البرمجية للتطبيق "
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_easypost_carrier_type
 msgid "Cancel"
-msgstr "إلغاء "
+msgstr "إلغاء"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_stock_package_type__package_carrier_type
@@ -133,8 +132,11 @@ msgstr "اسم العرض "
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
-msgid "Do not forget to load your Easypost carrier accounts for a valid configuration."
-msgstr "لا تنسَ إعداد حسابات شركات الشحن لدى Easypost لتتم التهيئة بشكل صحيح. "
+msgid ""
+"Do not forget to load your Easypost carrier accounts for a valid "
+"configuration."
+msgstr ""
+"لا تنسَ إعداد حسابات شركات الشحن لدى Easypost لتتم التهيئة بشكل صحيح. "
 
 #. module: delivery_easypost
 #: model:ir.model.fields.selection,name:delivery_easypost.selection__delivery_carrier__easypost_label_file_type__epl2
@@ -167,7 +169,7 @@ msgstr "تهيئة Easypost "
 #: code:addons/delivery_easypost/models/delivery_carrier.py:0
 #, python-format
 msgid "Easypost Documents:"
-msgstr ""
+msgstr "مستندات Easypost: "
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_label_file_type
@@ -247,8 +249,12 @@ msgstr "معدل رسوم التأمين (بالدولار الأمريكي) "
 #. odoo-python
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
-msgid "It seems Easypost do not provide shipments for this order.                We advise you to try with another package type or service level."
-msgstr "يبدو أن Easypost لا يمكنها توفير خدمة شحن لهذا الطلب.                ننصحك بمحاولة استخدام نوع تعبئة أو مستوى خدمة مختلفين. "
+msgid ""
+"It seems Easypost do not provide shipments for this order.                We"
+" advise you to try with another package type or service level."
+msgstr ""
+"يبدو أن Easypost لا يمكنها توفير خدمة شحن لهذا الطلب.                ننصحك "
+"بمحاولة استخدام نوع تعبئة أو مستوى خدمة مختلفين. "
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
@@ -275,12 +281,12 @@ msgstr "تحميل حسابات شركات الشحن لدى Easypost "
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Options"
-msgstr "الخيارات "
+msgstr "الخيارات"
 
 #. module: delivery_easypost
 #: model:ir.model.fields.selection,name:delivery_easypost.selection__delivery_carrier__easypost_label_file_type__pdf
 msgid "PDF"
-msgstr "PDF "
+msgstr "PDF"
 
 #. module: delivery_easypost
 #: model:ir.model.fields.selection,name:delivery_easypost.selection__delivery_carrier__easypost_label_file_type__png
@@ -296,6 +302,7 @@ msgstr "لم يتم تهيئة نوع الحزمة في %s لـ easypost. "
 
 #. module: delivery_easypost
 #. odoo-python
+#: code:addons/delivery_easypost/models/easypost_request.py:0
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
@@ -415,7 +422,9 @@ msgstr ""
 #. odoo-python
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
-msgid "The estimated price cannot be computed because the weight of your product is missing."
+msgid ""
+"The estimated price cannot be computed because the weight of your product is"
+" missing."
 msgstr "لا يمكن احتساب السعر التقديري لأن وزن منتجك مفقود."
 
 #. module: delivery_easypost
@@ -433,13 +442,17 @@ msgstr ""
 #. odoo-python
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
-msgid "There is no rate available for the selected service level for one of your package. Please choose another service level."
-msgstr "لا يوجد سعر متاح لمستوى الخدمة المختار لأحد حزمك. الرجاء اختيار مستوى خدمة آخر. "
+msgid ""
+"There is no rate available for the selected service level for one of your "
+"package. Please choose another service level."
+msgstr ""
+"لا يوجد سعر متاح لمستوى الخدمة المختار لأحد حزمك. الرجاء اختيار مستوى خدمة "
+"آخر. "
 
 #. module: delivery_easypost
 #: model:ir.model,name:delivery_easypost.model_stock_picking
 msgid "Transfer"
-msgstr "الشحنة"
+msgstr "تحويل "
 
 #. module: delivery_easypost
 #. odoo-python
@@ -473,8 +486,12 @@ msgstr "لا يمكنك إلغاء شحنة Easypost."
 #. odoo-python
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
-msgid "You have no carrier linked to your Easypost Account.                Please connect to Easypost, link your account to carriers and then retry."
-msgstr "لا توجد أي شركة شحن مرتبطة بحسابك على Easypost.                 الرجاء الاتصال بـEasypost، وربط حسابك بشركة شحن ثم إعادة المحاولة. "
+msgid ""
+"You have no carrier linked to your Easypost Account.                Please "
+"connect to Easypost, link your account to carriers and then retry."
+msgstr ""
+"لا توجد أي شركة شحن مرتبطة بحسابك على Easypost.                 الرجاء "
+"الاتصال بـEasypost، وربط حسابك بشركة شحن ثم إعادة المحاولة. "
 
 #. module: delivery_easypost
 #: model:ir.model.fields.selection,name:delivery_easypost.selection__delivery_carrier__easypost_label_file_type__zpl

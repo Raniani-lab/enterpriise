@@ -1,24 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* documents_project
-#
+# 
 # Translators:
-# 江口和志 <sandwhale1010@gmail.com>, 2022
-# Martin Trigaux, 2023
-# Andy Yiu, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:02+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Andy Yiu, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
-"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: documents_project
@@ -26,12 +24,14 @@ msgstr ""
 #: code:addons/documents_project/models/project_project.py:0
 #, python-format
 msgid "%(project_name)s's Documents"
-msgstr ""
+msgstr "%(project_name)sのドキュメント"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_workflow_rule
-msgid "A set of condition and actions which will be available to all attachments matching the conditions"
-msgstr ""
+msgid ""
+"A set of condition and actions which will be available to all attachments "
+"matching the conditions"
+msgstr "条件に一致する全ての添付ファイルが利用できる、条件とアクションのセット。"
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_ask_for_validation
@@ -41,17 +41,17 @@ msgstr "検証を依頼する"
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_ir_attachment
 msgid "Attachment"
-msgstr "添付"
+msgstr "添付ファイル"
 
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.edit_project_document_form_inherit
 msgid "Categorize and share your documents with your customers"
-msgstr ""
+msgstr "ドキュメントをカスタマイズして顧客と共有しましょう"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_facet
 msgid "Category"
-msgstr "カテゴリ"
+msgstr "カテゴリー"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_workflow_rule__create_model
@@ -77,11 +77,13 @@ msgstr "廃止"
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_deprecated
 msgid "Deprecated"
-msgstr "廃止済"
+msgstr "廃止"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_document
 #: model:ir.model.fields,field_description:documents_project.field_ir_attachment__document_ids
+#: model:ir.model.fields,field_description:documents_project.field_mrp_document__document_ids
+#: model:ir.model.fields,field_description:documents_project.field_product_document__document_ids
 msgid "Document"
 msgstr "ドキュメント"
 
@@ -98,7 +100,7 @@ msgstr "ドキュメント"
 #: model_terms:ir.ui.view,arch_db:documents_project.view_task_form2_document_inherit
 #, python-format
 msgid "Documents"
-msgstr "ドキュメント"
+msgstr "書類"
 
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.edit_project_document_form_inherit
@@ -108,31 +110,31 @@ msgstr "書類及び分析"
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_folder
 msgid "Documents Workspace"
-msgstr ""
+msgstr "ドキュメントワークプレイス"
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_draft
 msgid "Draft"
-msgstr "ドラフト"
+msgstr "下書き"
 
 #. module: documents_project
 #. odoo-python
 #: code:addons/documents_project/models/documents_document.py:0
 #, python-format
 msgid "Invalid project search"
-msgstr ""
+msgstr "無効なプロジェクト検索"
 
 #. module: documents_project
 #. odoo-python
 #: code:addons/documents_project/models/documents_document.py:0
 #, python-format
 msgid "Invalid task search"
-msgstr ""
+msgstr "無効なタスク検索"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_document__is_shared
 msgid "Is Shared"
-msgstr ""
+msgstr "共有済"
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_mark_as_draft
@@ -144,24 +146,24 @@ msgstr "下書きとしてマーク"
 #: code:addons/documents_project/models/documents_folder.py:0
 #, python-format
 msgid "Merged Workspace"
-msgstr ""
+msgstr "マージ済ワークプレイス"
 
 #. module: documents_project
 #. odoo-python
 #: code:addons/documents_project/models/documents_workflow_rule.py:0
 #, python-format
 msgid "New task from Documents"
-msgstr ""
+msgstr "ドキュメントからの新規タスク"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_project__document_count
 msgid "Number of documents in Project"
-msgstr ""
+msgstr "プロジェクト内ドキュメント数"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_task__document_count
 msgid "Number of documents in Task"
-msgstr ""
+msgstr "タスク内ドキュメント数"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_project_project
@@ -180,18 +182,18 @@ msgstr "プロジェクト"
 #: model:ir.model.fields,field_description:documents_project.field_project_project__shared_document_ids
 #: model:ir.model.fields,field_description:documents_project.field_project_task__shared_document_ids
 msgid "Shared Documents"
-msgstr ""
+msgstr "共有済ドキュメント"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_project__shared_document_count
 #: model:ir.model.fields,field_description:documents_project.field_project_task__shared_document_count
 msgid "Shared Documents Count"
-msgstr ""
+msgstr "共有済ドキュメント数"
 
 #. module: documents_project
 #: model:documents.facet,name:documents_project.documents_project_status
 msgid "Status"
-msgstr "ステータス"
+msgstr "状態"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_project_task
@@ -206,42 +208,51 @@ msgstr "タスク"
 #: code:addons/documents_project/models/documents_workflow_rule.py:0
 #, python-format
 msgid "Task created from document %s"
-msgstr ""
+msgstr "ドキュメント%sから作成されたタスク"
 
 #. module: documents_project
 #. odoo-python
 #: code:addons/documents_project/models/documents_workflow_rule.py:0
 #, python-format
-msgid "Task created from documents %s"
-msgstr ""
+msgid "Task created from documents"
+msgstr "ドキュメントから作成されたタスク"
 
 #. module: documents_project
 #. odoo-python
 #: code:addons/documents_project/models/project_task.py:0
 #, python-format
 msgid "Task's Documents"
-msgstr ""
+msgstr "タスクのドキュメント"
 
 #. module: documents_project
 #. odoo-python
 #: code:addons/documents_project/models/documents_folder.py:0
 #, python-format
-msgid "The \"%s\" workspace is required by the Project application and cannot be deleted."
-msgstr ""
+msgid ""
+"The \"%s\" workspace is required by the Project application and cannot be "
+"deleted."
+msgstr " \"%s\" 作業区がプロジェクトアプリケーションで要求されているため、削除することはできません。"
 
 #. module: documents_project
 #. odoo-python
 #: code:addons/documents_project/models/project_project.py:0
 #, python-format
-msgid "The \"%s\" workspace should either be in the \"%s\" company like this project or be open to all companies."
-msgstr ""
+msgid ""
+"The \"%s\" workspace should either be in the \"%s\" company like this "
+"project or be open to all companies."
+msgstr "\"%s\"作業区はこのプロジェクトのような\"%s\"会社内にあるか、または全ての会社に対してオープンである必要があります。"
 
 #. module: documents_project
 #. odoo-python
 #: code:addons/documents_project/models/documents_folder.py:0
 #, python-format
-msgid "This workspace should remain in the same company as the \"%s\" project to which it is linked. Please update the company of the \"%s\" project, or leave the company of this workspace empty."
+msgid ""
+"This workspace should remain in the same company as the \"%s\" project to "
+"which it is linked. Please update the company of the \"%s\" project, or "
+"leave the company of this workspace empty."
 msgstr ""
+"この作業区はそれがリンクされている \"%s\" "
+"プロジェクトと同じ会社内にある必要があります。\"%s\"プロジェクトの会社を更新するか、この作業区の会社を空にして下さい。"
 
 #. module: documents_project
 #. odoo-python
@@ -253,6 +264,10 @@ msgid ""
 "\n"
 "Please update the company of those projects, or leave the company of this workspace empty."
 msgstr ""
+"この作業区は、それがリンクされている以下のプロジェクトと同じ会社に残す必要があります:\n"
+"%s\n"
+"\n"
+"これらのプロジェクトの会社を更新するか、この作業区の会社を空にして下さい。"
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_to_validate
@@ -261,13 +276,17 @@ msgstr "未検証"
 
 #. module: documents_project
 #: model_terms:ir.actions.act_window,help:documents_project.action_view_documents_project_task
-msgid "Upload <span class=\"fw-normal\">a file or </span>drag <span class=\"fw-normal\">it here.</span>"
+msgid ""
+"Upload <span class=\"fw-normal\">a file or </span>drag <span class=\"fw-"
+"normal\">it here.</span>"
 msgstr ""
+"<span class=\"fw-normal\">ファイルを </span>アップロードするか <span class=\"fw-"
+"normal\">それをここに</span>ドラッグして下さい。"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_task__project_use_documents
 msgid "Use Documents"
-msgstr ""
+msgstr "ドキュメントを使用"
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_validate
@@ -288,8 +307,11 @@ msgstr "ワークスペース"
 #. module: documents_project
 #: model:ir.model.fields,help:documents_project.field_project_project__documents_folder_id
 #: model:ir.model.fields,help:documents_project.field_project_task__documents_folder_id
-msgid "Workspace in which all of the documents of this project will be categorized. All of the attachments of your tasks will be automatically added as documents in this workspace as well."
-msgstr ""
+msgid ""
+"Workspace in which all of the documents of this project will be categorized."
+" All of the attachments of your tasks will be automatically added as "
+"documents in this workspace as well."
+msgstr "このプロジェクトの全てのドキュメントが分類される作業区。タスクの添付ファイルもすべて、この作業区のドキュメントとして自動的に追加されます。"
 
 #. module: documents_project
 #. odoo-python
@@ -301,22 +323,26 @@ msgid ""
 "\n"
 "Please update the company of all projects so that they remain in the same company as their workspace, or leave the company of the \"%s\" workspace blank."
 msgstr ""
+"このプロジェクトの会社は変更できません。なぜなら、このプロジェクトの作業区は、\"%s\"会社のままの他の後続プロジェクトとリンクしているからです:%s\n"
+"\n"
+"\n"
+"全てのプロジェクトの会社を更新して作業区と同じ会社にするか、\"%s\"作業区の会社を空のままにして下さい。"
 
 #. module: documents_project
 #. odoo-python
 #: code:addons/documents_project/models/documents_folder.py:0
 #, python-format
 msgid "You cannot set a company on the %s workspace."
-msgstr ""
+msgstr "%s作業区に会社を設定することはできません。"
 
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.share_page
 msgid "documents shared"
-msgstr ""
+msgstr "ドキュメントが共有されました"
 
 #. module: documents_project
 #. odoo-python
 #: code:addons/documents_project/models/documents_workflow_rule.py:0
 #, python-format
 msgid "new %s from %s"
-msgstr ""
+msgstr "新規 %s(%sからの)"

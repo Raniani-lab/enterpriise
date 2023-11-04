@@ -1,24 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery_dhl
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Niyas Raphy, 2022
-# Malaz Abuidris <msea@odoo.com>, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
-"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. module: delivery_dhl
@@ -200,6 +198,7 @@ msgstr "تهيئة DHL "
 #. module: delivery_dhl
 #. odoo-python
 #: code:addons/delivery_dhl/models/delivery_dhl.py:0
+#: code:addons/delivery_dhl/models/delivery_dhl.py:0
 #, python-format
 msgid "DHL Documents"
 msgstr "مستندات DHL "
@@ -265,7 +264,8 @@ msgstr "DHL الولايات المتحدة الأمريكية -> دولي "
 #. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
-msgid "DHL account number is missing, please modify your delivery method settings."
+msgid ""
+"DHL account number is missing, please modify your delivery method settings."
 msgstr "اسم مستخدم DHL مفقود، الرجاء تعديل إعدادات طريقة التسليم الخاصة بك. "
 
 #. module: delivery_dhl
@@ -404,7 +404,7 @@ msgstr "O - DOM إكسبريس 10:30 "
 #. module: delivery_dhl
 #: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
 msgid "Options"
-msgstr "خيارات"
+msgstr "الخيارات"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__p
@@ -424,14 +424,18 @@ msgstr "وحدة أبعاد الحزمة "
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_package_weight_unit
 msgid "Package Weight Unit"
-msgstr "وحدة وزن الحزمة "
+msgstr "وحدة وزن الطرد "
 
 #. module: delivery_dhl
 #. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
-msgid "Please define an incoterm in the associated sale order or set a default incoterm for the company in the accounting's settings."
-msgstr "الرجاء تحديد شروط التجارة الدولية في أمر المبيعات ذي الصلة لتعيين شرط التجارة الدولي الافتراضي للشركة في إعدادات المحاسبة. "
+msgid ""
+"Please define an incoterm in the associated sale order or set a default "
+"incoterm for the company in the accounting's settings."
+msgstr ""
+"الرجاء تحديد شروط التجارة الدولية في أمر المبيعات ذي الصلة لتعيين شرط "
+"التجارة الدولي الافتراضي للشركة في إعدادات المحاسبة. "
 
 #. module: delivery_dhl
 #. odoo-python
@@ -468,7 +472,7 @@ msgstr "المستلم"
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_region_code
 msgid "Region"
-msgstr "منطقة"
+msgstr "المنطقة "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__s
@@ -483,9 +487,10 @@ msgstr "المرسل"
 #. module: delivery_dhl
 #. odoo-python
 #: code:addons/delivery_dhl/models/delivery_dhl.py:0
+#: code:addons/delivery_dhl/models/delivery_dhl.py:0
 #, python-format
 msgid "Shipment created into DHL <br/> <b>Tracking Number: </b>%s"
-msgstr ""
+msgstr "تم إنشاء الشحنة في DHL <br/> <b>رقم التتبع: </b>%s"
 
 #. module: delivery_dhl
 #: model:ir.model,name:delivery_dhl.model_delivery_carrier
@@ -550,7 +555,9 @@ msgstr ""
 #. odoo-python
 #: code:addons/delivery_dhl/models/delivery_dhl.py:0
 #, python-format
-msgid "There is no price available for this shipping, you should rather try with the DHL product %s"
+msgid ""
+"There is no price available for this shipping, you should rather try with "
+"the DHL product %s"
 msgstr "لا يوجد سعر متوفر لهذا الشحن، عوضاً عن ذلك، جربه مع منتج DHL%s"
 
 #. module: delivery_dhl

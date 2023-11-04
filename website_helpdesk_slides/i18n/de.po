@@ -106,6 +106,8 @@ msgid ""
 "Hours to Complete\n"
 "                    |"
 msgstr ""
+"Stunden bis Abschluss\n"
+"                    |"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.channel_search_result
@@ -116,6 +118,7 @@ msgstr "Lektionen"
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.knowledge_base_slides_card
 msgid "Level up your skills with our training videos and tutorials"
 msgstr ""
+"Verbessern Sie Ihre Kompetenzen mit unseren Schulungsvideos und Tutorials"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.search_result
@@ -148,7 +151,7 @@ msgstr "Beliebteste"
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.knowledge_base_slides_card
 msgid "Quick Links"
-msgstr ""
+msgstr "Schnellzugriffe"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_helpdesk_team__show_knowledge_base_slide_channel
@@ -163,7 +166,7 @@ msgstr "Folien"
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.knowledge_base_slides_card
 msgid "Take courses"
-msgstr ""
+msgstr "Kurse belegen"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.search_result

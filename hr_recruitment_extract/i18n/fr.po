@@ -3,6 +3,7 @@
 # 	* hr_recruitment_extract
 # 
 # Translators:
+# Jolien De Paepe, 2023
 # Wil Odoo, 2023
 # 
 msgid ""
@@ -50,6 +51,8 @@ msgid ""
 "<i class=\"oi oi-fw o_button_icon oi-arrow-right\"/>\n"
 "                        Retry"
 msgstr ""
+"<i class=\"oi oi-fw o_button_icon oi-arrow-right\"/>\n"
+"                        Réessayer"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__message_needaction
@@ -104,7 +107,7 @@ msgstr "Numériser automatiquement"
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_actions_server_digitize_cv
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "Digitize document"
-msgstr ""
+msgstr "Numériser le document"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__res_company__recruitment_extract_show_ocr_option_selection__manual_send

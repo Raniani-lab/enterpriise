@@ -1,24 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* documents_project
-#
+# 
 # Translators:
-# Niyas Raphy, 2023
-# Martin Trigaux, 2023
-# Malaz Abuidris <msea@odoo.com>, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:02+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
-"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. module: documents_project
@@ -30,8 +28,12 @@ msgstr "مستند %(project_name)s "
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_workflow_rule
-msgid "A set of condition and actions which will be available to all attachments matching the conditions"
-msgstr "مجموعة الشروط والإجراءات التي سوف تكون متُاحة لكافة المرفقات التي تستوفي الشروط "
+msgid ""
+"A set of condition and actions which will be available to all attachments "
+"matching the conditions"
+msgstr ""
+"مجموعة الشروط والإجراءات التي سوف تكون متُاحة لكافة المرفقات التي تستوفي "
+"الشروط "
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_ask_for_validation
@@ -51,7 +53,7 @@ msgstr "قم بوضع مستنداتك في فئات ومشاركتها مع ع�
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_facet
 msgid "Category"
-msgstr "فئة"
+msgstr "الفئة "
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_workflow_rule__create_model
@@ -82,6 +84,8 @@ msgstr "مهمَل "
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_document
 #: model:ir.model.fields,field_description:documents_project.field_ir_attachment__document_ids
+#: model:ir.model.fields,field_description:documents_project.field_mrp_document__document_ids
+#: model:ir.model.fields,field_description:documents_project.field_product_document__document_ids
 msgid "Document"
 msgstr "المستند"
 
@@ -120,14 +124,14 @@ msgstr "مسودة"
 #: code:addons/documents_project/models/documents_document.py:0
 #, python-format
 msgid "Invalid project search"
-msgstr ""
+msgstr "بحث المشروع غير صحيح "
 
 #. module: documents_project
 #. odoo-python
 #: code:addons/documents_project/models/documents_document.py:0
 #, python-format
 msgid "Invalid task search"
-msgstr ""
+msgstr "بحث المهمة غير صحيح "
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_document__is_shared
@@ -206,42 +210,53 @@ msgstr "المهمة"
 #: code:addons/documents_project/models/documents_workflow_rule.py:0
 #, python-format
 msgid "Task created from document %s"
-msgstr ""
+msgstr "تم إنشاء مهمة من المستند %s"
 
 #. module: documents_project
 #. odoo-python
 #: code:addons/documents_project/models/documents_workflow_rule.py:0
 #, python-format
-msgid "Task created from documents %s"
-msgstr ""
+msgid "Task created from documents"
+msgstr "تم إنشاء مهمة من المستندات "
 
 #. module: documents_project
 #. odoo-python
 #: code:addons/documents_project/models/project_task.py:0
 #, python-format
 msgid "Task's Documents"
-msgstr ""
+msgstr "مستندات المهمة "
 
 #. module: documents_project
 #. odoo-python
 #: code:addons/documents_project/models/documents_folder.py:0
 #, python-format
-msgid "The \"%s\" workspace is required by the Project application and cannot be deleted."
+msgid ""
+"The \"%s\" workspace is required by the Project application and cannot be "
+"deleted."
 msgstr "مساحة العمل \"%s\" مطلوبة من قِبَل تطبيق المشروع ولا يمكن حذفها. "
 
 #. module: documents_project
 #. odoo-python
 #: code:addons/documents_project/models/project_project.py:0
 #, python-format
-msgid "The \"%s\" workspace should either be in the \"%s\" company like this project or be open to all companies."
-msgstr "يجب أن تكون مساحة العمل \"%s\" إما في الشركة \"%s\" التي فيها المشروع، أو مفتوحة لكافة الشركات. "
+msgid ""
+"The \"%s\" workspace should either be in the \"%s\" company like this "
+"project or be open to all companies."
+msgstr ""
+"يجب أن تكون مساحة العمل \"%s\" إما في الشركة \"%s\" التي فيها المشروع، أو "
+"مفتوحة لكافة الشركات. "
 
 #. module: documents_project
 #. odoo-python
 #: code:addons/documents_project/models/documents_folder.py:0
 #, python-format
-msgid "This workspace should remain in the same company as the \"%s\" project to which it is linked. Please update the company of the \"%s\" project, or leave the company of this workspace empty."
-msgstr "يجب أن تبقى مساحة العمل هذه في نفس شركة المشروع \"%s\" المرتبطة به. يرجى تحديث شركة المشروع \"%s\"، أو ترك شركة مساحة العمل هذه فارغة. "
+msgid ""
+"This workspace should remain in the same company as the \"%s\" project to "
+"which it is linked. Please update the company of the \"%s\" project, or "
+"leave the company of this workspace empty."
+msgstr ""
+"يجب أن تبقى مساحة العمل هذه في نفس شركة المشروع \"%s\" المرتبطة به. يرجى "
+"تحديث شركة المشروع \"%s\"، أو ترك شركة مساحة العمل هذه فارغة. "
 
 #. module: documents_project
 #. odoo-python
@@ -256,7 +271,7 @@ msgstr ""
 "يجب أن تبقى مساحة العمل هذه في نفس شركة المشروع التالي المرتبطة به:\n"
 "%s\n"
 "\n"
-"رجى تحديث شركة تلك المشاريع  أو ترك شركة مساحة العمل هذه فارغة. "
+"يرجى تحديث شركة تلك المشاريع  أو ترك شركة مساحة العمل هذه فارغة. "
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_to_validate
@@ -265,13 +280,17 @@ msgstr "بانتظار التصديق "
 
 #. module: documents_project
 #: model_terms:ir.actions.act_window,help:documents_project.action_view_documents_project_task
-msgid "Upload <span class=\"fw-normal\">a file or </span>drag <span class=\"fw-normal\">it here.</span>"
-msgstr "قم برفع <span class=\"fw-normal\">الملف أو</span> سحبه <span class=\"fw-normal\">إلى هنا.</span> "
+msgid ""
+"Upload <span class=\"fw-normal\">a file or </span>drag <span class=\"fw-"
+"normal\">it here.</span>"
+msgstr ""
+"قم برفع <span class=\"fw-normal\">الملف أو</span> سحبه <span class=\"fw-"
+"normal\">إلى هنا.</span> "
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_task__project_use_documents
 msgid "Use Documents"
-msgstr "يستخدم مستندات"
+msgstr "استخدم المستندات "
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_validate
@@ -292,8 +311,13 @@ msgstr "مساحة العمل"
 #. module: documents_project
 #: model:ir.model.fields,help:documents_project.field_project_project__documents_folder_id
 #: model:ir.model.fields,help:documents_project.field_project_task__documents_folder_id
-msgid "Workspace in which all of the documents of this project will be categorized. All of the attachments of your tasks will be automatically added as documents in this workspace as well."
-msgstr "مساحة العمل التي سيتم وضع كافة المستندات في فئات فيها. ستتم إضافة كافة مرفقات مهامك تلقائياً كمستندات في مساحة العمل هذه أيضاً. "
+msgid ""
+"Workspace in which all of the documents of this project will be categorized."
+" All of the attachments of your tasks will be automatically added as "
+"documents in this workspace as well."
+msgstr ""
+"مساحة العمل التي سيتم وضع كافة المستندات في فئات فيها. ستتم إضافة كافة "
+"مرفقات مهامك تلقائياً كمستندات في مساحة العمل هذه أيضاً. "
 
 #. module: documents_project
 #. odoo-python
@@ -315,7 +339,7 @@ msgstr ""
 #: code:addons/documents_project/models/documents_folder.py:0
 #, python-format
 msgid "You cannot set a company on the %s workspace."
-msgstr ""
+msgstr "لا يمكنك تعيين شركة في مساحة عمل %s. "
 
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.share_page

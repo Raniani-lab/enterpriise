@@ -42,6 +42,11 @@ msgid "Created on"
 msgstr "Aangemaakt op"
 
 #. module: account_disallowed_expenses_fleet
+#: model:ir.model,name:account_disallowed_expenses_fleet.model_account_deferred_report_handler
+msgid "Deferred Expense Report Custom Handler"
+msgstr "Aangepaste handler rapportage uitgestelde kosten"
+
+#. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_account_disallowed_expenses_category
 msgid "Disallowed Expenses Category"
 msgstr "Verworpen uitgaven"

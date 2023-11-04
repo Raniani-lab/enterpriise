@@ -1,23 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* pos_iot
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Thi Huong Nguyen, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Thi Huong Nguyen, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
-"Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: pos_iot
@@ -32,21 +31,21 @@ msgstr "Chấp nhận thanh toán với thiết bị đầu cuối thanh toán I
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/xml/IoTErrorPopup.xml:0
+#: code:addons/pos_iot/static/src/app/io_t_error_popup/io_t_error_popup.xml:0
 #, python-format
 msgid "Access your"
 msgstr "Truy cập"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/xml/LastTransactionStatus.xml:0
+#: code:addons/pos_iot/static/src/app/last_transaction_status/last_transaction_status.xml:0
 #, python-format
 msgid "Action identifier:"
 msgstr "Định danh hành động: "
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/xml/LastTransactionStatus.xml:0
+#: code:addons/pos_iot/static/src/app/last_transaction_status/last_transaction_status.xml:0
 #, python-format
 msgid "Amount:"
 msgstr "Số tiền:"
@@ -70,21 +69,24 @@ msgstr "Ngăn kéo đựng tiền"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/xml/IoTErrorPopup.xml:0
+#: code:addons/pos_iot/static/src/app/io_t_error_popup/io_t_error_popup.xml:0
 #, python-format
 msgid "Click on Advanced/Show Details/Details/More information"
 msgstr "Bấm vào Nâng cao/Hiển thị chi tiết/Chi tiết/Thêm thông tin"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/xml/IoTErrorPopup.xml:0
+#: code:addons/pos_iot/static/src/app/io_t_error_popup/io_t_error_popup.xml:0
 #, python-format
-msgid "Click on Proceed to .../Add Exception/Visit this website/Go on to the webpage"
-msgstr "Bấm vào Tiến hành.../Thêm ngoại lệ/Truy cập trang web này/Đi tới trang web"
+msgid ""
+"Click on Proceed to .../Add Exception/Visit this website/Go on to the "
+"webpage"
+msgstr ""
+"Bấm vào Tiến hành.../Thêm ngoại lệ/Truy cập trang web này/Đi tới trang web"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/xml/IoTErrorPopup.xml:0
+#: code:addons/pos_iot/static/src/app/io_t_error_popup/io_t_error_popup.xml:0
 #, python-format
 msgid "Close this window and try again"
 msgstr "Đóng cửa sổ này và thử lại"
@@ -96,29 +98,29 @@ msgstr "Cài đặt cấu hình"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/js/payment.js:0
+#: code:addons/pos_iot/static/src/app/payment.js:0
 #, python-format
 msgid "Configuration of payment terminal failed"
 msgstr "Cấu hình thiết bị đầu cuối thanh toán không thành công"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/js/iot_longpolling.js:0
-#: code:addons/pos_iot/static/src/js/payment.js:0
+#: code:addons/pos_iot/static/src/app/payment.js:0
+#: code:addons/pos_iot/static/src/overrides/components/iot_longpolling/iot_longpolling.js:0
 #, python-format
 msgid "Connection to IoT Box failed"
 msgstr "Kết nối với Hộp IoT không thành công"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/js/payment.js:0
+#: code:addons/pos_iot/static/src/app/payment.js:0
 #, python-format
 msgid "Connection to terminal failed"
 msgstr "Kết nối với thiết bị đầu cuối không thành công"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/js/ScaleScreen.js:0
+#: code:addons/pos_iot/static/src/overrides/components/scale_screen/scale_screen.js:0
 #, python-format
 msgid "Could not connect to IoT scale"
 msgstr "Không thể kết nối với cân IoT"
@@ -143,7 +145,7 @@ msgstr "Cân điện tử"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/js/LastTransactionStatus.js:0
+#: code:addons/pos_iot/static/src/app/last_transaction_status/last_transaction_status.js:0
 #, python-format
 msgid "Electronic payment in progress"
 msgstr "Thanh toán điện tử đang diễn ra"
@@ -152,8 +154,12 @@ msgstr "Thanh toán điện tử đang diễn ra"
 #: model:ir.model.fields,help:pos_iot.field_pos_config__iface_scan_via_proxy
 #: model:ir.model.fields,help:pos_iot.field_pos_config__iface_scanner_ids
 #: model:ir.model.fields,help:pos_iot.field_res_config_settings__pos_iface_scanner_ids
-msgid "Enable barcode scanning with a remotely connected barcode scanner and card swiping with a Vantiv card reader."
-msgstr "Bật quét mã vạch với máy quét mã vạch được kết nối từ xa và quẹt thẻ bằng máy đọc thẻ Vantiv."
+msgid ""
+"Enable barcode scanning with a remotely connected barcode scanner and card "
+"swiping with a Vantiv card reader."
+msgstr ""
+"Bật quét mã vạch với máy quét mã vạch được kết nối từ xa và quẹt thẻ bằng "
+"máy đọc thẻ Vantiv."
 
 #. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_config__iface_electronic_scale
@@ -162,14 +168,14 @@ msgstr "Bật tích hợp cân điện tử."
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/xml/IoTErrorPopup.xml:0
+#: code:addons/pos_iot/static/src/app/io_t_error_popup/io_t_error_popup.xml:0
 #, python-format
 msgid "Firefox only: Click on Confirm Security Exception"
-msgstr ""
+msgstr "Chỉ Firefox: Bấm vào Xác nhận ngoại lệ an ninh"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/xml/ScaleScreen.xml:0
+#: code:addons/pos_iot/static/src/overrides/components/scale_screen/scale_screen.xml:0
 #, python-format
 msgid "Get Weight"
 msgstr "Cân sản phẩm"
@@ -177,14 +183,17 @@ msgstr "Cân sản phẩm"
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_printer__device_identifier
 msgid "Identifier"
-msgstr ""
+msgstr "Định danh"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/xml/IoTErrorPopup.xml:0
+#: code:addons/pos_iot/static/src/app/io_t_error_popup/io_t_error_popup.xml:0
 #, python-format
-msgid "If you are on a secure server (HTTPS) check if you accepted the certificate:"
-msgstr "Nếu bạn đang sử dụng máy chủ bảo mật (HTTPS) hãy kiểm tra xem bạn đã chấp nhận chứng chỉ hay chưa: "
+msgid ""
+"If you are on a secure server (HTTPS) check if you accepted the certificate:"
+msgstr ""
+"Nếu bạn đang sử dụng máy chủ bảo mật (HTTPS) hãy kiểm tra xem bạn đã chấp "
+"nhận chứng chỉ hay chưa: "
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_display_id
@@ -222,7 +231,7 @@ msgstr "Thiết bị đầu cuối thanh toán Ingenico"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/xml/IoTErrorPopup.xml:0
+#: code:addons/pos_iot/static/src/app/io_t_error_popup/io_t_error_popup.xml:0
 #, python-format
 msgid "IoT Box Homepage"
 msgstr "Trang chủ Hộp IoT"
@@ -230,7 +239,7 @@ msgstr "Trang chủ Hộp IoT"
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_printer__device_id
 msgid "IoT Device"
-msgstr ""
+msgstr "Thiết bị IoT"
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
@@ -245,7 +254,7 @@ msgstr "Thiết bị IoT"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/js/models.js:0
+#: code:addons/pos_iot/static/src/overrides/models/models.js:0
 #, python-format
 msgid ""
 "It seems that no scale was detected.\n"
@@ -256,24 +265,24 @@ msgstr ""
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/xml/LastTransactionStatus.xml:0
+#: code:addons/pos_iot/static/src/app/last_transaction_status/last_transaction_status.xml:0
 #, python-format
 msgid "Last Transaction Status"
 msgstr "Trạng thái giao dịch gần nhất"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/js/models.js:0
+#: code:addons/pos_iot/static/src/overrides/models/models.js:0
 #, python-format
 msgid "No Scale Detected"
 msgstr "Không phát hiện cân"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/xml/LastTransactionStatus.xml:0
+#: code:addons/pos_iot/static/src/app/last_transaction_status/last_transaction_status.xml:0
 #, python-format
 msgid "Ok"
-msgstr "Đồng ý"
+msgstr "Ok"
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_payment_method__payment_terminal_ids
@@ -288,36 +297,40 @@ msgstr "Thiết bị đầu cuối thanh toán"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/js/payment.js:0
+#: code:addons/pos_iot/static/src/app/payment.js:0
 #, python-format
 msgid "Payment terminal error"
 msgstr "Lỗi thiết bị đầu cuối thanh toán"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/js/payment.js:0
-#: code:addons/pos_iot/static/src/xml/IoTErrorPopup.xml:0
+#: code:addons/pos_iot/static/src/app/io_t_error_popup/io_t_error_popup.xml:0
+#: code:addons/pos_iot/static/src/app/payment.js:0
 #, python-format
 msgid "Please check if the IoT Box is still connected."
 msgstr "Vui lòng kiểm tra xem Hộp IoT của bạn có còn kết nối không."
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/js/payment.js:0
+#: code:addons/pos_iot/static/src/app/payment.js:0
 #, python-format
 msgid "Please check if the terminal is still connected."
 msgstr "Vui lòng kiểm tra xem thiết bị đầu cuối còn kết nối không. "
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/js/payment.js:0
+#: code:addons/pos_iot/static/src/app/payment.js:0
 #, python-format
-msgid "Please check the network connection and then check the status of the last transaction manually."
-msgstr "Vui lòng kiểm tra kết nối mạng và sau đó kiểm tra trạng thái của giao dịch gần nhất theo cách thủ công. "
+msgid ""
+"Please check the network connection and then check the status of the last "
+"transaction manually."
+msgstr ""
+"Vui lòng kiểm tra kết nối mạng và sau đó kiểm tra trạng thái của giao dịch "
+"gần nhất theo cách thủ công. "
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/app/pos_store.js:0
+#: code:addons/pos_iot/static/src/overrides/models/pos_store.js:0
 #, python-format
 msgid "Please process or cancel the current transaction."
 msgstr "Vui lòng tiến hành hoặc hủy giao dịch hiện tại."
@@ -325,17 +338,17 @@ msgstr "Vui lòng tiến hành hoặc hủy giao dịch hiện tại."
 #. module: pos_iot
 #: model:ir.model,name:pos_iot.model_pos_config
 msgid "Point of Sale Configuration"
-msgstr "Cấu hình điểm bán lẻ"
+msgstr "Cấu hình điểm bán hàng"
 
 #. module: pos_iot
 #: model:ir.model,name:pos_iot.model_pos_payment_method
 msgid "Point of Sale Payment Methods"
-msgstr "Phương thức thanh toán điểm bán lẻ"
+msgstr "Phương thức thanh toán điểm bán hàng"
 
 #. module: pos_iot
 #: model:ir.model,name:pos_iot.model_pos_printer
 msgid "Point of Sale Printer"
-msgstr ""
+msgstr "Máy in POS"
 
 #. module: pos_iot
 #: model:ir.model,name:pos_iot.model_pos_session
@@ -350,7 +363,7 @@ msgstr "In qua Proxy"
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_printer__proxy_ip
 msgid "Proxy IP Address"
-msgstr ""
+msgstr "Địa chỉ IP của Proxy"
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
@@ -370,7 +383,7 @@ msgstr "Hiển thị thanh toán cho khách hàng bằng màn hình được k�
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/js/payment.js:0
+#: code:addons/pos_iot/static/src/app/payment.js:0
 #, python-format
 msgid "Terminal Disconnected"
 msgstr "Đã ngắt kết nối với thiết bị đầu cuối"
@@ -378,43 +391,51 @@ msgstr "Đã ngắt kết nối với thiết bị đầu cuối"
 #. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_printer__proxy_ip
 msgid "The IP Address or hostname of the Printer's hardware proxy"
-msgstr ""
+msgstr "Địa chỉ IP hoặc hostname của proxy phần cứng của máy in"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/js/ScaleScreen.js:0
+#: code:addons/pos_iot/static/src/overrides/components/scale_screen/scale_screen.js:0
 #, python-format
 msgid "The IoT scale is not responding. You should check your connection."
 msgstr "Cân IoT không phản hồi. Bạn nên kiểm tra kết nối. "
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
-msgid "The transactions are processed by Ingenico. Set your Ingenico device on the related payment method."
-msgstr "Giao dịch được xử lý bởi Ingenico. Thiết lập thiết bị Ingenico của bạn cho phương thức thanh toán liên quan. "
+msgid ""
+"The transactions are processed by Ingenico. Set your Ingenico device on the "
+"related payment method."
+msgstr ""
+"Giao dịch được xử lý bởi Ingenico. Thiết lập thiết bị Ingenico của bạn cho "
+"phương thức thanh toán liên quan. "
 
 #. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_res_config_settings__worldline_payment_terminal
 #: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
-msgid "The transactions are processed by Worldline. Set your Worldline device on the related payment method."
-msgstr "Giao dịch được xử lý bởi Worldline. Thiết lập thiết bị Worldline của bạn cho phương thức thanh toán liên quan. "
+msgid ""
+"The transactions are processed by Worldline. Set your Worldline device on "
+"the related payment method."
+msgstr ""
+"Giao dịch được xử lý bởi Worldline. Thiết lập thiết bị Worldline của bạn cho"
+" phương thức thanh toán liên quan. "
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/xml/LastTransactionStatus.xml:0
+#: code:addons/pos_iot/static/src/app/last_transaction_status/last_transaction_status.xml:0
 #, python-format
 msgid "Time:"
 msgstr "Thời gian: "
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/js/payment.js:0
+#: code:addons/pos_iot/static/src/app/payment.js:0
 #, python-format
 msgid "Transaction could not be cancelled"
 msgstr "Không thể hủy giao dịch"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/app/pos_store.js:0
+#: code:addons/pos_iot/static/src/overrides/models/pos_store.js:0
 #, python-format
 msgid "Transaction in progress"
 msgstr "Giao dịch đang diễn ra"
@@ -426,7 +447,7 @@ msgstr "Worldline"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/xml/LastTransactionStatus.xml:0
+#: code:addons/pos_iot/static/src/app/last_transaction_status/last_transaction_status.xml:0
 #, python-format
 msgid "Worldline - Last Transaction Status"
 msgstr "Worldline - Trạng thái giao dịch gần nhất"
@@ -438,14 +459,18 @@ msgstr "Thiết bị đầu cuối thanh toán Worldline"
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/js/LastTransactionStatus.js:0
+#: code:addons/pos_iot/static/src/app/last_transaction_status/last_transaction_status.js:0
 #, python-format
-msgid "You cannot check the status of the last transaction when a payment in in progress."
-msgstr "Bạn có thể kiểm tra trạng thái của giao dịch gần nhất khi một khoản thanh toán đang diễn ra."
+msgid ""
+"You cannot check the status of the last transaction when a payment in in "
+"progress."
+msgstr ""
+"Bạn không thể kiểm tra trạng thái của giao dịch gần nhất khi một khoản thanh"
+" toán đang diễn ra."
 
 #. module: pos_iot
 #. odoo-javascript
-#: code:addons/pos_iot/static/src/js/payment.js:0
+#: code:addons/pos_iot/static/src/app/payment.js:0
 #, python-format
 msgid "You must select a payment terminal in your POS config."
 msgstr "Bạn phải chọn thiết bị đầu cuối thanh toán trong cấu hình POS. "

@@ -85,7 +85,7 @@ msgstr "Mehr laden"
 #: code:addons/website_knowledge/static/src/xml/knowledge_public.xml:0
 #, python-format
 msgid "Log in"
-msgstr ""
+msgstr "Anmelden"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.public_sidebar

@@ -1,38 +1,45 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery_ups
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Malaz Abuidris <msea@odoo.com>, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
-"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "A shipment cannot have a KGS/IN or LBS/CM as its unit of measurements. Configure it from the delivery method."
-msgstr "لا يمكن أن يكون للشحنو وحدات قياس كجم/إنش أو رطل/سم. قم بتهيئتها من طريقة التوصيل. "
+msgid ""
+"A shipment cannot have a KGS/IN or LBS/CM as its unit of measurements. "
+"Configure it from the delivery method."
+msgstr ""
+"لا يمكن أن يكون للشحنو وحدات قياس كجم/إنش أو رطل/سم. قم بتهيئتها من طريقة "
+"التوصيل. "
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "Access License number is Invalid. Provide a valid number (Length should be 0-35 alphanumeric characters)"
-msgstr "رقم رخصة الوصول غير صالح. الرجاء تحديد رقم صالح (يجب أن يكون الطول بين 0-35 خانة من الحروف والأرقام) "
+msgid ""
+"Access License number is Invalid. Provide a valid number (Length should be "
+"0-35 alphanumeric characters)"
+msgstr ""
+"رقم رخصة الوصول غير صالح. الرجاء تحديد رقم صالح (يجب أن يكون الطول بين 0-35 "
+"خانة من الحروف والأرقام) "
 
 #. module: delivery_ups
 #. odoo-python
@@ -137,7 +144,8 @@ msgstr ""
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "Exceeds Total Number of allowed pieces per World Wide Express Shipment."
+msgid ""
+"Exceeds Total Number of allowed pieces per World Wide Express Shipment."
 msgstr "يفوق الرقم الإجمالي للقطع المسموح بها لكل شحنة للشحن الدولي السريع. "
 
 #. module: delivery_ups
@@ -170,12 +178,12 @@ msgstr "تنسيق بطاقة العنوان "
 #. module: delivery_ups
 #: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Options"
-msgstr "الخيارات "
+msgstr "الخيارات"
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__gif
 msgid "PDF"
-msgstr "PDF "
+msgstr "PDF"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_package_dimension_unit
@@ -197,9 +205,10 @@ msgstr "وزن الحزم %s ليس رقماً إيجابياً. "
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/delivery_ups.py:0
+#: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid "Packages:"
-msgstr ""
+msgstr "الطرود: "
 
 #. module: delivery_ups
 #. odoo-python
@@ -261,7 +270,9 @@ msgstr "الرجاء كتابة اسم دولة صالح في عنوان الش�
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "Please provide a valid package type available for service and selected locations."
+msgid ""
+"Please provide a valid package type available for service and selected "
+"locations."
 msgstr "الرجاء تحديد نوع حزمة صالح متوفر للخدمة والموقع المختارين. "
 
 #. module: delivery_ups
@@ -274,12 +285,15 @@ msgstr "الرجاء كتابة رقم هاتف صالح للمستلم. "
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide a valid shipper Number/Carrier Account."
 msgstr "الرجاء كتابة رقم الشاحن/حساب شركة الشحن الصحيح. "
 
 #. module: delivery_ups
 #. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide a valid shipper number/Carrier Account."
@@ -351,6 +365,7 @@ msgstr "الرجاء كتابة رمز zip صحيح في عنوان الشاحن
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide a valid zip code in the warehouse address."
 msgstr "الرجاء كتابة رمز zip صحيح في عنوان المستودع. "
@@ -371,6 +386,7 @@ msgstr "الرجاء تحديد عنصر واحد على الأقل لشحنه "
 
 #. module: delivery_ups
 #. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
@@ -405,6 +421,7 @@ msgstr "لم يتم العثور على رقم رخصة الوصول هذا في
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Provided Tracking Ref. Number is invalid."
 msgstr "الرقم المرجعي للتتبع غير صحيح. "
@@ -424,7 +441,8 @@ msgstr "المستلم"
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Recipient Phone must be at least 10 alphanumeric characters."
-msgstr "يجب أن يتكون رقم هاتف المستلم من 10 خانات على الأقل منها أحرف وأرقام. "
+msgstr ""
+"يجب أن يتكون رقم هاتف المستلم من 10 خانات على الأقل منها أحرف وأرقام. "
 
 #. module: delivery_ups
 #. odoo-python
@@ -445,7 +463,7 @@ msgstr "يجب أن تحتوي وصلة هاتف المستلم على أرقا�
 #: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid "Return label generated"
-msgstr ""
+msgstr "تم إنشاء ملصق الإرجاع "
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__spl
@@ -479,14 +497,15 @@ msgstr "لقد تم إلغاء الشحنة رقم %s  "
 #: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid "Shipment created into UPS"
-msgstr ""
+msgstr "تم إنشاء الشحنة في UPS "
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Shipper Phone must be at least 10 alphanumeric characters."
-msgstr "يجي أن يتكون رقم هاتف الشاحم من 10 خانات على الأقل من الأحرف والأرقام. "
+msgstr ""
+"يجي أن يتكون رقم هاتف الشاحم من 10 خانات على الأقل من الأحرف والأرقام. "
 
 #. module: delivery_ups
 #. odoo-python
@@ -552,7 +571,8 @@ msgstr ""
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The delivery cannot be done because the weight of your product is missing."
+msgid ""
+"The delivery cannot be done because the weight of your product is missing."
 msgstr "لا يمكن إتمام عملية التوصيل لأن وزن منتجك مفقود. "
 
 #. module: delivery_ups
@@ -570,8 +590,12 @@ msgstr ""
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The maximum number of user access attempts was exceeded. So please try again later"
-msgstr "لقد تخطيت الحد الأقصى المسموح به لمحاولات الوصول. الرجاء المحاولة من جديد لاحقاً "
+msgid ""
+"The maximum number of user access attempts was exceeded. So please try again"
+" later"
+msgstr ""
+"لقد تخطيت الحد الأقصى المسموح به لمحاولات الوصول. الرجاء المحاولة من جديد "
+"لاحقاً "
 
 #. module: delivery_ups
 #. odoo-python
@@ -594,6 +618,7 @@ msgstr ""
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "The requested service is unavailable between the selected locations."
 msgstr "الخدمة المطوبة غير متاحة حالياً بين المواقع المحددة. "
@@ -602,22 +627,31 @@ msgstr "الخدمة المطوبة غير متاحة حالياً بين الم
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The selected service is invalid from the requested warehouse, please choose another service."
-msgstr "الخدمة المحددة غير صالحة من المستودع المطلوب. الرجاء اختيار خدمة أخرى. "
+msgid ""
+"The selected service is invalid from the requested warehouse, please choose "
+"another service."
+msgstr ""
+"الخدمة المحددة غير صالحة من المستودع المطلوب. الرجاء اختيار خدمة أخرى. "
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The selected service is invalid to the recipient address, please choose another service."
+msgid ""
+"The selected service is invalid to the recipient address, please choose "
+"another service."
 msgstr "الخدمة المحددة غير صالحة إلى عنوان المستلم. الرجاء اختيار خدمة أخرى. "
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The selected service is not possible from your warehouse to the recipient address, please choose another service."
-msgstr "الخدمة المحددة غير ممكنة من مستودعك إلى عنوان المستلم. الرجاء اختيار خدمة أخرى. "
+msgid ""
+"The selected service is not possible from your warehouse to the recipient "
+"address, please choose another service."
+msgstr ""
+"الخدمة المحددة غير ممكنة من مستودعك إلى عنوان المستلم. الرجاء اختيار خدمة "
+"أخرى. "
 
 #. module: delivery_ups
 #. odoo-python
@@ -630,32 +664,46 @@ msgstr "الخدمة المحددة غير صالحة مع طريقة التعب
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "This measurement system is not valid for the selected country. Please switch from LBS/IN to KGS/CM (or vice versa). Configure it from delivery method"
-msgstr "نظام القياسات هذا غير صالح للدولة المحددة. الرجاء التبديل من رطل/إنش إلى كجم/سم (أو العكس). قم بتهيئتها من طريقة التوصيل. "
+msgid ""
+"This measurement system is not valid for the selected country. Please switch"
+" from LBS/IN to KGS/CM (or vice versa). Configure it from delivery method"
+msgstr ""
+"نظام القياسات هذا غير صالح للدولة المحددة. الرجاء التبديل من رطل/إنش إلى "
+"كجم/سم (أو العكس). قم بتهيئتها من طريقة التوصيل. "
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "This measurement system is not valid for the selected country. Please switch from LBS/IN to KGS/CM (or vice versa). Configure it from the delivery method."
-msgstr "نظام القياسات هذا غير صالح للدولة المحددة. الرجاء التبديل من رطل/إنش إلى كجم/سم (أو العكس). قم بتهيئتها من طريقة التوصيل. "
+msgid ""
+"This measurement system is not valid for the selected country. Please switch"
+" from LBS/IN to KGS/CM (or vice versa). Configure it from the delivery "
+"method."
+msgstr ""
+"نظام القياسات هذا غير صالح للدولة المحددة. الرجاء التبديل من رطل/إنش إلى "
+"كجم/سم (أو العكس). قم بتهيئتها من طريقة التوصيل. "
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_cod
-msgid "This value added service enables UPS to collect the payment of the shipment from your customer."
+msgid ""
+"This value added service enables UPS to collect the payment of the shipment "
+"from your customer."
 msgstr "بقيمة مضافة، ستتيح لك هذه الخدمة تحصيل مدفوعات الشحنة من عميلك."
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_saturday_delivery
-msgid "This value added service will allow you to ship the package on saturday also."
+msgid ""
+"This value added service will allow you to ship the package on saturday "
+"also."
 msgstr "بقيمة مضافة، ستتيح لك هذه الخدمة شحن الحزمة يوم السبت أيضًا. "
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/delivery_ups.py:0
+#: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid "Tracking Numbers:"
-msgstr ""
+msgstr "أرقام التتبع: "
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__delivery_type__ups
@@ -748,8 +796,12 @@ msgstr "رقم حساب UPS "
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "UPS address lines can only contain a maximum of 35 characters. You can split the contacts addresses on multiple lines to try to avoid this limitation."
-msgstr "يمكن أن تحتوي بنود عنوان UPS على 35 خانة كحد أقصى. بإمكانك تجزئة عناوين جهات الاتصال لعدة بنود لتجنب تلك المحدودية. "
+msgid ""
+"UPS address lines can only contain a maximum of 35 characters. You can split"
+" the contacts addresses on multiple lines to try to avoid this limitation."
+msgstr ""
+"يمكن أن تحتوي بنود عنوان UPS على 35 خانة كحد أقصى. بإمكانك تجزئة عناوين جهات"
+" الاتصال لعدة بنود لتجنب تلك المحدودية. "
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_duty_payment
@@ -764,6 +816,7 @@ msgstr "وحدة وزن طرد Ups "
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Username/Password is invalid for this delivery provider."
 msgstr "اسم المستخدم/كلمة المرور غير صحيحة لمزود التوصيل هذا. "
@@ -773,7 +826,8 @@ msgstr "اسم المستخدم/كلمة المرور غير صحيحة لمزو
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Warehouse Phone must be at least 10 alphanumeric characters."
-msgstr "يجب أن يتكون رقم هاتف المستودع من 10 خانات على الأقل من الأحرف والأرقام. "
+msgstr ""
+"يجب أن يتكون رقم هاتف المستودع من 10 خانات على الأقل من الأحرف والأرقام. "
 
 #. module: delivery_ups
 #. odoo-python

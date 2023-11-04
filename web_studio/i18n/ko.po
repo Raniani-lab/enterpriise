@@ -1,23 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* web_studio
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Sarah Park, 2023
-#
+# Daye Jeong, 2023
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Sarah Park, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
-"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: web_studio
@@ -38,6 +38,18 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"\n"
+"                <p class=\"o_view_nocontent_smiling_face\">\n"
+"                    이것은 새로운 활동입니다.\n"
+"                </p>\n"
+"                <p>기본적으로 목록 및 양식 보기와 선택한 모델의 옵션에 따라\n"
+"                    다른 유형의 보기가 포함될 수 있습니다.\n"
+"                </p>\n"
+"                <p>\n"
+"                    오른쪽 상단의 스튜디오 아이콘을 클릭하여 사용자 지정으로 이러한 화면을 편집할 수 있습니다.\n"
+"                    (이 도움말 메시지도 여기에서 직접 편집할 수 있습니다.)\n"
+"                </p>\n"
+"            "
 
 #. module: web_studio
 #. odoo-javascript
@@ -48,6 +60,9 @@ msgid ""
 "    There are no many2one fields related to the current model.\n"
 "    To create a one2many field on the current model, you must first create its many2one counterpart on the model you want to relate to.\n"
 msgstr ""
+"\n"
+"    현재 모델과 관련된 many2one 필드가 없습니다.\n"
+"    현재 모델에서 one2many 필드를 만드려면 먼저 관련 모델에서 many2one 대응 필드를 만들어야 합니다.\n"
 
 #. module: web_studio
 #. odoo-python
@@ -70,21 +85,6 @@ msgstr ""
 #, python-format
 msgid ""
 " <p class=\"o_view_nocontent_smiling_face\">\n"
-"                Add a new automated action\n"
-"            </p>\n"
-"            "
-msgstr ""
-" <p class=\"o_view_nocontent_smiling_face\">\n"
-"                새로운 자동 작업 추가\n"
-"            </p>\n"
-"            "
-
-#. module: web_studio
-#. odoo-python
-#: code:addons/web_studio/controllers/main.py:0
-#, python-format
-msgid ""
-" <p class=\"o_view_nocontent_smiling_face\">\n"
 "                Add a new filter\n"
 "            </p>\n"
 "            "
@@ -93,6 +93,20 @@ msgstr ""
 "                새 필터 추가\n"
 "            </p>\n"
 "            "
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor.xml:0
+#, python-format
+msgid "\" failed."
+msgstr "\" 실패."
+
+#. module: web_studio
+#. odoo-python
+#: code:addons/web_studio/models/studio_approval.py:0
+#, python-format
+msgid "%(rule_string)s (%(model_name)s)"
+msgstr "%(rule_string)s (%(model_name)s)"
 
 #. module: web_studio
 #. odoo-python
@@ -106,14 +120,14 @@ msgstr "%s 보고서"
 #: code:addons/web_studio/static/src/client_action/editor/new_model_item/new_model_item.xml:0
 #, python-format
 msgid "'My model'"
-msgstr ""
+msgstr "'나의 모델'"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
 #, python-format
-msgid "(t-if=\""
-msgstr "(t-if=\""
+msgid "('doc' or 'o' are recommended)"
+msgstr "('doc' 또는 'o' 사용 권장)"
 
 #. module: web_studio
 #. odoo-python
@@ -140,17 +154,17 @@ msgstr "같은 이름의 필드가 이미 존재합니다."
 #. module: web_studio
 #: model:ir.model.constraint,message:web_studio.constraint_studio_approval_entry_uniq_combination
 msgid "A rule can only be approved/rejected once per record."
-msgstr ""
+msgstr "규칙은 레코드당 한 번만 승인/거부할 수 있습니다."
 
 #. module: web_studio
 #: model:ir.model.constraint,message:web_studio.constraint_studio_approval_rule_method_or_action_together
 msgid "A rule must apply to an action or a method (but not both)."
-msgstr ""
+msgstr "규칙은 작업 또는 메서드에 적용되어야 합니다(둘 다 적용할 수 없음)."
 
 #. module: web_studio
 #: model:ir.model.constraint,message:web_studio.constraint_studio_approval_rule_method_or_action_not_null
 msgid "A rule must apply to an action or a method."
-msgstr ""
+msgstr "규칙은 작업이나 메서드에 적용되어야 합니다."
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_ir_model__abstract
@@ -162,7 +176,7 @@ msgstr "요약"
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Access Control"
-msgstr ""
+msgstr "사용 권한 제어"
 
 #. module: web_studio
 #. odoo-python
@@ -181,14 +195,14 @@ msgstr "사용 가능 그룹"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/pivot/pivot_editor_sidebar.xml:0
 #, python-format
 msgid "Access records from cell"
-msgstr ""
+msgstr "셀에서 레코드에 액세스"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/graph/graph_editor_sidebar.xml:0
 #, python-format
 msgid "Access records from graph"
-msgstr ""
+msgstr "그래프에서 레코드에 액세스"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_mail_activity_type__category
@@ -214,6 +228,13 @@ msgstr "작업 윈도우 보기"
 #: code:addons/web_studio/static/src/approval/approval_infos.xml:0
 #, python-format
 msgid "Action to approve:"
+msgstr "승인할 작업:"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
+#, python-format
+msgid "Action to run"
 msgstr ""
 
 #. module: web_studio
@@ -225,8 +246,10 @@ msgstr "작업 제목"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_mail_activity_type__category
-msgid "Actions may trigger specific behavior like opening calendar view or automatically mark as done when a document is uploaded"
-msgstr "작업은 일정 관리보기 열기와 같은 특정 동작을 트리거하거나 문서가 업로드될 때 자동으로 완료로 표시할 수 있습니다."
+msgid ""
+"Actions may trigger specific behavior like opening calendar view or "
+"automatically mark as done when a document is uploaded"
+msgstr "활동을 통해 캘린더 화면 열기와 같은 특정 작업을 진행하거나 문서가 업로드되면 자동으로 완료 표시를 할 수 있습니다. "
 
 #. module: web_studio
 #. odoo-javascript
@@ -244,7 +267,7 @@ msgstr "보기 활성화"
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 #, python-format
 msgid "Active"
-msgstr "활성"
+msgstr "활성화"
 
 #. module: web_studio
 #. odoo-javascript
@@ -258,19 +281,18 @@ msgstr "활동"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_mail_activity_type
 msgid "Activity Type"
-msgstr "업무 유형"
+msgstr "활동 유형"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/action_editor/action_editor.js:0
 #, python-format
 msgid "Activity view unavailable on this model"
-msgstr ""
+msgstr "이 모델에서는 활동 보기를 사용할 수 없습니다"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/interactive_editor_sidebar.js:0
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Add"
 msgstr "추가"
@@ -287,7 +309,7 @@ msgstr "대화 위젯 추가"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_renderer/form_editor_renderer_components.xml:0
 #, python-format
 msgid "Add Picture"
-msgstr ""
+msgstr "사진 추가"
 
 #. module: web_studio
 #. odoo-javascript
@@ -295,6 +317,13 @@ msgstr ""
 #, python-format
 msgid "Add a Button"
 msgstr "버튼 추가하기"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
+#, python-format
+msgid "Add a button"
+msgstr "버튼 추가"
 
 #. module: web_studio
 #. odoo-javascript
@@ -322,33 +351,25 @@ msgstr "우선 순위 추가하기"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
 #, python-format
 msgid "Add an approval rule"
-msgstr ""
+msgstr "승인 규칙 추가하기"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/kanban/kanban_editor_compiler.js:0
 #, python-format
 msgid "Add an avatar"
-msgstr ""
+msgstr "아바타 추가하기"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Add details to your records with an embedded list view"
-msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Add in the print menu"
-msgstr "인쇄 메뉴에서 추가하기"
+msgstr "임베디드 목록 보기로 레코드에 세부 정보 추가하기"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog.xml:0
-#: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Add new value"
 msgstr "새 값 추가하기"
@@ -358,21 +379,14 @@ msgstr "새 값 추가하기"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/list/list_editor_sidebar/list_editor_sidebar.js:0
 #, python-format
 msgid "Add record at the bottom"
-msgstr ""
+msgstr "하단에 레코드 추가"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/list/list_editor_sidebar/list_editor_sidebar.js:0
 #, python-format
 msgid "Add record on top"
-msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
-#, python-format
-msgid "Add selection"
-msgstr "선택 추가하기"
+msgstr "상단에 레코드 추가"
 
 #. module: web_studio
 #. odoo-javascript
@@ -386,14 +400,7 @@ msgstr "태그 추가하기"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/map/map_editor_sidebar.xml:0
 #, python-format
 msgid "Additional Fields"
-msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
-#, python-format
-msgid "Address Block"
-msgstr "주소 블록"
+msgstr "추가 필드"
 
 #. module: web_studio
 #. odoo-javascript
@@ -404,13 +411,6 @@ msgstr "종합"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Alignment"
-msgstr "정렬"
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/calendar/calendar_editor_sidebar.xml:0
 #, python-format
 msgid "All Day"
@@ -418,24 +418,33 @@ msgstr "하루 종일"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
 #, python-format
-msgid "All set? You are just one click away from <b>generating your first app</b>."
+msgid ""
+"All changes done to the report's structure will be discarded and the report "
+"will be reset to its factory settings."
+msgstr "보고서 형식에 대한 모든 변경 사항은 삭제되고 공장 초기화 상태로 변경됩니다."
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
+#: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__group_id
+#, python-format
+msgid "Allowed Group"
 msgstr ""
 
 #. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Amount total"
-msgstr "총액"
+#: model:ir.model.fields,help:web_studio.field_studio_approval_rule__responsible_id
+msgid ""
+"An activity will be assigned to this user when an approval is requested"
+msgstr ""
 
 #. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
+#. odoo-python
+#: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
-msgid "Amount untaxed"
-msgstr "비과세 금액"
+msgid "An approval for '%(rule_name)s' has been requested on %(record_name)s"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -447,25 +456,18 @@ msgstr "결재"
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
 msgid "Approval Entries"
-msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
-#, python-format
-msgid "Approval Group"
-msgstr ""
+msgstr "승인 항목"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__rule_id
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_request__rule_id
 msgid "Approval Rule"
-msgstr ""
+msgstr "승인 규칙"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 msgid "Approval Rules"
-msgstr ""
+msgstr "승인 규칙"
 
 #. module: web_studio
 #. odoo-javascript
@@ -477,8 +479,16 @@ msgstr "전자결재 관리"
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
+#: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "Approvals can only be done on a method or an action, not both."
+msgstr "메서드 또는 작업 중 하나만 승인할 수 있으며, 둘 다 승인할 수는 없습니다."
+
+#. module: web_studio
+#. odoo-python
+#: code:addons/web_studio/models/studio_approval.py:0
+#, python-format
+msgid "Approvals missing"
 msgstr ""
 
 #. module: web_studio
@@ -497,29 +507,30 @@ msgstr "결재 완료"
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.notify_approval
 msgid "Approved as"
-msgstr ""
+msgstr "다음과 같이 승인됨"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/approval/approval_infos.xml:0
 #, python-format
 msgid "Approved on"
-msgstr ""
+msgstr "승인된 날짜"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__user_id
 msgid "Approved/rejected by"
-msgstr ""
+msgstr "승인/거부 대상"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Archive deprecated records"
-msgstr ""
+msgstr "사용되지 않는 레코드 보관"
 
 #. module: web_studio
 #. odoo-python
+#: code:addons/web_studio/models/ir_ui_view.py:0
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_form_view
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
@@ -532,14 +543,14 @@ msgstr "보관됨"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Archiving"
-msgstr ""
+msgstr "보관"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/properties/field_properties/field_properties.js:0
 #, python-format
 msgid "Are you sure you want to remove the selection values?"
-msgstr ""
+msgstr "선택 값을 제거하시겠습니까?"
 
 #. module: web_studio
 #. odoo-javascript
@@ -568,13 +579,6 @@ msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "As expression"
-msgstr "표현식으로"
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/graph/graph_editor.js:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/list/list_editor_sidebar/list_editor_sidebar.js:0
 #, python-format
@@ -586,21 +590,21 @@ msgstr "오름차순"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Assign a responsible to each record"
-msgstr ""
+msgstr "각 레코드에 책임자 지정"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Assign dates and visualize records in a calendar"
-msgstr ""
+msgstr "캘린더에서 날짜 지정 및 레코드 시각화"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Attach a picture to a record"
-msgstr ""
+msgstr "레코드에 사진 첨부하기"
 
 #. module: web_studio
 #. odoo-javascript
@@ -611,15 +615,8 @@ msgstr "자동 완성 필드"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_base_automation
-msgid "Automated Action"
-msgstr "자동 작업"
-
-#. module: web_studio
-#. odoo-python
-#: code:addons/web_studio/controllers/main.py:0
-#, python-format
-msgid "Automated Actions"
-msgstr "자동 작업"
+msgid "Automation Rule"
+msgstr "자동화 규칙"
 
 #. module: web_studio
 #. odoo-javascript
@@ -640,21 +637,21 @@ msgstr "평균"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/list/list_editor_sidebar/list_editor_sidebar.js:0
 #, python-format
 msgid "Average of %s"
-msgstr ""
+msgstr "%s의 평균"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/approval/approval_infos.xml:0
 #, python-format
 msgid "Awaiting approval"
-msgstr ""
+msgstr "승인 대기 중"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/cohort/cohort_editor.js:0
 #, python-format
 msgid "Backwards"
-msgstr ""
+msgstr "뒤로"
 
 #. module: web_studio
 #. odoo-javascript
@@ -666,7 +663,7 @@ msgstr "막대그래프"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_base
 msgid "Base"
-msgstr "Base"
+msgstr "기준액"
 
 #. module: web_studio
 #. odoo-javascript
@@ -674,13 +671,6 @@ msgstr "Base"
 #, python-format
 msgid "Blank"
 msgstr "공백"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks_registry.js:0
-#, python-format
-msgid "Block"
-msgstr "블록"
 
 #. module: web_studio
 #. odoo-python
@@ -692,24 +682,9 @@ msgstr "거부됨"
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/properties/field_properties/field_properties.xml:0
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Bold"
 msgstr "굵게"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Bordered"
-msgstr "테두리화"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Borderless"
-msgstr "테두리없게"
 
 #. module: web_studio
 #. odoo-javascript
@@ -720,10 +695,10 @@ msgstr "비즈니스 머리글/바닥글"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/report_editor_sidebar.js:0
+#: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.js:0
 #, python-format
-msgid "By default: "
-msgstr "기본값 :"
+msgid "Buttons Properties"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -732,6 +707,13 @@ msgstr "기본값 :"
 #, python-format
 msgid "Calendar"
 msgstr "캘린더"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
+#, python-format
+msgid "Call a method"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -763,6 +745,20 @@ msgstr "편집 가능"
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__can_validate
 msgid "Can be approved"
+msgstr "승인 가능"
+
+#. module: web_studio
+#. odoo-python
+#: code:addons/web_studio/models/studio_approval.py:0
+#, python-format
+msgid "Can't patch 'create', 'write' and 'unlink'."
+msgstr ""
+
+#. module: web_studio
+#. odoo-python
+#: code:addons/web_studio/models/studio_approval.py:0
+#, python-format
+msgid "Can't patch private methods."
 msgstr ""
 
 #. module: web_studio
@@ -771,13 +767,13 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/editor/new_model_item/new_model_item.xml:0
 #: code:addons/web_studio/static/src/client_action/editor/new_view_dialogs/map_new_view_dialog.xml:0
 #: code:addons/web_studio/static/src/client_action/editor/new_view_dialogs/new_view_dialog.xml:0
+#: code:addons/web_studio/static/src/client_action/menu_creator/menu_creator.xml:0
 #: code:addons/web_studio/static/src/client_action/studio_home_menu/icon_creator_dialog/icon_creator_dialog.xml:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/components/field_selector_dialog.xml:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/new_button_box_dialog.xml:0
+#: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/field_configuration.xml:0
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog.xml:0
-#: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
-#: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 #, python-format
 msgid "Cancel"
 msgstr "취소"
@@ -787,7 +783,7 @@ msgstr "취소"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Categorize records with custom tags"
-msgstr ""
+msgstr "사용자 지정 태그를 사용하여 레코드 분류"
 
 #. module: web_studio
 #. odoo-javascript
@@ -805,24 +801,17 @@ msgstr "이미지 변경"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
-#, python-format
-msgid "Change the <b>background</b>, make it yours."
-msgstr "귀하가 원하는대로 <b>배경</b>을 바꾸세요."
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Chatter"
-msgstr ""
+msgstr "대화 메시지"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
 #, python-format
 msgid "CheckBox"
-msgstr ""
+msgstr "체크박스"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_model_data__studio
@@ -838,6 +827,13 @@ msgstr "앱 이름을 선택하십시오"
 
 #. module: web_studio
 #. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/menu_creator/menu_creator.xml:0
+#, python-format
+msgid "Choose the name of the menu"
+msgstr ""
+
+#. module: web_studio
+#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/cohort/cohort_editor.js:0
 #, python-format
 msgid "Churn"
@@ -845,46 +841,17 @@ msgstr "이탈"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Class"
-msgstr "클래스"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
-#, python-format
-msgid "Clear"
-msgstr "제거"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
-#, python-format
-msgid "Click here."
-msgstr "여기를 클릭하세요."
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
-#, python-format
-msgid "Click to edit messaging features on your model."
-msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/approval/studio_approval.xml:0
 #, python-format
 msgid "Click to see all approval rules."
-msgstr ""
+msgstr "모든 승인 규칙을 보려면 클릭하세요."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/approval/approval_infos.xml:0
 #: code:addons/web_studio/static/src/client_action/navbar/navbar.xml:0
-#: code:addons/web_studio/static/src/client_action/view_editor/xml_editor/xml_editor.xml:0
-#: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
-#: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
+#: code:addons/web_studio/static/src/client_action/xml_resource_editor/xml_resource_editor.xml:0
+#: code:addons/web_studio/static/src/client_action/xml_resource_editor/xml_resource_editor.xml:0
 #, python-format
 msgid "Close"
 msgstr "닫기"
@@ -901,6 +868,7 @@ msgstr "코호트"
 #. odoo-python
 #. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
+#: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/calendar/calendar_editor_sidebar.xml:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/gantt/gantt_editor_sidebar.xml:0
 #, python-format
@@ -909,24 +877,10 @@ msgstr "색상"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Colors"
-msgstr "색상"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks_registry.js:0
-#, python-format
-msgid "Column"
-msgstr "열"
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/pivot/pivot_editor_sidebar.xml:0
 #, python-format
 msgid "Column grouping"
-msgstr ""
+msgstr "열 그룹화"
 
 #. module: web_studio
 #. odoo-javascript
@@ -934,13 +888,6 @@ msgstr ""
 #, python-format
 msgid "Columns"
 msgstr "열"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Compact"
-msgstr "콤팩트"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_res_company
@@ -966,7 +913,7 @@ msgstr "구성 요소"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/client_action/view_editor/property/property.xml:0
+#: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/properties/modifiers/modifiers_properties.xml:0
 #, python-format
 msgid "Conditional"
 msgstr "조건부"
@@ -974,7 +921,7 @@ msgstr "조건부"
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__conditional
 msgid "Conditional Rule"
-msgstr ""
+msgstr "조건부 규칙"
 
 #. module: web_studio
 #. odoo-python
@@ -982,24 +929,32 @@ msgstr ""
 #: code:addons/web_studio/models/ir_ui_menu.py:0
 #, python-format
 msgid "Configuration"
-msgstr "구성"
+msgstr "설정"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/new_model_item/new_model_item.xml:0
 #, python-format
 msgid "Configure Model"
+msgstr "모델 설정"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/menu_creator/menu_creator.xml:0
+#, python-format
+msgid "Configure model"
 msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/app_menu_editor/app_menu_editor.xml:0
+#: code:addons/web_studio/static/src/client_action/menu_creator/menu_creator.xml:0
 #: code:addons/web_studio/static/src/client_action/studio_home_menu/icon_creator_dialog/icon_creator_dialog.xml:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/components/field_selector_dialog.xml:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/new_button_box_dialog.xml:0
+#: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/field_configuration.xml:0
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog.xml:0
-#: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
 #, python-format
 msgid "Confirm"
 msgstr "승인"
@@ -1024,21 +979,21 @@ msgstr "연락처"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/map/map_editor_sidebar.xml:0
 #, python-format
 msgid "Contact Field"
-msgstr ""
+msgstr "연락처 필드"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/new_view_dialogs/map_new_view_dialog.js:0
 #, python-format
 msgid "Contact Field Required"
-msgstr ""
+msgstr "연락처 필드 필수 항목"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Contact details"
-msgstr ""
+msgstr "연락처 상세 정보"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1049,17 +1004,10 @@ msgstr "문맥"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
-#, python-format
-msgid "Continue to configure some typical behaviors for your new type of object."
-msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/navbar/home_menu_customizer/home_menu_customizer.js:0
 #, python-format
 msgid "Could not change the background"
-msgstr ""
+msgstr "배경을 변경할 수 없습니다"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1073,21 +1021,14 @@ msgstr "메뉴 만들기"
 #: code:addons/web_studio/static/src/client_action/editor/new_model_item/new_model_item.js:0
 #, python-format
 msgid "Create Model"
-msgstr ""
+msgstr "모델 만들기"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/new_model_item/new_model_item.js:0
 #, python-format
 msgid "Create a new Model"
-msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
-#, python-format
-msgid "Create your <b>selection values</b> (e.g.: Romance, Polar, Fantasy, etc.)"
-msgstr "<b>선택 값</b> 만들기(예 : 로맨스,폴라,판타지 등)"
+msgstr "새 모델 만들기"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1108,14 +1049,14 @@ msgstr "앱 만들기"
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "Create your first menu"
-msgstr ""
+msgstr "첫 번째 메뉴 만들기"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/menu_creator/menu_creator.js:0
 #, python-format
 msgid "Create your menu"
-msgstr ""
+msgstr "메뉴 만들기"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__create_uid
@@ -1140,9 +1081,7 @@ msgstr "이 유형의 화면 작성은 현재 Studio에서 지원되지 않습�
 
 #. module: web_studio
 #. odoo-python
-#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Currency"
 msgstr "통화"
@@ -1152,7 +1091,7 @@ msgstr "통화"
 #: code:addons/web_studio/models/ir_ui_menu.py:0
 #, python-format
 msgid "Custom Configuration"
-msgstr ""
+msgstr "사용자 지정 설정"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall__custom_fields
@@ -1174,7 +1113,7 @@ msgstr "맞춤 보고서"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Custom Sorting"
-msgstr ""
+msgstr "사용자 지정 정렬"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall__custom_views
@@ -1182,18 +1121,11 @@ msgid "Custom Views"
 msgstr "맞춤 화면"
 
 #. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Custom color"
-msgstr "맞춤 색상"
-
-#. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "Custom field names cannot contain double underscores."
-msgstr ""
+msgstr "사용자 지정 필드 이름에는 이중 밑줄을 사용할 수 없습니다."
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.view_base_module_uninstall_studio
@@ -1225,14 +1157,14 @@ msgstr "Studio로 만든 사용자 정의는 영구적으로 손실됩니다"
 #: code:addons/web_studio/static/src/client_action/navbar/home_menu_customizer/home_menu_customizer.xml:0
 #, python-format
 msgid "Customizations"
-msgstr "맞춤화"
+msgstr "커스터마이징"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_xml/report_editor_xml.xml:0
 #, python-format
-msgid "Data table"
-msgstr "데이터 테이블"
+msgid "DIFF"
+msgstr ""
 
 #. module: web_studio
 #. odoo-python
@@ -1242,28 +1174,28 @@ msgstr "데이터 테이블"
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
 #, python-format
 msgid "Date"
-msgstr "일자"
+msgstr "날짜"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Date & Calendar"
-msgstr ""
+msgstr "날짜 & 캘린더"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Date range & Gantt"
-msgstr ""
+msgstr "날짜 범위 & 간트"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
 #, python-format
 msgid "Datetime"
-msgstr ""
+msgstr "일시"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1300,7 +1232,7 @@ msgstr "기본 화면 모드"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/list/list_editor_sidebar/list_editor_sidebar.xml:0
 #, python-format
 msgid "Default Group By"
-msgstr ""
+msgstr "기본 그룹 기준"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1335,6 +1267,7 @@ msgstr "기본 값"
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/action_editor/action_editor.xml:0
+#: code:addons/web_studio/static/src/client_action/action_editor/action_editor.xml:0
 #, python-format
 msgid "Default view"
 msgstr "기본 화면"
@@ -1344,7 +1277,7 @@ msgstr "기본 화면"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Define start/end dates and visualize records in a Gantt chart"
-msgstr ""
+msgstr "시작/종료일을 정의하고 간트 차트에서 레코드를 시각화하세요"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1373,13 +1306,16 @@ msgstr "내림차순"
 #. odoo-python
 #. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
+#: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
+#: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__message
 #, python-format
 msgid "Description"
 msgstr "설명"
 
 #. module: web_studio
 #. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/icon_creator/icon_creator.xml:0
 #: code:addons/web_studio/static/src/client_action/icon_creator/icon_creator.xml:0
 #, python-format
 msgid "Design your Icon"
@@ -1390,14 +1326,21 @@ msgstr "아이콘 디자인"
 #: code:addons/web_studio/static/src/client_action/action_editor/action_editor.xml:0
 #, python-format
 msgid "Disable View"
-msgstr ""
+msgstr "보기 비활성화"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_snackbar.xml:0
+#, python-format
+msgid "Discard"
+msgstr "취소"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog.xml:0
 #, python-format
 msgid "Discard changes"
-msgstr ""
+msgstr "변경 내용 삭제"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__display_name
@@ -1445,27 +1388,14 @@ msgstr "완료"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
-#, python-format
-msgid "Drag & drop <b>another field</b>. Let’s try with a <i>selection field</i>."
-msgstr "<b>다른 필드</b> 끌어서 놓기. <i>선택한 필드</i>에 시도해 보자."
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/app_menu_editor/app_menu_editor.xml:0
 #, python-format
 msgid "Drag a menu to the right to create a sub-menu"
 msgstr "하위 메뉴로 만들려면 메뉴를 오른쪽으로 끌기"
 
 #. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/report_editor.js:0
-#, python-format
-msgid "Drag building block here"
-msgstr "빌딩 블록을 여기로 드래그"
-
-#. module: web_studio
 #. odoo-python
+#: code:addons/web_studio/models/ir_ui_view.py:0
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Dropdown Menu"
@@ -1474,21 +1404,21 @@ msgstr "드롭다운 메뉴"
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 msgid "Duplicate"
-msgstr "복제"
+msgstr "복사"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Edit"
-msgstr "편집하기"
+msgstr "편집"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/components/field_content_overlay.js:0
 #, python-format
 msgid "Edit %s view"
-msgstr ""
+msgstr "%s 보기 편집하기"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1507,13 +1437,6 @@ msgstr "메뉴 편집하기"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
-#, python-format
-msgid "Edit Value"
-msgstr "값 편집하기"
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/properties/field_properties/field_properties.xml:0
 #, python-format
 msgid "Edit Values"
@@ -1522,31 +1445,32 @@ msgstr "값 편집하기"
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/app_menu_editor/app_menu_editor.xml:0
-#: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Edit selection"
 msgstr "선택 편집하기"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/client_action/view_editor/xml_editor/xml_editor.js:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
 #, python-format
-msgid "Editing a built-in file through this editor is not advised, as it will prevent it from being updated during future App upgrades."
-msgstr ""
+msgid "Edit sources"
+msgstr "소스 편집"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/xml_resource_editor/xml_resource_editor.js:0
+#, python-format
+msgid ""
+"Editing a built-in file through this editor is not advised, as it will "
+"prevent it from being updated during future App upgrades."
+msgstr "이 편집기를 통해 기본 파일을 편집하면 향후 앱 업그레이드 시 업데이트되지 않으므로 권장하지 않습니다."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog.xml:0
 #, python-format
 msgid "Editing item:"
-msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Else"
-msgstr "그밖에"
+msgstr "항목 편집:"
 
 #. module: web_studio
 #. odoo-python
@@ -1584,14 +1508,14 @@ msgstr "빈 목록 메시지"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/list/list_editor_sidebar/list_editor_sidebar.xml:0
 #, python-format
 msgid "Enable Mass Editing"
-msgstr ""
+msgstr "대량 편집 활성화"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/map/map_editor_sidebar.xml:0
 #, python-format
 msgid "Enable Routing"
-msgstr ""
+msgstr "라우팅 활성화"
 
 #. module: web_studio
 #. odoo-python
@@ -1609,20 +1533,24 @@ msgstr "항목"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.xml:0
 #: code:addons/web_studio/static/src/client_action/view_editor/studio_view.js:0
 #: code:addons/web_studio/static/src/client_action/view_editor/view_editor_model.js:0
-#: code:addons/web_studio/static/src/legacy/js/common/abstract_editor_manager.js:0
+#: code:addons/web_studio/static/src/client_action/view_editor/view_editor_snackbar.xml:0
 #, python-format
 msgid "Error"
 msgstr "오류"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
+#: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
 #, python-format
-msgid "Esc expression"
-msgstr "Esc 표현식"
+msgid "Exclusive Approval"
+msgstr ""
+
+#. module: web_studio
+#: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__exclusive_user
+msgid "Exclusive approval"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -1636,7 +1564,7 @@ msgstr "기존 필드"
 #: code:addons/web_studio/static/src/client_action/menu_creator/menu_creator.js:0
 #, python-format
 msgid "Existing Model"
-msgstr ""
+msgstr "기존 모델"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1675,54 +1603,25 @@ msgstr "즐겨찾기"
 
 #. module: web_studio
 #. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/components/field_selector_dialog.xml:0
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Field"
 msgstr "필드"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
-#, python-format
-msgid "Field & Label"
-msgstr "필드 및 라벨"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
-#, python-format
-msgid "Field Column"
-msgstr "필드 열"
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog.js:0
-#: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
 #, python-format
 msgid "Field Properties"
 msgstr "필드 속성"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Field expression"
-msgstr "필드 표현식"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
-#, python-format
-msgid "Field in Cell"
-msgstr "셀 안에 필드"
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/field_configuration.js:0
 #, python-format
 msgid "Field properties: %s"
-msgstr ""
+msgstr "필드 속성: %s"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model_fields
@@ -1765,7 +1664,7 @@ msgstr "필터 규칙"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/field_configuration.xml:0
 #, python-format
 msgid "Filter label"
-msgstr ""
+msgstr "필터 라벨"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1787,21 +1686,16 @@ msgstr "첫 번째 상태"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/graph/graph_editor_sidebar.xml:0
 #, python-format
 msgid "First dimension"
+msgstr "1차원"
+
+#. module: web_studio
+#. odoo-python
+#: code:addons/web_studio/models/studio_approval.py:0
+#, python-format
+msgid ""
+"For compatibility purpose with base_automation,approvals on 'create', "
+"'write' and 'unlink' methods are forbidden."
 msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Font style"
-msgstr "폰트 스타일"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Foreach expression"
-msgstr "Foreach 표현식"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1813,10 +1707,10 @@ msgstr "양식"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/client_action/view_editor/xml_editor/xml_editor.xml:0
+#: code:addons/web_studio/static/src/client_action/xml_resource_editor/xml_resource_editor.xml:0
 #, python-format
 msgid "Format"
-msgstr ""
+msgstr "형식"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1838,7 +1732,7 @@ msgstr "간트 차트"
 #: code:addons/web_studio/static/src/client_action/action_editor/action_editor.js:0
 #, python-format
 msgid "General views"
-msgstr ""
+msgstr "일반 보기"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1852,21 +1746,14 @@ msgstr "생성된 %s 화면"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Get contact, phone and email fields on records"
-msgstr ""
+msgstr "레코드에서 연락처, 전화 및 이메일 필드 가져오기"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
 #, python-format
-msgid "Go on, you are almost done!"
-msgstr "거의 끝났습니다!"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
-#, python-format
-msgid "Good job! To add more <b>fields</b>, come back to the <i>Add tab</i>."
-msgstr "잘했어요! <b>필드</b>를 추가하려면 <i>탭 추가하기</i>로 돌아갑니다."
+msgid "Go back"
+msgstr "돌아가기"
 
 #. module: web_studio
 #. odoo-python
@@ -1875,7 +1762,7 @@ msgstr "잘했어요! <b>필드</b>를 추가하려면 <i>탭 추가하기</i>�
 #: model:mail.activity.type,name:web_studio.mail_activity_data_approve
 #, python-format
 msgid "Grant Approval"
-msgstr ""
+msgstr "승인 권한 부여"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1887,6 +1774,7 @@ msgstr "그래프"
 
 #. module: web_studio
 #. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/view_editor/editors/search/search_editor.xml:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/search/search_editor.xml:0
 #, python-format
 msgid "Graph View"
@@ -1902,13 +1790,13 @@ msgstr "훌륭합니다!"
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/search/search_editor.xml:0
+#: code:addons/web_studio/static/src/client_action/view_editor/editors/search/search_editor.xml:0
 #, python-format
 msgid "Grid View"
 msgstr "그리드 화면"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__group_id
-#: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__group_id
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 msgid "Group"
 msgstr "그룹"
@@ -1934,21 +1822,21 @@ msgstr "그룹별"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/list/list_editor_sidebar/list_editor_sidebar.xml:0
 #, python-format
 msgid "Grouping is not applied while in Studio to allow editing."
-msgstr ""
+msgstr "스튜디오에서는 그룹화가 적용되지 않으므로 편집이 가능합니다."
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "Groups used in approval rules must have an external identifier."
-msgstr ""
+msgstr "승인 규칙에 사용되는 그룹에는 외부 식별자가 있어야 합니다."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
 #, python-format
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_http
@@ -1971,45 +1859,12 @@ msgstr "30분"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
 #, python-format
-msgid "Heading1"
-msgstr "제목1"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Heading2"
-msgstr "제목2"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Heading3"
-msgstr "제목3"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Heading4"
-msgstr "제목4"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Heading5"
-msgstr "제목5"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Heading6"
-msgstr "제목6"
+msgid ""
+"Header and footer are shared with other reports which may be impacted by the"
+" reset."
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -2020,24 +1875,17 @@ msgstr "도움말 툴팁"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
-#, python-format
-msgid "Here, you can <b>name</b> your field (e.g. Book reference, ISBN, Internal Note, etc.)."
-msgstr "여기서 필드의 <b>이름</b>을 지정할 수 있습니다(예 : 책 참조, ISBN, 내부 노트 등)."
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/map/map_editor_sidebar.xml:0
 #, python-format
 msgid "Hide Address"
-msgstr ""
+msgstr "주소 숨기기"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/map/map_editor_sidebar.xml:0
 #, python-format
 msgid "Hide Name"
-msgstr ""
+msgstr "이름 숨기기"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2051,7 +1899,7 @@ msgstr "기본적으로 숨기기"
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "High Priority"
-msgstr ""
+msgstr "우선순위 높음"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_res_company__background_image
@@ -2064,27 +1912,6 @@ msgstr "홈 메뉴 배경 이미지"
 #, python-format
 msgid "Hour"
 msgstr "시간"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
-#, python-format
-msgid "How do you want to <b>name</b> your app? Library, Academy, …?"
-msgstr "앱 <b>이름</b>을 어떻게 지정하고 싶으신가요? 도서관이나 아카데미는 어떨까요."
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
-#, python-format
-msgid "How do you want to name your first <b>menu</b>? My books, My courses?"
-msgstr "첫 번째 메뉴의 <b>이름</b>을 어떻게 지정하고 싶으신가요? 내 책이나 내 강좌는 어떨까요?"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
-#, python-format
-msgid "I bet you can <b>build an app</b> in 5 minutes. Ready for the challenge?"
-msgstr "5분 안에 <b>앱 생성</b>이 완료됩니다. 도전할 준비가 완료되셨나요?"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__id
@@ -2103,26 +1930,30 @@ msgstr "아이콘"
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_studio_approval_rule__domain
 msgid "If set, the rule will only apply on records that match the domain."
-msgstr ""
+msgstr "설정 시 도메인과 일치하는 레코드에만 규칙이 적용됩니다."
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_studio_approval_rule__exclusive_user
-msgid "If set, the user who approves this rule will not be able to approve other rules for the same record"
-msgstr ""
+msgid ""
+"If set, the user who approves this rule will not be able to approve other "
+"rules for the same record"
+msgstr "설정 시, 이 규칙을 승인한 사용자는 동일한 레코드에 대해 다른 규칙을 승인할 수 없습니다"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/controllers/main.py:0
+#: code:addons/web_studio/controllers/main.py:0
 #, python-format
-msgid "If you don't want to create a new model, an existing model should be selected."
-msgstr ""
+msgid ""
+"If you don't want to create a new model, an existing model should be "
+"selected."
+msgstr "새 모델을 생성하지 않으려면 기존 모델을 선택해야 합니다."
 
 #. module: web_studio
 #. odoo-python
 #. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Image"
 msgstr "이미지"
@@ -2130,13 +1961,13 @@ msgstr "이미지"
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/navbar/home_menu_customizer/home_menu_customizer.xml:0
-#: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 #, python-format
 msgid "Import"
 msgstr "가져오기"
 
 #. module: web_studio
 #. odoo-python
+#: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "In Progress"
@@ -2146,20 +1977,34 @@ msgstr "진행 중"
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/field_configuration.js:0
 #, python-format
-msgid "In order to use a monetary field, you need a currency field on the model. Do you want to create a currency field first? You can make this field invisible afterwards."
-msgstr "통화 필드를 사용하려면 모델에 통화 필드가 필요합니다. 통화 필드를 먼저 작성 하시겠습니까? 나중에 이 필드를 보이지 않게 할 수 있습니다."
-
-#. module: web_studio
-#: model:ir.model.fields,help:web_studio.field_ir_ui_menu__is_studio_configuration
-msgid "Indicates that this menu was created by Studio to hold configuration sub-menus"
+msgid ""
+"In order to use a monetary field, you need a currency field on the model. Do"
+" you want to create a currency field first? You can make this field "
+"invisible afterwards."
 msgstr ""
+"통화 필드를 사용하려면 모델에 통화 필드가 필요합니다. 통화 필드를 먼저 작성 하시겠습니까? 나중에 이 필드를 보이지 않게 할 수 "
+"있습니다."
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks_registry.js:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
 #, python-format
-msgid "Inline"
-msgstr "인라인"
+msgid "Include header and footer"
+msgstr ""
+
+#. module: web_studio
+#: model:ir.model.fields,help:web_studio.field_ir_ui_menu__is_studio_configuration
+msgid ""
+"Indicates that this menu was created by Studio to hold configuration sub-"
+"menus"
+msgstr "하위 메뉴 설정을 유지하기 위해 스튜디오에서 생성한 메뉴임을 나타냅니다"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
+#, python-format
+msgid "Insert a field"
+msgstr "필드 삽입"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2187,7 +2032,7 @@ msgstr "간격"
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Invalid studio_approval %s in button"
-msgstr ""
+msgstr "버튼의 %s studio_approval이 유효하지 않습니다"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2204,16 +2049,17 @@ msgstr "Studio 여부"
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/action_editor/action_editor.xml:0
+#: code:addons/web_studio/static/src/client_action/action_editor/action_editor.xml:0
 #, python-format
 msgid "Is default view"
 msgstr "기본 화면 여부"
 
 #. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
+#. odoo-python
+#: code:addons/web_studio/controllers/main.py:0
 #, python-format
-msgid "Italic"
-msgstr "기울기"
+msgid "It lacks a method to check."
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -2237,12 +2083,19 @@ msgstr "칸반 상태"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/page_properties/page_properties.xml:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/gantt/gantt_editor_sidebar.xml:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/search/search_editor.xml:0
+#: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog.xml:0
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/properties/field_properties/field_properties.xml:0
-#: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Label"
 msgstr "라벨"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
+#, python-format
+msgid "Label of the button"
+msgstr ""
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__write_uid
@@ -2260,24 +2113,16 @@ msgstr "최근 갱신 일자"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_xml/report_editor_xml.xml:0
 #, python-format
-msgid "Let’s check the result. Close Odoo Studio to get an <b>overview of your app</b>."
-msgstr "결과를 확인해 보겠습니다. <b>앱 개요</b>를 보려면 Odoo Studio를 닫습니다."
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
-#: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__exclusive_user
-#, python-format
-msgid "Limit approver to this rule"
+msgid "Leave DIFF"
 msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/action_editor/action_editor.xml:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/properties/limit_group_visibility/limit_group_visibility.xml:0
-#: code:addons/web_studio/static/src/legacy/xml/sidebar_common.xml:0
 #, python-format
 msgid "Limit visibility to groups"
 msgstr "그룹에 대한 가시성 제한"
@@ -2313,37 +2158,31 @@ msgstr "목록"
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/search/search_editor.xml:0
+#: code:addons/web_studio/static/src/client_action/view_editor/editors/search/search_editor.xml:0
 #, python-format
 msgid "List View"
 msgstr "목록 화면"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor.xml:0
-#, python-format
-msgid "Loading..."
-msgstr "불러오는 중..."
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Manually sort records in the list view"
-msgstr ""
+msgstr "목록 보기에서 수동으로 레코드 정렬"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
 #, python-format
 msgid "Many2Many"
-msgstr ""
+msgstr "Many2Many"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
 #, python-format
 msgid "Many2One"
-msgstr ""
+msgstr "Many2One"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2355,17 +2194,10 @@ msgstr "지도"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Margins"
-msgstr "여백"
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/graph/graph_editor_sidebar.xml:0
 #, python-format
 msgid "Measure"
-msgstr "측정"
+msgstr "계산"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2379,7 +2211,7 @@ msgstr "단위 필드"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/pivot/pivot_editor_sidebar.xml:0
 #, python-format
 msgid "Measures"
-msgstr "측정"
+msgstr "계산"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2396,7 +2228,6 @@ msgstr "메뉴"
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/rainbow_effect.xml:0
-#: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__message
 #, python-format
 msgid "Message"
 msgstr "메시지"
@@ -2408,6 +2239,14 @@ msgstr "메시지"
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 msgid "Method"
 msgstr "방법"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
+#: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
+#, python-format
+msgid "Method to run"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -2424,9 +2263,12 @@ msgid "Mode"
 msgstr "모드"
 
 #. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/menu_creator/menu_creator.xml:0
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__model_id
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
+#, python-format
 msgid "Model"
 msgstr "모델"
 
@@ -2451,12 +2293,19 @@ msgstr "모델명"
 #: code:addons/web_studio/static/src/client_action/editor/new_model_item/new_model_item.xml:0
 #, python-format
 msgid "Model name"
-msgstr ""
+msgstr "모델명"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model
 msgid "Models"
 msgstr "모델"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/xml_resource_editor/xml_resource_editor.xml:0
+#, python-format
+msgid "Modified by:"
+msgstr ""
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_module_module
@@ -2467,11 +2316,6 @@ msgstr "모듈"
 #: model:ir.model,name:web_studio.model_base_module_uninstall
 msgid "Module Uninstall"
 msgstr "모듈 제거"
-
-#. module: web_studio
-#: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
-msgid "Module file (.zip)"
-msgstr "모듈 파일 (.zip)"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2485,7 +2329,7 @@ msgstr "통화"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Monetary value"
-msgstr ""
+msgstr "통화 가치"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2504,9 +2348,9 @@ msgstr "월 정밀도"
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/action_editor/action_editor.xml:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/properties/sidebar_properties_toolbox/sidebar_properties_toolbox.xml:0
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/sidebar_view_toolbox/sidebar_view_toolbox.xml:0
-#: code:addons/web_studio/static/src/legacy/xml/sidebar_common.xml:0
 #, python-format
 msgid "More"
 msgstr "더 보기"
@@ -2516,21 +2360,21 @@ msgstr "더 보기"
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
 #, python-format
 msgid "Multine Text"
-msgstr ""
+msgstr "여러 줄 텍스트"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/action_editor/action_editor.js:0
 #, python-format
 msgid "Multiple records views"
-msgstr ""
+msgstr "여러 레코드 보기"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "My %s"
-msgstr ""
+msgstr "내 %s"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2542,13 +2386,11 @@ msgstr "내 버튼"
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
 msgid "My entries"
-msgstr ""
+msgstr "내 항목"
 
 #. module: web_studio
 #. odoo-python
-#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__name
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__name
 #, python-format
@@ -2567,14 +2409,14 @@ msgstr "신규"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/interactive_editor.js:0
 #, python-format
 msgid "New %s"
-msgstr ""
+msgstr "신규 %s"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "New Approval Entry"
-msgstr ""
+msgstr "새 승인 항목"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2602,7 +2444,7 @@ msgstr "새 필터"
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "New Lines"
-msgstr ""
+msgstr "신규 내역"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2617,25 +2459,28 @@ msgstr "새 메뉴"
 #: code:addons/web_studio/static/src/client_action/menu_creator/menu_creator.js:0
 #, python-format
 msgid "New Model"
-msgstr ""
+msgstr "신규 모델"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_renderer/form_editor_renderer_components.js:0
 #, python-format
 msgid "New Page"
-msgstr ""
+msgstr "새 페이지"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/new_button_box_dialog.js:0
 #, python-format
 msgid "New button"
-msgstr ""
+msgstr "새 버튼"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
+#: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
+#: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
+#: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.xml:0
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.xml:0
 #, python-format
 msgid "Next"
@@ -2643,24 +2488,17 @@ msgstr "다음"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
-#, python-format
-msgid "Nicely done! Let’s build your screen now; <b>drag</b> a <i>text field</i> and <b>drop</b> it in your view, on the right."
-msgstr "잘했어요! 이제 화면을 만들겠습니다. <b>끌어온</b> <i>텍스트 필드</i>를 오른쪽 화면에 <b>놓습니다</b>."
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/properties/field_properties/field_type_properties.js:0
 #, python-format
 msgid "No aggregation"
-msgstr ""
+msgstr "집계 없음"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "No approval found for this rule, record and user combination."
-msgstr ""
+msgstr "해당 규칙, 레코드 및 사용자 조합에 대한 승인 내역을 찾을 수 없습니다."
 
 #. module: web_studio
 #. odoo-javascript
@@ -2677,25 +2515,11 @@ msgid "No related many2one fields found"
 msgstr "관련 many2one 필드를 찾을 수 없습니다"
 
 #. module: web_studio
-#. odoo-python
-#: code:addons/web_studio/controllers/report.py:0
-#, python-format
-msgid "No view found for the given report!"
-msgstr "지정된 보고서에 대한 보기를 찾을 수 없습니다!"
-
-#. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/rainbow_effect.js:0
 #, python-format
 msgid "None"
-msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Normal"
-msgstr "일반"
+msgstr "없음"
 
 #. module: web_studio
 #. odoo-python
@@ -2708,17 +2532,11 @@ msgstr "메모"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
+#: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
+#: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__notification_order
 #, python-format
-msgid "Now you’re on your own. Enjoy your <b>super power</b>."
-msgstr "이제 당신은 혼자예요. 당신의 <b>초능력</b>을 즐기세요."
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
-#, python-format
-msgid "Now, customize your icon. Make it yours."
-msgstr "이제 아이콘을 사용자 정의하십시오. 당신이 만드십시오."
+msgid "Notification Order"
+msgstr ""
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__entries_count
@@ -2734,37 +2552,25 @@ msgstr "Odoo 스튜디오"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/systray_item/systray_item.xml:0
-#, python-format
-msgid "Odoo Studio Icon"
-msgstr "Odoo 스튜디오 아이콘"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Offset"
-msgstr "오프셋"
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
 #, python-format
 msgid "One2Many"
-msgstr ""
+msgstr "One2Many"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "Only %s members can approve this rule."
-msgstr ""
+msgstr "이 규칙은 %s의 구성원만 승인할 수 있습니다."
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
-msgid "Only groups with an external ID can be used here. Please choose another group or assign manually an external ID to this group."
+msgid ""
+"Only groups with an external ID can be used here. Please choose another "
+"group or assign manually an external ID to this group."
 msgstr "외부 ID가 있는 그룹만 여기에서 사용할 수 있습니다. 다른 그룹을 선택하거나 이 그룹에 외부 ID를 수동으로 할당하십시오."
 
 #. module: web_studio
@@ -2772,7 +2578,7 @@ msgstr "외부 ID가 있는 그룹만 여기에서 사용할 수 있습니다. �
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/list/list_editor_sidebar/list_editor_sidebar.js:0
 #, python-format
 msgid "Open form view"
-msgstr ""
+msgstr "서식보기 열기"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2780,13 +2586,6 @@ msgstr ""
 #, python-format
 msgid "Optional"
 msgstr "선택 사항"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Options"
-msgstr "옵션"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2807,7 +2606,7 @@ msgstr "용지 형식 설정"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
 #, python-format
 msgid "Paper format"
 msgstr "용지 형식"
@@ -2822,9 +2621,10 @@ msgstr "상위 메뉴"
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_ui_view.py:0
+#: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Partner"
-msgstr "파트너"
+msgstr "협력사"
 
 #. module: web_studio
 #. odoo-python
@@ -2852,14 +2652,14 @@ msgstr "파이"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Pipeline stages"
-msgstr ""
+msgstr "파이프라인 단계"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_renderer/form_editor_renderer_components.js:0
 #, python-format
 msgid "Pipeline status bar"
-msgstr ""
+msgstr "파이프라인 상태 표시줄"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2877,13 +2677,6 @@ msgid "Placeholder"
 msgstr "자리 표시자"
 
 #. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
-#, python-format
-msgid "Please specify a field name for the selected model."
-msgstr "선택한 모델의 필드 이름을 지정하십시오."
-
-#. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
@@ -2895,11 +2688,13 @@ msgstr "필드를 지정하십시오."
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/kanban/kanban_editor_record.xml:0
 #, python-format
 msgid "Preview is not available"
-msgstr ""
+msgstr "미리 보기를 사용할 수 없습니다"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
+#: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
+#: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.xml:0
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.xml:0
 #, python-format
 msgid "Previous"
@@ -2907,17 +2702,10 @@ msgstr "이전"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_manager.xml:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
 #, python-format
-msgid "Print"
-msgstr "인쇄"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Printed Report Name"
-msgstr "인쇄된 보고서 이름"
+msgid "Print preview"
+msgstr "인쇄 미리보기"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2930,15 +2718,17 @@ msgstr "우선 순위"
 #. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
-msgid "Private methods cannot be restricted (since they cannot be called remotely, this would be useless)."
-msgstr ""
+msgid ""
+"Private methods cannot be restricted (since they cannot be called remotely, "
+"this would be useless)."
+msgstr "비공개 메서드는 제한할 수 없습니다 (원격으로 호출할 수 없으므로 유용하지 않습니다)."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/interactive_editor_sidebar.js:0
 #, python-format
 msgid "Properties"
-msgstr "부동산"
+msgstr "속성"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2960,7 +2750,7 @@ msgstr "빠른 생성"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/calendar/calendar_editor_sidebar.xml:0
 #, python-format
 msgid "Quick Create Field"
-msgstr ""
+msgstr "빠른 필드 생성"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_qweb
@@ -2986,7 +2776,7 @@ msgstr "무지개 맨"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/properties/modifiers/modifiers_properties.xml:0
 #, python-format
 msgid "Readonly"
-msgstr ""
+msgstr "읽기 전용"
 
 #. module: web_studio
 #. odoo-python
@@ -3008,7 +2798,8 @@ msgstr "레코드 ID"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.xml:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
+#: code:addons/web_studio/static/src/client_action/view_editor/view_editor_snackbar.xml:0
 #, python-format
 msgid "Redo"
 msgstr "되돌리기"
@@ -3033,14 +2824,14 @@ msgstr "거부됨"
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.notify_approval
 msgid "Rejected as"
-msgstr ""
+msgstr "거부됨"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/approval/approval_infos.xml:0
 #, python-format
 msgid "Rejected on"
-msgstr ""
+msgstr "거부일"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3051,21 +2842,7 @@ msgstr "관련된 필드"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Related expression"
-msgstr "관련 표현식"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
-#, python-format
-msgid "Relation:"
-msgstr "관계 :"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
 #, python-format
 msgid "Reload from attachment"
 msgstr "첨부 파일에서 다시 불러오기"
@@ -3073,7 +2850,6 @@ msgstr "첨부 파일에서 다시 불러오기"
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/properties/sidebar_properties_toolbox/sidebar_properties_toolbox.xml:0
-#: code:addons/web_studio/static/src/legacy/xml/sidebar_common.xml:0
 #, python-format
 msgid "Remove from View"
 msgstr "화면에서 제거하기"
@@ -3081,17 +2857,9 @@ msgstr "화면에서 제거하기"
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/app_menu_editor/app_menu_editor.xml:0
-#: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Remove selection"
 msgstr "선택 제거하기"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Report"
-msgstr "보고서"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_report
@@ -3100,10 +2868,40 @@ msgstr "보고서 작업"
 
 #. module: web_studio
 #. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
+#, python-format
+msgid "Report Tools"
+msgstr "보고서 도구"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_model.js:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_model.js:0
+#, python-format
+msgid "Report edition failed"
+msgstr "보고서 편집 실패"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
+#, python-format
+msgid "Report name"
+msgstr "보고서 이름"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
+#, python-format
+msgid "Report preview not available"
+msgstr ""
+
+#. module: web_studio
+#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/action_editor/action_editor.js:0
 #, python-format
 msgid "Reporting views"
-msgstr ""
+msgstr "조회수 보고"
 
 #. module: web_studio
 #. odoo-python
@@ -3136,6 +2934,25 @@ msgid "Reset Image"
 msgstr "이미지 초기화"
 
 #. module: web_studio
+#: model_terms:ir.ui.view,arch_db:web_studio.reset_view_arch_wizard_view
+msgid "Reset View"
+msgstr "보기 초기화"
+
+#. module: web_studio
+#: model:ir.model,name:web_studio.model_reset_view_arch_wizard
+msgid "Reset View Architecture Wizard"
+msgstr "화면 구조 마법사 재설정"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
+#, python-format
+msgid "Reset report"
+msgstr "보고서 재설정"
+
+#. module: web_studio
 #. odoo-python
 #. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
@@ -3159,7 +2976,7 @@ msgstr "기본 화면 복원"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Restrict a record to a specific company"
-msgstr ""
+msgstr "특정 회사로 레코드 제한하기"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3180,14 +2997,14 @@ msgstr "폐지"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/pivot/pivot_editor_sidebar.xml:0
 #, python-format
 msgid "Row grouping - First level"
-msgstr ""
+msgstr "행 그룹화 - 첫 번째 레벨"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/pivot/pivot_editor_sidebar.xml:0
 #, python-format
 msgid "Row grouping - Second level"
-msgstr ""
+msgstr "행 그룹화 - 두 번째 레벨"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_rule
@@ -3198,43 +3015,65 @@ msgstr "규칙"
 #. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
-msgid "Rules with existing entries cannot be deleted since it would delete existing approval entries. You should archive the rule instead."
+msgid ""
+"Rules with existing entries cannot be deleted since it would delete existing"
+" approval entries. You should archive the rule instead."
 msgstr ""
+"기존 항목이 있는 규칙을 삭제하면 기존 승인 항목도 함께 삭제되므로 삭제할 수 없습니다. 대신 규칙을 보관함으로 이동할 수 있습니다."
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
-msgid "Rules with existing entries cannot be modified since it would break existing approval entries. You should archive the rule and create a new one instead."
+msgid ""
+"Rules with existing entries cannot be modified since it would break existing"
+" approval entries. You should archive the rule and create a new one instead."
+msgstr ""
+"기존 항목이 있는 규칙을 수정하면 기존 승인 항목을 손상시킬 수 있으므로 수정할 수 없습니다. 대신 규칙을 보관함으로 이동시키고 새 "
+"규칙을 만들 수 있습니다."
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
+#, python-format
+msgid "Run a Server Action"
 msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/client_action/view_editor/xml_editor/xml_editor.xml:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_snackbar.xml:0
+#: code:addons/web_studio/static/src/client_action/xml_resource_editor/xml_resource_editor.xml:0
 #, python-format
 msgid "Save"
-msgstr ""
+msgstr "저장"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
-#, python-format
-msgid "Save."
-msgstr "저장."
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.xml:0
+#: code:addons/web_studio/static/src/client_action/view_editor/view_editor_snackbar.xml:0
 #, python-format
 msgid "Saved"
-msgstr ""
+msgstr "저장됨"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.xml:0
+#: code:addons/web_studio/static/src/client_action/view_editor/view_editor_snackbar.xml:0
 #, python-format
 msgid "Saving"
-msgstr ""
+msgstr "저장중"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_model.js:0
+#, python-format
+msgid "Saving both some report's parts and full xml is not permitted."
+msgstr "보고서의 XML을 모두 저장하는 것은 허용되지 않습니다."
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor.xml:0
+#, python-format
+msgid "Saving the report \""
+msgstr "보고서 저장하기 \""
 
 #. module: web_studio
 #. odoo-javascript
@@ -3263,7 +3102,7 @@ msgstr "두 번째 상태"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/graph/graph_editor_sidebar.xml:0
 #, python-format
 msgid "Second dimension"
-msgstr ""
+msgstr "2차원"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3281,31 +3120,32 @@ msgstr "관련 필드를 선택하십시오."
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
-#, python-format
-msgid "Select a related field:"
-msgstr "관련 필드 선택 :"
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/new_view_dialogs/map_new_view_dialog.xml:0
 #, python-format
-msgid "Select the contact field to use to get the coordinates of your records."
-msgstr ""
+msgid ""
+"Select the contact field to use to get the coordinates of your records."
+msgstr "레코드의 좌표를 가져오는 데 사용할 연락처 필드를 선택합니다."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/field_configuration.xml:0
 #, python-format
 msgid "Select the model in relation to this one"
-msgstr ""
+msgstr "이 모델과 관련된 모델을 선택하세요"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/field_configuration.xml:0
 #, python-format
 msgid "Select the reciprocal ManyToOne field"
-msgstr ""
+msgstr "상호 ManyToOne 필드 선택"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
+#, python-format
+msgid "Select the report's variable for the field:"
+msgstr "필드에 대한 보고서의 변수를 선택합니다:"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3326,7 +3166,7 @@ msgstr "다음 보내기"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Send messages, log notes and schedule activities"
-msgstr ""
+msgstr "메시지 전송, 메모 기록 및 활동 예약"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3338,6 +3178,7 @@ msgstr "구분자"
 
 #. module: web_studio
 #. odoo-python
+#: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "Sequence"
@@ -3353,7 +3194,7 @@ msgstr "서버작업"
 #: code:addons/web_studio/static/src/client_action/action_editor/action_editor.xml:0
 #, python-format
 msgid "Set As Default"
-msgstr ""
+msgstr "기본값으로 설정"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3367,35 +3208,21 @@ msgstr "표지 이미지 설정"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Set a price or cost on records"
-msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
-#, python-format
-msgid "Set an <b>email alias</b>. Then, try to send an email to this address; it will create a document automatically for you. Pretty cool, huh?"
-msgstr "<b>이메일 별칭</b> 설정. 그런 다음 이 주소로 이메일을 보내십시오. 자동으로 문서를 만듭니다. 멋지죠 응?"
+msgstr "레코드에 가격 또는 비용 설정"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
 #, python-format
 msgid "Set approval rules"
-msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Set expression"
-msgstr "표현식 설정"
+msgstr "승인 규칙 설정"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/sidebar_view_toolbox/sidebar_view_toolbox.xml:0
 #, python-format
 msgid "Show Invisible Elements"
-msgstr ""
+msgstr "보이지 않는 요소 표시"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3406,17 +3233,17 @@ msgstr "기본적으로 표시"
 
 #. module: web_studio
 #. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
+#, python-format
+msgid "Show in print menu"
+msgstr "인쇄 메뉴에서 보기"
+
+#. module: web_studio
+#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
 #, python-format
 msgid "Signature"
 msgstr "서명"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Size"
-msgstr "사이즈"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3426,11 +3253,13 @@ msgid "Slow"
 msgstr "천천히"
 
 #. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
+#. odoo-python
+#: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
-msgid "Small"
-msgstr "작게"
+msgid ""
+"Some records were skipped because approvals were missing to"
+"                                    proceed with your request: "
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -3451,19 +3280,11 @@ msgstr "정렬 기준"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/graph/graph_editor_sidebar.xml:0
 #, python-format
 msgid "Sorting"
-msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Source"
-msgstr "원본"
+msgstr "정렬"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog.xml:0
-#: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Specify all possible values"
 msgstr "가능한 모든 값을 지정하십시오"
@@ -3473,7 +3294,7 @@ msgstr "가능한 모든 값을 지정하십시오"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/graph/graph_editor_sidebar.xml:0
 #, python-format
 msgid "Stacked graph"
-msgstr ""
+msgstr "누적 그래프"
 
 #. module: web_studio
 #. odoo-python
@@ -3495,7 +3316,7 @@ msgstr "단계명"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Stage and visualize records in a custom pipeline"
-msgstr ""
+msgstr "사용자 지정 파이프라인에서 레코드 준비 및 시각화"
 
 #. module: web_studio
 #. odoo-python
@@ -3526,13 +3347,6 @@ msgid "Stop Date Field"
 msgstr "중지 날짜 필드"
 
 #. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Striped"
-msgstr "줄무늬"
-
-#. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_ir_model_data__studio
 msgid "Studio"
 msgstr "스튜디오"
@@ -3546,39 +3360,35 @@ msgstr "스튜디오 앱 생성기"
 #: model:ir.actions.act_window,name:web_studio.studio_approval_entry_action
 #: model:ir.ui.menu,name:web_studio.menu_studio_approval_entry
 msgid "Studio Approval Entries"
-msgstr ""
+msgstr "스튜디오 승인 항목"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_entry
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_form_view
 msgid "Studio Approval Entry"
-msgstr ""
+msgstr "스튜디오 승인 항목"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_request
 msgid "Studio Approval Request"
-msgstr ""
+msgstr "스튜디오 승인 요청"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_rule
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_form_view
 msgid "Studio Approval Rule"
-msgstr ""
+msgstr "스튜디오 승인 규칙"
 
 #. module: web_studio
 #: model:ir.actions.act_window,name:web_studio.studio_approval_rule_action
-msgid "Studio Approvals"
-msgstr ""
-
-#. module: web_studio
 #: model:ir.ui.menu,name:web_studio.menu_studio_approval_rule
-msgid "Studio Approvals Rules"
+msgid "Studio Approval Rules"
 msgstr ""
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_ir_ui_menu__is_studio_configuration
 msgid "Studio Configuration Menu"
-msgstr ""
+msgstr "스튜디오 설정 메뉴"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_customizations_filter
@@ -3592,18 +3402,11 @@ msgstr "스튜디오 믹스인"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
-#, python-format
-msgid "Subtotal & Total"
-msgstr "소계 및 총계"
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.xml:0
 #, python-format
 msgid "Suggested features for your new model"
-msgstr ""
+msgstr "새 모델에 대한 권장 기능"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3617,21 +3420,7 @@ msgstr "합계"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/list/list_editor_sidebar/list_editor_sidebar.js:0
 #, python-format
 msgid "Sum of %s"
-msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks_registry.js:0
-#, python-format
-msgid "Table"
-msgstr "표"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Table style"
-msgstr "표 스타일"
+msgstr "%s 합계"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3652,13 +3441,6 @@ msgstr "태그"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Taxes amount by groups"
-msgstr "그룹별 세액"
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/properties/field_properties/field_properties.xml:0
 #, python-format
 msgid "Technical Name"
@@ -3674,24 +3456,9 @@ msgstr "'%s' 서식을 찾을 수 없습니다"
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Text"
 msgstr "문자"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Text decoration"
-msgstr "문자 장식"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
-#, python-format
-msgid "Text in Cell"
-msgstr "셀 안에 문자"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3703,23 +3470,28 @@ msgstr "웹 응용 프로그램을 만드는 가장 빠른 방법입니다."
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/controllers/main.py:0
+#: code:addons/web_studio/controllers/main.py:0
+#: code:addons/web_studio/controllers/main.py:0
+#: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The field %s does not exist."
 msgstr "%s 필드가 존재하지 않습니다"
 
 #. module: web_studio
+#. odoo-python
 #. odoo-javascript
+#: code:addons/web_studio/models/studio_approval.py:0
 #: code:addons/web_studio/static/src/approval/approval_hook.js:0
 #, python-format
 msgid "The following approvals are missing:"
-msgstr ""
+msgstr "다음 승인이 누락되었습니다:"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.xml:0
 #, python-format
 msgid "The following fields are currently not in the view."
-msgstr ""
+msgstr "다음 필드는 현재 보기에 없습니다."
 
 #. module: web_studio
 #. odoo-python
@@ -3739,8 +3511,32 @@ msgstr "아이콘이 첨부 파일에 연결되어 있지 않습니다"
 #. odoo-python
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
+msgid "The method %s does not exist on the model %s."
+msgstr ""
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.js:0
+#, python-format
+msgid "The method %s is private."
+msgstr ""
+
+#. module: web_studio
+#. odoo-python
+#: code:addons/web_studio/controllers/main.py:0
+#: code:addons/web_studio/controllers/main.py:0
+#: code:addons/web_studio/controllers/main.py:0
+#: code:addons/web_studio/controllers/main.py:0
+#, python-format
 msgid "The model %s does not exist."
 msgstr "%s 모델이 존재하지 않습니다"
+
+#. module: web_studio
+#. odoo-python
+#: code:addons/web_studio/controllers/main.py:0
+#, python-format
+msgid "The model %s doesn't exist."
+msgstr ""
 
 #. module: web_studio
 #. odoo-python
@@ -3754,14 +3550,7 @@ msgstr "%s 모델은 필드 추가를 지원하지 않습니다."
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The operation  type \"%s\" is not supported"
-msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
-#, python-format
-msgid "The record field name is missing"
-msgstr "레코드 필드 이름이 없습니다"
+msgstr "\"%s\" 유형의 작업은 지원되지 않습니다"
 
 #. module: web_studio
 #. odoo-python
@@ -3772,11 +3561,20 @@ msgstr "버튼의 관련 필드는 %s에 대한 many2one여야 합니다."
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/client_action/view_editor/studio_view.js:0
-#: code:addons/web_studio/static/src/legacy/js/common/abstract_editor_manager.js:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_model.js:0
 #, python-format
-msgid "The requested change caused an error in the view. It could be because a field was deleted, but still used somewhere else."
-msgstr "요청한 변경으로 인해 보기에서 오류가 발생했습니다. 필드가 삭제 되었으나 여전히 다른 곳에서 사용 되었기 때문일 수 있습니다."
+msgid "The report is in error. Only editing the XML sources is permitted"
+msgstr ""
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/view_editor/studio_view.js:0
+#, python-format
+msgid ""
+"The requested change caused an error in the view. It could be because a "
+"field was deleted, but still used somewhere else."
+msgstr ""
+"요청한 변경으로 인해 보기에서 오류가 발생했습니다. 필드가 삭제 되었으나 여전히 다른 곳에서 사용 되었기 때문일 수 있습니다."
 
 #. module: web_studio
 #. odoo-python
@@ -3786,12 +3584,37 @@ msgid ""
 "There are %s records using selection values not listed in those you are trying to save.\n"
 "Are you sure you want to remove the selection values of those records?"
 msgstr ""
+"저장하려는 레코드에 나열되지 않은 선택 값을 사용하는 %s 레코드가 있습니다.\n"
+"해당 레코드의 선택 값을 제거하시겠습니까?"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "There is no method %s on the model %s (%s)"
+msgstr "메서드%s가 모델 %s (%s)에 존재하지 않습니다"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
+#, python-format
+msgid ""
+"There is no record on which this report can be previewed. Create at least "
+"one record to preview the report."
+msgstr ""
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
+#, python-format
+msgid "There is no record to preview"
+msgstr ""
+
+#. module: web_studio
+#: model:ir.model.fields,help:web_studio.field_studio_approval_rule__users_to_notify
+msgid ""
+"These users will receive a notification via internal note when an approval "
+"is requested"
 msgstr ""
 
 #. module: web_studio
@@ -3805,6 +3628,7 @@ msgstr "세 번째 상태"
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/navbar/navbar.js:0
 #: code:addons/web_studio/static/src/client_action/studio_home_menu/studio_home_menu.js:0
+#: code:addons/web_studio/static/src/studio_service.js:0
 #, python-format
 msgid "This action is not editable by Studio"
 msgstr "이 작업은 Studio에서 편집할 수 없습니다"
@@ -3817,49 +3641,52 @@ msgid ""
 "This approval or the one you already submitted limits you to a single approval on this action.\n"
 "Another user is required to further approve this action."
 msgstr ""
+"이 승인 또는 이미 제출한 승인으로 인해 이 작업에 대한 승인은 한 번으로 제한됩니다.\n"
+"이 작업을 추가로 승인하려면 다른 사용자가 필요합니다."
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/sidebar_common.xml:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor.xml:0
 #, python-format
-msgid "This field is placed after another element that is only displayed under certain conditions."
-msgstr "이 필드는 특정 조건에서만 표시되는 다른 요소 뒤에 배치됩니다."
+msgid ""
+"This could also be due to the absence of a real record to render the report "
+"with."
+msgstr "이는 보고서를 렌더링할 실제 레코드가 없기 때문일 가능성이 있습니다."
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor.xml:0
+#, python-format
+msgid "This may be due to an incorrect syntax in the edited parts."
+msgstr "편집한 부분의 구문이 잘못되었을 수 있습니다."
+
+#. module: web_studio
+#: model:ir.model.fields,help:web_studio.field_studio_approval_rule__message
+msgid ""
+"This message will be displayed to users that cannot proceed without this "
+"approval"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/view_editor_model.js:0
-#: code:addons/web_studio/static/src/legacy/js/common/abstract_editor_manager.js:0
 #, python-format
 msgid "This operation caused an error, probably because a xpath was broken"
 msgstr "xpath가 손상 되었기 때문에 이 조작으로 오류가 발생했습니다."
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/report_editor.js:0
-#, python-format
-msgid "This report could not be previewed or edited because it could not be rendered with this message: %s. This could be happening because this is a custom report type that needs custom data to be rendered and so is not editable by studio."
-msgstr ""
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "This rule has already been approved/rejected."
-msgstr ""
+msgstr "이미 승인/거부된 규칙입니다."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/approval/approval_infos.xml:0
 #, python-format
 msgid "This rule limits this user to a single approval for this action."
-msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
-#, python-format
-msgid "Three Columns"
-msgstr "세 개의 열"
+msgstr "이 규칙은 이 사용자가 해당 작업에 대해 한 번만 승인하도록 제한합니다."
 
 #. module: web_studio
 #. odoo-javascript
@@ -3873,31 +3700,11 @@ msgstr "활동 기록"
 #: code:addons/web_studio/static/src/client_action/action_editor/action_editor.js:0
 #, python-format
 msgid "Timeline views"
-msgstr ""
+msgstr "타임라인 보기"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
-#, python-format
-msgid "Title Block"
-msgstr "제목 블록"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
-#, python-format
-msgid "To <b>customize a field</b>, click on its <i>label</i>."
-msgstr "<b>필드를 사용자 지정</b>하려면 해당 <i>라벨</i>을 클릭합니다."
-
-#. module: web_studio
-#. odoo-python
-#: code:addons/web_studio/controllers/report.py:0
-#, python-format
-msgid "To edit this document please create a record first"
-msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
+#: code:addons/web_studio/static/src/systray_item/systray_item.xml:0
 #: code:addons/web_studio/static/src/systray_item/systray_item.xml:0
 #, python-format
 msgid "Toggle Studio"
@@ -3908,14 +3715,7 @@ msgstr "토글 스튜디오"
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Total"
-msgstr "합계"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
-#, python-format
-msgid "Two Columns"
-msgstr "두 개의 열"
+msgstr "총계"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3929,21 +3729,23 @@ msgstr "유형"
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Type down your notes here..."
-msgstr ""
+msgstr "여기에 메모를 입력하세요..."
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Underline"
-msgstr "밑줄"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.xml:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
+#: code:addons/web_studio/static/src/client_action/view_editor/view_editor_snackbar.xml:0
 #, python-format
 msgid "Undo"
 msgstr "취소"
+
+#. module: web_studio
+#: model:ir.model.fields,help:web_studio.field_studio_approval_rule__notification_order
+msgid ""
+"Use this field to setup multi-level validation. Next activities and "
+"notifications for an approval request will only be sent once rules from "
+"previous levels have been validated"
+msgstr ""
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
@@ -3955,13 +3757,35 @@ msgstr "사용자"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "User assignment"
-msgstr ""
+msgstr "사용자 배정"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/approval/studio_approval.xml:0
 #, python-format
 msgid "User avatar placeholder"
+msgstr "사용자 아바타 자리 표시자"
+
+#. module: web_studio
+#. odoo-python
+#: code:addons/web_studio/models/studio_approval.py:0
+#, python-format
+msgid "User is not a member of the selected group."
+msgstr "사용자가 선택한 그룹의 구성원이 아닙니다."
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
+#: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__users_to_notify
+#, python-format
+msgid "Users to notify"
+msgstr ""
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/xml_resource_editor/xml_resource_editor.xml:0
+#, python-format
+msgid "Uses:"
 msgstr ""
 
 #. module: web_studio
@@ -3969,15 +3793,14 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog.xml:0
-#: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Value"
-msgstr "가치"
+msgstr "금액"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/app_menu_editor/app_menu_editor.xml:0
-#: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
+#: code:addons/web_studio/static/src/client_action/editor/app_menu_editor/app_menu_editor.xml:0
 #, python-format
 msgid "Value of list"
 msgstr "목록의 값"
@@ -3999,38 +3822,24 @@ msgstr "화면"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Visible for"
-msgstr "다음에서 표시 가능"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Visible if"
-msgstr "다음이면 표시 가능"
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/approval/studio_approval.xml:0
 #, python-format
 msgid "Waiting for approval"
+msgstr "승인 대기 중"
+
+#. module: web_studio
+#. odoo-python
+#: code:addons/web_studio/controllers/main.py:0
+#, python-format
+msgid "Webhook Automations"
 msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
+#: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
-msgid "Want more fun? Let’s create more <b>views</b>."
-msgstr "더 재미있게 하고 싶나요? 더 많은 <b>화면</b>을 만들어 보겠습니다."
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
-#, python-format
-msgid "Want to customize the background? Let’s activate <b>Odoo Studio</b>."
-msgstr "배경을 사용자 지정하고 싶습니까? <b>Odoo Studio</b>를 활성화합니다."
+msgid "Webhooks"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -4055,61 +3864,45 @@ msgstr "환영합니다"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
+#: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
 #, python-format
-msgid "What about a <b>Kanban view</b>?"
-msgstr "<b>칸반 화면</b>은 어떤가요?"
+msgid "What should the button do"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/list/list_editor_sidebar/list_editor_sidebar.xml:0
 #, python-format
 msgid "When Creating Record"
-msgstr ""
+msgstr "레코드 생성 시"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_studio_approval_rule__can_validate
 msgid "Whether the rule can be approved by the current user"
-msgstr ""
+msgstr "현재 사용자가 규칙을 승인할 수 있는지 여부"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_model__abstract
 msgid "Whether this model is abstract"
-msgstr ""
+msgstr "추상적 모델인지 여부"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/properties/field_properties/type_widget_properties.xml:0
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Widget"
 msgstr "위젯"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "Width"
-msgstr "폭"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/tours/web_studio.js:0
-#, python-format
-msgid "Wow, nice! And I’m sure you can make it even better! Use this icon to open <b>Odoo Studio</b> and customize any screen."
-msgstr "와, 좋아요! 그리고 저는 여러분이 그것을 훨씬 더 좋게 만들 수 있다고 확신해요! 이 아이콘을 사용하여 <b>Odoo Studio</b>를 열고 화면을 사용자 지정합니다."
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Write additional notes or comments"
-msgstr ""
+msgstr "추가 메모 또는 댓글 작성"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/sidebar_view_toolbox/sidebar_view_toolbox.xml:0
-#: code:addons/web_studio/static/src/legacy/xml/sidebar_common.xml:0
 #, python-format
 msgid "XML"
 msgstr "XML"
@@ -4122,18 +3915,11 @@ msgid "Year"
 msgstr "년"
 
 #. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
-#, python-format
-msgid "You can only display a user or a partner"
-msgstr "사용자 또는 파트너만 표시 할 수 있습니다"
-
-#. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "You cannot cancel an approval you didn't set yourself."
-msgstr ""
+msgstr "직접 설정하지 않은 승인은 취소할 수 없습니다."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4141,13 +3927,6 @@ msgstr ""
 #, python-format
 msgid "You cannot deactivate this view as it is the last one active."
 msgstr "이 보기는 마지막 활성 상태이므로 비활성화할 수 없습니다."
-
-#. module: web_studio
-#. odoo-python
-#: code:addons/web_studio/controllers/report.py:0
-#, python-format
-msgid "You cannot modify this view, it is part of the generic layout"
-msgstr "이 보기는 일반 레이아웃의 일부이므로 수정할 수 없습니다."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4161,77 +3940,35 @@ msgstr "먼저 양식 보기에서 many2many 필드를 생성해야 합니다."
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "You just like to break things, don't you?"
-msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
-#, python-format
-msgid "You must have at least one option set"
-msgstr ""
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
-#, python-format
-msgid "You must select a related field"
-msgstr "관련 필드를 선택해야 합니다"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
-#, python-format
-msgid "You must select a relation"
-msgstr "관계를 선택해야 합니다"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/sidebar_common.xml:0
-#, python-format
-msgid "You need to be part of these groups to see this field:"
-msgstr "이 필드를 보려면 다음 그룹에 소속되야 합니다 :"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
-#, python-format
-msgid "You need to use a many2many or one2many field to display a list of items"
-msgstr "항목 목록을 표시하려면 many2many 또는 one2many 필드를 사용해야 합니다"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "bottom"
-msgstr "맨 아래"
+msgstr "물건 망가뜨리는 걸 좋아하시죠?"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/chatter_properties/chatter_properties.xml:0
 #, python-format
 msgid "domain not defined"
-msgstr ""
+msgstr "도메인 정의되지 않음"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/properties/sidebar_properties_toolbox/sidebar_properties_toolbox.js:0
 #, python-format
 msgid "dropdown"
-msgstr ""
+msgstr "드롭다운"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/menu_creator/menu_creator.xml:0
+#, python-format
+msgid "e.g. Properties"
+msgstr "예: 속성"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "e.g. Real Estate"
-msgstr "예. 부동산"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "left"
-msgstr "왼쪽"
+msgstr "예: 부동산"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4241,53 +3978,32 @@ msgid "or"
 msgstr "또는"
 
 #. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "px"
-msgstr "px"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "reset color"
-msgstr "색 재설정"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "right"
-msgstr "오른쪽"
-
-#. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "studio_approval attribute can only be set in form views"
-msgstr ""
+msgstr "studio_approval 속성은 양식 보기에서만 설정할 수 있습니다"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/interactive_editor_sidebar.xml:0
 #, python-format
 msgid "tabsDisplay.new.title"
-msgstr ""
+msgstr "tabsDisplay.new.title"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/interactive_editor_sidebar.xml:0
 #, python-format
 msgid "tabsDisplay.properties.title"
-msgstr ""
+msgstr "tabsDisplay.properties.title"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/interactive_editor_sidebar.xml:0
 #, python-format
 msgid "tabsDisplay.view.title"
-msgstr ""
+msgstr "tabsDisplay.view.title"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4295,13 +4011,6 @@ msgstr ""
 #, python-format
 msgid "test email"
 msgstr "이메일 테스트"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
-#, python-format
-msgid "top"
-msgstr "제일 위"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4323,3 +4032,10 @@ msgstr "하나만 업로드하기"
 #, python-format
 msgid "x_studio_"
 msgstr "x_studio_"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog.xml:0
+#, python-format
+msgid "{{ item.isInEdition ? 'Add selection' : 'Edit selection' }}"
+msgstr ""

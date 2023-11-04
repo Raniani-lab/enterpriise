@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Marianna Ciofani, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -244,6 +245,8 @@ msgid ""
 "After the data extraction, check and validate the bill. If no vendor has "
 "been found, add one before validating."
 msgstr ""
+"In seguito all'estrazione dei dati, controlla e valida la fattura. Se non "
+"sono stati trovati fornitori aggiungine uno prima della validazione."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -352,7 +355,7 @@ msgstr "Sei sicuro di volere eliminare l'estratto conto?"
 #: code:addons/account_accountant/static/src/components/move_line_list_reconcile/move_line_list_reconcile.xml:0
 #, python-format
 msgid "Auto-reconcile"
-msgstr ""
+msgstr "Riconciliazione automatica"
 
 #. module: account_accountant
 #. odoo-python
@@ -480,6 +483,8 @@ msgstr ""
 msgid ""
 "Click on a fetched bank transaction to start the reconciliation process."
 msgstr ""
+"Fai clic su un'operazione bancaria recuperata per iniziare il processo di "
+"riconciliazione."
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_res_company
@@ -727,12 +732,12 @@ msgstr "Abbandona"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_line_reconcile_tree
 msgid "Discount Amount"
-msgstr ""
+msgstr "Importo dello sconto"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_line_reconcile_tree
 msgid "Discount Date"
-msgstr ""
+msgstr "Data di Sconto"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_auto_reconcile_wizard__display_name
@@ -866,12 +871,12 @@ msgstr "Da"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_reconcile_search
 msgid "From Trade Payable accounts"
-msgstr ""
+msgstr "Da conti di debito commerciali"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_reconcile_search
 msgid "From Trade Receivable accounts"
-msgstr ""
+msgstr "Da conti di credito commerciali"
 
 #. module: account_accountant
 #: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_0
@@ -891,23 +896,23 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_accountant.field_res_company__generate_deferred_expense_entries_method
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__generate_deferred_expense_entries_method
 msgid "Generate Deferred Expense Entries Method"
-msgstr ""
+msgstr "Metodo creazione registrazioni differite relative alle spese"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_company__generate_deferred_revenue_entries_method
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__generate_deferred_revenue_entries_method
 msgid "Generate Deferred Revenue Entries Method"
-msgstr ""
+msgstr "Metodo creazione registrazioni differite relative ai ricavi"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Generate Expense Entries"
-msgstr ""
+msgstr "Genera registrazioni relative alle spese"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Generate Revenue Entries"
-msgstr ""
+msgstr "Genera registrazioni relative ai ricavi"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -926,11 +931,13 @@ msgid ""
 "Great! Let’s continue.<br/><br/><i>Tip: If you choose to upload your bill, "
 "don’t forget to attach it.</i>"
 msgstr ""
+"Ottimo! Continuiamo.<br/><br/><i>Consiglio: se scegli di caricare la tua "
+"fattura fornitore non dimenticarti di allegarla.</i>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_reconcile_search
 msgid "Group By"
-msgstr ""
+msgstr "Raggruppa per"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__group_tax_id
@@ -940,7 +947,7 @@ msgstr "Gruppo tassa"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_move_line__has_deferred_moves
 msgid "Has Deferred Moves"
-msgstr ""
+msgstr "Ha movimenti stornati"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_auto_reconcile_wizard__id
@@ -1012,7 +1019,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_line_reconcile_tree
 msgid "Invoice Date"
-msgstr ""
+msgstr "Data fattura"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_company__invoicing_switch_threshold
@@ -1090,17 +1097,17 @@ msgstr "Movimento contabile"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_line_reconcile_tree
 msgid "Journal Items"
-msgstr ""
+msgstr "Movimenti contabili"
 
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_move_line_posted_unreconciled
 msgid "Journal Items to reconcile"
-msgstr ""
+msgstr "Movimenti contabili da riconciliare"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_reconcile_search
 msgid "Journal items where matching number isn't set"
-msgstr ""
+msgstr "Movimenti con numero abbinato non impostato"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__deferred_journal_id
@@ -1256,12 +1263,12 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__generate_deferred_expense_entries_method
 msgid "Method used to generate deferred expense entries"
-msgstr ""
+msgstr "Metodo utilizzato per creare registrazioni differite relative a spese"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__generate_deferred_revenue_entries_method
 msgid "Method used to generate deferred revenue entries"
-msgstr ""
+msgstr "Metodo utilizzato per creare registrazioni differite"
 
 #. module: account_accountant
 #. odoo-python
@@ -1325,6 +1332,7 @@ msgstr "Nessun estratto conto"
 #, python-format
 msgid "No transactions matching your filters were found."
 msgstr ""
+"Non sono state trovate transazioni corrispondenti ai filtri configurati."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__tax_lock_date
@@ -1364,17 +1372,17 @@ msgstr "Note"
 #: code:addons/account_accountant/models/account_bank_statement.py:0
 #, python-format
 msgid "Nothing to do here!"
-msgstr ""
+msgstr "Nulla da fare qui!"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__res_company__generate_deferred_expense_entries_method__on_validation
 msgid "On bill validation"
-msgstr ""
+msgstr "Al momento della convalida della fattura fornitore"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__res_company__generate_deferred_revenue_entries_method__on_validation
 msgid "On invoice validation"
-msgstr ""
+msgstr "Al momento della convalida della fattura"
 
 #. module: account_accountant
 #. odoo-python
@@ -1441,7 +1449,7 @@ msgstr "Fatture originali"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_reconcile_search
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_line_reconcile_tree
 msgid "Originator Tax"
-msgstr ""
+msgstr "Creata dall'imposta"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
@@ -1497,7 +1505,7 @@ msgstr "Partner"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_reconcile_search
 msgid "Payable"
-msgstr ""
+msgstr "Debito"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1614,7 +1622,7 @@ msgstr "Stampa"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_reconcile_search
 msgid "Receivable"
-msgstr ""
+msgstr "Credito"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1666,12 +1674,12 @@ msgstr "Registrare il costo dei beni venduti nelle registrazioni contabili"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_form_inherit
 msgid "Related Purchase(s)"
-msgstr ""
+msgstr "Acquisto(i) correlato(i)"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_form_inherit
 msgid "Related Sale(s)"
-msgstr ""
+msgstr "Vendita(e) correlata(e)"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1683,12 +1691,12 @@ msgstr "Azzera"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_line_reconcile_tree
 msgid "Residual"
-msgstr ""
+msgstr "Residuo"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_line_reconcile_tree
 msgid "Residual in Currency"
-msgstr ""
+msgstr "Residuo in valuta"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__return_todo_command
@@ -1719,7 +1727,7 @@ msgstr "Salva e nuovo"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_reconcile_search
 msgid "Search Journal Items to Reconcile"
-msgstr ""
+msgstr "Cerca movimenti contabili da riconciliare"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__selected_aml_ids
@@ -1850,7 +1858,7 @@ msgstr "Valuta importo base imponibile"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_line_reconcile_tree
 msgid "Tax Grids"
-msgstr ""
+msgstr "Griglie imposta"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__tax_lock_date
@@ -2033,27 +2041,27 @@ msgstr "Comando da fare"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_line_reconcile_tree
 msgid "Total Balance"
-msgstr ""
+msgstr "Saldo totale"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_line_reconcile_tree
 msgid "Total Credit"
-msgstr ""
+msgstr "Totale avere"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_line_reconcile_tree
 msgid "Total Debit"
-msgstr ""
+msgstr "Totale dare"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_line_reconcile_tree
 msgid "Total Residual"
-msgstr ""
+msgstr "Totale residuo"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_line_reconcile_tree
 msgid "Total Residual in Currency"
-msgstr ""
+msgstr "Totale residuo in valuta"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -2094,7 +2102,7 @@ msgstr "Prova a riconciliare automaticamente le righe del tuo estratto conto"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_reconcile_search
 msgid "Unreconciled"
-msgstr ""
+msgstr "Non riconciliati"
 
 #. module: account_accountant
 #. odoo-python
@@ -2185,6 +2193,8 @@ msgid ""
 "You cannot change the account for a deferred line in %(move_name)s if it has"
 " already been deferred."
 msgstr ""
+"Non è possibile modificare il conto per una riga differita in %(move_name)s "
+"se è già stata differita."
 
 #. module: account_accountant
 #. odoo-python
@@ -2224,6 +2234,8 @@ msgid ""
 "You cannot reset to draft an invoice that is grouped in deferral entry. You "
 "can create a credit note instead."
 msgstr ""
+"Non è possibile impostare di nuovo come bozza una fattura raggrruppata in un"
+" differimento."
 
 #. module: account_accountant
 #. odoo-python

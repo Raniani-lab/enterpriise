@@ -35,14 +35,21 @@ msgid "# Signatures"
 msgstr "# Signatures"
 
 #. module: hr_contract_salary
+#. odoo-python
+#: code:addons/hr_contract_salary/models/hr_contract_salary_offer.py:0
+#, python-format
+msgid "%s manually set the Offer to Refused"
+msgstr "%s a manuellement défini l'offre comme refusé"
+
+#. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,helper:hr_contract_salary.hr_contract_salary_personal_info_name
 msgid "(Lastname Firstname)"
-msgstr ""
+msgstr "(Nom Prénom)"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,placeholder:hr_contract_salary.hr_contract_salary_personal_info_identification_id
 msgid "00.00.00-000.00"
-msgstr ""
+msgstr "00.00.00-000.00"
 
 #. module: hr_contract_salary
 #: model:mail.template,body_html:hr_contract_salary.mail_template_send_offer
@@ -132,6 +139,8 @@ msgid ""
 "<span class=\"text-muted fst-italic\" invisible=\"contract_id\">An offer template need to be selected to have an offer link.</span>\n"
 "                        <span class=\"text-muted fst-italic\" invisible=\"not display_warning_message\">An applicant name needs to be set to have an offer link.</span>"
 msgstr ""
+"<span class=\"text-muted fst-italic\" invisible=\"contract_id\">Un modèle d'offre doit être sélectionné pour obtenir un lien d'offre.</span>\n"
+"                        <span class=\"text-muted fst-italic\" invisible=\"not display_warning_message\">Le nom du candidat doit être défini pour obtenir un lien d'offre.</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_thank_you
@@ -148,6 +157,12 @@ msgid ""
 "                                    There are currently no requested fields.\n"
 "                                </span>"
 msgstr ""
+"<span>\n"
+"                                    Ce champ ne peut être modifié que par un administrateur de serveur. Contactez-le si ces champs doivent être modifiés.\n"
+"                                </span>\n"
+"                                <span invisible=\"requested_documents_fields_string\">\n"
+"                                    En ce moment, il n'y a pas de champs requis.\n"
+"                                </span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
@@ -249,6 +264,9 @@ msgid ""
 "current one to be editable. Before edition, the current benefit is always "
 "set to false."
 msgstr ""
+"Tous les avantages dans ce champ doivent être sélectionnés, pour que "
+"l'avantage actuel soit modifiable. Avant la modification, l'avantage actuel "
+"est toujours défini comme étant faux."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_benefit__display_type__always
@@ -303,7 +321,7 @@ msgstr "Candidat"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_offer__applicant_name
 msgid "Applicant's Name"
-msgstr ""
+msgstr "Nom du candidat"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_offer_view_search
@@ -336,7 +354,7 @@ msgstr "Archivé"
 #: code:addons/hr_contract_salary/static/src/js/binary_field_contract.js:0
 #, python-format
 msgid "Are you sure you want to delete this file permanently ?"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer ce fichier de manière définitive ?"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_benefit__activity_responsible_id
@@ -367,19 +385,19 @@ msgstr "Compte bancaire"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_benefit_value__benefit_id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__benefit_ids
 msgid "Benefit"
-msgstr ""
+msgstr "Avantage"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_benefit__res_field_id
 msgid "Benefit Field"
-msgstr ""
+msgstr "Champ avantage"
 
 #. module: hr_contract_salary
 #: model:ir.actions.act_window,name:hr_contract_salary.hr_contract_benefit_action
 #: model:ir.ui.menu,name:hr_contract_salary.salary_package_benefit
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_benefit_view_form
 msgid "Benefits"
-msgstr ""
+msgstr "Avantages"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -387,11 +405,13 @@ msgstr ""
 #, python-format
 msgid "Benefits that are not linked to a field should always be displayed."
 msgstr ""
+"Les avantages qui ne sont pas liés à un champ doivent toujours être "
+"affichés."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_benefit__res_field_public
 msgid "Benefit Field"
-msgstr ""
+msgstr "Champ avantage"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_birthdate
@@ -465,12 +485,12 @@ msgstr "Paramètres de configuration"
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_benefit_type
 msgid "Contract Benefit Type"
-msgstr ""
+msgstr "Type d'avantage du contrat"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_benefit_value
 msgid "Contract Benefit Value"
-msgstr ""
+msgstr "Valeur de l'avantage du contrat"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -526,7 +546,7 @@ msgstr "Rapport d'analyse du contrat et de l'employé"
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_benefit__res_field_id
 msgid "Contract field linked to this benefit"
-msgstr ""
+msgstr "Champ de contrat lié à cet avantage"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_benefit__cost_res_field_id
@@ -534,16 +554,19 @@ msgid ""
 "Contract field linked to this benefit cost. If not set, the benefit won't be"
 " taken into account when computing the employee budget."
 msgstr ""
+"Champ de contrat lié à coût d'avantage. Si ce champ n'est pas renseigné, "
+"l'avantage ne sera pas pris en compte dans le calcul du budget de l'employé."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_benefit__fold_res_field_id
 msgid "Contract field used to fold this benefit."
-msgstr ""
+msgstr "Champ de contrat utilisé pour replier cet avantage."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_benefit__manual_res_field_id
 msgid "Contract field used to manually encode an benefit value."
 msgstr ""
+"Champ de contrat utilisé pour manuellement encoder la valeur d'un avantage."
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_history
@@ -675,6 +698,9 @@ msgid ""
 "Default contract used to generate an offer. If empty, benefits will be taken"
 " from current contract of the employee/nothing for an applicant."
 msgstr ""
+"Contrat par défaut utilisé pour générer une offre. Si le champ est laissé "
+"vide, les avantages seront copiés du contrat en cours de l'employé/rien pour"
+" un candidat."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__default_contract_id
@@ -710,6 +736,9 @@ msgid ""
 "- When the benefit is set: Unique creation the first time the employee will take the benefit\n"
 "- When the benefit is modified: Activity will be created for each change regarding the benefit."
 msgstr ""
+"Déterminer quand le système crée une nouvelle activité :\n"
+"- Lorsque l'avantage est défini : Création unique la première fois que l'employé bénéficie de l'avantage\n"
+"- Lorsque l'avantage est modifié : Une activité sera créée pour chaque modification relative à l'avantage."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_benefit__sign_frenquency
@@ -718,6 +747,9 @@ msgid ""
 "- When the benefit is set: Unique signature request the first time the employee will take the benefit\n"
 "- When the benefit is modified: Signature request will be created for each change regarding the benefit."
 msgstr ""
+"Déterminer quand le système crée une nouvelle demande de signature :\n"
+"- Lorsque l'avantage est défini : Demande de signature unique la première fois que l'employé bénéficie de l'avantage\n"
+"- Lorsque l'avantage est modifié : Une demande de signature sera créée pour chaque modification relative à l'avantage."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__department_id
@@ -791,6 +823,9 @@ msgid ""
 "signatures related to the benefit. eg: A company car policy to approve if "
 "you choose a company car."
 msgstr ""
+"L'employé sera invité à signer également les documents sélectionnés ici liés"
+" à l'avantage. Par ex. Il doit approuver la politique de voiture de société "
+"s'il choisit une voiture de société."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_sign_document_wizard__sign_template_ids
@@ -1052,7 +1087,7 @@ msgstr "Masquer les infos personnelles des enfants si coché."
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_benefit__hide_description
 msgid "Hide the description if the benefit is not taken."
-msgstr ""
+msgstr "Masquer la description si l'avantage n'est pas pris."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__id
@@ -1107,7 +1142,7 @@ msgstr "Image"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__image_1920_filename
 msgid "Image 1920 Filename"
-msgstr ""
+msgstr "Nom du fichier image 1920"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__impacts_monthly_total
@@ -1212,7 +1247,7 @@ msgstr "Langues"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__write_uid
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume_category__write_uid
 msgid "Last Updated by"
-msgstr "Dernière mise à jour par"
+msgstr "Mis à jour par"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__write_date
@@ -1226,7 +1261,7 @@ msgstr "Dernière mise à jour par"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__write_date
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume_category__write_date
 msgid "Last Updated on"
-msgstr "Dernière mise à jour le"
+msgstr "Mis à jour le"
 
 #. module: hr_contract_salary
 #: model_terms:ir.actions.act_window,help:hr_contract_salary.action_hr_contract_templates
@@ -1261,7 +1296,7 @@ msgstr "Masculin"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_benefit__benefit_ids
 msgid "Mandatory Benefits"
-msgstr ""
+msgstr "Avantages obligatoires"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_benefit__manual_field
@@ -1468,7 +1503,7 @@ msgstr "Nombre d'erreurs"
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_offer__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "Nombre de messages nécessitant une action"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_offer__message_has_error_counter
@@ -1502,6 +1537,8 @@ msgstr "Impossible d'envoyer le lien d'offre. Le candidat doit avoir un nom."
 
 #. module: hr_contract_salary
 #: model:ir.actions.act_window,name:hr_contract_salary.hr_contract_salary_offer_action
+#: model:ir.actions.act_window,name:hr_contract_salary.hr_contract_salary_offer_recruitment_action
+#: model:ir.ui.menu,name:hr_contract_salary.menu_hr_contract_salary_job_offer
 #: model:ir.ui.menu,name:hr_contract_salary.menu_salary_package_offer
 msgid "Offers"
 msgstr "Nos offres"
@@ -1611,6 +1648,12 @@ msgid ""
 "Sum of Benefits value: You can pick in all benefits and compute a sum of them\n"
 "Monthly Total: The information will be a total of all the informations in the category Monthly Benefits"
 msgstr ""
+"Choisissez comment la valeur de l'information est calculée :\n"
+"Valeur fixe : Définir une valeur fixe déterminée pour tous les liens\n"
+"Valeur du contrat : Obtenir la valeur d'un champ de l'enregistrement du contrat\n"
+"Valeur de la fiche de paie : Obtenir la valeur d'un champ de l'enregistrement de la fiche de paie\n"
+"Valeur de la somme des avantages : Vous pouvez sélectionner tous les avantages et en calculer la somme\n"
+"Total mensuel : L'information sera un total de toutes les informations reprises dans la catégorie Avantages mensuels"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_place_of_birth
@@ -1686,7 +1729,14 @@ msgid "Red"
 msgstr "Rouge"
 
 #. module: hr_contract_salary
+#: model:ir.actions.server,name:hr_contract_salary.action_refuse_salary_offer
+msgid "Refuse"
+msgstr "Refuser"
+
+#. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_offer__state__refused
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_offer_view_form
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_offer_view_search
 msgid "Refused"
 msgstr "Refusée"
 
@@ -1703,7 +1753,7 @@ msgstr "Modèle associé"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_benefit__benefit_type_id
 msgid "Related Type"
-msgstr ""
+msgstr "Type associé"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_benefit__requested_documents_field_ids
@@ -1755,7 +1805,7 @@ msgstr "Erreur d'envoi SMS"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_payroll_structure_type__salary_benefits_ids
 msgid "Salary Benefits"
-msgstr ""
+msgstr "Avantages de salaire"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_offer_view_form
@@ -1785,7 +1835,7 @@ msgstr "Nombre d'offres salariales"
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_benefit_view_form
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_benefit_view_tree
 msgid "Salary Package Benefit"
-msgstr ""
+msgstr "Avantage du package salarial"
 
 #. module: hr_contract_salary
 #: model:ir.ui.menu,name:hr_contract_salary.salary_package_menu
@@ -1874,12 +1924,12 @@ msgstr "Section"
 #: model:hr.contract.salary.personal.info,placeholder:hr_contract_salary.hr_contract_salary_personal_info_country_id
 #: model:hr.contract.salary.personal.info,placeholder:hr_contract_salary.hr_contract_salary_personal_info_country_of_birth
 msgid "Select a Country"
-msgstr ""
+msgstr "Sélectionner un pays"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,placeholder:hr_contract_salary.hr_contract_salary_personal_info_state_id
 msgid "Select a State"
-msgstr ""
+msgstr "Sélectionner un État"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__display_type__dropdown
@@ -1952,7 +2002,7 @@ msgstr "Panneau latéral"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
 msgid "Sign"
-msgstr ""
+msgstr "Signature"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_benefit__sign_frenquency
@@ -1992,7 +2042,7 @@ msgstr "Curseur Min"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_benefit__slider_step
 msgid "Slider Step"
-msgstr ""
+msgstr "Étape de curseur"
 
 #. module: hr_contract_salary
 #. odoo-javascript
@@ -2051,7 +2101,7 @@ msgstr "Type de structure"
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_resume__value_type__sum
 msgid "Sum of Benefits Values"
-msgstr ""
+msgstr "Somme de la valeur des avantages"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_benefit__sign_template_id
@@ -2121,6 +2171,8 @@ msgid ""
 "The type of activity that will be created automatically on the contract if "
 "this benefit is chosen by the employee."
 msgstr ""
+"Le type d'activité qui sera créé automatiquement sur le contrat si cet "
+"avantage est choisi par l'employé."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_benefits
@@ -2130,7 +2182,7 @@ msgstr "Il n'y a pas d'option disponible pour personnaliser votre salaire"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_diff_email_template
 msgid "There were no changes since previous contract."
-msgstr ""
+msgstr "Il n'y a pas eu de changement depuis le contrat précédent."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_thank_you
@@ -2207,7 +2259,7 @@ msgstr "Type d'activité d'exception enregistrée."
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_benefit__uom
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__uom
 msgid "Unit of Measure"
-msgstr ""
+msgstr "Unité de mesure"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.res_config_settings_view_form_hr
@@ -2274,13 +2326,13 @@ msgstr "Historique de communication du site web"
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_benefit__activity_creation_type__onchange
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_benefit__sign_frenquency__always
 msgid "When the benefit is modified"
-msgstr ""
+msgstr "Lorsque l'avantage est modifié"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_benefit__activity_creation_type__always
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_benefit__sign_frenquency__onchange
 msgid "When the benefit is set"
-msgstr ""
+msgstr "Lorsque l'avantage est défini"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_benefit__show_name

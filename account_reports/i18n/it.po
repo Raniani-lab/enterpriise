@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Marianna Ciofani, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,7 +46,7 @@ msgstr "%s non è un valore numerio"
 #: code:addons/account_reports/static/src/components/account_report/filters/filters.js:0
 #, python-format
 msgid "%s selected"
-msgstr ""
+msgstr "%s selezionato"
 
 #. module: account_reports
 #. odoo-python
@@ -139,6 +140,8 @@ msgid ""
 "<i>Errors marked with <i class=\"fa fa-warning\"/> are critical and prevent "
 "the file generation.</i>"
 msgstr ""
+"<i>Gli errori contrassegnati con <i class=\"fa fa-warning\"/> sono critici e"
+" impediscono la generazione del file.</i>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.partner_view_buttons
@@ -149,6 +152,8 @@ msgstr "<span class=\"o_stat_text\">Libro maestro partner</span>"
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_report_file_download_error_wizard_form
 msgid "<span>One or more error(s) occurred during file generation:</span>"
 msgstr ""
+"<span>Si sono verificati uno o più errori durante la generazione del "
+"file:</span>"
 
 #. module: account_reports
 #: model:ir.model.constraint,message:account_reports.constraint_account_report_horizontal_group_name_uniq
@@ -428,7 +433,7 @@ msgstr "Tutti i crediti"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "All Report Variants"
-msgstr ""
+msgstr "Tutte le varianti del resoconto"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.account_financial_report_ec_sales_amount
@@ -513,8 +518,8 @@ msgid "At Date"
 msgstr "Alla data"
 
 #. module: account_reports
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #: code:addons/account_reports/static/src/components/journal_report/line/line.xml:0
 #: code:addons/account_reports/static/src/components/journal_report/line/line.xml:0
@@ -608,8 +613,8 @@ msgid "Bank and Cash Accounts"
 msgstr "Conti banca e cassa"
 
 #. module: account_reports
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/account_reports/models/account_general_ledger.py:0
 #: code:addons/account_reports/static/src/components/journal_report/line/line.xml:0
 #: model_terms:ir.ui.view,arch_db:account_reports.journal_report_pdf_export_main_table_body
@@ -807,7 +812,7 @@ msgstr "Cambia data di pagamento attesa"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_report_file_download_error_wizard_form
 msgid "Close"
-msgstr ""
+msgstr "Chiudi"
 
 #. module: account_reports
 #. odoo-python
@@ -1002,7 +1007,7 @@ msgstr "Tassi di cambio (%s)"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.pdf_export_filters
 msgid "Currency:"
-msgstr ""
+msgstr "Valuta:"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.deferred_expense_current
@@ -1149,7 +1154,7 @@ msgstr "Ammortamento"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_line__display_custom_groupby_warning
 msgid "Display Custom Groupby Warning"
-msgstr ""
+msgstr "Avviso visualizzazione raggruppa per personalizzato"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__display_name
@@ -1183,7 +1188,7 @@ msgstr "Domestico"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_report_file_download_error_wizard_form
 msgid "Download Anyway"
-msgstr ""
+msgstr "Scarica comunque"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -1260,7 +1265,7 @@ msgstr "Attiva sezioni"
 #: code:addons/account_reports/static/src/components/account_report/filters/filter_variant.xml:0
 #, python-format
 msgid "Enable more ..."
-msgstr ""
+msgstr "Abilita altri..."
 
 #. module: account_reports
 #. odoo-python
@@ -1368,6 +1373,8 @@ msgid ""
 "Expected payment date for journal item %r has been changed from %s to %s on "
 "journal entry %r"
 msgstr ""
+"La data di pagamento prevista per il movimento contabile %r è stata "
+"modificata da %s a %s nella registrazione contabile %r."
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__expense_provision_account_id
@@ -1458,22 +1465,22 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_file_download_error_wizard__file_content
 msgid "File Content"
-msgstr ""
+msgstr "Contenuto file"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_report_file_download_error_wizard_form
 msgid "File Download Errors"
-msgstr ""
+msgstr "Errori download file"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_file_download_error_wizard__file_generation_errors
 msgid "File Generation Errors"
-msgstr ""
+msgstr "Errori generazione file"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_file_download_error_wizard__file_name
 msgid "File Name"
-msgstr ""
+msgstr "Nome file"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_form
@@ -1486,7 +1493,7 @@ msgstr "Filtri"
 #: model_terms:ir.ui.view,arch_db:account_reports.pdf_export_filters
 #, python-format
 msgid "Filters:"
-msgstr ""
+msgstr "Filtri:"
 
 #. module: account_reports
 #. odoo-javascript
@@ -1558,8 +1565,8 @@ msgid "Function to Call"
 msgstr "Funzione da chiamare"
 
 #. module: account_reports
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/account_reports/models/account_report.py:0
 #: code:addons/account_reports/models/account_trial_balance_report.py:0
 #: code:addons/account_reports/static/src/components/multicurrency_revaluation_report/line_name.xml:0
@@ -1669,7 +1676,7 @@ msgstr "Nome gruppo"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.pdf_export_filters
 msgid "Group by:"
-msgstr ""
+msgstr "Raggruppa per:"
 
 #. module: account_reports
 #. odoo-python
@@ -1683,7 +1690,7 @@ msgstr "Registrazione differimenti raggruppati di %s"
 #: code:addons/account_reports/static/src/components/account_report/filters/filter_extra_options.xml:0
 #, python-format
 msgid "Hide lines at 0"
-msgstr ""
+msgstr "Nascondi righe pari a 0"
 
 #. module: account_reports
 #. odoo-javascript
@@ -1724,7 +1731,7 @@ msgstr "Regola gruppo orizzontale per rendiconti"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.pdf_export_filters
 msgid "Horizontal:"
-msgstr ""
+msgstr "Orizzontale:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -1762,7 +1769,7 @@ msgstr "Griglie imposte interessate"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_report_search
 msgid "Inactive"
-msgstr ""
+msgstr "Non attivo"
 
 #. module: account_reports
 #. odoo-javascript
@@ -1858,21 +1865,21 @@ msgstr "Le imposte intracomunitarie sono applicate a"
 #: code:addons/account_reports/wizard/account_report_file_download_error_wizard.py:0
 #, python-format
 msgid "Invalid Partners"
-msgstr ""
+msgstr "Partner non validi"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/wizard/account_report_file_download_error_wizard.py:0
 #, python-format
 msgid "Invalid Products"
-msgstr ""
+msgstr "Prodotti non validi"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/wizard/account_report_file_download_error_wizard.py:0
 #, python-format
 msgid "Invalid Taxes"
-msgstr ""
+msgstr "Imposte non valide"
 
 #. module: account_reports
 #. odoo-python
@@ -1947,8 +1954,9 @@ msgid "Journal Item"
 msgstr "Movimento contabile"
 
 #. module: account_reports
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
+#: code:addons/account_reports/models/account_deferred_reports.py:0
 #: code:addons/account_reports/models/account_report.py:0
 #: code:addons/account_reports/models/account_trial_balance_report.py:0
 #: code:addons/account_reports/static/src/components/aged_partner_balance/line_name/line_name.xml:0
@@ -2005,8 +2013,8 @@ msgid "LIABILITIES + EQUITY"
 msgstr "PASSIVITÀ + PATRIMONIO NETTO"
 
 #. module: account_reports
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/account_reports/static/src/components/account_report/line/popover/debug_popover.xml:0
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
 #: model:account.report.column,name:account_reports.journal_report_partner_name
@@ -2130,6 +2138,8 @@ msgstr "Crea registrazione di rettifica"
 #: model:ir.model,name:account_reports.model_account_report_file_download_error_wizard
 msgid "Manage the file generation errors from report exports."
 msgstr ""
+"Gestisci gli errori relativi alla generazione del file dalle esportazioni "
+"del resoconto."
 
 #. module: account_reports
 #. odoo-python
@@ -2149,7 +2159,7 @@ msgstr "Valori manuali"
 #. module: account_reports
 #: model:account.report.column,name:account_reports.partner_ledger_report_matching_number
 msgid "Matching"
-msgstr ""
+msgstr "Abbinamento"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_tax_unit__company_ids
@@ -2168,7 +2178,7 @@ msgstr "Il metodo \"%s\" deve iniziare con il prefisso \"%s\"."
 #: code:addons/account_reports/wizard/account_report_file_download_error_wizard.py:0
 #, python-format
 msgid "Missing Company Data"
-msgstr ""
+msgstr "Dati azienda mancanti"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_horizontal_group_rule__res_model_name
@@ -2208,8 +2218,8 @@ msgstr ""
 "%s"
 
 #. module: account_reports
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/account_reports/models/account_general_ledger.py:0
 #: code:addons/account_reports/models/account_journal_report.py:0
 #: code:addons/account_reports/static/src/components/journal_report/line/line.xml:0
@@ -2495,7 +2505,7 @@ msgstr "Partner"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.pdf_export_filters
 msgid "Partners Categories:"
-msgstr ""
+msgstr "Categorie partner:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.pdf_export_filters
@@ -2736,7 +2746,7 @@ msgstr "Resoconti"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_line_form
 msgid "Reset to Standard"
-msgstr ""
+msgstr "Ripristina a standard"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_retained_earnings0
@@ -2785,8 +2795,8 @@ msgid "Same Period Last Year"
 msgstr "Stesso periodo ultimo anno"
 
 #. module: account_reports
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/account_reports/models/account_report.py:0
 #: code:addons/account_reports/static/src/components/account_report/footnote/dialog/footnote_dialog.xml:0
 #: code:addons/account_reports/static/src/components/aged_partner_balance/dialog/expected_date_dialog.xml:0
@@ -2820,7 +2830,7 @@ msgstr "Servizi"
 #: code:addons/account_reports/wizard/account_report_file_download_error_wizard.py:0
 #, python-format
 msgid "Settings"
-msgstr ""
+msgstr "Impostazioni"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_executivesummary_st_cash_forecast0
@@ -2887,8 +2897,8 @@ msgid "Tags"
 msgstr "Etichette"
 
 #. module: account_reports
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/account_reports/models/account_general_ledger.py:0
 #: code:addons/account_reports/static/src/components/journal_report/line/line.xml:0
 #: model_terms:ir.ui.view,arch_db:account_reports.journal_report_pdf_export_main_table_body
@@ -2901,7 +2911,7 @@ msgstr "Importo imposta"
 #: model:ir.model.fields,field_description:account_reports.field_account_move__tax_closing_alert
 #: model:ir.model.fields,field_description:account_reports.field_account_payment__tax_closing_alert
 msgid "Tax Closing Alert"
-msgstr ""
+msgstr "Avviso chiusura imposta"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_bank_statement_line__tax_closing_end_date
@@ -3220,11 +3230,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_line_form
 msgid "This line uses a custom user-defined 'Group By' value."
 msgstr ""
+"Questa riga utilizza un valore \"Raggruppa per\" personalizzato definito "
+"dall'utente."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_form
 msgid "This option hides lines with a value of 0"
-msgstr ""
+msgstr "Questa opzione nasconde le righe con valore pari a 0"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_form
@@ -3232,6 +3244,8 @@ msgid ""
 "This report is linked to a custom handler.\n"
 "                        You can customize it manually, but make sure your changes don't clash with what the handler does."
 msgstr ""
+"Questo resoconto è collegato ad un gestore personalizzato.\n"
+"                        È possibile personalizzarlo manualmente ma assicurati che le modifiche apportate non si scontrino con il lavoro del gestore."
 
 #. module: account_reports
 #. odoo-javascript
@@ -3248,6 +3262,10 @@ msgid ""
 "its content, in case other entries using taxes have been posted in the "
 "meantime."
 msgstr ""
+"La voce di chiusura imposta è registrata ma la data di blocco  precede "
+"l'ultimo giorno del periodo coperto. È necessario reimpostarla come bozza e "
+"ricaricare il contenuto in caso siano state inserite altre registrazioni che"
+" utilizzano imposte."
 
 #. module: account_reports
 #. odoo-javascript
@@ -3547,6 +3565,26 @@ msgstr ""
 #, python-format
 msgid "You cannot add taxes on a tax closing move line."
 msgstr ""
+"Non è possibile aggiungere imposte ad una riga relativa a un movimento di "
+"chiusura dell'imposta."
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_deferred_reports.py:0
+#, python-format
+msgid ""
+"You cannot generate entries for a period that does not end at the end of the"
+" month."
+msgstr ""
+"Non è possibile generare registrazioni per un periodo che non termina alla "
+"fine del mese."
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_deferred_reports.py:0
+#, python-format
+msgid "You cannot generate entries for a period that is locked."
+msgstr "Non è possibile generare registrazioni per un periodo bloccato."
 
 #. module: account_reports
 #. odoo-python

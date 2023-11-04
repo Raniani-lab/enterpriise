@@ -321,7 +321,7 @@ msgstr "Soort boeking"
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_receipt
 msgid "Purchase Receipt"
-msgstr ""
+msgstr "Inkoopbewijs"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_bank_statement_line__suspense_statement_line_id

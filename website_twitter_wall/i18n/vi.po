@@ -1,23 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* website_twitter_wall
-#
+# 
 # Translators:
-# Vo Thanh Thuy, 2022
-# Martin Trigaux, 2022
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:03+0000\n"
-"PO-Revision-Date: 2022-09-22 05:50+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:22+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
-"Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: website_twitter_wall
@@ -67,7 +66,7 @@ msgstr "Đang hoạt động"
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_search
 msgid "Archived"
-msgstr "Đã lưu"
+msgstr "Đã lưu trữ"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__can_publish
@@ -155,7 +154,7 @@ msgstr "Tìm kiếm cuối cùng"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__write_uid
 msgid "Last Updated by"
-msgstr "Last Updated by"
+msgstr "Cập nhật lần cuối bởi"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__write_date
@@ -256,7 +255,8 @@ msgstr "Dạng xem đơn"
 #. odoo-python
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:0
 #, python-format
-msgid "The Twitter authentication failed. Please check your API key and secret."
+msgid ""
+"The Twitter authentication failed. Please check your API key and secret."
 msgstr "Xác thực Twitter thất bại. Vui lòng kiểm tra API key và secret."
 
 #. module: website_twitter_wall
@@ -278,7 +278,8 @@ msgstr ""
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:0
 #, python-format
 msgid "The tweets search failed. Check your credentials and access token"
-msgstr "Tìm kiếm tweet thất bại. Kiểm tra thông tin đăng nhập và token truy cập "
+msgstr ""
+"Tìm kiếm tweet thất bại. Kiểm tra thông tin đăng nhập và token truy cập "
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
@@ -342,7 +343,7 @@ msgstr "Kiểu tweet"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__website_published
 msgid "Visible on current website"
-msgstr "Hiển thị ở website hiện tại"
+msgstr "Hiển thị trên trang web hiện tại"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_tweet__wall_ids
@@ -372,7 +373,7 @@ msgstr "Website Twitter"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__website_url
 msgid "Website URL"
-msgstr "Địa chỉ website"
+msgstr "URL trang web"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form

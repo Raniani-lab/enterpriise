@@ -1,23 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery_fedex
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Sarah Park, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Sarah Park, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
-"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: delivery_fedex
@@ -27,19 +26,21 @@ msgstr ", \"프로덕션 키 얻기\"를 클릭하고 모든 단계를 수행하
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
-msgid "<br/>According to your needs, you will need to contact different certifications:"
-msgstr ""
-
-#. module: delivery_fedex
-#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid ""
-"<span attrs=\"{'invisible': [('fedex_weight_unit', '!=', 'KG')]}\">CM</span>\n"
-"                                <span attrs=\"{'invisible': [('fedex_weight_unit', '!=', 'LB')]}\">IN</span>"
-msgstr ""
+"<br/>According to your needs, you will need to contact different "
+"certifications:"
+msgstr "<br/>필요에 따라 다른 인증 기관에 문의하세요:"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "<span class=\"o_form_label\">Package Length Unit</span>"
+msgstr "<span class=\"o_form_label\">패키지 길이 단위</span>"
+
+#. module: delivery_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+msgid ""
+"<span invisible=\"fedex_weight_unit != 'KG'\">CM</span>\n"
+"                                <span invisible=\"fedex_weight_unit != 'LB'\">IN</span>"
 msgstr ""
 
 #. module: delivery_fedex
@@ -90,7 +91,7 @@ msgstr "개발자 키"
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Duties paid by"
-msgstr ""
+msgstr "관세 납부자"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_label_file_type__epl2
@@ -111,22 +112,22 @@ msgstr ""
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Extra Data"
-msgstr ""
+msgstr "추가 데이터"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_extra_data_rate_request
 msgid "Extra data for rate"
-msgstr ""
+msgstr "요금 관련 추가 데이터"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_extra_data_return_request
 msgid "Extra data for return"
-msgstr ""
+msgstr "반품 관련 추가 데이터"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_extra_data_ship_request
 msgid "Extra data for ship"
-msgstr ""
+msgstr "쉬핑 관련 추가 데이터"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_label_file_type
@@ -149,9 +150,19 @@ msgid "FEDEX_3_DAY_FREIGHT"
 msgstr "FEDEX_3_DAY_FREIGHT"
 
 #. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_economy_select
+msgid "FEDEX_ECONOMY_SELECT"
+msgstr ""
+
+#. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_express_saver
 msgid "FEDEX_EXPRESS_SAVER"
 msgstr "FEDEX_EXPRESS_SAVER"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_first
+msgid "FEDEX_FIRST"
+msgstr ""
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_ground
@@ -161,12 +172,12 @@ msgstr "FEDEX_GROUND"
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_international_priority
 msgid "FEDEX_INTERNATIONAL_PRIORITY"
-msgstr ""
+msgstr "FEDEX_INTERNATIONAL_PRIORITY"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_international_priority_express
 msgid "FEDEX_INTERNATIONAL_PRIORITY_EXPRESS"
-msgstr ""
+msgstr "FEDEX_INTERNATIONAL_PRIORITY_EXPRESS"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_next_day_afternoon
@@ -187,6 +198,31 @@ msgstr "FEDEX_NEXT_DAY_END_OF_DAY"
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_next_day_mid_morning
 msgid "FEDEX_NEXT_DAY_MID_MORNING"
 msgstr "FEDEX_NEXT_DAY_MID_MORNING"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_priority
+msgid "FEDEX_PRIORITY"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_priority_express
+msgid "FEDEX_PRIORITY_EXPRESS"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_priority_express_freight
+msgid "FEDEX_PRIORITY_EXPRESS_FREIGHT"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_priority_freight
+msgid "FEDEX_PRIORITY_FREIGHT"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_regional_economy
+msgid "FEDEX_REGIONAL_ECONOMY"
+msgstr ""
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__first_overnight
@@ -213,7 +249,7 @@ msgstr "FedEx 토요일 배달"
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_sale
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_stock
 msgid "FedEx Shipping Methods"
-msgstr "FedEx 선적 방법"
+msgstr "FedEx 배송 방법"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
@@ -230,12 +266,12 @@ msgstr "FedEx 환경 설정"
 #: code:addons/delivery_fedex/models/delivery_fedex.py:0
 #, python-format
 msgid "Fedex Documents"
-msgstr ""
+msgstr "Fedex 서류"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_droppoff_type
 msgid "Fedex Drop-Off Type"
-msgstr ""
+msgstr "Fedex 방문 접수 유형"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_duty_payment
@@ -251,7 +287,7 @@ msgstr "Fedex International"
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_default_package_type_id
 msgid "Fedex Package Type"
-msgstr ""
+msgstr "Fedex 패키지 유형"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_service_type
@@ -299,7 +335,7 @@ msgstr "INTERNATIONAL_PRIORITY"
 #: code:addons/delivery_fedex/models/delivery_fedex.py:0
 #, python-format
 msgid "Invalid syntax for FedEx extra data."
-msgstr ""
+msgstr "FedEx 추가 데이터의 구문 오류"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_weight_unit__kg
@@ -346,7 +382,7 @@ msgstr "PAPER_4X6"
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_document_stock_type__paper_4x6_75
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_label_stock_type__paper_4x6_75
 msgid "PAPER_4X6.75"
-msgstr ""
+msgstr "PAPER_4X6.75"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_document_stock_type__paper_4x8
@@ -434,7 +470,7 @@ msgstr "수신인"
 #: code:addons/delivery_fedex/models/delivery_fedex.py:0
 #, python-format
 msgid "Return Label"
-msgstr ""
+msgstr "반송 라벨"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__standard_overnight
@@ -456,7 +492,7 @@ msgstr "STOCK_4X6"
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_document_stock_type__stock_4x6_75
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_label_stock_type__stock_4x6_75
 msgid "STOCK_4X6.75"
-msgstr ""
+msgstr "STOCK_4X6.75"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_document_stock_type__stock_4x6_75_leading_doc_tab
@@ -480,7 +516,7 @@ msgstr "STOCK_4X8"
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_document_stock_type__stock_4x9
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_label_stock_type__stock_4x9
 msgid "STOCK_4X9"
-msgstr ""
+msgstr "STOCK_4X9"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_document_stock_type__stock_4x9_leading_doc_tab
@@ -514,19 +550,21 @@ msgstr "보낸 사람"
 #: code:addons/delivery_fedex/models/delivery_fedex.py:0
 #, python-format
 msgid "Shipment #%s has been cancelled"
-msgstr ""
+msgstr "#%s 배송이 취소되었습니다"
 
 #. module: delivery_fedex
 #. odoo-python
 #: code:addons/delivery_fedex/models/delivery_fedex.py:0
 #, python-format
-msgid "Shipment created into Fedex<br/><b>Tracking Numbers:</b> %s<br/><b>Packages:</b> %s"
+msgid ""
+"Shipment created into Fedex<br/><b>Tracking Numbers:</b> "
+"%s<br/><b>Packages:</b> %s"
 msgstr "Fedex로 배송<br/><b>조회 번호 :</b> %s<br/><b>패키지 :</b> %s"
 
 #. module: delivery_fedex
 #: model:ir.model,name:delivery_fedex.model_delivery_carrier
 msgid "Shipping Methods"
-msgstr "선적 방법"
+msgstr "배송 방법"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_saturday_delivery
@@ -557,7 +595,7 @@ msgstr "표준 서비스"
 #. module: delivery_fedex
 #: model:ir.model,name:delivery_fedex.model_stock_package_type
 msgid "Stock package type"
-msgstr ""
+msgstr "재고 포장 유형"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_extra_data_rate_request
@@ -574,6 +612,15 @@ msgid ""
 "With the above example, the AdditionalInformation of each piece will be updated.\n"
 "More info on https://www.fedex.com/en-us/developer/web-services/process.html#documentation"
 msgstr ""
+"FedEx와 관련된 추가 데이터는 json 파일의 내부에 구성되어 있습니다.\n"
+"이 기능은 고급/기술적인 기능이므로, 사용법을 잘 이해하고 있는 경우에만 사용하도록 권장합니다.\n"
+"\n"
+"올바른 값의 예시: ```\n"
+"\"ShipmentDetails\": {\"Pieces\": {\"Piece\": {\"AdditionalInformation\": \"extra info\"}}}\n"
+"```\n"
+"\n"
+"위의 예시를 사용하면, 각 'piece' 의 'AdditionalInformation' 부분이 업데이트 됩니다.\n"
+"더 많은 정보를 원하시면, 다음 링크를 확인해주세요. https://www.fedex.com/en-us/developer/web-services/process.html#documentation"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
@@ -582,7 +629,9 @@ msgstr "마지막 단계는"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
-msgid "These certifications usually require that you contact the FedEx support team by email."
+msgid ""
+"These certifications usually require that you contact the FedEx support team"
+" by email."
 msgstr "이러한 인증은 일반적으로 이메일로 FedEx 지원 팀에 문의해야 합니다."
 
 #. module: delivery_fedex

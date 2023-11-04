@@ -3,6 +3,8 @@
 # 	* web_studio
 # 
 # Translators:
+# Sergio Zanchetta <primes2h@gmail.com>, 2023
+# Marianna Ciofani, 2023
 # Wil Odoo, 2023
 # 
 msgid ""
@@ -326,7 +328,7 @@ msgstr "Aggiungi pulsante"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
 #, python-format
 msgid "Add a button"
-msgstr ""
+msgstr "Aggiungi pulsante"
 
 #. module: web_studio
 #. odoo-javascript
@@ -623,7 +625,7 @@ msgstr "Campi con autocompletamento"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_base_automation
 msgid "Automation Rule"
-msgstr ""
+msgstr "Regola automazione"
 
 #. module: web_studio
 #. odoo-javascript
@@ -872,8 +874,8 @@ msgid "Cohort"
 msgstr "Coorte"
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/calendar/calendar_editor_sidebar.xml:0
@@ -902,8 +904,8 @@ msgid "Companies"
 msgstr "Aziende"
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
@@ -1176,8 +1178,8 @@ msgid "DIFF"
 msgstr ""
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
@@ -1313,8 +1315,8 @@ msgid "Descending"
 msgstr "Decrescente"
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
@@ -1343,7 +1345,7 @@ msgstr "Disattiva vista"
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_snackbar.xml:0
 #, python-format
 msgid "Discard"
-msgstr ""
+msgstr "Abbandona"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1663,8 +1665,8 @@ msgid "Filter"
 msgstr "Filtro"
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/controllers/main.py:0
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
@@ -1722,7 +1724,7 @@ msgstr "modulo"
 #: code:addons/web_studio/static/src/client_action/xml_resource_editor/xml_resource_editor.xml:0
 #, python-format
 msgid "Format"
-msgstr ""
+msgstr "Formatta"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1971,8 +1973,8 @@ msgstr ""
 "esistente."
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
 #, python-format
@@ -2547,8 +2549,8 @@ msgid "None"
 msgstr "Nessuna"
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
@@ -2933,8 +2935,8 @@ msgid "Reporting views"
 msgstr "Viste rendiconto"
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/controllers/main.py:0
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
@@ -2965,12 +2967,12 @@ msgstr "Ripristina immagine"
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.reset_view_arch_wizard_view
 msgid "Reset View"
-msgstr ""
+msgstr "Ripristina vista"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_reset_view_arch_wizard
 msgid "Reset View Architecture Wizard"
-msgstr ""
+msgstr "Procedura di ripristino architettura vista"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2982,8 +2984,8 @@ msgid "Reset report"
 msgstr "Resetta resoconto"
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
@@ -3465,8 +3467,8 @@ msgid "Tabs"
 msgstr "Schede"
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
@@ -3513,8 +3515,8 @@ msgid "The field %s does not exist."
 msgstr "Il campo %s non esiste."
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/studio_approval.py:0
 #: code:addons/web_studio/static/src/approval/approval_hook.js:0
 #, python-format
@@ -3664,6 +3666,7 @@ msgstr "Terzo stato"
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/navbar/navbar.js:0
 #: code:addons/web_studio/static/src/client_action/studio_home_menu/studio_home_menu.js:0
+#: code:addons/web_studio/static/src/studio_service.js:0
 #, python-format
 msgid "This action is not editable by Studio"
 msgstr "Azione non modificabile con Studio"
@@ -3829,8 +3832,8 @@ msgid "Uses:"
 msgstr ""
 
 #. module: web_studio
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog.xml:0
 #, python-format
@@ -4001,7 +4004,7 @@ msgstr "menu a discesa"
 #: code:addons/web_studio/static/src/client_action/menu_creator/menu_creator.xml:0
 #, python-format
 msgid "e.g. Properties"
-msgstr ""
+msgstr "es. Proprietà"
 
 #. module: web_studio
 #. odoo-javascript

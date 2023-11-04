@@ -1,22 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* social_facebook
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:03+0000\n"
-"PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
-"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: social_facebook
@@ -66,7 +66,9 @@ msgstr ""
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_res_config_settings__facebook_use_own_account
-msgid "Check this if you want to use your personal Facebook Developer Account instead of the provided one."
+msgid ""
+"Check this if you want to use your personal Facebook Developer Account "
+"instead of the provided one."
 msgstr ""
 
 #. module: social_facebook
@@ -77,7 +79,7 @@ msgstr "備註"
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_res_config_settings
 msgid "Config Settings"
-msgstr "設定"
+msgstr "配置設定"
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_post__display_facebook_preview
@@ -89,7 +91,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:social_facebook.selection__social_media__media_type__facebook
 #: model:social.media,name:social_facebook.social_media_facebook
 msgid "Facebook"
-msgstr "臉書"
+msgstr "Facebook"
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_account__facebook_access_token
@@ -137,7 +139,9 @@ msgstr ""
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_social_account__facebook_account_id
-msgid "Facebook Page ID provided by the Facebook API, this should never be set manually."
+msgid ""
+"Facebook Page ID provided by the Facebook API, this should never be set "
+"manually."
 msgstr ""
 
 #. module: social_facebook
@@ -202,7 +206,9 @@ msgstr ""
 #. odoo-python
 #: code:addons/social_facebook/models/social_stream_post.py:0
 #, python-format
-msgid "Post not found. It could be because the post has been deleted on the Social Platform."
+msgid ""
+"Post not found. It could be because the post has been deleted on the Social "
+"Platform."
 msgstr ""
 
 #. module: social_facebook
@@ -234,7 +240,7 @@ msgstr ""
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_account
 msgid "Social Account"
-msgstr ""
+msgstr "社交媒體帳號"
 
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_live_post
@@ -249,7 +255,7 @@ msgstr "社交媒體"
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_post
 msgid "Social Post"
-msgstr ""
+msgstr "社交帖文"
 
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_post_template
@@ -276,6 +282,7 @@ msgstr ""
 #. module: social_facebook
 #. odoo-python
 #: code:addons/social_facebook/models/social_stream_post.py:0
+#: code:addons/social_facebook/models/social_stream_post.py:0
 #, python-format
 msgid "Unknown"
 msgstr "未知"
@@ -287,7 +294,9 @@ msgstr ""
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_social_media__media_type
-msgid "Used to make comparisons when we need to restrict some features to a specific media ('facebook', 'twitter', ...)."
+msgid ""
+"Used to make comparisons when we need to restrict some features to a "
+"specific media ('facebook', 'twitter', ...)."
 msgstr ""
 
 #. module: social_facebook
@@ -308,7 +317,9 @@ msgstr "視圖"
 #: code:addons/social_facebook/models/social_live_post.py:0
 #: code:addons/social_facebook/models/social_post.py:0
 #, python-format
-msgid "We could not upload your image, try reducing its size and posting it again (error: %s)."
+msgid ""
+"We could not upload your image, try reducing its size and posting it again "
+"(error: %s)."
 msgstr ""
 
 #. module: social_facebook
@@ -316,7 +327,7 @@ msgstr ""
 #: code:addons/social_facebook/models/social_media.py:0
 #, python-format
 msgid "You don't have an active subscription. Please buy one here: %s"
-msgstr ""
+msgstr "您尚未訂閱。請點選連結添購：%s"
 
 #. module: social_facebook
 #. odoo-python

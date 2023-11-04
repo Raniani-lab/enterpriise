@@ -3,8 +3,8 @@
 # 	* documents_hr
 # 
 # Translators:
-# Wil Odoo, 2023
 # Jolien De Paepe, 2023
+# Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:21+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Jolien De Paepe, 2023\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,6 +27,9 @@ msgid ""
 "                                Default tags\n"
 "                            </span>"
 msgstr ""
+"<span name=\"documents_hr_tags\" class=\"o_form_label\" invisible=\"1\">\n"
+"                                Étiquettes par défaut\n"
+"                            </span>"
 
 #. module: documents_hr
 #: model:mail.template,body_html:documents_hr.mail_template_document_folder_link
@@ -49,7 +52,7 @@ msgid ""
 msgstr ""
 "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
 "        <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
-"            Cher, chère <t t-esc=\"object.name\"></t>, le lien d'accès à vos documents personnels est disponible.<br><br>\n"
+"            Bonjour <t t-esc=\"object.name\"></t>, le lien d'accès à vos documents personnels est disponible.<br><br>\n"
 "            Vous trouverez tous vos documents RH personnels dans ce dossier.<br><br>\n"
 "            Veuillez conserver ce lien en toute sécurité.<br><br>\n"
 "            <div style=\"text-align: center; padding: 16px 0px 16px 0px; font-size: 14px;\">\n"

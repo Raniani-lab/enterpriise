@@ -2,12 +2,17 @@
 # This file contains the translation of the following modules:
 # 	* sale_management_renting
 # 
+# Translators:
+# Wil Odoo, 2023
+# Jolien De Paepe, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:21+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,37 +23,37 @@ msgstr ""
 #. module: sale_management_renting
 #: model_terms:ir.actions.act_window,help:sale_management_renting.sale_order_template_action
 msgid "Create your quotation template"
-msgstr ""
+msgstr "Maak je offertesjabloon"
 
 #. module: sale_management_renting
 #: model:sale.order.template.line,name:sale_management_renting.rental_order_template_line_1
 msgid "Meeting Room"
-msgstr ""
+msgstr "Vergaderzaal"
 
 #. module: sale_management_renting
 #: model:ir.model,name:sale_management_renting.model_sale_order_template_line
 msgid "Quotation Template Line"
-msgstr ""
+msgstr "Offertesjabloonregel"
 
 #. module: sale_management_renting
 #: model:ir.model,name:sale_management_renting.model_sale_order_template_option
 msgid "Quotation Template Option"
-msgstr ""
+msgstr "Offerte sjabloon optie"
 
 #. module: sale_management_renting
 #: model:ir.ui.menu,name:sale_management_renting.menu_quotation_template
 msgid "Quotation Templates"
-msgstr ""
+msgstr "Offertesjablonen"
 
 #. module: sale_management_renting
 #: model:ir.actions.act_window,name:sale_management_renting.sale_order_template_action
 msgid "Rental Quotation Templates"
-msgstr ""
+msgstr "Verhuuroffertesjablonen"
 
 #. module: sale_management_renting
 #: model:ir.model,name:sale_management_renting.model_sale_order_option
 msgid "Sale Options"
-msgstr ""
+msgstr "Verkoopopties"
 
 #. module: sale_management_renting
 #: model_terms:ir.actions.act_window,help:sale_management_renting.sale_order_template_action
@@ -57,8 +62,11 @@ msgid ""
 "                Send these quotes by email and let your customers sign online.\n"
 "                Use cross-selling and discounts to push and boost your sales."
 msgstr ""
+"Gebruik sjablonen om gepolijste, professionele offertes te maken in minuten.\n"
+"Verzend deze offertes via e-mail en laat je klanten online tekenen.\n"
+"Gebruik kruisverkoop en kortingen om je verkoop te boosten."
 
 #. module: sale_management_renting
 #: model:sale.order.template.option,name:sale_management_renting.rental_order_template_option_1
 msgid "[RENT001] Projector"
-msgstr ""
+msgstr "[RENT001] Projector"

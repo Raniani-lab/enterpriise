@@ -997,7 +997,7 @@ msgstr "Verantwoordelijke gebruiker"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "SMS fout bij versturen"
 
 #. module: approvals
 #. odoo-python
@@ -1139,12 +1139,12 @@ msgstr "Wachten"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Websiteberichten"
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Website communicatie geschiedenis"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form

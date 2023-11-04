@@ -128,14 +128,14 @@ msgstr "Journal"
 #: model:ir.model.fields,field_description:account_sepa.field_res_partner__account_sepa_lei
 #: model:ir.model.fields,field_description:account_sepa.field_res_users__account_sepa_lei
 msgid "LEI"
-msgstr ""
+msgstr "LEI"
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_company__account_sepa_lei
 #: model:ir.model.fields,help:account_sepa.field_res_partner__account_sepa_lei
 #: model:ir.model.fields,help:account_sepa.field_res_users__account_sepa_lei
 msgid "Legal Entity Identifier"
-msgstr ""
+msgstr "Legal Entity Identifier"
 
 #. module: account_sepa
 #. odoo-python
@@ -148,7 +148,7 @@ msgstr ""
 #. module: account_sepa
 #: model_terms:ir.ui.view,arch_db:account_sepa.res_partner_sepa_inherit_form
 msgid "Miscellaneous"
-msgstr ""
+msgstr "Sonstiges"
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_config_settings__sepa_initiating_party_name
@@ -162,7 +162,7 @@ msgstr ""
 #. module: account_sepa
 #: model:ir.model.fields.selection,name:account_sepa.selection__account_journal__sepa_pain_version__pain_001_001_09
 msgid "New generic version (09)"
-msgstr ""
+msgstr "Neue generische Version (09)"
 
 #. module: account_sepa
 #. odoo-python
@@ -350,6 +350,9 @@ msgid ""
 "- 18 alphanumeric characters with capital letters\n"
 "- 2 digits in the end\n"
 msgstr ""
+"Die LEI-Nummer muss aus 20 Zeichen bestehen und der folgenden Struktur entsprechen:\n"
+"- 18 alphanumerische Zeichen mit Großbuchstaben\n"
+"- 2 Ziffern am Ende\n"
 
 #. module: account_sepa
 #. odoo-python
@@ -416,12 +419,12 @@ msgstr "Zu viele Transaktionen für eine einzelne Datei."
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_payment__sepa_uetr
 msgid "UETR"
-msgstr ""
+msgstr "UETR"
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_account_payment__sepa_uetr
 msgid "Unique end-to-end transaction reference"
-msgstr ""
+msgstr "Eindeutige Zahlungsreferenz (UETR)"
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_company__sepa_initiating_party_name

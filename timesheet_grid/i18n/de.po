@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1415,7 +1416,7 @@ msgstr ""
 #: code:addons/timesheet_grid/models/res_users.py:0
 #, python-format
 msgid "You are not allowed to see timesheets."
-msgstr ""
+msgstr "Sie sind nicht berechtigt, Zeiterfassungen zu sehen."
 
 #. module: timesheet_grid
 #. odoo-python
@@ -1524,7 +1525,7 @@ msgstr "nach Ende der Woche"
 #: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
 #, python-format
 msgid "and click on"
-msgstr ""
+msgstr "und klicken Sie auf"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
@@ -1564,18 +1565,18 @@ msgstr "oder [a], um den Timer zu starten"
 #: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
 #, python-format
 msgid "or click on"
-msgstr ""
+msgstr "oder klicken auf"
 
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
 #, python-format
 msgid "to add 15 min"
-msgstr ""
+msgstr ", um 15 Min. hinzuzufügen"
 
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
 #, python-format
 msgid "to launch the timer"
-msgstr ""
+msgstr ", um den Timer zu starten"

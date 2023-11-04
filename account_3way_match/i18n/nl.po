@@ -47,7 +47,7 @@ msgstr "Te betalen leveranciersfacturen"
 #. module: account_3way_match
 #: model_terms:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match
 msgid "Bills to Validate"
-msgstr ""
+msgstr "Te bevestigen leveranciersfacturen"
 
 #. module: account_3way_match
 #: model:ir.model.fields.selection,name:account_3way_match.selection__account_move__release_to_pay__exception

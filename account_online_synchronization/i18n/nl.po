@@ -3,13 +3,15 @@
 # 	* account_online_synchronization
 # 
 # Translators:
+# Martin Trigaux, 2023
+# Jolien De Paepe, 2023
 # Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"POT-Creation-Date: 2023-10-31 14:34+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
 "Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
@@ -26,6 +28,15 @@ msgstr ""
 msgid ""
 ").\n"
 "                    This might cause duplicate entries."
+msgstr ""
+").\n"
+"                    Dit kan dubbele boekingen veroorzaken."
+
+#. module: account_online_synchronization
+#. odoo-javascript
+#: code:addons/account_online_synchronization/static/src/components/refresh_spin_journal_widget/refresh_spin_journal_widget.xml:0
+#, python-format
+msgid "0 transaction fetched"
 msgstr ""
 
 #. module: account_online_synchronization
@@ -193,6 +204,11 @@ msgid "Account Online Link"
 msgstr "Link online rekening"
 
 #. module: account_online_synchronization
+#: model:ir.actions.server,name:account_online_synchronization.online_sync_cron_waiting_synchronization_ir_actions_server
+msgid "Account: Journal online Waiting Synchronization"
+msgstr ""
+
+#. module: account_online_synchronization
 #: model:ir.actions.server,name:account_online_synchronization.online_sync_cron_ir_actions_server
 msgid "Account: Journal online sync"
 msgstr "Boekhouding: Dagboek online sync"
@@ -235,7 +251,7 @@ msgstr "Activiteitensoort icoon"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line_transient__amount
 msgid "Amount"
-msgstr ""
+msgstr "Bedrag"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_attachment_count
@@ -310,7 +326,7 @@ msgstr "Annuleren"
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_missing_transaction_wizard_view_form
 msgid "Choose a date and a journal from which you want to fetch transactions"
-msgstr ""
+msgstr "Kies een datum en een dagboek waarvan je transacties wilt ophalen"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__client_id
@@ -384,7 +400,7 @@ msgstr "Verbindingsverzoeken"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__connection_state_details
 msgid "Connection State Details"
-msgstr ""
+msgstr "Details verbindingsstatus"
 
 #. module: account_online_synchronization
 #: model:mail.message.subtype,name:account_online_synchronization.bank_sync_consent_renewal
@@ -430,7 +446,7 @@ msgstr "Valuta"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line_transient__date
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_journal__expiring_synchronization_date
@@ -450,7 +466,7 @@ msgstr "Schermnaam"
 #. module: account_online_synchronization
 #: model:ir.model.fields.selection,name:account_online_synchronization.selection__account_online_account__fetching_status__done
 msgid "Done"
-msgstr ""
+msgstr "Gereed"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields.selection,name:account_online_synchronization.selection__account_online_link__state__error
@@ -483,41 +499,50 @@ msgstr "Extra informatie nodig van externe provider"
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_missing_transaction_wizard_view_form
 msgid "Fetch"
-msgstr ""
+msgstr "Ophalen"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_missing_transaction_wizard_view_form
 msgid "Fetch Missing Bank Statements Wizard"
-msgstr ""
+msgstr "Wizard ontbrekende rekeningafschriften ophalen"
 
 #. module: account_online_synchronization
-#: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
+#. odoo-javascript
+#: code:addons/account_online_synchronization/static/src/components/refresh_spin_journal_widget/refresh_spin_journal_widget.xml:0
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_online_link_view_form
+#, python-format
 msgid "Fetch Transactions"
 msgstr "Transacties ophalen"
+
+#. module: account_online_synchronization
+#. odoo-python
+#: code:addons/account_online_synchronization/models/account_online.py:0
+#, python-format
+msgid "Fetched Transactions"
+msgstr "Opgehaalde transacties"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__online_sync_fetching_status
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__fetching_status
 msgid "Fetching Status"
-msgstr ""
+msgstr "Ophaalstatus"
 
 #. module: account_online_synchronization
 #. odoo-javascript
 #: code:addons/account_online_synchronization/static/src/components/refresh_spin_journal_widget/refresh_spin_journal_widget.xml:0
 #, python-format
 msgid "Fetching..."
-msgstr ""
+msgstr "Aan het ophalen..."
 
 #. module: account_online_synchronization
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/account_online_synchronization/models/account_journal.py:0
 #: code:addons/account_online_synchronization/static/src/components/bank_reconciliation/fetch_missing_transactions_cog_menu.xml:0
 #: model:ir.actions.server,name:account_online_synchronization.account_journal_action_fetch_missing_transactions
 #, python-format
 msgid "Find Missing Transactions"
-msgstr ""
+msgstr "Ontbrekende transacties vinden"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_follower_ids
@@ -549,7 +574,7 @@ msgstr "Heeft ongekoppelde accounts"
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Here"
-msgstr ""
+msgstr "Hier"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_selection__id
@@ -610,7 +635,7 @@ msgstr ""
 #: code:addons/account_online_synchronization/static/src/components/transient_bank_statement_line_list_view/transient_bank_statement_line_list_view.xml:0
 #, python-format
 msgid "Import Transactions"
-msgstr ""
+msgstr "Transacties importeren"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__provider_data
@@ -710,7 +735,7 @@ msgstr "Koppel een bankrekening aan het geselecteerde dagboek"
 #: code:addons/account_online_synchronization/wizard/account_journal_missing_transactions.py:0
 #, python-format
 msgid "Manual Bank Statement Lines"
-msgstr ""
+msgstr "Handmatige rekeningafschriftregels"
 
 #. module: account_online_synchronization
 #. odoo-python
@@ -734,7 +759,7 @@ msgstr "Berichten"
 #: code:addons/account_online_synchronization/wizard/account_journal_missing_transactions.py:0
 #, python-format
 msgid "Missing and Pending Transactions"
-msgstr ""
+msgstr "Ontbrekende en lopende transacties"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__my_activity_date_deadline
@@ -746,11 +771,6 @@ msgstr "Mijn activiteit deadline"
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__name
 msgid "Name"
 msgstr "Naam"
-
-#. module: account_online_synchronization
-#: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
-msgstr "Volgende activiteitenafspraak"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__activity_date_deadline
@@ -852,24 +872,24 @@ msgstr "Initieel afschrift: eerste synchronisatie"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line_transient__partner_name
 msgid "Partner Name"
-msgstr ""
+msgstr "Relatienaam"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line_transient__payment_ref
 msgid "Payment Ref"
-msgstr ""
+msgstr "Betalingsreferentie"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields.selection,name:account_online_synchronization.selection__account_bank_statement_line_transient__state__pending
 msgid "Pending"
-msgstr ""
+msgstr "In behandeling"
 
 #. module: account_online_synchronization
 #. odoo-python
 #: code:addons/account_online_synchronization/wizard/account_journal_missing_transactions.py:0
 #, python-format
 msgid "Please enter a valid Starting Date to continue."
-msgstr ""
+msgstr "Geef een geldige startdatum op om verder te gaan."
 
 #. module: account_online_synchronization
 #. odoo-python
@@ -883,22 +903,22 @@ msgstr "Maak opnieuw verbinding met je online account."
 #: code:addons/account_online_synchronization/wizard/account_bank_statement_line.py:0
 #, python-format
 msgid "Please select first the transactions you wish to import."
-msgstr ""
+msgstr "Selecteer eerst de transacties die je wilt importeren."
 
 #. module: account_online_synchronization
 #: model:ir.model.fields.selection,name:account_online_synchronization.selection__account_bank_statement_line_transient__state__posted
 msgid "Posted"
-msgstr ""
+msgstr "Geplaatst"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.missing_bank_statement_line_search
 msgid "Posted Transactions"
-msgstr ""
+msgstr "Geplaatste transacties"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields.selection,name:account_online_synchronization.selection__account_online_account__fetching_status__processing
 msgid "Processing"
-msgstr ""
+msgstr "In verwerking"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__provider_data
@@ -908,12 +928,7 @@ msgstr "Provider gegevens"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__provider_type
 msgid "Provider Type"
-msgstr ""
-
-#. module: account_online_synchronization
-#: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__rating_ids
-msgid "Ratings"
-msgstr "Beoordelingen"
+msgstr "Type aanbieder"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_online_link_view_form
@@ -921,7 +936,10 @@ msgid "Reconnect"
 msgstr "Opnieuw verbinden"
 
 #. module: account_online_synchronization
+#. odoo-javascript
+#: code:addons/account_online_synchronization/static/src/components/refresh_spin_journal_widget/refresh_spin_journal_widget.xml:0
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
+#, python-format
 msgid "Reconnect Bank"
 msgstr "Bank opnieuw verbinden"
 
@@ -937,7 +955,7 @@ msgstr "Doorverwijzen"
 #: code:addons/account_online_synchronization/static/src/components/refresh_spin_journal_widget/refresh_spin_journal_widget.xml:0
 #, python-format
 msgid "Refresh"
-msgstr ""
+msgstr "Vernieuwen"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__refresh_token
@@ -946,10 +964,17 @@ msgstr "Vernieuw token"
 
 #. module: account_online_synchronization
 #. odoo-python
+#: code:addons/account_online_synchronization/models/account_journal.py:0
+#, python-format
+msgid "Report Issue"
+msgstr ""
+
+#. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Report issue"
-msgstr ""
+msgstr "Probleem rapporteren"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__client_id
@@ -978,6 +1003,13 @@ msgstr ""
 "de knop te klikken."
 
 #. module: account_online_synchronization
+#. odoo-javascript
+#: code:addons/account_online_synchronization/static/src/components/refresh_spin_journal_widget/refresh_spin_journal_widget.xml:0
+#, python-format
+msgid "See error"
+msgstr ""
+
+#. module: account_online_synchronization
 #. odoo-python
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.view_account_bank_selection_form_wizard
@@ -998,7 +1030,7 @@ msgstr "Geselecteerd account"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line_transient__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Reeks"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__account_number
@@ -1008,7 +1040,7 @@ msgstr "Stel in of de externe provider het volledige rekeningnummer heeft"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_missing_transaction_wizard__date
 msgid "Starting Date"
-msgstr ""
+msgstr "Startdatum"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line_transient__state
@@ -1049,7 +1081,7 @@ msgstr ""
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__provider_type
 msgid "Third Party Provider"
-msgstr ""
+msgstr "Externe provider"
 
 #. module: account_online_synchronization
 #. odoo-python
@@ -1086,12 +1118,12 @@ msgstr ""
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line_transient__transaction_details
 msgid "Transaction Details"
-msgstr ""
+msgstr "Details transactie"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_account_bank_statement_line_transient
 msgid "Transient model for bank statement line"
-msgstr ""
+msgstr "Transiënt model voor rekeningafschriftregel"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__has_unlinked_accounts
@@ -1115,7 +1147,7 @@ msgstr "Inloggegevens bijwerken"
 #. module: account_online_synchronization
 #: model:ir.model.fields.selection,name:account_online_synchronization.selection__account_online_account__fetching_status__waiting
 msgid "Waiting"
-msgstr ""
+msgstr "Wachten"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__website_message_ids
@@ -1130,7 +1162,7 @@ msgstr "Website communicatie geschiedenis"
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_account_missing_transaction_wizard
 msgid "Wizard for missing transactions"
-msgstr ""
+msgstr "Wizard voor ontbrekende transacties"
 
 #. module: account_online_synchronization
 #. odoo-javascript
@@ -1140,12 +1172,21 @@ msgid ""
 "You are importing transactions before the creation of your online synchronization\n"
 "                    ("
 msgstr ""
+"Je importeert transacties voordat je online synchronisatie is aangemaakt\n"
+"                    ("
 
 #. module: account_online_synchronization
 #. odoo-python
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "You can contact Odoo support"
+msgstr "Je kan contact opnemen met de Odoo ondersteuning"
+
+#. module: account_online_synchronization
+#. odoo-python
+#: code:addons/account_online_synchronization/models/account_journal.py:0
+#, python-format
+msgid "You can only execute this action for bank-synchronized journals."
 msgstr ""
 
 #. module: account_online_synchronization
@@ -1156,6 +1197,8 @@ msgstr ""
 msgid ""
 "You can't find missing transactions for a journal that isn't connected."
 msgstr ""
+"Je kan geen ontbrekende transacties vinden voor een dagboek dat niet "
+"verbonden is."
 
 #. module: account_online_synchronization
 #. odoo-python
@@ -1172,21 +1215,21 @@ msgstr ""
 #: code:addons/account_online_synchronization/wizard/account_bank_statement_line.py:0
 #, python-format
 msgid "You cannot import pending transactions."
-msgstr ""
+msgstr "Je kan geen lopende transacties importeren."
 
 #. module: account_online_synchronization
 #. odoo-javascript
 #: code:addons/account_online_synchronization/static/src/components/transient_bank_statement_line_list_view/transient_bank_statement_line_list_view.xml:0
 #, python-format
 msgid "You have"
-msgstr ""
+msgstr "Je hebt"
 
 #. module: account_online_synchronization
 #. odoo-python
 #: code:addons/account_online_synchronization/wizard/account_journal_missing_transactions.py:0
 #, python-format
 msgid "You have to select one journal to continue."
-msgstr ""
+msgstr "Je moet één dagboek selecteren om door te gaan."
 
 #. module: account_online_synchronization
 #: model:mail.template,subject:account_online_synchronization.email_template_sync_reminder
@@ -1203,7 +1246,7 @@ msgstr "te verbinden rekening:"
 #: code:addons/account_online_synchronization/static/src/components/transient_bank_statement_line_list_view/transient_bank_statement_line_list_view.xml:0
 #, python-format
 msgid "entries"
-msgstr ""
+msgstr "boekingen"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.portal_renew_consent
@@ -1217,9 +1260,18 @@ msgstr "vertegenwoordiging van een online bankrekening"
 
 #. module: account_online_synchronization
 #. odoo-javascript
+#: code:addons/account_online_synchronization/static/src/components/refresh_spin_journal_widget/refresh_spin_journal_widget.xml:0
+#, python-format
+msgid "transactions fetched"
+msgstr ""
+
+#. module: account_online_synchronization
+#. odoo-javascript
 #: code:addons/account_online_synchronization/static/src/components/transient_bank_statement_line_list_view/transient_bank_statement_line_list_view.xml:0
 #, python-format
 msgid ""
 "within this period that were not created using the online synchronization. "
 "This might cause duplicate entries."
 msgstr ""
+"in deze periode die niet werden gemaakt door middel van de online "
+"synchronisatie. Dit kan dubbele boekingen veroorzaken."

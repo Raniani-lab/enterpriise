@@ -3,6 +3,7 @@
 # 	* voip
 # 
 # Translators:
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2023
 # Wil Odoo, 2023
 # 
 msgid ""
@@ -126,7 +127,7 @@ msgstr "Activiteit"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_call__activity_name
 msgid "Activity Name"
-msgstr ""
+msgstr "Naam activiteit"
 
 #. module: voip
 #. odoo-javascript
@@ -176,8 +177,8 @@ msgid "Backspace"
 msgstr "Backspace"
 
 #. module: voip
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/voip/models/voip_queue_mixin.py:0
 #: code:addons/voip/static/src/softphone/correspondence_details.xml:0
 #: code:addons/voip/static/src/softphone/softphone.js:0
@@ -229,7 +230,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_call__state__calling
 msgid "Calling"
-msgstr ""
+msgstr "Wordt gebeld"
 
 #. module: voip
 #. odoo-javascript
@@ -410,7 +411,7 @@ msgstr "Schermnaam"
 #: code:addons/voip/static/src/softphone/correspondence_details.xml:0
 #, python-format
 msgid "Documents"
-msgstr ""
+msgstr "Documenten"
 
 #. module: voip
 #. odoo-javascript
@@ -429,7 +430,7 @@ msgstr "Einde gesprek"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_call__end_date
 msgid "End Date"
-msgstr ""
+msgstr "Einddatum"
 
 #. module: voip
 #. odoo-javascript
@@ -615,7 +616,7 @@ msgstr "Dempen"
 #: code:addons/voip/static/src/softphone/softphone.js:0
 #, python-format
 msgid "Next Activities"
-msgstr ""
+msgstr "Volgende activiteiten"
 
 #. module: voip
 #. odoo-javascript
@@ -647,7 +648,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_call__state__ongoing
 msgid "Ongoing"
-msgstr ""
+msgstr "Lopend"
 
 #. module: voip
 #. odoo-javascript
@@ -688,7 +689,7 @@ msgstr "Telefoon"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_call__phone_number
 msgid "Phone Number"
-msgstr ""
+msgstr "Telefoonnummer"
 
 #. module: voip
 #. odoo-javascript
@@ -832,12 +833,12 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_call__start_date
 msgid "Start Date"
-msgstr ""
+msgstr "Begindatum"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_call__state
 msgid "State"
-msgstr ""
+msgstr "Staat"
 
 #. module: voip
 #. odoo-javascript
@@ -968,7 +969,7 @@ msgstr "Verplaatsing"
 #: code:addons/voip/static/src/softphone/transfer_popover.xml:0
 #, python-format
 msgid "Transfer to"
-msgstr ""
+msgstr "Overbrengen naar"
 
 #. module: voip
 #. odoo-javascript
@@ -982,7 +983,7 @@ msgstr ""
 #: code:addons/voip/static/src/softphone/correspondence_details.js:0
 #, python-format
 msgid "Unmute"
-msgstr ""
+msgstr "Dempen opheffen"
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_users

@@ -4,6 +4,8 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Sergio Zanchetta <primes2h@gmail.com>, 2023
+# Marianna Ciofani, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:21+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -57,12 +59,12 @@ msgstr "<span class=\"o_stat_text\">Richieste di firma</span>"
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_mail_activity_plan_template
 msgid "Activity plan template"
-msgstr ""
+msgstr "Modello piano attività"
 
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_mail_activity_schedule
 msgid "Activity schedule plan Wizard"
-msgstr ""
+msgstr "Procedura guidata pianificazione attività"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
@@ -147,6 +149,10 @@ msgid ""
 "                - Private takes the email defined in Private Information\n"
 "                - If the selected email is not defined, the available one will be used."
 msgstr ""
+"Indirizzo e-mail utilzzato per inviare la richiesta di firma.\n"
+"                - Lavoro definisce l'e-mail nel campo \"e-mail di lavoro\"\n"
+"                - Privato definisce l'e-mail nelle informazioni private\n"
+"                -Se l'indirizzo e-mail selezionato non è definito, verrà utilizzato quello disponbile."
 
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_employee
@@ -212,7 +218,7 @@ msgstr "Ultimo aggiornamento il"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__mail_displayed
 msgid "Mail Displayed"
-msgstr ""
+msgstr "E-mail visualizzata"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
@@ -324,7 +330,7 @@ msgstr "Richiesta di firma"
 #. module: hr_contract_sign
 #: model:ir.actions.server,name:hr_contract_sign.action_signature_request_wizard
 msgid "Signature request"
-msgstr ""
+msgstr "Richiesta di firma"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__subject
@@ -355,7 +361,7 @@ msgstr "Utente"
 #. module: hr_contract_sign
 #: model:ir.model.fields.selection,name:hr_contract_sign.selection__hr_contract_sign_document_wizard__mail_to__work
 msgid "Work"
-msgstr ""
+msgstr "Lavoro"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign

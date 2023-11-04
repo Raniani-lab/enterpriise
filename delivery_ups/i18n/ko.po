@@ -1,38 +1,41 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery_ups
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Sarah Park, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Sarah Park, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
-"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "A shipment cannot have a KGS/IN or LBS/CM as its unit of measurements. Configure it from the delivery method."
+msgid ""
+"A shipment cannot have a KGS/IN or LBS/CM as its unit of measurements. "
+"Configure it from the delivery method."
 msgstr "발송물은 측정 단위로 KGS/IN 또는 LBS/CM을 가질 수 없습니다. 배송 방법에서 설정하십시오."
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "Access License number is Invalid. Provide a valid number (Length should be 0-35 alphanumeric characters)"
-msgstr ""
+msgid ""
+"Access License number is Invalid. Provide a valid number (Length should be "
+"0-35 alphanumeric characters)"
+msgstr "엑세스 라이센스 번호가 유효하지 않습니다. 올바른 번호를 입력해 주세요. (0-35자 사이의 영문 또는 숫자여야 함)"
 
 #. module: delivery_ups
 #. odoo-python
@@ -115,7 +118,7 @@ msgstr "연락처"
 #. module: delivery_ups
 #: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Duties paid by"
-msgstr ""
+msgstr "관세 납부자"
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__epl
@@ -137,8 +140,9 @@ msgstr ""
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "Exceeds Total Number of allowed pieces per World Wide Express Shipment."
-msgstr "월드 와이드 익스프레스 배송 당 허용되는 총 개수를 초과합니다."
+msgid ""
+"Exceeds Total Number of allowed pieces per World Wide Express Shipment."
+msgstr "월드와이드익스프레스에서 배송건당 허용하는 총 개수를 초과합니다."
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_bill_my_account
@@ -150,7 +154,7 @@ msgid ""
 "and delivery fees will be charged on it."
 msgstr ""
 "이 항목을 선택하면 전자 상거래 사용자에게 UPS 계정 번호가 표시되고 \n"
-"배달 수수료가 청구됩니다."
+"배송 수수료가 청구됩니다."
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_dimension_unit__in
@@ -180,7 +184,7 @@ msgstr "PDF"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_package_dimension_unit
 msgid "Package Size Unit"
-msgstr ""
+msgstr "패키지 사이즈 단위"
 
 #. module: delivery_ups
 #: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
@@ -197,9 +201,10 @@ msgstr "%s 패키지의 배송 중량이 양수가 아닙니다."
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/delivery_ups.py:0
+#: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid "Packages:"
-msgstr ""
+msgstr "패키지:"
 
 #. module: delivery_ups
 #. odoo-python
@@ -261,7 +266,9 @@ msgstr "배송 업체 주소로 유효한 국가를 입력하십시오."
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "Please provide a valid package type available for service and selected locations."
+msgid ""
+"Please provide a valid package type available for service and selected "
+"locations."
 msgstr "서비스 및 선택한 지역에 유효한 패키지 유형을 제공하십시오."
 
 #. module: delivery_ups
@@ -274,12 +281,15 @@ msgstr "수신자에게 유효한 전화 번호를 입력하십시오."
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide a valid shipper Number/Carrier Account."
 msgstr "유효한 배송 업체 번호/캐리어 계정을 제공하십시오."
 
 #. module: delivery_ups
 #. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide a valid shipper number/Carrier Account."
@@ -351,6 +361,7 @@ msgstr "선적업체 주소로 유효한 우편 번호를 입력하십시오."
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide a valid zip code in the warehouse address."
 msgstr "창고 주소에 유효한 우편 번호를 입력하십시오."
@@ -371,6 +382,7 @@ msgstr "선적할 상품을 하나 이상 선택해야 합니다."
 
 #. module: delivery_ups
 #. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
@@ -404,6 +416,7 @@ msgstr "제공된 UPS 라이센스 번호가 UPS 데이터베이스에 없습니
 
 #. module: delivery_ups
 #. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Provided Tracking Ref. Number is invalid."
@@ -445,7 +458,7 @@ msgstr "수신자 전화 내선 번호는 숫자만 포함해야 합니다."
 #: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid "Return label generated"
-msgstr ""
+msgstr "반품 라벨 생성"
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__spl
@@ -472,14 +485,14 @@ msgstr "보낸 사람"
 #: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid "Shipment #%s has been cancelled"
-msgstr ""
+msgstr "#%s 배송이 취소되었습니다"
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid "Shipment created into UPS"
-msgstr ""
+msgstr "UPS로 배송 생성"
 
 #. module: delivery_ups
 #. odoo-python
@@ -512,12 +525,12 @@ msgstr "선적업체 전화 내선 번호에는 숫자만 포함되어야 합니
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_delivery_carrier
 msgid "Shipping Methods"
-msgstr "선적 방법"
+msgstr "배송 방법"
 
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_stock_package_type
 msgid "Stock package type"
-msgstr ""
+msgstr "재고 포장 유형"
 
 #. module: delivery_ups
 #. odoo-python
@@ -552,7 +565,8 @@ msgstr ""
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The delivery cannot be done because the weight of your product is missing."
+msgid ""
+"The delivery cannot be done because the weight of your product is missing."
 msgstr "상품 무게가 없어서 배송할 수 없습니다."
 
 #. module: delivery_ups
@@ -563,12 +577,16 @@ msgid ""
 "The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n"
 " %s"
 msgstr ""
+"다음 품목의 중량 정보가 누락되어 예상 배송 비용을 계산할 수 없습니다.\n"
+"%s"
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The maximum number of user access attempts was exceeded. So please try again later"
+msgid ""
+"The maximum number of user access attempts was exceeded. So please try again"
+" later"
 msgstr "최대 사용자 액세스 시도 횟수를 초과했습니다. 나중에 다시 시도해 주세요."
 
 #. module: delivery_ups
@@ -576,7 +594,7 @@ msgstr "최대 사용자 액세스 시도 횟수를 초과했습니다. 나중�
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "The name of the customer should be no more than 35 characters."
-msgstr ""
+msgstr "고객 이름은 35자 이내로 입력해야 합니다."
 
 #. module: delivery_ups
 #. odoo-python
@@ -592,6 +610,7 @@ msgstr ""
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "The requested service is unavailable between the selected locations."
 msgstr "선택한 위치간에 요청한 서비스를 사용할 수 없습니다."
@@ -600,21 +619,27 @@ msgstr "선택한 위치간에 요청한 서비스를 사용할 수 없습니다
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The selected service is invalid from the requested warehouse, please choose another service."
+msgid ""
+"The selected service is invalid from the requested warehouse, please choose "
+"another service."
 msgstr "선택한 서비스가 요청한 창고에서 유효하지 않습니다. 다른 서비스를 선택하십시오."
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The selected service is invalid to the recipient address, please choose another service."
+msgid ""
+"The selected service is invalid to the recipient address, please choose "
+"another service."
 msgstr "선택한 서비스가 수신자 주소지에 유효하지 않습니다. 다른 서비스를 선택하십시오."
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The selected service is not possible from your warehouse to the recipient address, please choose another service."
+msgid ""
+"The selected service is not possible from your warehouse to the recipient "
+"address, please choose another service."
 msgstr "창고에서 수취인 주소로 선택한 서비스를 사용할 수 없습니다. 다른 서비스를 선택하십시오."
 
 #. module: delivery_ups
@@ -628,32 +653,46 @@ msgstr "선택한 서비스는 선택한 포장에 유효하지 않습니다."
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "This measurement system is not valid for the selected country. Please switch from LBS/IN to KGS/CM (or vice versa). Configure it from delivery method"
-msgstr "이 측정 시스템은 선택한 국가에 유효하지 않습니다. LBS/IN에서 KGS/CM으로 (또는 그 반대로) 전환하십시오. 배송 방법에서 설정하십시오."
+msgid ""
+"This measurement system is not valid for the selected country. Please switch"
+" from LBS/IN to KGS/CM (or vice versa). Configure it from delivery method"
+msgstr ""
+"이 측정 시스템은 선택한 국가에 유효하지 않습니다. LBS/IN에서 KGS/CM으로 (또는 그 반대로) 전환하십시오. 배송 방법에서 "
+"설정하십시오."
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "This measurement system is not valid for the selected country. Please switch from LBS/IN to KGS/CM (or vice versa). Configure it from the delivery method."
-msgstr "이 측정 시스템은 선택한 국가에 유효하지 않습니다. LBS/IN에서 KGS/CM으로 (또는 그 반대로) 전환하십시오. 배송 방법에서 설정하십시오."
+msgid ""
+"This measurement system is not valid for the selected country. Please switch"
+" from LBS/IN to KGS/CM (or vice versa). Configure it from the delivery "
+"method."
+msgstr ""
+"이 측정 시스템은 선택한 국가에 유효하지 않습니다. LBS/IN에서 KGS/CM으로 (또는 그 반대로) 전환하십시오. 배송 방법에서 "
+"설정하십시오."
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_cod
-msgid "This value added service enables UPS to collect the payment of the shipment from your customer."
+msgid ""
+"This value added service enables UPS to collect the payment of the shipment "
+"from your customer."
 msgstr "이 부가 서비스를 통해 UPS는 고객으로부터 발송물의 대금을 회수할 수 있습니다."
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_saturday_delivery
-msgid "This value added service will allow you to ship the package on saturday also."
+msgid ""
+"This value added service will allow you to ship the package on saturday "
+"also."
 msgstr "이 부가 서비스를 이용하면 토요일에도 패키지를 배송할 수 있습니다."
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/delivery_ups.py:0
+#: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid "Tracking Numbers:"
-msgstr ""
+msgstr "배송 조회 번호:"
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__delivery_type__ups
@@ -664,13 +703,13 @@ msgstr "UPS"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_access_number
 msgid "UPS Access Key"
-msgstr ""
+msgstr "UPS 액세스 키"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_res_partner__property_ups_carrier_account
 #: model:ir.model.fields,field_description:delivery_ups.field_res_users__property_ups_carrier_account
 msgid "UPS Account Number"
-msgstr ""
+msgstr "UPS 계정 번호"
 
 #. module: delivery_ups
 #: model:delivery.carrier,name:delivery_ups.delivery_carrier_ups_be
@@ -691,7 +730,7 @@ msgstr "UPS 라벨 파일 유형"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_default_package_type_id
 msgid "UPS Package Type"
-msgstr ""
+msgstr "UPS 패키지 유형"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_passwd
@@ -724,7 +763,7 @@ msgstr "UPS 선적업체 번호"
 #: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
 #: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
 msgid "UPS Shipping Methods"
-msgstr "USPS 선적 방법"
+msgstr "USPS 배송 방법"
 
 #. module: delivery_ups
 #: model:delivery.carrier,name:delivery_ups.delivery_carrier_ups_us
@@ -740,14 +779,17 @@ msgstr "UPS 사용자 이름"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_sale_order__partner_ups_carrier_account
 msgid "UPS account number"
-msgstr ""
+msgstr "UPS 계정 번호"
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "UPS address lines can only contain a maximum of 35 characters. You can split the contacts addresses on multiple lines to try to avoid this limitation."
-msgstr "UPS 주소는 한 줄에 최대 35자만 포함할 수 있습니다. 이 제한을 피하기 위해 연락처 주소를 여러 줄로 나눌 수 있습니다."
+msgid ""
+"UPS address lines can only contain a maximum of 35 characters. You can split"
+" the contacts addresses on multiple lines to try to avoid this limitation."
+msgstr ""
+"UPS 주소는 한 줄에 최대 35자만 포함할 수 있습니다. 이 제한을 피하기 위해 연락처 주소를 여러 줄로 나눌 수 있습니다."
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_duty_payment
@@ -761,6 +803,7 @@ msgstr "UPS 패키지 무게 단위"
 
 #. module: delivery_ups
 #. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Username/Password is invalid for this delivery provider."
@@ -792,7 +835,7 @@ msgstr "창고 내선 번호는 길이가 4를 초과 할 수 없습니다."
 #: code:addons/delivery_ups/models/sale.py:0
 #, python-format
 msgid "You must enter an UPS account number."
-msgstr ""
+msgstr "UPS 계정 번호를 입력해야 합니다."
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__zpl

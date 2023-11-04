@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:21+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -337,7 +338,7 @@ msgstr "Produktionsanalyse"
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__qty_demanded
 msgid "Quantity Demanded"
-msgstr ""
+msgstr "Geforderte Menge"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__qty_produced
@@ -348,7 +349,7 @@ msgstr "Produzierte Menge"
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,help:mrp_account_enterprise.field_mrp_report__yield_rate
 msgid "Ratio of quantity produced over quantity demanded"
-msgstr ""
+msgstr "Verhältnis der produzierten Menge zur geforderten Menge"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
@@ -412,7 +413,7 @@ msgstr "Gesamtdauer (Minuten) der Vorgänge für den Fertigungsauftrag"
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,help:mrp_account_enterprise.field_mrp_report__qty_demanded
 msgid "Total quantity demanded in product's UoM"
-msgstr ""
+msgstr "Gesamte geforderte Menge in der Maßeinheit des Produkts"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,help:mrp_account_enterprise.field_mrp_report__qty_produced
@@ -422,7 +423,7 @@ msgstr "Gesamte produzierte Menge in der Maßeinheit des Produkts"
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__yield_rate
 msgid "Yield Percentage(%)"
-msgstr ""
+msgstr "Gewinnprozentsatz (%)"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure

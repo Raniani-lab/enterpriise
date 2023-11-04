@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Marianna Ciofani, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -115,6 +116,8 @@ msgid ""
 "<br/>\n"
 "                    is sharing content with you"
 msgstr ""
+"<br/>\n"
+"                    sta condividendo del contenuto con te"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -123,8 +126,8 @@ msgstr "<br/>Powered by"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
-msgid "<i class=\"fa fa fa-folder text-odoo me-2\" title=\"Workspace\"/>"
-msgstr "<i class=\"fa fa fa-folder text-odoo me-2\" title=\"Workspace\"/>"
+msgid "<i class=\"fa fa fa-folder text-primary me-2\" title=\"Workspace\"/>"
+msgstr "<i class=\"fa fa fa-folder text-primary me-2\" title=\"Workspace\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_workspace_page
@@ -134,7 +137,7 @@ msgstr "<i class=\"fa fa-download fa-fw\"/>  Scaricare tutto"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 msgid "<i class=\"fa fa-lock oe_inline\" title=\"Locked\" invisible=\"not lock_uid\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-lock oe_inline\" title=\"Locked\" invisible=\"not lock_uid\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -142,6 +145,8 @@ msgid ""
 "<i class=\"fa fa-tag o_documents_tag_color ms-2\" invisible=\"not tag_ids\" "
 "title=\"Tags\"/>"
 msgstr ""
+"<i class=\"fa fa-tag o_documents_tag_color ms-2\" invisible=\"not tag_ids\" "
+"title=\"Tags\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_workspace_page
@@ -690,8 +695,8 @@ msgid "Action Needed"
 msgstr "Azione richiesta"
 
 #. module: documents
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #: model:ir.ui.menu,name:documents.workflow_rules_menu
@@ -808,17 +813,17 @@ msgstr "Sicurezza contatto alias"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_domain_id
 msgid "Alias Domain"
-msgstr ""
+msgstr "Dominio alias"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_domain
 msgid "Alias Domain Name"
-msgstr ""
+msgstr "Nome dominio alias"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_full_name
 msgid "Alias Email"
-msgstr ""
+msgstr "E-mail alias"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_name
@@ -916,7 +921,7 @@ msgstr "In archivio"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_search
 msgid "Archived Workspace"
-msgstr ""
+msgstr "Spazio di lavoro archiviato"
 
 #. module: documents
 #. odoo-javascript
@@ -944,14 +949,14 @@ msgstr "Sei sicuro di voler eliminare questa pagina?"
 #: code:addons/documents/static/src/views/documents_model_mixin.js:0
 #, python-format
 msgid "Are you sure you want to permanently erase the document?"
-msgstr ""
+msgstr "Sei sicuro di voler eliminare il documento in maniera definitiva?"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/documents_model_mixin.js:0
 #, python-format
 msgid "Are you sure you want to permanently erase the documents?"
-msgstr ""
+msgstr "Sei sicuro di voler eliminare i documenti in maniera definitiva?"
 
 #. module: documents
 #. odoo-javascript
@@ -1050,7 +1055,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "Bytes"
-msgstr ""
+msgstr "Byte"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__can_upload
@@ -1062,7 +1067,7 @@ msgstr "Puoi caricare"
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "Can't share documents of different workspaces."
-msgstr ""
+msgstr "Impossibile condividere i documenti di spazi di lavoro differenti."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_link_to_record_form_view
@@ -1077,6 +1082,8 @@ msgid ""
 "Cannot move folder under the given parent as this would create a recursive "
 "hierarchy"
 msgstr ""
+"Impossibile spostare la cartella sotto il genitore indicato in quanto "
+"creerebbe una gerarchia ricorsiva"
 
 #. module: documents
 #: model_terms:documents.folder,description:documents.documents_internal_folder
@@ -1109,7 +1116,7 @@ msgstr "Scegli un record da collegare"
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Choose or Configure Email Servers"
-msgstr ""
+msgstr "Scegli o configura server e-mail"
 
 #. module: documents
 #. odoo-javascript
@@ -1169,7 +1176,7 @@ msgstr "Condizioni"
 #. module: documents
 #: model:ir.model,name:documents.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Impostazioni di configurazione"
 
 #. module: documents
 #: model:ir.ui.menu,name:documents.Config
@@ -1289,6 +1296,7 @@ msgstr "Valori predefiniti per i documenti caricati"
 #: model:ir.model.fields,help:documents.field_res_config_settings__deletion_delay
 msgid "Delay after permanent deletion of the document in the trash (days)"
 msgstr ""
+"Ritardo dopo l'eliminazione definitiva del documento nel cestino (giorni)"
 
 #. module: documents
 #. odoo-javascript
@@ -1317,22 +1325,22 @@ msgstr "Elimina pagine dedicate o selezionate"
 #: code:addons/documents/static/src/views/documents_model_mixin.js:0
 #, python-format
 msgid "Delete permanently"
-msgstr ""
+msgstr "Elimina in maniera definitiva"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_res_config_settings__deletion_delay
 msgid "Deletion Delay"
-msgstr ""
+msgstr "Ritardo eliminazione"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__deletion_delay
 msgid "Deletion delay"
-msgstr ""
+msgstr "Ritardo eliminazione"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 msgid "Deletion delay (days)"
-msgstr ""
+msgstr "Ritardo eliminazione (giorni)"
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_deprecate
@@ -1467,8 +1475,8 @@ msgid "Document: Document Request"
 msgstr "Documenti: richiesta documento"
 
 #. module: documents
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/models/res_partner.py:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
@@ -1551,7 +1559,7 @@ msgstr "Scarica e carica"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_files_page
 msgid "Download file"
-msgstr ""
+msgstr "Scarica file"
 
 #. module: documents
 #. odoo-javascript
@@ -1579,7 +1587,7 @@ msgstr "Tipo di scadenza"
 #: code:addons/documents/static/src/views/form/folder_form_controller.js:0
 #, python-format
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplica"
 
 #. module: documents
 #. odoo-javascript
@@ -1658,7 +1666,7 @@ msgstr "Scaduto"
 #: code:addons/documents/static/src/views/list/folder_list_controller.js:0
 #, python-format
 msgid "Export"
-msgstr ""
+msgstr "Esporta"
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_facet_name_unique
@@ -1717,7 +1725,7 @@ msgstr "Centralizzazione dei file"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_deletion_form
 msgid "Files will be sent to trash and deleted forever after"
-msgstr ""
+msgstr "File che verranno spostati nel cestino ed eliminati per sempre dopo"
 
 #. module: documents
 #. odoo-javascript
@@ -1726,6 +1734,8 @@ msgstr ""
 #, python-format
 msgid "Files will be sent to trash and deleted forever after %s days."
 msgstr ""
+"File che verranno spostati nel cestino ed eliminati per sempre dopo %s "
+"giorni."
 
 #. module: documents
 #: model:documents.folder,name:documents.documents_finance_folder
@@ -1812,7 +1822,7 @@ msgstr "Unisci in un documento"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "Gb"
-msgstr ""
+msgstr "GB"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1983,6 +1993,7 @@ msgstr "È considerato multipagine"
 #, python-format
 msgid "Items in trash will be deleted forever after %s days."
 msgstr ""
+"Articoli nel cestino che verranno eliminati per sempre dopo %s giorni."
 
 #. module: documents
 #. odoo-javascript
@@ -1990,11 +2001,13 @@ msgstr ""
 #, python-format
 msgid "Items moved to the trash will be deleted forever after %s days."
 msgstr ""
+"Articoli spostati nel cestino che verranno eliminati per sempre dopo %s "
+"giorni."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "Kb"
-msgstr ""
+msgstr "Kb"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_internal_knowledge
@@ -2114,7 +2127,7 @@ msgstr "Dal vivo"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_incoming_local
 msgid "Local-part based incoming detection"
-msgstr ""
+msgstr "Rilevamento dell'arrivo di una parte locale"
 
 #. module: documents
 #. odoo-javascript
@@ -2169,12 +2182,12 @@ msgstr "Marketing"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "Mb"
-msgstr ""
+msgstr "Mb"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_note
 msgid "Message"
-msgstr ""
+msgstr "Messaggio"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_has_error
@@ -2245,17 +2258,17 @@ msgstr "Sposta nello spazio di lavoro"
 #: model_terms:ir.ui.view,arch_db:documents.folder_deletion_form
 #, python-format
 msgid "Move to trash"
-msgstr ""
+msgstr "Sposta nel cestino"
 
 #. module: documents
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/static/src/views/form/folder_form_controller.js:0
 #: code:addons/documents/static/src/views/list/folder_list_controller.js:0
 #, python-format
 msgid "Move to trash?"
-msgstr ""
+msgstr "Spostare nel cestino?"
 
 #. module: documents
 #. odoo-javascript
@@ -2698,6 +2711,8 @@ msgid ""
 "Requested\n"
 "                                ∙"
 msgstr ""
+"Richiesta\n"
+"                                ∙"
 
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_md
@@ -2873,7 +2888,7 @@ msgstr "Definire etichette"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 msgid "Set deletion delay for documents in the Trash"
-msgstr ""
+msgstr "Configura il ritardo di eliminazione per i documenti nel cestino"
 
 #. module: documents
 #: model:mail.template,description:documents.mail_template_document_request_reminder
@@ -2995,7 +3010,7 @@ msgstr "Dimensione"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_files_page
 msgid "Size:"
-msgstr ""
+msgstr "Dimensione:"
 
 #. module: documents
 #. odoo-javascript
@@ -3147,14 +3162,14 @@ msgstr ""
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_res_config_settings_check_deletion_delay
 msgid "The deletion delay should be positive."
-msgstr ""
+msgstr "Il ritardo di eliminazione dovrebbe essere positivo."
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "The links and requested documents are not shareable."
-msgstr ""
+msgstr "I link e i documenti richiesti non sono condivisibili."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_model_id
@@ -3222,7 +3237,7 @@ msgstr ""
 #: code:addons/documents/models/documents_document.py:0
 #, python-format
 msgid "This file has been restored"
-msgstr ""
+msgstr "Questo file è stato ripristinato"
 
 #. module: documents
 #. odoo-python
@@ -3231,6 +3246,7 @@ msgstr ""
 msgid ""
 "This file has been sent to the trash and will be deleted forever on the %s"
 msgstr ""
+"Questo file è stato spostato nel cestino e verrà eliminato per sempre il %s"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__company_id
@@ -3304,7 +3320,7 @@ msgstr "Suggerimento"
 #: code:addons/documents/static/src/views/search/documents_search_model.js:0
 #, python-format
 msgid "Trash"
-msgstr ""
+msgstr "Cestino"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__is_editable_attachment
@@ -3430,7 +3446,7 @@ msgstr "Validata"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_files_page
 msgid "Validity date:"
-msgstr ""
+msgstr "Data validità:"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_Videos
@@ -3539,7 +3555,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
 #, python-format
 msgid "You cannot upload content in this workspace"
-msgstr ""
+msgstr "Non è possibile caricare contenuti in questo spazio di lavoro"
 
 #. module: documents
 #. odoo-python
@@ -3576,7 +3592,7 @@ msgstr "Video Youtube"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_deletion_form
 msgid "days."
-msgstr ""
+msgstr "giorni."
 
 #. module: documents
 #. odoo-javascript
@@ -3652,7 +3668,7 @@ msgstr "es. Convalidare documento"
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "e.g. domain.com"
-msgstr ""
+msgstr "ad es. domain.com"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
@@ -3669,7 +3685,7 @@ msgstr "file_extension"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_files_page
 msgid "files"
-msgstr ""
+msgstr "file"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__is_readonly_model

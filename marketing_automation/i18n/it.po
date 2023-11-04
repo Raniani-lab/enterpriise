@@ -3,6 +3,9 @@
 # 	* marketing_automation
 # 
 # Translators:
+# Sergio Zanchetta <primes2h@gmail.com>, 2023
+# Martin Trigaux, 2023
+# Marianna Ciofani, 2023
 # Wil Odoo, 2023
 # 
 msgid ""
@@ -33,6 +36,11 @@ msgstr "# Filtri preferiti"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mass_mailing_count
 msgid "# Mailings"
 msgstr "N. invii e-mail"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_sms_count
+msgid "# SMS Mailings"
+msgstr "N. invii SMS"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__total_participant_count
@@ -144,7 +152,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "<span class=\"d-inline-block w-25\">after</span>"
-msgstr ""
+msgstr "<span class=\"d-inline-block w-25\">dopo</span>"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -197,6 +205,11 @@ msgstr "Invio al vincitore della campagna A/B"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_mailings_count
 msgid "A/B Test Mailings #"
 msgstr "Mailing Test A/B #"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_mailings_sms_count
+msgid "A/B Test Mailings SMS #"
+msgstr "SMS mailing test A/B #"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_completed
@@ -257,21 +270,21 @@ msgstr ""
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Add Hot Category"
-msgstr ""
+msgstr "Aggiungi categoria di tendenza"
 
 #. module: marketing_automation
 #. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Add Tag"
-msgstr ""
+msgstr "Aggiungi etichetta"
 
 #. module: marketing_automation
 #. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Add To Confirmed List"
-msgstr ""
+msgstr "Aggiungi all'elenco confermate"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -288,14 +301,14 @@ msgstr "Aggiungi ai modelli"
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Add to list"
-msgstr ""
+msgstr "Aggiungi all'elenco"
 
 #. module: marketing_automation
 #. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "After 7 days"
-msgstr ""
+msgstr "Dopo 7 giorni"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_activity__allowed_parent_ids
@@ -334,6 +347,8 @@ msgid ""
 "Are you sure you want to create a new participant for each matching record "
 "that has not been used yet?"
 msgstr ""
+"Sei si curo di creare un nuovo partecipante per ogni record corrispondente "
+"non ancora utilizzato?"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
@@ -360,14 +375,14 @@ msgstr ""
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Blacklist Bounces"
-msgstr ""
+msgstr "Rimbalzi lista nera"
 
 #. module: marketing_automation
 #. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Blacklist record"
-msgstr ""
+msgstr "Registrazione lista nera"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -427,14 +442,14 @@ msgstr "Annullata"
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Check Bounce Contact"
-msgstr ""
+msgstr "Verifica contatto rimbalzo"
 
 #. module: marketing_automation
 #. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Check Email Address"
-msgstr ""
+msgstr "Verifica indirizzo e-mail"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_activity__validity_duration
@@ -491,6 +506,11 @@ msgid "Commercial prospection"
 msgstr "Ricerca della clientela"
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__company_id
+msgid "Company"
+msgstr "Azienda"
+
+#. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_participant__state__completed
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_search
@@ -508,14 +528,14 @@ msgstr "Configurazione"
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Confirmation"
-msgstr ""
+msgstr "Conferma"
 
 #. module: marketing_automation
 #. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Confirmed contacts"
-msgstr ""
+msgstr "Contatti confermati"
 
 #. module: marketing_automation
 #. odoo-javascript
@@ -523,14 +543,14 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
 #, python-format
 msgid "Create a Campaign"
-msgstr ""
+msgstr "Crea una campagna"
 
 #. module: marketing_automation
 #. odoo-javascript
 #: code:addons/marketing_automation/static/src/xml/marketing_automation_templates.xml:0
 #, python-format
 msgid "Create one or load a template prepared by our experts."
-msgstr ""
+msgstr "Crea un modello o scegli uno di quelli elaborati dai nostri esperti."
 
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
@@ -538,6 +558,8 @@ msgid ""
 "Create one or load a template prepared by our experts.\n"
 "                    Then sit down and let Odoo handle the rest."
 msgstr ""
+"Crea un modello o scegli uno di quelli elaborati dai nostri esperti.\n"
+"                    Mettiti comodo e lascia che Odoo faccia il resto."
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__create_uid
@@ -556,6 +578,11 @@ msgstr "Creato da"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__create_date
 msgid "Created on"
 msgstr "Data creazione"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__currency_id
+msgid "Currency"
+msgstr "Valuta"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_campaign__ab_testing_schedule_datetime
@@ -635,7 +662,7 @@ msgstr "Non aggiornare"
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Double Opt-in"
-msgstr ""
+msgstr "Consenso doppio"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -741,7 +768,7 @@ msgstr "Genera partecipanti"
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Get 10% OFF"
-msgstr ""
+msgstr "Ottinei il 10% DI SCONTO"
 
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_trace_action
@@ -757,7 +784,7 @@ msgstr ""
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Hot"
-msgstr ""
+msgstr "Di tendenza"
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__hours
@@ -789,7 +816,7 @@ msgstr "Sarà generato automaticamente una volta registrato questo record."
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Join partnership!"
-msgstr ""
+msgstr "Partecipa e collabora!"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__write_uid
@@ -1033,6 +1060,11 @@ msgid "Mass Mailings"
 msgstr "Invio massivo e-mail"
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_sms_ids
+msgid "Mass SMS"
+msgstr "SMS di massa"
+
+#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__mailing_trace_ids
 msgid "Mass mailing statistics"
 msgstr "Statistiche mailing di massa"
@@ -1087,7 +1119,7 @@ msgstr "Nuovo"
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Next activity: Check Email Address"
-msgstr ""
+msgstr "Prossima attività: verifica l'indirizzo e-mail"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -1164,7 +1196,7 @@ msgstr ""
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Offer free catalog"
-msgstr ""
+msgstr "Offerta catalogo gratuito"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -1286,6 +1318,11 @@ msgid "Processed"
 msgstr "Elaborata"
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__quotation_count
+msgid "Quotation Count"
+msgstr "Numero preventivi"
+
+#. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "REJECTED"
 msgstr "RESPINTE"
@@ -1393,6 +1430,11 @@ msgid "Responsible"
 msgstr "Responsabile"
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__invoiced_amount
+msgid "Revenues generated by the campaign"
+msgstr "Entrate generate dalla campagna"
+
+#. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Run"
@@ -1402,6 +1444,8 @@ msgstr "Esegui"
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Run the next scheduled activity for each participant of this campaign?"
 msgstr ""
+"Avviare la prossima attività programmata per ogni partecipante della "
+"campagna?"
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_campaign__state__running
@@ -1411,6 +1455,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_search
 msgid "Running"
 msgstr "In esecuzione"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_sms_winner_selection
+msgid "SMS Winner Selection"
+msgstr "Selezione del vincitore SMS"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -1452,7 +1501,7 @@ msgstr "Selezione per determinare il mailing vincitore che sarà inviato."
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Send 10% Welcome Discount"
-msgstr ""
+msgstr "Invia uno sconto di benvenuto pari al 10%"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_schedule_datetime
@@ -1464,7 +1513,7 @@ msgstr "Inviare versione finale il"
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Send Welcome Email"
-msgstr ""
+msgstr "Invia un'e-mail di benvenuto"
 
 #. module: marketing_automation
 #. odoo-python
@@ -1472,13 +1521,14 @@ msgstr ""
 #, python-format
 msgid "Send a free catalog and follow-up according to reactions."
 msgstr ""
+"Invia un catalogo gratuito ed esegui il follow-up in base alle reazioni."
 
 #. module: marketing_automation
 #. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Send a welcome email to contacts and tag them if they click in it."
-msgstr ""
+msgstr "Invia un'e-mail di benvenuto ai contatti e taggali se la cliccano."
 
 #. module: marketing_automation
 #. odoo-python
@@ -1487,6 +1537,8 @@ msgstr ""
 msgid ""
 "Send a welcome email to new subscribers, remove the address that bounced."
 msgstr ""
+"Invia un'e-mail di benvenuto ai nuovi iscritti, elimina l'indirizzo che è "
+"stato respinto."
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__interval_number
@@ -1503,7 +1555,7 @@ msgstr "Inviare dopo (in ore)"
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Send an email to new recipients to confirm their consent."
-msgstr ""
+msgstr "Invia un'e-mail ai nuovi destinatari per confermare il consenso."
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -1626,7 +1678,7 @@ msgstr "La sincronizzazione dei partecipanti è richiesta"
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Tag Hot Contacts"
-msgstr ""
+msgstr "Tagga contatti di tendenza"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__tag_ids
@@ -1686,7 +1738,7 @@ msgstr ""
 #: code:addons/marketing_automation/static/src/xml/marketing_automation_templates.xml:0
 #, python-format
 msgid "Then sit down and let Odoo handle the rest!"
-msgstr ""
+msgstr "Mettiti comodo e lascia che Odoo faccia il resto!"
 
 #. module: marketing_automation
 #. odoo-python
@@ -1832,7 +1884,7 @@ msgstr "Settimane"
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Welcome Flow"
-msgstr ""
+msgstr "Flusso di benvenuto"
 
 #. module: marketing_automation
 #. odoo-python
@@ -1840,7 +1892,7 @@ msgstr ""
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Welcome!"
-msgstr ""
+msgstr "Benvenuto!"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_winner_selection

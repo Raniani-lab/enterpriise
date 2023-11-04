@@ -43,6 +43,11 @@ msgid "Created on"
 msgstr "Créé le"
 
 #. module: account_disallowed_expenses_fleet
+#: model:ir.model,name:account_disallowed_expenses_fleet.model_account_deferred_report_handler
+msgid "Deferred Expense Report Custom Handler"
+msgstr "Gestionnaire personnalisé du rapport des charges constatées d'avance"
+
+#. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_account_disallowed_expenses_category
 msgid "Disallowed Expenses Category"
 msgstr "Catégorie de dépenses non admises"
@@ -86,12 +91,12 @@ msgstr "Écriture comptable"
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_disallowed_expenses_rate__write_uid
 msgid "Last Updated by"
-msgstr "Dernière mise à jour par"
+msgstr "Mis à jour par"
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_disallowed_expenses_rate__write_date
 msgid "Last Updated on"
-msgstr "Dernière mise à jour le"
+msgstr "Mis à jour le"
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_bank_rec_widget_line

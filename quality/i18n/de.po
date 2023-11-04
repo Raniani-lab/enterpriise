@@ -85,7 +85,7 @@ msgstr "Symbol des Aktivitätstyps"
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_check_view_activity
 msgid "Activity view"
-msgstr ""
+msgstr "Aktivitätsansicht"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__additional_note
@@ -130,12 +130,12 @@ msgstr "Alias-Domain"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_domain
 msgid "Alias Domain Name"
-msgstr ""
+msgstr "Alias-Domainname"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_full_name
 msgid "Alias Email"
-msgstr ""
+msgstr "Alias-E-Mail"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_name
@@ -322,7 +322,7 @@ msgstr "Erledigt"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_email
 msgid "Email Alias"
-msgstr ""
+msgstr "E-Mail-Alias"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__email_cc
@@ -497,7 +497,7 @@ msgstr "Verspätete Aktivitäten"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_incoming_local
 msgid "Local-part based incoming detection"
-msgstr ""
+msgstr "Erkennung des Eingangs eines lokalen Elements"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__lot_id
@@ -639,7 +639,7 @@ msgstr "Anzahl der Fehler"
 #: model:ir.model.fields,help:quality.field_quality_check__message_needaction_counter
 #: model:ir.model.fields,help:quality.field_quality_point__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr "Anzahl der Meldungen, die eine Aktion erfordern"
+msgstr "Anzahl der Nachrichten, die eine Aktion erfordern"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_has_error_counter
@@ -1060,7 +1060,7 @@ msgstr "Website-Nachrichten"
 #: model:ir.model.fields,help:quality.field_quality_check__website_message_ids
 #: model:ir.model.fields,help:quality.field_quality_point__website_message_ids
 msgid "Website communication history"
-msgstr "Website-Kommunikationshistorie"
+msgstr "Website-Kommunikationsverlauf"
 
 #. module: quality
 #: model:quality.reason,name:quality.reason_wo

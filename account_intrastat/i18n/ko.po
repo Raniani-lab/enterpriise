@@ -1,23 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* account_intrastat
-#
+# 
 # Translators:
-# Martin Trigaux, 2023
-# Sarah Park, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:02+0000\n"
-"PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Sarah Park, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
-"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: account_intrastat
@@ -48,7 +47,7 @@ msgstr "계정 이동 항목"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Active"
-msgstr "활성"
+msgstr "활성화"
 
 #. module: account_intrastat
 #. odoo-python
@@ -74,14 +73,14 @@ msgstr "유형별"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "Check the expired"
 msgstr "만료 확인"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "Check the premature"
 msgstr "조기 확인"
@@ -118,7 +117,7 @@ msgstr "회사 소속 국가"
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_res_config_settings
 msgid "Config Settings"
-msgstr "설정 구성"
+msgstr "환경 설정"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_country_code
@@ -158,7 +157,7 @@ msgstr "파견"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_options.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/filters/filter_intrastat_options.xml:0
 #, python-format
 msgid "Extended Mode"
 msgstr "확장된 모드"
@@ -166,7 +165,7 @@ msgstr "확장된 모드"
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_incoterm_code
 msgid "Incoterm Code"
-msgstr "Incoterm 코드"
+msgstr "인코텀즈 코드"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_move_line__intrastat_transaction_id
@@ -174,7 +173,7 @@ msgstr "Incoterm 코드"
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_form_view_inherit_account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_template_form_view_inherit_account_intrastat
 msgid "Intrastat"
-msgstr "인트라스탯(EU 통계자료 공유)"
+msgstr "인트라스탯 (EU 통계자료)"
 
 #. module: account_intrastat
 #: model:ir.actions.act_window,name:account_intrastat.action_report_intrastat_code_tree
@@ -254,32 +253,32 @@ msgstr "거래 intrastat 코드가 유효하지 않습니다."
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_move
 msgid "Journal Entry"
-msgstr "분개"
+msgstr "전표 입력"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_move_line
 msgid "Journal Item"
-msgstr "분개 항목"
+msgstr "전표 항목"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_partner.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/filters/filter_intrastat_partner.xml:0
 #, python-format
 msgid "Only with VAT numbers"
 msgstr "VAT 번호만"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_options.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/filters/filter_intrastat_options.xml:0
 #, python-format
 msgid "Options:"
-msgstr ""
+msgstr "선택 사항"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_product_origin_country
 #: model_terms:ir.ui.view,arch_db:account_intrastat.report_invoice_document_intrastat_2019
 msgid "Origin"
-msgstr "출발지"
+msgstr "최초 문서"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_partner_vat
@@ -288,10 +287,10 @@ msgstr "협력사 VAT"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_partner.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/filters/filter_intrastat_partner.xml:0
 #, python-format
 msgid "Partners:"
-msgstr ""
+msgstr "협력사 :"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_product_template
@@ -323,28 +322,30 @@ msgstr "지역 코드"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "Some lines have expired intrastat"
 msgstr "일부 항목의 intrastat이 만료되었습니다"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "Some lines have premature intrastat"
 msgstr "일부 항목의 intrastat 이 아직 기간 전입니다"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "Some lines have undefined"
 msgstr "일부 항목이 정의되지 않았습니다"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "Some products have undefined"
 msgstr "일부 품목이 정의되지 않았습니다"
@@ -389,7 +390,7 @@ msgstr "품목 수량 당 보조 단위의 수입니다"
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Total"
-msgstr "합계"
+msgstr "총계"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__type__transaction
@@ -419,10 +420,10 @@ msgstr "삼중 코드/유형/country_id는 고유해야 합니다."
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_type.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/filters/filter_intrastat_type.xml:0
 #, python-format
 msgid "Types:"
-msgstr ""
+msgstr "유형:"
 
 #. module: account_intrastat
 #. odoo-python
@@ -441,14 +442,14 @@ msgstr "중량 품목이 정의되지 않았습니다."
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_value
 msgid "Value"
-msgstr "가치"
+msgstr "금액"
 
 #. module: account_intrastat
 #. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "View Journal Entry"
-msgstr "분개장 기입 항목 보기"
+msgstr "전표 항목 보기"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_weight
@@ -467,7 +468,7 @@ msgstr "ce/el"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "commodity codes"
 msgstr "상품 코드"
@@ -564,14 +565,21 @@ msgstr "품목"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
+#, python-format
+msgid "product commodity codes"
+msgstr "품목별 상품 코드"
+
+#. module: account_intrastat
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "product's commodity codes"
 msgstr "품목별 상품 코드"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "supplementary units"
 msgstr "보조 단위"
@@ -583,21 +591,24 @@ msgstr "t. CO2"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "transaction codes"
 msgstr "거래 코드"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "weights"
 msgstr "무게"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "when they are required."
 msgstr "필요한 경우에 해당합니다."

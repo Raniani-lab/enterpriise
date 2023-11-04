@@ -1,49 +1,48 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* account_intrastat
-#
+# 
 # Translators:
-# Tony Ng, 2023
-# Martin Trigaux, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:02+0000\n"
-"PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
-"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__1_000_kwh
 msgid "1 000 kWh"
-msgstr ""
+msgstr "千度電（兆瓦時）"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__1_000_m3
 msgid "1 000 m3"
-msgstr ""
+msgstr "千立方米"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__1_000_p/st
 msgid "1 000 p/st"
-msgstr ""
+msgstr "千件"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__100_p/st
 msgid "100 p/st"
-msgstr ""
+msgstr "百件"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_move_line_tree_view_account_intrastat_transaction_codes
 msgid "Account move line"
-msgstr ""
+msgstr "賬戶分錄資料行"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
@@ -74,17 +73,17 @@ msgstr "按類型"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "Check the expired"
-msgstr ""
+msgstr "檢查過期的"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "Check the premature"
-msgstr ""
+msgstr "檢查過早的"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__type__commodity
@@ -98,12 +97,12 @@ msgstr "優惠"
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_tree_view_account_intrastat_supplementary_unit
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_tree_view_account_intrastat_weight
 msgid "Commodity Code"
-msgstr "優惠碼"
+msgstr "商品代碼"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_code_id
 msgid "Commodity code"
-msgstr ""
+msgstr "商品編號"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_res_company
@@ -118,7 +117,7 @@ msgstr "公司所屬的國家"
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_res_config_settings
 msgid "Config Settings"
-msgstr "設定"
+msgstr "配置設定"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_country_code
@@ -130,24 +129,24 @@ msgstr "國家"
 #: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_origin_country_id
 #: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_origin_country_id
 msgid "Country of Origin"
-msgstr ""
+msgstr "原產國"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_default_invoice_transaction_code_id
 #: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__intrastat_default_invoice_transaction_code_id
 msgid "Default invoice transaction code"
-msgstr ""
+msgstr "預設發票交易代碼"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_default_refund_transaction_code_id
 #: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__intrastat_default_refund_transaction_code_id
 msgid "Default refund transaction code"
-msgstr ""
+msgstr "預設退款交易代碼"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_transport_mode_id
 msgid "Default transport mode"
-msgstr ""
+msgstr "預設傳輸模式"
 
 #. module: account_intrastat
 #. odoo-python
@@ -158,7 +157,7 @@ msgstr "派遣"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_options.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/filters/filter_intrastat_options.xml:0
 #, python-format
 msgid "Extended Mode"
 msgstr "擴展模式"
@@ -182,7 +181,7 @@ msgstr "國際貿易統計組織"
 #: model:ir.ui.menu,name:account_intrastat.menu_report_intrastat_code
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_report_intrastat_code_form
 msgid "Intrastat Code"
-msgstr "Intrastat 代碼（歐盟）"
+msgstr "國際間統計組織代碼"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_bank_statement_line__intrastat_country_id
@@ -196,12 +195,12 @@ msgstr "歐盟內部國家"
 #: model:ir.actions.client,name:account_intrastat.action_account_report_intrastat
 #: model:ir.ui.menu,name:account_intrastat.menu_action_account_report_intrastat
 msgid "Intrastat Report"
-msgstr "Intrastat 報表（歐盟）"
+msgstr "國際貿易統計報告"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_intrastat_report_handler
 msgid "Intrastat Report Custom Handler"
-msgstr ""
+msgstr "Intrastat 報表自訂處理程式"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_bank_statement_line__intrastat_transport_mode_id
@@ -235,45 +234,45 @@ msgstr "國家地區"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_move_line_tree_view_account_intrastat_transaction_codes
 msgid "Intrastat transaction code"
-msgstr ""
+msgstr "Intrastat 交易代碼"
 
 #. module: account_intrastat
 #. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Invalid commodity intrastat code products."
-msgstr ""
+msgstr "商品的 Intrastat 產品代碼無效。"
 
 #. module: account_intrastat
 #. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Invalid transaction intrastat code entries."
-msgstr ""
+msgstr "交易的 Intrastat 記項代碼無效。"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_move
 msgid "Journal Entry"
-msgstr "日記帳分錄"
+msgstr "日記賬記項"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_move_line
 msgid "Journal Item"
-msgstr "日記帳項目"
+msgstr "日記賬項目"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_partner.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/filters/filter_intrastat_partner.xml:0
 #, python-format
 msgid "Only with VAT numbers"
-msgstr ""
+msgstr "只包括增值稅號碼"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_options.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/filters/filter_intrastat_options.xml:0
 #, python-format
 msgid "Options:"
-msgstr ""
+msgstr "選項："
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_product_origin_country
@@ -284,14 +283,14 @@ msgstr "原始"
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_partner_vat
 msgid "Partner VAT"
-msgstr ""
+msgstr "合作夥伴增值稅"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_partner.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/filters/filter_intrastat_partner.xml:0
 #, python-format
 msgid "Partners:"
-msgstr ""
+msgstr "合作夥伴："
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_product_template
@@ -303,12 +302,12 @@ msgstr "商品"
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_move_line__intrastat_product_origin_country_id
 msgid "Product Country"
-msgstr ""
+msgstr "產品國家/地區"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_product_product
 msgid "Product Variant"
-msgstr "產品變體"
+msgstr "產品款式"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__type__region
@@ -323,50 +322,52 @@ msgstr "地區代碼"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "Some lines have expired intrastat"
-msgstr ""
+msgstr "部份資料行包含已過期 Intrastat 資料"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "Some lines have premature intrastat"
-msgstr ""
+msgstr "部份資料行包含過早執行的 Intrastat 資料"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "Some lines have undefined"
-msgstr ""
+msgstr "部份資料行包含未定義資料"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "Some products have undefined"
-msgstr ""
+msgstr "部份產品包含未定義資料"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_supplementary_unit
 #: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_supplementary_unit
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Supplementary Unit"
-msgstr ""
+msgstr "補充單位"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_supplementary_units
 #: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_supplementary_unit_amount
 #: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_supplementary_unit_amount
 msgid "Supplementary Units"
-msgstr ""
+msgstr "補充單位"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_tree_view_account_intrastat_supplementary_unit
 msgid "Supplementary Units per Product"
-msgstr ""
+msgstr "每產品補充單位"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_system
@@ -382,7 +383,7 @@ msgstr "使用該公司稅務報告的國家/地區"
 #: model:ir.model.fields,help:account_intrastat.field_product_product__intrastat_supplementary_unit_amount
 #: model:ir.model.fields,help:account_intrastat.field_product_template__intrastat_supplementary_unit_amount
 msgid "The number of supplementary units per product quantity."
-msgstr ""
+msgstr "每個產品數量的補充單位數目。"
 
 #. module: account_intrastat
 #. odoo-python
@@ -419,24 +420,24 @@ msgstr "三項 代碼/類型/ country_id必須是唯一的。"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_type.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/filters/filter_intrastat_type.xml:0
 #, python-format
 msgid "Types:"
-msgstr ""
+msgstr "類型："
 
 #. module: account_intrastat
 #. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Undefined supplementary unit products."
-msgstr ""
+msgstr "補充單位產品未定義。"
 
 #. module: account_intrastat
 #. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Undefined weight products."
-msgstr ""
+msgstr "產品重量未定義。"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_value
@@ -458,146 +459,156 @@ msgstr "重量"
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__c/k
 msgid "c/k"
-msgstr ""
+msgstr "卡（克拉）"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__ce/el
 msgid "ce/el"
-msgstr ""
+msgstr "個細胞"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "commodity codes"
-msgstr ""
+msgstr "商品編號"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__ct/l
 msgid "ct/l"
-msgstr ""
+msgstr "噸承載能力"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__gi_f_/_s
 msgid "gi F / S"
-msgstr ""
+msgstr "克裂變同位素"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_90_%_sdt
 msgid "kg 90 % sdt"
-msgstr ""
+msgstr "公斤九成乾燥物質"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_h2o2
 msgid "kg H2O2"
-msgstr ""
+msgstr "公斤雙氧水（公斤過氧化氫）"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_k2o
 msgid "kg K2O"
-msgstr ""
+msgstr "公斤氧化鉀"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_koh
 msgid "kg KOH"
-msgstr ""
+msgstr "公斤苛性鉀（公斤氫氧化鉀）"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_n
 msgid "kg N"
-msgstr ""
+msgstr "公斤氮"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_naoh
 msgid "kg NaOH"
-msgstr ""
+msgstr "公斤苛性鈉（公斤氫氧化鈉）"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_p2o5
 msgid "kg P2O5"
-msgstr ""
+msgstr "公斤五氧化二磷"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_u
 msgid "kg U"
-msgstr ""
+msgstr "公斤鈾"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_met_am_
 msgid "kg met.am."
-msgstr ""
+msgstr "公斤甲胺"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg/net_eda
 msgid "kg/net eda"
-msgstr ""
+msgstr "公斤瀝乾淨重"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__l_alc__100_%
 msgid "l alc. 100 %"
-msgstr ""
+msgstr "公升純酒精"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__m2
 msgid "m2"
-msgstr ""
+msgstr "平方米"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__m3
 msgid "m3"
-msgstr ""
+msgstr "立方米"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__p/st
 msgid "p/st"
-msgstr ""
+msgstr "件"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__pa
 msgid "pa"
-msgstr ""
+msgstr "對"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_tree_view_account_intrastat_supplementary_unit
 msgid "product"
-msgstr "商品"
+msgstr "產品"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
+#, python-format
+msgid "product commodity codes"
+msgstr "產品商品代碼"
+
+#. module: account_intrastat
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "product's commodity codes"
-msgstr ""
+msgstr "產品的商品編號"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "supplementary units"
-msgstr ""
+msgstr "補充單位"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__t__co2
 msgid "t. CO2"
-msgstr ""
+msgstr "公噸二氧化碳當量"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "transaction codes"
-msgstr ""
+msgstr "交易編號"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "weights"
-msgstr ""
+msgstr "重量"
 
 #. module: account_intrastat
 #. odoo-javascript
-#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
+#: code:addons/account_intrastat/static/src/components/intrastat_report/warnings.xml:0
 #, python-format
 msgid "when they are required."
-msgstr ""
+msgstr "當需要它們時。"

@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -699,7 +700,7 @@ msgstr "Einblicke"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post__is_author
 msgid "Is Author"
-msgstr ""
+msgstr "Ist Autor"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__message_is_follower
@@ -1060,7 +1061,7 @@ msgstr "Anzahl der Aktionen"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Number of Followers of your channel"
-msgstr "Anzahl der Followers Ihres Kanals"
+msgstr "Anzahl der Follower Ihres Kanals"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__click_count
@@ -1085,7 +1086,7 @@ msgstr ""
 #: model:ir.model.fields,help:social.field_social_media__message_needaction_counter
 #: model:ir.model.fields,help:social.field_social_post__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr "Anzahl der Meldungen, die eine Aktion erfordern"
+msgstr "Anzahl der Nachrichten, die eine Aktion erfordern"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_has_error_counter
@@ -1529,6 +1530,8 @@ msgid ""
 "Something went wrong while posting the comment. \n"
 "%s"
 msgstr ""
+"Beim Hinterlassen des Kommentars ist etwas schiefgelaufen. \n"
+"%s"
 
 #. module: social
 #. odoo-javascript
@@ -1804,7 +1807,7 @@ msgstr "Website-Nachrichten"
 #: model:ir.model.fields,help:social.field_social_media__website_message_ids
 #: model:ir.model.fields,help:social.field_social_post__website_message_ids
 msgid "Website communication history"
-msgstr "Website-Kommunikationshistorie"
+msgstr "Website-Kommunikationsverlauf"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__post_method

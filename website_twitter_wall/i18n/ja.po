@@ -1,22 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* website_twitter_wall
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:03+0000\n"
-"PO-Revision-Date: 2022-09-22 05:50+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:22+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
-"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: website_twitter_wall
@@ -60,7 +60,7 @@ msgstr "アクセストークン"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__active
 msgid "Active"
-msgstr "有効"
+msgstr "有効化"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
@@ -71,7 +71,7 @@ msgstr "アーカイブ済"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__can_publish
 msgid "Can Publish"
-msgstr "公開可能"
+msgstr "公開可"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__create_uid
@@ -109,7 +109,7 @@ msgstr "表示名"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Exit full screen"
-msgstr "フルスクリーンを解除"
+msgstr "全画面を解除"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
@@ -239,7 +239,7 @@ msgstr "twitterで #{wall.name} をシェアする"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.snippet_options
 msgid "Share Option"
-msgstr ""
+msgstr "オプションをシェア"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
@@ -255,13 +255,14 @@ msgstr "シングルビュー"
 #. odoo-python
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:0
 #, python-format
-msgid "The Twitter authentication failed. Please check your API key and secret."
+msgid ""
+"The Twitter authentication failed. Please check your API key and secret."
 msgstr "Twitter認証に失敗しました。 APIキーとシークレットを確認してください。"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__website_url
 msgid "The full URL to access the document through the website."
-msgstr "ウェブサイトを介してドキュメントにアクセスするために完全なURLです。"
+msgstr "サイト経由して、文書にアクセスする完全なURL。"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__search_pattern
@@ -326,7 +327,7 @@ msgstr "Twitterウォール"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.snippet_options
 msgid "Twitter Wall Page"
-msgstr ""
+msgstr "Twitterウォールページ"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
@@ -341,7 +342,7 @@ msgstr "ツイートの種類"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__website_published
 msgid "Visible on current website"
-msgstr "現在のウェブサイトで見える状態"
+msgstr "現在のサイトに表示"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_tweet__wall_ids
@@ -352,7 +353,7 @@ msgstr "ウォール"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "Wall Name"
-msgstr ""
+msgstr "ウォール名"
 
 #. module: website_twitter_wall
 #: model:ir.actions.act_window,name:website_twitter_wall.website_twitter_wall_action
@@ -371,9 +372,9 @@ msgstr "ウェブサイト Twitter"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__website_url
 msgid "Website URL"
-msgstr "ウェブサイトURL"
+msgstr "サイトURL"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "e.g. My Twitter Wall"
-msgstr ""
+msgstr "例:自分のTwitterウォール"

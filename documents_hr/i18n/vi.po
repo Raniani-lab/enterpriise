@@ -1,34 +1,31 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* documents_hr
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:02+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
-"Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: documents_hr
 #: model_terms:ir.ui.view,arch_db:documents_hr.res_config_settings_view_form
 msgid ""
-"<span name=\"documents_hr_tags\" class=\"o_form_label\" invisible=\"1\" attrs=\"{'invisible' : [('documents_hr_settings', '=', False)]}\">\n"
+"<span name=\"documents_hr_tags\" class=\"o_form_label\" invisible=\"1\">\n"
 "                                Default tags\n"
 "                            </span>"
 msgstr ""
-"<span name=\"documents_hr_tags\" class=\"o_form_label\" invisible=\"1\" attrs=\"{'invisible' : [('documents_hr_settings', '=', False)]}\">\n"
-"                                  Default tags\n"
-"                               </span>"
 
 #. module: documents_hr
 #: model:mail.template,body_html:documents_hr.mail_template_document_folder_link
@@ -58,7 +55,8 @@ msgstr "Vắng mặt"
 #. module: documents_hr
 #: model_terms:ir.ui.view,arch_db:documents_hr.res_config_settings_view_form
 msgid "Centralize your employees' documents (contracts, payslips, etc.)"
-msgstr "Tập trung các tài liệu của nhân viên của bạn (hợp đồng, phiếu lương, v.v.)"
+msgstr ""
+"Tập trung các tài liệu của nhân viên của bạn (hợp đồng, phiếu lương, v.v.)"
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_Cerification
@@ -73,7 +71,7 @@ msgstr "Công ty"
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_res_config_settings
 msgid "Config Settings"
-msgstr "Cấu hình"
+msgstr "Cài đặt cấu hình"
 
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_hr_departure_wizard
@@ -121,7 +119,7 @@ msgstr "Nhân viên"
 #: code:addons/documents_hr/models/hr_employee.py:0
 #, python-format
 msgid ""
-"Employee's private email must be set to use \"Send Access Link\" function:\n"
+"Employee's related user and private email must be set to use \"Send Access Link\" function:\n"
 "%s"
 msgstr ""
 
@@ -150,12 +148,12 @@ msgstr ""
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_config_settings__documents_hr_settings
 msgid "Human Resources"
-msgstr "Nguồn lực nhân sự"
+msgstr "Nhân sự"
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_hr_departure_wizard__private_email
 msgid "Private Email"
-msgstr "Private Email"
+msgstr "Email cá nhân"
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_hr_departure_wizard__send_hr_documents_access_link
@@ -169,7 +167,9 @@ msgstr ""
 
 #. module: documents_hr
 #: model:ir.model.fields,help:documents_hr.field_hr_departure_wizard__send_hr_documents_access_link
-msgid "Send a share link to the private email of the employee with all the HR files he owns in Documents app"
+msgid ""
+"Send a share link to the private email of the employee with all the HR files"
+" he owns in Documents app"
 msgstr ""
 
 #. module: documents_hr
@@ -192,13 +192,15 @@ msgstr "Người dùng"
 #. module: documents_hr
 #: model_terms:ir.ui.view,arch_db:documents_hr.res_config_settings_view_form
 msgid "Workspace"
-msgstr "Không gian làm việc"
+msgstr "Khu vực làm việc"
 
 #. module: documents_hr
 #. odoo-python
 #: code:addons/documents_hr/models/hr_employee.py:0
 #, python-format
-msgid "You must set a private address on the Employee in order to use Document's features."
+msgid ""
+"You must set a work contact address on the Employee in order to use "
+"Document's features."
 msgstr ""
 
 #. module: documents_hr

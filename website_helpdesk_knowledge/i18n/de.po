@@ -80,7 +80,7 @@ msgstr "Neueste Artikel"
 #. module: website_helpdesk_knowledge
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_knowledge.knowledge_base_articles_card
 msgid "Quick Links"
-msgstr ""
+msgstr "Schnellzugriffe"
 
 #. module: website_helpdesk_knowledge
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_knowledge.knowledge_base_articles_card

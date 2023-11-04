@@ -3,6 +3,7 @@
 # 	* marketing_automation
 # 
 # Translators:
+# Martin Trigaux, 2023
 # Wil Odoo, 2023
 # 
 msgid ""
@@ -33,6 +34,11 @@ msgstr "# Favoriete filters"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mass_mailing_count
 msgid "# Mailings"
 msgstr "# Mailings"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_sms_count
+msgid "# SMS Mailings"
+msgstr "# SMS mailings"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__total_participant_count
@@ -199,6 +205,11 @@ msgid "A/B Test Mailings #"
 msgstr "A/B-testmailings #"
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_mailings_sms_count
+msgid "A/B Test Mailings SMS #"
+msgstr "# A/B-testmailings sms "
+
+#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_completed
 msgid "A/B Testing Campaign Finished"
 msgstr "A/B-testcampagne voltooid"
@@ -265,7 +276,7 @@ msgstr ""
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Add Tag"
-msgstr ""
+msgstr "Label toevoegen"
 
 #. module: marketing_automation
 #. odoo-python
@@ -296,7 +307,7 @@ msgstr ""
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "After 7 days"
-msgstr ""
+msgstr "Na 7 dagen"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_activity__allowed_parent_ids
@@ -491,6 +502,11 @@ msgid "Commercial prospection"
 msgstr "Commercieel voorstel"
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__company_id
+msgid "Company"
+msgstr "Bedrijf"
+
+#. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_participant__state__completed
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_search
@@ -508,7 +524,7 @@ msgstr "Configuratie"
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Confirmation"
-msgstr ""
+msgstr "Bevestiging"
 
 #. module: marketing_automation
 #. odoo-python
@@ -523,7 +539,7 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
 #, python-format
 msgid "Create a Campaign"
-msgstr ""
+msgstr "Een campagne maken"
 
 #. module: marketing_automation
 #. odoo-javascript
@@ -556,6 +572,11 @@ msgstr "Aangemaakt door"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__create_date
 msgid "Created on"
 msgstr "Aangemaakt op"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__currency_id
+msgid "Currency"
+msgstr "Valuta"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_campaign__ab_testing_schedule_datetime
@@ -793,7 +814,7 @@ msgstr "Deze wordt automatisch gegenereerd wanneer je dit record opslaat."
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Join partnership!"
-msgstr ""
+msgstr "Wordt lid van het partnerprogramma!"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__write_uid
@@ -1037,6 +1058,11 @@ msgid "Mass Mailings"
 msgstr "Bulk mailingen"
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_sms_ids
+msgid "Mass SMS"
+msgstr "Bulk SMS"
+
+#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__mailing_trace_ids
 msgid "Mass mailing statistics"
 msgstr "Bulkmailstatistieken"
@@ -1167,7 +1193,7 @@ msgstr ""
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Offer free catalog"
-msgstr ""
+msgstr "Gratis catalogus aanbieden"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -1289,6 +1315,11 @@ msgid "Processed"
 msgstr "Verwerkt"
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__quotation_count
+msgid "Quotation Count"
+msgstr "Aantal offertes"
+
+#. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "REJECTED"
 msgstr "AFGEWEZEN"
@@ -1396,6 +1427,11 @@ msgid "Responsible"
 msgstr "Verantwoordelijke"
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__invoiced_amount
+msgid "Revenues generated by the campaign"
+msgstr "Omzet gegenereerd via deze campagne"
+
+#. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Run"
@@ -1414,6 +1450,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_search
 msgid "Running"
 msgstr "Actief"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_sms_winner_selection
+msgid "SMS Winner Selection"
+msgstr "Selectie van SMS-winnaars"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -1845,7 +1886,7 @@ msgstr ""
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Welcome!"
-msgstr ""
+msgstr "Welkom!"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_winner_selection

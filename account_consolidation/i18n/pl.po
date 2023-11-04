@@ -1,42 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* account_consolidation
-#
+# 
 # Translators:
-# Zdzisław Krajewski <zdzichucb@gmail.com>, 2022
-# Patryk Openglobe <patryk.walentowicz@openglobe.pl>, 2022
-# Mariusz, 2022
-# Rafał Kozak <rafal.kozak@openglobe.pl>, 2022
-# Arek Smagacz <arek.smagacz@gmail.com>, 2022
-# Tomasz Leppich <t.leppich@gmail.com>, 2022
-# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2022
-# Paweł Wodyński <pw@myodoo.pl>, 2022
-# Dariusz Żbikowski <darek@krokus.com.pl>, 2022
-# Maksym <ms@myodoo.pl>, 2022
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2022
-# Piotr Strębski <strebski@gmail.com>, 2022
-# Karol Rybak <karolrybak85@gmail.com>, 2022
-# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2022
-# Andrzej Wiśniewski <a.wisniewski@hadron.eu.com>, 2022
-# Martin Trigaux, 2022
-# Natalia Gros <nag@odoo.com>, 2022
-# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2022
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2022
-# Wojciech Warczakowski <w.warczakowski@gmail.com>, 2022
-# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
-"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: pl\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 #. module: account_consolidation
@@ -103,6 +83,7 @@ msgstr "(Ponowne) obliczenie"
 #. module: account_consolidation
 #. odoo-javascript
 #: code:addons/account_consolidation/static/src/components/move_line_list/move_line_list.xml:0
+#: code:addons/account_consolidation/static/src/components/move_line_list/move_line_list.xml:0
 #, python-format
 msgid ") and the consolidated company ("
 msgstr ") oraz skonsolidowanej spółki ("
@@ -123,10 +104,10 @@ msgstr ") mają różne waluty."
 
 #. module: account_consolidation
 #. odoo-javascript
-#: code:addons/account_consolidation/static/src/components/consolidation_report/line_cell/line_cell.xml:0
+#: code:addons/account_consolidation/static/src/components/consolidation_report/header.xml:0
 #, python-format
 msgid "/ End Rate: 1"
-msgstr ""
+msgstr "/ Kurs końcowy: 1"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_company_period_form
@@ -138,12 +119,12 @@ msgstr "<span class=\"o_form_label oe_inline\">%</span>"
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 msgid "<span class=\"o_stat_text\">Consolidated Balance</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Skonsolidowane saldo</span>"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 msgid "<span class=\"o_stat_text\">Edit</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Edytuj</span>"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_kanban
@@ -157,15 +138,22 @@ msgstr "<span role=\"separator\">Widok</span>"
 
 #. module: account_consolidation
 #: model:ir.model.constraint,message:account_consolidation.constraint_consolidation_account_code_uniq
-msgid "A consolidation account with the same code already exists in this consolidation."
-msgstr "Konto konsolidacyjne o tym samym kodzie już istnieje w tej konsolidacji."
+msgid ""
+"A consolidation account with the same code already exists in this "
+"consolidation."
+msgstr ""
+"Konto konsolidacyjne o tym samym kodzie już istnieje w tej konsolidacji."
 
 #. module: account_consolidation
 #. odoo-python
 #: code:addons/account_consolidation/models/consolidation_journal.py:0
 #, python-format
-msgid "A journal entry should only be linked to a company period OR to a analysis period of another consolidation!"
+msgid ""
+"A journal entry should only be linked to a company period OR to a analysis "
+"period of another consolidation!"
 msgstr ""
+"Wpis w dzienniku powinien być powiązany tylko z okresem firmy LUB z okresem "
+"analizy innej konsolidacji!"
 
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_account_account
@@ -178,6 +166,11 @@ msgstr "Konto"
 #: model:ir.model.fields,field_description:account_consolidation.field_res_company__account_consolidation_currency_is_different
 msgid "Account Consolidation Currency Is Different"
 msgstr "Konsolidacja kont Waluta jest inna"
+
+#. module: account_consolidation
+#: model:onboarding.onboarding,name:account_consolidation.onboarding_onboarding_account_consolidation_dashboard
+msgid "Account Consolidation Dashboard Onboarding"
+msgstr ""
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_group_tree
@@ -287,8 +280,11 @@ msgstr "Kwota"
 #. odoo-python
 #: code:addons/account_consolidation/models/consolidation_coa.py:0
 #, python-format
-msgid "An account group can only have accounts or other groups children but not both!"
+msgid ""
+"An account group can only have accounts or other groups children but not "
+"both!"
 msgstr ""
+"Grupa kont może mieć tylko konta lub dzieci z innych grup, ale nie z obu!"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal__period_id
@@ -309,14 +305,14 @@ msgid "Analysis Periods"
 msgstr "Analiza okresów"
 
 #. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.create_period_step
+#: model:onboarding.onboarding.step,title:account_consolidation.onboarding_onboarding_step_create_consolidation_period
 msgid "Analysis period"
 msgstr "Okres analizy"
 
 #. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.create_period_step
+#: model:onboarding.onboarding.step,done_text:account_consolidation.onboarding_onboarding_step_create_consolidation_period
 msgid "Analysis period created!"
-msgstr ""
+msgstr "Utworzono okres analizy!"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form_onboarding
@@ -328,13 +324,6 @@ msgstr "Zastosuj"
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_attachment_count
 msgid "Attachment Count"
 msgstr "Liczba załączników"
-
-#. module: account_consolidation
-#. odoo-javascript
-#: code:addons/account_consolidation/static/src/components/consolidation_report/line_cell/line_cell.xml:0
-#, python-format
-msgid "Audit"
-msgstr "Audyt"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_search
@@ -360,10 +349,10 @@ msgstr "Średnia stawka"
 
 #. module: account_consolidation
 #. odoo-javascript
-#: code:addons/account_consolidation/static/src/components/consolidation_report/line_cell/line_cell.xml:0
+#: code:addons/account_consolidation/static/src/components/consolidation_report/header.xml:0
 #, python-format
 msgid "Avg Rate: 1"
-msgstr ""
+msgstr "Średni kurs: 1"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal__balance
@@ -384,19 +373,19 @@ msgid "Chart"
 msgstr "Wykres"
 
 #. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.chart_of_account_step
+#: model:onboarding.onboarding.step,title:account_consolidation.onboarding_onboarding_step_setup_ccoa
 msgid "Chart of Accounts"
 msgstr "Plan kont"
-
-#. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.chart_of_account_step
-msgid "Chart of account set!"
-msgstr ""
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_kanban
 msgid "Chart of accounts"
 msgstr "Plan kont"
+
+#. module: account_consolidation
+#: model:onboarding.onboarding.step,done_text:account_consolidation.onboarding_onboarding_step_setup_ccoa
+msgid "Chart of accounts set!"
+msgstr ""
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_tree
@@ -420,7 +409,6 @@ msgstr "Okres zamknięcia"
 
 #. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__consolidation_period__state__closed
-#: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_dashboard_onboarding_state__closed
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "Closed"
 msgstr "Zamknięte"
@@ -428,7 +416,7 @@ msgstr "Zamknięte"
 #. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__consolidation_account__currency_mode__end
 msgid "Closing Rate"
-msgstr ""
+msgstr "Kurs zamknięcia"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__code
@@ -490,14 +478,14 @@ msgstr "Okresy firmy"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__company_unmapped_accounts_counts
 msgid "Company Unmapped Accounts Counts"
-msgstr ""
+msgstr "Liczba niezmapowanych kont firmowych"
 
 #. module: account_consolidation
 #. odoo-javascript
 #: code:addons/account_consolidation/static/src/components/consolidation_report/filters/filters.xml:0
 #, python-format
 msgid "Comparison:"
-msgstr ""
+msgstr "Porównanie:"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition__composed_period_id
@@ -507,7 +495,7 @@ msgstr "Składany okres analizy"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition__composed_chart_currency_id
 msgid "Composed Consolidation Currency"
-msgstr ""
+msgstr "Złożona konsolidacja Waluta"
 
 #. module: account_consolidation
 #: model:ir.ui.menu,name:account_consolidation.menu_consolidation_configuration
@@ -516,10 +504,10 @@ msgstr "Konfiguracja"
 
 #. module: account_consolidation
 #. odoo-javascript
-#: code:addons/account_consolidation/static/src/components/consolidation_report/line_cell/line_cell.xml:0
+#: code:addons/account_consolidation/static/src/components/consolidation_report/header.xml:0
 #, python-format
 msgid "Conso Rate:"
-msgstr ""
+msgstr "Kurs Conso:"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal_line__account_id
@@ -588,7 +576,7 @@ msgstr "Konto konsolidacji"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_account_account__consolidation_account_chart_filtered_ids
 msgid "Consolidation Account Chart Filtered"
-msgstr ""
+msgstr "Filtrowany schemat konta konsolidacji"
 
 #. module: account_consolidation
 #: model:ir.actions.act_window,name:account_consolidation.consolidation_account_action
@@ -705,7 +693,7 @@ msgid "Consolidation user"
 msgstr "Użytkownik konsolidujący"
 
 #. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.create_period_step
+#: model:onboarding.onboarding.step,button_text:account_consolidation.onboarding_onboarding_step_create_consolidation_period
 msgid "Create"
 msgstr "Utwórz"
 
@@ -715,9 +703,9 @@ msgid "Create First Period"
 msgstr "Tworzenie pierwszego okresu"
 
 #. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.create_period_step
-msgid "Create your first analysis period &amp; set the currency rates."
-msgstr "Utwórz swój pierwszy okres analizy &amp; ustaw kursy walut."
+#: model:onboarding.onboarding.step,description:account_consolidation.onboarding_onboarding_step_create_consolidation_period
+msgid "Create your first analysis period & set the currency rates."
+msgstr ""
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__create_uid
@@ -796,14 +784,15 @@ msgid "Date"
 msgstr "Data"
 
 #. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_step
+#: model:onboarding.onboarding.step,button_text:account_consolidation.onboarding_onboarding_step_setup_consolidation
 msgid "Define"
 msgstr "Zdefiniuj"
 
 #. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_step
-msgid "Define the companies that should be consolidated &amp; the target currency"
-msgstr "Zdefiniowanie spółek, które powinny zostać objęte konsolidacją &amp; waluta docelowa"
+#: model:onboarding.onboarding.step,description:account_consolidation.onboarding_onboarding_step_setup_consolidation
+msgid ""
+"Define the companies that should be consolidated & the target currency."
+msgstr ""
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal_line__note
@@ -827,14 +816,6 @@ msgstr "Wyświetlanie dat"
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_rate__display_name
 msgid "Display Name"
 msgstr "Nazwa wyświetlana"
-
-#. module: account_consolidation
-#: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_create_period_state__done
-#: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_dashboard_onboarding_state__done
-#: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_setup_ccoa_state__done
-#: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_setup_consolidation_state__done
-msgid "Done"
-msgstr "Wykonano"
 
 #. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__consolidation_period__state__draft
@@ -936,6 +917,13 @@ msgid "Has Message"
 msgstr "Ma wiadomość"
 
 #. module: account_consolidation
+#. odoo-javascript
+#: code:addons/account_consolidation/static/src/components/consolidation_report/filters/filter_extra_options.xml:0
+#, python-format
+msgid "Hierarchy and Subtotals"
+msgstr "Hierarchia i podgrupy"
+
+#. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__consolidation_account__currency_mode__hist
 msgid "Historical Rate"
 msgstr "Wskaźnik historyczny"
@@ -955,8 +943,11 @@ msgstr "Wskaźniki historyczne: %(company)s"
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_company_period__currency_rate_avg
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_company_period__currency_rate_end
-msgid "How many units of company currency is needed to get 1 unit of chart currency"
-msgstr "Ile jednostek waluty firmowej potrzeba, aby otrzymać 1 jednostkę waluty schematu"
+msgid ""
+"How many units of company currency is needed to get 1 unit of chart currency"
+msgstr ""
+"Ile jednostek waluty firmowej potrzeba, aby otrzymać 1 jednostkę waluty "
+"schematu"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__id
@@ -980,7 +971,8 @@ msgstr "Jeśli zaznaczone, nowe wiadomości wymagają twojej uwagi."
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_has_error
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr "Jeśli zaznaczone, niektóre wiadomości napotkały błędy podczas doręczenia."
+msgstr ""
+"Jeśli zaznaczone, niektóre wiadomości napotkały błędy podczas doręczenia."
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
@@ -1041,15 +1033,7 @@ msgstr "Dzienniki"
 #: code:addons/account_consolidation/static/src/components/consolidation_report/filters/filters.xml:0
 #, python-format
 msgid "Journals:"
-msgstr ""
-
-#. module: account_consolidation
-#: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_create_period_state__just_done
-#: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_dashboard_onboarding_state__just_done
-#: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_setup_ccoa_state__just_done
-#: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_setup_consolidation_state__just_done
-msgid "Just done"
-msgstr "Wykonano"
+msgstr "Dzienniki:"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__write_uid
@@ -1123,8 +1107,13 @@ msgstr "Nazwa"
 
 #. module: account_consolidation
 #: model_terms:ir.actions.act_window,help:account_consolidation.account_mapping_action
-msgid "No accounts have been found. Make sure you have installed a chart of account for this company or that you have access right to see the accounts of this company."
-msgstr "Nie znaleziono żadnych kont. Upewnij się, że zainstalowałeś plan kont dla tej firmy lub że masz prawo dostępu do kont tej firmy."
+msgid ""
+"No accounts have been found. Make sure you have installed a chart of account"
+" for this company or that you have access right to see the accounts of this "
+"company."
+msgstr ""
+"Nie znaleziono żadnych kont. Upewnij się, że zainstalowałeś plan kont dla "
+"tej firmy lub że masz prawo dostępu do kont tej firmy."
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.account_mapping_search
@@ -1138,14 +1127,6 @@ msgid "Not consolidated"
 msgstr "Nieskonsolidowane"
 
 #. module: account_consolidation
-#: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_create_period_state__not_done
-#: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_dashboard_onboarding_state__not_done
-#: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_setup_ccoa_state__not_done
-#: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_setup_consolidation_state__not_done
-msgid "Not done"
-msgstr "Nie wykonano"
-
-#. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_needaction_counter
 msgid "Number of Actions"
 msgstr "Liczba akcji"
@@ -1157,7 +1138,7 @@ msgstr "Liczba błędów"
 
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr "Liczba wiadomości wymagających akcji"
 
 #. module: account_consolidation
@@ -1166,11 +1147,39 @@ msgid "Number of messages with delivery error"
 msgstr "Liczba wiadomości z błędami przy doręczeniu"
 
 #. module: account_consolidation
+#: model:ir.model,name:account_consolidation.model_onboarding_onboarding
+msgid "Onboarding"
+msgstr "Wdrożenie"
+
+#. module: account_consolidation
+#: model:onboarding.onboarding.step,step_image_alt:account_consolidation.onboarding_onboarding_step_create_consolidation_period
+msgid "Onboarding Analysis period"
+msgstr ""
+
+#. module: account_consolidation
+#: model:onboarding.onboarding.step,step_image_alt:account_consolidation.onboarding_onboarding_step_setup_ccoa
+msgid "Onboarding Chart of Accounts"
+msgstr ""
+
+#. module: account_consolidation
+#: model:ir.model,name:account_consolidation.model_onboarding_onboarding_step
+msgid "Onboarding Step"
+msgstr "Krok wdrożenia"
+
+#. module: account_consolidation
+#: model:onboarding.onboarding.step,step_image_alt:account_consolidation.onboarding_onboarding_step_setup_consolidation
+msgid "Onboarding The Scope of Consolidation"
+msgstr ""
+
+#. module: account_consolidation
 #. odoo-python
 #: code:addons/account_consolidation/models/consolidation_journal.py:0
 #, python-format
-msgid "Only one entry by account should be created for a generated journal entry!"
+msgid ""
+"Only one entry by account should be created for a generated journal entry!"
 msgstr ""
+"Dla wygenerowanego wpisu do dziennika należy utworzyć tylko jeden wpis "
+"według konta!"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
@@ -1200,6 +1209,7 @@ msgstr "Waluta źródłowa"
 
 #. module: account_consolidation
 #. odoo-python
+#: code:addons/account_consolidation/report/trial_balance.py:0
 #: code:addons/account_consolidation/report/trial_balance.py:0
 #, python-format
 msgid "PDF"
@@ -1260,7 +1270,7 @@ msgstr "Zakresy stawek"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__rating_ids
 msgid "Ratings"
-msgstr ""
+msgstr "Oceny"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_kanban
@@ -1283,9 +1293,9 @@ msgid "SMS Delivery error"
 msgstr "Błąd dostarczenia wiadomości SMS"
 
 #. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_step
+#: model:onboarding.onboarding.step,done_text:account_consolidation.onboarding_onboarding_step_setup_consolidation
 msgid "Scope of Consolidation defined!"
-msgstr ""
+msgstr "Zakres konsolidacji określony!"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__sequence
@@ -1299,12 +1309,12 @@ msgid "Settings"
 msgstr "Ustawienia"
 
 #. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.chart_of_account_step
+#: model:onboarding.onboarding.step,button_text:account_consolidation.onboarding_onboarding_step_setup_ccoa
 msgid "Setup"
 msgstr "Ustawienia"
 
 #. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.chart_of_account_step
+#: model:onboarding.onboarding.step,description:account_consolidation.onboarding_onboarding_step_setup_ccoa
 msgid ""
 "Setup your consolidated accounts and their currency conversion method.\n"
 "                Then map them with the companies accounts."
@@ -1357,45 +1367,25 @@ msgid "State"
 msgstr "Stan"
 
 #. module: account_consolidation
-#: model:ir.model.fields,field_description:account_consolidation.field_res_company__consolidation_dashboard_onboarding_state
-msgid "State Of The Account Consolidation Dashboard Onboarding Panel"
-msgstr ""
-
-#. module: account_consolidation
-#: model:ir.model.fields,field_description:account_consolidation.field_res_company__consolidation_setup_ccoa_state
-msgid "State Of The Onboarding Consolidated Chart Of Account Step"
-msgstr ""
-
-#. module: account_consolidation
-#: model:ir.model.fields,field_description:account_consolidation.field_res_company__consolidation_setup_consolidation_state
-msgid "State Of The Onboarding Consolidation Step"
-msgstr ""
-
-#. module: account_consolidation
-#: model:ir.model.fields,field_description:account_consolidation.field_res_company__consolidation_create_period_state
-msgid "State Of The Onboarding Create Period Step"
-msgstr ""
-
-#. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form
 msgid "Sub-consolidated Chart"
-msgstr ""
+msgstr "Wykres subskonsolidowany"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__linked_chart_ids
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__children_ids
 msgid "Sub-consolidations"
-msgstr ""
+msgstr "Subkonsolidacje"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 msgid "Sub-consolidations Periods"
-msgstr ""
+msgstr "Okresy subkonsolidacji"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 msgid "Sub-consolidations periods"
-msgstr ""
+msgstr "Okresy subkonsolidacji"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_group_form
@@ -1404,6 +1394,7 @@ msgstr "Podgrupy"
 
 #. module: account_consolidation
 #. odoo-javascript
+#: code:addons/account_consolidation/static/src/components/move_line_list/move_line_list.xml:0
 #: code:addons/account_consolidation/static/src/components/move_line_list/move_line_list.xml:0
 #, python-format
 msgid "Take into account that the consolidation ("
@@ -1429,19 +1420,23 @@ msgstr "Waluta docelowa"
 #. odoo-python
 #: code:addons/account_consolidation/models/consolidation_period.py:0
 #, python-format
-msgid "The Composed Analysis Period must be different from the Analysis Period"
+msgid ""
+"The Composed Analysis Period must be different from the Analysis Period"
 msgstr "Komponowany okres analizowany musi być inny niż okres analizowany."
 
 #. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_step
+#: model:onboarding.onboarding.step,title:account_consolidation.onboarding_onboarding_step_setup_consolidation
 msgid "The Scope of Consolidation"
 msgstr "Zakres konsolidacji"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_company_period_form
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_composition_form
-msgid "The rate used for the consolidation (basically this rate will multiply the sum of everything"
-msgstr "Kurs użyty do konsolidacji (w zasadzie ten kurs pomnoży sumę wszystkiego"
+msgid ""
+"The rate used for the consolidation (basically this rate will multiply the "
+"sum of everything"
+msgstr ""
+"Kurs użyty do konsolidacji (w zasadzie ten kurs pomnoży sumę wszystkiego"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_form
@@ -1467,7 +1462,7 @@ msgstr "Suma"
 #: model_terms:ir.ui.view,arch_db:account_consolidation.view_trial_balance_report_grid
 #, python-format
 msgid "Trial Balance"
-msgstr "Bilans próbny"
+msgstr "Saldo próbne"
 
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_consolidation_trial_balance_report_handler
@@ -1488,8 +1483,12 @@ msgstr "Bilans próbny"
 
 #. module: account_consolidation
 #: model:ir.model.constraint,message:account_consolidation.constraint_consolidation_period_composition__unique_composition
-msgid "Two compositions of the same analysis period by the same analysis period cannot be created"
-msgstr "Nie można utworzyć dwóch kompozycji tego samego okresu analizy przez ten sam okres analizy"
+msgid ""
+"Two compositions of the same analysis period by the same analysis period "
+"cannot be created"
+msgstr ""
+"Nie można utworzyć dwóch kompozycji tego samego okresu analizy przez ten sam"
+" okres analizy"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_form
@@ -1526,11 +1525,17 @@ msgstr "Historia komunikacji"
 #. odoo-python
 #: code:addons/account_consolidation/models/consolidation_journal.py:0
 #, python-format
-msgid "When setting a period on a consolidation journal, the selected consolidation chart for the journal cannot be different from the one of the chosen period."
-msgstr "Podczas ustawiania okresu na dzienniku konsolidacyjnym, wybrany wykres konsolidacyjny dla dziennika nie może być inny niż dla wybranego okresu."
+msgid ""
+"When setting a period on a consolidation journal, the selected consolidation"
+" chart for the journal cannot be different from the one of the chosen "
+"period."
+msgstr ""
+"Podczas ustawiania okresu na dzienniku konsolidacyjnym, wybrany wykres "
+"konsolidacyjny dla dziennika nie może być inny niż dla wybranego okresu."
 
 #. module: account_consolidation
 #. odoo-python
+#: code:addons/account_consolidation/report/trial_balance.py:0
 #: code:addons/account_consolidation/report/trial_balance.py:0
 #, python-format
 msgid "XLSX"
@@ -1538,8 +1543,12 @@ msgstr "XLSX"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form
-msgid "You can here define complex consolidations based on other sub-consolidations, as part of a whole scheme"
-msgstr "Można tu zdefiniować złożone konsolidacje oparte na innych subkonsolidacjach, jako część całego schematu"
+msgid ""
+"You can here define complex consolidations based on other sub-"
+"consolidations, as part of a whole scheme"
+msgstr ""
+"Można tu zdefiniować złożone konsolidacje oparte na innych "
+"subkonsolidacjach, jako część całego schematu"
 
 #. module: account_consolidation
 #. odoo-python
@@ -1551,6 +1560,7 @@ msgstr "Nie można usunąć automatycznie wygenerowanego wpisu do dziennika."
 #. module: account_consolidation
 #. odoo-python
 #: code:addons/account_consolidation/models/consolidation_journal.py:0
+#: code:addons/account_consolidation/models/consolidation_journal.py:0
 #, python-format
 msgid "You can't edit an auto-generated journal entry."
 msgstr "Nie można edytować automatycznie wygenerowanego wpisu do dziennika."
@@ -1560,7 +1570,7 @@ msgstr "Nie można edytować automatycznie wygenerowanego wpisu do dziennika."
 #: code:addons/account_consolidation/models/consolidation_journal.py:0
 #, python-format
 msgid "You cannot add journals to a closed period!"
-msgstr ""
+msgstr "Nie można dodawać dzienników do zamkniętego okresu!"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_group_form

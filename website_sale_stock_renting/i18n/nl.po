@@ -78,7 +78,7 @@ msgstr "Het product is niet beschikbaar voor de volgende periode(s):\n"
 #. module: website_sale_stock_renting
 #: model:ir.model,name:website_sale_stock_renting.model_website
 msgid "Website"
-msgstr ""
+msgstr "Website"
 
 #. module: website_sale_stock_renting
 #. odoo-javascript

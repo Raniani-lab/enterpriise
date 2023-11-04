@@ -45,6 +45,16 @@ msgid ".&amp;nbsp;"
 msgstr ".&amp;nbsp;"
 
 #. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.resource_planning
+msgid "01/01/2023 5:00 PM"
+msgstr "01/01/2023 5:00 PM"
+
+#. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.resource_planning
+msgid "01/01/2023 9:00 AM"
+msgstr "01/01/2023 9:00 AM"
+
+#. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "04:00"
 msgstr "04:00"
@@ -55,6 +65,11 @@ msgid "08:00"
 msgstr "08:00"
 
 #. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.resource_planning
+msgid "100"
+msgstr "100"
+
+#. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "12:00"
 msgstr "12:00"
@@ -63,6 +78,11 @@ msgstr "12:00"
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "16:00"
 msgstr "16:00"
+
+#. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.resource_planning
+msgid "8 hours"
+msgstr "8 heures"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -158,7 +178,7 @@ msgid ""
 msgstr ""
 "<div>\n"
 "                    <p>\n"
-"                        Cher, chère <t t-out=\"ctx.get('old_assignee_name', 'Mitchel Admin')\"></t>,\n"
+"                        Cher/Chère <t t-out=\"ctx.get('old_assignee_name', 'Mitchel Admin')\"></t>,\n"
 "                        <br><br>\n"
 "                        Votre poste suivant a été réassigné à <t t-out=\"ctx.get('new_assignee_name', 'Marc Demo')\"></t>.\n"
 "                    </p>\n"
@@ -246,10 +266,10 @@ msgstr ""
 "<div>\n"
 "                    <p>\n"
 "                    <t t-if=\"ctx.get('employee')\">\n"
-"                        Cher, chère <t t-out=\"ctx['employee'].name or ''\"></t>,\n"
+"                        Cher/Chère <t t-out=\"ctx['employee'].name or ''\"></t>,\n"
 "                    </t>\n"
 "                    <t t-else=\"\">\n"
-"                        Cher, chère,\n"
+"                        Bonjour,\n"
 "                    </t>\n"
 "                        <br><br>\n"
 "                    <t t-if=\"ctx.get('assigned_new_shift')\">\n"
@@ -333,7 +353,7 @@ msgid ""
 "            "
 msgstr ""
 "<div>\n"
-"                    <p>Cher, chère <t t-out=\"ctx.get('employee_name', '')\">Anita Oliver</t>,<br><br></p>\n"
+"                    <p>Chère <t t-out=\"ctx.get('employee_name', '')\">Anita Oliver</t>,<br><br></p>\n"
 "                    <t t-if=\"ctx.get('open_shift_available')\">\n"
 "                        <p>Un nouveau poste ouvert est disponible :</p>\n"
 "                    </t>\n"
@@ -1507,7 +1527,7 @@ msgstr "Dernière date de fin générée"
 #: model:ir.model.fields,field_description:planning.field_planning_slot__write_uid
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template__write_uid
 msgid "Last Updated by"
-msgstr "Dernière mise à jour par"
+msgstr "Mis à jour par"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_planning__write_date
@@ -1517,7 +1537,7 @@ msgstr "Dernière mise à jour par"
 #: model:ir.model.fields,field_description:planning.field_planning_slot__write_date
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template__write_date
 msgid "Last Updated on"
-msgstr "Dernière mise à jour le"
+msgstr "Mis à jour le"
 
 #. module: planning
 #. odoo-javascript
@@ -1576,8 +1596,14 @@ msgstr "Gestion"
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__manager_id
 #: model:ir.model.fields,field_description:planning.field_planning_slot__manager_id
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search_base
+#: model_terms:ir.ui.view,arch_db:planning.resource_planning
 msgid "Manager"
 msgstr "Manager"
+
+#. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.slot_report
+msgid "Marc Demo"
+msgstr "Marc Demo"
 
 #. module: planning
 #: model:ir.model.fields.selection,name:planning.selection__planning_analysis_report__resource_type__material
@@ -1826,6 +1852,11 @@ msgstr "Analyse du planning"
 #: model:ir.model,name:planning.model_planning_analysis_report
 msgid "Planning Analysis Report"
 msgstr "Rapport d'analyse de la planification "
+
+#. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.resource_planning
+msgid "Planning Meeting"
+msgstr "Planifier une réunion"
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_recurrency
@@ -2433,8 +2464,8 @@ msgid "The shift has successfully been sent."
 msgstr "Le poste a été envoyé avec succès."
 
 #. module: planning
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/planning/static/src/views/planning_hooks.js:0
 #: code:addons/planning/wizard/planning_send.py:0
 #, python-format

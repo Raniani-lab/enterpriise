@@ -155,7 +155,7 @@ msgstr "Löschen"
 #: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
 #, python-format
 msgid "Delete All"
-msgstr ""
+msgstr "Alle löschen"
 
 #. module: pos_preparation_display
 #: model:ir.model.fields,help:pos_preparation_display.field_pos_preparation_display_order__displayed
@@ -193,7 +193,7 @@ msgstr "Anzeigename"
 #: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
 #, python-format
 msgid "Explore demo data"
-msgstr ""
+msgstr "Demodaten erkunden"
 
 #. module: pos_preparation_display
 #. odoo-javascript
@@ -207,7 +207,7 @@ msgstr "Senden der Änderungen an das Zubereitungsdisplay fehlgeschlagen"
 #: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
 #, python-format
 msgid "Filters"
-msgstr ""
+msgstr "Filter"
 
 #. module: pos_preparation_display
 #: model:ir.model.fields,field_description:pos_preparation_display.field_pos_preparation_display_display__id
@@ -277,7 +277,7 @@ msgstr "Zuletzt aktualisiert am"
 #: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
 #, python-format
 msgid "Loading..."
-msgstr ""
+msgstr "Lädt …"
 
 #. module: pos_preparation_display
 #: model:ir.model.fields,field_description:pos_preparation_display.field_pos_preparation_display_display__name
@@ -297,7 +297,7 @@ msgstr ""
 #: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
 #, python-format
 msgid "No data available."
-msgstr ""
+msgstr "Keine Daten verfügbar."
 
 #. module: pos_preparation_display
 #: model_terms:ir.ui.view,arch_db:pos_preparation_display.preparation_display_view_form
@@ -307,7 +307,7 @@ msgstr "Angebot"
 #. module: pos_preparation_display
 #: model_terms:ir.ui.view,arch_db:pos_preparation_display.preparation_display_view_kanban
 msgid "Open Preparation Display"
-msgstr ""
+msgstr "Zubereitungsdisplay öffnen"
 
 #. module: pos_preparation_display
 #: model:ir.model.fields,field_description:pos_preparation_display.field_pos_preparation_display_order_stage__order_id
@@ -348,7 +348,7 @@ msgstr "Kassensystem"
 #. module: pos_preparation_display
 #: model:ir.model,name:pos_preparation_display.model_pos_order
 msgid "Point of Sale Orders"
-msgstr ""
+msgstr "Kassenaufträge"
 
 #. module: pos_preparation_display
 #: model:ir.model,name:pos_preparation_display.model_pos_session
@@ -428,7 +428,7 @@ msgstr "Menge bestellter Produkte"
 #: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
 #, python-format
 msgid "Recall"
-msgstr ""
+msgstr "Zurückziehen"
 
 #. module: pos_preparation_display
 #. odoo-javascript
@@ -458,7 +458,7 @@ msgstr "Alle Aufträge zurücksetzen"
 #. module: pos_preparation_display
 #: model:ir.model.fields,field_description:pos_preparation_display.field_pos_preparation_display_orderline__attribute_value_ids
 msgid "Selected Attributes"
-msgstr ""
+msgstr "Ausgewählte Attribute"
 
 #. module: pos_preparation_display
 #. odoo-javascript
@@ -508,7 +508,7 @@ msgstr "Timer, nach dem der Auftrag hervorgehoben wird"
 #: code:addons/pos_preparation_display/static/src/app/components/preparation_display/preparation_display.xml:0
 #, python-format
 msgid "or simply wait for commands to be sent to this location."
-msgstr ""
+msgstr "oder einfach auf an diesen Standort zu sendende Befehle warten."
 
 #. module: pos_preparation_display
 #. odoo-javascript

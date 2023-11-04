@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # 	* spreadsheet_dashboard_hr_payroll
 # 
+# Translators:
+# Jolien De Paepe, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:21+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,40 +24,40 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_payroll/data/files/payroll_dashboard.json:0
 #, python-format
 msgid "Average Basic Wage"
-msgstr ""
+msgstr "Salaire de base moyen"
 
 #. module: spreadsheet_dashboard_hr_payroll
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_payroll/data/files/payroll_dashboard.json:0
 #, python-format
 msgid "Average Net Wage"
-msgstr ""
+msgstr "Salaire net moyen"
 
 #. module: spreadsheet_dashboard_hr_payroll
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_payroll/data/files/payroll_dashboard.json:0
 #, python-format
 msgid "Avg Hours/Days"
-msgstr ""
+msgstr "Moyenne d'heures/jour"
 
 #. module: spreadsheet_dashboard_hr_payroll
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_payroll/data/files/payroll_dashboard.json:0
 #, python-format
 msgid "Department"
-msgstr ""
+msgstr "Département"
 
 #. module: spreadsheet_dashboard_hr_payroll
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_payroll/data/files/payroll_dashboard.json:0
 #, python-format
 msgid "Paid Time Off"
-msgstr ""
+msgstr "Congés payés"
 
 #. module: spreadsheet_dashboard_hr_payroll
 #: model:spreadsheet.dashboard,name:spreadsheet_dashboard_hr_payroll.spreadsheet_dashboard_payroll
 msgid "Payroll"
-msgstr ""
+msgstr "Paie"
 
 #. module: spreadsheet_dashboard_hr_payroll
 #. odoo-javascript
@@ -62,46 +66,46 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_payroll/data/files/payroll_dashboard.json:0
 #, python-format
 msgid "Payroll Analysis"
-msgstr ""
+msgstr "Analyse de la paie"
 
 #. module: spreadsheet_dashboard_hr_payroll
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_payroll/data/files/payroll_dashboard.json:0
 #, python-format
 msgid "Period"
-msgstr ""
+msgstr "Période"
 
 #. module: spreadsheet_dashboard_hr_payroll
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_payroll/data/files/payroll_dashboard.json:0
 #, python-format
 msgid "Total Basic Wage"
-msgstr ""
+msgstr "Salaire de base total"
 
 #. module: spreadsheet_dashboard_hr_payroll
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_payroll/data/files/payroll_dashboard.json:0
 #, python-format
 msgid "Total Net Wage"
-msgstr ""
+msgstr "Salaire net total"
 
 #. module: spreadsheet_dashboard_hr_payroll
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_payroll/data/files/payroll_dashboard.json:0
 #, python-format
 msgid "Unpaid Time off"
-msgstr ""
+msgstr "Congés sans solde"
 
 #. module: spreadsheet_dashboard_hr_payroll
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_payroll/data/files/payroll_dashboard.json:0
 #, python-format
 msgid "Work Entries Analysis"
-msgstr ""
+msgstr "Analyse des prestations"
 
 #. module: spreadsheet_dashboard_hr_payroll
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_payroll/data/files/payroll_dashboard.json:0
 #, python-format
 msgid "Work Entries Analysis by Work Entry Type"
-msgstr ""
+msgstr "Analyse des prestations par type de prestation"

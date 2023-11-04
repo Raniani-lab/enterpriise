@@ -251,7 +251,7 @@ msgstr "Plaats"
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.avatax_connection_test_result_view_form
 msgid "Close"
-msgstr ""
+msgstr "Afsluiten"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_exemption__code

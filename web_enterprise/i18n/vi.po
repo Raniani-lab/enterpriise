@@ -1,24 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* web_enterprise
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2023
-# Thi Huong Nguyen, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:03+0000\n"
-"PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Thi Huong Nguyen, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:22+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
-"Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: web_enterprise
@@ -51,7 +49,6 @@ msgstr "1 tháng"
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/promote_studio.xml:0
 #: code:addons/web_enterprise/static/src/views/list/list_renderer_desktop.xml:0
 #, python-format
 msgid "Add Custom Field"
@@ -59,18 +56,24 @@ msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/promote_studio.xml:0
+#: code:addons/web_enterprise/static/src/views/kanban/kanban_header_patch.js:0
+#, python-format
+msgid "Automations"
+msgstr "Tự động hóa"
+
+#. module: web_enterprise
+#. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
-msgid "Add new fields and much more with"
+msgid "Build new apps from scratch"
 msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
-msgid "CLEAR"
-msgstr "XÓA"
+msgid "Build new reports"
+msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -81,35 +84,41 @@ msgstr "Nhấn vào đây để gửi email"
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/promote_studio.xml:0
-#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#: code:addons/web_enterprise/static/src/webclient/share_url/burger_menu.xml:0
+#: code:addons/web_enterprise/static/src/webclient/share_url/burger_menu.xml:0
 #, python-format
-msgid "Close"
-msgstr "Đóng"
-
-#. module: web_enterprise
-#: model:ir.model,name:web_enterprise.model_res_config_settings
-msgid "Config Settings"
-msgstr "Cài đặt cấu hình"
-
-#. module: web_enterprise
-#: model:ir.model,name:web_enterprise.model_res_partner
-msgid "Contact"
-msgstr "Liên hệ"
+msgid "Close menu"
+msgstr "Đóng menu"
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
-msgid "Contact your sales representative to help you to unlink your previous database"
+msgid ""
+"Contact your sales representative to help you to unlink your previous "
+"database"
 msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
-msgid "Control panel toolbar"
-msgstr "Thanh công cụ bảng điều khiển"
+msgid "Create automation rules"
+msgstr ""
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#, python-format
+msgid "Customize Reports"
+msgstr ""
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#, python-format
+msgid "Customize any screen"
+msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -127,15 +136,24 @@ msgstr "Ngày hết hạn Cơ sở dữ liệu:"
 
 #. module: web_enterprise
 #. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#, python-format
+msgid "Define webhooks"
+msgstr ""
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#, python-format
+msgid "Discard"
+msgstr "Huỷ bỏ"
+
+#. module: web_enterprise
+#. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Dismiss"
 msgstr "Bỏ qua"
-
-#. module: web_enterprise
-#: model:ir.actions.server,name:web_enterprise.download_contact
-msgid "Download (vCard)"
-msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -145,16 +163,14 @@ msgid "Error reason:"
 msgstr "Lý do lỗi:"
 
 #. module: web_enterprise
-#. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
-#, python-format
-msgid "FILTER"
-msgstr "BỘ LỌC"
-
-#. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_http
 msgid "HTTP Routing"
-msgstr "HTTP Routing"
+msgstr "Định tuyến HTTP"
+
+#. module: web_enterprise
+#: model:ir.model.fields,field_description:web_enterprise.field_res_users_settings__homemenu_config
+msgid "Home Menu Configuration"
+msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -165,11 +181,10 @@ msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/promote_studio.xml:0
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
-msgid "Install Odoo Studio"
-msgstr ""
+msgid "Learn More"
+msgstr "Tìm hiểu thêm"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -188,7 +203,7 @@ msgstr ""
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_ui_menu
 msgid "Menu"
-msgstr "Trình đơn"
+msgstr "Menu"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -200,7 +215,6 @@ msgstr "Không kết quả"
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/settings_form_view/res_config_edition.xml:0
-#: model_terms:ir.ui.view,arch_db:web_enterprise.res_config_settings_view_form
 #, python-format
 msgid "Odoo"
 msgstr "Odoo"
@@ -214,14 +228,21 @@ msgstr "Giấy phép Phiên bản Doanh nghiệp Odoo V1.0"
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/promote_studio.xml:0
-#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#: code:addons/web_enterprise/static/src/views/list/list_renderer_desktop.js:0
 #, python-format
-msgid "Odoo Studio"
-msgstr "Hệ thống Studio"
+msgid "Odoo Studio - Add new fields to any view"
+msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
+#: code:addons/web_enterprise/static/src/views/kanban/kanban_header_patch.js:0
+#, python-format
+msgid "Odoo Studio - Customize workflows in minutes"
+msgstr ""
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Odoo Support"
@@ -242,16 +263,21 @@ msgid "Previous view"
 msgstr ""
 
 #. module: web_enterprise
-#: model_terms:ir.ui.view,arch_db:web_enterprise.res_config_settings_view_form
-msgid "Progressive Web App"
-msgstr ""
-
-#. module: web_enterprise
 #. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Refresh subscription status"
 msgstr "Làm mới trạng thái đăng ký"
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
+#, python-format
+msgid "Register"
+msgstr "Đăng ký"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -269,17 +295,11 @@ msgstr "Gia hạn gói đăng ký của bạn"
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
-msgid "SEE RESULT"
-msgstr "XEM KẾT QUẢ"
-
-#. module: web_enterprise
-#. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/barcode_fields.xml:0
-#, python-format
-msgid "Scan barcode"
-msgstr "Quét mã vạch"
+msgid "Retry"
+msgstr "Thử lại"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -290,10 +310,36 @@ msgstr "Đang gửi hướng dẫn qua email ..."
 
 #. module: web_enterprise
 #. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/share_url/share_url.js:0
+#, python-format
+msgid "Share"
+msgstr "Chia sẻ"
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/share_url/burger_menu.xml:0
+#: code:addons/web_enterprise/static/src/webclient/share_url/burger_menu.xml:0
+#, python-format
+msgid "Share URL"
+msgstr "Chia sẻ URL"
+
+#. module: web_enterprise
+#. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
-msgid "Something went wrong while registering your database. You can try again or contact"
-msgstr "Đã xảy ra lỗi khi đăng ký cơ sở dữ liệu của bạn. Bạn có thể thử lại hoặc liên hệ"
+msgid ""
+"Something went wrong while registering your database. You can try again or "
+"contact"
+msgstr ""
+"Đã xảy ra lỗi khi đăng ký cơ sở dữ liệu của bạn. Bạn có thể thử lại hoặc "
+"liên hệ"
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#, python-format
+msgid "Start using Odoo Studio"
+msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -313,22 +359,30 @@ msgstr "LỜI KHUYÊN"
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
-msgid "Thank you, your registration was successful! Your database is valid until"
-msgstr "Xin cảm ơn, bạn đã đăng ký thành công! Cơ sở dữ liệu của bạn có hiệu lực đến"
+msgid ""
+"Thank you, your registration was successful! Your database is valid until"
+msgstr ""
+"Xin cảm ơn, bạn đã đăng ký thành công! Cơ sở dữ liệu của bạn có hiệu lực đến"
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/enterprise_subscription_service.js:0
 #, python-format
-msgid "Thank you, your registration was successful! Your database is valid until %s."
+msgid ""
+"Thank you, your registration was successful! Your database is valid until "
+"%s."
 msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
-msgid "The instructions to unlink your subscription from the previous database(s) have been sent"
-msgstr "Hướng dẫn hủy liên kết đăng ký của bạn khỏi (các) cơ sở dữ liệu trước đó đã được gửi"
+msgid ""
+"The instructions to unlink your subscription from the previous database(s) "
+"have been sent"
+msgstr ""
+"Hướng dẫn hủy liên kết đăng ký của bạn khỏi (các) cơ sở dữ liệu trước đó đã "
+"được gửi"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -352,23 +406,11 @@ msgid "This demo database will expire in %s. "
 msgstr "Cơ sở dữ liệu demo này sẽ hết hạn trong %s. "
 
 #. module: web_enterprise
-#: model_terms:ir.ui.view,arch_db:web_enterprise.res_config_settings_view_form
-msgid "This name will be used for the application when Odoo is installed through the browser."
-msgstr ""
-
-#. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "To unlink it you can either:"
 msgstr "Để hủy liên kết nó, bạn có thể:"
-
-#. module: web_enterprise
-#. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
-#, python-format
-msgid "Today"
-msgstr "Hôm nay"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -379,36 +421,50 @@ msgstr "Không thể gửi hướng dẫn qua email, vui lòng liên hệ với"
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
-msgid "Upgrade your subscription"
-msgstr "Nâng cấp thuê bao của bạn"
-
-#. module: web_enterprise
-#. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
-#, python-format
-msgid "View switcher"
-msgstr "Xem bộ chuyển đổi"
-
-#. module: web_enterprise
-#: model:ir.model.fields,field_description:web_enterprise.field_res_config_settings__web_app_name
-msgid "Web App Name"
+msgid "Unleash the power of Odoo Studio:"
 msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
-msgid "You have more users or more apps installed than your subscription allows."
-msgstr "Bạn có nhiều người dùng hơn hoặc cài đặt nhiều ứng dụng hơn mức đăng ký của bạn cho phép."
+msgid "Upgrade your subscription"
+msgstr "Nâng cấp thuê bao của bạn"
+
+#. module: web_enterprise
+#: model:ir.model,name:web_enterprise.model_res_users_settings
+msgid "User Settings"
+msgstr "Cài đặt người dùng"
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#, python-format
+msgid "Want to tailor-make your Odoo?"
+msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
-msgid "You will be able to register your database once you have installed your first app."
-msgstr "Bạn có thể đăng ký cơ sở dữ liệu của bạn một khi bạn đã cài đặt ứng dụng đầu tiên của bạn."
+msgid ""
+"You have more users or more apps installed than your subscription allows."
+msgstr ""
+"Bạn có nhiều người dùng hơn hoặc cài đặt nhiều ứng dụng hơn mức đăng ký của "
+"bạn cho phép."
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
+#, python-format
+msgid ""
+"You will be able to register your database once you have installed your "
+"first app."
+msgstr ""
+"Bạn có thể đăng ký cơ sở dữ liệu của bạn một khi bạn đã cài đặt ứng dụng đầu"
+" tiên của bạn."
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -430,6 +486,13 @@ msgstr "Đăng ký của bạn đã được liên kết với một cơ sở d�
 #, python-format
 msgid "Your subscription was updated and is valid until"
 msgstr "Thuê bao của bạn đã cập nhật và có giá trị đến"
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
+#, python-format
+msgid "and more!"
+msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript

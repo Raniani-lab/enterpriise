@@ -29,7 +29,7 @@ msgstr "Azienda"
 #: code:addons/helpdesk_sale_loyalty/wizard/helpdesk_sale_coupon_generate.py:0
 #, python-format
 msgid "Compose Email"
-msgstr ""
+msgstr "Componi e-mail"
 
 #. module: helpdesk_sale_loyalty
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_loyalty.helpdesk_ticket_view_form_inherit_helpdesk_sale_coupon
@@ -136,7 +136,7 @@ msgstr "Invia"
 #. module: helpdesk_sale_loyalty
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_loyalty.helpdesk_sale_coupon_generate_view_form
 msgid "Send by Email"
-msgstr ""
+msgstr "Invia con e-mail"
 
 #. module: helpdesk_sale_loyalty
 #: model:ir.model.fields,field_description:helpdesk_sale_loyalty.field_helpdesk_sale_coupon_generate__ticket_id

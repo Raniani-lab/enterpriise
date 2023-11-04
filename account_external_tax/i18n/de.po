@@ -45,7 +45,7 @@ msgstr "Journalbuchung"
 #. module: account_external_tax
 #: model:ir.model,name:account_external_tax.model_account_external_tax_mixin
 msgid "Mixin to manage common parts of external tax calculation"
-msgstr ""
+msgstr "Mixin zur Verwaltung allgemeiner Teile externer Steuerberechnung"
 
 #. module: account_external_tax
 #: model:ir.model.fields,help:account_external_tax.field_account_bank_statement_line__is_tax_computed_externally
@@ -56,3 +56,5 @@ msgid ""
 "Technical field to determine if tax is calculated using an external service "
 "instead of Odoo."
 msgstr ""
+"Technisches Feld zur Bestimmung, ob die Steuer über einen externen Dienst "
+"anstatt über Odoo berechnet wird."

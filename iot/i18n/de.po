@@ -109,7 +109,7 @@ msgstr "Kamera"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_select_printers_wizard
 msgid "Cancel"
-msgstr ""
+msgstr "Stornieren"
 
 #. module: iot
 #. odoo-javascript
@@ -275,7 +275,7 @@ msgstr "Anzeige"
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_select_printers_wizard__display_device_ids
 msgid "Display Device"
-msgstr ""
+msgstr "Anzeigegerät"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__display_name
@@ -508,7 +508,7 @@ msgstr "Keine IoT-Box gefunden!"
 #: code:addons/iot/static/src/client_action/delete_local_storage.xml:0
 #, python-format
 msgid "No report to display"
-msgstr ""
+msgstr "Kein anzuzeigender Bericht"
 
 #. module: iot
 #. odoo-javascript
@@ -561,7 +561,7 @@ msgstr "Bitte warten"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_select_printers_wizard
 msgid "Print"
-msgstr ""
+msgstr "Drucken"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__printer
@@ -576,7 +576,7 @@ msgstr "Drucker-Berichte"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_select_printers_wizard
 msgid "Printers"
-msgstr ""
+msgstr "Drucker"
 
 #. module: iot
 #: model:ir.model,name:iot.model_publisher_warranty_contract
@@ -624,7 +624,7 @@ msgstr "Neustart"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_select_printers_wizard
 msgid "Sales Details"
-msgstr ""
+msgstr "Verkaufsdetails"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__scale
@@ -634,7 +634,7 @@ msgstr "Waage"
 #. module: iot
 #: model:ir.model,name:iot.model_select_printers_wizard
 msgid "Selection of printers"
-msgstr ""
+msgstr "Druckerauswahl"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__serial
@@ -656,12 +656,12 @@ msgstr "Erfolgreich"
 #. module: iot
 #: model:ir.model,name:iot.model_iot_channel
 msgid "The Websocket Iot Channel"
-msgstr ""
+msgstr "Der IoT-Kanal des Websockets"
 
 #. module: iot
 #: model:ir.model.constraint,message:iot.constraint_iot_channel_unique_name
 msgid "The channel name must be unique"
-msgstr ""
+msgstr "Der Kanalname muss eindeutig sein"
 
 #. module: iot
 #. odoo-python
@@ -730,7 +730,7 @@ msgstr "USB"
 #: code:addons/iot/static/src/client_action/delete_local_storage.xml:0
 #, python-format
 msgid "Unlink"
-msgstr ""
+msgstr "Trennen"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_keyboard_layout__variant

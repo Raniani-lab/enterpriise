@@ -1,27 +1,27 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* web_map
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Raymond Yu <cl_yu@hotmail.com>, 2022
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:03+0000\n"
-"PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Raymond Yu <cl_yu@hotmail.com>, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:22+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
-"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: web_map
 #. odoo-javascript
+#: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid ""
@@ -37,6 +37,8 @@ msgid ""
 "<i class=\"oi oi-arrow-right\"/>\n"
 "                                Sign up to MapBox to get a free token"
 msgstr ""
+"<i class=\"oi oi-arrow-right\"/>\n"
+"                                注册 MapBox 获取免费令牌"
 
 #. module: web_map
 #: model:ir.model,name:web_map.model_ir_actions_act_window_view
@@ -46,6 +48,7 @@ msgstr "动作窗口视图"
 #. module: web_map
 #. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_renderer.js:0
+#: code:addons/web_map/static/src/map_view/map_renderer.js:0
 #, python-format
 msgid "Address"
 msgstr "地址"
@@ -53,10 +56,11 @@ msgstr "地址"
 #. module: web_map
 #: model:ir.model,name:web_map.model_base
 msgid "Base"
-msgstr "基础"
+msgstr "基数"
 
 #. module: web_map
 #. odoo-javascript
+#: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid "Close"
@@ -109,7 +113,7 @@ msgstr "地图"
 #. module: web_map
 #: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
 msgid "Map Routes"
-msgstr ""
+msgstr "地图路线"
 
 #. module: web_map
 #. odoo-javascript
@@ -130,7 +134,7 @@ msgstr "名称"
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid "Navigate to"
-msgstr ""
+msgstr "导航至"
 
 #. module: web_map
 #: model:ir.model.fields,help:web_map.field_res_config_settings__map_box_token
@@ -156,7 +160,7 @@ msgstr "无"
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid "Open"
-msgstr ""
+msgstr "打开"
 
 #. module: web_map
 #. odoo-javascript
@@ -201,8 +205,12 @@ msgstr "令牌输入无效"
 #. module: web_map
 #. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_model.js:0
+#: code:addons/web_map/static/src/map_view/map_model.js:0
+#: code:addons/web_map/static/src/map_view/map_model.js:0
 #, python-format
-msgid "The view has switched to another provider but functionalities will be limited"
+msgid ""
+"The view has switched to another provider but functionalities will be "
+"limited"
 msgstr "该视图已切换到另一个供应商，但功能将受到限制"
 
 #. module: web_map
@@ -216,8 +224,10 @@ msgstr "此引用者未获得授权"
 #. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
-msgid "To get routing on your map, you first need to set up your MapBox token. It's free."
-msgstr ""
+msgid ""
+"To get routing on your map, you first need to set up your MapBox token. It's"
+" free."
+msgstr "要在地图上获取路线，首先需要设置 MapBox 令牌。无需付费。"
 
 #. module: web_map
 #: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
@@ -286,6 +296,8 @@ msgstr "视图"
 #. module: web_map
 #: model:ir.model.fields,field_description:web_map.field_ir_actions_act_window_view__view_mode
 #: model:ir.model.fields,field_description:web_map.field_ir_ui_view__type
+#: model:ir.model.fields,field_description:web_map.field_website_controller_page__type
+#: model:ir.model.fields,field_description:web_map.field_website_page__type
 msgid "View Type"
 msgstr "视图类型"
 

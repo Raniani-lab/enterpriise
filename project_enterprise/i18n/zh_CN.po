@@ -1,25 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* project_enterprise
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Raymond Yu <cl_yu@hotmail.com>, 2022
-# Jeffery CHEN <jeffery9@gmail.com>, 2023
-# Emily Jia <eji@odoo.com>, 2023
-#
+# Wil Odoo, 2023
+# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:03+0000\n"
-"PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Emily Jia <eji@odoo.com>, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2023\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
-"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: project_enterprise
@@ -27,18 +25,37 @@ msgstr ""
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid "%s has %s tasks at the same time."
-msgstr ""
+msgstr "同时%s有%s任务。"
 
 #. module: project_enterprise
-#: model_terms:ir.ui.view,arch_db:project_enterprise.view_task_kanban_inherited
-msgid "<i class=\"fa fa-long-arrow-right mx-2 oe_read_only\" aria-label=\"Arrow icon\" title=\"Arrow\"/>"
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form
+msgid ""
+"<i class=\"fa fa-exclamation-circle me-2\" role=\"img\" title=\"Dependency "
+"warning\"/>"
 msgstr ""
+"<i class=\"fa fa-exclamation-circle me-2\" role=\"img\" title=\"Dependency "
+"warning\"/>"
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_sharing_project_task_view_kanban_inherited
+#: model_terms:ir.ui.view,arch_db:project_enterprise.view_task_kanban_inherited
+msgid ""
+"<i class=\"fa fa-long-arrow-right mx-2 oe_read_only\" aria-label=\"Arrow "
+"icon\" title=\"Arrow\" invisible=\"not planned_date_begin\"/>"
+msgstr ""
+"<i class=\"fa fa-long-arrow-right mx-2 oe_read_only\" aria-label=\"Arrow "
+"icon\" title=\"Arrow\" invisible=\"not planned_date_begin\"/>"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_project_view_gantt
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
 msgid "<i class=\"fa fa-long-arrow-right\" title=\"Arrow\"/>"
 msgstr "<i class=\"fa fa-long-arrow-right\" title=\"Arrow\"/>"
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form
+msgid "<i class=\"fa fa-random me-2\" role=\"img\" title=\"Planning overlap\"/>"
+msgstr "<i class=\"fa fa-random me-2\" role=\"img\" title=\"Planning overlap\"/>"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
@@ -57,9 +74,19 @@ msgid "<strong>Customer — </strong>"
 msgstr "<strong>客户 — </strong>"
 
 #. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.portal_my_task
+msgid "<strong>Deadline:</strong>"
+msgstr "<strong>截止日期：</strong>"
+
+#. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
 msgid "<strong>Milestone — </strong>"
 msgstr "<strong>里程碑 — </strong>"
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.portal_my_task
+msgid "<strong>Planned Date:</strong>"
+msgstr "<strong>计划日期：</strong>"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_project_view_gantt
@@ -79,25 +106,12 @@ msgid "Assignees"
 msgstr "受托人"
 
 #. module: project_enterprise
-#. odoo-python
-#: code:addons/project_enterprise/models/project_task.py:0
-#, python-format
-msgid "Caution: some tasks have not been scheduled"
-msgstr "警告：有些任务尚未安排"
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form
+msgid "Check it out <i class=\"oi oi-chevron-right ms-2\"/>"
+msgstr "看看<i class=\"oi oi-chevron-right ms-2\"/>"
 
 #. module: project_enterprise
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__create_uid
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_wizard__create_uid
-msgid "Created by"
-msgstr "创建人"
-
-#. module: project_enterprise
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__create_date
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_wizard__create_date
-msgid "Created on"
-msgstr "创建时间"
-
-#. module: project_enterprise
+#: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_id
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view_no_title
 msgid "Customer"
@@ -111,58 +125,17 @@ msgstr "日期"
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__dependency_warning
 msgid "Dependency Warning"
-msgstr ""
+msgstr "依赖关系警告"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form_in_gantt
-#: model_terms:ir.ui.view,arch_db:project_enterprise.view_task_confirm_schedule_wizard_form
 msgid "Discard"
 msgstr "丢弃"
-
-#. module: project_enterprise
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__display_name
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_wizard__display_name
-msgid "Display Name"
-msgstr "显示名称"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__display_warning_dependency_in_gantt
 msgid "Display Warning Dependency In Gantt"
 msgstr "在甘特图中显示警告依赖"
-
-#. module: project_enterprise
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__date_end
-msgid "End Date"
-msgstr "终止日期"
-
-#. module: project_enterprise
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task__planned_date_end
-#: model:ir.model.fields,field_description:project_enterprise.field_report_project_task_user__planned_date_end
-msgid "End date"
-msgstr "终止日期"
-
-#. module: project_enterprise
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__id
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_wizard__id
-msgid "ID"
-msgstr "ID"
-
-#. module: project_enterprise
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__write_uid
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_wizard__write_uid
-msgid "Last Updated by"
-msgstr "最后更新人"
-
-#. module: project_enterprise
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__write_date
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_wizard__write_date
-msgid "Last Updated on"
-msgstr "最后更新时间"
-
-#. module: project_enterprise
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_wizard__line_ids
-msgid "Lines"
-msgstr "明细行"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
@@ -177,31 +150,30 @@ msgstr "手机"
 
 #. module: project_enterprise
 #. odoo-python
-#: code:addons/project_enterprise/wizard/task_confirm_schedule_wizard.py:0
+#: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
-msgid "No task has been scheduled in the future."
-msgstr "未来没有任何安排的任务。"
+msgid ""
+"One parameter is missing to use this method. You should give a start and end"
+" dates."
+msgstr "缺少使用此方法的参数。您应该设置开始和结束日期。"
 
 #. module: project_enterprise
 #. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
-msgid "One parameter is missing to use this method. You should give a start and end dates."
-msgstr "缺少使用此方法的参数。您应该给出开始和结束日期。"
+msgid ""
+"Operation not supported, you should always compare dependency_warning to "
+"True or False."
+msgstr "不支持操作，应始终将dependency_warning与正确或错误进行对比。"
 
 #. module: project_enterprise
 #. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
-msgid "Operation not supported, you should always compare dependency_warning to True or False."
-msgstr ""
-
-#. module: project_enterprise
-#. odoo-python
-#: code:addons/project_enterprise/models/project_task.py:0
-#, python-format
-msgid "Operation not supported, you should always compare planning_overlap to True or False."
-msgstr ""
+msgid ""
+"Operation not supported, you should always compare planning_overlap to True "
+"or False."
+msgstr "不支持操作，应始终将planning_overlap与与正确或错误进行对比。"
 
 #. module: project_enterprise
 #. odoo-python
@@ -217,7 +189,12 @@ msgstr "重合的任务"
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form
 #, python-format
 msgid "Planned Date"
-msgstr "计划的日期"
+msgstr "安排的日期"
+
+#. module: project_enterprise
+#: model:ir.model.fields,field_description:project_enterprise.field_project_task__planned_date_start
+msgid "Planned Date Start"
+msgstr "计划开始日期"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_project_view_gantt
@@ -231,7 +208,15 @@ msgid "Planning Overlap"
 msgstr "规划重合"
 
 #. module: project_enterprise
+#. odoo-javascript
+#: code:addons/project_enterprise/static/src/views/project_task_map/project_task_map_model.js:0
+#, python-format
+msgid "Private"
+msgstr "私密"
+
+#. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_project
+#: model:ir.model.fields,field_description:project_enterprise.field_project_task__project_id
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
 msgid "Project"
 msgstr "项目"
@@ -247,36 +232,13 @@ msgid "Save"
 msgstr "保存"
 
 #. module: project_enterprise
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__schedule_task
-msgid "Schedule Task"
-msgstr "安排任务"
-
-#. module: project_enterprise
-#: model_terms:ir.ui.view,arch_db:project_enterprise.view_task_confirm_schedule_wizard_form
-msgid "Schedule Tasks"
-msgstr "安排任务"
-
-#. module: project_enterprise
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_wizard__selected_line_count
-msgid "Selected Line Count"
-msgstr "选定行计数"
-
-#. module: project_enterprise
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_wizard__show_warnings
-msgid "Show Warnings"
-msgstr "显示警告"
-
-#. module: project_enterprise
 #. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
-msgid "Some tasks weren't planned because the closest available starting date was too far ahead in the future"
+msgid ""
+"Some tasks weren't planned because the closest available starting date was "
+"too far ahead in the future"
 msgstr "有些任务没有计划，因为最近的可用的开始日期在未来太远了"
-
-#. module: project_enterprise
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__date_begin
-msgid "Start Date"
-msgstr "开始日期"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__planned_date_begin
@@ -291,24 +253,13 @@ msgstr "街道"
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_task
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__task_id
 msgid "Task"
 msgstr "任务"
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_task_recurrence
 msgid "Task Recurrence"
-msgstr ""
-
-#. module: project_enterprise
-#: model:ir.model,name:project_enterprise.model_project_task_confirm_schedule_line_wizard
-msgid "Task confirm schedule line wizard"
-msgstr "任务确认安排行向导"
-
-#. module: project_enterprise
-#: model:ir.model,name:project_enterprise.model_project_task_confirm_schedule_wizard
-msgid "Task confirm schedule wizard"
-msgstr "任务确认安排向导"
+msgstr "重新发起"
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_report_project_task_user
@@ -316,32 +267,16 @@ msgid "Tasks Analysis"
 msgstr "任务分析"
 
 #. module: project_enterprise
-#: model_terms:ir.ui.view,arch_db:project_enterprise.view_task_confirm_schedule_wizard_form
-msgid ""
-"The following tasks have not been scheduled because the corresponding\n"
-"                        employees are unavailable. The next possible dates for these tasks are:"
-msgstr ""
-"以下任务尚未计划，因为相应的\n"
-"员工不可用。 这些任务的下一个可能日期是:"
+#. odoo-python
+#: code:addons/project_enterprise/models/project_task.py:0
+#, python-format
+msgid "Tasks have been successfully scheduled for the upcoming periods."
+msgstr "已成功为即将到来的时段安排了任务。"
 
 #. module: project_enterprise
 #: model:ir.model.constraint,message:project_enterprise.constraint_project_task_planned_dates_check
 msgid "The planned start date must be before the planned end date."
-msgstr "计划开始日期必须早于计划结束日期"
-
-#. module: project_enterprise
-#. odoo-python
-#: code:addons/project_enterprise/wizard/task_confirm_schedule_wizard.py:0
-#, python-format
-msgid "The task has been successfully scheduled."
-msgstr "任务已成功安排"
-
-#. module: project_enterprise
-#. odoo-python
-#: code:addons/project_enterprise/wizard/task_confirm_schedule_wizard.py:0
-#, python-format
-msgid "The tasks have been successfully scheduled."
-msgstr "任务已成功安排"
+msgstr "计划开始日期必须在计划结束日期之前。"
 
 #. module: project_enterprise
 #. odoo-python
@@ -366,14 +301,16 @@ msgstr ""
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid "This task cannot be planned before Tasks %s, on which it depends."
-msgstr ""
+msgstr "无法在此任务依赖的%s任务之前计划此任务。"
 
 #. module: project_enterprise
 #. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
-msgid "This user isn't expected to have any tasks assigned during this period because they don't have any running contract. Planned hours :"
-msgstr ""
+msgid ""
+"This user isn't expected to have any tasks assigned during this period "
+"because they don't have any running contract. Planned hours :"
+msgstr "此用户在此期间不应分配任何任务，因为没有正在运行的合同。计划工时："
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.res_config_settings_view_form
@@ -382,19 +319,21 @@ msgstr "工时单"
 
 #. module: project_enterprise
 #. odoo-javascript
-#: code:addons/project_enterprise/static/src/task_gantt_model.js:0
+#: code:addons/project_enterprise/static/src/views/project_task_map/project_task_map_model.js:0
 #, python-format
-msgid "Unassigned Tasks"
-msgstr "未分派任务"
+msgid "Unassigned"
+msgstr "未分派"
 
 #. module: project_enterprise
+#. odoo-javascript
+#: code:addons/project_enterprise/static/src/task_gantt_popover.xml:0
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form_in_gantt
+#, python-format
 msgid "Unschedule"
 msgstr "未安排"
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_res_users
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_wizard__user_id
 msgid "User"
 msgstr "用户"
 
@@ -406,17 +345,25 @@ msgstr "用户名"
 #. module: project_enterprise
 #. odoo-javascript
 #: code:addons/project_enterprise/static/src/task_gantt_renderer.js:0
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__warning
 #, python-format
 msgid "Warning"
 msgstr "警告"
 
 #. module: project_enterprise
-#: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__parent_id
-msgid "Wizard"
-msgstr "向导"
-
-#. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_zip
 msgid "Zip"
 msgstr "邮政编码"
+
+#. module: project_enterprise
+#. odoo-javascript
+#: code:addons/project_enterprise/static/src/task_gantt_model.js:0
+#, python-format
+msgid "👤 Unassigned"
+msgstr "👤 未分配"
+
+#. module: project_enterprise
+#. odoo-javascript
+#: code:addons/project_enterprise/static/src/task_gantt_model.js:0
+#, python-format
+msgid "🔒 Private"
+msgstr "🔒 私密"

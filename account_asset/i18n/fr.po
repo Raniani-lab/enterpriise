@@ -777,7 +777,7 @@ msgstr "Valeur amortissable"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Depreciated Amount"
-msgstr "Montant amortissable"
+msgstr "Montant amorti"
 
 #. module: account_asset
 #. odoo-python
@@ -1132,13 +1132,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__write_uid
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__write_uid
 msgid "Last Updated by"
-msgstr "Dernière mise à jour par"
+msgstr "Mis à jour par"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__write_date
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__write_date
 msgid "Last Updated on"
-msgstr "Dernière mise à jour le"
+msgstr "Mis à jour le"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search

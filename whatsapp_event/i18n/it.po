@@ -22,12 +22,12 @@ msgstr ""
 #. module: whatsapp_event
 #: model:ir.model.fields,field_description:whatsapp_event.field_event_registration__date_range
 msgid "Date Range"
-msgstr ""
+msgstr "Intervallo data"
 
 #. module: whatsapp_event
 #: model:ir.model,name:whatsapp_event.model_event_mail
 msgid "Event Automated Mailing"
-msgstr ""
+msgstr "E-mail automatiche per l'evento"
 
 #. module: whatsapp_event
 #: model:ir.model,name:whatsapp_event.model_event_registration
@@ -37,18 +37,18 @@ msgstr "Registrazione evento"
 #. module: whatsapp_event
 #: model:ir.model,name:whatsapp_event.model_event_type_mail
 msgid "Mail Scheduling on Event Category"
-msgstr ""
+msgstr "Pianificazione e-mail su categoria evento"
 
 #. module: whatsapp_event
 #: model:ir.model,name:whatsapp_event.model_event_mail_registration
 msgid "Registration Mail Scheduler"
-msgstr ""
+msgstr "Pianificatore e-mail di iscrizione"
 
 #. module: whatsapp_event
 #: model:ir.model.fields,field_description:whatsapp_event.field_event_mail__notification_type
 #: model:ir.model.fields,field_description:whatsapp_event.field_event_type_mail__notification_type
 msgid "Send"
-msgstr ""
+msgstr "Invia"
 
 #. module: whatsapp_event
 #: model:ir.model.fields.selection,name:whatsapp_event.selection__event_mail__notification_type__whatsapp
@@ -64,11 +64,11 @@ msgstr "Modello WhatsApp"
 #. module: whatsapp_event
 #: model:ir.model,name:whatsapp_event.model_whatsapp_template_variable
 msgid "WhatsApp Template Variable"
-msgstr ""
+msgstr "Variabile modello WhtsApp"
 
 #. module: whatsapp_event
 #. odoo-python
 #: code:addons/whatsapp_event/models/event_mail.py:0
 #, python-format
 msgid "Whatsapp Templates in Events must have a phone field set."
-msgstr ""
+msgstr "I modelli Whatsapp in Eventi devono avere un campo telefono."

@@ -1,32 +1,34 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* hr_referral
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Raymond Yu <cl_yu@hotmail.com>, 2022
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
-#
+# Wil Odoo, 2023
+# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2023\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
-"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: hr_referral
 #. odoo-python
 #: code:addons/hr_referral/models/hr_applicant.py:0
 #, python-format
-msgid " You've gained %(gained)s points with this progress.<br/>It makes you a new total of %(total)s points. Visit <a href=\"%(url)s\">this link</a> to pick a gift!"
-msgstr "你的这一进展使你获得了%(gained)s 积分。<br/>它使你的新的总积分达到了%(total)s 。请访问<a href=\"%(url)s\">这个链接</a>来挑选礼物!"
+msgid ""
+" You've gained {gained} points with this progress.{new_line}It makes you a "
+"new total of {total} points. Visit {link1}this link{link2} to pick a gift!"
+msgstr ""
+"您已获得{gained}点数。{new_line} 您的总点数达到{total}点。访问 {link1} 此链接 {link2} 挑选礼物！"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_recruitment_report__referral_hired
@@ -77,8 +79,12 @@ msgstr ""
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_kanban
-msgid "<span title=\"Buy\"><i class=\"fa fa-shopping-basket me-3\" role=\"img\" aria-label=\"Buy\"/>Buy</span>"
-msgstr "<span title=\"Buy\"><i class=\"fa fa-shopping-basket me-3\" role=\"img\" aria-label=\"Buy\"/>购买</span>"
+msgid ""
+"<span title=\"Buy\"><i class=\"fa fa-shopping-basket me-3\" role=\"img\" "
+"aria-label=\"Buy\"/>Buy</span>"
+msgstr ""
+"<span title=\"Buy\"><i class=\"fa fa-shopping-basket me-3\" role=\"img\" "
+"aria-label=\"Buy\"/>购买</span>"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_job_employee_referral_kanban
@@ -87,8 +93,12 @@ msgstr "<span title=\"More info\">更多信息</span>"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_job_employee_referral_kanban
-msgid "<span title=\"My Link to Share\"><i class=\"fa fa-lg fa-link text-secondary\" role=\"img\" aria-label=\"My Link to Share\"/></span>"
-msgstr "<span title=\"我的分享链接\"><i class=\"fa fa-lg fa-link text-secondary\" role=\"img\" aria-label=\"我的分享链接\"/></span>"
+msgid ""
+"<span title=\"My Link to Share\"><i class=\"fa fa-lg fa-link\" role=\"img\" "
+"aria-label=\"My Link to Share\"/></span>"
+msgstr ""
+"<span title=\"My Link to Share\"><i class=\"fa fa-lg fa-link\" role=\"img\" "
+"aria-label=\"My Link to Share\"/></span>"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_job_employee_referral_kanban
@@ -99,19 +109,21 @@ msgstr "<span title=\"用邮件发送\">推荐朋友</span>"
 #. odoo-python
 #: code:addons/hr_referral/wizard/hr_referral_alert_mail_wizard.py:0
 #, python-format
-msgid "A new alert has been added to the Referrals app! Check your <a href=%(url)s>dashboard</a> now!"
+msgid ""
+"A new alert has been added to the Referrals app! Check your <a "
+"href=%(url)s>dashboard</a> now!"
 msgstr "一个新的警报已被添加到推荐人应用程序中！现在就检查你的<a href=%(url)s>仪表板</a>！"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_needaction
 msgid "Action Needed"
-msgstr "需要采取动作"
+msgstr "所需操作"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__active
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__active
 msgid "Active"
-msgstr "启用"
+msgstr "已启用"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__activity_ids
@@ -121,7 +133,7 @@ msgstr "活动"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr "活动异常勋章"
+msgstr "活动异常标示"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__activity_state
@@ -150,8 +162,17 @@ msgid "Alerts"
 msgstr "提醒"
 
 #. module: hr_referral
+#: model_terms:ir.actions.act_window,help:hr_referral.action_hr_referral_alert_configuration
+msgid ""
+"Alerts will be displayed on the first screen to give information or "
+"redirects the employees"
+msgstr "第一个屏幕上将显示提示，为员工提供信息或重新定向"
+
+#. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_recruitment_stage__points
-msgid "Amount of points that the referent will receive when the applicant will reach this stage"
+msgid ""
+"Amount of points that the referent will receive when the applicant will "
+"reach this stage"
 msgstr "当申请人到达此阶段时，推荐人将获得的积分数量"
 
 #. module: hr_referral
@@ -169,10 +190,15 @@ msgid "Applicant must have a company."
 msgstr "申请人必须有一个公司"
 
 #. module: hr_referral
+#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__applicant_name
+msgid "Applicant's Name"
+msgstr "申请人姓名"
+
+#. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_alert_view_search
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_alert_form
 msgid "Archived"
-msgstr "已归档"
+msgstr "已存档"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_attachment_count
@@ -217,7 +243,7 @@ msgstr "正文"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_job__utm_campaign_id
 msgid "Campaign"
-msgstr "营销"
+msgstr "活动"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_alert_mail_wizard_view_form
@@ -258,7 +284,9 @@ msgstr "公司"
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__company_id
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_onboarding__company_id
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__company_id
+#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__company_id
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__company_id
+#: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_search
 msgid "Company"
 msgstr "公司"
 
@@ -307,10 +335,12 @@ msgstr "创建人"
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__create_date
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_send_mail__create_date
 msgid "Created on"
-msgstr "创建时间"
+msgstr "创建日期"
 
 #. module: hr_referral
 #. odoo-javascript
+#: code:addons/hr_referral/static/src/views/dashboard.js:0
+#: code:addons/hr_referral/static/src/views/dashboard.js:0
 #: code:addons/hr_referral/static/src/views/dashboard.js:0
 #: model:ir.actions.client,name:hr_referral.action_hr_referral_welcome_screen
 #: model:ir.ui.menu,name:hr_referral.menu_hr_applicant_employee_referral_dashboard
@@ -340,7 +370,10 @@ msgstr "结束日期"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_friend__position
-msgid "Define the position of the friend. If it's a small friend like a dog, you must select Front, it will be placed in the front of the dashboard, above superhero."
+msgid ""
+"Define the position of the friend. If it's a small friend like a dog, you "
+"must select Front, it will be placed in the front of the dashboard, above "
+"superhero."
 msgstr "定义朋友的位置。如果它是像狗一样的小朋友，你必须选择Front，它将被放置在仪表板的前面，超级英雄之上。"
 
 #. module: hr_referral
@@ -353,7 +386,7 @@ msgstr "部门"
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__description
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_form
 msgid "Description"
-msgstr "说明"
+msgstr "描述"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_job__direct_clicks
@@ -395,7 +428,9 @@ msgstr "没有访问权限"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_kanban
-msgid "Do you want to confirm this reward? After confirmation an HR will contact you."
+msgid ""
+"Do you want to confirm this reward? After confirmation an HR will contact "
+"you."
 msgstr "你想确认这个奖励吗？确认后，一位人力资源部门将与您联系。"
 
 #. module: hr_referral
@@ -407,7 +442,7 @@ msgstr "已获得积分"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_send_mail__email_to
 msgid "Email"
-msgstr "Email"
+msgstr "电子邮件"
 
 #. module: hr_referral
 #. odoo-javascript
@@ -415,6 +450,11 @@ msgstr "Email"
 #, python-format
 msgid "Email a friend"
 msgstr "给朋友发电子邮件"
+
+#. module: hr_referral
+#: model:ir.model.fields,help:hr_referral.field_hr_referral_points__applicant_subject
+msgid "Email subject for applications sent via email"
+msgstr "通过电子邮件发送的申请的电子邮件主题"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_search
@@ -457,7 +497,9 @@ msgstr "员工推荐分析"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_alert__url
-msgid "External links must start with 'http://www.'. For an internal url, you don't need to put domain name, you can just insert the path."
+msgid ""
+"External links must start with 'http://www.'. For an internal url, you don't"
+" need to put domain name, you can just insert the path."
 msgstr "外部链接必须以“http://www.”开头。对于内部URL，你不需要放置域名，只需插入路径即可。"
 
 #. module: hr_referral
@@ -478,12 +520,17 @@ msgstr "关注者"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "关注者(业务伙伴)"
+msgstr "关注者（合作伙伴）"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr "完美的图标，例如FA任务"
+msgstr "Font Awesome图标，例如：fa-tasks"
+
+#. module: hr_referral
+#: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_onboarding_tree
+msgid "Force Onboarding"
+msgstr "必修入职培训"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__friend_id
@@ -544,7 +591,7 @@ msgstr "所有工作"
 #: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_search
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
 msgid "Group By"
-msgstr "分组"
+msgstr "分组方式"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_alert_view_search
@@ -554,7 +601,7 @@ msgstr "人力资源推荐提醒搜索"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__has_message
 msgid "Has Message"
-msgstr "有信息"
+msgstr "有消息"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_recruitment_report__has_referrer
@@ -565,15 +612,19 @@ msgstr "有推荐人"
 #. odoo-python
 #: code:addons/hr_referral/wizard/hr_referral_send_mail.py:0
 #, python-format
-msgid "Hello,<br><br>There are some amazing job offers in my company! Have a look, they  can be interesting for you<br><a href=\"%s\">See Job Offers</a>"
-msgstr "你好，<br><br>我公司有一些惊人的工作机会！看看，它们对你来说很有趣<br><a href=\"%s\">查看工作机会</a>"
+msgid ""
+"Hello,<br><br>There are some amazing job offers in my company! Have a look, "
+"they  can be interesting for you<br><a href=\"%s\">See Job Offers</a>"
+msgstr "您好，<br><br>我们有不错的工作机会！欢迎看看，说不定您会感兴趣<br><a href=\"%s\">查看工作机会</a>"
 
 #. module: hr_referral
 #. odoo-python
 #: code:addons/hr_referral/wizard/hr_referral_send_mail.py:0
 #, python-format
-msgid "Hello,<br><br>There is an amazing job offer for %s in my company! It will be a fit for you<br><a href=\"%s\">See Job Offer</a>"
-msgstr "你好，<br><br>我公司有一些惊人的%s工作机会！看看，它们对你来说很有趣<br><a href=\"%s\">查看工作机会</a>"
+msgid ""
+"Hello,<br><br>There is an amazing job offer for %s in my company! It will be"
+" a fit for you<br><a href=\"%s\">See Job Offer</a>"
+msgstr "你好，<br><br>我们有不错的%s工作机会！欢迎看看，说不定您会感兴趣<br><a href=\"%s\">查看工作机会</a>"
 
 #. module: hr_referral
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_applicant__referral_state__hired
@@ -591,11 +642,6 @@ msgstr "人力资源推荐级别"
 #: model:ir.model.fields,field_description:hr_referral.field_res_users__hr_referral_onboarding_page
 msgid "Hr Referral Onboarding Page"
 msgstr "人力资源推荐入职页面"
-
-#. module: hr_referral
-#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__hr_referral_reward_id
-msgid "Hr Referral Reward"
-msgstr "人力资源推荐奖励"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__id
@@ -619,18 +665,18 @@ msgstr "图标"
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr "表示异常活动的图标。"
+msgstr "指示异常活动的图标。"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "确认后, 出现提示消息."
+msgstr "如果勾选此项，则需要查看新消息。"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_has_error
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr "如果勾选此项， 某些消息将会产生传递错误。"
+msgstr "如果勾选此项， 某些消息将出现发送错误。"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_friend__image_head
@@ -650,7 +696,7 @@ msgstr "进行中"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_is_follower
 msgid "Is Follower"
-msgstr "关注者"
+msgstr "是关注者"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_link_to_share__job_id
@@ -685,7 +731,7 @@ msgstr "招聘开始招聘日期"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__write_date
 msgid "Last Update Date"
-msgstr "最后更新日期"
+msgstr "上次更新日期"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__write_uid
@@ -711,7 +757,7 @@ msgstr "最后更新人"
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__write_date
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_send_mail__write_date
 msgid "Last Updated on"
-msgstr "最后更新时间"
+msgstr "上次更新日期"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__last_valuable_stage_id
@@ -791,7 +837,7 @@ msgstr "媒介"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_has_error
 msgid "Message Delivery error"
-msgstr "消息传递错误"
+msgstr "消息发送错误"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_ids
@@ -832,7 +878,7 @@ msgstr "下一页"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr "下一个活动日历事件"
+msgstr "下一活动日历事件"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__activity_date_deadline
@@ -848,6 +894,11 @@ msgstr "下一活动摘要"
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__activity_type_id
 msgid "Next Activity Type"
 msgstr "下一活动类型"
+
+#. module: hr_referral
+#: model_terms:ir.actions.act_window,help:hr_referral.employee_referral_report_action
+msgid "No data to display"
+msgstr "无数据显示"
 
 #. module: hr_referral
 #: model_terms:ir.actions.act_window,help:hr_referral.action_hr_job_employee_referral
@@ -869,22 +920,22 @@ msgstr "未聘用"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_needaction_counter
 msgid "Number of Actions"
-msgstr "动作数量"
+msgstr "操作数量"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_has_error_counter
 msgid "Number of errors"
-msgstr "错误数"
+msgstr "错误数量"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "需要采取动作消息数量"
+msgid "Number of messages requiring action"
+msgstr "需要采取行动的消息数量"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "发送错误的消息数量"
+msgstr "发送错误的消息的数量"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__onclick
@@ -926,7 +977,7 @@ msgstr "积分图标"
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_backend_kanban
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_kanban
 msgid "Points"
-msgstr "积分"
+msgstr "分数"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__points_not_hired
@@ -943,7 +994,7 @@ msgstr "遣失的积分"
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Points Received"
-msgstr ""
+msgstr "所得分数"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_job_employee_referral_kanban
@@ -965,7 +1016,7 @@ msgstr "购买这个所需的积分"
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Points to spend"
-msgstr ""
+msgstr "待消费点数"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_friend__position
@@ -991,7 +1042,7 @@ msgstr "产品名称"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__rating_ids
 msgid "Ratings"
-msgstr ""
+msgstr "点评"
 
 #. module: hr_referral
 #: model_terms:ir.actions.act_window,help:hr_referral.action_hr_applicant_employee_referral
@@ -1107,7 +1158,7 @@ msgstr "要求"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__activity_user_id
 msgid "Responsible User"
-msgstr "负责用户"
+msgstr "责任用户"
 
 #. module: hr_referral
 #. odoo-javascript
@@ -1124,6 +1175,7 @@ msgstr "恢复默认"
 #. module: hr_referral
 #. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
+#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__hr_referral_reward_id
 #, python-format
 msgid "Reward"
 msgstr "优惠类型"
@@ -1146,7 +1198,7 @@ msgstr "优惠及返利"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr "短信息发送错误"
+msgstr "短信发送错误"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
@@ -1166,7 +1218,7 @@ msgstr "发送"
 #. module: hr_referral
 #: model:ir.actions.act_window,name:hr_referral.hr_referral_send_mail_action
 msgid "Send Job Offer by Mail"
-msgstr "通过邮件发送工作机会"
+msgstr "通过邮件发送录用通知"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_send_mail_view_form
@@ -1184,7 +1236,7 @@ msgstr "发送邮件"
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_onboarding__sequence
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__sequence
 msgid "Sequence"
-msgstr "单号规则"
+msgstr "序列"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__sequence_stage
@@ -1248,7 +1300,7 @@ msgstr "跳过并开始"
 #: code:addons/hr_referral/models/hr_applicant.py:0
 #, python-format
 msgid "Sorry, your referral %s has been refused in the recruitment process."
-msgstr ""
+msgstr "对不起，您推荐的%s未通过招聘考核。"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_res_users__utm_source_id
@@ -1267,6 +1319,8 @@ msgstr "阶段"
 
 #. module: hr_referral
 #. odoo-javascript
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Start"
@@ -1287,16 +1341,21 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
-"基于活动的状态 \n"
-" 逾期：已经超过截止日期 \n"
-" 现今：活动日期是当天 \n"
-" 计划：未来活动。"
+"基于活动的状态\n"
+"逾期：超出到期日期\n"
+"今天：活动日期是今天\n"
+"计划：未来活动。"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert_mail_wizard__subject
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_send_mail__subject
 msgid "Subject"
 msgstr "主题"
+
+#. module: hr_referral
+#: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__applicant_subject
+msgid "Subject / Application"
+msgstr "主题/应用"
 
 #. module: hr_referral
 #. odoo-javascript
@@ -1312,33 +1371,50 @@ msgstr "文本"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_friend__image
-msgid "This field holds the image used as image for the friend on the dashboard, limited to 1024x1024px."
+msgid ""
+"This field holds the image used as image for the friend on the dashboard, "
+"limited to 1024x1024px."
 msgstr "此字段包含用作仪表板上朋友的图像的图像，限制为1024x1024px。"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_friend__image_head
-msgid "This field holds the image used as image for the head's friend when the user must choose a new friend, limited to 1024x1024px."
+msgid ""
+"This field holds the image used as image for the head's friend when the user"
+" must choose a new friend, limited to 1024x1024px."
 msgstr "当用户必须选择新朋友时，此字段保存用作头部朋友的图像的图像，限制为1024x1024px。"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__image
-msgid "This field holds the image used as image for the product, limited to 1024x1024px."
+msgid ""
+"This field holds the image used as image for the product, limited to "
+"1024x1024px."
 msgstr "该字段保存产品的图像，限制到  1024x1024px."
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_link_to_share_view_form
-msgid "This link contains a tracker so that people clicking on it will account to a referral for you, even if they apply on a position after a few days."
+msgid ""
+"This link contains a tracker so that people clicking on it will account to a"
+" referral for you, even if they apply on a position after a few days."
 msgstr "此链接包含一个跟踪器，以便人们点击它将为您提供转介，即使他们在几天后申请某个职位。"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_recruitment_stage__use_in_referral
-msgid "This option is used in app 'Referrals'. If checked, the stage is displayed in 'Referrals Dashboard' and points are given to the employee."
+msgid ""
+"This option is used in app 'Referrals'. If checked, the stage is displayed "
+"in 'Referrals Dashboard' and points are given to the employee."
 msgstr "该选项用于应用程序 \"推荐\"。如果选中，该阶段将显示在 \"推荐仪表板 \"中，并给员工加分。"
 
 #. module: hr_referral
 #: model_terms:ir.actions.act_window,help:hr_referral.employee_referral_report_action
-msgid "This report performs analysis on your employee referral."
-msgstr "此报告会对您的员工推荐进行分析。"
+msgid "This reports allow you to follow the referrals and their evolution."
+msgstr "这些报告帮助您跟踪被推荐人的情况及其发展动向。"
+
+#. module: hr_referral
+#: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_onboarding_tree
+msgid ""
+"This will make the onboarding visible to all employees who have already seen"
+" it. Do you want to continue?"
+msgstr "这会让所有已经看过入职培训的员工都能看到培训内容。要继续吗？"
 
 #. module: hr_referral
 #. odoo-javascript
@@ -1352,7 +1428,7 @@ msgstr "已支出"
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Total"
-msgstr "合计"
+msgstr "总计"
 
 #. module: hr_referral
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_referral_link_to_share__channel__twitter
@@ -1367,12 +1443,12 @@ msgstr "推特点击"
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr "记录的异常活动类型。"
+msgstr "记录中异常活动的类型。"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__url
 msgid "URL"
-msgstr "URL"
+msgstr "网址"
 
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_utm_campaign
@@ -1406,7 +1482,7 @@ msgstr "用户对此礼物负责。"
 #. module: hr_referral
 #: model:res.groups,name:hr_referral.group_hr_recruitment_referral_user
 msgid "User: Referral only"
-msgstr ""
+msgstr "用户：仅推荐"
 
 #. module: hr_referral
 #. odoo-javascript
@@ -1430,7 +1506,7 @@ msgstr "网站消息"
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__website_message_ids
 msgid "Website communication history"
-msgstr "网上沟通记录"
+msgstr "网站沟通记录"
 
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_referral_onboarding
@@ -1470,7 +1546,9 @@ msgstr ""
 #. odoo-python
 #: code:addons/hr_referral/models/hr_referral_reward.py:0
 #, python-format
-msgid "You do not have enough points in this company to buy this product. In this company, you have %s points."
+msgid ""
+"You do not have enough points in this company to buy this product. In this "
+"company, you have %s points."
 msgstr "您在此公司的积分不足以购买此产品，您的积分为：%s。"
 
 #. module: hr_referral

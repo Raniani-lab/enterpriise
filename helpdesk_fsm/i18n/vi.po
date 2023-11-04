@@ -1,23 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* helpdesk_fsm
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Thi Huong Nguyen, 2023
-#
+# Wil Odoo, 2023
+# Vo Thanh Thuy, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:02+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Thi Huong Nguyen, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Vo Thanh Thuy, 2023\n"
 "Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
-"Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: helpdesk_fsm
@@ -37,7 +37,6 @@ msgstr "Tạo & xem nhiệm vụ"
 
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.create_fsm_task_view_form
-#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_ticket_view_form
 msgid "Create Task"
 msgstr "Tạo nhiệm vụ"
 
@@ -47,7 +46,7 @@ msgstr "Tạo nhiệm vụ"
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_create_fsm_task
 #, python-format
 msgid "Create a Field Service task"
-msgstr "Tạo một nhiệm vụ dịch vụ hiện trường"
+msgstr "Tạo nhiệm vụ dịch vụ hiện trường"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__create_uid
@@ -97,7 +96,7 @@ msgstr "Số nhiệm vụ FSM"
 #. module: helpdesk_fsm
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr "Đội ngũ hỗ trợ "
+msgstr "Đội ngũ hỗ trợ"
 
 #. module: helpdesk_fsm
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_ticket
@@ -123,6 +122,11 @@ msgstr "Cập nhật lần cuối vào"
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__helpdesk_ticket_id
 msgid "Original Ticket"
 msgstr "Phiếu hỗ trợ gốc"
+
+#. module: helpdesk_fsm
+#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_ticket_view_form
+msgid "Plan Intervention"
+msgstr "Kế hoạch can thiệp"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__project_id
@@ -152,7 +156,7 @@ msgstr "Nhiệm vụ"
 #: model:mail.message.subtype,description:helpdesk_fsm.mt_ticket_task_canceled
 #: model:mail.message.subtype,name:helpdesk_fsm.mt_ticket_task_canceled
 msgid "Task Canceled"
-msgstr ""
+msgstr "Nhiệm vụ bị huỷ"
 
 #. module: helpdesk_fsm
 #: model:mail.message.subtype,description:helpdesk_fsm.mt_team_ticket_task_done

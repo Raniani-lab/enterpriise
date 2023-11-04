@@ -1,22 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery_usps
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Spanish (https://app.transifex.com/odoo/teams/41243/es/)\n"
-"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: es\n"
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: delivery_usps
@@ -39,7 +39,9 @@ msgstr "Marca esta casilla si tu cuenta ha sido validada por USPS"
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Company phone number is invalid. Please insert a US phone number."
-msgstr "El número de teléfono de la compañía no es válido. Por favor, usa un número de teléfono de los EUA "
+msgstr ""
+"El número de teléfono de la compañía no es válido. Por favor, usa un número "
+"de teléfono de los EUA "
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_content_type
@@ -85,7 +87,7 @@ msgstr "Primera clase"
 #. module: delivery_usps
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_first_class_mail_type__flat
 msgid "Flat"
-msgstr "Fijo"
+msgstr "Plano"
 
 #. module: delivery_usps
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_mail_type__flatrate
@@ -225,43 +227,55 @@ msgstr "Paquete"
 
 #. module: delivery_usps
 #: model:ir.model.fields,help:delivery_usps.field_delivery_carrier__usps_machinable
-msgid "Please check on USPS website to ensure that your package is machinable."
-msgstr "Por favor, revisa el sitio web de USPS para asegurarte que tu paquete es mecanizable."
+msgid ""
+"Please check on USPS website to ensure that your package is machinable."
+msgstr ""
+"Por favor, revisa el sitio web de USPS para asegurarte que tu paquete es "
+"mecanizable."
 
 #. module: delivery_usps
 #. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
-msgid "Please choose another service (maximum weight of this service is 4 pounds)"
-msgstr "Por favor, elige otro servicio (el peso máximo de este servicio es de 4 libras)"
+msgid ""
+"Please choose another service (maximum weight of this service is 4 pounds)"
+msgstr ""
+"Por favor, elige otro servicio (el peso máximo de este servicio es de 4 "
+"libras)"
 
 #. module: delivery_usps
 #. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Please enter a valid ZIP code in recipient address"
-msgstr "Por favor, ingresa un código postal válido en la dirección del destinatario"
+msgstr ""
+"Por favor, ingresa un código postal válido en la dirección del destinatario"
 
 #. module: delivery_usps
 #. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Please enter a valid ZIP code in your Company address"
-msgstr "Por favor, ingresa un código postal válido en la dirección de su Compañía"
+msgstr ""
+"Por favor, ingresa un código postal válido en la dirección de su Compañía"
 
 #. module: delivery_usps
 #. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr "Por favor, proporcionar al menos un elemento para embarcar."
+msgstr "Por favor, proporciona al menos un dato para embarcar."
 
 #. module: delivery_usps
 #. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
-msgid "Please set country U.S.A in your company address, Service is only available for U.S.A"
-msgstr "Por favor, configura EUA como el país en la dirección de su compañía, el servicio solo está disponible para EUA"
+msgid ""
+"Please set country U.S.A in your company address, Service is only available "
+"for U.S.A"
+msgstr ""
+"Por favor, configura EUA como el país en la dirección de su compañía, el "
+"servicio solo está disponible para EUA"
 
 #. module: delivery_usps
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_first_class_mail_type__postcard
@@ -290,7 +304,9 @@ msgstr "La cantidad para cada línea de movimiento debe ser inferior a 1000."
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Recipient address cannot be found. Please check the address exists."
-msgstr "La dirección del destinatario no ha sido encontrada. Por favor, revisa que la dirección existe."
+msgstr ""
+"La dirección del destinatario no ha sido encontrada. Por favor, revisa que "
+"la dirección existe."
 
 #. module: delivery_usps
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_container__rectangular
@@ -407,7 +423,9 @@ msgstr ""
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "The selected USPS service (%s) cannot be used to deliver this package."
-msgstr "El servicio USPS seleccionado (%s) no puede ser utilizado para entregar este paquete."
+msgstr ""
+"El servicio USPS seleccionado (%s) no puede ser utilizado para entregar este"
+" paquete."
 
 #. module: delivery_usps
 #. odoo-python
@@ -451,8 +469,12 @@ msgstr "Sobre Pequeño USPS Doméstico Tarifa Fija"
 #. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
-msgid "USPS Domestic is used only to ship inside of the U.S.A. Please change the delivery method into USPS International."
-msgstr "USPS Domestic es utilizado solo para envíos dentro de E.U.A.. Por favor, cambia el método de entrega a USPS International."
+msgid ""
+"USPS Domestic is used only to ship inside of the U.S.A. Please change the "
+"delivery method into USPS International."
+msgstr ""
+"USPS Domestic es utilizado solo para envíos dentro de E.U.A.. Por favor, "
+"cambia el método de entrega a USPS International."
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_first_class_mail_type
@@ -469,8 +491,12 @@ msgstr "Caja Tarifa Fija USPS Internacional"
 #. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
-msgid "USPS International is used only to ship outside of the U.S.A. Please change the delivery method into USPS Domestic."
-msgstr "USPS International es utilizado solo para envíos fuera de E.U.A.. Por favor, cambia el método de entrega a USPS Domestic."
+msgid ""
+"USPS International is used only to ship outside of the U.S.A. Please change "
+"the delivery method into USPS Domestic."
+msgstr ""
+"USPS International es utilizado solo para envíos fuera de E.U.A.. Por favor,"
+" cambia el método de entrega a USPS Domestic."
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_label_file_type

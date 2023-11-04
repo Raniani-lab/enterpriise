@@ -1,23 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* sale_account_taxcloud
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Wichanon Jamwutthipreecha, 2022
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:24+0000\n"
-"PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Wichanon Jamwutthipreecha, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
-"Language: th\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: th\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: sale_account_taxcloud
@@ -32,7 +31,8 @@ msgstr "มีการกำหนดค่า Taxcloud"
 
 #. module: sale_account_taxcloud
 #: model_terms:ir.ui.view,arch_db:sale_account_taxcloud.view_order_form_inherit
-msgid "Please enter your Taxcloud credentials to compute tax rates automatically."
+msgid ""
+"Please enter your Taxcloud credentials to compute tax rates automatically."
 msgstr "โปรดป้อนข้อมูลประจำตัว Taxcloud ของคุณเพื่อคำนวณอัตราภาษีโดยอัตโนมัติ"
 
 #. module: sale_account_taxcloud
@@ -56,6 +56,7 @@ msgid "Tax"
 msgstr "ภาษี"
 
 #. module: sale_account_taxcloud
+#. odoo-python
 #: code:addons/sale_account_taxcloud/models/sale_order.py:0
 #, python-format
 msgid "Unable to retrieve taxes from TaxCloud: "
@@ -73,5 +74,6 @@ msgstr "ใช้ TaxCloud API"
 
 #. module: sale_account_taxcloud
 #: model:ir.model.fields,help:sale_account_taxcloud.field_sale_order__is_taxcloud_configured
-msgid "Used to determine whether or not to warn the user to configure TaxCloud."
+msgid ""
+"Used to determine whether or not to warn the user to configure TaxCloud."
 msgstr "ใช้เพื่อกำหนดว่าควรจะเตือนผู้ใช้ให้กำหนดค่า TaxCloud หรือไม่"

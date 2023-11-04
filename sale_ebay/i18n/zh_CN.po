@@ -1,31 +1,32 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* sale_ebay
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
-# Emily Jia <eji@odoo.com>, 2023
-#
+# Wil Odoo, 2023
+# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Emily Jia <eji@odoo.com>, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2023\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
-"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: sale_ebay
 #. odoo-python
 #: code:addons/sale_ebay/models/product.py:0
 #, python-format
-msgid " If you want to set quantity to 0, the Out Of Stock option should be enabled and the listing duration should set to Good 'Til Canceled"
+msgid ""
+" If you want to set quantity to 0, the Out Of Stock option should be enabled"
+" and the listing duration should set to Good 'Til Canceled"
 msgstr ""
 " 如果你设置数量为0,需启用缺货选项，清单时间应该被设为货物直到取消\n"
 "如果要将数量设置为0，则应启用缺货选项，并且设置列表持续时间直到取消"
@@ -80,7 +81,9 @@ msgstr "添加其他国家"
 #. odoo-python
 #: code:addons/sale_ebay/models/product.py:0
 #, python-format
-msgid "All the quantities must be greater than 0 or you need to enable the Out Of Stock option."
+msgid ""
+"All the quantities must be greater than 0 or you need to enable the Out Of "
+"Stock option."
 msgstr "所有的数量必须大于0或激活缺货选项。"
 
 #. module: sale_ebay
@@ -135,7 +138,7 @@ msgstr "类别类型"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_item_condition__code
 msgid "Code"
-msgstr "代号"
+msgstr "代码"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_config_settings
@@ -157,7 +160,7 @@ msgstr "联系人"
 #. module: sale_ebay
 #: model:ir.actions.act_window,name:sale_ebay.action_country_all_form
 msgid "Countries"
-msgstr "国家"
+msgstr "国家/地区"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -168,7 +171,7 @@ msgstr "国家和货币"
 #: model:ir.model,name:sale_ebay.model_res_country
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_country
 msgid "Country"
-msgstr "国家"
+msgstr "国家/地区"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__create_uid
@@ -186,7 +189,7 @@ msgstr "创建人"
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__create_date
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__create_date
 msgid "Created on"
-msgstr "创建时间"
+msgstr "创建日期"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_currency
@@ -294,10 +297,10 @@ msgstr ""
 #, python-format
 msgid ""
 "Error Encountered.\n"
-"'%s'"
+"%r"
 msgstr ""
-"遇到问题.\n"
-"'%s'"
+"遇到错误。\n"
+"%r"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
@@ -382,7 +385,7 @@ msgstr "最后更新人"
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__write_date
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__write_date
 msgid "Last Updated on"
-msgstr "最后更新时间"
+msgstr "上次更新日期"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_last_sync
@@ -495,7 +498,9 @@ msgstr "支付政策"
 #. odoo-python
 #: code:addons/sale_ebay/models/res_config_settings.py:0
 #, python-format
-msgid "Please provide your ebay production keys before enabling the account deletion notifications."
+msgid ""
+"Please provide your ebay production keys before enabling the account "
+"deletion notifications."
 msgstr "在启用账户删除通知之前，请提供您的Ebay生产环境密钥。"
 
 #. module: sale_ebay
@@ -607,7 +612,7 @@ msgstr "销售团队管理eBay销售"
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__res_config_settings__ebay_domain__sand
 msgid "Sandbox"
-msgstr "沙箱"
+msgstr "沙盒"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sandbox_app_id
@@ -633,7 +638,7 @@ msgstr "在eBay上销售"
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_seller_shipping_policy_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_seller_shipping_policy_id
 msgid "Shipping Policy"
-msgstr "送货政策"
+msgstr "送货策略"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_start_date
@@ -650,7 +655,7 @@ msgstr "拍卖起始价"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Storage"
-msgstr ""
+msgstr "存储"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -688,7 +693,7 @@ msgstr "现在同步"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Synchronization"
-msgstr ""
+msgstr "同步"
 
 #. module: sale_ebay
 #. odoo-python
@@ -718,7 +723,9 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_subtitle
 #: model:ir.model.fields,help:sale_ebay.field_product_template__ebay_subtitle
-msgid "The subtitle is restricted to 55 characters. Fees can be claimed by eBay for this feature"
+msgid ""
+"The subtitle is restricted to 55 characters. Fees can be claimed by eBay for"
+" this feature"
 msgstr "子标题限制55个字符.对于此功能eBAY 要收费"
 
 #. module: sale_ebay
@@ -730,22 +737,34 @@ msgstr "标题支持80个字符"
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_category_2_id
 #: model:ir.model.fields,help:sale_ebay.field_product_template__ebay_category_2_id
-msgid "The use of a secondary category is not allowed on every eBay sites. Fees can be claimed by eBay for this feature"
+msgid ""
+"The use of a secondary category is not allowed on every eBay sites. Fees can"
+" be claimed by eBay for this feature"
 msgstr "每个eBay网站都不允许使用二级分类。eBay可以为这项功能收取费用"
 
 #. module: sale_ebay
 #. odoo-python
 #: code:addons/sale_ebay/models/product.py:0
 #, python-format
-msgid "There is no last synchronization date in your System Parameters. Create a System Parameter record with the key \"ebay_last_sync\" and the value set to the date of the oldest order you wish to synchronize in the format \"YYYY-MM-DD\"."
-msgstr "你的系统参数中没有上次同步日期。使用键“ebay_last_sync”创建一个系统参数记录，并将值设置为你希望以“YYYY-MM-DD”格式同步的最早订单的日期。"
+msgid ""
+"There is no last synchronization date in your System Parameters. Create a "
+"System Parameter record with the key \"ebay_last_sync\" and the value set to"
+" the date of the oldest order you wish to synchronize in the format \"YYYY-"
+"MM-DD\"."
+msgstr ""
+"你的系统参数中没有上次同步日期。使用键“ebay_last_sync”创建一个系统参数记录，并将值设置为你希望以“YYYY-MM-"
+"DD”格式同步的最早订单的日期。"
 
 #. module: sale_ebay
 #. odoo-python
 #: code:addons/sale_ebay/models/product.py:0
 #, python-format
-msgid "This function should not be called with a range of more than 30 days, as eBay does not handle longer timespans. Instead use synchronize_orders which split in as many calls as needed."
-msgstr "此函数应在30天内调用，因为eBay无法处理更长的时间跨度。或者，可以使用synchronize_orders，根据需要拆分为任意多个调用。"
+msgid ""
+"This function should not be called with a range of more than 30 days, as "
+"eBay does not handle longer timespans. Instead use synchronize_orders which "
+"split in as many calls as needed."
+msgstr ""
+"此函数应在30天内调用，因为eBay无法处理更长的时间跨度。或者，可以使用synchronize_orders，根据需要拆分为任意多个调用。"
 
 #. module: sale_ebay
 #. odoo-python
@@ -769,7 +788,7 @@ msgstr "称谓"
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_stock_picking
 msgid "Transfer"
-msgstr "调拨"
+msgstr "转账"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__policy_type
@@ -817,7 +836,7 @@ msgstr "eBay"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay Account"
-msgstr ""
+msgstr "eBay账号"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_category
@@ -867,7 +886,7 @@ msgstr "eBay上市 ID"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay Marketplace Account Deletion/Closure Notifications"
-msgstr ""
+msgstr "eBay市场账户删除/关闭通知"
 
 #. module: sale_ebay
 #: model:mail.activity.type,summary:sale_ebay.ebay_GDPR_notification
@@ -877,7 +896,7 @@ msgstr "eBay Odoo连接器通知--账户删除"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay Options"
-msgstr ""
+msgstr "eBay选项"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_policy
@@ -941,8 +960,9 @@ msgstr "eBay 参数"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "eBay requires supporting customer account deletion/closure notifications."
-msgstr ""
+msgid ""
+"eBay requires supporting customer account deletion/closure notifications."
+msgstr "eBay需要支持客户账户删除/关闭通知。"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_url

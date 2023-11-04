@@ -1,39 +1,44 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery_ups
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Khwunchai Jaengsawang <khwunchai.j@ku.th>, 2022
-# Wichanon Jamwutthipreecha, 2022
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Wichanon Jamwutthipreecha, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
-"Language: th\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: th\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "A shipment cannot have a KGS/IN or LBS/CM as its unit of measurements. Configure it from the delivery method."
-msgstr "การจัดส่งต้องไม่มี KGS/IN หรือ LBS/CM เป็นหน่วยวัด กำหนดค่าจากวิธีการจัดส่ง"
+msgid ""
+"A shipment cannot have a KGS/IN or LBS/CM as its unit of measurements. "
+"Configure it from the delivery method."
+msgstr ""
+"การจัดส่งต้องไม่มี KGS/IN หรือ LBS/CM เป็นหน่วยวัด กำหนดค่าจากวิธีการจัดส่ง"
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "Access License number is Invalid. Provide a valid number (Length should be 0-35 alphanumeric characters)"
-msgstr "หมายเลขใบอนุญาตการเข้าถึงไม่ถูกต้อง ต้องระบุตัวเลขที่ถูกต้อง (ความยาวควรเป็น 0-35 อักขระที่เป็นตัวอักษรและตัวเลขคละกัน)"
+msgid ""
+"Access License number is Invalid. Provide a valid number (Length should be "
+"0-35 alphanumeric characters)"
+msgstr ""
+"หมายเลขใบอนุญาตการเข้าถึงไม่ถูกต้อง ต้องระบุตัวเลขที่ถูกต้อง (ความยาวควรเป็น"
+" 0-35 อักขระที่เป็นตัวอักษรและตัวเลขคละกัน)"
 
 #. module: delivery_ups
 #. odoo-python
@@ -47,7 +52,9 @@ msgstr "หมายเลขใบอนุญาตการเข้าถึ
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Access License number is invalid for this provider.Please re-license."
-msgstr "หมายเลขใบอนุญาตการเข้าถึงไม่ถูกต้องสำหรับผู้ให้บริการรายนี้ โปรดขอใบอนุญาตใหม่"
+msgstr ""
+"หมายเลขใบอนุญาตการเข้าถึงไม่ถูกต้องสำหรับผู้ให้บริการรายนี้ "
+"โปรดขอใบอนุญาตใหม่"
 
 #. module: delivery_ups
 #. odoo-python
@@ -138,7 +145,8 @@ msgstr ""
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "Exceeds Total Number of allowed pieces per World Wide Express Shipment."
+msgid ""
+"Exceeds Total Number of allowed pieces per World Wide Express Shipment."
 msgstr "เกินจำนวนที่อนุญาตต่อการขนส่งด่วนทั่วโลก"
 
 #. module: delivery_ups
@@ -197,6 +205,7 @@ msgstr "แพ็คเกจ%s ไม่มีน้ำหนักการจ
 
 #. module: delivery_ups
 #. odoo-python
+#: code:addons/delivery_ups/models/delivery_ups.py:0
 #: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid "Packages:"
@@ -262,7 +271,9 @@ msgstr "โปรดระบุประเทศที่ถูกต้อง
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "Please provide a valid package type available for service and selected locations."
+msgid ""
+"Please provide a valid package type available for service and selected "
+"locations."
 msgstr "โปรดระบุประเภทแพ็คเกจที่ถูกต้องสำหรับบริการและตำแหน่งที่เลือก"
 
 #. module: delivery_ups
@@ -275,12 +286,15 @@ msgstr "โปรดระบุหมายเลขโทรศัพท์ท
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide a valid shipper Number/Carrier Account."
 msgstr "โปรดระบุหมายเลขผู้จัดส่ง/บัญชีผู้ให้บริการที่ถูกต้อง"
 
 #. module: delivery_ups
 #. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide a valid shipper number/Carrier Account."
@@ -352,6 +366,7 @@ msgstr "โปรดระบุรหัสไปรษณีย์ที่ถ
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide a valid zip code in the warehouse address."
 msgstr "โปรดระบุรหัสไปรษณีย์ที่ถูกต้องในที่อยู่โกดังสินค้า"
@@ -372,6 +387,7 @@ msgstr "โปรดระบุสินค้าสำหรับจัดส
 
 #. module: delivery_ups
 #. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
@@ -406,6 +422,7 @@ msgstr "ไม่พบหมายเลขใบอนุญาตการเ
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Provided Tracking Ref. Number is invalid."
 msgstr "ระบุหมายเลขสำหรับอ้างอิงการติดตามไม่ถูกต้อง"
@@ -425,7 +442,8 @@ msgstr "ผู้รับ"
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Recipient Phone must be at least 10 alphanumeric characters."
-msgstr "โทรศัพท์ผู้รับต้องมีอักขระที่เป็นตัวอักษรและตัวเลขคละกันอย่างน้อย 10 ตัว"
+msgstr ""
+"โทรศัพท์ผู้รับต้องมีอักขระที่เป็นตัวอักษรและตัวเลขคละกันอย่างน้อย 10 ตัว"
 
 #. module: delivery_ups
 #. odoo-python
@@ -487,7 +505,9 @@ msgstr ""
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Shipper Phone must be at least 10 alphanumeric characters."
-msgstr "โทรศัพท์ของผู้จัดส่งต้องมีอักขระที่เป็นตัวอักษรและตัวเลขคละกันอย่างน้อย 10 ตัว"
+msgstr ""
+"โทรศัพท์ของผู้จัดส่งต้องมีอักขระที่เป็นตัวอักษรและตัวเลขคละกันอย่างน้อย 10 "
+"ตัว"
 
 #. module: delivery_ups
 #. odoo-python
@@ -553,7 +573,8 @@ msgstr ""
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The delivery cannot be done because the weight of your product is missing."
+msgid ""
+"The delivery cannot be done because the weight of your product is missing."
 msgstr "ไม่สามารถจัดส่งได้เนื่องจากไม่มีน้ำหนักของสินค้า"
 
 #. module: delivery_ups
@@ -571,8 +592,12 @@ msgstr ""
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The maximum number of user access attempts was exceeded. So please try again later"
-msgstr "เกินจำนวนครั้งสูงสุดของความพยายามในการเข้าถึงของผู้ใช้แล้ว ดังนั้นโปรดลองอีกครั้งในภายหลัง"
+msgid ""
+"The maximum number of user access attempts was exceeded. So please try again"
+" later"
+msgstr ""
+"เกินจำนวนครั้งสูงสุดของความพยายามในการเข้าถึงของผู้ใช้แล้ว "
+"ดังนั้นโปรดลองอีกครั้งในภายหลัง"
 
 #. module: delivery_ups
 #. odoo-python
@@ -595,6 +620,7 @@ msgstr ""
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "The requested service is unavailable between the selected locations."
 msgstr "บริการที่ร้องขอไม่สามารถใช้ได้ระหว่างตำแหน่งที่เลือก"
@@ -603,22 +629,30 @@ msgstr "บริการที่ร้องขอไม่สามารถ
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The selected service is invalid from the requested warehouse, please choose another service."
+msgid ""
+"The selected service is invalid from the requested warehouse, please choose "
+"another service."
 msgstr "บริการที่เลือกไม่ถูกต้องจากโกดังสินค้าที่ร้องขอ โปรดเลือกบริการอื่น"
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The selected service is invalid to the recipient address, please choose another service."
+msgid ""
+"The selected service is invalid to the recipient address, please choose "
+"another service."
 msgstr "บริการที่เลือกไม่ถูกต้องสำหรับที่อยู่ผู้รับ โปรดเลือกบริการอื่น"
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The selected service is not possible from your warehouse to the recipient address, please choose another service."
-msgstr "ไม่สามารถใช้บริการที่เลือกจากโกดังสินค้าของคุณไปยังที่อยู่ผู้รับได้ กรุณาเลือกบริการอื่น"
+msgid ""
+"The selected service is not possible from your warehouse to the recipient "
+"address, please choose another service."
+msgstr ""
+"ไม่สามารถใช้บริการที่เลือกจากโกดังสินค้าของคุณไปยังที่อยู่ผู้รับได้ "
+"กรุณาเลือกบริการอื่น"
 
 #. module: delivery_ups
 #. odoo-python
@@ -631,28 +665,43 @@ msgstr "บริการที่เลือกไม่ถูกต้อง
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "This measurement system is not valid for the selected country. Please switch from LBS/IN to KGS/CM (or vice versa). Configure it from delivery method"
-msgstr "ระบบการวัดนี้ไม่ถูกต้องสำหรับประเทศที่เลือก โปรดเปลี่ยนจาก LBS/IN เป็น KGS/CM (หรือกลับกัน) กำหนดค่าจากวิธีการจัดส่ง"
+msgid ""
+"This measurement system is not valid for the selected country. Please switch"
+" from LBS/IN to KGS/CM (or vice versa). Configure it from delivery method"
+msgstr ""
+"ระบบการวัดนี้ไม่ถูกต้องสำหรับประเทศที่เลือก โปรดเปลี่ยนจาก LBS/IN เป็น "
+"KGS/CM (หรือกลับกัน) กำหนดค่าจากวิธีการจัดส่ง"
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "This measurement system is not valid for the selected country. Please switch from LBS/IN to KGS/CM (or vice versa). Configure it from the delivery method."
-msgstr "ระบบการวัดนี้ไม่ถูกต้องสำหรับประเทศที่เลือก โปรดเปลี่ยนจาก LBS/IN เป็น KGS/CM (หรือกลับกัน) กำหนดค่าจากวิธีการจัดส่ง"
+msgid ""
+"This measurement system is not valid for the selected country. Please switch"
+" from LBS/IN to KGS/CM (or vice versa). Configure it from the delivery "
+"method."
+msgstr ""
+"ระบบการวัดนี้ไม่ถูกต้องสำหรับประเทศที่เลือก โปรดเปลี่ยนจาก LBS/IN เป็น "
+"KGS/CM (หรือกลับกัน) กำหนดค่าจากวิธีการจัดส่ง"
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_cod
-msgid "This value added service enables UPS to collect the payment of the shipment from your customer."
-msgstr "บริการเพิ่มมูลค่านี้ทำให้ UPS สามารถเรียกเก็บเงินค่าขนส่งจากลูกค้าของคุณได้"
+msgid ""
+"This value added service enables UPS to collect the payment of the shipment "
+"from your customer."
+msgstr ""
+"บริการเพิ่มมูลค่านี้ทำให้ UPS สามารถเรียกเก็บเงินค่าขนส่งจากลูกค้าของคุณได้"
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_saturday_delivery
-msgid "This value added service will allow you to ship the package on saturday also."
+msgid ""
+"This value added service will allow you to ship the package on saturday "
+"also."
 msgstr "บริการเพิ่มมูลค่าจะช่วยให้คุณสามารถจัดส่งแพ็คเกจได้ในวันเสาร์"
 
 #. module: delivery_ups
 #. odoo-python
+#: code:addons/delivery_ups/models/delivery_ups.py:0
 #: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid "Tracking Numbers:"
@@ -749,8 +798,12 @@ msgstr "เลขที่บัญชี UPS"
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "UPS address lines can only contain a maximum of 35 characters. You can split the contacts addresses on multiple lines to try to avoid this limitation."
-msgstr "บรรทัดที่อยู่ของ UPS สามารถมีอักขระได้สูงสุด 35 ตัวเท่านั้น คุณสามารถแบ่งที่อยู่สำหรับติดต่อออกเป็นหลายบรรทัดเพื่อหลีกเลี่ยงข้อจำกัดนี้ได้"
+msgid ""
+"UPS address lines can only contain a maximum of 35 characters. You can split"
+" the contacts addresses on multiple lines to try to avoid this limitation."
+msgstr ""
+"บรรทัดที่อยู่ของ UPS สามารถมีอักขระได้สูงสุด 35 ตัวเท่านั้น "
+"คุณสามารถแบ่งที่อยู่สำหรับติดต่อออกเป็นหลายบรรทัดเพื่อหลีกเลี่ยงข้อจำกัดนี้ได้"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_duty_payment
@@ -765,6 +818,7 @@ msgstr "Ups หน่วยน้ำหนักบรรจุภัณฑ์"
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Username/Password is invalid for this delivery provider."
 msgstr "ชื่อผู้ใช้/รหัสผ่านไม่ถูกต้องสำหรับผู้ให้บริการจัดส่งรายนี้"
@@ -774,7 +828,8 @@ msgstr "ชื่อผู้ใช้/รหัสผ่านไม่ถู�
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Warehouse Phone must be at least 10 alphanumeric characters."
-msgstr "โทรศัพท์โกดังต้องมีอักขระที่เป็นตัวอักษรและตัวเลขคละกันอย่างน้อย 10 ตัว"
+msgstr ""
+"โทรศัพท์โกดังต้องมีอักขระที่เป็นตัวอักษรและตัวเลขคละกันอย่างน้อย 10 ตัว"
 
 #. module: delivery_ups
 #. odoo-python

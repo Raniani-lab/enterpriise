@@ -1,29 +1,30 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* documents_product
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Ryoko Tsuda <ryoko@quartile.co>, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-17 10:16+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Ryoko Tsuda <ryoko@quartile.co>, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
-"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: documents_product
 #: model:ir.model,name:documents_product.model_documents_workflow_rule
-msgid "A set of condition and actions which will be available to all attachments matching the conditions"
-msgstr ""
+msgid ""
+"A set of condition and actions which will be available to all attachments "
+"matching the conditions"
+msgstr "条件に一致する全ての添付ファイルが利用できる、条件とアクションのセット。"
 
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
@@ -56,14 +57,26 @@ msgid "Default Tags"
 msgstr "デフォルトタグ"
 
 #. module: documents_product
+#: model:ir.model,name:documents_product.model_documents_document
+msgid "Document"
+msgstr "ドキュメント"
+
+#. module: documents_product
 #: model:documents.facet,name:documents_product.documents_product_documents_facet
 msgid "Documents"
-msgstr "ドキュメント"
+msgstr "書類"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__documents_product_settings
 msgid "Documents Product Settings"
-msgstr ""
+msgstr "ドキュメントプロダクト設定"
+
+#. module: documents_product
+#. odoo-python
+#: code:addons/documents_product/models/document.py:0
+#, python-format
+msgid "Invalid %s search"
+msgstr "無効な %s検索 "
 
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_msds_tag
@@ -82,6 +95,7 @@ msgstr "計画"
 
 #. module: documents_product
 #: model:ir.model,name:documents_product.model_product_template
+#: model:ir.model.fields,field_description:documents_product.field_documents_document__product_template_id
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__documents_product_settings
 msgid "Product"
 msgstr "プロダクト"
@@ -94,18 +108,19 @@ msgstr "プロダクトタグ"
 
 #. module: documents_product
 #: model:ir.model,name:documents_product.model_product_product
+#: model:ir.model.fields,field_description:documents_product.field_documents_document__product_id
 msgid "Product Variant"
 msgstr "プロダクトバリアント"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_folder
 msgid "Product Workspace"
-msgstr ""
+msgstr "プロダクト作業区"
 
 #. module: documents_product
 #: model:ir.model.fields.selection,name:documents_product.selection__documents_workflow_rule__create_model__product_template
 msgid "Product template"
-msgstr ""
+msgstr "プロダクトテンプレート"
 
 #. module: documents_product
 #: model:documents.folder,name:documents_product.documents_product_folder
@@ -125,4 +140,4 @@ msgstr "ワークスペース"
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_folder
 msgid "product default workspace"
-msgstr ""
+msgstr "プロダクトデフォルト作業区"

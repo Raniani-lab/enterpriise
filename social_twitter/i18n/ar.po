@@ -1,23 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* social_twitter
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Malaz Abuidris <msea@odoo.com>, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-17 10:16+0000\n"
-"PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
-"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. module: social_twitter
@@ -62,11 +61,6 @@ msgid "<i class=\"fa fa-retweet me-1\" title=\"Retweet a tweet\"/>"
 msgstr "<i class=\"fa fa-retweet me-1\" title=\"إعادة تغريد التغريدة \"/>"
 
 #. module: social_twitter
-#: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
-msgid "<span class=\"fst-italic\">Empty tweet</span>"
-msgstr "<span class=\"fst-italic\">تغريدة فارغة</span> "
-
-#. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.twitter_preview
 msgid "@twitteraccount ·"
 msgstr "@twitteraccount ·"
@@ -80,13 +74,14 @@ msgstr "لقد قمت بإعادة التغريد بالفعل "
 
 #. module: social_twitter
 #. odoo-python
-#: code:addons/social_twitter/models/social_stream_post.py:0
+#: code:addons/social_twitter/controllers/main.py:0
 #, python-format
-msgid "An error occurred (%s)"
-msgstr "حدث خطأ ما (%s) "
+msgid "Authentication failed. Please enter valid credentials."
+msgstr "فشلت عملية المصادقة. يرجى إدخال بيانات اعتماد صالحة. "
 
 #. module: social_twitter
 #. odoo-javascript
+#: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 #, python-format
@@ -94,23 +89,31 @@ msgid "Author Image"
 msgstr "صورة الكاتب "
 
 #. module: social_twitter
+#. odoo-python
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid ""
+"Can not like / unlike the tweet\n"
+"%s."
+msgstr ""
+"لا يمكن الإعجاب / عدم الإعجاب بالتغريدة\n"
+"%s. "
+
+#. module: social_twitter
 #. odoo-javascript
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Cancel"
-msgstr "إلغاء "
+msgstr "إلغاء"
 
 #. module: social_twitter
 #: model:ir.model.fields,help:social_twitter.field_res_config_settings__twitter_use_own_account
-msgid "Check this if you want to use your personal Twitter Developer Account instead of the provided one."
-msgstr "قم بتحديد ذلك إذا كنت ترغب في استخدام حساب مطور Twitter الخاص بك عوضاً عن المقدم إليك. "
-
-#. module: social_twitter
-#. odoo-python
-#: code:addons/social_twitter/models/social_stream_post.py:0
-#, python-format
-msgid "Code %i"
-msgstr "الكود %i "
+msgid ""
+"Check this if you want to use your personal Twitter Developer Account "
+"instead of the provided one."
+msgstr ""
+"قم بتحديد ذلك إذا كنت ترغب في استخدام حساب مطور Twitter الخاص بك عوضاً عن "
+"المقدم إليك. "
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_res_config_settings
@@ -155,6 +158,13 @@ msgstr "عرض معاينة Twitter "
 
 #. module: social_twitter
 #. odoo-javascript
+#: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
+#, python-format
+msgid "Empty tweet"
+msgstr ""
+
+#. module: social_twitter
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/js/stream_post_kanban_record.js:0
 #, python-format
 msgid "Error"
@@ -166,6 +176,32 @@ msgstr "خطأ"
 #, python-format
 msgid "Error while sending the data to the server."
 msgstr "حدث خطأ أثناء إرسال البيانات إلى الخادم. "
+
+#. module: social_twitter
+#. odoo-python
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid ""
+"Failed to delete the Tweet\n"
+"%s."
+msgstr ""
+"تعذر حذف التغريدة\n"
+"%s. "
+
+#. module: social_twitter
+#. odoo-python
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid ""
+"Failed to fetch the tweets in the same thread: '%s' using the account %s."
+msgstr "تعذر جلب التغريدات في نفس المحادثة: '%s' باستخدام الحساب %s. "
+
+#. module: social_twitter
+#. odoo-python
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "Failed to post comment: %s with the account %s."
+msgstr "تعذر نشر التعليق: %s باستخدام الحساب %s. "
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_likes
@@ -212,17 +248,14 @@ msgstr "الإعجابات"
 
 #. module: social_twitter
 #. odoo-python
-#: code:addons/social_twitter/models/social_stream_post.py:0
-#, python-format
-msgid "Looks like this Tweet is a duplicate. Edit its content and try posting again."
-msgstr "يبدو أن هذه التغريدة مكررة. قم بتحرير محتواها ثم حاول مجدداً لاحقاً. "
-
-#. module: social_twitter
-#. odoo-python
 #: code:addons/social_twitter/models/social_stream.py:0
 #, python-format
-msgid "Looks like you've made too many requests. Please wait a few minutes before giving it another try."
-msgstr "يبدو أنك قمت بإنشاء الكثير من الطلبات. يرجى الانتظار لبضع دقائق قبل المحاولة مجدداً. "
+msgid ""
+"Looks like you've made too many requests. Please wait a few minutes before "
+"giving it another try."
+msgstr ""
+"يبدو أنك قمت بإنشاء الكثير من الطلبات. يرجى الانتظار لبضع دقائق قبل المحاولة"
+" مجدداً. "
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_media__media_type
@@ -244,7 +277,7 @@ msgstr "الاسم"
 #: code:addons/social_twitter/models/social_stream.py:0
 #, python-format
 msgid "Please select a Twitter account for this stream type."
-msgstr "يرجى تحديد حساب Twitter لنوع التدفق هذا. "
+msgstr "يرجى تحديد حساب Twitter لنوع الوسائط هذا. "
 
 #. module: social_twitter
 #. odoo-javascript
@@ -294,6 +327,20 @@ msgstr "إعادة التغريد "
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_retweet_count
 msgid "Re-tweets"
 msgstr "إعادات التغريد "
+
+#. module: social_twitter
+#. odoo-python
+#: code:addons/social_twitter/controllers/main.py:0
+#, python-format
+msgid "Read More about Twitter Accounts"
+msgstr "اقرأ المزيد عن حسابات Twitter "
+
+#. module: social_twitter
+#. odoo-python
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "Replies from Tweets older than 7 days must be accessed on Twitter.com"
+msgstr "يجب الوصول إلى الردود الأقدم من 7 أيام عن طريق Twitter.com "
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
@@ -371,22 +418,39 @@ msgstr "حساب Twitter الاجتماعي "
 #. odoo-python
 #: code:addons/social_twitter/models/social_stream.py:0
 #, python-format
-msgid "The keyword you've typed in does not look valid. Please try again with other words."
-msgstr "الكلمة المفتاحية التي كتبتها لا تبدو صالحة. يرجى المحاولة مجدداً باستخدام كلمات أخرى. "
-
-#. module: social_twitter
-#. odoo-python
-#: code:addons/social_twitter/models/social_stream_post.py:0
-#, python-format
-msgid "The tweet is empty. Add a message and try posting again."
-msgstr "التغريدة فارغة. قم بإضافة رسالة ثم حاول نشرها مجدداً. "
+msgid ""
+"The keyword you've typed in does not look valid. Please try again with other"
+" words."
+msgstr ""
+"الكلمة المفتاحية التي كتبتها لا تبدو صالحة. يرجى المحاولة مجدداً باستخدام "
+"كلمات أخرى. "
 
 #. module: social_twitter
 #. odoo-python
 #: code:addons/social_twitter/models/social_media.py:0
 #, python-format
-msgid "The url that this service requested returned an error. Please contact the author of the app."
-msgstr "حدث خطأ ما في رابط url الذي تم طلبه من قِبَل هذه الخدمة. يرجى التواصل مع منشئ هذا التطبيق. "
+msgid ""
+"The url that this service requested returned an error. Please contact the "
+"author of the app."
+msgstr ""
+"حدث خطأ ما في رابط url الذي تم طلبه من قِبَل هذه الخدمة. يرجى التواصل مع "
+"منشئ هذا التطبيق. "
+
+#. module: social_twitter
+#. odoo-python
+#: code:addons/social_twitter/controllers/main.py:0
+#: code:addons/social_twitter/controllers/main.py:0
+#: code:addons/social_twitter/controllers/main.py:0
+#, python-format
+msgid "This Tweet has been deleted."
+msgstr ""
+
+#. module: social_twitter
+#. odoo-python
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "This tweet is outdated, please refresh the stream and try again."
+msgstr ""
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_follow
@@ -426,6 +490,11 @@ msgstr "مفتاح مستهلك Twitter "
 #: model:ir.model.fields,field_description:social_twitter.field_res_config_settings__twitter_consumer_secret_key
 msgid "Twitter Consumer Secret Key"
 msgstr "مفتاح سر مستهلك Twitter "
+
+#. module: social_twitter
+#: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_conversation_id
+msgid "Twitter Conversation ID"
+msgstr ""
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.res_config_settings_view_form
@@ -543,7 +612,15 @@ msgid "Undo Retweet"
 msgstr "إلغاء إعادة التغريد "
 
 #. module: social_twitter
+#. odoo-javascript
+#: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
+#, python-format
+msgid "Unknown"
+msgstr "غير معروف"
+
+#. module: social_twitter
 #. odoo-python
+#: code:addons/social_twitter/models/social_stream_post.py:0
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Unknown error"
@@ -556,18 +633,28 @@ msgstr "استخدم حساب Twitter الخاص بك "
 
 #. module: social_twitter
 #: model:ir.model.fields,help:social_twitter.field_social_media__media_type
-msgid "Used to make comparisons when we need to restrict some features to a specific media ('facebook', 'twitter', ...)."
-msgstr "يستخدم لإجراء المقارنات عند الحاجة إلى تقييد بعض الخصائص لموقع تواصل اجتماعي محدد ('facebook'، 'twitter'، ...). "
+msgid ""
+"Used to make comparisons when we need to restrict some features to a "
+"specific media ('facebook', 'twitter', ...)."
+msgstr ""
+"يستخدم لإجراء المقارنات عند الحاجة إلى تقييد بعض الخصائص لموقع تواصل اجتماعي"
+" محدد ('facebook'، 'twitter'، ...). "
 
 #. module: social_twitter
 #. odoo-python
 #: code:addons/social_twitter/models/social_account.py:0
 #, python-format
-msgid "We could not upload your image, try reducing its size and posting it again (error: %s)."
-msgstr "لم نتمكن من رفع صورتك. حاول تقليل حجمها ثم نشرها مجدداً (الخطأ: %s). "
+msgid ""
+"We could not upload your image, it may be corrupted, it may exceed size "
+"limit or API may have send improper response (error: %s)."
+msgstr ""
+"لم نتمكن من رفع صورتك. قد تكون تالفة أو قد تكون قد تجاوزت الحد الأقصى "
+"المسموح به للحجم، أو قد تكون الواجهة البرمجية قد أرسلت رداً غير مناسب (خطأ: "
+"%s). "
 
 #. module: social_twitter
 #. odoo-python
+#: code:addons/social_twitter/models/social_stream_post.py:0
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "You are not authenticated"
@@ -577,13 +664,16 @@ msgstr "أنت لست مصادقاً "
 #. odoo-javascript
 #: code:addons/social_twitter/static/src/js/stream_post_comments.js:0
 #, python-format
-msgid "You can comment only three times a tweet as it may be considered as spamming by Twitter"
-msgstr "يمكنك التعليق فقط ثلاث مرات في كل تغريدة لأنه قد يعد ذلك إزعاجاً في تويتر "
+msgid ""
+"You can comment only three times a tweet as it may be considered as spamming"
+" by Twitter"
+msgstr ""
+"يمكنك التعليق فقط ثلاث مرات في كل تغريدة لأنه قد يعد ذلك إزعاجاً في تويتر "
 
 #. module: social_twitter
 #: model:ir.model.constraint,message:social_twitter.constraint_social_stream_post_tweet_uniq
 msgid "You can not store two times the same tweet on the same stream!"
-msgstr "لا يمكنك تخزين نفس التغريدة مرتين في نفس التغريدة ونفس التيار! "
+msgstr "لا يمكنك تخزين نفس التغريدة مرتين في نفس التغريدة ونفس الوسط! "
 
 #. module: social_twitter
 #. odoo-python
@@ -593,7 +683,7 @@ msgid ""
 "You cannot create a Stream from this Twitter account.\n"
 "It may be because it's protected. To solve this, please make sure you follow it before trying again."
 msgstr ""
-"لا يمكنك إنشاء تدفق من حساب Twitter هذا. \n"
+"لا يمكنك إنشاء وسط من حساب Twitter هذا. \n"
 "قد يكون السبب هو أنه محمي. لحل هذه المشكلة، يرجى التأكد من أنك تتابعه قبل المحاولة مجدداً. "
 
 #. module: social_twitter
@@ -607,8 +697,12 @@ msgstr "لا تملك اشتراكاً سارياً. يرجى شراء واحد 
 #. odoo-python
 #: code:addons/social_twitter/models/social_media.py:0
 #, python-format
-msgid "You need to add the following callback URL to your twitter application settings: %s"
-msgstr "تحتاج إلى إضافة رابط الاستدعاء التالي إلى إعدادات تطبيق Twitter الخاصة بك: %s "
+msgid ""
+"You need to add the following callback URL to your twitter application "
+"settings: %s"
+msgstr ""
+"تحتاج إلى إضافة رابط الاستدعاء التالي إلى إعدادات تطبيق Twitter الخاصة بك: "
+"%s "
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_view_form

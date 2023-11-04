@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # 	* marketing_automation_crm
 # 
+# Translators:
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:21+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,7 +45,7 @@ msgstr ""
 #. module: marketing_automation_crm
 #: model:ir.model,name:marketing_automation_crm.model_marketing_campaign
 msgid "Marketing Campaign"
-msgstr ""
+msgstr "Marketingcampagne"
 
 #. module: marketing_automation_crm
 #. odoo-python
@@ -92,7 +96,7 @@ msgstr ""
 #: code:addons/marketing_automation_crm/models/marketing_campaign.py:0
 #, python-format
 msgid "Send Email"
-msgstr ""
+msgstr "Verzend e-mail"
 
 #. module: marketing_automation_crm
 #. odoo-python

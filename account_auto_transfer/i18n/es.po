@@ -1,22 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* account_auto_transfer
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:02+0000\n"
-"PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:09+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Spanish (https://app.transifex.com/odoo/teams/41243/es/)\n"
-"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: es\n"
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: account_auto_transfer
@@ -27,7 +27,7 @@ msgstr "<span> para </span>"
 #. module: account_auto_transfer
 #: model:ir.model,name:account_auto_transfer.model_account_chart_template
 msgid "Account Chart Template"
-msgstr ""
+msgstr "Plantilla de Plan de Cuentas"
 
 #. module: account_auto_transfer
 #: model:ir.model,name:account_auto_transfer.model_account_transfer_model
@@ -51,13 +51,22 @@ msgstr "Activar"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,help:account_auto_transfer.field_account_transfer_model_line__analytic_account_ids
-msgid "Adds a condition to only transfer the sum of the lines from the origin accounts that match these analytic accounts to the destination account"
-msgstr "Agrega una condición para transferir a la cuenta de destino únicamente la suma de las líneas desde las cuentas de origen que coincidan con las cuentas analíticas de la cuenta de destino."
+msgid ""
+"Adds a condition to only transfer the sum of the lines from the origin "
+"accounts that match these analytic accounts to the destination account"
+msgstr ""
+"Agrega una condición para transferir a la cuenta de destino únicamente la "
+"suma de las líneas desde las cuentas de origen que coincidan con las cuentas"
+" analíticas de la cuenta de destino."
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,help:account_auto_transfer.field_account_transfer_model_line__partner_ids
-msgid "Adds a condition to only transfer the sum of the lines from the origin accounts that match these partners to the destination account"
-msgstr "Agrega una condición para transferir solo la suma de las líneas de las cuentas de origen que coinciden con estos Partners a la cuenta de destino."
+msgid ""
+"Adds a condition to only transfer the sum of the lines from the origin "
+"accounts that match these partners to the destination account"
+msgstr ""
+"Agrega una condición para transferir solo la suma de las líneas de las "
+"cuentas de origen que coinciden con estos Partners a la cuenta de destino."
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line__analytic_account_ids
@@ -87,43 +96,52 @@ msgstr "Transferencia automática (-%s%%)"
 #. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
-msgid "Automatic Transfer (entries with analytic account(s): %s and partner(s): %s)"
-msgstr "Transferencia automática (entradas con cuenta(s) analítica(s): %s y partners: %s)"
+msgid ""
+"Automatic Transfer (entries with analytic account(s): %s and partner(s): %s)"
+msgstr ""
+"Transferencia automática (asientos con cuenta(s) analítica(s): %s y "
+"partners: %s)"
 
 #. module: account_auto_transfer
 #. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "Automatic Transfer (entries with analytic account(s): %s)"
-msgstr "Transferencia automática (entradas con cuenta(s) analítica(s): %s)"
+msgstr "Transferencia automática (asientos con cuenta(s) analítica(s): %s)"
 
 #. module: account_auto_transfer
 #. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "Automatic Transfer (entries with partner(s): %s)"
-msgstr "Transferencia automática (entradas con socio(s): %s)"
+msgstr "Transferencia automática (asientos con partner(s): %s)"
 
 #. module: account_auto_transfer
 #. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
-msgid "Automatic Transfer (from account %s with analytic account(s): %s and partner(s): %s)"
-msgstr "Transferencia automática (desde cuenta %s con cuenta(s) analítica(s): %s y partners: %s)"
+msgid ""
+"Automatic Transfer (from account %s with analytic account(s): %s and "
+"partner(s): %s)"
+msgstr ""
+"Transferencia automática (desde cuenta %s con cuenta(s) analítica(s): %s y "
+"partners: %s)"
 
 #. module: account_auto_transfer
 #. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "Automatic Transfer (from account %s with analytic account(s): %s)"
-msgstr "Transferencia automática (desde una cuenta %s con cuenta(s) analítica(s): %s)"
+msgstr ""
+"Transferencia automática (desde una cuenta %s con cuenta(s) analítica(s): "
+"%s)"
 
 #. module: account_auto_transfer
 #. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "Automatic Transfer (from account %s with partner(s): %s)"
-msgstr "Transferencia automática (desde cuenta %s con socio(s): %s)"
+msgstr "Transferencia automática (desde cuenta %s con partner(s): %s)"
 
 #. module: account_auto_transfer
 #. odoo-python
@@ -146,7 +164,7 @@ msgstr "Compañía"
 #. module: account_auto_transfer
 #: model:ir.model.fields,help:account_auto_transfer.field_account_transfer_model__company_id
 msgid "Company related to this journal"
-msgstr "Compañía relacionada con este libro diario"
+msgstr "Compañía relacionada con este diario"
 
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
@@ -173,7 +191,7 @@ msgstr "Descripción"
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line__account_id
 msgid "Destination Account"
-msgstr "Cuenta de destino"
+msgstr "Cuenta destino"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__line_ids
@@ -209,7 +227,7 @@ msgstr "Frecuencia"
 #. module: account_auto_transfer
 #: model:ir.actions.act_window,name:account_auto_transfer.generated_transfers_action
 msgid "Generated Entries"
-msgstr "Entradas Generadas"
+msgstr "Asientos generados"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__move_ids
@@ -238,6 +256,11 @@ msgstr "Diario"
 #: model:ir.model,name:account_auto_transfer.model_account_move
 msgid "Journal Entry"
 msgstr "Asiento contable"
+
+#. module: account_auto_transfer
+#: model:ir.model,name:account_auto_transfer.model_account_move_line
+msgid "Journal Item"
+msgstr "Apunte contable"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__write_uid
@@ -309,7 +332,7 @@ msgstr "Filtro de Partner"
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line__percent
 msgid "Percent"
-msgstr "Porcentaje"
+msgstr "Porciento"
 
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
@@ -323,8 +346,12 @@ msgstr "El porcentaje es de sólo lectura"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,help:account_auto_transfer.field_account_transfer_model_line__percent
-msgid "Percentage of the sum of lines from the origin accounts will be transferred to the destination account"
-msgstr "El porcentaje de la suma de líneas de las cuentas de origen se transferirá a la cuenta de destino."
+msgid ""
+"Percentage of the sum of lines from the origin accounts will be transferred "
+"to the destination account"
+msgstr ""
+"El porcentaje de la suma de líneas de las cuentas de origen se transferirá a"
+" la cuenta de destino."
 
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
@@ -372,8 +399,12 @@ msgstr "El filtro analítico %s está duplicado"
 #. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
-msgid "The partner filter %s in combination with the analytic filter %s is duplicated"
-msgstr "Se duplicó el filtro de partner %s en combinación con el filtro analítico %s "
+msgid ""
+"The partner filter %s in combination with the analytic filter %s is "
+"duplicated"
+msgstr ""
+"Se duplicó el filtro de partner %s en combinación con el filtro analítico %s"
+" "
 
 #. module: account_auto_transfer
 #. odoo-python
@@ -414,6 +445,13 @@ msgstr "Anualmente"
 #: code:addons/account_auto_transfer/demo/account_demo.py:0
 #, python-format
 msgid "Yearly liabilites auto transfers"
+msgstr ""
+
+#. module: account_auto_transfer
+#. odoo-python
+#: code:addons/account_auto_transfer/models/account_move_line.py:0
+#, python-format
+msgid "You cannot set Tax on Automatic Transfer's entries."
 msgstr ""
 
 #. module: account_auto_transfer

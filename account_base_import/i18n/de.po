@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -242,14 +243,14 @@ msgstr "Manuell überprüfen"
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "SIE 5"
-msgstr ""
+msgstr "SIE 5"
 
 #. module: account_base_import
 #. odoo-javascript
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "SIE Import module"
-msgstr ""
+msgstr "SIE-Importmodul"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -260,6 +261,9 @@ msgid ""
 "such as auditing, importing and exporting data from and to other accounting "
 "softwares."
 msgstr ""
+"Das SIE-Standarddateiformat ist in Schweden für verschiedene Zwecke sehr "
+"verbreitet, z. B. für die Rechnungsprüfung, den Import und Export von Daten "
+"aus und in andere Buchhaltungsprogramme."
 
 #. module: account_base_import
 #. odoo-python
@@ -332,6 +336,9 @@ msgid ""
 "                            For general SIE, we will setup your charts of accounts balances, journals, partners, and the history of journal entries (journals data must be present in the file).\n"
 "                            For the SIE entry, only entries and partners will be created, the rest must already be present in the system."
 msgstr ""
+"ist erforderlich, um die SIE und SIE-Buchungsdateien zu importieren.\n"
+"                            Für die allgemeine SIE richten wir Ihre Kontenpläne, Journale, Partner und die Historie der Journalbuchungen ein (die Daten der Journale müssen in der Datei vorhanden sein).\n"
+"                            Für den SIE-Eintrag werden nur Einträge und Partner erstellt, der Rest muss bereits im System vorhanden sein."
 
 #. module: account_base_import
 #. odoo-javascript

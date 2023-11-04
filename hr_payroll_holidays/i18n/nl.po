@@ -73,7 +73,7 @@ msgstr "Code werknemer"
 #. module: hr_payroll_holidays
 #: model:ir.model,name:hr_payroll_holidays.model_hr_contract
 msgid "Employee Contract"
-msgstr ""
+msgstr "Arbeidsovereenkomst"
 
 #. module: hr_payroll_holidays
 #: model:mail.activity.type,name:hr_payroll_holidays.mail_activity_data_hr_leave_to_defer

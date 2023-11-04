@@ -3,6 +3,7 @@
 # 	* website_studio
 # 
 # Translators:
+# Jolien De Paepe, 2023
 # Wil Odoo, 2023
 # 
 msgid ""
@@ -36,23 +37,27 @@ msgid ""
 "                                /my-little-record-23\n"
 "                            </span>"
 msgstr ""
+"<span invisible=\"name_slugified\" class=\"bg-300\">...</span>\n"
+"                            <span invisible=\"page_type == 'listing'\">\n"
+"                                /my-little-record-23\n"
+"                            </span>"
 
 #. module: website_studio
 #: model_terms:ir.ui.view,arch_db:website_studio.website_controller_page_form_dialog
 msgid "<span>/model/</span>"
-msgstr ""
+msgstr "<span>/model/</span>"
 
 #. module: website_studio
 #: model_terms:ir.ui.view,arch_db:website_studio.website_controller_page_form_dialog
 msgid "Advanced"
-msgstr ""
+msgstr "Avancé"
 
 #. module: website_studio
 #. odoo-javascript
 #: code:addons/website_studio/static/src/website_integrator/website_integrator.js:0
 #, python-format
 msgid "All Websites"
-msgstr ""
+msgstr "Tous les sites web"
 
 #. module: website_studio
 #. odoo-javascript
@@ -65,31 +70,31 @@ msgstr "Icône d'application"
 #. module: website_studio
 #: model_terms:ir.ui.view,arch_db:website_studio.website_controller_page_form_dialog
 msgid "Basic parameters"
-msgstr ""
+msgstr "Paramètres de base"
 
 #. module: website_studio
 #. odoo-javascript
 #: code:addons/website_studio/static/src/website_integrator/website_integrator.xml:0
 #, python-format
 msgid "Configure"
-msgstr ""
+msgstr "Configurer"
 
 #. module: website_studio
 #: model:ir.model.fields,field_description:website_studio.field_website_controller_page__auto_single_page
 msgid "Create Single Page"
-msgstr ""
+msgstr "Créer une seule page"
 
 #. module: website_studio
 #: model:ir.model.fields,field_description:website_studio.field_website_controller_page__use_menu
 msgid "Create Website Menu"
-msgstr ""
+msgstr "Créer un menu de site web"
 
 #. module: website_studio
 #. odoo-javascript
 #: code:addons/website_studio/static/src/website_integrator/website_integrator.xml:0
 #, python-format
 msgid "Delete"
-msgstr ""
+msgstr "Supprimer"
 
 #. module: website_studio
 #. odoo-javascript
@@ -97,6 +102,8 @@ msgstr ""
 #, python-format
 msgid "Display a detailed page for a single record on a page of your website"
 msgstr ""
+"Afficher une page détaillée pour un seul enregistrement d'une page de votre "
+"site web"
 
 #. module: website_studio
 #. odoo-javascript
@@ -104,6 +111,8 @@ msgstr ""
 #, python-format
 msgid "Display records on your website, in a list or card format"
 msgstr ""
+"Afficher des enregistrements sur votre site web, sous forme de liste ou de "
+"carte"
 
 #. module: website_studio
 #. odoo-python
@@ -111,6 +120,8 @@ msgstr ""
 #, python-format
 msgid "Drag building blocks to edit the website description of this record."
 msgstr ""
+"Glissez des blocs de construction pour modifier la description de cet "
+"enregistrement sur le site web."
 
 #. module: website_studio
 #. odoo-javascript
@@ -129,72 +140,74 @@ msgstr "Formulaires"
 #. module: website_studio
 #: model_terms:ir.ui.view,arch_db:website_studio.listing_layout_switcher
 msgid "Grid"
-msgstr ""
+msgstr "Grille"
 
 #. module: website_studio
 #: model:ir.model.fields,help:website_studio.field_website_controller_page__auto_single_page
 msgid "If checked, a single page will be created along with your listing page"
 msgstr ""
+"Si cette case est cochée, une seule page sera créée avec votre page de "
+"référencement"
 
 #. module: website_studio
 #: model_terms:ir.ui.view,arch_db:website_studio.listing_layout_switcher
 msgid "List"
-msgstr ""
+msgstr "Liste"
 
 #. module: website_studio
 #. odoo-javascript
 #: code:addons/website_studio/static/src/website_integrator/website_integrator.js:0
 #, python-format
 msgid "Listings"
-msgstr ""
+msgstr "Référencements"
 
 #. module: website_studio
 #: model_terms:ir.ui.view,arch_db:website_studio.website_controller_page_form_dialog
 msgid "Menus"
-msgstr ""
+msgstr "Menus"
 
 #. module: website_studio
 #: model:ir.model,name:website_studio.model_website_controller_page
 msgid "Model Page"
-msgstr ""
+msgstr "Page modèle"
 
 #. module: website_studio
 #. odoo-javascript
 #: code:addons/website_studio/static/src/website_integrator/website_integrator.xml:0
 #, python-format
 msgid "New Form"
-msgstr ""
+msgstr "Nouveau formulaire"
 
 #. module: website_studio
 #. odoo-javascript
 #: code:addons/website_studio/static/src/website_integrator/website_integrator.xml:0
 #, python-format
 msgid "New Listing"
-msgstr ""
+msgstr "Nouveau référencement"
 
 #. module: website_studio
 #. odoo-javascript
 #: code:addons/website_studio/static/src/website_integrator/website_integrator.xml:0
 #, python-format
 msgid "New Page"
-msgstr ""
+msgstr "Nouvelle page"
 
 #. module: website_studio
 #. odoo-javascript
 #: code:addons/website_studio/static/src/website_integrator/website_integrator.js:0
 #, python-format
 msgid "Pages"
-msgstr ""
+msgstr "Pages"
 
 #. module: website_studio
 #: model_terms:ir.ui.view,arch_db:website_studio.default_listing
 msgid "Search"
-msgstr ""
+msgstr "Rechercher"
 
 #. module: website_studio
 #: model_terms:ir.ui.view,arch_db:website_studio.default_listing
 msgid "Search..."
-msgstr ""
+msgstr "Rechercher..."
 
 #. module: website_studio
 #. odoo-javascript
@@ -216,7 +229,7 @@ msgstr "Soumettre"
 #. module: website_studio
 #: model_terms:ir.ui.view,arch_db:website_studio.website_controller_page_form_dialog
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #. module: website_studio
 #. odoo-javascript
@@ -230,31 +243,31 @@ msgstr "Afficher le formulaire"
 #: code:addons/website_studio/static/src/website_integrator/website_integrator.xml:0
 #, python-format
 msgid "View in website"
-msgstr ""
+msgstr "Voir sur le site web"
 
 #. module: website_studio
 #. odoo-javascript
 #: code:addons/website_studio/static/src/website_integrator/website_integrator.js:0
 #, python-format
 msgid "Website"
-msgstr ""
+msgstr "Site web"
 
 #. module: website_studio
 #. odoo-python
 #: code:addons/website_studio/models/website_controller_page.py:0
 #, python-format
 msgid "Website Description"
-msgstr ""
+msgstr "Description du site web"
 
 #. module: website_studio
 #: model_terms:ir.ui.view,arch_db:website_studio.listing_layout_switcher
 msgid "border-primary"
-msgstr ""
+msgstr "border-primary"
 
 #. module: website_studio
 #: model_terms:ir.ui.view,arch_db:website_studio.default_listing
 msgid "found)"
-msgstr ""
+msgstr "trouvé(s))"
 
 #. module: website_studio
 #. odoo-javascript
@@ -262,3 +275,5 @@ msgstr ""
 #, python-format
 msgid "— Allow visitors of your website to create records themselves"
 msgstr ""
+"— Permettez aux visiteurs de votre site web de créer eux-mêmes des "
+"enregistrements"

@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:21+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -66,24 +67,24 @@ msgstr "Sind Sie sicher, dass Sie fortfahren möchten?"
 #. module: hr_payroll_account
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.res_config_settings_view_form
 msgid "Batch Account Move Lines"
-msgstr ""
+msgstr "Sammelbuchungszeilen für Buchhaltung"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payslip__batch_payroll_move_lines
 #: model:ir.model.fields,field_description:hr_payroll_account.field_res_company__batch_payroll_move_lines
 #: model:ir.model.fields,field_description:hr_payroll_account.field_res_config_settings__batch_payroll_move_lines
 msgid "Batch Payroll Move Lines"
-msgstr ""
+msgstr "Sammelbuchungszeilen für Personalabrechnung"
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Unternehmen"
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Konfigurationseinstellungen"
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_contract_history
@@ -124,6 +125,10 @@ msgid ""
 "into a single account move line. This will anonymize the accounting entries "
 "but also disable single payment generations."
 msgstr ""
+"Aktivieren Sie diese Option, um alle Buchungseinträge für denselben Zeitraum"
+" in einer einzigen Kontobuchungszeile zusammenzufassen. Dadurch werden die "
+"Buchungseinträge anonymisiert, aber auch die Generierung von Einzelzahlungen"
+" deaktiviert."
 
 #. module: hr_payroll_account
 #. odoo-python
@@ -184,18 +189,18 @@ msgstr "Gehaltsabrechnung"
 #: code:addons/hr_payroll_account/wizard/account_payment_register.py:0
 #, python-format
 msgid "Payment done at %s"
-msgstr ""
+msgstr "Zahlung getätigt am %s"
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_account_payment
 msgid "Payments"
-msgstr ""
+msgstr "Zahlungen"
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_account_payment_register
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_view_form
 msgid "Register Payment"
-msgstr ""
+msgstr "Zahlung registrieren"
 
 #. module: hr_payroll_account
 #. odoo-python
@@ -241,14 +246,14 @@ msgstr ""
 #: code:addons/hr_payroll_account/models/hr_payslip.py:0
 #, python-format
 msgid "The credit account on the NET salary rule is not reconciliable"
-msgstr ""
+msgstr "Das Habenkonto in der Regel NETTO-Gehalt ist nicht abstimmbar"
 
 #. module: hr_payroll_account
 #. odoo-python
 #: code:addons/hr_payroll_account/models/hr_payslip.py:0
 #, python-format
 msgid "The employee bank account is untrusted"
-msgstr ""
+msgstr "Das Bankkonto des Mitarbeiters ist nicht vertrauenswürdig"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,help:hr_payroll_account.field_hr_salary_rule__not_computed_in_net

@@ -86,14 +86,14 @@ msgid "Please select a Worksheet Template."
 msgstr "Sélectionnez un modèle de feuille de travail."
 
 #. module: maintenance_worksheet
-#: model:ir.model.fields,field_description:maintenance_worksheet.field_maintenance_request__worksheet_count
-msgid "Worksheer Count"
-msgstr "Nombre de feuilles de travail"
-
-#. module: maintenance_worksheet
 #: model_terms:ir.ui.view,arch_db:maintenance_worksheet.worksheet_page
 msgid "Worksheet"
 msgstr "Feuille de travail"
+
+#. module: maintenance_worksheet
+#: model:ir.model.fields,field_description:maintenance_worksheet.field_maintenance_request__worksheet_count
+msgid "Worksheet Count"
+msgstr "Nombre de feuilles de travail"
 
 #. module: maintenance_worksheet
 #: model:ir.actions.report,name:maintenance_worksheet.maintenance_request_report

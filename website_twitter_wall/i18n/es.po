@@ -1,23 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* website_twitter_wall
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Leonardo J. Caballero G. <leonardocaballero@gmail.com>, 2022
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:03+0000\n"
-"PO-Revision-Date: 2022-09-22 05:50+0000\n"
-"Last-Translator: Leonardo J. Caballero G. <leonardocaballero@gmail.com>, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:22+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Spanish (https://app.transifex.com/odoo/teams/41243/es/)\n"
-"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: es\n"
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: website_twitter_wall
@@ -165,7 +164,7 @@ msgstr "Última actualización el"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "List view"
-msgstr "Vista de listado"
+msgstr "Vista de lista"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
@@ -256,8 +255,11 @@ msgstr "Vista única"
 #. odoo-python
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:0
 #, python-format
-msgid "The Twitter authentication failed. Please check your API key and secret."
-msgstr "La autenticación en Twitter no fue exitosa. Revise la clave API y la clave secreta."
+msgid ""
+"The Twitter authentication failed. Please check your API key and secret."
+msgstr ""
+"La autenticación en Twitter no fue exitosa. Revise la clave API y la clave "
+"secreta."
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__website_url
@@ -278,7 +280,9 @@ msgstr ""
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:0
 #, python-format
 msgid "The tweets search failed. Check your credentials and access token"
-msgstr "La búsqueda de tuits no fue exitosa. Revise sus credenciales y token de acceso"
+msgstr ""
+"La búsqueda de tuits no fue exitosa. Revise sus credenciales y token de "
+"acceso"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view

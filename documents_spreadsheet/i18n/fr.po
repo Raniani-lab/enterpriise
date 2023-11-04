@@ -3,8 +3,8 @@
 # 	* documents_spreadsheet
 # 
 # Translators:
-# Wil Odoo, 2023
 # Jolien De Paepe, 2023
+# Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:21+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Jolien De Paepe, 2023\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -236,7 +236,7 @@ msgstr "Si vous souhaitez travailler ensemble sur ces feuilles de calcul :"
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_contributor__write_uid
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__write_uid
 msgid "Last Updated by"
-msgstr "Dernière mise à jour par"
+msgstr "Mis à jour par"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_documents_shared_spreadsheet__write_date
@@ -244,7 +244,7 @@ msgstr "Dernière mise à jour par"
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_contributor__write_date
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__write_date
 msgid "Last Updated on"
-msgstr "Dernière mise à jour le"
+msgstr "Mis à jour le"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_contributor__last_update_date
@@ -300,8 +300,8 @@ msgid "New spreadsheet"
 msgstr "Nouvelle feuille de calcul"
 
 #. module: documents_spreadsheet
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/documents_spreadsheet/models/documents_document.py:0
 #: code:addons/documents_spreadsheet/static/src/bundle/actions/spreadsheet_action.js:0
 #: code:addons/documents_spreadsheet/static/src/spreadsheet_selector_dialog/document_selector_panel.js:0
@@ -310,8 +310,8 @@ msgid "New spreadsheet created in Documents"
 msgstr "Nouvelle feuille de calcul créée dans Documents"
 
 #. module: documents_spreadsheet
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/documents_spreadsheet/models/spreadsheet_template.py:0
 #: code:addons/documents_spreadsheet/static/src/bundle/actions/spreadsheet_template/spreadsheet_template_action.js:0
 #, python-format
@@ -367,7 +367,7 @@ msgstr "Séquence"
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template__server_revision_id
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__server_revision_id
 msgid "Server Revision"
-msgstr ""
+msgstr "Révision du serveur"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_documents_shared_spreadsheet__share_id

@@ -1,23 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery_usps
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Sarah Park, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Sarah Park, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
-"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: delivery_usps
@@ -146,7 +145,7 @@ msgstr "리갈 고정 비율 봉투"
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_first_class_mail_type__letter
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_mail_type__letter
 msgid "Letter"
-msgstr "편지"
+msgstr "서신"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_machinable
@@ -191,17 +190,17 @@ msgstr "패키지"
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_custom_container_girth
 msgid "Package Girth"
-msgstr ""
+msgstr "패키지 둘레"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_custom_container_height
 msgid "Package Height"
-msgstr ""
+msgstr "패키지 높이"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_custom_container_length
 msgid "Package Length"
-msgstr ""
+msgstr "패키지 길이"
 
 #. module: delivery_usps
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_first_class_mail_type__package_service
@@ -211,7 +210,7 @@ msgstr "패키지 서비스"
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_custom_container_width
 msgid "Package Width"
-msgstr ""
+msgstr "패키지 폭"
 
 #. module: delivery_usps
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_domestic_regular_container__padded_flat_rate_envelope
@@ -226,14 +225,16 @@ msgstr "소포"
 
 #. module: delivery_usps
 #: model:ir.model.fields,help:delivery_usps.field_delivery_carrier__usps_machinable
-msgid "Please check on USPS website to ensure that your package is machinable."
+msgid ""
+"Please check on USPS website to ensure that your package is machinable."
 msgstr "패키지가 가공 가능한지 USPS 웹 사이트를 확인하십시오."
 
 #. module: delivery_usps
 #. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
-msgid "Please choose another service (maximum weight of this service is 4 pounds)"
+msgid ""
+"Please choose another service (maximum weight of this service is 4 pounds)"
 msgstr "다른 서비스를 선택하십시오 (이 서비스의 최대 무게는 4 파운드입니다)"
 
 #. module: delivery_usps
@@ -261,7 +262,9 @@ msgstr "최소한 하나의 배송 품목을 입력해 주세요."
 #. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
-msgid "Please set country U.S.A in your company address, Service is only available for U.S.A"
+msgid ""
+"Please set country U.S.A in your company address, Service is only available "
+"for U.S.A"
 msgstr "회사 주소로 국가 USA를 설정하십시오. 서비스는 미국에서만 가능합니다"
 
 #. module: delivery_usps
@@ -334,26 +337,26 @@ msgstr "견본"
 #: code:addons/delivery_usps/models/delivery_usps.py:0
 #, python-format
 msgid "Shipment #%s has been cancelled"
-msgstr ""
+msgstr "#%s 배송이 취소되었습니다"
 
 #. module: delivery_usps
 #. odoo-python
 #: code:addons/delivery_usps/models/delivery_usps.py:0
 #, python-format
 msgid "Shipment created into USPS"
-msgstr ""
+msgstr "UPS 배송 생성"
 
 #. module: delivery_usps
 #. odoo-python
 #: code:addons/delivery_usps/models/delivery_usps.py:0
 #, python-format
 msgid "Shipment created into USPS <br/> <b>Tracking Number: </b>%s"
-msgstr ""
+msgstr "USPS 배송 생성 <br/> <b>배송 조회 번호: </b>%s"
 
 #. module: delivery_usps
 #: model:ir.model,name:delivery_usps.model_delivery_carrier
 msgid "Shipping Methods"
-msgstr "선적 방법"
+msgstr "배송 방법"
 
 #. module: delivery_usps
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_domestic_regular_container__sm_flat_rate_box
@@ -389,6 +392,8 @@ msgid ""
 "The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n"
 " %s"
 msgstr ""
+"다음 품목의 중량 정보가 누락되어 예상 배송 비용을 계산할 수 없습니다.\n"
+"%s"
 
 #. module: delivery_usps
 #. odoo-python
@@ -413,7 +418,7 @@ msgstr "선택한 USPS 서비스(%s)를 사용하여이 패키지를 배송할 �
 #: code:addons/delivery_usps/models/delivery_usps.py:0
 #, python-format
 msgid "Tracking Number:"
-msgstr ""
+msgstr "배송 조회 번호:"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_international_regular_container
@@ -450,7 +455,9 @@ msgstr "USPS 국내 고정 비율 봉투"
 #. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
-msgid "USPS Domestic is used only to ship inside of the U.S.A. Please change the delivery method into USPS International."
+msgid ""
+"USPS Domestic is used only to ship inside of the U.S.A. Please change the "
+"delivery method into USPS International."
 msgstr "USPS Domestic은 미국 내 배송에만 사용됩니다. 배송 방법을 USPS International로 변경하십시오."
 
 #. module: delivery_usps
@@ -468,8 +475,11 @@ msgstr "USPS 국제 고정 비율 상자"
 #. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
-msgid "USPS International is used only to ship outside of the U.S.A. Please change the delivery method into USPS Domestic."
-msgstr "USPS International은 미국 이외의 지역으로 만 배송됩니다. 배송 방법을 USPS Domestic로 변경하십시오."
+msgid ""
+"USPS International is used only to ship outside of the U.S.A. Please change "
+"the delivery method into USPS Domestic."
+msgstr ""
+"USPS International은 미국 이외의 지역으로 만 배송됩니다. 배송 방법을 USPS Domestic로 변경하십시오."
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_label_file_type
@@ -490,7 +500,7 @@ msgstr "USPS 서비스"
 #: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_sale
 #: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_stock
 msgid "USPS Shipping Methods"
-msgstr "USPS 선적 방법"
+msgstr "USPS 배송 방법"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_username
@@ -512,4 +522,4 @@ msgstr "회사 또는 수신자 우편 번호가 잘못되었습니다."
 #. module: delivery_usps
 #: model_terms:ir.ui.view,arch_db:delivery_usps.view_delivery_carrier_form_with_provider_usps
 msgid "inch"
-msgstr ""
+msgstr "인치"

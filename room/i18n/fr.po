@@ -4,6 +4,8 @@
 # 
 # Translators:
 # Guillaume Schifflers, 2023
+# Wil Odoo, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Guillaume Schifflers, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -302,7 +304,9 @@ msgstr "Si coché, de nouveaux messages demandent votre attention."
 
 #. module: room
 #: model:ir.model.fields,help:room.field_room_booking__message_has_error
+#: model:ir.model.fields,help:room.field_room_booking__message_has_sms_error
 #: model:ir.model.fields,help:room.field_room_room__message_has_error
+#: model:ir.model.fields,help:room.field_room_room__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr "Si coché, certains messages ont une erreur de livraison."
 
@@ -327,14 +331,14 @@ msgstr "La salle est actuellement disponible"
 #: model:ir.model.fields,field_description:room.field_room_office__write_uid
 #: model:ir.model.fields,field_description:room.field_room_room__write_uid
 msgid "Last Updated by"
-msgstr "Dernière mise à jour par"
+msgstr "Mis à jour par"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_booking__write_date
 #: model:ir.model.fields,field_description:room.field_room_office__write_date
 #: model:ir.model.fields,field_description:room.field_room_room__write_date
 msgid "Last Updated on"
-msgstr "Dernière mise à jour le"
+msgstr "Mis à jour le"
 
 #. module: room
 #: model:room.office,name:room.room_office_main_office
@@ -531,6 +535,12 @@ msgid "Rooms"
 msgstr "Salles"
 
 #. module: room
+#: model:ir.model.fields,field_description:room.field_room_booking__message_has_sms_error
+#: model:ir.model.fields,field_description:room.field_room_room__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "Erreur de livraison SMS"
+
+#. module: room
 #. odoo-javascript
 #: code:addons/room/static/src/room_booking/room_booking_form/room_booking_form.xml:0
 #, python-format
@@ -621,3 +631,15 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:room.room_room_view_kanban
 msgid "Until"
 msgstr "Jusqu'au"
+
+#. module: room
+#: model:ir.model.fields,field_description:room.field_room_booking__website_message_ids
+#: model:ir.model.fields,field_description:room.field_room_room__website_message_ids
+msgid "Website Messages"
+msgstr "Messages du site web"
+
+#. module: room
+#: model:ir.model.fields,help:room.field_room_booking__website_message_ids
+#: model:ir.model.fields,help:room.field_room_room__website_message_ids
+msgid "Website communication history"
+msgstr "Historique de communication du site web"

@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:22+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,7 +23,7 @@ msgstr ""
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.article_view_public
 msgid "<i class=\"fa fa-circle-o-notch fa-2x fa-spin\" title=\"loader\" role=\"img\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-circle-o-notch fa-2x fa-spin\" title=\"loader\" role=\"img\"/>"
 
 #. module: website_knowledge
 #. odoo-javascript
@@ -48,7 +49,7 @@ msgstr "Artikel niet gepubliceerd"
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.article_view_public
 msgid "Article not found"
-msgstr ""
+msgstr "Artikel niet gevonden"
 
 #. module: website_knowledge
 #: model:ir.model.fields,field_description:website_knowledge.field_knowledge_article__can_publish
@@ -61,7 +62,7 @@ msgstr "Kan publiceren"
 #: code:addons/website_knowledge/static/src/xml/knowledge_public.xml:0
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "Downloaden"
 
 #. module: website_knowledge
 #: model:ir.model.fields,field_description:website_knowledge.field_knowledge_article__is_published
@@ -77,19 +78,19 @@ msgstr "Kennis artikel"
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.articles_template
 msgid "Load more"
-msgstr ""
+msgstr "Meer laden"
 
 #. module: website_knowledge
 #. odoo-javascript
 #: code:addons/website_knowledge/static/src/xml/knowledge_public.xml:0
 #, python-format
 msgid "Log in"
-msgstr ""
+msgstr "Login"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.public_sidebar
 msgid "No article found"
-msgstr ""
+msgstr "Geen artikel gevonden"
 
 #. module: website_knowledge
 #. odoo-javascript
@@ -101,7 +102,7 @@ msgstr "Enkel specifieke personen hebben toegang"
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.public_sidebar
 msgid "Public Articles"
-msgstr ""
+msgstr "Publieke artikelen"
 
 #. module: website_knowledge
 #. odoo-javascript
@@ -113,12 +114,12 @@ msgstr "Gepubliceerd om met iedereen te delen"
 #. module: website_knowledge
 #: model:ir.model,name:website_knowledge.model_ir_qweb
 msgid "Qweb"
-msgstr ""
+msgstr "Qweb"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.article_view_public
 msgid "Search an article..."
-msgstr ""
+msgstr "Zoek een artikel..."
 
 #. module: website_knowledge
 #. odoo-javascript
@@ -134,6 +135,8 @@ msgid ""
 "The article you are trying the read has either been removed or you do not "
 "have access to it."
 msgstr ""
+"Het artikel dat je probeert te lezen, is verwijderd of je hebt er geen "
+"toegang toe."
 
 #. module: website_knowledge
 #: model:ir.model.fields,help:website_knowledge.field_knowledge_article__website_url
@@ -149,18 +152,20 @@ msgid ""
 "This Article cannot be unfolded. Either you lost access to it or it has been"
 " deleted."
 msgstr ""
+"Dit artikel kan niet uitgevouwen worden. Ofwel ben je de toegang ertoe "
+"kwijt, ofwel is het verwijderd."
 
 #. module: website_knowledge
 #. odoo-javascript
 #: code:addons/website_knowledge/static/src/xml/knowledge_public.xml:0
 #, python-format
 msgid "This view is only available for internal users"
-msgstr ""
+msgstr "Deze weergave is alleen beschikbaar voor interne gebruikers"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.article_view_public
 msgid "Untitled"
-msgstr ""
+msgstr "Geen titel"
 
 #. module: website_knowledge
 #: model:ir.model.fields,field_description:website_knowledge.field_knowledge_article__website_published

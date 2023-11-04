@@ -48,4 +48,4 @@ msgstr "Contratto dipendente"
 #. module: documents_hr_contract
 #: model:documents.tag,name:documents_hr_contract.document_tag_signature_request
 msgid "Signature Request"
-msgstr ""
+msgstr "Richiesta di firma"

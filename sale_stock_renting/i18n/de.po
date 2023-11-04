@@ -55,6 +55,8 @@ msgid ""
 "A new rental period will not propagate to stock pickings. You may need to "
 "manually change that."
 msgstr ""
+"Ein neuer Mietzeitraum wird nicht auf die Bestandskommissionierungen "
+"übertragen. Möglicherweise müssen Sie dies manuell ändern."
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,help:sale_stock_renting.field_res_company__padding_time
@@ -256,7 +258,7 @@ msgstr "Reserviertes Los"
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_stock_return_picking
 msgid "Return Picking"
-msgstr ""
+msgstr "Abholung zurückgeben"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_order_wizard_line__returnable_lot_ids
@@ -272,7 +274,7 @@ msgstr "Zurückgegebenes Los"
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Verkaufsauftrag"
 
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_sale_order_line
@@ -302,7 +304,7 @@ msgstr "Seriennummern"
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_stock_move
 msgid "Stock Move"
-msgstr ""
+msgstr "Lagerbuchung"
 
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_stock_rule
@@ -353,12 +355,12 @@ msgstr "Nicht verfügbares Los"
 #. module: sale_stock_renting
 #: model:res.groups,name:sale_stock_renting.group_rental_stock_picking
 msgid "Use pickings for rental orders"
-msgstr ""
+msgstr "Abolungen für Mietaufträge verwenden"
 
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form
 msgid "Use stock pickings for rental orders"
-msgstr ""
+msgstr "Bestandskommissionierungen für Mietaufträge verwenden"
 
 #. module: sale_stock_renting
 #. odoo-javascript

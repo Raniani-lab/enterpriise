@@ -2,12 +2,19 @@
 # This file contains the translation of the following modules:
 # 	* room
 # 
+# Translators:
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
+# Martin Trigaux, 2023
+# Wil Odoo, 2023
+# Jolien De Paepe, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -71,13 +78,13 @@ msgstr ""
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_room__access_token
 msgid "Access Token"
-msgstr ""
+msgstr "Toegangstoken"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_booking__message_needaction
 #: model:ir.model.fields,field_description:room.field_room_room__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Actie gevraagd"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_room__description
@@ -95,7 +102,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:room.field_room_booking__message_attachment_count
 #: model:ir.model.fields,field_description:room.field_room_room__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Aantal bijlagen"
 
 #. module: room
 #. odoo-javascript
@@ -104,7 +111,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:room.room_room_view_kanban
 #, python-format
 msgid "Available"
-msgstr ""
+msgstr "Beschikbaar"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_room__bookable_background_color
@@ -114,21 +121,21 @@ msgstr ""
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_room__room_background_image
 msgid "Background Image"
-msgstr ""
+msgstr "Achtergrondafbeelding"
 
 #. module: room
 #. odoo-javascript
 #: code:addons/room/static/src/room_booking/room_booking_view/room_booking_view.xml:0
 #, python-format
 msgid "Book now"
-msgstr ""
+msgstr "Reserveer nu"
 
 #. module: room
 #. odoo-javascript
 #: code:addons/room/static/src/room_booking/room_booking_view/room_booking_view.xml:0
 #, python-format
 msgid "Booked"
-msgstr ""
+msgstr "Geboekt"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_room__booked_background_color
@@ -138,7 +145,7 @@ msgstr ""
 #. module: room
 #: model_terms:ir.ui.view,arch_db:room.room_booking_view_search
 msgid "Booking"
-msgstr ""
+msgstr "Boeking"
 
 #. module: room
 #. odoo-javascript
@@ -165,7 +172,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:room.room_booking_view_gantt
 #, python-format
 msgid "Bookings"
-msgstr ""
+msgstr "Boekings"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_room__bookings_count
@@ -176,7 +183,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:room.room_room_view_form
 #: model_terms:ir.ui.view,arch_db:room.room_room_view_kanban
 msgid "Busy"
-msgstr ""
+msgstr "Bezet"
 
 #. module: room
 #. odoo-javascript
@@ -184,7 +191,7 @@ msgstr ""
 #: code:addons/room/static/src/room_booking/room_booking_view/room_booking_view.xml:0
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "Annuleren"
 
 #. module: room
 #: model_terms:room.room,description:room.room_room_main_office_room_3
@@ -196,7 +203,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:room.field_room_office__company_id
 #: model:ir.model.fields,field_description:room.field_room_room__company_id
 msgid "Company"
-msgstr ""
+msgstr "Bedrijf"
 
 #. module: room
 #: model_terms:ir.actions.act_window,help:room.room_room_action
@@ -208,43 +215,43 @@ msgstr ""
 #: model:ir.model.fields,field_description:room.field_room_office__create_uid
 #: model:ir.model.fields,field_description:room.field_room_room__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Aangemaakt door"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_booking__create_date
 #: model:ir.model.fields,field_description:room.field_room_office__create_date
 #: model:ir.model.fields,field_description:room.field_room_room__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Aangemaakt op"
 
 #. module: room
 #: model_terms:ir.ui.view,arch_db:room.room_booking_view_form
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #. module: room
 #. odoo-javascript
 #: code:addons/room/static/src/room_booking/room_booking_view/room_booking_view.js:0
 #, python-format
 msgid "Delete"
-msgstr ""
+msgstr "Verwijderen"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_booking__display_name
 #: model:ir.model.fields,field_description:room.field_room_office__display_name
 #: model:ir.model.fields,field_description:room.field_room_room__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Schermnaam"
 
 #. module: room
 #: model_terms:ir.ui.view,arch_db:room.room_booking_view_form
 msgid "E.g. Team Meeting"
-msgstr ""
+msgstr "bijv. Teamvergadering"
 
 #. module: room
 #: model_terms:ir.ui.view,arch_db:room.room_room_view_form
 msgid "E.g. projector, capacity 6 people"
-msgstr ""
+msgstr "Bijv. projector, capaciteit 6 personen"
 
 #. module: room
 #: model:ir.module.category,description:room.module_category_room
@@ -260,19 +267,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:room.field_room_booking__message_follower_ids
 #: model:ir.model.fields,field_description:room.field_room_room__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Volgers"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_booking__message_partner_ids
 #: model:ir.model.fields,field_description:room.field_room_room__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Volgers (Relaties)"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_booking__has_message
 #: model:ir.model.fields,field_description:room.field_room_room__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Heeft bericht"
 
 #. module: room
 #: model:room.office,name:room.room_office_head_office
@@ -284,19 +291,21 @@ msgstr ""
 #: model:ir.model.fields,field_description:room.field_room_office__id
 #: model:ir.model.fields,field_description:room.field_room_room__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: room
 #: model:ir.model.fields,help:room.field_room_booking__message_needaction
 #: model:ir.model.fields,help:room.field_room_room__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Indien aangevinkt vragen nieuwe berichten je aandacht."
 
 #. module: room
 #: model:ir.model.fields,help:room.field_room_booking__message_has_error
+#: model:ir.model.fields,help:room.field_room_booking__message_has_sms_error
 #: model:ir.model.fields,help:room.field_room_room__message_has_error
+#: model:ir.model.fields,help:room.field_room_room__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Indien aangevinkt hebben sommige berichten een leveringsfout."
 
 #. module: room
 #: model_terms:ir.ui.view,arch_db:room.room_room_view_list
@@ -307,7 +316,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:room.field_room_booking__message_is_follower
 #: model:ir.model.fields,field_description:room.field_room_room__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Is een volger"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_room__is_available
@@ -319,14 +328,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:room.field_room_office__write_uid
 #: model:ir.model.fields,field_description:room.field_room_room__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Laatst bijgewerkt door"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_booking__write_date
 #: model:ir.model.fields,field_description:room.field_room_office__write_date
 #: model:ir.model.fields,field_description:room.field_room_room__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Laatst bijgewerkt op"
 
 #. module: room
 #: model:room.office,name:room.room_office_main_office
@@ -352,23 +361,23 @@ msgstr ""
 #: model:ir.model.fields,field_description:room.field_room_booking__message_has_error
 #: model:ir.model.fields,field_description:room.field_room_room__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Bericht afleverfout"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_booking__message_ids
 #: model:ir.model.fields,field_description:room.field_room_room__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Berichten"
 
 #. module: room
 #: model_terms:ir.ui.view,arch_db:room.room_booking_view_search
 msgid "My Meetings"
-msgstr ""
+msgstr "Mijn afspraken"
 
 #. module: room
 #: model_terms:ir.ui.view,arch_db:room.room_booking_view_list
 msgid "Name"
-msgstr ""
+msgstr "Naam"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_room__next_booking_start
@@ -380,7 +389,7 @@ msgstr ""
 #: code:addons/room/static/src/room_booking/room_booking_form/room_booking_form.xml:0
 #, python-format
 msgid "Next Week"
-msgstr ""
+msgstr "Volgende week"
 
 #. module: room
 #. odoo-javascript
@@ -400,66 +409,66 @@ msgstr ""
 #: model:ir.model.fields,field_description:room.field_room_booking__message_needaction_counter
 #: model:ir.model.fields,field_description:room.field_room_room__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Aantal acties"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_booking__message_has_error_counter
 #: model:ir.model.fields,field_description:room.field_room_room__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "Aantal fouten"
 
 #. module: room
 #: model:ir.model.fields,help:room.field_room_booking__message_needaction_counter
 #: model:ir.model.fields,help:room.field_room_room__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "Aantal berichten die actie vereisen"
 
 #. module: room
 #: model:ir.model.fields,help:room.field_room_booking__message_has_error_counter
 #: model:ir.model.fields,help:room.field_room_room__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Aantal berichten met leveringsfout"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_booking__office_id
 #: model:ir.model.fields,field_description:room.field_room_room__office_id
 msgid "Office"
-msgstr ""
+msgstr "Kantoor"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_office__name
 #: model_terms:ir.ui.view,arch_db:room.room_office_view_form
 msgid "Office Name"
-msgstr ""
+msgstr "Kantoornaam"
 
 #. module: room
 #: model_terms:ir.ui.view,arch_db:room.room_room_view_form
 msgid "Open"
-msgstr ""
+msgstr "Openen"
 
 #. module: room
 #. odoo-javascript
 #: code:addons/room/static/src/room_booking/room_booking_view/room_booking_view.xml:0
 #, python-format
 msgid "Or"
-msgstr ""
+msgstr "Of"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_booking__organizer_id
 msgid "Organizer"
-msgstr ""
+msgstr "Organisator"
 
 #. module: room
 #. odoo-javascript
 #: code:addons/room/static/src/room_booking/room_booking_form/room_booking_form.xml:0
 #, python-format
 msgid "Previous Week"
-msgstr ""
+msgstr "Vorige week"
 
 #. module: room
 #: model_terms:room.room,description:room.room_room_main_office_room_2
 msgid "Projector"
-msgstr ""
+msgstr "Projector"
 
 #. module: room
 #: model_terms:room.room,description:room.room_room_main_office_room_1
@@ -477,7 +486,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:room.field_room_booking__rating_ids
 #: model:ir.model.fields,field_description:room.field_room_room__rating_ids
 msgid "Ratings"
-msgstr ""
+msgstr "Beoordelingen"
 
 #. module: room
 #: model:ir.actions.act_window,name:room.room_room_action
@@ -509,7 +518,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:room.field_room_room__name
 #: model_terms:ir.ui.view,arch_db:room.room_room_view_form
 msgid "Room Name"
-msgstr ""
+msgstr "Ruimtenaam"
 
 #. module: room
 #: model:ir.model,name:room.model_room_office
@@ -519,21 +528,27 @@ msgstr ""
 #. module: room
 #: model:ir.ui.menu,name:room.room_room_menu
 msgid "Rooms"
-msgstr ""
+msgstr "Ruimtes"
+
+#. module: room
+#: model:ir.model.fields,field_description:room.field_room_booking__message_has_sms_error
+#: model:ir.model.fields,field_description:room.field_room_room__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "SMS fout bij versturen"
 
 #. module: room
 #. odoo-javascript
 #: code:addons/room/static/src/room_booking/room_booking_form/room_booking_form.xml:0
 #, python-format
 msgid "Save"
-msgstr ""
+msgstr "Opslaan"
 
 #. module: room
 #. odoo-javascript
 #: code:addons/room/static/src/room_booking/room_booking_form/room_booking_form.xml:0
 #, python-format
 msgid "Schedule"
-msgstr ""
+msgstr "Inplannen"
 
 #. module: room
 #. odoo-javascript
@@ -545,14 +560,14 @@ msgstr ""
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_room__short_code
 msgid "Short Code"
-msgstr ""
+msgstr "Korte code"
 
 #. module: room
 #. odoo-javascript
 #: code:addons/room/static/src/room_booking/room_booking_form/room_booking_form.js:0
 #, python-format
 msgid "Start"
-msgstr ""
+msgstr "Start"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_booking__start_datetime
@@ -565,7 +580,7 @@ msgstr ""
 #: code:addons/room/static/src/room_booking/room_booking_form/room_booking_form.js:0
 #, python-format
 msgid "Stop"
-msgstr ""
+msgstr "Stoppen"
 
 #. module: room
 #: model:ir.model.constraint,message:room.constraint_room_room_uniq_access_token
@@ -606,4 +621,16 @@ msgstr ""
 #. module: room
 #: model_terms:ir.ui.view,arch_db:room.room_room_view_kanban
 msgid "Until"
-msgstr ""
+msgstr "T/m"
+
+#. module: room
+#: model:ir.model.fields,field_description:room.field_room_booking__website_message_ids
+#: model:ir.model.fields,field_description:room.field_room_room__website_message_ids
+msgid "Website Messages"
+msgstr "Websiteberichten"
+
+#. module: room
+#: model:ir.model.fields,help:room.field_room_booking__website_message_ids
+#: model:ir.model.fields,help:room.field_room_room__website_message_ids
+msgid "Website communication history"
+msgstr "Website communicatie geschiedenis"

@@ -620,7 +620,7 @@ msgstr "Retweet ongedaan maken"
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Unknown"
-msgstr ""
+msgstr "Onbekend"
 
 #. module: social_twitter
 #. odoo-python

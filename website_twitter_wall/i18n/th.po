@@ -1,24 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* website_twitter_wall
-#
+# 
 # Translators:
-# Odoo Thaidev <odoothaidev@gmail.com>, 2022
-# Martin Trigaux, 2022
-# Wichanon Jamwutthipreecha, 2022
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:03+0000\n"
-"PO-Revision-Date: 2022-09-22 05:50+0000\n"
-"Last-Translator: Wichanon Jamwutthipreecha, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:22+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
-"Language: th\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: th\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: website_twitter_wall
@@ -257,8 +255,10 @@ msgstr "ุมุมมองเดี่ยว"
 #. odoo-python
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:0
 #, python-format
-msgid "The Twitter authentication failed. Please check your API key and secret."
-msgstr "การตรวจสอบสิทธิ์ Twitter ล้มเหลว โปรดตรวจสอบรหัส API และข้อมูลส่วนตัวของคุณ"
+msgid ""
+"The Twitter authentication failed. Please check your API key and secret."
+msgstr ""
+"การตรวจสอบสิทธิ์ Twitter ล้มเหลว โปรดตรวจสอบรหัส API และข้อมูลส่วนตัวของคุณ"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__website_url

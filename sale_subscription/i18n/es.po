@@ -1,25 +1,27 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* sale_subscription
-#
+# 
 # Translators:
-# Antonio Trueba, 2022
-# Leonardo J. Caballero G. <leonardocaballero@gmail.com>, 2022
-# Martin Trigaux, 2022
-# Camille Dantinne <cmd@odoo.com>, 2023
-#
+# Antoine Demany, 2023
+# Leonardo J. Caballero G. <leonardocaballero@gmail.com>, 2023
+# Martin Trigaux, 2023
+# marcescu, 2023
+# Larissa Manderfeld, 2023
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Camille Dantinne <cmd@odoo.com>, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Spanish (https://app.transifex.com/odoo/teams/41243/es/)\n"
-"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: es\n"
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: sale_subscription
@@ -43,14 +45,9 @@ msgid ""
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__contract_number
-msgid "# Contracts"
-msgstr ""
-
-#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__nbr
 msgid "# of Lines"
-msgstr ""
+msgstr "# de líneas"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__percentage_satisfaction
@@ -58,9 +55,16 @@ msgid "% Happy"
 msgstr "% Feliz"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "(Wrong address?)"
-msgstr "(¿Dirección incorrecta?)"
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_subscription_plan.py:0
+#, python-format
+msgid "%s days"
+msgstr "%s días"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
+msgid "(Change Plan)"
+msgstr "(Cambiar plan)"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__mrr_change_period__1month
@@ -73,10 +77,24 @@ msgid "3 Months"
 msgstr "3 Meses"
 
 #. module: sale_subscription
+#: model:sale.subscription.plan,name:sale_subscription.subscription_plan_6_month
+msgid "6 Months"
+msgstr ""
+
+#. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
-msgid "<b>Congratulations</b>, your first subscription quotation is ready to be sent!"
+msgid ""
+"<b>Congratulations</b>, your first subscription quotation is ready to be "
+"sent!"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
+msgid ""
+"<b>No suitable payment method could be found.</b><br/>\n"
+"                                    If you believe that is an error, please contact the website administrator."
 msgstr ""
 
 #. module: sale_subscription
@@ -179,88 +197,69 @@ msgid ""
 msgstr ""
 
 #. module: sale_subscription
-#: model:mail.template,body_html:sale_subscription.mail_template_subscription_invoice
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid ""
-"<div style=\"margin: 0px; padding: 0px;\">\n"
-"                <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"                    Dear <t t-out=\"object.partner_id.name or ''\">Brandon Freeman</t>\n"
-"                    <t t-if=\"object.partner_id.parent_id\">\n"
-"                        (<t t-out=\"object.partner_id.parent_id.name or ''\">Azure Interior</t>)\n"
-"                    </t>,\n"
-"                    <br><br>\n"
-"                    Here is, in attachment, your subscription\n"
-"                    <t t-if=\"object.name\">\n"
-"                        invoice <span style=\"font-weight:bold;\" t-out=\"object.name or ''\">Office Cleaning Service</span>\n"
-"                    </t>\n"
-"                    <t t-else=\"\">\n"
-"                        invoice\n"
-"                    </t>\n"
-"                    <t t-if=\"object.invoice_origin\">\n"
-"                        (with reference: <t t-out=\"object.invoice_origin or ''\">INVOICE_ORIGIN</t>)\n"
-"                    </t>\n"
-"                    amounting in <span style=\"font-weight:bold;\" t-out=\"format_amount(object.amount_total, object.currency_id) or ''\">$ 10.00</span>\n"
-"                    from <t t-out=\"object.company_id.name or ''\">YourCompany</t>.\n"
-"                    <t t-if=\"object.payment_state in ('paid', 'in_payment')\">\n"
-"                        This invoice is already paid.\n"
-"                    </t>\n"
-"                    <t t-else=\"\">\n"
-"                        Please remit payment at your earliest convenience.\n"
-"                    </t>\n"
-"                    <br><br>\n"
-"                    Do not hesitate to contact us if you have any questions.\n"
-"                    <br><br>\n"
-"                    <t t-if=\"not is_html_empty(object.invoice_user_id.signature)\">\n"
-"                        <br><br>\n"
-"                        <t t-out=\"object.invoice_user_id.signature or ''\">--<br>Mitchell Admin</t>\n"
-"                    </t>\n"
-"                </p>\n"
-"            </div>\n"
-"        "
+"<em class=\"text-muted\" colspan=\"2\" invisible=\"not id\">\n"
+"                                Action data can not be updated to avoid unexpected behaviors. Create a new action instead.\n"
+"                            </em>"
 msgstr ""
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "<i class=\"fa fa-comment\"/> Send message"
-msgstr "<i class=\"fa fa-comment\"/> Enviar mensaje"
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_base_automation_form
+msgid ""
+"<em class=\"text-muted\" invisible=\"not is_sale_order_alert\">\n"
+"                        Action data can not be updated to avoid unexpected behaviors. Create a new automation rule instead.\n"
+"                    </em>"
+msgstr ""
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_sidebar
 msgid "<i class=\"fa fa-download\"/> Download"
 msgstr "<i class=\"fa fa-download\"/> Descargar"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
 msgid "<i class=\"fa fa-fw fa-check\"/> In Progress"
 msgstr "<i class=\"fa fa-fw fa-check\"/> En Progreso"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
+msgid "<i class=\"fa fa-fw fa-check\"/> Paused"
+msgstr "<i class=\"fa fa-fw fa-check\"/> Pausado"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
 msgid "<i class=\"fa fa-fw fa-remove\"/> Closed"
 msgstr "<i class=\"fa fa-fw fa-remove\"/> Cerrado"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
 msgid "<i class=\"fa fa-fw fa-repeat\"/> To Renew"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-repeat\"/> A renovar"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_sidebar
 msgid "<i class=\"fa fa-print\"/> Print"
 msgstr "<i class=\"fa fa-print\"/> Imprimir"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_so_portal_template
+msgid "<i class=\"oi oi-arrow-right me-1\"/>Back to your subscription"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
+msgid "<i class=\"oi oi-arrow-right\"/> Add payment providers"
+msgstr "<i class=\"oi oi-arrow-right\"/> Agregar proveedores de pago"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
 msgid "<option value=\"\">Choose a reason...</option>"
 msgstr ""
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "<small class=\"text-muted\">Subscription -</small>"
-msgstr "<small class=\"text-muted\">Suscripción -</small>"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
-msgid "<span attrs=\"{'invisible': ['|', ('recurrence_id', '=', False), ('subscription_state', '=', '7_upsell')]}\">until</span>"
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_sidebar
+msgid "<small class=\"text-muted\">Subscription Manager:</small>"
 msgstr ""
 
 #. module: sale_subscription
@@ -270,69 +269,74 @@ msgstr "<span class=\"align-middle\">para esta suscripción.</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
-msgid "<span class=\"badge rounded-pill text-bg-danger\"><i class=\"fa fa-fw fa-repeat\"/> To Renew</span>"
+msgid ""
+"<span class=\"badge rounded-pill text-bg-danger\"><i class=\"fa fa-fw fa-"
+"repeat\"/> To Renew</span>"
+msgstr ""
+"<span class=\"badge rounded-pill text-bg-danger\"><i class=\"fa fa-fw fa-"
+"repeat\"/> A renovar</span>"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
+msgid ""
+"<span class=\"badge rounded-pill text-bg-dark\"><i class=\"fa fa-fw fa-"
+"remove\"/> Closed</span>"
 msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
-msgid "<span class=\"badge rounded-pill text-bg-dark\"><i class=\"fa fa-fw fa-remove\"/> Closed</span>"
+msgid ""
+"<span class=\"badge rounded-pill text-bg-success\"><i class=\"fa fa-fw fa-"
+"check\"/> In Progress</span>"
 msgstr ""
+"<span class=\"badge rounded-pill text-bg-success\"><i class=\"fa fa-fw fa-"
+"check\"/> En progreso</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
-msgid "<span class=\"badge rounded-pill text-bg-success\"><i class=\"fa fa-fw fa-check\"/> In Progress</span>"
-msgstr "<span class=\"badge rounded-pill text-bg-success\"><i class=\"fa fa-fw fa-check\"/> En progreso</span>"
+msgid ""
+"<span class=\"badge rounded-pill text-bg-success\"><i class=\"fa fa-fw fa-"
+"check\"/> Paused</span>"
+msgstr ""
+"<span class=\"badge rounded-pill text-bg-success\"><i class=\"fa fa-fw fa-"
+"check\"/> Pausado</span>"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_plan_view_form
+msgid "<span class=\"o_stat_text\">Subscriptions</span>"
+msgstr "<span class=\"o_stat_text\">Suscripciones</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.recurring_details
 msgid "<span class=\"text-start\">Non Recurring</span>:"
-msgstr ""
+msgstr "<span class=\"text-start\">No recurrente</span>:"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.recurring_details
 msgid "<span class=\"text-start\">Recurring</span>:"
+msgstr "<span class=\"text-start\">Recurrente</span>:"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
+msgid ""
+"<span invisible=\"not plan_id or subscription_state == "
+"'7_upsell'\">until</span>"
 msgstr ""
+"<span invisible=\"not plan_id or subscription_state == "
+"'7_upsell'\">hasta</span>"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "<span>Disc.%</span>"
-msgstr "<span>Desc.%</span>"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "<span>Tax excl.</span>"
-msgstr ""
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "<span>Tax incl.</span>"
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
+msgid ""
+"<span>\n"
+"                                There is already a pending payment for this subscription.\n"
+"                            </span>"
 msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
-msgid "<strong attrs=\"{'invisible': [('rating_operator', '=', False)]}\">%</strong>"
+msgid "<strong invisible=\"not rating_operator\">%</strong>"
 msgstr ""
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "<strong class=\"mr16\">Subtotal</strong>"
-msgstr "<strong class=\"mr16\">Subtotal</strong>"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "<strong class=\"text-muted\">Subscription Manager:</strong>"
-msgstr "<strong class=\"text-muted\">Gerente de suscripciones:</strong>"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_portal_content_inherit
-msgid ""
-"<strong>\n"
-"                            Recurrency\n"
-"                        </strong>"
-msgstr ""
-"<strong>\n"
-"                            Recurrencia\n"
-"                        </strong>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -340,29 +344,21 @@ msgid "<strong> and </strong>"
 msgstr "<strong> y </strong>"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "<strong>Next Billing Amount:</strong>"
-msgstr "<strong>Próximo importe de facturación:</strong>"
-
-#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.report_saleorder_document
-msgid "<strong>Recurrence:</strong>"
-msgstr "<strong>Recurrencia:</strong>"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "<strong>Subtotal</strong>"
-msgstr "<strong>Subtotal</strong>"
+msgid "<strong>Recurring Plan:</strong>"
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_form
-msgid "<strong>Warning:</strong> the survey can only be shown if all information is set. Please complete:"
+msgid ""
+"<strong>Warning:</strong> the survey can only be shown if all information is"
+" set. Please complete:"
 msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "<strong>subscriptions</strong>"
-msgstr ""
+msgstr "<strong>suscripciones</strong>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -654,13 +650,17 @@ msgstr ""
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
-msgid "A canceled SO cannot be in progress.You should close %s before canceling it."
+msgid ""
+"A canceled SO cannot be in progress. You should close %s before canceling "
+"it."
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__website_published
-msgid "A code server action can be executed from the website, using a dedicated controller. The address is <base>/website/action/<website_path>. Set this field as True to allow users to run this action. If it is set to False the action cannot be run through the website."
-msgstr "Se puede ejecutar desde el sitio web una acción de servidor de código, usando un controlador dedicado. La dirección es <base>/website/action/<website_path>. Establezca este campo a verdadero para permitir a los usuarios ejecutar esta acción. Si se establece a falso, la acción no se podrá ejecutar a través del sitio web."
+#. odoo-python
+#: code:addons/sale_subscription/controllers/portal.py:0
+#, python-format
+msgid "A renewal has been created by the client."
+msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
@@ -670,18 +670,28 @@ msgid "A renewal quotation %s has been created"
 msgstr "Se creó una cotización %s de renovación"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__action
+#: model_terms:ir.ui.view,arch_db:sale_subscription.view_sale_order_log_analysis_graph
+#: model_terms:ir.ui.view,arch_db:sale_subscription.view_sale_order_log_growth_graph
+#: model_terms:ir.ui.view,arch_db:sale_subscription.view_sale_order_log_growth_pivot
+msgid "ARR Change"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__arr_change_normalized
+msgid "ARR Change (normalized)"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__is_abandoned_cart
+msgid "Abandoned Cart"
+msgstr "Carro abandonado"
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Action"
 msgstr "Acción"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__help
-msgid "Action Description"
-msgstr "Descripción de la acción"
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__name
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Action Name"
 msgstr "Nombre de acción"
@@ -689,33 +699,43 @@ msgstr "Nombre de acción"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Acción requerida"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__state
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__action
 msgid "Action To Do"
 msgstr "Acción a realizar"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__type
-msgid "Action Type"
-msgstr "Tipo de acción"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
-msgid "Action data can not be updated to avoid unexpected behaviors. Create a new action instead."
-msgstr ""
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__action_server_ids
+msgid "Actions"
+msgstr "Acciones"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__active
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__active
 msgid "Active"
 msgstr "Activo"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_type_id
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__contract_number
+msgid "Active Subscriptions Change"
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Activity"
 msgstr "Actividad"
+
+#. module: sale_subscription
+#: model:ir.ui.menu,name:sale_subscription.mail_activity_plan_menu_config_subscription
+msgid "Activity Plan"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_type_id
+msgid "Activity Type"
+msgstr "Tipo de actividad"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.mail_activity_type_action_config_subscription
@@ -724,14 +744,27 @@ msgid "Activity Types"
 msgstr "Tipos de actividad"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_user_type
-msgid "Activity User Type"
-msgstr "Tipo de actividad de usuario"
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order__user_quantity
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__user_quantity
+msgid "Add Products"
+msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__partner_ids
-msgid "Add Followers"
-msgstr "Añadir seguidores"
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_sidebar
+msgid "Add Quantity"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.actions.act_window,help:sale_subscription.mail_activity_plan_action_subscription
+msgid "Add a new plan"
+msgstr "Agregar un nuevo plan"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.product_pricelist_view
+#: model_terms:ir.ui.view,arch_db:sale_subscription.product_template_view_form_recurring
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_plan_view_form
+msgid "Add a price rule"
+msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
@@ -741,31 +774,39 @@ msgid "All"
 msgstr "Todos"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__amount_contraction
-msgid "Amount Contraction"
+#: model:ir.model.fields,help:sale_subscription.field_sale_order__user_quantity
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_plan__user_quantity
+msgid ""
+"Allow customers to create an Upsell quote to adjust the quantity of products"
+" in their subscription.Only products that are listed as \"optional "
+"products\" can be modified."
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__amount_expansion
-msgid "Amount Expansion"
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_plan__related_plan_id
+msgid ""
+"Allow your customers to switch from this plan to another on quotation (new "
+"subscription or renewal)"
 msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__amount_signed
 msgid "Amount Signed"
-msgstr ""
+msgstr "Cantidad Firmada"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Amount:"
-msgstr "Importe:"
+#. odoo-python
+#: code:addons/sale_subscription/controllers/portal.py:0
+#, python-format
+msgid "An upsell has been created by the client."
+msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "An upsell quotation %s has been created"
-msgstr "Se creó una cotización %s de venta adicional"
+msgstr "Se creó el presupuesto %s de venta adicional"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_account_analytic_account
@@ -775,25 +816,24 @@ msgstr "Cuenta analítica"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__recurring_yearly
-#: model_terms:ir.ui.view,arch_db:sale_subscription.view_sale_order_log_analysis_graph
-#: model_terms:ir.ui.view,arch_db:sale_subscription.view_sale_order_log_growth_graph
 msgid "Annual Recurring Revenue"
-msgstr ""
+msgstr "Ingreso anual recurrente"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__recurring_yearly_graph
-msgid "Annual Recurring Revenue (graph)"
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
+msgid "Anticipate payment"
 msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__filter_domain
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Apply on"
-msgstr "Aplicar sobre"
+msgstr "Aplicar en"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_template_view_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_plan_view_form
 msgid "Archived"
 msgstr "Archivado"
 
@@ -813,6 +853,11 @@ msgid "Assign To"
 msgstr "Asignar a"
 
 #. module: sale_subscription
+#: model:ir.model.fields.selection,name:sale_subscription.selection__payment_transaction__subscription_action__assign_token
+msgid "Assign Token"
+msgstr ""
+
+#. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
@@ -822,30 +867,30 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Nº de archivos adjuntos"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__automation_id
-msgid "Automated Action"
-msgstr "Acción automatizada"
+#: model:ir.model.fields.selection,name:sale_subscription.selection__payment_transaction__renewal_state__authorized
+msgid "Authorized"
+msgstr "Authorized"
 
 #. module: sale_subscription
-#: model:ir.actions.act_window,name:sale_subscription.sale_subscription_alert_action
-#: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_alert
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_tree
-msgid "Automated actions"
-msgstr ""
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__auto_close_limit
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__auto_close_limit
 msgid "Automatic Closing"
 msgstr "Cancelación automática"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__auto_close_limit_display
+msgid "Automatic Closing After"
+msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
-msgid "Automatic payment failed after multiple attempts. Contract closed automatically."
+msgid ""
+"Automatic payment failed after multiple attempts. Contract closed "
+"automatically."
 msgstr ""
 
 #. module: sale_subscription
@@ -859,7 +904,8 @@ msgstr ""
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
-msgid "Automatic payment failed. No country specified on payment_token's partner"
+msgid ""
+"Automatic payment failed. No country specified on payment_token's partner"
 msgstr ""
 
 #. module: sale_subscription
@@ -873,13 +919,23 @@ msgstr ""
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
-msgid "Automatic payment succeeded. Payment reference: %(ref)s. Amount: %(amount)s. Contract set to: In Progress, Next Invoice: %(inv)s. Email sent to customer."
-msgstr "El pago automático se ha realizado con éxito. Referencia de pago: %(ref)s. Importe: %(amount)s. Contrato fijado en: En curso. Próxima factura: %(inv)s. Correo electrónico enviado al cliente."
+msgid ""
+"Automatic payment succeeded. Payment reference: %(ref)s. Amount: %(amount)s."
+" Contract set to: In Progress, Next Invoice: %(inv)s. Email sent to "
+"customer."
+msgstr ""
+"El pago automático se ha realizado con éxito. Referencia de pago: %(ref)s. "
+"Importe: %(amount)s. Contrato fijado en: En curso. Próxima factura: %(inv)s."
+" Correo electrónico enviado al cliente."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__payment_exception
-msgid "Automatic payment with token failed. The payment provider configuration and token should be checked"
-msgstr "El pago automático con token ha fallado. Compruebe la configuración de su proveedor de pago y el token."
+msgid ""
+"Automatic payment with token failed. The payment provider configuration and "
+"token should be checked"
+msgstr ""
+"El pago automático con token ha fallado. Compruebe la configuración de su "
+"proveedor de pago y el token."
 
 #. module: sale_subscription
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_auto_close_limit_reached
@@ -890,13 +946,28 @@ msgstr ""
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
-msgid "Automatic renewal succeeded. Free subscription. Next Invoice: %(inv)s. No email sent."
+msgid ""
+"Automatic renewal succeeded. Free subscription. Next Invoice: %(inv)s. No "
+"email sent."
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__website_published
-msgid "Available on the Website"
-msgstr "Disponible en el sitio web"
+#: model:ir.model,name:sale_subscription.model_base_automation
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__automation_id
+msgid "Automation Rule"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__name
+msgid "Automation Rule Name"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.actions.act_window,name:sale_subscription.sale_subscription_alert_action
+#: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_alert
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_tree
+msgid "Automation Rules"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_avg
@@ -925,23 +996,22 @@ msgstr "Antes de actualizar el dominio"
 
 #. module: sale_subscription
 #: model_terms:sale.order.close.reason,retention_message:sale_subscription.close_reason_1
-msgid "Before closing your subscription, we'd like to offer you to schedule a call with Marc Demo, your account manager."
+msgid ""
+"Before closing your subscription, we'd like to offer you to schedule a call "
+"with Marc Demo, your account manager."
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__binding_model_id
-msgid "Binding Model"
-msgstr "Modelo vinculante"
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__billing_period_display
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_pricing__name
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_plan_view_form
+msgid "Billing Period"
+msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__binding_type
-msgid "Binding Type"
-msgstr "Tipo de vínculo"
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__binding_view_types
-msgid "Binding View Types"
-msgstr "Tipos de vista de enlace"
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__billing_period_display_sentence
+msgid "Billing Period Display"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_close_reason__retention_button_link
@@ -951,18 +1021,22 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_close_reason__retention_button_text
 msgid "Button Text"
-msgstr ""
+msgstr "Texto del botón"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__percentage_satisfaction
-msgid "Calculate the ratio between the number of the best ('great') ratings and the total number of ratings"
-msgstr "Calcule la razón entre el número de las mejores (\"excelentes\") valoraciones y el número total de valoraciones"
+msgid ""
+"Calculate the ratio between the number of the best ('great') ratings and the"
+" total number of ratings"
+msgstr ""
+"Calcule la razón entre el número de las mejores (\"excelentes\") "
+"valoraciones y el número total de valoraciones"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__campaign_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__campaign_id
 msgid "Campaign"
-msgstr ""
+msgstr "Campaña"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.product_template_search_view_inherit_sale_subscription
@@ -970,20 +1044,22 @@ msgid "Can be Recurring"
 msgstr ""
 
 #. module: sale_subscription
-#. odoo-javascript
-#: code:addons/sale_subscription/static/src/js/manage_form.js:0
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_change_customer_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_wizard_view_form
-#, python-format
 msgid "Cancel"
 msgstr "Cancelar"
+
+#. module: sale_subscription
+#: model:ir.actions.server,name:sale_subscription.model_sale_order_subscription_cancel
+msgid "Cancel Subscription"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__order_state__cancel
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log_report__state__cancel
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_cancel
 msgid "Cancelled"
-msgstr ""
+msgstr "Cancelado"
 
 #. module: sale_subscription
 #: model:product.template,name:sale_subscription.product_car_leasing_product_template
@@ -993,6 +1069,17 @@ msgstr "Renta de coches (SUB)"
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_change_customer_wizard_action
 msgid "Change Customer"
+msgstr "Cambiar cliente"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_sidebar
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_so_portal_template
+msgid "Change Plan"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_so_portal_template
+msgid "Change Plan for"
 msgstr ""
 
 #. module: sale_subscription
@@ -1001,52 +1088,13 @@ msgid "Change customer"
 msgstr ""
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Change plan"
-msgstr "Cambiar plan"
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__child_ids
-msgid "Child Actions"
-msgstr "Acciones hijas"
-
-#. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__child_ids
-msgid "Child server actions that will be executed. Note that the last return returned action value will be used as global return value."
-msgstr "Las acciones de servidor hijas que serán ejecutadas. Tenga en cuenta que el último valor devuelto será usado como valor de retorno global."
-
-#. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Choose a product name.<br/><i>(e.g. eLearning Access)</i>"
-msgstr "Escoge un nombre para el producto <br/><i> (por ejemplo, eLearning Access)</i>"
-
-#. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__sms_method
-msgid ""
-"Choose method for SMS sending:\n"
-"SMS: mass SMS\n"
-"Post as Message: log on document\n"
-"Post as Note: mass SMS with archives"
 msgstr ""
-"Elija el método de envío por SMS:\n"
-"SMS: SMS masivos\n"
-"Publicar como mensaje: documento de inicio de sesión\n"
-"Publicar como nota: SMS masivos con archivos"
-
-#. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__mail_post_method
-msgid ""
-"Choose method for email sending:\n"
-"EMail: send directly emails\n"
-"Post as Message: post on document and notify followers\n"
-"Post as Note: log a note on document"
-msgstr ""
-"Elija el método de envío del correo electrónico:\n"
-"Correo electrónico: enviar correos electrónicos directamente\n"
-"Publicar como mensaje: publicar en el documento y notificar a los seguidores\n"
-"Publicar como nota: registrar una nota en el documento"
+"Escoge un nombre para el producto <br/><i> (por ejemplo, eLearning "
+"Access)</i>"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log__event_type__2_churn
@@ -1075,8 +1123,15 @@ msgid "Click here to add some products or services to your quotation."
 msgstr "Clic aqui para añadir algún producto o servicio a su presupuesto."
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order__user_closable
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__user_closable
+msgid "Closable"
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_so_portal_template
 msgid "Close"
 msgstr "Cerrar"
 
@@ -1098,7 +1153,8 @@ msgid "Close Reasons"
 msgstr "Razones del cierre"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_sidebar
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
 msgid "Close Subscription"
 msgstr "Cerrar suscripción"
 
@@ -1122,23 +1178,30 @@ msgid "Closing text: %s"
 msgstr "Texto de cancelación: %s"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__color
-msgid "Color"
-msgstr "Color"
-
-#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__commercial_partner_id
 msgid "Commercial Entity"
 msgstr "Entidad comercial"
 
 #. module: sale_subscription
+#: model:ir.model,name:sale_subscription.model_res_company
+msgid "Companies"
+msgstr "Compañías"
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__company_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__company_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__company_id
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__company_id
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_pricing__company_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__company_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_log_report_search
 msgid "Company"
 msgstr "Compañía"
+
+#. module: sale_subscription
+#: model:ir.model,name:sale_subscription.model_res_config_settings
+msgid "Config Settings"
+msgstr "Opciones de configuración"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_config
@@ -1146,8 +1209,21 @@ msgid "Configuration"
 msgstr "Configuración"
 
 #. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_res_config_settings__invoice_consolidation
+#: model_terms:ir.ui.view,arch_db:sale_subscription.res_config_settings_view_form
+msgid ""
+"Consolidate all of a customer's subscriptions that are due to be billed on "
+"the same day onto a single invoice."
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_res_config_settings__invoice_consolidation
+msgid "Consolidate subscriptions billing"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_res_partner
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_sidebar
 msgid "Contact"
 msgstr "Contacto"
 
@@ -1157,7 +1233,7 @@ msgid "Contact Marc"
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_template__recurring_rule_type
+#: model:ir.model.fields,help:sale_subscription.field_sale_order_template__duration_unit
 msgid "Contract duration"
 msgstr "Duración de contrato"
 
@@ -1179,7 +1255,6 @@ msgid "Contracts whose payment has failed"
 msgstr "Contratos con falta de pago"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order__country_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__country_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_log_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
@@ -1197,14 +1272,14 @@ msgid "Create Invoice"
 msgstr "Crear Factura"
 
 #. module: sale_subscription
+#: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_plan_action
+msgid "Create a new plan"
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.product_action_subscription
 msgid "Create a new product"
 msgstr "Crear un nuevo producto"
-
-#. module: sale_subscription
-#: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_recurrence_action
-msgid "Create a new recurrence"
-msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action
@@ -1216,6 +1291,11 @@ msgstr "Crear una nueva suscripción"
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_alert_action
 msgid "Create a new subscription alert"
 msgstr "Crear alerta de suscripción"
+
+#. module: sale_subscription
+#: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_plan
+msgid "Create a new subscription plan"
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_template_action
@@ -1233,13 +1313,22 @@ msgid "Create next activity"
 msgstr "Crear la siguiente actividad"
 
 #. module: sale_subscription
+#: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_plan
+msgid "Create subscriptions plan"
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_quotes
 msgid ""
 "Create subscriptions to manage recurring invoicing and payments. Subscriptions can\n"
 "                be time-bounded or not. In case of a limited period, they are flagged as to be renewed\n"
 "                one month from the end date."
-msgstr "Cree suscripciones para gestionar la facturación y los pagos recurrentes. Las suscripciones puedenser o no de duración limitada. En caso de ser limitadas, se marcan como a renovarun mes después de la fecha de finalización."
+msgstr ""
+"Cree suscripciones para gestionar la facturación y los pagos recurrentes. "
+"Las suscripciones puedenser o no de duración limitada. En caso de ser "
+"limitadas, se marcan como a renovarun mes después de la fecha de "
+"finalización."
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -1254,6 +1343,8 @@ msgstr "Cree aquí su primer producto de suscripción"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__create_uid
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_change_customer_wizard__create_uid
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_close_reason_wizard__create_uid
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__create_uid
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_pricing__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
@@ -1262,6 +1353,8 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_close_reason__create_date
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_change_customer_wizard__create_date
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_close_reason_wizard__create_date
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__create_date
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_pricing__create_date
 msgid "Created on"
 msgstr "Creado el"
 
@@ -1274,14 +1367,17 @@ msgstr "Siguiente activación del cron"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__currency_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__currency_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__currency_id
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_pricing__currency_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__currency_id
+#: model_terms:ir.ui.view,arch_db:sale_subscription.view_sale_order_log_growth_tree
 msgid "Currency"
 msgstr "Moneda"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Current Plan:"
-msgstr "Plan actual:"
+#: model:ir.model.fields,field_description:sale_subscription.field_product_product__product_subscription_pricing_ids
+#: model:ir.model.fields,field_description:sale_subscription.field_product_template__product_subscription_pricing_ids
+msgid "Custom Subscription Pricings"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__partner_id
@@ -1300,26 +1396,49 @@ msgstr "Empresa del cliente"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__country_id
 msgid "Customer Country"
-msgstr ""
+msgstr "País del cliente"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__commercial_partner_id
 msgid "Customer Entity"
-msgstr ""
+msgstr "Entidad del Cliente"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__industry_id
 msgid "Customer Industry"
-msgstr ""
+msgstr "Industria del Cliente"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__client_order_ref
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__client_order_ref
 msgid "Customer Reference"
+msgstr "Referencia cliente"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__state_id
+msgid "Customer State"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__partner_zip
+msgid "Customer ZIP"
+msgstr "Código postal del cliente"
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_order__user_closable
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_plan__user_closable
+msgid "Customer can close their subscriptions."
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_order__user_extend
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_plan__user_extend
+msgid "Customer can create a renewal quotation for their subscription."
 msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__customer_ids
+#: model:ir.ui.menu,name:sale_subscription.menu_orders_customers
 msgid "Customers"
 msgstr "Clientes"
 
@@ -1334,6 +1453,22 @@ msgid "Date of Next Invoice"
 msgstr "Fecha de la próxima factura"
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_plan_view_form
+msgid "Days"
+msgstr "Días"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_res_company__subscription_default_plan_id
+#: model:ir.model.fields,field_description:sale_subscription.field_res_config_settings__subscription_default_plan_id
+msgid "Default Recurrence"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.res_config_settings_view_form
+msgid "Default period to use as recurrence for a new quotation."
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending
 msgid "Define a new subscription"
 msgstr "Definir una nueva suscripción"
@@ -1346,18 +1481,15 @@ msgstr "Retraso después de la activación"
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_range
 msgid ""
-"Delay after the trigger date.\n"
-"        You can put a negative number if you need a delay before the\n"
-"        trigger date, like sending a reminder 15 minutes before a meeting."
+"Delay after the trigger date. You can put a negative number if you need a "
+"delay before the trigger date, like sending a reminder 15 minutes before a "
+"meeting."
 msgstr ""
-"Retraso después de fecha de activación.\n"
-"          Puede colocar un número negativo si necesita un retraso antes de la\n"
-"          fecha de activación, como enviar un recordatorio de 15 minutos antes de una reunión."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_range
 msgid "Delay after trigger date"
-msgstr "Retraso después fecha de disparo"
+msgstr "Retraso después de la fecha de activación"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_range_type
@@ -1365,23 +1497,38 @@ msgid "Delay type"
 msgstr "Tipo retraso"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__description
+msgid "Description"
+msgstr "Descripción"
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Destination"
 msgstr "Destino"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_plan_view_form
+msgid "Details"
+msgstr "Detalles"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
 msgid "Discard, I want to stay"
 msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__discount
 msgid "Discount %"
-msgstr ""
+msgstr "Descuento %"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__discount_amount
 msgid "Discount Amount"
+msgstr "Importe del descuento"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order__display_late
+msgid "Display Late"
 msgstr ""
 
 #. module: sale_subscription
@@ -1391,19 +1538,21 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__display_name
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_change_customer_wizard__display_name
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_close_reason_wizard__display_name
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__display_name
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_pricing__display_name
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_sidebar
 msgid "Download"
 msgstr "Descargar"
 
 #. module: sale_subscription
-#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log_report__state__draft
-msgid "Draft Quotation"
-msgstr ""
+#: model:ir.model.fields.selection,name:sale_subscription.selection__payment_transaction__renewal_state__draft
+msgid "Draft"
+msgstr "Borrador"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_date_deadline_range
@@ -1416,9 +1565,14 @@ msgid "Due type"
 msgstr "Tipo de vencimiento"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__recurring_rule_boundary
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__billing_period_value
 msgid "Duration"
 msgstr "Duración"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__duration_unit
+msgid "Duration Unit"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__template_id
@@ -1426,12 +1580,19 @@ msgid "Email Template"
 msgstr "Plantilla de correo electrónico"
 
 #. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_plan__invoice_mail_template_id
+msgid ""
+"Email template used to send invoicing email automatically.\n"
+"Leave it empty if you don't want to send email automatically."
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_close_reason__empty_retention_message
 msgid "Empty Retention Message"
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__recurring_rule_count
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__duration_value
 msgid "End After"
 msgstr "Finalizar después de"
 
@@ -1466,7 +1627,7 @@ msgstr "Fecha evento"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_log_report_search
 msgid "Event Type"
-msgstr ""
+msgstr "Tipo de evento"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log__event_type__1_expansion
@@ -1474,11 +1635,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_log_report_search
 msgid "Expansion"
 msgstr ""
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__xml_id
-msgid "External ID"
-msgstr "ID externo"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -1501,7 +1657,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "First Contract Date"
-msgstr ""
+msgstr "Primera fecha del contrato"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__origin_order_id
@@ -1520,34 +1676,19 @@ msgid "First contract date"
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__recurring_rule_boundary__limited
-msgid "Fixed"
-msgstr "Fijo"
-
-#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Seguidores"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
-
-#. module: sale_subscription
-#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__recurring_rule_boundary__unlimited
-msgid "Forever"
-msgstr "Por siempre"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Frequency:"
-msgstr "Frecuencia:"
+msgstr "Seguidores (Contactos)"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Future"
-msgstr ""
+msgstr "Futuro"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -1593,7 +1734,7 @@ msgstr "Buena Salud"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__weight
 msgid "Gross Weight"
-msgstr ""
+msgstr "Peso bruto"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_log_report_search
@@ -1603,19 +1744,19 @@ msgid "Group By"
 msgstr "Agrupar por"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__groups_id
-msgid "Groups"
-msgstr "Grupos"
-
-#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Happy face"
 msgstr "Cara feliz"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__model_is_mail_thread
+msgid "Has Mail Thread"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Tiene un mensaje"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__has_recurring_line
@@ -1638,7 +1779,6 @@ msgstr "Le ayuda a manejar las suscripciones y facturación recurrente."
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 #, python-format
 msgid "History"
 msgstr "Historial"
@@ -1647,13 +1787,6 @@ msgstr "Historial"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__history_count
 msgid "History Count"
 msgstr "en el historial"
-
-#. module: sale_subscription
-#. odoo-python
-#: code:addons/sale_subscription/models/product_pricing.py:0
-#, python-format
-msgid "Hourly and daily pricing are forbidden on recurring products"
-msgstr "Los precios por hora y día están prohibidos en productos recurrentes"
 
 #. module: sale_subscription
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_4
@@ -1667,73 +1800,79 @@ msgstr "No lo uso"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_change_customer_wizard__id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_close_reason_wizard__id
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__id
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_pricing__id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__id
 msgid "ID"
 msgstr "ID"
 
 #. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__xml_id
-msgid "ID of the action if defined in a XML file"
-msgstr "ID de la acción si está definida en el archivo XML"
-
-#. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Si está marcado hay nuevos mensajes que requieren su atención."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__message_has_error
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
-
-#. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_template__user_closable
-msgid "If checked, the user will be able to close his account from the frontend"
-msgstr "Si se activa, el usuario será capaz de cerrar su cuenta desde el frontend"
+msgstr "Si se encuentra marcado, algunos mensajes tienen error de envío."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__payment_token_id
 msgid "If not set, the automatic payment will fail."
-msgstr "Si esta opción no está activada, no se podrá realizar el pago automático."
+msgstr ""
+"Si esta opción no está activada, no se podrá realizar el pago automático."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__filter_domain
-msgid "If present, this condition must be satisfied before executing the action rule."
-msgstr "Si está marcada esta casilla, la condición debe satisfacerse antes de ejecutar la regla de acción."
+msgid ""
+"If present, this condition must be satisfied before executing the automation"
+" rule."
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__filter_pre_domain
-msgid "If present, this condition must be satisfied before the update of the record."
-msgstr "Si está presente, esta condición debe satisfacerse antes de la actualización del registro."
+msgid ""
+"If present, this condition must be satisfied before the update of the "
+"record."
+msgstr ""
+"Si está presente, esta condición debe satisfacerse antes de la actualización"
+" del registro."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__end_date
-msgid "If set in advance, the subscription will be set to renew 1 month before the date and will be closed on the date set in this field."
-msgstr "Si esta opción está activada, se renovará la suscripción 1 mes antes de la fecha y se cancelará en la fecha establecida por este campo."
+msgid ""
+"If set in advance, the subscription will be set to renew 1 month before the "
+"date and will be closed on the date set in this field."
+msgstr ""
+"Si esta opción está activada, se renovará la suscripción 1 mes antes de la "
+"fecha y se cancelará en la fecha establecida por este campo."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_product_product__recurring_invoice
 #: model:ir.model.fields,help:sale_subscription.field_product_template__recurring_invoice
+#: model:ir.model.fields,help:sale_subscription.field_sale_order_line__recurring_invoice
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_template_line__recurring_invoice
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_template_option__recurring_invoice
-msgid "If set, confirming a sale order with this product will create a subscription"
-msgstr "Si se configura, la confirmación de un pedido de venta con este producto creará una suscripción"
+msgid ""
+"If set, confirming a sale order with this product will create a subscription"
+msgstr ""
+"Si se configura, la confirmación de un pedido de venta con este producto "
+"creará una suscripción"
 
 #. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_template__journal_id
-msgid "If set, subscriptions with this template will invoice in this journal; otherwise the sales journal with the lowest sequence is used."
-msgstr "Si se establece, las suscripciones con esta plantilla se facturarán en este diario; de lo contrario se utilizará el diario de ventas con la secuencia más baja."
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
 msgid "If you wish to reopen it, the"
 msgstr "Si desea volver a abrirla, la"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "If you wish to reopen it, you can pay your invoice for the current invoicing period."
-msgstr "Si desea volver a abrirla, puede pagar su factura correspondiente al período de facturación actual."
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
+msgid ""
+"If you wish to reopen it, you can pay your invoice for the current invoicing"
+" period."
+msgstr ""
+"Si desea volver a abrirla, puede pagar su factura correspondiente al período"
+" de facturación actual."
 
 #. module: sale_subscription
 #. odoo-python
@@ -1751,7 +1890,6 @@ msgid "In Progress"
 msgstr "En progreso"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order__industry_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__industry_id
 msgid "Industry"
 msgstr "Sector"
@@ -1762,29 +1900,37 @@ msgid "Initial"
 msgstr "Inicial"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
-msgid "Invoice Email"
-msgstr "Correo electrónico para la factura"
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order__internal_note
+msgid "Internal Note"
+msgstr "Nota interna"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__invoice_mail_template_id
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order__internal_note_display
+msgid "Internal Note Display"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
+msgid "Internal notes"
+msgstr "Notas internas"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__invoice_mail_template_id
 msgid "Invoice Email Template"
 msgstr "Plantilla de correo electrónico de factura"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__invoice_status
 msgid "Invoice Status"
-msgstr ""
+msgstr "Estado factura"
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.email_payment_success
-msgid "Invoice for subscription {{ ctx.get('code', ctx.get('subscription_name')) }}"
-msgstr "Facturación de la suscripción {{ ctx.get('code', ctx.get('subscription_name')) }}"
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__journal_id
-msgid "Invoicing Journal"
-msgstr "Diario de factura"
+msgid ""
+"Invoice for subscription {{ ctx.get('code', ctx.get('subscription_name')) }}"
+msgstr ""
+"Facturación de la suscripción {{ ctx.get('code', "
+"ctx.get('subscription_name')) }}"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__is_batch
@@ -1794,7 +1940,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Es un seguidor"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_close_reason__is_protected
@@ -1804,6 +1950,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__is_renewing
 msgid "Is Renewing"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_base_automation__is_sale_order_alert
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__is_sale_order_alert
+msgid "Is Sale Order Alert"
 msgstr ""
 
 #. module: sale_subscription
@@ -1853,6 +2005,11 @@ msgid "KPI 3 months MRR Delta"
 msgstr "KPI 3 meses de MRR delta"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__is_unlimited
+msgid "Last Forever"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__last_run
 msgid "Last Run"
 msgstr "Última ejecución"
@@ -1863,6 +2020,8 @@ msgstr "Última ejecución"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__write_uid
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_change_customer_wizard__write_uid
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_close_reason_wizard__write_uid
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__write_uid
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_pricing__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
@@ -1872,6 +2031,8 @@ msgstr "Última actualización por"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__write_date
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_change_customer_wizard__write_date
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_close_reason_wizard__write_date
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__write_date
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_pricing__write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
 
@@ -1903,7 +2064,7 @@ msgstr "Última valoración: Satisfecho"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__least_delay_msg
 msgid "Least Delay Msg"
-msgstr "Mensaje de retraso mínimo"
+msgstr "Mínimo de retraso del mensaje"
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -1924,16 +2085,17 @@ msgstr ""
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Let's go to the catalog to create our first subscription product"
-msgstr "Dirijámonos al catálogo para crear nuestro primer producto de suscripción"
+msgstr ""
+"Dirijámonos al catálogo para crear nuestro primer producto de suscripción"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__link_field_id
-msgid "Link Field"
-msgstr "Campo de enlace"
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__log_webhook_calls
+msgid "Log Calls"
+msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__order_state__done
-msgid "Locked"
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__log_currency_id
+msgid "Log Currency"
 msgstr ""
 
 #. module: sale_subscription
@@ -1949,6 +2111,7 @@ msgid "MRR"
 msgstr "MRR"
 
 #. module: sale_subscription
+#: model:ir.actions.act_window,name:sale_subscription.sale_order_log_analysis_action
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_order_log_analysis_report
 msgid "MRR Analysis"
 msgstr "Análisis de MRR"
@@ -1960,6 +2123,7 @@ msgstr "MRR entre"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_order_log_growth_action
+#: model:ir.ui.menu,name:sale_subscription.menu_sale_order_log_growth_report
 msgid "MRR Breakdown"
 msgstr ""
 
@@ -1967,12 +2131,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__amount_signed
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_sale_order_log_analysis_graph
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_sale_order_log_growth_graph
+#: model_terms:ir.ui.view,arch_db:sale_subscription.view_sale_order_log_growth_pivot
 msgid "MRR Change"
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__amount_signed_graph
-msgid "MRR Change (graph)"
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__mrr_change_normalized
+msgid "MRR Change (normalized)"
 msgstr ""
 
 #. module: sale_subscription
@@ -1996,11 +2161,6 @@ msgid "MRR Change Unit"
 msgstr "Cambiar unidad del MRR"
 
 #. module: sale_subscription
-#: model:ir.ui.menu,name:sale_subscription.menu_sale_order_log_growth_report
-msgid "MRR Growth"
-msgstr ""
-
-#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mrr_max
 msgid "MRR Range Max"
 msgstr "Rango máximo del MRR"
@@ -2009,11 +2169,6 @@ msgstr "Rango máximo del MRR"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mrr_min
 msgid "MRR Range Min"
 msgstr "Rango mínimo del MRR"
-
-#. module: sale_subscription
-#: model:ir.actions.act_window,name:sale_subscription.sale_order_log_analysis_action
-msgid "MRR Timeline"
-msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_sale_order_log_growth_tree
@@ -2038,36 +2193,42 @@ msgid "MRR:"
 msgstr "MRR:"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_sidebar
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
 msgid "Manage Payment Method"
 msgstr "Gestionar el método de pago"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Manage Payment Methods"
-msgstr "Gestionar métodos de pago"
+#: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_home_subscription
+msgid "Manage your subscriptions"
+msgstr ""
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Managing payment methods requires to be logged in under the customer order."
-msgstr "La gestión de los métodos de pago requiere iniciar sesión desde la orden del cliente."
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_sidebar
+msgid ""
+"Managing payment methods requires to be logged in under the customer order."
+msgstr ""
+"La gestión de los métodos de pago requiere iniciar sesión desde la orden del"
+" cliente."
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
-msgid "Manual payment succeeded. Payment reference: %(ref)s; Amount: %(amount)s. Invoice %(invoice)s"
+msgid ""
+"Manual payment succeeded. Payment reference: %(ref)s. Amount: %(amount)s. "
+"Contract set to: In Progress, Next Invoice: %(inv)s. Email sent to customer."
 msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__margin
 msgid "Margin"
-msgstr ""
+msgstr "Margen"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__medium_id
 msgid "Medium"
-msgstr ""
+msgstr "Media"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__starred_user_ids
@@ -2077,23 +2238,34 @@ msgstr "Miembros"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_close_reason__retention_message
 msgid "Message"
-msgstr ""
+msgstr "Mensaje"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Error de Envío de Mensaje"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__message_ids
 msgid "Messages"
+msgstr "Mensajes"
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_plan__billing_period_value
+msgid ""
+"Minimum duration before this rule is applied. If set to 0, it represents a "
+"fixed temporal price."
 msgstr ""
+"Duración mínima antes de que se aplique esta regla. Si se establece en 0, "
+"representa un precio temporal fijo."
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
-msgid "Mix of negative recurring lines and non-recurring line. The contract should be fixed manually"
+msgid ""
+"Mix of negative recurring lines and non-recurring line. The contract should "
+"be fixed manually"
 msgstr ""
 
 #. module: sale_subscription
@@ -2107,19 +2279,20 @@ msgid "Model Name"
 msgstr "Nombre del modelo"
 
 #. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__crud_model_id
-msgid "Model for record creation / update. Set this field only to specify a different model than the base model."
-msgstr "Modelo para la creación / actualización del registro. Establezca este campo sólo para especificar un modelo diferente que el modelo base."
-
-#. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__model_id
-msgid "Model on which the server action runs."
-msgstr "Modelo sobre el que se aplica la acción de servidor."
+msgid "Model on which the automation rule runs."
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__trigger_condition__on_create_or_write
 msgid "Modification"
 msgstr "Modificación"
+
+#. module: sale_subscription
+#: model:sale.subscription.plan,name:sale_subscription.subscription_plan_month
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_plan_view_form
+msgid "Monthly"
+msgstr "Mensual"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__recurring_monthly
@@ -2131,18 +2304,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_account_move_line__subscription_mrr
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_line__recurring_monthly
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__recurring_monthly
-#: model_terms:ir.ui.view,arch_db:sale_subscription.view_sale_order_log_analysis_graph
-#: model_terms:ir.ui.view,arch_db:sale_subscription.view_sale_order_log_growth_graph
 msgid "Monthly Recurring Revenue"
 msgstr "Ingreso mensual recurrente"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__recurring_monthly_graph
-msgid "Monthly Recurring Revenue (graph)"
-msgstr ""
-
-#. module: sale_subscription
-#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__recurring_rule_type__month
+#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__duration_unit__month
+#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_plan__billing_period_unit__month
 msgid "Months"
 msgstr "Meses"
 
@@ -2156,6 +2323,7 @@ msgstr "Mis suscripciones"
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/controllers/portal.py:0
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__name
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_tree
 #, python-format
 msgid "Name"
@@ -2179,7 +2347,7 @@ msgstr "Cara neutral"
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log_report__event_type__0_creation
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_log_report_search
 msgid "New"
-msgstr ""
+msgstr "Nuevo"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_change_customer_wizard__partner_id
@@ -2205,7 +2373,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__recurring_monthly
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_sale_order_log_growth_tree
 msgid "New MRR"
-msgstr ""
+msgstr "Nuevo MRR"
 
 #. module: sale_subscription
 #. odoo-python
@@ -2217,12 +2385,12 @@ msgstr "Más reciente"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
 msgid "Next Billing Date"
-msgstr ""
+msgstr "Próxima fecha de facturación"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
 msgid "Next Billing Date:"
-msgstr ""
+msgstr "Próxima fecha de facturación:"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_tree
@@ -2238,7 +2406,6 @@ msgstr "Fecha de la siguiente factura"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Next Invoice:"
 msgstr "Siguiente factura:"
 
@@ -2255,7 +2422,12 @@ msgid "No Payment Method"
 msgstr ""
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_plan_view_form
+msgid "No automatic mail"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
 msgid "No thanks, close my account"
 msgstr ""
 
@@ -2293,29 +2465,39 @@ msgid "Note"
 msgstr "Nota"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order__note_order
+msgid "Note Order"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
+msgid "Notes"
+msgstr "Notas"
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_tree
 msgid "Number"
-msgstr ""
+msgstr "Número"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Número de acciones"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "Numero de errores"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr ""
+msgid "Number of messages requiring action"
+msgstr "Número de mensajes que requieren una acción"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Número de mensajes con error de envío"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending
@@ -2338,7 +2520,7 @@ msgstr "Servicio de limpieza de oficinas (SUB)"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__on_change_field_ids
 msgid "On Change Fields Trigger"
-msgstr "Activar Campos a modificar"
+msgstr "Activar al modificar campos"
 
 #. module: sale_subscription
 #. odoo-python
@@ -2348,19 +2530,14 @@ msgid "Operation not supported"
 msgstr "Operación no permitida"
 
 #. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__help
-msgid "Optional help text for the users with a description of the target view, such as its usage and purpose."
-msgstr "Texto de ayuda opcional para los usuarios con una descripción de la vista destino, como su uso y su propósito."
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__related_plan_id
+msgid "Optional Plans"
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Order"
 msgstr "Pedido"
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__order_id
-msgid "Order #"
-msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__date
@@ -2370,17 +2547,17 @@ msgstr "Fecha de pedido"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__name
 msgid "Order Reference"
-msgstr ""
+msgstr "Referencia del pedido"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_tree
 msgid "Order Status"
-msgstr ""
+msgstr "Estado del pedido"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__origin_order_id
 msgid "Origin Contract"
-msgstr ""
+msgstr "Contrato de origen"
 
 #. module: sale_subscription
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_5
@@ -2432,14 +2609,9 @@ msgid "Paused"
 msgstr "En pausa"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Pay With"
-msgstr "Pagar con"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Pay now to renew"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
+msgid "Pay now"
+msgstr "Pagar ahora"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
@@ -2455,7 +2627,7 @@ msgstr "Proveedor de pago"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__payment_term_id
 msgid "Payment Terms"
-msgstr ""
+msgstr "Plazos de pago"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_payment_token
@@ -2469,14 +2641,33 @@ msgid "Payment Transaction"
 msgstr "Transacción de pago"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_sidebar
 msgid "Payment method:"
 msgstr "Método de Pago:"
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.email_payment_reminder
-msgid "Payment reminder for subscription {{ object.client_order_ref or object.name }}"
-msgstr "Recordatorio de pago para la suscripción {{ object.client_order_ref or object.name }}"
+msgid ""
+"Payment reminder for subscription {{ object.client_order_ref or object.name "
+"}}"
+msgstr ""
+"Recordatorio de pago para la suscripción {{ object.client_order_ref or "
+"object.name }}"
+
+#. module: sale_subscription
+#: model:ir.model.fields.selection,name:sale_subscription.selection__payment_transaction__renewal_state__pending
+msgid "Pending"
+msgstr "Pendiente"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order__pending_transaction
+msgid "Pending Transaction"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
+msgid "Pending transaction"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__mrr_change_period
@@ -2484,35 +2675,28 @@ msgid "Period over which the KPI is calculated"
 msgstr "Período en el que se calcula el KPI"
 
 #. module: sale_subscription
-#: model:ir.actions.act_window,name:sale_subscription.sale_subscription_recurrence_action
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_recurrence_search
-msgid "Periods"
-msgstr ""
-
-#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__plan_id
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__plan_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_log_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_tree
 msgid "Plan"
-msgstr ""
+msgstr "Plan"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
 msgid "Plan Details"
 msgstr "Información sobre el plan"
 
 #. module: sale_subscription
-#: model:ir.actions.act_window,name:sale_subscription.sale_subscription_template_action
-#: model:ir.ui.menu,name:sale_subscription.menu_template_of_subscription
+#: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action_plan
 msgid "Plans"
 msgstr "Planes"
 
 #. module: sale_subscription
 #. odoo-javascript
-#: code:addons/sale_subscription/static/src/js/manage_form.js:0
+#: code:addons/sale_subscription/static/src/xml/payment_form_templates.xml:0
 #, python-format
-msgid "Please provide another payment method for these subscriptions."
+msgid "Please provide another payment method for these subscriptions first."
 msgstr ""
 
 #. module: sale_subscription
@@ -2521,7 +2705,9 @@ msgid "Portal: retention step"
 msgstr ""
 
 #. module: sale_subscription
+#: model:ir.model,name:sale_subscription.model_product_pricelist
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__pricelist_id
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_pricing__pricelist_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__pricelist_id
 msgid "Pricelist"
 msgstr "Tarifa"
@@ -2529,20 +2715,20 @@ msgstr "Tarifa"
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_pricelist
 msgid "Pricelists"
-msgstr ""
+msgstr "Tarifas"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_line__pricing_id
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_plan_view_form
 msgid "Pricing"
 msgstr "Precio"
 
 #. module: sale_subscription
-#: model:ir.model,name:sale_subscription.model_product_pricing
-msgid "Pricing rule of temporal products"
-msgstr "Regla de fijación de precios de productos temporales"
+#: model:ir.model,name:sale_subscription.model_sale_subscription_pricing
+msgid "Pricing rule of subscription products"
+msgstr ""
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_sidebar
 msgid "Print"
 msgstr "Imprimir"
 
@@ -2551,7 +2737,6 @@ msgstr "Imprimir"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__product_tmpl_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Product"
 msgstr "Producto"
 
@@ -2564,10 +2749,16 @@ msgstr "Categoría de producto"
 #: model:ir.model,name:sale_subscription.model_product_product
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__product_id
 msgid "Product Variant"
-msgstr ""
+msgstr "Variantes de producto"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_pricing__product_variant_ids
+msgid "Product Variants"
+msgstr "Variantes de producto"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.product_action_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_pricing__product_template_id
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_product
 #: model:ir.ui.menu,name:sale_subscription.product_menu_catalog
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -2575,42 +2766,34 @@ msgid "Products"
 msgstr "Productos"
 
 #. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__link_field_id
-msgid "Provide the field used to link the newly created record on the record used by the server action."
-msgstr "Proporcione el campo utilizado para vincular el registro recién creado en el registro utilizado por la acción del servidor."
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__code
-msgid "Python Code"
-msgstr "Código Python"
-
-#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__qty_delivered
 msgid "Qty Delivered"
-msgstr ""
+msgstr "Ctdad Enviada"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__qty_invoiced
 msgid "Qty Invoiced"
-msgstr ""
+msgstr "Ctdad Facturada"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__product_uom_qty
 msgid "Qty Ordered"
-msgstr ""
+msgstr "Ctdad Ordenada"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__qty_to_deliver
 msgid "Qty To Deliver"
-msgstr ""
+msgstr "Cant. Por Entregar"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__qty_to_invoice
 msgid "Qty To Invoice"
-msgstr ""
+msgstr "Ctdad para Facturar"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_analysis_view_graph
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_analysis_view_pivot
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_analysis_view_tree
 msgid "Quantity"
 msgstr "Cantidad"
 
@@ -2620,6 +2803,7 @@ msgstr "Cantidad"
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__subscription_state__1_draft
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__subscription_state_from__1_draft
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log__subscription_state__1_draft
+#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log_report__state__draft
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log_report__subscription_state__1_draft
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_report__subscription_state__1_draft
 msgid "Quotation"
@@ -2629,10 +2813,11 @@ msgstr "Presupuesto"
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__order_state__sent
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log_report__state__sent
 msgid "Quotation Sent"
-msgstr ""
+msgstr "Presupuesto enviado"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_template
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_tree
 msgid "Quotation Template"
 msgstr "Plantilla de presupuesto"
 
@@ -2652,9 +2837,10 @@ msgid "Quotation Template:"
 msgstr "Plantilla de cotización:"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__subscription_template_ids
-msgid "Quotation templates"
-msgstr "Plantillas de cotización"
+#: model:ir.actions.act_window,name:sale_subscription.sale_subscription_template_action
+#: model:ir.ui.menu,name:sale_subscription.menu_template_of_subscription
+msgid "Quotation Templates"
+msgstr "Plantillas de presupuesto"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action_quotes
@@ -2662,7 +2848,7 @@ msgstr "Plantillas de cotización"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Quotations"
-msgstr ""
+msgstr "Presupuestos"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_avg_text
@@ -2702,8 +2888,12 @@ msgstr "Valoración de Satisfacción"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__rating_percentage
-msgid "Rating Satisfaction is the ratio of positive rating to total number of rating."
-msgstr "La valoración de satisfacción es la razón entre la valoración positiva y el número total de valoraciones."
+msgid ""
+"Rating Satisfaction is the ratio of positive rating to total number of "
+"rating."
+msgstr ""
+"La valoración de satisfacción es la razón entre la valoración positiva y el "
+"número total de valoraciones."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_last_text
@@ -2718,7 +2908,7 @@ msgstr "Cuenta de calificación"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_ids
 msgid "Ratings"
-msgstr ""
+msgstr "Valoraciones"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_close_reason__name
@@ -2727,25 +2917,9 @@ msgid "Reason"
 msgstr "Motivo"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order__recurrence_id
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__recurrence_id
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__recurrence_id
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template_line__recurrence_id
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template_option__recurrence_id
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurrence_id
-#: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_line_view_tree
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_log_report_search
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
-msgid "Recurrence"
-msgstr "Recurrencia"
-
-#. module: sale_subscription
-#: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_periods
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_recurrence_search
-msgid "Recurrence periods"
-msgstr "Periodos de recurrencia"
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__record_getter
+msgid "Record Getter"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__is_subscription
@@ -2763,53 +2937,94 @@ msgid "Recurring Details"
 msgstr ""
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order__plan_id
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__plan_id
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_pricing__plan_id
+#: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_plan_search
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_plan_view_form
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_plan_view_search
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
+msgid "Recurring Plan"
+msgstr "Plan recurrente"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_portal_content_inherit
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
+msgid "Recurring Plan:"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.actions.act_window,name:sale_subscription.sale_subscription_plan_action
+#: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_plans
+msgid "Recurring Plans"
+msgstr "Planes recurrentes"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_pricing__price
+msgid "Recurring Price"
+msgstr "Precio recurrente"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.product_pricelist_view
+#: model_terms:ir.ui.view,arch_db:sale_subscription.product_template_view_form_recurring
+msgid "Recurring Prices"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_product_pricelist__product_subscription_pricing_ids
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__product_subscription_pricing_ids
+msgid "Recurring Pricing"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_total
 msgid "Recurring Revenue"
-msgstr ""
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__recurring_rule_type
-msgid "Recurring Rule Type"
-msgstr "Tipo de regla recurrente"
+msgstr "Ingresos recurrentes"
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order_line.py:0
 #, python-format
-msgid "Recurring products are discounted according to the prorated period from %s to %s"
-msgstr ""
-
-#. module: sale_subscription
-#. odoo-python
-#: code:addons/sale_subscription/models/sale_order_line.py:0
-#, python-format
-msgid "Recurring products are discounted according to the prorated period from %s to %s based on a recurrence of %s %ss"
+msgid ""
+"Recurring products are discounted according to the prorated period from %s "
+"to %s"
 msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order_line.py:0
 #, python-format
-msgid "Recurring products are discounted according to the prorated period from %s to %s based on a recurrence of one %s"
+msgid ""
+"Recurring products are entirely discounted as the next period has not been "
+"invoiced yet."
 msgstr ""
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
 msgid "Reference:"
 msgstr "Referencia:"
 
 #. module: sale_subscription
+#: model:ir.model.fields.selection,name:sale_subscription.selection__payment_transaction__renewal_state__cancel
+msgid "Refused"
+msgstr "Rechazado"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__order_reference
+msgid "Related Order"
+msgstr "Orden relacionada"
+
+#. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order__user_extend
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__user_extend
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_sidebar
 #, python-format
 msgid "Renew"
 msgstr "Renovar"
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_payment_transaction__renewal_allowed
-msgid "Renewal Allowed"
-msgstr "Renovación permitida"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__renewal_count
@@ -2817,14 +3032,17 @@ msgid "Renewal Count"
 msgstr ""
 
 #. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__subscription_state__2_renewal
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__subscription_state__2_renewal
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__subscription_state_from__2_renewal
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log__subscription_state__2_renewal
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log_report__subscription_state__2_renewal
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_report__subscription_state__2_renewal
+#, python-format
 msgid "Renewal Quotation"
-msgstr ""
+msgstr "Presupuesto de renovación"
 
 #. module: sale_subscription
 #. odoo-python
@@ -2839,6 +3057,11 @@ msgid "Renewal Quote"
 msgstr "Cotización de renovación"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_payment_transaction__renewal_state
+msgid "Renewal State"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__subscription_state__5_renewed
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__subscription_state__5_renewed
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__subscription_state_from__5_renewed
@@ -2851,7 +3074,7 @@ msgstr "Renovado"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 msgid "Reopen"
-msgstr ""
+msgstr "Reabrir"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_report
@@ -2866,7 +3089,7 @@ msgstr "Responsable"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 msgid "Resume"
-msgstr ""
+msgstr "Currículo"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_report_cohort
@@ -2881,7 +3104,7 @@ msgstr "Análisis de retención"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "Error de entrega del SMS"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__sms_template_id
@@ -2892,6 +3115,11 @@ msgstr "Plantilla de SMS"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Sad face"
 msgstr "Cara triste"
+
+#. module: sale_subscription
+#: model:ir.model,name:sale_subscription.model_sale_order_option
+msgid "Sale Options"
+msgstr "Opciones de venta"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__order_id
@@ -2944,17 +3172,12 @@ msgstr "Ventas"
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_advance_payment_inv
 msgid "Sales Advance Payment Invoice"
-msgstr ""
-
-#. module: sale_subscription
-#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log_report__state__done
-msgid "Sales Done"
-msgstr ""
+msgstr "Ventas. Anticipo pago factura"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 msgid "Sales History"
-msgstr ""
+msgstr "Historial de ventas"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_log_report
@@ -3005,6 +3228,16 @@ msgid "Search Template"
 msgstr "Buscar plantilla"
 
 #. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_pricing__product_variant_ids
+msgid ""
+"Select Variants of the Product for which this rule applies. Leave empty if "
+"this rule applies for any variant of this template."
+msgstr ""
+"Seleccione las Variantes del Producto para las que se aplica esta regla. "
+"Deje en blanco si esta regla se aplica a cualquier variante de esta "
+"plantilla."
+
+#. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
@@ -3019,9 +3252,24 @@ msgid "Select a recurring product"
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__user_closable
-msgid "Self closable"
-msgstr "Autocancelable"
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_pricing__product_template_id
+msgid "Select products on which this pricing will be applied."
+msgstr "Seleccione los productos a los que se aplicará este precio."
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_plan_view_form
+msgid "Self-Service"
+msgstr "Auto servicio"
+
+#. module: sale_subscription
+#: model:ir.model.fields.selection,name:sale_subscription.selection__payment_transaction__subscription_action__automatic_send_mail
+msgid "Send Mail (automatic payment)"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields.selection,name:sale_subscription.selection__payment_transaction__subscription_action__manual_send_mail
+msgid "Send Mail (manual payment)"
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending
@@ -3049,45 +3297,43 @@ msgid "Send an email to the customer"
 msgstr "Enviar un correo electrónico al cliente"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mail_post_method
-msgid "Send as"
-msgstr "Enviar como"
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__sms_method
-msgid "Send as (SMS)"
-msgstr "Enviar como (SMS)"
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_sidebar
+msgid "Send message"
+msgstr "Enviar mensaje"
 
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.email_payment_success
-msgid "Sent automatically with subscription invoice when payment is successful"
-msgstr "Se envía automáticamente con la factura de suscripción cuando se realiza el pago"
-
-#. module: sale_subscription
-#: model:mail.template,description:sale_subscription.mail_template_subscription_invoice
-msgid "Sent manually to customers with the invoice in attachment"
-msgstr "Se envía de manera manual a los clientes con la factura como archivo adjunto"
+msgid ""
+"Sent automatically with subscription invoice when payment is successful"
+msgstr ""
+"Se envía automáticamente con la factura de suscripción cuando se realiza el "
+"pago"
 
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.email_payment_close
-msgid "Sent to customer to indicate that subscription is automatically terminated"
-msgstr "Se envía al cliente para indicarle que la suscripción se cancela automáticamente"
+msgid ""
+"Sent to customer to indicate that subscription is automatically terminated"
+msgstr ""
+"Se envía al cliente para indicarle que la suscripción se cancela "
+"automáticamente"
 
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.email_payment_reminder
-msgid "Sent to customer when payment failed but subscription is not yet cancelled"
-msgstr "Se envía al cliente cuando se produce un error en el pago pero la suscripción aún no se ha cancelado"
+msgid ""
+"Sent to customer when payment failed but subscription is not yet cancelled"
+msgstr ""
+"Se envía al cliente cuando se produce un error en el pago pero la "
+"suscripción aún no se ha cancelado"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__sequence
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_close_reason__sequence
 msgid "Sequence"
 msgstr "Secuencia"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__action_server_id
-msgid "Server Actions"
-msgstr "Acciones de servidor"
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__action_id
+msgid "Server Action"
+msgstr "Acción de servidor"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__action__set_health_value
@@ -3095,19 +3341,28 @@ msgid "Set Contract Health value"
 msgstr ""
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_sidebar
 msgid "Set Payment Method"
 msgstr "Establecer método de pago"
 
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.mail_template_subscription_rating
-msgid "Set on subscription's stage (e.g. Closed, Upsell) to ask a rating to customers"
-msgstr "Establecer en la etapa de suscripción (p. ej., cancelada, venta adicional) para solicitar una calificación a los clientes"
+msgid ""
+"Set on subscription's stage (e.g. Closed, Upsell) to ask a rating to "
+"customers"
+msgstr ""
+"Establecer en la etapa de suscripción (p. ej., cancelada, venta adicional) "
+"para solicitar una calificación a los clientes"
 
 #. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__binding_model_id
-msgid "Setting a value makes this action available in the sidebar for the given model."
-msgstr "Establecer un valor hace que esta acción esté disponible desde el menú lateral del modelo."
+#: model_terms:ir.ui.view,arch_db:sale_subscription.payment_form_inherit
+msgid "Set payment method for subscription"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_settings
+msgid "Settings"
+msgstr "Ajustes"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__starred
@@ -3117,7 +3372,9 @@ msgstr "Mostrar la suscripción en el tablero"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Show all records which has next action date is before today"
-msgstr "Mostrar todos los registros que tienen la próxima fecha de acción antes de hoy"
+msgstr ""
+"Mostrar todos los registros que tienen la próxima fecha de acción antes de "
+"hoy"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__health
@@ -3126,9 +3383,23 @@ msgid "Show the health status"
 msgstr "Mostrar el estado de salud"
 
 #. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_selection_field_id
+msgid ""
+"Some triggers need a reference to a selection field. This field is used to "
+"store it."
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_field_ref
+msgid ""
+"Some triggers need a reference to another field. This field is used to store"
+" it."
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__source_id
 msgid "Source"
-msgstr ""
+msgstr "Origen"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__product_ids
@@ -3142,7 +3413,6 @@ msgid "Specific Users"
 msgstr "Usuarios específicos"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order__subscription_state
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__subscription_state
 msgid "Stage"
 msgstr "Etapa"
@@ -3164,7 +3434,7 @@ msgstr "Fecha de inicio"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
 msgid "Start Date:"
 msgstr "Fecha de inicio"
 
@@ -3180,8 +3450,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__state
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__state
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_analysis_view_tree
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_tree
 #, python-format
 msgid "Status"
 msgstr "Estado"
@@ -3189,29 +3457,31 @@ msgstr "Estado"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_change_customer_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_wizard_view_form
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_so_portal_template
 msgid "Submit"
 msgstr "Enviar"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mail_post_autofollow
-msgid "Subscribe Recipients"
-msgstr "Suscribir a los destinatarios"
-
-#. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
+#: code:addons/sale_subscription/models/sale_order.py:0
 #: model:ir.model.fields,field_description:sale_subscription.field_account_move_line__subscription_id
-#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_line__temporal_type__subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_log_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_template_view_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_view_cohort
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_view_cohort
 #, python-format
 msgid "Subscription"
 msgstr "Suscripción"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_payment_transaction__subscription_action
+msgid "Subscription Action"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_report
@@ -3249,6 +3519,11 @@ msgid "Subscription Count"
 msgstr "Recuento de suscripciones"
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
+msgid "Subscription Information"
+msgstr "Información de suscripción"
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_sale_order_log_growth_tree
 msgid "Subscription Log Analysis"
 msgstr ""
@@ -3259,14 +3534,20 @@ msgid "Subscription Logs"
 msgstr "Registro de suscripción"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_primary_form_view
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
+#: model:ir.model,name:sale_subscription.model_sale_subscription_plan
 msgid "Subscription Plan"
 msgstr "Plan de suscripción"
 
 #. module: sale_subscription
+#: model:ir.actions.act_window,name:sale_subscription.mail_activity_plan_action_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__subscription_plan_ids
+msgid "Subscription Plans"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_product_product__recurring_invoice
 #: model:ir.model.fields,field_description:sale_subscription.field_product_template__recurring_invoice
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_line__recurring_invoice
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template_line__recurring_invoice
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template_option__recurring_invoice
 msgid "Subscription Product"
@@ -3276,16 +3557,6 @@ msgstr "Producto de la suscripción"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 msgid "Subscription Quotation"
 msgstr ""
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_account_move_line__subscription_end_date
-msgid "Subscription Revenue End Date"
-msgstr "Fecha de finalización de ingresos de suscripción"
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_account_move_line__subscription_start_date
-msgid "Subscription Revenue Start Date"
-msgstr "Fecha de inicio de ingresos de suscripción"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__activity_user__contract
@@ -3301,9 +3572,8 @@ msgid "Subscription State"
 msgstr ""
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order__subscription_state
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
-#: model_terms:ir.ui.view,arch_db:sale_subscription.view_order_tree
-#: model_terms:ir.ui.view,arch_db:sale_subscription.view_quotation_tree_subscription
 msgid "Subscription Status"
 msgstr ""
 
@@ -3324,6 +3594,13 @@ msgid "Subscription is too expensive"
 msgstr "La suscripción es demasiado cara"
 
 #. module: sale_subscription
+#: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_plan
+msgid ""
+"Subscription plans are used to configure the recurring, invoicing, and self-"
+"service behavior of subscriptions."
+msgstr ""
+
+#. module: sale_subscription
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_3
 msgid "Subscription reached its end date"
 msgstr "La suscripción ha finalizado"
@@ -3336,6 +3613,11 @@ msgstr "Categoría de la etapa de suscripción cuando ocurrió el cambio"
 #. module: sale_subscription
 #: model:mail.message.subtype,description:sale_subscription.subtype_state_change
 msgid "Subscription state has changed"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_portal_content_inherit
+msgid "Subscription:"
 msgstr ""
 
 #. module: sale_subscription
@@ -3379,18 +3661,15 @@ msgid "Subscription: Rating Request"
 msgstr "Suscripción: Solicitud de valoración"
 
 #. module: sale_subscription
-#: model:mail.template,name:sale_subscription.mail_template_subscription_invoice
-msgid "Subscription: Subscription Invoice"
-msgstr "Suscripción: Factura de suscripción"
-
-#. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order_alert.py:0
+#: code:addons/sale_subscription/models/sale_subscription_plan.py:0
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action_filtered
 #: model:ir.model.fields,field_description:sale_subscription.field_account_analytic_account__subscription_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_res_partner__subscription_count
 #: model:ir.model.fields,field_description:sale_subscription.field_res_users__subscription_count
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__active_subs_count
 #: model:ir.module.category,name:sale_subscription.module_category_subscription_management
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_action
@@ -3424,7 +3703,8 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Subscriptions that are not assigned to an account manager."
-msgstr "Suscripciones que no se hallan asignadas a un administrador de cuentas."
+msgstr ""
+"Suscripciones que no se hallan asignadas a un administrador de cuentas."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_analysis_view_tree
@@ -3437,24 +3717,9 @@ msgid "Sum of Yearly Recurring Revenue"
 msgstr "Suma del ingreso anual recurrente"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_summary
-msgid "Summary"
-msgstr "Resumen"
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__crud_model_id
-msgid "Target Model"
-msgstr "Modelo de objetivo"
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__crud_model_name
-msgid "Target Model Name"
-msgstr "Nombre del modelo destino"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Taxes"
-msgstr "Impuestos"
+#: model:base.automation,name:sale_subscription.subscription_alert_percent_revenue_base_automation
+msgid "Take action on less satisfied clients"
+msgstr "Contactar a los clientes menos satisfechos"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__team_user_id
@@ -3462,14 +3727,25 @@ msgid "Team Leader"
 msgstr "Líder del equipo"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
 msgid "Tell us, why are you leaving?"
 msgstr ""
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_log_report_search
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
+msgid "Template"
+msgstr "Plantilla"
+
+#. module: sale_subscription
 #: model:mail.template,description:sale_subscription.mail_template_subscription_alert
-msgid "Template to be used on customized alerts for subscriptions requiring attention"
-msgstr "Plantilla que se utilizará en las alertas personalizadas para las suscripciones que requieran atención"
+msgid ""
+"Template to be used on customized alerts for subscriptions requiring "
+"attention"
+msgstr ""
+"Plantilla que se utilizará en las alertas personalizadas para las "
+"suscripciones que requieran atención"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_template_action
@@ -3483,19 +3759,11 @@ msgstr ""
 "los términos y condiciones de la suscripción definitiva."
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_line__temporal_type
-msgid "Temporal Type"
-msgstr "Tipo temporal"
-
-#. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.email_payment_close
-msgid "Termination of subscription {{ object.client_order_ref or object.name }}"
-msgstr "Finalización de la suscripción {{ object.client_order_ref or object.name }}"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Terms and Conditions"
-msgstr "Términos y condiciones"
+msgid ""
+"Termination of subscription {{ object.client_order_ref or object.name }}"
+msgstr ""
+"Finalización de la suscripción {{ object.client_order_ref or object.name }}"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_account_move_line__subscription_mrr
@@ -3510,55 +3778,84 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trigger_field_ids
-msgid "The action will be triggered if and only if one of these fields is updated. If empty, all fields are watched."
-msgstr "Solo se activará la acción si se actualiza uno de estos campos. Si está vacío, se verán todos los campos."
+msgid ""
+"The automation rule will be triggered if and only if one of these fields is "
+"updated.If empty, all fields are watched."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_subscription_pricing.py:0
+#, python-format
+msgid "The company of the plan is different from the company of the pricelist"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.constraint,message:sale_subscription.constraint_sale_order_template_check_duration_value
+msgid "The duration can't be negative or 0."
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__first_contract_date
-msgid "The first contract date is the start date of the first contract of the sequence. It is common across a subscription and its renewals."
+msgid ""
+"The first contract date is the start date of the first contract of the "
+"sequence. It is common across a subscription and its renewals."
 msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
-msgid "The following recurring orders have draft invoices. Please Confirm them or cancel them before creating new invoices. %s."
+msgid ""
+"The following recurring orders have draft invoices. Please Confirm them or "
+"cancel them before creating new invoices. %s."
 msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/account_move.py:0
 #, python-format
-msgid "The following refund %s has been made on this contract. Please check the next invoice date if necessary."
+msgid ""
+"The following refund %s has been made on this contract. Please check the "
+"next invoice date if necessary."
 msgstr ""
-
-#. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__website_url
-msgid "The full URL to access the server action through the website."
-msgstr "URL completa para acceder a la acción de servidor a través del sitio web."
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
-msgid "The last invoice (%s) of this subscription is unpaid after the due date."
+msgid ""
+"The last invoice (%s) of this subscription is unpaid after the due date."
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_order__pending_transaction
+msgid "The last transaction of the order is currently pending"
 msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.constraint,message:sale_subscription.constraint_sale_order_check_start_date_lower_next_invoice_date
 msgid "The next invoice date of a sale order should be after its start date."
-msgstr "La siguiente fecha de facturación de una orden de venta debe ser posterior a su fecha de inicio."
+msgstr ""
+"La siguiente fecha de facturación de una orden de venta debe ser posterior a"
+" su fecha de inicio."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__next_invoice_date
-msgid "The next invoice will be created on this date then the period will be extended."
-msgstr "La próxima factura se creará en dicha fecha y su periodo de validez se verá extendido."
+msgid ""
+"The next invoice will be created on this date then the period will be "
+"extended."
+msgstr ""
+"La próxima factura se creará en dicha fecha y su periodo de validez se verá "
+"extendido."
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order_close_reason.py:0
 #, python-format
-msgid "The reason %s is required by the Subscription application and cannot be deleted."
+msgid ""
+"The reason %s is required by the Subscription application and cannot be "
+"deleted."
 msgstr ""
 
 #. module: sale_subscription
@@ -3580,13 +3877,18 @@ msgstr "Se ha cancelado la renovación %s."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
-msgid "The scheduled action for alerts has been deleted. Update the Subscriptions module to re-create it."
-msgstr "Se ha eliminado la acción programada para las alertas. Actualice el módulo de suscripciones para volver a crearla."
+msgid ""
+"The scheduled action for alerts has been deleted. Update the Subscriptions "
+"module to re-create it."
+msgstr ""
+"Se ha eliminado la acción programada para las alertas. Actualice el módulo "
+"de suscripciones para volver a crearla."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__start_date
 msgid "The start date indicate when the subscription periods begin."
-msgstr "La fecha de inicio indica cuándo comienzan los periodos de suscripción."
+msgstr ""
+"La fecha de inicio indica cuándo comienzan los periodos de suscripción."
 
 #. module: sale_subscription
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_renew
@@ -3597,13 +3899,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_form
 msgid "The text to display on the call to action"
 msgstr ""
-
-#. module: sale_subscription
-#. odoo-python
-#: code:addons/sale_subscription/models/sale_order_line.py:0
-#, python-format
-msgid "The time unit cannot be used. Please chose one of these unit: %s."
-msgstr "No se puede utilizar la unidad de tiempo. Seleccione una de estas unidades: %s."
 
 #. module: sale_subscription
 #. odoo-python
@@ -3620,20 +3915,59 @@ msgid "The upsell %s has been confirmed."
 msgstr ""
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
+msgid "There is a"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
+msgid "There is an"
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_subscription_pricing.py:0
+#, python-format
+msgid "There is multiple pricings for an unique product, plan and pricelist."
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
-msgid "This bar allows to filter the opportunities based on scheduled activities."
-msgstr "Esta barra permite filtrar las oportunidades basado en las actividades agendadas."
+msgid ""
+"This bar allows to filter the opportunities based on scheduled activities."
+msgstr ""
+"Esta barra permite filtrar las oportunidades basado en las actividades "
+"agendadas."
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__record_getter
+msgid ""
+"This code will be run to find on which record the automation rule should be "
+"run."
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_form
-msgid "This message will be displayed to convince the customer to stay (e.g., We don't want you to leave, can we offer to schedule a meeting with your account manager?)"
+msgid ""
+"This message will be displayed to convince the customer to stay (e.g., We "
+"don't want you to leave, can we offer to schedule a meeting with your "
+"account manager?)"
 msgstr ""
 
 #. module: sale_subscription
 #. odoo-javascript
-#: code:addons/sale_subscription/static/src/js/manage_form.js:0
+#: code:addons/sale_subscription/static/src/xml/payment_form_templates.xml:0
 #, python-format
-msgid "This payment method cannot be removed as it is currently linked to the following active subscriptions:"
+msgid ""
+"This payment method cannot be deleted, because it is currently linked to the\n"
+"                following active subscriptions:"
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/controllers/portal.py:0
+#, python-format
+msgid "This subscription has a pending payment transaction."
 msgstr ""
 
 #. module: sale_subscription
@@ -3655,8 +3989,13 @@ msgstr "Esta orden de venta adicional se creó desde la suscripción"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
-msgid "This will trigger the action on all linked subsccriptions, regardless of possible timed conditions. Are you sure you want to proceed?"
-msgstr "Esto activará la acción en todas las suscripciones vinculadas, independientemente de las posibles condiciones de tiempo. ¿Está seguro de que quiere continuar?"
+msgid ""
+"This will trigger the action on all linked subsccriptions, regardless of "
+"possible timed conditions. Are you sure you want to proceed?"
+msgstr ""
+"Esto activará la acción en todas las suscripciones vinculadas, "
+"independientemente de las posibles condiciones de tiempo. ¿Está seguro de "
+"que quiere continuar?"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__trigger_condition__on_time
@@ -3664,18 +4003,24 @@ msgid "Timed Condition"
 msgstr "Condición de tiempo"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_summary
+msgid "Title"
+msgstr "Título"
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "To Invoice"
-msgstr ""
+msgstr "A facturar"
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/controllers/portal.py:0
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action_pending
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_pending
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 #, python-format
 msgid "To Renew"
-msgstr "Para renovar"
+msgstr "A renovar"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
@@ -3699,6 +4044,11 @@ msgid "Total Non Recurring Revenue"
 msgstr ""
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_portal_content_inherit
+msgid "Total Quantity"
+msgstr "Cantidad total"
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__recurring_total
 msgid "Total Recurring"
 msgstr ""
@@ -3720,6 +4070,16 @@ msgid "Trigger Date"
 msgstr "Fecha activación"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_selection_field_id
+msgid "Trigger Field"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_field_ref_model_name
+msgid "Trigger Field Model"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trigger_field_ids
 msgid "Trigger Fields"
 msgstr "Campos de activación"
@@ -3735,13 +4095,29 @@ msgid "Trigger On"
 msgstr "Activar en"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_field_ref
+msgid "Trigger Reference"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_field_ref_display_name
+msgid "Trigger Reference Display Name"
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_alert_action
-msgid "Trigger alerts for salespersons or customers: churn, invoice not paid, upsell, etc."
-msgstr "Active alertas para vendedores o clientes: cancelación, facturas no pagadas, ventas adicionales, etc."
+msgid ""
+"Trigger alerts for salespersons or customers: churn, invoice not paid, "
+"upsell, etc."
+msgstr ""
+"Active alertas para vendedores o clientes: cancelación, facturas no pagadas,"
+" ventas adicionales, etc."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_close_reason__retention_message
-msgid "Try to prevent customers from leaving and closing their subscriptions, thanks to a catchy message and a call to action."
+msgid ""
+"Try to prevent customers from leaving and closing their subscriptions, "
+"thanks to a catchy message and a call to action."
 msgstr ""
 
 #. module: sale_subscription
@@ -3751,37 +4127,14 @@ msgid "Type of event"
 msgstr "Tipo de evento"
 
 #. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__state
-msgid ""
-"Type of server action. The following values are available:\n"
-"- 'Execute Python Code': a block of python code that will be executed\n"
-"- 'Create a new Record': create a new record with new values\n"
-"- 'Update a Record': update the values of a record\n"
-"- 'Execute several actions': define an action that triggers several other server actions\n"
-"- 'Send Email': post a message, a note or send an email (Discuss)\n"
-"- 'Add Followers': add followers to a record (Discuss)\n"
-"- 'Create Next Activity': create an activity (Discuss)\n"
-"- 'Send SMS Text Message': send SMS, log them on documents (SMS)"
-msgstr ""
-"Tipo de acción del servidor. Estos son los valores disponibles:\n"
-"- 'Ejecutar código Python': un bloque de código Python que se ejecutará\n"
-"- 'Crear un nuevo registro': crear un nuevo registro con nuevos valores\n"
-"- 'Actualizar registro': Actualizar los valores de un registro\n"
-"- 'Ejecutar varias acciones': definir una acción que active muchas otras acciones\n"
-"- 'Enviar correo electrónico': publicar un mensaje/nota o enviar un correo (Conversaciones)\n"
-"- 'Agregar seguidores': agregar seguidores a un registro (Conversaciones)\n"
-"- 'Crear siguiente actividad': crear una actividad (Conversaciones)\n"
-"- 'Enviar mensaje SMS': enviar mensajes SMS y registrarlos en documentos (SMS)"
-
-#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Unassigned"
 msgstr "No asignado"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Unit Price"
-msgstr "Precio unitario"
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_plan__billing_period_unit
+msgid "Unit"
+msgstr "Unidad"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__product_uom
@@ -3791,7 +4144,7 @@ msgstr "Unidad de medida"
 #. module: sale_subscription
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_unknown
 msgid "Unknown"
-msgstr ""
+msgstr "Desconocido"
 
 #. module: sale_subscription
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_unpaid_subscription
@@ -3799,7 +4152,7 @@ msgid "Unpaid subscription"
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_template__auto_close_limit
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_plan__auto_close_limit
 msgid ""
 "Unpaid subscription after the due date majored by this number of days will be automatically closed by the subscriptions expiration scheduled action. \n"
 "If the chosen payment method has failed to renew the subscription after this time, the subscription is automatically closed."
@@ -3808,17 +4161,17 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__untaxed_amount_invoiced
 msgid "Untaxed Amount Invoiced"
-msgstr ""
+msgstr "Base imponible facturada"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__untaxed_amount_to_invoice
 msgid "Untaxed Amount To Invoice"
-msgstr ""
+msgstr "Base imponible a facturar"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__price_subtotal
 msgid "Untaxed Total"
-msgstr ""
+msgstr "Base imponible"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
@@ -3826,7 +4179,13 @@ msgid "Untaxed Total:"
 msgstr "Total sin impuestos:"
 
 #. module: sale_subscription
+#: model:base.automation,name:sale_subscription.subscription_alert_bad_health_base_automation
+msgid "Update health value according to MRR"
+msgstr ""
+
+#. module: sale_subscription
 #. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
 #: code:addons/sale_subscription/models/sale_order.py:0
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__subscription_state__7_upsell
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__subscription_state__7_upsell
@@ -3863,24 +4222,14 @@ msgid "Upsells"
 msgstr "Ventas adicionales"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__usage
-msgid "Usage"
-msgstr "Uso"
-
-#. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__activity_user_type
-msgid "Use 'Specific User' to always assign the same user on the next activity. Use 'Generic User From Record' to specify the field name of the user to choose on the record."
-msgstr "Use 'Usuario específico' para asignar siempre el mismo usuario en la siguiente actividad. Use 'Usuario genérico del registro' para especificar el nombre del campo del usuario para elegir en el registro."
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__url
+msgid "Url"
+msgstr "URL"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_calendar_id
 msgid "Use Calendar"
 msgstr "Usar calendario"
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
-msgid "Use employee work schedule"
-msgstr "Usar el calendario de trabajo del empleado"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_filtered
@@ -3894,24 +4243,9 @@ msgstr ""
 " las alertas de renovación de las suscripciones al comercial apropiado."
 
 #. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
-msgid "Use the user's working schedule."
-msgstr "Usar el calendario de trabajo del usuario"
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_user_field_name
-msgid "User field name"
-msgstr "Nombre del campo de usuario"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
 msgid "Valid Until:"
 msgstr "Válido hasta:"
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__fields_lines
-msgid "Value Mapping"
-msgstr "Mapeo de valores"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_close_reason__visible_in_portal
@@ -3921,18 +4255,15 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__volume
 msgid "Volume"
-msgstr ""
+msgstr "Volumen"
 
 #. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
-msgid "Want recurring billing via subscription management? Get started by clicking here"
-msgstr ""
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__warehouse_id
-msgid "Warehouse"
+msgid ""
+"Want recurring billing via subscription management? Get started by clicking "
+"here"
 msgstr ""
 
 #. module: sale_subscription
@@ -3944,7 +4275,7 @@ msgstr "Alerta"
 
 #. module: sale_subscription
 #. odoo-javascript
-#: code:addons/sale_subscription/static/src/js/manage_form.js:0
+#: code:addons/sale_subscription/static/src/js/payment_form.js:0
 #, python-format
 msgid "Warning!"
 msgstr "¡Alerta!"
@@ -3955,7 +4286,7 @@ msgid "We are sorry to hear that."
 msgstr ""
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
 msgid "We are sorry to see you go."
 msgstr ""
 
@@ -3965,34 +4296,36 @@ msgid "We don't want you to leave us like this."
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order__website_message_ids
-msgid "Website Messages"
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__webhook_uuid
+msgid "Webhook UUID"
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__website_path
-msgid "Website Path"
-msgstr "Ruta del sitio web"
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__website_id
+msgid "Website"
+msgstr "Sitio web"
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__website_url
-msgid "Website Url"
-msgstr "URL del lloc web"
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order__website_message_ids
+msgid "Website Messages"
+msgstr "Mensajes del sitio web"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Historial de comunicaciones del sitio web"
+
+#. module: sale_subscription
+#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_plan__billing_period_unit__week
+msgid "Weeks"
+msgstr "Semanas"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_calendar_id
-msgid "When calculating a day-based timed condition, it is possible to use a calendar to compute the date based on working days."
-msgstr "Cuando se calcula una condición de tiempo basada en días, se puede utilizar un calendario para calcular la fecha basada en días laborables."
-
-#. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__sequence
-msgid "When dealing with multiple actions, the execution order is based on the sequence. Low number means high priority."
-msgstr "Cuando se lidia con múltiples acciones, el orden de ejecución se basa en la secuencia. Números bajos significan mayor prioridad."
+msgid ""
+"When calculating a day-based timed condition, it is possibleto use a "
+"calendar to compute the date based on working days."
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_id
@@ -4006,7 +4339,8 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__active
 msgid "When unchecked, the rule is hidden and will not be executed."
-msgstr "Si no está marcado, la regla está oculta y no se ejecutará."
+msgstr ""
+"Si no se encuentra seleccionado, la regla está oculta y no se ejecutará."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__starred
@@ -4014,9 +4348,9 @@ msgid "Whether this subscription should be displayed on the dashboard or not"
 msgstr "Si esta suscripción debe mostrarse en el tablero o no"
 
 #. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__code
-msgid "Write Python code that the action will execute. Some variables are available for use; help about python expression is given in the help tab."
-msgstr "Escribe el código de Python que ejecutará la acción. Algunas variables están disponibles para su uso; La ayuda sobre la expresión de Python se encuentra en la pestaña de ayuda."
+#: model:sale.subscription.plan,name:sale_subscription.subscription_plan_year
+msgid "Yearly"
+msgstr "Anualmente"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_yearly
@@ -4024,12 +4358,13 @@ msgid "Yearly Recurring"
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__recurring_rule_type__year
+#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__duration_unit__year
+#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_plan__billing_period_unit__year
 msgid "Years"
 msgstr "Años"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
 msgid "You are about to permanently close a subscription that is valid until"
 msgstr ""
 
@@ -4037,42 +4372,77 @@ msgstr ""
 #. odoo-python
 #: code:addons/sale_subscription/models/product.py:0
 #, python-format
-msgid "You can not change the recurring property of this product because it has been sold already as a subscription."
+msgid ""
+"You can not change the recurring property of this product because it has "
+"been sold already."
 msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
-msgid "You can not delete a confirmed subscription. You must first close and cancel it before you can delete it."
+msgid ""
+"You can not delete a confirmed subscription. You must first close and cancel"
+" it before you can delete it."
 msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
-#, python-format
-msgid "You can not upsell or renew a subscription that has not been invoiced yet. Please, update directly the %s contract or invoice it first."
-msgstr ""
-
-#. module: sale_subscription
-#. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
-msgid "You can not upsell or upsell a subscription that has not been invoiced yet. Please, update directly the %s contract or invoice it first."
+msgid ""
+"You can not upsell or renew a subscription that has not been invoiced yet. "
+"Please, update directly the %s contract or invoice it first."
 msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/res_partner.py:0
 #, python-format
-msgid "You can't archive the partner as it is used in the following recurring orders: %s"
-msgstr "No se puede archivar el partner ya que se utiliza en las siguientes órdenes recurrentes: %s"
+msgid ""
+"You can't archive the partner as it is used in the following recurring "
+"orders: %s"
+msgstr ""
+"No se puede archivar el partner ya que se utiliza en las siguientes órdenes "
+"recurrentes: %s"
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid "You cannot cancel a subscription that has been invoiced."
+msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/wizard/sale_subscription_change_customer_wizard.py:0
 #, python-format
 msgid "You cannot change the customer of non recurring sale order."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"You cannot create an upsell for this subscription because it :\n"
+" - Has not started yet.\n"
+" - Has no invoiced period in the future."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid "You cannot renew a contract that already has an active subscription. "
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid "You cannot renew a subscription that has been renewed. "
 msgstr ""
 
 #. module: sale_subscription
@@ -4086,27 +4456,57 @@ msgstr ""
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
-msgid "You cannot save a sale order with a recurrence and no recurring product."
-msgstr "No puede guardar una orden de venta con una recurrencia sin un producto recurrente."
+msgid ""
+"You cannot save a sale order with a subscription plan and no recurring "
+"product."
+msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
-msgid "You cannot save a sale order with recurring product and no recurrence."
-msgstr "No puede guardar una orden de venta con un producto recurrente y sin recurrencia."
+msgid ""
+"You cannot save a sale order with recurring product and no subscription "
+"plan."
+msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
-msgid "You cannot set to draft a canceled quotation linked to invoiced subscriptions. Please create a new quotation."
-msgstr "No se puede mover a borrador una cotización cancelada que esté vinculada a las suscripciones facturadas. Cree una nueva cotización."
+msgid ""
+"You cannot send a sale order with a subscription plan and no recurring "
+"product."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"You cannot send a sale order with recurring product and no subscription "
+"plan."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"You cannot set to draft a canceled quotation linked to invoiced "
+"subscriptions. Please create a new quotation."
+msgstr ""
+"No se puede mover a borrador una cotización cancelada que esté vinculada a "
+"las suscripciones facturadas. Cree una nueva cotización."
 
 #. module: sale_subscription
 #: model:ir.model.constraint,message:sale_subscription.constraint_sale_order_sale_subscription_state_coherence
-msgid "You cannot set to draft a confirmed subscription. Please create a new quotation"
-msgstr "No se puede mover a borrador una suscripción confirmada. Cree una nueva cotización."
+msgid ""
+"You cannot set to draft a confirmed subscription. Please create a new "
+"quotation"
+msgstr ""
+"No se puede mover a borrador una suscripción confirmada. Cree una nueva "
+"cotización."
 
 #. module: sale_subscription
 #. odoo-python
@@ -4119,8 +4519,22 @@ msgstr ""
 #. odoo-python
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
-msgid "You cannot validate a renewal quotation starting before the next invoice date of the parent contract. Please update the start date after the %s."
+msgid ""
+"You cannot upsell a subscription whose next invoice date is in the past.\n"
+"Please, invoice directly the %s contract."
 msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"You cannot validate a renewal quotation starting before the next invoice "
+"date of the parent contract. Please update the start date after the %s."
+msgstr ""
+"No se puede validar una cotización de renovación que comience antes de la "
+"siguiente fecha de facturación de acuerdo con el contrato principal. "
+"Actualice la fecha de inicio para antes del %s."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
@@ -4128,7 +4542,7 @@ msgid "You don't have any subscriptions yet."
 msgstr "No tiene todavía ninguna suscripción."
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_sidebar
 msgid "You must be logged in to manage your payment methods."
 msgstr "Debe estar conectado para gestionar sus métodos de pago."
 
@@ -4137,42 +4551,51 @@ msgstr "Debe estar conectado para gestionar sus métodos de pago."
 msgid ""
 "You must define a product for everything you sell or purchase,\n"
 "                whether it's a storable product, a consumable or a service."
-msgstr "Debe definir un producto para todo lo que vende o compra, ya sea un producto almacenable, un consumible o un servicio."
+msgstr ""
+"Debe definir un producto para todo lo que vende o compra, ya sea un producto"
+" almacenable, un consumible o un servicio."
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending
-msgid "You will find here the subscriptions to be renewed (end date is close or passed)"
-msgstr "Aquí encontrará las suscripciones a renovar (la fecha de finalización está cerca o ya pasó)"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Your Details"
-msgstr "Sus detalles"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Your Plan"
-msgstr "Su plan"
+msgid ""
+"You will find here the subscriptions to be renewed (end date is close or "
+"passed)"
+msgstr ""
+"Aquí encontrará las suscripciones a renovar (la fecha de finalización está "
+"cerca o ya pasó)"
 
 #. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Your contract is recurrent"
-msgstr ""
+msgstr "Tu contrato es recurrente"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.payment_checkout_inherit
+#: model_terms:ir.ui.view,arch_db:sale_subscription.payment_method_form
 msgid "Your payment details will be saved for automatic renewals."
 msgstr ""
+"Los detalles de tu pago serán guardados para renovaciones automáticas."
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
+msgid "Your payment made on the"
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/controllers/portal.py:0
+#, python-format
+msgid "Your payment method has been changed for this subscription."
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
 msgid "Your subscription is closed."
 msgstr "Su suscripción está cerrada."
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
 msgid "Your subscription is expired, will be closed soon."
 msgstr ""
 
@@ -4192,9 +4615,9 @@ msgid "button text"
 msgstr ""
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
-msgid "days after due date"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
+msgid "contact us"
+msgstr "contáctenos"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -4212,6 +4635,19 @@ msgid "greater than"
 msgstr "mayor que"
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
+msgid "if there is a problem or an emergency."
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
+msgid ""
+"is pending.\n"
+"                        Your subscription will be renewed as soon as it is confirmed.<br/>\n"
+"                        Don't hesitate to"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__rating_operator__<
 msgid "less than"
 msgstr "menor que"
@@ -4227,33 +4663,107 @@ msgid "message"
 msgstr ""
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
 msgid "missing payments (from"
 msgstr "los impagos (de"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
-msgid "prices"
-msgstr "precios"
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_plan_view_search
+msgid "name"
+msgstr "nombre"
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_subscription_plan.py:0
+#, python-format
+msgid "per %d months"
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_subscription_plan.py:0
+#, python-format
+msgid "per %d weeks"
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_subscription_plan.py:0
+#, python-format
+msgid "per %d years"
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_subscription_plan.py:0
+#, python-format
+msgid "per month"
+msgstr "por mes"
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_subscription_plan.py:0
+#, python-format
+msgid "per week"
+msgstr "por semana"
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_subscription_plan.py:0
+#, python-format
+msgid "per year"
+msgstr "por año"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
+msgid "quotation and"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
+msgid ""
+"quotation existing for this subscription, please confirm it or reject it."
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
+msgid ""
+"quotation existing for this subscription, please confirm them or reject "
+"them."
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
+msgid "renewal"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
 msgid "to this day) will be automatically processed."
 msgstr "hasta el presente día) se procesarán automáticamente."
 
 #. module: sale_subscription
-#: model:mail.template,subject:sale_subscription.mail_template_subscription_invoice
-msgid "{{ object.company_id.name }} Invoice (Ref {{ object.name or 'n/a' }})"
-msgstr "{{ object.company_id.name }} Factura (Ref {{ object.name or 'n/a' }})"
-
-#. module: sale_subscription
-#: model:sms.template,body:sale_subscription.sms_template_data_payment_failure
-msgid "{{ object.company_id.name }}: Our final attempt to process a payment for your subscription failed. As your payment should have been made on {{ object.next_invoice_date }}, your subscription has been terminated."
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_template
+msgid "upsell"
 msgstr ""
 
 #. module: sale_subscription
+#: model:sms.template,body:sale_subscription.sms_template_data_payment_failure
+msgid ""
+"{{ object.company_id.name }}: Our final attempt to process a payment for "
+"your subscription failed. As your payment should have been made on {{ "
+"object.next_invoice_date }}, your subscription has been terminated."
+msgstr ""
+"{{ object.company_id.name }}: Nuestro último intento de procesar el pago "
+"para tu suscripción falló. En vista de que tu pago tuvo que haber sido "
+"realizado el {{ object.next_invoice_date }}, tu suscripción ha sido "
+"cancelada."
+
+#. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_alert
-msgid "{{ object.company_id.name }}: Please check the subscription {{ object.name }}"
+msgid ""
+"{{ object.company_id.name }}: Please check the subscription {{ object.name "
+"}}"
 msgstr "{{ object.company_id.name }}: Revise la suscripción {{ object.name }}"
 
 #. module: sale_subscription
@@ -4263,10 +4773,24 @@ msgstr "{{ object.company_id.name }}: Solicitud de valoración del servicio"
 
 #. module: sale_subscription
 #: model:sms.template,body:sale_subscription.sms_template_data_payment_reminder
-msgid "{{ object.company_id.name }}: We were unable to process a payment for your subscription. Your subscription {{ object.name }} is still valid but will be suspended on {{ object.next_invoice_date }} unless the payment succeeds in the meantime."
+msgid ""
+"{{ object.company_id.name }}: We were unable to process a payment for your "
+"subscription. Your subscription {{ object.name }} is still valid but will be"
+" suspended on {{ object.next_invoice_date }} unless the payment succeeds in "
+"the meantime."
 msgstr ""
+"{{ object.company_id.name }}: No pudimos procesar el pago para tu "
+"suscripçión. Tu suscripción {{ object.name }} todavía es válida pero será "
+"suspendida el {{ object.next_invoice_date }} a menos de que el pago sea "
+"realizado exitosamente antes de dicha fecha."
 
 #. module: sale_subscription
 #: model:sms.template,body:sale_subscription.sms_template_data_default_alert
-msgid "{{ object.company_id.name }}: Your subscription {{ object.name }} needs your attention. If you have some concerns about it, please contact {{ object.user_id.name }}, your contact person."
-msgstr "{{ object.company_id.name }}: Su suscripción {{ object.name }} requiere su atención. Si tiene alguna duda al respecto, póngase en contacto con {{ object.user_id.name }}, su persona de contacto."
+msgid ""
+"{{ object.company_id.name }}: Your subscription {{ object.name }} needs your"
+" attention. If you have some concerns about it, please contact {{ "
+"object.user_id.name }}, your contact person."
+msgstr ""
+"{{ object.company_id.name }}: Su suscripción {{ object.name }} requiere su "
+"atención. Si tiene alguna duda al respecto, póngase en contacto con {{ "
+"object.user_id.name }}, su persona de contacto."

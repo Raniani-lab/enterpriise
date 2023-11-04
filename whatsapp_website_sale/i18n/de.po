@@ -22,12 +22,12 @@ msgstr ""
 #. module: whatsapp_website_sale
 #: model:ir.model,name:whatsapp_website_sale.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Konfigurationseinstellungen"
 
 #. module: whatsapp_website_sale
 #: model:ir.model,name:whatsapp_website_sale.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Verkaufsauftrag"
 
 #. module: whatsapp_website_sale
 #: model_terms:ir.ui.view,arch_db:whatsapp_website_sale.res_config_settings_view_form
@@ -43,7 +43,7 @@ msgstr "WA-Verkaufsvorlage"
 #. module: whatsapp_website_sale
 #: model:ir.model,name:whatsapp_website_sale.model_website
 msgid "Website"
-msgstr ""
+msgstr "Website"
 
 #. module: whatsapp_website_sale
 #: model_terms:ir.ui.view,arch_db:whatsapp_website_sale.res_config_settings_view_form

@@ -1,23 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery_bpost
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
-#
+# Wil Odoo, 2023
+# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2023\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
-"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: delivery_bpost
@@ -190,7 +190,7 @@ msgstr "开发者令牌"
 #: code:addons/delivery_bpost/models/bpost_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr "请至少提供一个发货项目"
+msgstr "请提供至少一件要运送的物品。"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__delivery_type
@@ -202,14 +202,14 @@ msgstr "物流商"
 #: code:addons/delivery_bpost/models/delivery_bpost.py:0
 #, python-format
 msgid "Return labels created into bpost"
-msgstr ""
+msgstr "在 bpost 中创建退货标签"
 
 #. module: delivery_bpost
 #. odoo-python
 #: code:addons/delivery_bpost/models/delivery_bpost.py:0
 #, python-format
 msgid "Return shipment created into bpost"
-msgstr ""
+msgstr "向 bpost 创建退件"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_parcel_return_instructions__rta
@@ -238,7 +238,7 @@ msgstr "运输#%s已取消"
 #: code:addons/delivery_bpost/models/delivery_bpost.py:0
 #, python-format
 msgid "Shipment created into bpost"
-msgstr ""
+msgstr "在 bpost 中创建快件"
 
 #. module: delivery_bpost
 #: model:ir.model,name:delivery_bpost.model_delivery_carrier
@@ -270,7 +270,9 @@ msgstr "您公司或仓库的地址有误(缺少字段%s)"
 #. odoo-python
 #: code:addons/delivery_bpost/models/bpost_request.py:0
 #, python-format
-msgid "The estimated shipping price cannot be computed because all your products are service."
+msgid ""
+"The estimated shipping price cannot be computed because all your products "
+"are service."
 msgstr "因为你的所有产品都是服务，所以无法计算出估计的运输价格。"
 
 #. module: delivery_bpost
@@ -300,21 +302,21 @@ msgstr ""
 #: code:addons/delivery_bpost/models/delivery_bpost.py:0
 #, python-format
 msgid "Tracking Links"
-msgstr ""
+msgstr "跟踪链接"
 
 #. module: delivery_bpost
 #. odoo-python
 #: code:addons/delivery_bpost/models/delivery_bpost.py:0
 #, python-format
 msgid "Tracking Number:"
-msgstr ""
+msgstr "追踪号码："
 
 #. module: delivery_bpost
 #. odoo-python
 #: code:addons/delivery_bpost/models/delivery_bpost.py:0
 #, python-format
 msgid "Tracking Numbers:"
-msgstr ""
+msgstr "追踪号码："
 
 #. module: delivery_bpost
 #. odoo-python
@@ -380,14 +382,18 @@ msgstr "bpost 默认包类型"
 #. odoo-python
 #: code:addons/delivery_bpost/models/bpost_request.py:0
 #, python-format
-msgid "bpost Domestic is used only to ship inside Belgium. Please change the delivery method into bpost International."
+msgid ""
+"bpost Domestic is used only to ship inside Belgium. Please change the "
+"delivery method into bpost International."
 msgstr "Bpost国内仅用于在比利时境内运输。请更改运输方式为Bpost国际。"
 
 #. module: delivery_bpost
 #. odoo-python
 #: code:addons/delivery_bpost/models/bpost_request.py:0
 #, python-format
-msgid "bpost International is used only to ship outside Belgium. Please change the delivery method into bpost Domestic."
+msgid ""
+"bpost International is used only to ship outside Belgium. Please change the "
+"delivery method into bpost Domestic."
 msgstr "Bpost国际仅用于在比利时境外运输。请更改运输方式为Bpost国内。"
 
 #. module: delivery_bpost
@@ -401,4 +407,4 @@ msgstr "比利时邮政运输方式"
 #: code:addons/delivery_bpost/models/bpost_request.py:0
 #, python-format
 msgid "bpost did not return prices for this destination country."
-msgstr "Bpost未能返回此目标国家的价格"
+msgstr "bpost 没有返回该目的地国家的价格。"

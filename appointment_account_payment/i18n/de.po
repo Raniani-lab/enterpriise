@@ -101,7 +101,7 @@ msgstr ""
 #. module: appointment_account_payment
 #: model_terms:ir.ui.view,arch_db:appointment_account_payment.appointment_payment
 msgid ""
-"<strong>Warning</strong> Make sure your are logged in as the right partner "
+"<strong>Warning</strong> Make sure you are logged in as the right partner "
 "before making this payment."
 msgstr ""
 "<strong>Warnung</strong> Stellen Sie sicher, dass Sie als der richtige "
@@ -158,22 +158,22 @@ msgstr "Termin"
 #. module: appointment_account_payment
 #: model:ir.model,name:appointment_account_payment.model_appointment_answer_input
 msgid "Appointment Answer Inputs"
-msgstr ""
+msgstr "Antworteingaben für Termin"
 
 #. module: appointment_account_payment
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking__appointment_answer_input_ids
 msgid "Appointment Answers"
-msgstr ""
+msgstr "Antworten für Termin"
 
 #. module: appointment_account_payment
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking__appointment_invite_id
 msgid "Appointment Invite"
-msgstr ""
+msgstr "Termineinladung"
 
 #. module: appointment_account_payment
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking__account_move_id
 msgid "Appointment Invoice"
-msgstr ""
+msgstr "Terminrechnung"
 
 #. module: appointment_account_payment
 #: model:ir.model,name:appointment_account_payment.model_appointment_type
@@ -257,7 +257,7 @@ msgstr "Beschreibung"
 #. module: appointment_account_payment
 #: model_terms:ir.ui.view,arch_db:appointment_account_payment.calendar_booking_view
 msgid "Details"
-msgstr ""
+msgstr "Details"
 
 #. module: appointment_account_payment
 #: model_terms:appointment.type,message_intro:appointment_account_payment.appointment_type_online_cooking_lesson
@@ -272,61 +272,61 @@ msgstr ""
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking__display_name
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking_line__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Anzeigename"
 
 #. module: appointment_account_payment
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking__duration
 #: model_terms:ir.ui.view,arch_db:appointment_account_payment.calendar_booking_view
 msgid "Duration"
-msgstr ""
+msgstr "Dauer"
 
 #. module: appointment_account_payment
 #: model_terms:ir.ui.view,arch_db:appointment_account_payment.calendar_booking_view
 msgid "For"
-msgstr ""
+msgstr "Für"
 
 #. module: appointment_account_payment
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking__guest_ids
 msgid "Guests"
-msgstr ""
+msgstr "Gäste"
 
 #. module: appointment_account_payment
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking__id
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking_line__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: appointment_account_payment
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking__not_available
 msgid "Is Not Available"
-msgstr ""
+msgstr "Ist nicht verfügbar"
 
 #. module: appointment_account_payment
 #: model:ir.model,name:appointment_account_payment.model_account_move
 msgid "Journal Entry"
-msgstr ""
+msgstr "Journalbuchung"
 
 #. module: appointment_account_payment
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking__write_uid
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking_line__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Zuletzt aktualisiert von"
 
 #. module: appointment_account_payment
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking__write_date
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking_line__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Zuletzt aktualisiert am"
 
 #. module: appointment_account_payment
 #: model_terms:ir.ui.view,arch_db:appointment_account_payment.calendar_booking_view
 msgid "Location"
-msgstr ""
+msgstr "Standort"
 
 #. module: appointment_account_payment
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking__calendar_event_id
 msgid "Meeting"
-msgstr ""
+msgstr "Meeting"
 
 #. module: appointment_account_payment
 #: model:ir.model,name:appointment_account_payment.model_calendar_booking
@@ -336,23 +336,23 @@ msgstr ""
 #: model:ir.model.fields,field_description:appointment_account_payment.field_appointment_answer_input__calendar_booking_id
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking_line__calendar_booking_id
 msgid "Meeting Booking"
-msgstr ""
+msgstr "Meeting-Buchung"
 
 #. module: appointment_account_payment
 #: model:ir.model,name:appointment_account_payment.model_calendar_booking_line
 msgid "Meeting Resource Booking"
-msgstr ""
+msgstr "Buchung von Meetingressource"
 
 #. module: appointment_account_payment
 #: model:appointment.type,name:appointment_account_payment.appointment_type_online_cooking_lesson
 #: model:product.template,name:appointment_account_payment.product_appointment_type_online_cooking_lesson_product_template
 msgid "Online Cooking Lesson"
-msgstr ""
+msgstr "Online-Kochkurs"
 
 #. module: appointment_account_payment
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking__staff_user_id
 msgid "Operator"
-msgstr ""
+msgstr "Bediener"
 
 #. module: appointment_account_payment
 #: model_terms:ir.ui.view,arch_db:appointment_account_payment.appointment_payment
@@ -362,12 +362,12 @@ msgstr "Zahlung für „"
 #. module: appointment_account_payment
 #: model_terms:ir.ui.view,arch_db:appointment_account_payment.appointment_type_view_form
 msgid "Pick a Product"
-msgstr ""
+msgstr "Ein Produkt auswählen"
 
 #. module: appointment_account_payment
 #: model_terms:ir.ui.view,arch_db:appointment_account_payment.appointment_form
 msgid "Proceed to Payment"
-msgstr ""
+msgstr "Zur Zahlung"
 
 #. module: appointment_account_payment
 #: model:ir.model,name:appointment_account_payment.model_product_template
@@ -380,12 +380,12 @@ msgstr "Produkt"
 #: model:ir.model.fields,field_description:appointment_account_payment.field_product_product__detailed_type
 #: model:ir.model.fields,field_description:appointment_account_payment.field_product_template__detailed_type
 msgid "Product Type"
-msgstr ""
+msgstr "Produktart"
 
 #. module: appointment_account_payment
 #: model:ir.model.fields,help:appointment_account_payment.field_appointment_type__has_payment_step
 msgid "Require visitors to pay to confirm their booking"
-msgstr ""
+msgstr "Besucher zur Zahlung auffordern, um ihre Buchung zu bestätigen"
 
 #. module: appointment_account_payment
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking_line__appointment_resource_id
@@ -401,22 +401,22 @@ msgstr "Ressourcen"
 #. module: appointment_account_payment
 #: model_terms:ir.ui.view,arch_db:appointment_account_payment.calendar_booking_view
 msgid "Schedule another appointment"
-msgstr ""
+msgstr "Einen weiteren Termin planen"
 
 #. module: appointment_account_payment
 #: model_terms:ir.ui.view,arch_db:appointment_account_payment.appointment_payment
 msgid "Service"
-msgstr ""
+msgstr "Service"
 
 #. module: appointment_account_payment
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking__start
 msgid "Start"
-msgstr ""
+msgstr "Start"
 
 #. module: appointment_account_payment
 #: model:ir.model.fields,field_description:appointment_account_payment.field_calendar_booking__stop
 msgid "Stop"
-msgstr ""
+msgstr "Ende"
 
 #. module: appointment_account_payment
 #: model_terms:appointment.type,message_confirmation:appointment_account_payment.appointment_type_online_cooking_lesson
@@ -424,6 +424,8 @@ msgid ""
 "Thank you for your reservation. We will soon contact you to discuss menu "
 "options."
 msgstr ""
+"Vielen Dank für die Reservierung. Wir werden Sie bald kontaktieren, um die "
+"Menüoptionen zu besprechen."
 
 #. module: appointment_account_payment
 #: model:ir.model.constraint,message:appointment_account_payment.constraint_appointment_answer_input_check_event_or_booking
@@ -464,6 +466,8 @@ msgid ""
 "Unfortunately, it looks like this booking is not possible anymore. Please "
 "contact us to find an alternative."
 msgstr ""
+"Es scheint leider, dass diese Buchung nicht länger möglich ist. Bitte "
+"kontaktieren Sie uns, um nach einer Alternative zu suchen."
 
 #. module: appointment_account_payment
 #: model:ir.model.fields,field_description:appointment_account_payment.field_appointment_type__has_payment_step
@@ -473,7 +477,7 @@ msgstr "Vorauszahlung"
 #. module: appointment_account_payment
 #: model_terms:ir.ui.view,arch_db:appointment_account_payment.calendar_booking_view
 msgid "When"
-msgstr ""
+msgstr "Wann"
 
 #. module: appointment_account_payment
 #: model_terms:ir.ui.view,arch_db:appointment_account_payment.calendar_booking_view
@@ -486,9 +490,9 @@ msgstr ""
 #. module: appointment_account_payment
 #: model_terms:ir.ui.view,arch_db:appointment_account_payment.calendar_booking_view
 msgid "people"
-msgstr ""
+msgstr "Personen"
 
 #. module: appointment_account_payment
 #: model_terms:ir.ui.view,arch_db:appointment_account_payment.calendar_booking_view
 msgid "with"
-msgstr ""
+msgstr "mit"

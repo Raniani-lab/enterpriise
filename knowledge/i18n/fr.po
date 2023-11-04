@@ -49,6 +49,8 @@ msgid ""
 "\"%(article_name)s\" is a template and can not be a child of an article "
 "(\"%(parent_article_name)s\")."
 msgstr ""
+"\"%(article_name)s\" est un modèle et ne peut pas être un enfant d'un "
+"article (\"%(parent_article_name)s\")."
 
 #. module: knowledge
 #. odoo-python
@@ -58,6 +60,8 @@ msgid ""
 "\"%(article_name)s\" is an article and can not be a child of a template "
 "(\"%(parent_article_name)s\").\""
 msgstr ""
+"\"%(article_name)s\" est un article et ne peut pas être un enfant d'un "
+"modèle (\"%(parent_article_name)s\").\""
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_brand_assets
@@ -67,7 +71,7 @@ msgstr "Modèle \"À propos de nous\""
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "# Employees:"
-msgstr ""
+msgstr "# Employés :"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__favorite_count
@@ -117,7 +121,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_example_branding
 msgid "85x200 or 100x200, depending on the content"
-msgstr ""
+msgstr "85x200 ou 100x200, en fonction du contenu"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_company_newsletter
@@ -125,6 +129,8 @@ msgid ""
 "<br>\n"
 "                            Subscribe here to make sure you will not miss an episode!"
 msgstr ""
+"<br>\n"
+"                            Inscrivez-vous ici pour être sûr de ne rater aucun épisode !"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_campaign_brief
@@ -135,6 +141,11 @@ msgid ""
 "                    </font>\n"
 "                </em>"
 msgstr ""
+"<em>\n"
+"                    <font class=\"text-600\">\n"
+"                        Décrivez votre campagne en quelques mots.\n"
+"                    </font>\n"
+"                </em>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_campaign_brief
@@ -145,6 +156,11 @@ msgid ""
 "                    </font>\n"
 "                </em>"
 msgstr ""
+"<em>\n"
+"                    <font class=\"text-600\">\n"
+"                        Comment comptez-vous mesurer le progrès réalisés ?\n"
+"                    </font>\n"
+"                </em>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_campaign_brief
@@ -155,6 +171,11 @@ msgid ""
 "                    </font>\n"
 "                </em>"
 msgstr ""
+"<em>\n"
+"                    <font class=\"text-600\">\n"
+"                        Quel est l'objectif de cette campagne ?\n"
+"                    </font>\n"
+"                </em>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_campaign_brief
@@ -165,6 +186,11 @@ msgid ""
 "                    </font>\n"
 "                </em>"
 msgstr ""
+"<em>\n"
+"                    <font class=\"text-600\">\n"
+"                        De quoi essayez-vous de les convaincre ?\n"
+"                    </font>\n"
+"                </em>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_campaign_brief
@@ -175,6 +201,11 @@ msgid ""
 "                    </font>\n"
 "                </em>"
 msgstr ""
+"<em>\n"
+"                    <font class=\"text-600\">\n"
+"                        Qui essayez-vous d'atteindre ?\n"
+"                    </font>\n"
+"                </em>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
@@ -183,6 +214,9 @@ msgid ""
 "                    <font class=\"text-600\">Ask a Senior Engineer to fill this part before launching the task.</font>\n"
 "                </em>"
 msgstr ""
+"<em>\n"
+"                    <font class=\"text-600\">Demandez à un ingénieur senior de compléter cette partie avant de lancer la tâche.</font>\n"
+"                </em>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
@@ -191,6 +225,9 @@ msgid ""
 "                    <font class=\"text-600\">Ask the developer to go through this checklist before asking for a review.</font>\n"
 "                </em>"
 msgstr ""
+"<em>\n"
+"                    <font class=\"text-600\">Demandez au développeur de parcourir cette check-list avant de demander une révision.</font>\n"
+"                </em>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
@@ -199,6 +236,9 @@ msgid ""
 "                    <font class=\"text-600\">Explain in a few words the problem that this change is going to solve.</font>\n"
 "                </em>"
 msgstr ""
+"<em>\n"
+"                    <font class=\"text-600\">Expliquez en quelques mots quel problème ce changement va résoudre.</font>\n"
+"                </em>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
@@ -207,6 +247,9 @@ msgid ""
 "                    <font class=\"text-600\">Explain in a single sentence what has been changed.</font>\n"
 "                </em>"
 msgstr ""
+"<em>\n"
+"                    <font class=\"text-600\">Expliquez en une seule phrase ce qui a été changé.</font>\n"
+"                </em>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_post_mortem
@@ -215,6 +258,9 @@ msgid ""
 "                    <font class=\"text-600\">Explain the consequences of this issue.</font>\n"
 "                </em>"
 msgstr ""
+"<em>\n"
+"                    <font class=\"text-600\">Expliquez les conséquences de ce problème.</font>\n"
+"                </em>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_post_mortem
@@ -223,6 +269,9 @@ msgid ""
 "                    <font class=\"text-600\">Explain what went wrong in just a few words.</font>\n"
 "                </em>"
 msgstr ""
+"<em>\n"
+"                    <font class=\"text-600\">Expliquez ce qui n'a pas fonctionné en quelques mots.</font>\n"
+"                </em>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_post_mortem
@@ -231,6 +280,9 @@ msgid ""
 "                    <font class=\"text-600\">How did it get to happen?</font>\n"
 "                </em>"
 msgstr ""
+"<em>\n"
+"                    <font class=\"text-600\">Comment est-ce arrivé ?</font>\n"
+"                </em>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_post_mortem
@@ -239,6 +291,9 @@ msgid ""
 "                    <font class=\"text-600\">How was it solved?</font>\n"
 "                </em>"
 msgstr ""
+"<em>\n"
+"                    <font class=\"text-600\">Quelle a été la solution ?</font>\n"
+"                </em>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
@@ -247,6 +302,9 @@ msgid ""
 "                    <font class=\"text-600\">Lay here any remaining question or doubt.</font>\n"
 "                </em>"
 msgstr ""
+"<em>\n"
+"                    <font class=\"text-600\">Posez ici toute question ou tout doute subsistant.</font>\n"
+"                </em>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
@@ -255,6 +313,9 @@ msgid ""
 "                    <font class=\"text-600\">List here all the changes to implement.</font>\n"
 "                </em>"
 msgstr ""
+"<em>\n"
+"                    <font class=\"text-600\">Répertoriez ici tous les changements à implémenter.</font>\n"
+"                </em>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
@@ -263,6 +324,9 @@ msgid ""
 "                    <font class=\"text-600\">List here all the material and documentation related to the task.</font>\n"
 "                </em>"
 msgstr ""
+"<em>\n"
+"                    <font class=\"text-600\">Répertoriez ici le matériel et la documentation associés à la tâche.</font>\n"
+"                </em>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
@@ -271,6 +335,9 @@ msgid ""
 "                    <font class=\"text-600\">List here all the text you could not do this week. These shall be postponed in the next weekly schedule.</font>\n"
 "                </em>"
 msgstr ""
+"<em>\n"
+"                    <font class=\"text-600\">Répertoriez ici tout ce que vous n'avez pas réussi à faire cette semaine. Ces tâches seront reportées dans l'agenda de la semaine prochaine.</font>\n"
+"                </em>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_personas
@@ -279,6 +346,9 @@ msgid ""
 "                            <em>How to best reach this customer type.</em>\n"
 "                        </font>"
 msgstr ""
+"<font class=\"text-400\">\n"
+"                            <em>Comment atteindre au mieux ce type de client.</em>\n"
+"                        </font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_3
@@ -288,6 +358,10 @@ msgid ""
 "                </font>\n"
 "                Abigail works a lot and never watches TV. Better reach her on her phone or on her to work."
 msgstr ""
+"<font class=\"text-400\">\n"
+"                    <em>Comment atteindre le mieux ce type de client.<br></em>\n"
+"                </font>\n"
+"                Abigail travaille beaucoup et ne regarde jamais la télévision. Il vaut mieux l'atteindre sur son téléphone ou sur le chemin du travail."
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_4
@@ -297,6 +371,10 @@ msgid ""
 "                </font>\n"
 "                As a classic Gen Z member, Vittorio never watches TV and never listens to the radio. For him to see our message, we need to get to his Instagram feed."
 msgstr ""
+"<font class=\"text-400\">\n"
+"                    <em>Comment atteindre le mieux ce type de client.<br></em>\n"
+"                </font>\n"
+"                En tant que membre classique de la génération Z, Vittorio ne regarde jamais la télévision et n'écoute jamais la radio. Pour qu'il voie notre message, il doit apparaître sur son feed Instagram."
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_1
@@ -306,6 +384,10 @@ msgid ""
 "                </font>\n"
 "                As an avid music listener, the best way to reach Sonya is through the radio since hers is always on."
 msgstr ""
+"<font class=\"text-400\">\n"
+"                    <em>Comment atteindre le mieux ce type de client.<br></em>\n"
+"                </font>\n"
+"                En tant qu'auditrice passionnée de musique, le meilleur moyen de joindre Sonya est la radio, car la sienne est toujours allumée."
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_2
@@ -315,86 +397,90 @@ msgid ""
 "                </font>\n"
 "                Julius follows politics very tightly, and can best be reached with TV ads."
 msgstr ""
+"<font class=\"text-400\">\n"
+"                    <em>Comment atteindre le mieux ce type de client.<br></em>\n"
+"                </font>\n"
+"                Julius suit la politique de près et la meilleure façon de l'atteindre est de diffuser de publicités télévisées."
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes_template
 msgid "<font class=\"text-400\">To Read 1</font>"
-msgstr ""
+msgstr "<font class=\"text-400\">À lire 1</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes_template
 msgid "<font class=\"text-400\">To Read 2</font>"
-msgstr ""
+msgstr "<font class=\"text-400\">À lire 2</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_post_mortem
 msgid "<font class=\"text-600\">Action A</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Action A</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_post_mortem
 msgid "<font class=\"text-600\">Action B</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Action B</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_post_mortem
 msgid "<font class=\"text-600\">Action C</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Action C</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "<font class=\"text-600\">Backlog 1</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Tâche en retard 1</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "<font class=\"text-600\">Backlog 2</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Tâche en retard 2</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "<font class=\"text-600\">Backlog 3</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Tâche en retard 3</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "<font class=\"text-600\">Blue/Green/Red/Yellow</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Bleu/Vert/Rouge/Jaune</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "<font class=\"text-600\">Change 1</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Changement 1</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "<font class=\"text-600\">Change 2</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Changement 2</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "<font class=\"text-600\">Change 3</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Changement 3</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "<font class=\"text-600\">Color</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Coleur</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "<font class=\"text-600\">Competitor 1</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Concurrent 1</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "<font class=\"text-600\">Competitor 2</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Concurrent 2</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "<font class=\"text-600\">Competitor 3</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Concurrent 3</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_release_note
@@ -402,21 +488,23 @@ msgid ""
 "<font class=\"text-600\">Detailed Explanation of the feature, with "
 "screenshots or a GIF</font>"
 msgstr ""
+"<font class=\"text-600\">Explication détaillée de la fonctionnalité, avec "
+"des captures d'écran ou un GIF</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "<font class=\"text-600\">Email</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Email</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_release_note
 msgid "<font class=\"text-600\">Fixed a bug where...</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Correction d'un bug qui...</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_release_note
 msgid "<font class=\"text-600\">From now on, ...</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Désormais, ...</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
@@ -424,17 +512,23 @@ msgid ""
 "<font class=\"text-600\">How do stakeholders interact regarding "
 "offers?</font>"
 msgstr ""
+"<font class=\"text-600\">Comment les parties prenantes interagissent-elles "
+"en ce qui concerne les offres ?</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "<font class=\"text-600\">How do they compare and evaluate offers?</font>"
 msgstr ""
+"<font class=\"text-600\">Comment est-ce qu'ils comparent et évaluent les "
+"offres ?</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid ""
 "<font class=\"text-600\">I made sure any visual change is responsive</font>"
 msgstr ""
+"<font class=\"text-600\">J'ai veillé à ce que tout changement visuel soit "
+"adapté</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
@@ -442,6 +536,8 @@ msgid ""
 "<font class=\"text-600\">I made sure it did not introduce any obvious "
 "regression</font>"
 msgstr ""
+"<font class=\"text-600\">J'ai veillé à ne pas introduire de régression "
+"évidente</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
@@ -449,121 +545,125 @@ msgid ""
 "<font class=\"text-600\">I made sure it did not introduce any security "
 "flaw</font>"
 msgstr ""
+"<font class=\"text-600\">J'ai veillé à ne pas introduire de faille de "
+"sécurité</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "<font class=\"text-600\">Job Title 1</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Fonction 1</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "<font class=\"text-600\">Job Title 2</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Fonction 2</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "<font class=\"text-600\">Job Title</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Fonction</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_post_mortem
 msgid "<font class=\"text-600\">Lesson A</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Leçon A</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_post_mortem
 msgid "<font class=\"text-600\">Lesson B</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Leçon B</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_post_mortem
 msgid "<font class=\"text-600\">Lesson C</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Leçon C</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "<font class=\"text-600\">Name 1</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Nom 1</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "<font class=\"text-600\">Name 2</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Nom 2</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "<font class=\"text-600\">Name</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Nom</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_release_note
 msgid "<font class=\"text-600\">New Feature 2</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Nouvelle fonctionnalité 2</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "<font class=\"text-600\">Phone</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Téléphone</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "<font class=\"text-600\">Priority A</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Priorité A</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "<font class=\"text-600\">Priority B</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Priorité B</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "<font class=\"text-600\">Priority C</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Priorité C</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "<font class=\"text-600\">Reminder 1</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Rappel 1</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "<font class=\"text-600\">Reminder 2</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Rappel 2</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "<font class=\"text-600\">Reminder 3</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Rappel 3</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "<font class=\"text-600\">Task A</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Tâche A</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "<font class=\"text-600\">Task B</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Tâche B</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "<font class=\"text-600\">Task C</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Tâche C</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "<font class=\"text-600\">Task D</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Tâche D</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "<font class=\"text-600\">What is their buyer's journey?</font>"
-msgstr ""
+msgstr "<font class=\"text-600\">Quel est le parcours de leur acheteur ?</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "<font class=\"text-600\">What is their key decision criteria?</font>"
 msgstr ""
+"<font class=\"text-600\">Quels sont leurs critères décisionnels essentiels "
+"?</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
@@ -571,6 +671,8 @@ msgid ""
 "<font class=\"text-600\">What is your action plan to move forward with this account?</font><br>\n"
 "                <font class=\"text-600\">Which KPI will be used to measure this progress?</font>"
 msgstr ""
+"<font class=\"text-600\">Quel est votre plan d'action pour faire progresser ce compte ?</font><br>\n"
+"                <font class=\"text-600\">Quels sont les indicateurs clés de performance qui seront utilisés pour mesurer ces progrès ?</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
@@ -581,6 +683,11 @@ msgid ""
 "                <br>\n"
 "                <br>"
 msgstr ""
+"<font class=\"text-o-color-2\">\n"
+"                    <strong>Étape suivante planifiée :</strong>\n"
+"                </font>\n"
+"                <br>\n"
+"                <br>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
@@ -597,6 +704,8 @@ msgid ""
 "<i invisible=\"not is_user_favorite\" class=\"fa fa-star\" title=\"Remove from favorites\"/>\n"
 "                                        <i invisible=\"is_user_favorite\" class=\"fa fa-star-o\" title=\"Add to favorites\"/>"
 msgstr ""
+"<i invisible=\"not is_user_favorite\" class=\"fa fa-star\" title=\"Supprimer des favoris\"/>\n"
+"                                        <i invisible=\"is_user_favorite\" class=\"fa fa-star-o\" title=\"Ajouter aux favoris\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_kanban_items
@@ -604,6 +713,8 @@ msgid ""
 "<i invisible=\"not is_user_favorite\" class=\"fa fa-star\" title=\"Remove from favorites\"/>\n"
 "                                    <i invisible=\"is_user_favorite\" class=\"fa fa-star-o\" title=\"Add to favorites\"/>"
 msgstr ""
+"<i invisible=\"not is_user_favorite\" class=\"fa fa-star\" title=\"Supprimer des favoris\"/>\n"
+"                                    <i invisible=\"is_user_favorite\" class=\"fa fa-star-o\" title=\"Ajouter aux favoris\"/>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
@@ -618,6 +729,15 @@ msgid ""
 "                        </strong>\n"
 "                    </i>"
 msgstr ""
+"<i>\n"
+"                        <font style=\"color: rgb(0, 255, 0);\"><strong>Vert : Valorise la confiance avant tout</strong></font><br>\n"
+"                        <font style=\"color: rgb(255, 0, 0);\"><strong>Rouge : Valorise les résultats avant tout</strong></font><br>\n"
+"                        <strong>\n"
+"                            <font style=\"color: rgb(239, 198, 49);\">\n"
+"                                Jaune : Valorise la créativité et l'enthousiasme avant les résultats\n"
+"                            </font>\n"
+"                        </strong>\n"
+"                    </i>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
@@ -628,11 +748,16 @@ msgid ""
 "                    </font>\n"
 "                </i>"
 msgstr ""
+"<i>\n"
+"                    <font style=\"color: rgb(8, 82, 148);\">\n"
+"                        <strong>Bleu : Attend des résultats précis et rigoureux</strong>\n"
+"                    </font>\n"
+"                </i>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_release_note
 msgid "<span class=\"text-600\">New Feature 1</span>"
-msgstr ""
+msgstr "<span class=\"text-600\">Nouvelle fonctionnalité 1</span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_example_branding
@@ -641,6 +766,9 @@ msgid ""
 "                                        5125C\n"
 "                                    </span>"
 msgstr ""
+"<span style=\"color: rgb(255, 255, 255);font-size: 16px;font-style: normal;font-weight: 400;background-color: rgb(113, 75, 103)\">\n"
+"                                        5125C\n"
+"                                    </span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
@@ -649,6 +777,9 @@ msgid ""
 "                    <font class=\"text-600\">*💡 tick the box when the task is scheduled in the agenda</font>\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 12px;\">\n"
+"                    <font class=\"text-600\">*💡 cochez la case lorsque la tâche est planifiée dans l'agenda</font>\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
@@ -657,6 +788,9 @@ msgid ""
 "                                    <font class=\"text-600\">Task A</font>\n"
 "                                </span>"
 msgstr ""
+"<span style=\"font-size: 14px\">\n"
+"                                    <font class=\"text-600\">Tâche A</font>\n"
+"                                </span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
@@ -665,6 +799,9 @@ msgid ""
 "                                    <font class=\"text-600\">Task B</font>\n"
 "                                </span>"
 msgstr ""
+"<span style=\"font-size: 14px\">\n"
+"                                    <font class=\"text-600\">Tâche B</font>\n"
+"                                </span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
@@ -673,6 +810,9 @@ msgid ""
 "                                    <font class=\"text-600\">Task C</font>\n"
 "                                </span>"
 msgstr ""
+"<span style=\"font-size: 14px\">\n"
+"                                    <font class=\"text-600\">Tâche C</font>\n"
+"                                </span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
@@ -681,6 +821,9 @@ msgid ""
 "                                    <font class=\"text-600\">Task A</font>\n"
 "                                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                                    <font class=\"text-600\">Tâche A</font>\n"
+"                                </span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
@@ -689,6 +832,9 @@ msgid ""
 "                                    <font class=\"text-600\">Task B</font>\n"
 "                                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                                    <font class=\"text-600\">Tâche B</font>\n"
+"                                </span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
@@ -697,6 +843,9 @@ msgid ""
 "                                    <font class=\"text-600\">Task C</font>\n"
 "                                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                                    <font class=\"text-600\">Tâche C</font>\n"
+"                                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -1283,6 +1432,9 @@ msgid ""
 "                                <strong>Color</strong>\n"
 "                            </span>"
 msgstr ""
+"<span style=\"font-size: 18px;\">\n"
+"                                <strong>Couleur</strong>\n"
+"                            </span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
@@ -1291,6 +1443,9 @@ msgid ""
 "                                <strong>Name</strong>\n"
 "                            </span>"
 msgstr ""
+"<span style=\"font-size: 18px;\">\n"
+"                                <strong>Nom</strong>\n"
+"                            </span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
@@ -1299,6 +1454,9 @@ msgid ""
 "                                <strong>Role</strong>\n"
 "                            </span>"
 msgstr ""
+"<span style=\"font-size: 18px;\">\n"
+"                                <strong>Fonction</strong>\n"
+"                            </span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_product_catalog
@@ -1307,6 +1465,9 @@ msgid ""
 "                    1. How many people will live in this house?\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 18px;\">\n"
+"                    1. Combien de personnes vivront dans cette maison ?\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_product_catalog
@@ -1315,6 +1476,9 @@ msgid ""
 "                    2. What is your budget?\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 18px;\">\n"
+"                    2. Quel est votre budget ?\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_product_catalog
@@ -1323,6 +1487,9 @@ msgid ""
 "                    3. Which style do you prefer: Natural or Industrial?\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 18px;\">\n"
+"                    3. Quel style préférez-vous : Naturel ou Industriel ?\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_product_catalog
@@ -1331,6 +1498,9 @@ msgid ""
 "                    4. What can I do if I haven't found exactly what I wanted?\"\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 18px;\">\n"
+"                    4. Que puis-je faire si je n'ai pas trouvé exactement ce que je voulais ?\"\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
@@ -1340,6 +1510,10 @@ msgid ""
 "                </span>​\n"
 "                - Paul J. Meyer"
 msgstr ""
+"<span style=\"font-size: 18px;\">\n"
+"                    La productivité n'est jamais un accident. C'est toujours le résultat d'en engagement d'excellence, une planification intelligente et un effort ciblé.\n"
+"                </span>​\n"
+"                - Paul J. Meyer"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_personas
@@ -1348,6 +1522,9 @@ msgid ""
 "                    To add more, use the clipboard below 👇🏼\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 18px;\">\n"
+"                    Pour en ajouter plus, utilisez le presse-papiers ci-dessous 👇🏼\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_brand_assets
@@ -1371,6 +1548,9 @@ msgid ""
 "                    Thanks for reading, see you soon.👋\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 36px;\">Et c'est tout pour ce mois-ci, les amis !<br>\n"
+"                    Merci d'avoir pris le temps de lire, à bientôt.👋\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -1384,6 +1564,9 @@ msgid ""
 "                    Company Newsletter\n"
 "                </span>: <font class=\"text-400\">Month</font>"
 msgstr ""
+"<span style=\"font-weight: bolder;\">\n"
+"                    Newsletter de la société\n"
+"                </span>: <font class=\"text-400\">Mois</font>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -1420,16 +1603,18 @@ msgid ""
 "<strong style=\"font-weight: 500\"><span style=\"font-size: 14px\">\n"
 "                            Early bird alert</span></strong>"
 msgstr ""
+"<strong style=\"font-weight: 500\"><span style=\"font-size: 14px\">\n"
+"                            Alerte précoce</span></strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "<strong style=\"font-weight: 500\">Optional Tasks</strong>"
-msgstr ""
+msgstr "<strong style=\"font-weight: 500\">Tâches optionnelles</strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "<strong style=\"font-weight: 500\">⚡ TOP 3 PRIORITIES</strong>"
-msgstr ""
+msgstr "<strong style=\"font-weight: 500\">⚡ TOP 3 DES PRIORITES</strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_brand_assets
@@ -1438,6 +1623,9 @@ msgid ""
 "                                    <font style=\"color: rgb(148, 189, 123);\">Do</font>\n"
 "                                </strong>"
 msgstr ""
+"<strong>\n"
+"                                    <font style=\"color: rgb(148, 189, 123);\">À faire</font>\n"
+"                                </strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
@@ -1448,6 +1636,11 @@ msgid ""
 "                                </span>\n"
 "                            </strong>"
 msgstr ""
+"<strong>\n"
+"                                <span style=\"font-size: 18px;\">\n"
+"                                    <font class=\"text-o-color-1\">VENDREDI 🏠 @maison</font>\n"
+"                                </span>\n"
+"                            </strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
@@ -1458,6 +1651,11 @@ msgid ""
 "                                </span>\n"
 "                            </strong>"
 msgstr ""
+"<strong>\n"
+"                                <span style=\"font-size: 18px;\">\n"
+"                                    <font class=\"text-o-color-1\">LUNDI 🏢 @bureau</font>\n"
+"                                </span>\n"
+"                            </strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
@@ -1468,6 +1666,11 @@ msgid ""
 "                                </span>\n"
 "                            </strong>"
 msgstr ""
+"<strong>\n"
+"                                <span style=\"font-size: 18px;\">\n"
+"                                    <font class=\"text-o-color-1\">Rappels</font>\n"
+"                                </span>\n"
+"                            </strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
@@ -1478,6 +1681,11 @@ msgid ""
 "                                </span>\n"
 "                            </strong>"
 msgstr ""
+"<strong>\n"
+"                                <span style=\"font-size: 18px;\">\n"
+"                                    <font class=\"text-o-color-1\">SAMEDI 🏠 @maison</font>\n"
+"                                </span>\n"
+"                            </strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
@@ -1488,6 +1696,11 @@ msgid ""
 "                                </span>\n"
 "                            </strong>"
 msgstr ""
+"<strong>\n"
+"                                <span style=\"font-size: 18px;\">\n"
+"                                    <font class=\"text-o-color-1\">DIMANCHE 🏠 @maison</font>\n"
+"                                </span>\n"
+"                            </strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
@@ -1498,6 +1711,11 @@ msgid ""
 "                                </span>\n"
 "                            </strong>"
 msgstr ""
+"<strong>\n"
+"                                <span style=\"font-size: 18px;\">\n"
+"                                    <font class=\"text-o-color-1\">JEUDI 🏢 @bureau</font>\n"
+"                                </span>\n"
+"                            </strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
@@ -1508,6 +1726,11 @@ msgid ""
 "                                </span>\n"
 "                            </strong>"
 msgstr ""
+"<strong>\n"
+"                                <span style=\"font-size: 18px;\">\n"
+"                                    <font class=\"text-o-color-1\">MARDI 🏢 @bureau</font>\n"
+"                                </span>\n"
+"                            </strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
@@ -1518,6 +1741,11 @@ msgid ""
 "                                </span>\n"
 "                            </strong>"
 msgstr ""
+"<strong>\n"
+"                                <span style=\"font-size: 18px;\">\n"
+"                                    <font class=\"text-o-color-1\">MERCREDI 🏠 @maison</font>\n"
+"                                </span>\n"
+"                            </strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
@@ -1526,6 +1754,9 @@ msgid ""
 "                                <span style=\"font-size: 18px;\">Name</span>\n"
 "                            </strong>"
 msgstr ""
+"<strong>\n"
+"                                <span style=\"font-size: 18px;\">Nom</span>\n"
+"                            </strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
@@ -1534,6 +1765,9 @@ msgid ""
 "                                <span style=\"font-size: 18px;\">Strengths</span>\n"
 "                            </strong>"
 msgstr ""
+"<strong>\n"
+"                                <span style=\"font-size: 18px;\">Forces</span>\n"
+"                            </strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
@@ -1542,6 +1776,9 @@ msgid ""
 "                                <span style=\"font-size: 18px;\">Weaknesses</span>\n"
 "                            </strong>"
 msgstr ""
+"<strong>\n"
+"                                <span style=\"font-size: 18px;\">Faiblesses</span>\n"
+"                            </strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -1562,28 +1799,29 @@ msgid ""
 " use the book button in the chatter to find this article and autocomplete "
 "your email with this template."
 msgstr ""
+"<strong><font class=\"text-o-color-2\">CONSEIL PRO</font></strong> : À "
+"partir d'une piste, utilisez le bouton livre dans le chatter pour trouver "
+"cet article et complétez automatiquement votre email avec ce modèle."
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_brand_assets
 msgid "<strong><font style=\"color: rgb(231, 99, 99);\">Do Not</font></strong>"
-msgstr ""
-"<strong><font style=\"color: rgb(231, 99, 99);\">À ne pas "
-"faire</font></strong>"
+msgstr "<strong><font style=\"color: rgb(231, 99, 99);\">À éviter</font></strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "<strong><span style=\"font-size: 18px;\">Change</span></strong>"
-msgstr ""
+msgstr "<strong><span style=\"font-size: 18px;\">Changement</span></strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "<strong><span style=\"font-size: 18px;\">Complexity</span></strong>"
-msgstr ""
+msgstr "<strong><span style=\"font-size: 18px;\">Complexité</span></strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_post_mortem
 msgid "<strong>Actions Taken:</strong>"
-msgstr ""
+msgstr "<strong>Actions prises :</strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -1605,17 +1843,17 @@ msgstr ""
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "<strong>Extra Notes:</strong>"
-msgstr ""
+msgstr "<strong>Notes supplémentaires :</strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "<strong>Fast Facts</strong>"
-msgstr ""
+msgstr "<strong>Faits rapides</strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_post_mortem
 msgid "<strong>Lessons Learnt:</strong>"
-msgstr ""
+msgstr "<strong>Leçons apprises :</strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -1638,7 +1876,7 @@ msgstr "<strong>MRR</strong>"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "<strong>Main Point of Contact:</strong>"
-msgstr ""
+msgstr "<strong>Principal point de contact :</strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -1657,7 +1895,7 @@ msgstr "<strong>NRR</strong>"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "<strong>Optional Tasks</strong>"
-msgstr ""
+msgstr "<strong>Tâches optionnelles</strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -1670,6 +1908,8 @@ msgid ""
 "<strong>Summary</strong>: <font class=\"text-600\">What an exciting release!"
 " This time the focus was on...</font>"
 msgstr ""
+"<strong>Résumé</strong> : <font class=\"text-600\">Quelle version "
+"passionnante ! Cette fois-ci, l'accent a été mis sur...</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -1688,7 +1928,7 @@ msgstr "<strong>USP</strong>"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "<strong>⚡ TOP 3 PRIORITIES</strong>"
-msgstr ""
+msgstr "<strong>⚡ TOP 3 DES PRIORITES</strong>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_1
@@ -1697,7 +1937,7 @@ msgstr ""
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_4
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_personas
 msgid "<u>Demographics</u>"
-msgstr ""
+msgstr "<u>Démographie</u>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_1
@@ -1706,7 +1946,7 @@ msgstr ""
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_4
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_personas
 msgid "<u>Key Decision Factors</u>"
-msgstr ""
+msgstr "<u>Facteurs décisionnels essentiels</u>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_1
@@ -1715,7 +1955,7 @@ msgstr ""
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_4
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_personas
 msgid "<u>Strategy</u>"
-msgstr ""
+msgstr "<u>Strategie</u>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_hr_faq
@@ -1728,11 +1968,13 @@ msgid ""
 "A must listen for all developers out there and anyone interested in "
 "Javascript!"
 msgstr ""
+"À écouter absolument pour tous les développeurs et tous ceux qui "
+"s'intéressent au Javascript !"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_3
 msgid "Abigail"
-msgstr ""
+msgstr "Abigail"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_brand_assets
@@ -1764,12 +2006,12 @@ msgstr "Accès restreint. Ne peut pas être partagé avec tout le monde de"
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_account_management
 msgid "Account Management"
-msgstr ""
+msgstr "Gestion des comptes"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Account Management Cheat Sheet"
-msgstr ""
+msgstr "Aide-mémoire pour les gestion des comptes"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_needaction
@@ -1780,7 +2022,7 @@ msgstr "Nécessite une action"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Action Plan"
-msgstr ""
+msgstr "Plan d'action"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__active
@@ -1828,7 +2070,7 @@ msgstr "Ajouter des champs de propriété"
 #: code:addons/knowledge/static/src/components/comment/comment.js:0
 #, python-format
 msgid "Add a Comment..."
-msgstr ""
+msgstr "Ajouter un commentaire..."
 
 #. module: knowledge
 #. odoo-javascript
@@ -1842,14 +2084,14 @@ msgstr "Ajouter une section de presse-papiers"
 #: code:addons/knowledge/static/src/xml/knowledge_wysiwyg.xml:0
 #, python-format
 msgid "Add a comment to selection"
-msgstr ""
+msgstr "Ajouter un commentaire à la sélection"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/knowledge_icon/knowledge_icon.xml:0
 #, python-format
 msgid "Add a random icon"
-msgstr ""
+msgstr "Ajouter une icône au hasard"
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_stage_action
@@ -1953,6 +2195,10 @@ msgid ""
 " class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-"
 "star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i></span>"
 msgstr ""
+"Services après-vente <span class=\"o_stars o_five_stars\" "
+"id=\"checkId-5\"><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i "
+"class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-"
+"star\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_1
@@ -1962,6 +2208,10 @@ msgid ""
 "star\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
 "star-o\"></i></span>"
 msgstr ""
+"Services après-vente <span class=\"o_stars o_five_stars\" "
+"id=\"checkId-5\"><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i "
+"class=\"fa fa-star\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
+"star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_2
@@ -1971,6 +2221,10 @@ msgid ""
 "star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
 "star-o\"></i></span>"
 msgstr ""
+"Services après-vente <span class=\"o_stars o_five_stars\" "
+"id=\"checkId-5\"><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i "
+"class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
+"star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_3
@@ -1980,6 +2234,10 @@ msgid ""
 "class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
 "star-o\"></i></span>"
 msgstr ""
+"Services après-vente <span class=\"o_stars o_five_stars\" "
+"id=\"checkId-5\"><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i "
+"class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
+"star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_personas
@@ -1989,39 +2247,43 @@ msgid ""
 "star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i><i "
 "class=\"fa fa-star-o\"></i></span>"
 msgstr ""
+"Services après-vente <span class=\"o_stars o_five_stars\" "
+"id=\"checkId-5\"><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
+"star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i><i "
+"class=\"fa fa-star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_personas
 msgid "Age:"
-msgstr ""
+msgstr "Âge :"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_4
 msgid "Age: 24"
-msgstr ""
+msgstr "Âge : 24 "
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_2
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_3
 msgid "Age: 29"
-msgstr ""
+msgstr "Âge : 29"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_1
 msgid "Age: 42"
-msgstr ""
+msgstr "Âge : 42"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/comments_panel/comments_panel.xml:0
 #, python-format
 msgid "All Comments"
-msgstr ""
+msgstr "Tous les commentaires"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_product_catalog
 msgid "All Models 📖"
-msgstr ""
+msgstr "Tous les modèles 📖"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -2053,11 +2315,14 @@ msgid ""
 "Analyze what went wrong and the underlying causes. Extract insights to avoid"
 " making similar mistakes in the future."
 msgstr ""
+"Analysez ce qui n'a pas fonctionné mal passé et les causes sous-jacentes. "
+"Tirez des enseignements pour éviter de commettre des erreurs similaires à "
+"l'avenir."
 
 #. module: knowledge
 #: model:knowledge.article,template_description:knowledge.knowledge_article_template_hr_faq
 msgid "Answer questions frequently asked by your employees"
-msgstr ""
+msgstr "Répondez aux questions fréquemment posées par vos employés"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search_items
@@ -2216,7 +2481,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_article_thread
 msgid "Article Discussion Thread"
-msgstr ""
+msgstr "Fil de discussion de l'article"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_properties_definition
@@ -2340,12 +2605,12 @@ msgstr "Nombre de pièces jointes"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_product_catalog
 msgid "Available Models ✅"
-msgstr ""
+msgstr "Modèles disponibles ✅"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_company_newsletter
 msgid "BOOK NOW"
-msgstr ""
+msgstr "RESERVER MAINTENANT"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -2355,7 +2620,7 @@ msgstr "Contexte :"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "Backlog"
-msgstr ""
+msgstr "Tâche en retard"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2406,6 +2671,10 @@ msgid ""
 "class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-"
 "star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star-o\"></i></span>"
 msgstr ""
+"Attraction de la marque <span class=\"o_stars o_five_stars\" "
+"id=\"checkId-3\"><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i "
+"class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-"
+"star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_4
@@ -2415,6 +2684,10 @@ msgid ""
 "star\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
 "star-o\"></i></span>"
 msgstr ""
+"Attraction de la marque <span class=\"o_stars o_five_stars\" "
+"id=\"checkId-3\"><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i "
+"class=\"fa fa-star\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
+"star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_2
@@ -2424,6 +2697,10 @@ msgid ""
 "star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
 "star-o\"></i></span>"
 msgstr ""
+"Attraction de la marque <span class=\"o_stars o_five_stars\" "
+"id=\"checkId-3\"><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i "
+"class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
+"star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_personas
@@ -2433,6 +2710,10 @@ msgid ""
 "star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
 "star-o\"></i></span>"
 msgstr ""
+"Attraction de la marque <span class=\"o_stars o_five_stars\" "
+"id=\"checkId-3\"><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
+"star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i><i "
+"class=\"fa fa-star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_brand_assets
@@ -2449,7 +2730,7 @@ msgstr "Parcourir les modèles"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_release_note
 msgid "Bug Fixes 🔨"
-msgstr ""
+msgstr "Corrections de bugs 🔨"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2478,16 +2759,18 @@ msgid ""
 "Build fictional representation of your customers to better tailor your "
 "advertising messages for them. "
 msgstr ""
+"Construisez une représentation fictive de vos clients pour mieux adapter vos"
+" messages publicitaires."
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_release_note
 msgid "But Also..."
-msgstr ""
+msgstr "Mais aussi..."
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Buying Process"
-msgstr ""
+msgstr "Processus d'achat"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2626,7 +2909,7 @@ msgstr "Séquence de la catégorie"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_post_mortem
 msgid "Causes"
-msgstr ""
+msgstr "Causes"
 
 #. module: knowledge
 #: model:knowledge.article,template_description:knowledge.knowledge_article_template_account_management
@@ -2634,6 +2917,8 @@ msgid ""
 "Centralize account insights in one document for comprehensive monitoring and"
 " follow-up."
 msgstr ""
+"Centralisez les informations sur les comptes dans un seul document pour un "
+"contrôle et un suivi complets."
 
 #. module: knowledge
 #: model:knowledge.article,template_description:knowledge.knowledge_article_template_meeting_minutes
@@ -2641,26 +2926,28 @@ msgid ""
 "Centralize team meetings in a single article, while making sure notes are "
 "handled efficiently."
 msgstr ""
+"Centralisez les réunions d'équipe en un seul article, tout en vous assurant "
+"que les minutes sont traitées efficacement."
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Challenges &amp; Competitive Landscape<br>"
-msgstr ""
+msgstr "Défis &amp; Paysage compétitif<br>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "Change 1"
-msgstr ""
+msgstr "Changement 1"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "Change 2"
-msgstr ""
+msgstr "Changement 2"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "Change 3"
-msgstr ""
+msgstr "Changement 3"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2686,7 +2973,7 @@ msgstr "Articles et éléments enfants"
 #: code:addons/knowledge/static/src/components/knowledge_cover/knowledge_cover_dialog.js:0
 #, python-format
 msgid "Choose a nice cover"
-msgstr ""
+msgstr "Choisissez une jolie couverture"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2728,7 +3015,7 @@ msgstr "Fermer"
 #: code:addons/knowledge/static/src/xml/knowledge_wysiwyg.xml:0
 #, python-format
 msgid "Comment"
-msgstr ""
+msgstr "Commenter"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -2738,22 +3025,22 @@ msgstr "Abréviations commerciales"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Company Details"
-msgstr ""
+msgstr "Détails de la société"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Company Location:"
-msgstr ""
+msgstr "Lieu de la société :"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Company Name:"
-msgstr ""
+msgstr "Nom de la société :"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_company_newsletter
 msgid "Company Newsletter"
-msgstr ""
+msgstr "Newsletter de la société"
 
 #. module: knowledge
 #: model:knowledge.article.template.category,name:knowledge.knowledge_article_template_category_company_organization
@@ -2763,7 +3050,7 @@ msgstr "Organisation de la société"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Company Structure:"
-msgstr ""
+msgstr "Structure de la société :"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -2801,13 +3088,13 @@ msgstr "Contact"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_product_catalog
 msgid "Contact Us"
-msgstr ""
+msgstr "Contactez-nous"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_shared_todos_contact_our_lawyer
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_shared_todos_contact_our_lawyer
 msgid "Contact our Lawyer"
-msgstr ""
+msgstr "Contacter notre avocat"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2819,7 +3106,7 @@ msgstr "Contenu copie dans le presse-papiers."
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Contract Due Date:"
-msgstr ""
+msgstr "Date d'échéance du contrat :"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2840,14 +3127,14 @@ msgstr "Convertir en élément d'article"
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
 msgid "Copy"
-msgstr ""
+msgstr "Copier"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
 msgid "Copy to Clipboard"
-msgstr ""
+msgstr "Copier dans le presse-papiers"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -2963,6 +3250,8 @@ msgstr "Créer un nouvel élément d'article"
 msgid ""
 "Create a simple catalog to provide technical details about your products."
 msgstr ""
+"Créez un catalogue simple pour fournir des détails techniques à propos de "
+"vos produits."
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_action
@@ -3008,23 +3297,23 @@ msgstr "Créé le"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Current Contract:"
-msgstr ""
+msgstr "Contrat en cours :"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Current Satisfaction:"
-msgstr ""
+msgstr "Satisfaction actuelle :"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_marketing_customer_personas
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_personas
 msgid "Customer Personas"
-msgstr ""
+msgstr "Personnages clients"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "DESIGN PROTOTYPE"
-msgstr ""
+msgstr "PROTOTYPE DE CONCEPTION"
 
 #. module: knowledge
 #. odoo-javascript
@@ -3046,27 +3335,27 @@ msgstr "Propriétés de date et d'heure"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "Dear"
-msgstr "Cher, chère"
+msgstr "Cher(e)"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes_template
 msgid "Decision 1"
-msgstr ""
+msgstr "Décision 1"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes_template
 msgid "Decision 2"
-msgstr ""
+msgstr "Décision 2"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes_template
 msgid "Decision 3"
-msgstr ""
+msgstr "Décision 3"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes_template
 msgid "Decision 4"
-msgstr ""
+msgstr "Décision 4"
 
 #. module: knowledge
 #. odoo-javascript
@@ -3091,13 +3380,6 @@ msgstr ""
 "Autorisation par défaut pour tous les utilisateurs internes. (Les "
 "utilisateurs externes peuvent toujours avoir accès à cet article s'ils sont "
 "ajoutés à ses membres)"
-
-#. module: knowledge
-#. odoo-javascript
-#: code:addons/knowledge/static/src/components/topbar/topbar.xml:0
-#, python-format
-msgid "Delete"
-msgstr "Supprimer"
 
 #. module: knowledge
 #. odoo-python
@@ -3153,6 +3435,8 @@ msgid ""
 "Distribute brand digital assets while ensuring compliance with company "
 "policies and guidelines."
 msgstr ""
+"Distribuez la version numérique des brand assets  tout en veillant au "
+"respect des politiques et lignes directrices de la société."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -3164,6 +3448,8 @@ msgstr "Se lancer"
 msgid ""
 "Document your Marketing Campaigns to prioritize key objectives and outcomes."
 msgstr ""
+"Documentez vos campagnes de marketing pour prioriser les principaux "
+"objectifs et résultats."
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_company_newsletter
@@ -3171,6 +3457,8 @@ msgid ""
 "Don't forget to spread the word, we're <em>so</em> looking forward to "
 "unveiling this new Odoo version! 🥳"
 msgstr ""
+"N'oubliez pas de faire passer le mot, nous avons <em>tellement</em> hâte de "
+"dévoiler cette nouvelle version d'Odoo ! 🥳"
 
 #. module: knowledge
 #. odoo-python
@@ -3186,7 +3474,7 @@ msgstr "Fait"
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "Télécharger"
 
 #. module: knowledge
 #. odoo-javascript
@@ -3212,37 +3500,37 @@ msgstr "MODIFIER"
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_manager.xml:0
 #, python-format
 msgid "Edit"
-msgstr ""
+msgstr "Modifier"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_personas
 msgid "Education:"
-msgstr ""
+msgstr "Éducation :"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_1
 msgid "Education: Bachelor's degree in Marketing"
-msgstr ""
+msgstr "Éducation : Diplôme de bachelier en marketing"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_2
 msgid "Education: High school diploma"
-msgstr ""
+msgstr "Éducation : Diplôme de l'enseignement secondaire"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_3
 msgid "Education: PhD."
-msgstr ""
+msgstr "Éducation : Doctorat"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_4
 msgid "Education: Student"
-msgstr ""
+msgstr "Éducation : Étudiant"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_company_newsletter
 msgid "Egg'cellent run"
-msgstr ""
+msgstr "Egg'cellent run"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -3261,7 +3549,7 @@ msgstr "Intégrer une vue"
 #: code:addons/knowledge/static/src/components/video_selector_dialog/video_selector_dialog.js:0
 #, python-format
 msgid "Embed a video"
-msgstr ""
+msgstr "Intégrer une vidéo"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__icon
@@ -3281,6 +3569,8 @@ msgid ""
 "Ensure all stakeholders of a product change are aligned by clearly "
 "communicating the requirements."
 msgstr ""
+"Assurez-vous que toutes les parties prenantes d'un changement de produit "
+"sont alignées en communiquant clairement les exigences."
 
 #. module: knowledge
 #. odoo-javascript
@@ -3300,7 +3590,7 @@ msgstr "Chiffre d'affaires estimé :"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_company_newsletter
 msgid "Events 🌍"
-msgstr ""
+msgstr "Événements 🌍"
 
 #. module: knowledge
 #. odoo-javascript
@@ -3329,7 +3619,7 @@ msgstr "Commentaire supplémentaire"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "Extra Technical Instructions:"
-msgstr ""
+msgstr "Instructions techniques supplémentaires :"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_favorite_view_form
@@ -3367,7 +3657,7 @@ msgstr "Fichier"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.portal_my_home_knowledge
 msgid "Find all articles shared with you"
-msgstr ""
+msgstr "Trouver tous les articles partagés avec vous"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_stage__fold
@@ -3415,19 +3705,19 @@ msgstr "Pleine largeur"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_personas
 msgid "Gender(s):"
-msgstr ""
+msgstr "Genre :"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_2
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_4
 msgid "Gender(s): M"
-msgstr ""
+msgstr "Genre : M"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_1
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_3
 msgid "Gender(s): W"
-msgstr ""
+msgstr "Genre : F"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_favorite_view_search
@@ -3527,6 +3817,8 @@ msgstr ""
 msgid ""
 "Here is a short guide that will help you pick the right tiny house for you."
 msgstr ""
+"Voici un petit guide qui vous aidera à choisir la tiny house parfaite pour "
+"vous."
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -3545,24 +3837,24 @@ msgstr "Masqué"
 #: code:addons/knowledge/static/src/components/comments_panel/comments_panel.xml:0
 #, python-format
 msgid "Highlight content and use the"
-msgstr ""
+msgstr "Surlignez du contenu et utilisez le"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Highlight the structure of this article"
-msgstr ""
+msgstr "Surlignez la structure de cet article"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__html_field_history
 msgid "History data"
-msgstr ""
+msgstr "Données historiques"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__html_field_history_metadata
 msgid "History metadata"
-msgstr ""
+msgstr "Métadonnées historiques"
 
 #. module: knowledge
 #. odoo-javascript
@@ -3575,42 +3867,42 @@ msgstr "Page d'accueil"
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_product_catalog_house_cielo
 msgid "House Model \"Cielo\""
-msgstr ""
+msgstr "Modèle de maison \"Cielo\""
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_product_catalog_house_dolcezza
 msgid "House Model \"Dolcezza\""
-msgstr ""
+msgstr "Modèle de maison \"Dolcezza\""
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_product_catalog_house_incanto
 msgid "House Model \"Incanto\""
-msgstr ""
+msgstr "Modèle de maison \"Incanto\""
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_product_catalog_house_serenita
 msgid "House Model \"Serenità\""
-msgstr ""
+msgstr "Modèle de maison \"Serenità\""
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_product_catalog_house_cielo
 msgid "House Model - Cielo"
-msgstr ""
+msgstr "Modèle de maison - Cielo"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_product_catalog_house_dolcezza
 msgid "House Model - Dolcezza"
-msgstr ""
+msgstr "Modèle de maison - Dolcezza"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_product_catalog_house_incanto
 msgid "House Model - Incanto"
-msgstr ""
+msgstr "Modèle de maison - Incanto"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_product_catalog_house_serenita
 msgid "House Model - Serenità"
-msgstr ""
+msgstr "Modèle de maison - Serenità"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_hr_faq
@@ -3620,12 +3912,12 @@ msgstr "Comment puis-je savoir quel modèle je peux commander ou non ?"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "How they measure success:"
-msgstr ""
+msgstr "Comment mesurent-ils le succès :"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_product_catalog
 msgid "How to find the perfect model for your needs 😍"
-msgstr ""
+msgstr "Comment trouver le modèle parfait et adapté à vos besoins 😍"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -3704,6 +3996,9 @@ msgid ""
 "team.<br>At MyCompany, your happiness is our utmost priority, and we'll go "
 "the extra mile to make sure you find what you're looking for!"
 msgstr ""
+"Si aucune de ces offres ne vous a convaincu, il vous suffit de contacter "
+"notre équipe.<br>Chez MyCompany, votre bonheur est notre priorité absolue et"
+" nous ferons tout pour que vous trouviez ce que vous cherchez !"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__is_desynchronized
@@ -3715,37 +4010,37 @@ msgstr ""
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_post_mortem
 msgid "Impact"
-msgstr ""
+msgstr "Impact"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_release_note
 msgid "Improvements 🔬"
-msgstr ""
+msgstr "Améliorations 🔬"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_personas
 msgid "Income:"
-msgstr ""
+msgstr "Revenus :"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_2
 msgid "Income: $109,160"
-msgstr ""
+msgstr "Revenus : 109.160 $"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_1
 msgid "Income: $142,170"
-msgstr ""
+msgstr "Revenus : 142.170 $"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_3
 msgid "Income: $293,650"
-msgstr ""
+msgstr "Revenus : 293.650 $"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_4
 msgid "Income: $68,170"
-msgstr ""
+msgstr "Revenus : 68.170 $"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -3762,12 +4057,12 @@ msgstr "Index"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_product_catalog
 msgid "Industrial ⚙-"
-msgstr ""
+msgstr "Industriel ⚙-"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Industry:"
-msgstr ""
+msgstr "Secteur :"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_hr_faq
@@ -3778,6 +4073,8 @@ msgstr "Informez les RH et votre chef d'équipe"
 #: model:knowledge.article,template_description:knowledge.knowledge_article_template_release_note
 msgid "Inform users about your latest software updates and improvements."
 msgstr ""
+"Informer les utilisateurs des dernières mises à jours et améliorations de "
+"votre logiciel."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__inherited_permission
@@ -3810,14 +4107,14 @@ msgstr "Insérer un lien"
 #: code:addons/knowledge/static/src/components/video_selector_dialog/video_selector_dialog.xml:0
 #, python-format
 msgid "Insert Video"
-msgstr ""
+msgstr "Insérer une vidéo"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/item_calendar_props_dialog/item_calendar_props_dialog.xml:0
 #, python-format
 msgid "Insert a Calendar View"
-msgstr ""
+msgstr "Insérer une vie calendrier"
 
 #. module: knowledge
 #. odoo-javascript
@@ -3866,7 +4163,7 @@ msgstr "Insérer une vue Liste des éléments"
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Insert a Video"
-msgstr ""
+msgstr "Insérer une vidéo"
 
 #. module: knowledge
 #. odoo-javascript
@@ -3897,27 +4194,27 @@ msgstr ""
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_personas
 msgid "Interests:"
-msgstr ""
+msgstr "Intérêts :"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_4
 msgid "Interests: Cooking"
-msgstr ""
+msgstr "Intérêts : Cuisiner"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_1
 msgid "Interests: Music"
-msgstr ""
+msgstr "Intérêts : Musique"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_2
 msgid "Interests: Politics"
-msgstr ""
+msgstr "Intérêts : Politique"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_3
 msgid "Interests: Science"
-msgstr ""
+msgstr "Intérêts : Sciences"
 
 #. module: knowledge
 #. odoo-javascript
@@ -3978,7 +4275,7 @@ msgstr "Est un élément ?"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_template
 msgid "Is Template"
-msgstr ""
+msgstr "Est un modèle"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__has_item_parent
@@ -3988,12 +4285,12 @@ msgstr "Le parent est-il un élément ?"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_post_mortem
 msgid "Issue Summary"
-msgstr ""
+msgstr "Récapitulatif du problème"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Issues they are trying to solve:"
-msgstr ""
+msgstr "Problèmes qu'ils tentent de résoudre :"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__template_category_sequence
@@ -4009,22 +4306,22 @@ msgstr "Cela détermine l'ordre d'affichage du modèle dans sa catégorie"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes_template
 msgid "Item 1"
-msgstr ""
+msgstr "Élément 1"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes_template
 msgid "Item 2"
-msgstr ""
+msgstr "Élément 2"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes_template
 msgid "Item 3"
-msgstr ""
+msgstr "Élément 3"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes_template
 msgid "Item 4"
-msgstr ""
+msgstr "Élément 4"
 
 #. module: knowledge
 #. odoo-javascript
@@ -4089,7 +4386,7 @@ msgstr "Rejoindre un article masqué"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_2
 msgid "Julius"
-msgstr ""
+msgstr "Julius"
 
 #. module: knowledge
 #. odoo-javascript
@@ -4109,6 +4406,8 @@ msgstr "Kanban d'éléments d'article"
 #: model:knowledge.article,template_description:knowledge.knowledge_article_template_shared_todos
 msgid "Keep track of your company to-dos and share them with your colleagues."
 msgstr ""
+"Gardez une trace des to-dos de votre entreprise et partagez-les avec vos "
+"collègues."
 
 #. module: knowledge
 #: model:knowledge.article,template_description:knowledge.knowledge_article_template_company_newsletter
@@ -4116,6 +4415,8 @@ msgid ""
 "Keep your colleagues informed about the company's latest developments and "
 "activities through periodic updates."
 msgstr ""
+"Tenez vos collègues informés des derniers développements et activités de "
+"l'entreprise grâce à des mises à jour périodiques."
 
 #. module: knowledge
 #. odoo-javascript
@@ -4197,7 +4498,7 @@ msgstr "Dernière modification le"
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__write_uid
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__write_uid
 msgid "Last Updated by"
-msgstr "Dernière mise à jour par"
+msgstr "Mis à jour par"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__write_date
@@ -4209,7 +4510,7 @@ msgstr "Dernière mise à jour par"
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__write_date
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__write_date
 msgid "Last Updated on"
-msgstr "Dernière mise à jour le"
+msgstr "Mis à jour le"
 
 #. module: knowledge
 #. odoo-javascript
@@ -4291,7 +4592,7 @@ msgstr "Charger un modèle"
 #: code:addons/knowledge/static/src/components/topbar/topbar.xml:0
 #, python-format
 msgid "Lock Content"
-msgstr ""
+msgstr "Verrouiller le contenu"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_locked
@@ -4333,29 +4634,31 @@ msgid ""
 "Make every week a success by proactively organizing your priority and "
 "optional tasks."
 msgstr ""
+"Faites de chaque semaine un succès en organisant de manière proactive vos "
+"tâches prioritaires et optionnelles."
 
 #. module: knowledge
 #: model:knowledge.article,template_description:knowledge.knowledge_article_template_sprint_calendar
-msgid "Manage your team schedule for the upcomming sprint."
-msgstr ""
+msgid "Manage your team schedule for the upcoming sprint."
+msgstr "Gérez le planning de votre équipe pour le sprint à venir."
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/models/knowledge_article_thread.py:0
 #, python-format
 msgid "Mark Comment as Closed"
-msgstr ""
+msgstr "Marquer le commentaire comme fermé"
 
 #. module: knowledge
 #: model:knowledge.article.template.category,name:knowledge.knowledge_article_template_category_marketing
 msgid "Marketing"
-msgstr ""
+msgstr "Marketing"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_marketing_campaign_brief
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_campaign_brief
 msgid "Marketing Campaign Brief"
-msgstr ""
+msgstr "Brief de marketing"
 
 #. module: knowledge
 #. odoo-javascript
@@ -4370,25 +4673,25 @@ msgstr "Média"
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_sprint_calendar_meeting
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sprint_calendar_meeting
 msgid "Meeting"
-msgstr ""
+msgstr "Réunion"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_meeting_example_branding
 msgid "Meeting Example"
-msgstr ""
+msgstr "Exemple de réunion"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_meeting_minutes
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_meeting_minutes_template
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes
 msgid "Meeting Minutes"
-msgstr ""
+msgstr "Minutes de la réunion"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_example_branding
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes_template
 msgid "Meeting Minutes Template"
-msgstr ""
+msgstr "Modèle de minutes de la réunion"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_member_view_form
@@ -4452,7 +4755,7 @@ msgstr "Fichier manquant"
 #: code:addons/knowledge/static/src/components/topbar/topbar.xml:0
 #, python-format
 msgid "More actions"
-msgstr ""
+msgstr "Plus d'actions"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_company_newsletter
@@ -4461,6 +4764,9 @@ msgid ""
 "                            kilometers.<br>Starting from the office, they enjoyed a great tour in the countryside before\n"
 "                            coming back to Grand-Rosière, where they were welcomed with a drink and a burger."
 msgstr ""
+"Plus de 150 Odooers ont participé à cette édition de la course à pied de 5 ou 11\n"
+"                            kilomètres.<br>Au départ du bureau, ils ont bénéficié d'un grand tour dans la campagne avant de\n"
+"                            revenir à Grand-Rosière, où ils ont été accueillis avec une boisson et un burger."
 
 #. module: knowledge
 #. odoo-javascript
@@ -4509,7 +4815,7 @@ msgstr "Déplacer l'article sans titre sous :"
 #: code:addons/knowledge/static/src/components/sidebar/sidebar.js:0
 #, python-format
 msgid "Move to Private"
-msgstr ""
+msgstr "Déplacer vers privé"
 
 #. module: knowledge
 #. odoo-javascript
@@ -4523,7 +4829,7 @@ msgstr "Déplacer vers la corbeille"
 #: code:addons/knowledge/static/src/components/sidebar/sidebar.js:0
 #, python-format
 msgid "Move to Workspace"
-msgstr ""
+msgstr "Déplacer vers l'espace de travail"
 
 #. module: knowledge
 #. odoo-python
@@ -4573,7 +4879,7 @@ msgstr "Nom"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_product_catalog
 msgid "Natural Style ☘ -"
-msgstr ""
+msgstr "Style naturel ☘ -"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -4602,14 +4908,14 @@ msgstr "Nouveau"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_release_note
 msgid "New Features 🎉"
-msgstr ""
+msgstr "Nouvelles fonctionnalités 🎉"
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/models/knowledge_article_thread.py:0
 #, python-format
 msgid "New Mention in %s"
-msgstr ""
+msgstr "Nouvelle mention dans %s"
 
 #. module: knowledge
 #. odoo-javascript
@@ -4617,11 +4923,6 @@ msgstr ""
 #, python-format
 msgid "New property could not be created."
 msgstr "Impossible de créer la nouvelle propriété."
-
-#. module: knowledge
-#: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
-msgstr "Activité suivante de l'événement du calendrier"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_date_deadline
@@ -4641,12 +4942,12 @@ msgstr "Type d'activités à venir"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes_template
 msgid "Next Meeting: <font class=\"text-400\">@Date</font>"
-msgstr ""
+msgstr "Prochaine réunion : <font class=\"text-400\">@Date</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_example_branding
 msgid "Next Meeting: <u>6th May, @John's Office</u>"
-msgstr ""
+msgstr "Prochaine réunion : <u>6 mai, @Bureau de John</u>"
 
 #. module: knowledge
 #. odoo-javascript
@@ -4726,7 +5027,7 @@ msgstr "Vous ne savez pas comment vous y prendre ?"
 #: code:addons/knowledge/static/src/components/comments_panel/comments_panel.xml:0
 #, python-format
 msgid "Nothing going on!"
-msgstr ""
+msgstr "Il ne se passe rien !"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -4764,17 +5065,17 @@ msgstr "Nombre de messages avec des erreurs d'envoi"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Objectives with our Collaboration"
-msgstr ""
+msgstr "Objectifs de notre collaboration"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_example_branding
 msgid "Odoo Brand Assets"
-msgstr ""
+msgstr "Odoo Brand Assets"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_company_newsletter
 msgid "Odoo Experience 🎉"
-msgstr ""
+msgstr "Odoo Experience 🎉"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_brand_assets
@@ -4789,7 +5090,7 @@ msgstr "Odoo Survival Guide"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_example_branding
 msgid "Odoo: Manage your SME online"
-msgstr ""
+msgstr "Odoo : Gérez votre PME en ligne"
 
 #. module: knowledge
 #. odoo-javascript
@@ -4881,21 +5182,21 @@ msgstr "Ouvert"
 #: code:addons/knowledge/static/src/js/knowledge_plugin.js:0
 #, python-format
 msgid "Open Video"
-msgstr ""
+msgstr "Ouvrir la vidéo"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/topbar/topbar.xml:0
 #, python-format
 msgid "Open comments panel"
-msgstr ""
+msgstr "Ouvrir le volet des commentaires"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/topbar/topbar.xml:0
 #, python-format
 msgid "Open history"
-msgstr ""
+msgstr "Ouvrir l'historique"
 
 #. module: knowledge
 #. odoo-javascript
@@ -4907,7 +5208,7 @@ msgstr "Ouvrir la corbeille"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_example_branding
 msgid "OpenERP becomes Odoo"
-msgstr ""
+msgstr "OpenERP devient Odoo"
 
 #. module: knowledge
 #. odoo-javascript
@@ -4923,7 +5224,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_shared_todos
 msgid "Otherwise, feel free to handle others listed below:"
-msgstr ""
+msgstr "Sinon, n'hésitez pas à gérer les tâches suivantes :"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_hr_faq
@@ -4937,7 +5238,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_post_mortem
 msgid "Outcome"
-msgstr ""
+msgstr "Résultat"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_stage__parent_id
@@ -4947,7 +5248,7 @@ msgstr "Propriétaire de l'article"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_company_newsletter
 msgid "PLANET ODOO"
-msgstr ""
+msgstr "PLANET ODOO"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -4979,7 +5280,7 @@ msgstr "Partenaire"
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_shared_todos_pay_the_electricity_bill
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_shared_todos_pay_the_electricity_bill
 msgid "Pay the Electricity Bill"
-msgstr ""
+msgstr "Payer la facture d'électricité"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__permission
@@ -4990,28 +5291,28 @@ msgstr "Autorisation"
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_marketing_customer_persona_1
 msgid "Persona 1"
-msgstr ""
+msgstr "Personnage 1"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_marketing_customer_persona_2
 msgid "Persona 2"
-msgstr ""
+msgstr "Personnage 2"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_marketing_customer_persona_3
 msgid "Persona 3"
-msgstr ""
+msgstr "Personnage 3"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_marketing_customer_persona_4
 msgid "Persona 4"
-msgstr ""
+msgstr "Personnage 4"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_personal_organizer
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "Personal Organizer"
-msgstr ""
+msgstr "Organisateur personnel"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -5021,7 +5322,7 @@ msgstr "Téléphone :"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_shared_todos
 msgid "Please pick the following tasks first:"
-msgstr ""
+msgstr "Choisissez d'abord parmi les tâches suivantes :"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_hr_faq
@@ -5045,22 +5346,22 @@ msgstr "Pluraliser la marque (par ex. <em>VosSociétés</em>)"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_company_newsletter
 msgid "Podcast updates 📻"
-msgstr ""
+msgstr "Mise à jour des podcasts 📻"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_post_mortem
 msgid "Post-Mortem Analysis"
-msgstr ""
+msgstr "Analyse post mortem"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_post_mortem
 msgid "Post-mortem"
-msgstr ""
+msgstr "Post mortem"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Potential Risks:"
-msgstr ""
+msgstr "Risques potentiels :"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -5077,6 +5378,9 @@ msgid ""
 "fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i "
 "class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i></span>"
 msgstr ""
+"Prix <span class=\"o_stars o_five_stars\" id=\"checkId-1\"><i class=\"fa fa-"
+"star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i "
+"class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_4
@@ -5085,6 +5389,9 @@ msgid ""
 "fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i "
 "class=\"fa fa-star\"></i><i class=\"fa fa-star-o\"></i></span>"
 msgstr ""
+"Prix <span class=\"o_stars o_five_stars\" id=\"checkId-1\"><i class=\"fa fa-"
+"star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i "
+"class=\"fa fa-star\"></i><i class=\"fa fa-star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_1
@@ -5093,6 +5400,9 @@ msgid ""
 "fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i "
 "class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i></span>"
 msgstr ""
+"Prix <span class=\"o_stars o_five_stars\" id=\"checkId-1\"><i class=\"fa fa-"
+"star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i "
+"class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_3
@@ -5101,6 +5411,9 @@ msgid ""
 "fa-star\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i><i"
 " class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i></span>"
 msgstr ""
+"Prix <span class=\"o_stars o_five_stars\" id=\"checkId-1\"><i class=\"fa fa-"
+"star\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i><i "
+"class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_personas
@@ -5110,6 +5423,9 @@ msgid ""
 "star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
 "star-o\"></i></span>​"
 msgstr ""
+"Prix <span class=\"o_stars o_five_stars\" id=\"checkId-1\"><i class=\"fa fa-"
+"star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i><i "
+"class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i></span>​"
 
 #. module: knowledge
 #. odoo-javascript
@@ -5124,12 +5440,12 @@ msgstr "Privée"
 #. module: knowledge
 #: model:knowledge.article.template.category,name:knowledge.knowledge_article_template_category_product_management
 msgid "Product Management"
-msgstr ""
+msgstr "Gestion des produits"
 
 #. module: knowledge
 #: model:knowledge.article.template.category,name:knowledge.knowledge_article_template_category_productivity
 msgid "Productivity"
-msgstr ""
+msgstr "Productivité"
 
 #. module: knowledge
 #. odoo-javascript
@@ -5173,22 +5489,24 @@ msgid ""
 "Provide salespeople with tips, lexicon and templates to help them sell "
 "faster."
 msgstr ""
+"Fournissez aux vendeurs des conseils, du lexique et des modèles pour aider à"
+" vendre plus rapidement."
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_sprint_calendar_public_holiday
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sprint_calendar_public_holiday
 msgid "Public Holidays"
-msgstr ""
+msgstr "Jours fériés"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "Q1: <font class=\"text-600\">Would it be possible to...</font>"
-msgstr ""
+msgstr "Q1 : <font class=\"text-600\">Serait-il possible de...</font>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "Q2: <font class=\"text-600\">Would there be an issue if...</font>"
-msgstr ""
+msgstr "Q2 : <font class=\"text-600\">Il y aurait-il un problème si...</font>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite
@@ -5216,24 +5534,24 @@ msgstr "Destinataires"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_post_mortem
 msgid "Recovery"
-msgstr ""
+msgstr "Récupération"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #, python-format
 msgid "Refresh"
-msgstr ""
+msgstr "Actualiser"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_release_note
 msgid "Release Notes"
-msgstr ""
+msgstr "Notes de version"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_release_note
 msgid "Release Notes 🎉"
-msgstr ""
+msgstr "Notes de version 🎉"
 
 #. module: knowledge
 #. odoo-javascript
@@ -5283,7 +5601,7 @@ msgstr "Renommer"
 #: code:addons/knowledge/static/src/discuss/message_actions.js:0
 #, python-format
 msgid "Reopen the Thread"
-msgstr ""
+msgstr "Rouvrir le fil"
 
 #. module: knowledge
 #. odoo-javascript
@@ -5297,7 +5615,7 @@ msgstr "Remplacer la couverture"
 #: code:addons/knowledge/static/src/components/comment/comment.xml:0
 #, python-format
 msgid "Reply"
-msgstr ""
+msgstr "Répondre"
 
 #. module: knowledge
 #. odoo-javascript
@@ -5318,14 +5636,14 @@ msgstr "Repositionner la couverture"
 #: code:addons/knowledge/static/src/discuss/message_actions.js:0
 #, python-format
 msgid "Resolve the Thread"
-msgstr ""
+msgstr "Résoudre le fil"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/comments_panel/comments_panel.xml:0
 #, python-format
 msgid "Resolved Comments"
-msgstr ""
+msgstr "Commentaires résolus"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_user_id
@@ -5336,6 +5654,7 @@ msgstr "Utilisateur responsable"
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_trash
 #, python-format
 msgid "Restore"
 msgstr "Restaurer"
@@ -5407,12 +5726,12 @@ msgstr "Erreur d'envoi SMS"
 #. module: knowledge
 #: model:knowledge.article.template.category,name:knowledge.knowledge_article_template_category_sales
 msgid "Sales"
-msgstr ""
+msgstr "Ventes"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Sales Details"
-msgstr ""
+msgstr "Détails de la vente"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_sales_playbook
@@ -5532,7 +5851,15 @@ msgstr "Sélectionner un article"
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
 msgid "Send as Message"
-msgstr ""
+msgstr "Envoyer en tant que message"
+
+#. module: knowledge
+#. odoo-javascript
+#: code:addons/knowledge/static/src/components/topbar/topbar.xml:0
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
+#, python-format
+msgid "Send to Trash"
+msgstr "Envoyer à la corbeille"
 
 #. module: knowledge
 #. odoo-javascript
@@ -5568,21 +5895,21 @@ msgstr "Partagé"
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_shared_todos
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_shared_todos
 msgid "Shared To-Do List"
-msgstr ""
+msgstr "Liste to-do partagée"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #, python-format
 msgid "Show All"
-msgstr ""
+msgstr "Afficher tout"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #, python-format
 msgid "Show Less"
-msgstr ""
+msgstr "Afficher moins"
 
 #. module: knowledge
 #. odoo-javascript
@@ -5610,6 +5937,9 @@ msgid ""
 "fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i "
 "class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i></span>"
 msgstr ""
+"Social <span class=\"o_stars o_five_stars\" id=\"checkId-4\"><i class=\"fa "
+"fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i "
+"class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_4
@@ -5618,6 +5948,9 @@ msgid ""
 "class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-"
 "star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star-o\"></i></span>"
 msgstr ""
+"Statut social <span class=\"o_stars o_five_stars\" id=\"checkId-4\"><i "
+"class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-"
+"star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_3
@@ -5627,6 +5960,10 @@ msgid ""
 "star\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
 "star-o\"></i></span>"
 msgstr ""
+"Statut social <span class=\"o_stars o_five_stars\" id=\"checkId-4\"><i "
+"class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-"
+"star\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
+"star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_personas
@@ -5636,6 +5973,10 @@ msgid ""
 "star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
 "star-o\"></i></span>"
 msgstr ""
+"Statut social <span class=\"o_stars o_five_stars\" id=\"checkId-4\"><i "
+"class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
+"star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
+"star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_1
@@ -5644,12 +5985,15 @@ msgid ""
 "class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-"
 "star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star-o\"></i></span>"
 msgstr ""
+"Statut social ​<span class=\"o_stars o_five_stars\" id=\"checkId-4\"><i "
+"class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-"
+"star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star-o\"></i></span>"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_software_specification
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "Software Specification"
-msgstr ""
+msgstr "Spécification du logiciel"
 
 #. module: knowledge
 #. odoo-python
@@ -5668,12 +6012,12 @@ msgstr "Une erreur est survenue !"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_1
 msgid "Sonya"
-msgstr ""
+msgstr "Sonya"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "Source Feedback"
-msgstr ""
+msgstr "Feedback de la source"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_3
@@ -5682,6 +6026,9 @@ msgid ""
 "class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-"
 "star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star-o\"></i></span>"
 msgstr ""
+"Rapidité du service <span class=\"o_stars o_five_stars\" id=\"checkId-2\"><i"
+" class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-"
+"star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_4
@@ -5691,6 +6038,10 @@ msgid ""
 "star\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
 "star-o\"></i></span>"
 msgstr ""
+"Rapidité du service <span class=\"o_stars o_five_stars\" id=\"checkId-2\"><i"
+" class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-"
+"star\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
+"star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_1
@@ -5701,6 +6052,10 @@ msgid ""
 "star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
 "star-o\"></i></span>"
 msgstr ""
+"Rapidité du service <span class=\"o_stars o_five_stars\" id=\"checkId-2\"><i"
+" class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-"
+"star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
+"star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_personas
@@ -5710,12 +6065,16 @@ msgid ""
 "star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
 "star-o\"></i></span>"
 msgstr ""
+"Rapidité du service ​<span class=\"o_stars o_five_stars\" "
+"id=\"checkId-2\"><i class=\"fa fa-star-o\"></i><i class=\"fa fa-"
+"star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i><i "
+"class=\"fa fa-star-o\"></i></span>"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_sprint_calendar
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sprint_calendar
 msgid "Sprint Calendar"
-msgstr ""
+msgstr "Calendrier des sprints."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_stage_view_form
@@ -5740,7 +6099,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Stakeholders Analysis"
-msgstr ""
+msgstr "Analyse des parties prenantes"
 
 #. module: knowledge
 #. odoo-javascript
@@ -5761,7 +6120,7 @@ msgstr "Date de début"
 #: code:addons/knowledge/static/src/components/item_calendar_props_dialog/item_calendar_props_dialog.xml:0
 #, python-format
 msgid "Start typing"
-msgstr ""
+msgstr "Commencez à écrire"
 
 #. module: knowledge
 #. odoo-javascript
@@ -5799,7 +6158,7 @@ msgstr "Date d'arrêt"
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #, python-format
 msgid "Switch Mode"
-msgstr ""
+msgstr "Basculer le mode"
 
 #. module: knowledge
 #. odoo-javascript
@@ -5820,12 +6179,12 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_template_view_search
 msgid "Template"
-msgstr ""
+msgstr "Modèle"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__template_body
 msgid "Template Body"
-msgstr ""
+msgstr "Corps du modèle"
 
 #. module: knowledge
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_template_category_action
@@ -5836,17 +6195,17 @@ msgstr "Catégories de modèle"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__template_category_id
 msgid "Template Category"
-msgstr ""
+msgstr "Catégorie de modèle"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__template_category_sequence
 msgid "Template Category Sequence"
-msgstr ""
+msgstr "Séquence de catégorie de modèle"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__template_description
 msgid "Template Description"
-msgstr ""
+msgstr "Description du modèle"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_template_view_search
@@ -5856,7 +6215,7 @@ msgstr "Éléments de modèle"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__template_preview
 msgid "Template Preview"
-msgstr ""
+msgstr "Aperçu du modèle"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__template_sequence
@@ -5867,12 +6226,12 @@ msgstr "Séquence de modèle"
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_template_stage_action
 #: model:ir.ui.menu,name:knowledge.knowledge_article_template_stage_menu
 msgid "Template Stages"
-msgstr ""
+msgstr "Étapes du modèle"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__template_name
 msgid "Template Title"
-msgstr ""
+msgstr "Titre du modèle"
 
 #. module: knowledge
 #: model:ir.ui.menu,name:knowledge.knowledge_article_template_menu
@@ -5882,12 +6241,12 @@ msgstr "Modèles"
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_template_name_required
 msgid "Templates should have a name."
-msgstr ""
+msgstr "Les modèles doivent avoir un nom."
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "Test Environment"
-msgstr ""
+msgstr "Environnement de test"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_company_newsletter
@@ -5897,6 +6256,10 @@ msgid ""
 "                                <strong>Odoo Run</strong>\n"
 "                            </font>!"
 msgstr ""
+"Merci à toutes les personnes impliquées dans l'organisation de cette édition de l'\n"
+"                            <font class=\"text-o-color-2\">\n"
+"                                <strong>Odoo Run</strong>\n"
+"                            </font> !"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -5924,7 +6287,7 @@ msgstr "L'article auquel vous essayez d'accéder a été supprimé"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_company_newsletter
 msgid "The Future Entrepreneurship Fair"
-msgstr ""
+msgstr "Salon du futur de l'entrepreneuriat"
 
 #. module: knowledge
 #. odoo-python
@@ -5939,7 +6302,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/macros/abstract_macro.js:0
 #, python-format
 msgid "The operation could not be completed."
-msgstr ""
+msgstr "L'opération n'a pas pu être terminée."
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_company_newsletter
@@ -5948,6 +6311,9 @@ msgid ""
 "                            new episode of the series features Géry, the mastermind behind OWL, the world fastest JS\n"
 "                            framework. 🚀"
 msgstr ""
+"Le podcast lance ses nouvelles conférences techniques, pour tous les auditeurs férus de technologie ! Ce\n"
+"                            nouvel épisode de la série met en scène Géry, le cerveau derrière OWL, le framework JS\n"
+"                            le plus rapide du monde. 🚀"
 
 #. module: knowledge
 #. odoo-javascript
@@ -5955,7 +6321,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/macros/abstract_macro.js:0
 #, python-format
 msgid "The record that this macro is targeting could not be found."
-msgstr ""
+msgstr "L'enregistrement visé par cette macro n'a pas pu être trouvé."
 
 #. module: knowledge
 #. odoo-python
@@ -5994,6 +6360,8 @@ msgid ""
 "The tickets to participate to Odoo Experience 23 are now available and they "
 "are cheaper if you book them now!"
 msgstr ""
+"Les tickets pour participer à Odoo Experience 23 sont maintenant disponibles"
+" et ils sont moins chers si vous les réservez maintenant !"
 
 #. module: knowledge
 #. odoo-javascript
@@ -6012,7 +6380,7 @@ msgstr "Il n'y a aucun article dans votre espace de travail."
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "Things to handle this week*"
-msgstr ""
+msgstr "Choses à faire cette semaine*"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -6051,6 +6419,9 @@ msgid ""
 "                            Antwerp, ready to promote our company!<br>Fabien was also there and gave an interview on the main\n"
 "                            stage."
 msgstr ""
+"Cette année encore, Odoo était présent au <em>Technology & Innovation Festival pour étudiants</em> à\n"
+"                            Anvers, prêt à promouvoir notre société !<br>Fabien était également présent et a donné une interview sur la scène\n"
+"                            principale."
 
 #. module: knowledge
 #. odoo-javascript
@@ -6065,13 +6436,13 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_thread__is_resolved
 msgid "Thread Closed"
-msgstr ""
+msgstr "Fil fermé"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_product_catalog
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_product_catalog
 msgid "Tiny House Catalog"
-msgstr ""
+msgstr "Catalogue des tiny houses"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -6102,7 +6473,7 @@ msgstr "Menu latéral"
 #: code:addons/knowledge/static/src/components/topbar/topbar.xml:0
 #, python-format
 msgid "Toggle chatter"
-msgstr ""
+msgstr "Chatter"
 
 #. module: knowledge
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_action_trashed
@@ -6153,7 +6524,7 @@ msgstr "Déverrouiller"
 #: code:addons/knowledge/static/src/components/comments_panel/comments_panel.xml:0
 #, python-format
 msgid "Unresolved Comments"
-msgstr ""
+msgstr "Commentaires non résolus"
 
 #. module: knowledge
 #. odoo-python
@@ -6183,7 +6554,7 @@ msgstr "Sans titre"
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #, python-format
 msgid "Update"
-msgstr ""
+msgstr "Mettre à jour"
 
 #. module: knowledge
 #. odoo-javascript
@@ -6210,7 +6581,7 @@ msgstr "Utiliser comme %s"
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #, python-format
 msgid "Use as Attachment"
-msgstr ""
+msgstr "Utiliser comme pièce jointe"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_brand_assets
@@ -6268,21 +6639,21 @@ msgstr "Autorisation de l'utilisateur"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_release_note
 msgid "VersionName - ReleaseDate"
-msgstr ""
+msgstr "Nom de la version - Date de sortie"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Video"
-msgstr ""
+msgstr "Vidéo"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/video_behavior/video_behavior.xml:0
 #, python-format
 msgid "Video player"
-msgstr ""
+msgstr "Lecteur vidéo"
 
 #. module: knowledge
 #. odoo-javascript
@@ -6295,18 +6666,18 @@ msgstr "Visibilité"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_persona_4
 msgid "Vittorio"
-msgstr ""
+msgstr "Vittorio"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_shared_todos_water_the_plants
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_shared_todos_water_the_plants
 msgid "Water the Plants"
-msgstr ""
+msgstr "Donner de l'eau aux plantes"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_company_newsletter
 msgid "We already cannot wait for the next one🏃"
-msgstr ""
+msgstr "Vivement la prochaine édition🏃"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__website_message_ids
@@ -6333,6 +6704,8 @@ msgid ""
 "Welcome to the last edition of the MyCompany Newsletter!<br>\n"
 "                We are very excited to share with you the hottest updates and news! 🤩"
 msgstr ""
+"Bienvenue à la dernière édition de la newsletter de MyCompany !<br>\n"
+"                Nous sommes très heureux de partager avec vous les mises à jour et les nouvelles les plus récentes ! 🤩"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_hr_faq
@@ -6394,21 +6767,26 @@ msgid ""
 "in touch with our architects and we will make sure to provide any specific "
 "choice you desire."
 msgstr ""
+"Que votre cœur penche pour le charme rustique d'une cabane en bois ou la "
+"beauté intrinsèque des aciéries victoriennes, nous avons ce qu'il vous faut."
+" Vous souhaitez une option spécifique ? Rassurez-vous, nous sommes là pour "
+"répondre à vos souhaits ! Contactez simplement nos architectes et nous nous "
+"assurerons de fournir tout choix spécifique que vous désirez."
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_example_branding
 msgid "Which color should we pick for the logo?"
-msgstr ""
+msgstr "Quelle couleur devrions-nous choisir pour le logo ?"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_example_branding
 msgid "Which size should the rollups be?"
-msgstr ""
+msgstr "Quelle doit être la taille des roll-ups ?"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_example_branding
 msgid "Which text should we print on the billboards?"
-msgstr ""
+msgstr "Quel texte devions-nous imprimer sur les panneaux publicitaires ?"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_product_catalog
@@ -6419,6 +6797,12 @@ msgid ""
 "multiple roommates, our Serenità model is highly recommended, providing "
 "ample space for each individual to enjoy<br>"
 msgstr ""
+"Bien que les tiny houses soient petites, il est important de privilégier de "
+"confort lorsque l'on partage un espace aussi limité. Pour assurer le bonheur"
+" de chacun, nous recommandons de prévoir au moins 9 m² par personne. Si vous"
+" prévoyez de vivre avec plusieurs personnes, notre modèle Serenità est ce "
+"qu'il vous faut, car il offre suffisamment d'espace pour que chacun puisse "
+"en profiter<br>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_product_catalog
@@ -6429,6 +6813,11 @@ msgid ""
 "Cielo model.<br>It provides everything you need while allowing you to "
 "save.<br>"
 msgstr ""
+"Bien que les tiny houses offrent une alternative plus rentable aux maisons "
+"traditionnelles, chez MyCompany, nous donnons la priorité à la durabilité, "
+"ce qui a un prix. Toutefois, si votre budget est serré, nous avons la "
+"solution parfaite : le modèle Cielo.<br>Il offre tout ce dont vous avez "
+"besoin tout en vous permettant d'économiser.<br>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_hr_faq
@@ -6482,7 +6871,7 @@ msgstr ""
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_shared_todos_write_the_next_newsletter
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_shared_todos_write_the_next_newsletter
 msgid "Write the next Newsletter"
-msgstr ""
+msgstr "Écrire la nouvelle newsletter"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_member_unique_article_partner
@@ -6494,14 +6883,14 @@ msgstr "Vous avez déjà ajouté ce partenaire sur cet article."
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "You are not allowed to create a new template."
-msgstr ""
+msgstr "Vous n'êtes pas autorisé à créer un nouveau modèle."
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "You are not allowed to delete a template."
-msgstr ""
+msgstr "Vous n'êtes pas autorisé à supprimer un modèle."
 
 #. module: knowledge
 #. odoo-python
@@ -6525,7 +6914,7 @@ msgstr ""
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "You are not allowed to update a template."
-msgstr ""
+msgstr "Vous n'êtes pas autorisé à mettre à jour un modèle."
 
 #. module: knowledge
 #. odoo-python
@@ -6533,6 +6922,8 @@ msgstr ""
 #, python-format
 msgid "You are not allowed to update the type of a article or a template."
 msgstr ""
+"Vous n'êtes pas autorisé à mettre à jour le type d'un article ou d'un "
+"modèle."
 
 #. module: knowledge
 #. odoo-javascript
@@ -6703,7 +7094,7 @@ msgstr "Votre accès : %s"
 #: code:addons/knowledge/static/src/components/behaviors/video_behavior/video_behavior.xml:0
 #, python-format
 msgid "Your browser does not support iframe."
-msgstr ""
+msgstr "Votre navigateur ne prend pas en charge iframe."
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_hr_faq
@@ -6753,7 +7144,7 @@ msgstr "envoyés à la Corbeille.<br/><br/>"
 #: code:addons/knowledge/static/src/components/comments_panel/comments_panel.xml:0
 #, python-format
 msgid "button to add comments"
-msgstr ""
+msgstr "bouton pour ajouter des commentaires"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_hr_faq
@@ -6831,7 +7222,7 @@ msgstr "logo.jpg"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_mail_notification_layout
 msgid "mentioned you in a comment:"
-msgstr ""
+msgstr "vous a mentionné dans un commentaire :"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__none
@@ -6880,7 +7271,7 @@ msgstr "pour libérer le pouvoir de Connaissances !"
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.js:0
 #, python-format
 msgid "untitled"
-msgstr ""
+msgstr "sans titre"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__write
@@ -6894,6 +7285,9 @@ msgid ""
 "star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i><i "
 "class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i></span>"
 msgstr ""
+"​<span class=\"o_stars o_five_stars\" id=\"checkId-1\"><i class=\"fa fa-"
+"star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i><i "
+"class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
@@ -6902,6 +7296,9 @@ msgid ""
 "star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i><i "
 "class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i></span>"
 msgstr ""
+"​<span class=\"o_stars o_five_stars\" id=\"checkId-2\"><i class=\"fa fa-"
+"star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i><i "
+"class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
@@ -6910,86 +7307,89 @@ msgid ""
 "star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i><i "
 "class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i></span>"
 msgstr ""
+"​<span class=\"o_stars o_five_stars\" id=\"checkId-3\"><i class=\"fa fa-"
+"star-o\"></i><i class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i><i "
+"class=\"fa fa-star-o\"></i><i class=\"fa fa-star-o\"></i></span>"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_campaign_brief
 msgid "⌚ Elevator Pitch"
-msgstr ""
+msgstr "⌚ Argumentaire"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_example_branding
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes_template
 msgid "☝🏼 Please prepare the following before the meeting:"
-msgstr ""
+msgstr "☝🏼 Veuillez préparer les documents suivants avant la réunion :"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "⚙ Technical Specifications"
-msgstr ""
+msgstr "⚙ Spécifications techniques"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "❓ Open Questions"
-msgstr ""
+msgstr "❓ Questions ouvertes"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "⭐ Release Notes"
-msgstr ""
+msgstr "⭐ Notes de version"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_campaign_brief
 msgid "🎯 Target Audience"
-msgstr ""
+msgstr "🎯 Public cible"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_campaign_brief
 msgid "📊 KPIs"
-msgstr ""
+msgstr "📊 KPIs"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "📝 Purpose"
-msgstr ""
+msgstr "📝 Objectif"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_campaign_brief
 msgid "📣 Message"
-msgstr ""
+msgstr "📣 Message"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "🔍 Review Checklist"
-msgstr ""
+msgstr "🔍 Check-list de révision"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "🔗 Links"
-msgstr ""
+msgstr "🔗 Liens"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "🗓 WEEKLY AGENDA"
-msgstr ""
+msgstr "🗓 AGENDA HEBDOMADAIRE"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_example_branding
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes_template
 msgid "🗣 Meeting Agenda"
-msgstr ""
+msgstr "🗣 Ordre du jour de la réunion"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_example_branding
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes_template
 msgid "🙌🏼 Decisions Taken"
-msgstr ""
+msgstr "🙌🏼 Décisions prises"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_campaign_brief
 msgid "🚀 Objective"
-msgstr ""
+msgstr "🚀 Objectif"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
 msgid "🧠 Functional Specifications"
-msgstr ""
+msgstr "🧠 Spécifications fonctionnelles"

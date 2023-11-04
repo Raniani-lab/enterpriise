@@ -1,22 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* social_push_notifications
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:03+0000\n"
-"PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:21+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
-"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: social_push_notifications
@@ -40,12 +40,12 @@ msgstr "允許"
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "Body"
-msgstr "本文主體"
+msgstr "內文"
 
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_res_config_settings
 msgid "Config Settings"
-msgstr "設定"
+msgstr "配置設定"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
@@ -57,7 +57,7 @@ msgstr "延遲"
 #: code:addons/social_push_notifications/static/src/xml/social_push_notifications_templates.xml:0
 #, python-format
 msgid "Deny"
-msgstr ""
+msgstr "禁止"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor_push_subscription__display_name
@@ -86,7 +86,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social_push_notifications.field_res_config_settings__firebase_enable_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_website__firebase_enable_push_notifications
 msgid "Enable Web Push Notifications"
-msgstr ""
+msgstr "啟用網絡推送通知"
 
 #. module: social_push_notifications
 #. odoo-python
@@ -151,7 +151,7 @@ msgstr "HTTP 路由"
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor_push_subscription__id
 msgid "ID"
-msgstr "ID"
+msgstr "識別號"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
@@ -283,7 +283,7 @@ msgstr ""
 #: model:social.media,name:social_push_notifications.social_media_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.utm_campaign_view_form
 msgid "Push Notifications"
-msgstr ""
+msgstr "推送通知"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor__has_push_notifications
@@ -330,7 +330,7 @@ msgstr ""
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.utm_campaign_view_form
 msgid "Send Push"
-msgstr ""
+msgstr "發出推送"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.website_visitor_view_form
@@ -351,7 +351,9 @@ msgstr ""
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
-msgid "Send push notifications and configure this website's notifications permission request"
+msgid ""
+"Send push notifications and configure this website's notifications "
+"permission request"
 msgstr ""
 
 #. module: social_push_notifications
@@ -362,7 +364,7 @@ msgstr ""
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_social_account
 msgid "Social Account"
-msgstr ""
+msgstr "社交媒體帳號"
 
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_social_live_post
@@ -377,7 +379,7 @@ msgstr "社交媒體"
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_social_post
 msgid "Social Post"
-msgstr ""
+msgstr "社交帖文"
 
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_social_post_template
@@ -403,7 +405,8 @@ msgstr ""
 
 #. module: social_push_notifications
 #: model:ir.model.fields,help:social_push_notifications.field_social_account__website_id
-msgid "This firebase configuration will only be used for the specified website"
+msgid ""
+"This firebase configuration will only be used for the specified website"
 msgstr ""
 
 #. module: social_push_notifications
@@ -436,7 +439,9 @@ msgstr ""
 
 #. module: social_push_notifications
 #: model:ir.model.fields,help:social_push_notifications.field_social_media__media_type
-msgid "Used to make comparisons when we need to restrict some features to a specific media ('facebook', 'twitter', ...)."
+msgid ""
+"Used to make comparisons when we need to restrict some features to a "
+"specific media ('facebook', 'twitter', ...)."
 msgstr ""
 
 #. module: social_push_notifications
@@ -473,7 +478,7 @@ msgstr "網站"
 #: model:ir.model,name:social_push_notifications.model_website_visitor
 #: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor_push_subscription__website_visitor_id
 msgid "Website Visitor"
-msgstr "網站訪問者"
+msgstr "網站訪客"
 
 #. module: social_push_notifications
 #. odoo-python
@@ -486,7 +491,9 @@ msgstr ""
 #. odoo-python
 #: code:addons/social_push_notifications/models/social_account.py:0
 #, python-format
-msgid "You have to install \"google_auth>=1.18.0\" to be able to send push notifications."
+msgid ""
+"You have to install \"google_auth>=1.18.0\" to be able to send push "
+"notifications."
 msgstr ""
 
 #. module: social_push_notifications
@@ -512,5 +519,7 @@ msgstr ""
 #. module: social_push_notifications
 #: model:ir.model.fields,help:social_push_notifications.field_social_post__use_visitor_timezone
 #: model:ir.model.fields,help:social_push_notifications.field_social_post_template__use_visitor_timezone
-msgid "e.g: If you post at 15:00 your time, all visitors will receive the post at 15:00 their time."
+msgid ""
+"e.g: If you post at 15:00 your time, all visitors will receive the post at "
+"15:00 their time."
 msgstr ""

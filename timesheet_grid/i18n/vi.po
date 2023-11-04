@@ -1,25 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* timesheet_grid
-#
+# 
 # Translators:
-# Thanh Nguyễn Văn, 2022
-# Duy BQ <duybq86@gmail.com>, 2022
-# Martin Trigaux, 2022
-# Thi Huong Nguyen, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Thi Huong Nguyen, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
-"Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: timesheet_grid
@@ -28,6 +25,13 @@ msgstr ""
 #, python-format
 msgid "%s Spent"
 msgstr "%s đã dùng"
+
+#. module: timesheet_grid
+#. odoo-javascript
+#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
+#, python-format
+msgid "+ [A] to add"
+msgstr ""
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_kanban
@@ -220,7 +224,7 @@ msgstr "Tất cả Bảng chấm công"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__amount
 msgid "Amount"
-msgstr "Tổng tiền"
+msgstr "Số tiền"
 
 #. module: timesheet_grid
 #. odoo-python
@@ -253,21 +257,18 @@ msgstr ""
 
 #. module: timesheet_grid
 #: model_terms:ir.actions.act_window,help:timesheet_grid.timesheet_grid_to_validate_action
-msgid "Check that your employees correctly filled in their timesheets and that their time is billable."
-msgstr ""
-
-#. module: timesheet_grid
-#. odoo-javascript
-#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
-#, python-format
-msgid "Click on"
+msgid ""
+"Check that your employees correctly filled in their timesheets and that "
+"their time is billable."
 msgstr ""
 
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
+#: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
-msgid "Click on the cell to set the number of hours you spent on this project."
+msgid ""
+"Click on the cell to set the number of hours you spent on this project."
 msgstr ""
 
 #. module: timesheet_grid
@@ -278,11 +279,13 @@ msgstr "Công ty"
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_res_config_settings
 msgid "Config Settings"
-msgstr "Cấu hình"
+msgstr "Cài đặt cấu hình"
 
 #. module: timesheet_grid
 #: model:mail.template,description:timesheet_grid.mail_template_timesheet_reminder
-msgid "Configure reminders in timesheet settings to remind approvers to validate timesheets"
+msgid ""
+"Configure reminders in timesheet settings to remind approvers to validate "
+"timesheets"
 msgstr ""
 
 #. module: timesheet_grid
@@ -360,8 +363,11 @@ msgstr "Số ngày để nhắc nhở người điền"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_account_analytic_line__employee_id
-msgid "Define an 'hourly cost' on the employee to track the cost of their time."
-msgstr "Xác định \"chi phí theo giờ\" cho nhân viên để theo dõi chi phí theo thời gian họ làm việc"
+msgid ""
+"Define an 'hourly cost' on the employee to track the cost of their time."
+msgstr ""
+"Xác định \"chi phí theo giờ\" cho nhân viên để theo dõi chi phí theo thời "
+"gian họ làm việc"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
@@ -377,7 +383,9 @@ msgstr "Mô tả hoạt động của bạn"
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
-msgid "Describe your activity <i>(e.g. sent an e-mail, meeting with the customer...)</i>."
+msgid ""
+"Describe your activity <i>(e.g. sent an e-mail, meeting with the "
+"customer...)</i>."
 msgstr ""
 
 #. module: timesheet_grid
@@ -387,7 +395,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
 #, python-format
 msgid "Describe your activity..."
-msgstr "Describe your activity..."
+msgstr "Mô tả hoạt động..."
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__name
@@ -399,21 +407,27 @@ msgstr "Mô tả"
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/components/timesheet_overtime_indication/timesheet_overtime_indication.js:0
 #, python-format
-msgid "Difference between the number of %s allocated to the project and the number of %s recorded"
+msgid ""
+"Difference between the number of %s allocated to the project and the number "
+"of %s recorded"
 msgstr ""
 
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/components/timesheet_overtime_indication/timesheet_overtime_indication.js:0
 #, python-format
-msgid "Difference between the number of %s allocated to the task and the number of %s recorded"
+msgid ""
+"Difference between the number of %s allocated to the task and the number of "
+"%s recorded"
 msgstr ""
 
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/components/employee_overtime_indication/employee_overtime_indication.xml:0
 #, python-format
-msgid "Difference between the number of hours recorded and the number of hours the employee was supposed to work according to his contract"
+msgid ""
+"Difference between the number of hours recorded and the number of hours the "
+"employee was supposed to work according to his contract"
 msgstr ""
 
 #. module: timesheet_grid
@@ -441,19 +455,19 @@ msgstr "Tên hiển thị"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer
 msgid "Display Timer"
-msgstr "Hiển thị hẹn giờ"
+msgstr "Hiển thị đồng hồ tính giờ"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer_pause
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timer_pause
 msgid "Display Timer Pause"
-msgstr "Hiển thị thời gian tạm dừng"
+msgstr "Hiển thị đồng hồ tính giờ Tạm ngừng"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer_resume
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timer_resume
 msgid "Display Timer Resume"
-msgstr "Hiển thị thời gian tiếp tục"
+msgstr "Hiển đồng hồ tính giờ Tiếp tục"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer_start_primary
@@ -470,18 +484,18 @@ msgstr "Display Timer Start Secondary"
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer_stop
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timer_stop
 msgid "Display Timer Stop"
-msgstr "Hiển thị thời gian Dừng"
+msgstr "Hiển thị đồng hồ tính giờ Ngừng"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timesheet_timer
 msgid "Display Timesheet Time"
-msgstr "Hiển thị thời gian bảng chấm công"
+msgstr "Hiển thị thời gian bảng chấm công"
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__account_analytic_line__validated_status__draft
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "Draft"
-msgstr "Dự thảo"
+msgstr "Nháp"
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_hr_employee
@@ -514,14 +528,15 @@ msgstr "Đơn vị tính"
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
+#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
 #, python-format
 msgid "Enter"
-msgstr ""
+msgstr "Vào"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "Frequency"
-msgstr "Thời điểm nhắc nhở"
+msgstr "Tần suất"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -551,7 +566,7 @@ msgstr "ID"
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__is_timer_running
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheets_analysis_report__is_timer_running
 msgid "Is Timer Running"
-msgstr "Đang chạy?"
+msgstr "Đồng hồ tính giờ có đang chạy không?"
 
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate_previous_month
@@ -562,7 +577,7 @@ msgstr "Tháng trước"
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__write_uid
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet__write_uid
 msgid "Last Updated by"
-msgstr "Last Updated by"
+msgstr "Cập nhật lần cuối bởi"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__write_date
@@ -584,7 +599,11 @@ msgstr "Tuần trước"
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
-msgid "Launch the <b>timer</b> for this project by pressing the <b>[a] key</b>. Easily switch from one project to another by using those keys. <i>Tip: you can also directly add 15 minutes to this project by hitting the <b>shift + [A] keys</b>.</i>"
+msgid ""
+"Launch the <b>timer</b> for this project by pressing the <b>[a] key</b>. "
+"Easily switch from one project to another by using those keys. <i>Tip: you "
+"can also directly add 15 minutes to this project by hitting the <b>shift + "
+"[A] keys</b>.</i>"
 msgstr ""
 
 #. module: timesheet_grid
@@ -621,7 +640,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_ir_module_module
 msgid "Module"
-msgstr "Mô đun"
+msgstr "Phân hệ"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid
@@ -633,7 +652,7 @@ msgstr "Tháng"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "My Department"
-msgstr "Phòng ban của tôi"
+msgstr "Bộ phận của tôi"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
@@ -673,32 +692,43 @@ msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_delay
-msgid "Number of days after the end of the week/month after which an automatic email reminder will be sent to timesheet managers that still have timesheets to validate."
+msgid ""
+"Number of days after the end of the week/month after which an automatic "
+"email reminder will be sent to timesheet managers that still have timesheets"
+" to validate."
 msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_user_delay
-msgid "Numbers of days after the end of the week/month after which an automatic email reminder will be sent to timesheet users that still have timesheets to encode (according to their working hours)."
+msgid ""
+"Numbers of days after the end of the week/month after which an automatic "
+"email reminder will be sent to timesheet users that still have timesheets to"
+" encode (according to their working hours)."
 msgstr ""
 
 #. module: timesheet_grid
 #. odoo-python
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
-msgid "Only a Timesheets Approver or Manager is allowed to modify a validated entry."
+msgid ""
+"Only a Timesheets Approver or Manager is allowed to modify a validated "
+"entry."
 msgstr ""
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
 msgid "Pause"
-msgstr "Tạm dừng"
+msgstr "Tạm ngừng"
 
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
+#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
+#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
+#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
 #, python-format
 msgid "Press"
-msgstr ""
+msgstr "Nhấn"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -716,7 +746,7 @@ msgstr "Dự án"
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_hr_employee_public
 msgid "Public Employee"
-msgstr "Public Employee"
+msgstr "Nhân viên chung"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__unit_amount
@@ -786,15 +816,27 @@ msgstr "Đặt nếu đường phân tích này đại diện cho một dòng c�
 
 #. module: timesheet_grid
 #: model:mail.template,description:timesheet_grid.mail_template_timesheet_reminder_user
-msgid "Set reminders in settings to notify employees who didn't record their timesheet"
+msgid ""
+"Set reminders in settings to notify employees who didn't record their "
+"timesheet"
 msgstr ""
 
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
-msgid "Set the number of hours you spent on this project (e.g. 1:30 or 1.5). <i>Tip: use the tab keys to easily navigate from one cell to another.</i>"
+msgid ""
+"Set the number of hours you spent on this project (e.g. 1:30 or 1.5). "
+"<i>Tip: use the tab keys to easily navigate from one cell to another.</i>"
 msgstr ""
+
+#. module: timesheet_grid
+#. odoo-javascript
+#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
+#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
+#, python-format
+msgid "Shift"
+msgstr "Ca làm"
 
 #. module: timesheet_grid
 #. odoo-python
@@ -810,7 +852,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
 #, python-format
 msgid "Start"
-msgstr "Khởi động"
+msgstr "Bắt đầu"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -819,13 +861,15 @@ msgstr "Khởi động"
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
 #, python-format
 msgid "Stop"
-msgstr "Dừng"
+msgstr "Ngừng"
 
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
-msgid "Stop the <b>timer</b> when you are done. <i>Tip: hit <b>[Enter]</b> in the description to automatically log your activity.</i>"
+msgid ""
+"Stop the <b>timer</b> when you are done. <i>Tip: hit <b>[Enter]</b> in the "
+"description to automatically log your activity.</i>"
 msgstr ""
 
 #. module: timesheet_grid
@@ -833,7 +877,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__task_id
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet__task_id
 msgid "Task"
-msgstr "Công việc"
+msgstr "Nhiệm vụ"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_project_task_create_timesheet__task_id
@@ -842,12 +886,18 @@ msgstr "Nhiệm vụ mà chúng tôi đang tạo đơn bán hàng"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_account_analytic_line__display_timer
-msgid "Technical field used to display the timer if the encoding unit is 'Hours'."
+msgid ""
+"Technical field used to display the timer if the encoding unit is 'Hours'."
 msgstr ""
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
-msgid "The duration of timesheets encoded through the timer will automatically be rounded up to this number. For instance, if you stop your timer at 00:16:56, the duration of the timesheet entry will automatically be rounded up to 00:30 (assuming you have a round up of 15 min). We recommend having the same value for the minimal duration and for the round up."
+msgid ""
+"The duration of timesheets encoded through the timer will automatically be "
+"rounded up to this number. For instance, if you stop your timer at 00:16:56,"
+" the duration of the timesheet entry will automatically be rounded up to "
+"00:30 (assuming you have a round up of 15 min). We recommend having the same"
+" value for the minimal duration and for the round up."
 msgstr ""
 
 #. module: timesheet_grid
@@ -901,14 +951,17 @@ msgstr ""
 #. odoo-python
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
-msgid "There are no timesheets to reset to draft or they have already been invoiced."
+msgid ""
+"There are no timesheets to reset to draft or they have already been "
+"invoiced."
 msgstr ""
 
 #. module: timesheet_grid
 #. odoo-python
 #: code:addons/timesheet_grid/models/task.py:0
 #, python-format
-msgid "This project isn't expected to have task during this period. Planned hours :"
+msgid ""
+"This project isn't expected to have task during this period. Planned hours :"
 msgstr ""
 
 #. module: timesheet_grid
@@ -998,12 +1051,20 @@ msgstr "Báo cáo phân tích bảng chấm công"
 #. odoo-python
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
-msgid "Timesheets before the %s (included) have been validated, and can no longer be %s."
+msgid ""
+"Timesheets before the %s (included) have been validated, and can no longer "
+"be %s."
 msgstr ""
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
-msgid "Timesheets encoded via the timer that do not meet the minimal duration will automatically be rounded up to the defined value. For instance, if you stop your timer at 00:04:36, the duration of the timesheet entry will automatically be rounded up to 00:15 (assuming you have a minimal duration of 15 min). We recommend having the same value for the minimal duration and for the round up."
+msgid ""
+"Timesheets encoded via the timer that do not meet the minimal duration will "
+"automatically be rounded up to the defined value. For instance, if you stop "
+"your timer at 00:04:36, the duration of the timesheet entry will "
+"automatically be rounded up to 00:15 (assuming you have a minimal duration "
+"of 15 min). We recommend having the same value for the minimal duration and "
+"for the round up."
 msgstr ""
 
 #. module: timesheet_grid
@@ -1059,7 +1120,9 @@ msgstr "Người dùng Đồng hồ tính giờ"
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_hr_employee_public__timesheet_manager_id
 msgid "User responsible of timesheet validation. Should be Timesheet Manager."
-msgstr "Người dùng chịu trách nhiệm xác nhận thời gian biểu. Nên là quản lý thời gian biểu."
+msgstr ""
+"Người dùng chịu trách nhiệm xác nhận thời gian biểu. Nên là quản lý thời "
+"gian biểu."
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1121,21 +1184,35 @@ msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_account_analytic_line__user_can_validate
-msgid "Whether or not the current user can validate/reset to draft the record."
+msgid ""
+"Whether or not the current user can validate/reset to draft the record."
+msgstr ""
+
+#. module: timesheet_grid
+#. odoo-python
+#: code:addons/timesheet_grid/models/hr_employee.py:0
+#: code:addons/timesheet_grid/models/res_users.py:0
+#, python-format
+msgid "You are not allowed to see timesheets."
 msgstr ""
 
 #. module: timesheet_grid
 #. odoo-python
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
-msgid "You can only reset to draft the timesheets of employees of whom you are the manager or the timesheet approver."
+msgid ""
+"You can only reset to draft the timesheets of employees of whom you are the "
+"manager or the timesheet approver."
 msgstr ""
 
 #. module: timesheet_grid
 #. odoo-python
 #: code:addons/timesheet_grid/models/analytic.py:0
+#: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
-msgid "You can only validate the timesheets of employees of whom you are the manager or the timesheet approver."
+msgid ""
+"You can only validate the timesheets of employees of whom you are the "
+"manager or the timesheet approver."
 msgstr ""
 
 #. module: timesheet_grid
@@ -1148,26 +1225,37 @@ msgstr "You cannot access timesheets that are not yours."
 #. module: timesheet_grid
 #. odoo-python
 #: code:addons/timesheet_grid/models/analytic.py:0
+#: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
-msgid "You cannot adjust the time of the timesheet for a project with timesheets disabled."
+msgid ""
+"You cannot adjust the time of the timesheet for a project with timesheets "
+"disabled."
 msgstr ""
 
 #. module: timesheet_grid
 #. odoo-python
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
-msgid "You cannot delete a validated entry. Please, contact your manager or your timesheet approver."
+msgid ""
+"You cannot delete a validated entry. Please, contact your manager or your "
+"timesheet approver."
 msgstr ""
 
 #. module: timesheet_grid
 #. odoo-python
 #: code:addons/timesheet_grid/models/project.py:0
 #, python-format
-msgid "You cannot start the timer for a project in a company encoding its timesheets in days."
+msgid ""
+"You cannot start the timer for a project in a company encoding its "
+"timesheets in days."
 msgstr ""
 
 #. module: timesheet_grid
 #. odoo-python
+#: code:addons/timesheet_grid/models/analytic.py:0
+#: code:addons/timesheet_grid/models/analytic.py:0
+#: code:addons/timesheet_grid/models/analytic.py:0
+#: code:addons/timesheet_grid/models/analytic.py:0
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "You cannot use the timer on validated timesheets."
@@ -1177,7 +1265,10 @@ msgstr ""
 #. odoo-python
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
-msgid "You cannot validate the timesheets from employees that are not part of your team or there are no timesheets to validate."
+msgid ""
+"You cannot validate the selected timesheets as they either belong to "
+"employees who are not part of your team or are not in a state that can be "
+"validated. This may be due to the fact that they are dated in the future."
 msgstr ""
 
 #. module: timesheet_grid
@@ -1190,6 +1281,13 @@ msgstr ""
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_employee_interval__weeks
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_interval__weeks
 msgid "after the end of the week"
+msgstr ""
+
+#. module: timesheet_grid
+#. odoo-javascript
+#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
+#, python-format
+msgid "and click on"
 msgstr ""
 
 #. module: timesheet_grid
@@ -1222,19 +1320,26 @@ msgstr "đã được chỉnh sửa"
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
 #, python-format
-msgid "or a letter to start the timer"
+msgid "or [a] to launch the timer"
 msgstr ""
 
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
 #, python-format
-msgid "to add"
+msgid "or click on"
 msgstr ""
 
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
 #, python-format
-msgid "to start the timer"
+msgid "to add 15 min"
+msgstr ""
+
+#. module: timesheet_grid
+#. odoo-javascript
+#: code:addons/timesheet_grid/static/src/components/timesheet_timer_header/timesheet_timer_header.xml:0
+#, python-format
+msgid "to launch the timer"
 msgstr ""

@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:21+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -78,7 +79,7 @@ msgstr "Werknemers met ongeldige bankrekeningen"
 #: code:addons/hr_payroll_account_sepa/models/hr_payslip.py:0
 #, python-format
 msgid "Employees with untrusted Bank Account numbers"
-msgstr ""
+msgstr "Werknemers met onbetrouwbare bankrekeningnummers"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,help:hr_payroll_account_sepa.field_hr_payslip__sepa_export
@@ -213,6 +214,8 @@ msgid ""
 "The following employees have invalid bank accounts and could not be trusted:\n"
 "%s"
 msgstr ""
+"De volgende werknemers hebben ongeldige bankrekeningen en zijn niet te vertrouwen:\n"
+"%s"
 
 #. module: hr_payroll_account_sepa
 #. odoo-python
@@ -228,17 +231,17 @@ msgstr ""
 #. module: hr_payroll_account_sepa
 #: model:ir.actions.server,name:hr_payroll_account_sepa.trust_employee_bank
 msgid "Trust Bank Account"
-msgstr ""
+msgstr "Bankrekening vertrouwen"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip__sepa_uetr
 msgid "UETR"
-msgstr ""
+msgstr "UETR"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,help:hr_payroll_account_sepa.field_hr_payslip__sepa_uetr
 msgid "Unique end-to-end transaction reference"
-msgstr ""
+msgstr "Unique end-to-end transaction reference"
 
 #. module: hr_payroll_account_sepa
 #. odoo-python
@@ -249,10 +252,12 @@ msgid ""
 "Untrusted bank account for the following employees:\n"
 "%s"
 msgstr ""
+"Niet te vertrouwen bankrekening voor de volgende werknemers:\n"
+"%s"
 
 #. module: hr_payroll_account_sepa
 #. odoo-python
 #: code:addons/hr_payroll_account_sepa/models/hr_employee.py:0
 #, python-format
 msgid "You do not have the right to trust or un-trust a bank account."
-msgstr ""
+msgstr "Je hebt niet het recht om een bankrekening te vertrouwen of niet."

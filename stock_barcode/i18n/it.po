@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Marianna Ciofani, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,6 +44,8 @@ msgid ""
 "<i class=\"fa fa-fw fa-lg fa-barcode me-3\" title=\"Serial/Lot Number\" "
 "invisible=\"tracking not in ['serial', 'lot']\"/>"
 msgstr ""
+"<i class=\"fa fa-fw fa-lg fa-barcode me-3\" title=\"Serial/Lot Number\" "
+"invisible=\"tracking not in ['serial', 'lot']\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
@@ -618,7 +621,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__image_1920
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_quant__image_1920
 msgid "Image"
-msgstr ""
+msgstr "Immagine"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
@@ -661,7 +664,7 @@ msgstr "Ubicazioni di magazzino"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__is_barcode_picking_type
 msgid "Is Barcode Picking Type"
-msgstr ""
+msgstr "È tipo prelievo codice a barre"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation__write_uid
@@ -774,7 +777,7 @@ msgstr ""
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #, python-format
 msgid "No product, lot or package found for barcode %s"
-msgstr ""
+msgstr "Nessun prodotto, lotto o pacchetto trovato per il codice a barre %s"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__barcode_nomenclature_id
@@ -910,7 +913,7 @@ msgstr "Premi Convalida o scansiona un altro prodotto"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Print Barcodes"
-msgstr ""
+msgstr "Stampa codici a barre"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -970,7 +973,7 @@ msgstr "Imballaggio prodotti"
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_reference_code
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_quant__product_reference_code
 msgid "Product Reference Code"
-msgstr ""
+msgstr "Codice riferimento prodotto"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_stock_quant_ids
@@ -1002,7 +1005,7 @@ msgstr "Crea collo"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__qty_done
 msgid "Qty Done"
-msgstr ""
+msgstr "Qtà effettuata"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -1183,6 +1186,8 @@ msgstr "Scansiona un prodotto e in seguito l'ubicazione di destinazione"
 msgid ""
 "Scan a product, a lot/serial number or a package to filter the transfers."
 msgstr ""
+"Scansiona un prodotto, un lotto/numero seriale o un pacchetto per filtrare i"
+" trasferimenti."
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1427,6 +1432,9 @@ msgid ""
 "Technical field indicating if should be used in barcode app and used to "
 "control visibility in the related UI."
 msgstr ""
+"Campo tecnico che indica se deve essere usato nell'applicazione codice a "
+"barre e che serve a controllare la visibilità nella relativa interfaccia "
+"utente."
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_picking_type__show_barcode_validation
@@ -1590,7 +1598,7 @@ msgstr "Valore dell'ultimo codice a barre scansionato."
 #: code:addons/stock_barcode/static/src/widgets/image_preview.xml:0
 #, python-format
 msgid "Viewer"
-msgstr ""
+msgstr "Visualizzatore"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_warehouse
@@ -1625,6 +1633,8 @@ msgid ""
 "You are about to take the product %(productName)s from the location %(locationName)s but this product isn't reserved in this location.\n"
 "Scan the current location to confirm that."
 msgstr ""
+"Stai per prelevare il prodotto %(productName)s dall'ubicazione %(locationName)s ma il prodotto non è prenotato in questa ubicazione.\n"
+"Scansiona l'ubicazione attuale per confermarlo."
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1691,7 +1701,7 @@ msgstr "È necessario scansionare un prodotto"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "[${product.code}] "
-msgstr ""
+msgstr "[${product.code}] "
 
 #. module: stock_barcode
 #. odoo-javascript

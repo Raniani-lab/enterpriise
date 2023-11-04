@@ -1,25 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* account_asset
-#
+# 
 # Translators:
-# arfa simoncelli, 2022
-# Martin Trigaux, 2022
-# Ryanto The <ry.the77@gmail.com>, 2022
+# Wil Odoo, 2023
 # Abe Manyo, 2023
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:44+0000\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:09+0000\n"
 "Last-Translator: Abe Manyo, 2023\n"
 "Language-Team: Indonesian (https://app.transifex.com/odoo/teams/41243/id/)\n"
-"Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: id\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: account_asset
@@ -55,15 +53,12 @@ msgstr "# Entri Penyusutan Terposting"
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
-msgid "%s Future entries will be recomputed to depreciate the asset following the changes."
-msgstr "%s Entri masa depan akan dihitung ulang untuk melakukan depresiasi aset mengikuti perubahan ini."
-
-#. module: account_asset
-#. odoo-python
-#: code:addons/account_asset/models/account_move.py:0
-#, python-format
-msgid "%s created from invoice: %s"
-msgstr "%s membuat faktur: %s"
+msgid ""
+"%s Future entries will be recomputed to depreciate the asset following the "
+"changes."
+msgstr ""
+"%s Entri masa depan akan dihitung ulang untuk melakukan depresiasi aset "
+"mengikuti perubahan ini."
 
 #. module: account_asset
 #. odoo-python
@@ -93,20 +88,6 @@ msgstr "(termasuk."
 
 #. module: account_asset
 #. odoo-python
-#: code:addons/account_asset/models/account_asset.py:0
-#, python-format
-msgid "A deferred expense has been created for this move:"
-msgstr "Biaya yang ditangguhkan telah dibuat untuk langkah ini:"
-
-#. module: account_asset
-#. odoo-python
-#: code:addons/account_asset/models/account_asset.py:0
-#, python-format
-msgid "A deferred revenue has been created for this move:"
-msgstr "Biaya yang ditangguhkan telah dibuat untuk langkah ini:"
-
-#. module: account_asset
-#. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "A depreciation entry will be posted on and including the date %s."
@@ -116,22 +97,38 @@ msgstr "Entri depresiasi akan dipost pada dan termasuk tanggal %s."
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
-msgid "A depreciation entry will be posted on and including the date %s. <br/> %s Future entries will be recomputed to depreciate the asset following the changes."
-msgstr "Entri depresiasi akan dipost pada dan termasuk tanggal %s. <br/> %s Entri masa depan akan dihitung ulang untuk melakukan depresiasi aset mengikuti perubahan ini."
+msgid ""
+"A depreciation entry will be posted on and including the date %s. <br/> %s "
+"Future entries will be recomputed to depreciate the asset following the "
+"changes."
+msgstr ""
+"Entri depresiasi akan dipost pada dan termasuk tanggal %s. <br/> %s Entri "
+"masa depan akan dihitung ulang untuk melakukan depresiasi aset mengikuti "
+"perubahan ini."
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
-msgid "A depreciation entry will be posted on and including the date %s.<br/> A disposal entry will be posted on the %s account <b>%s</b>."
-msgstr "Entri depresiasi akan dipost pada dan termasuk tanggal %s.<br/> Entri pembuangan akan dipost pada %s akun <b>%s</b>."
+msgid ""
+"A depreciation entry will be posted on and including the date %s.<br/> A "
+"disposal entry will be posted on the %s account <b>%s</b>."
+msgstr ""
+"Entri depresiasi akan dipost pada dan termasuk tanggal %s.<br/> Entri "
+"pembuangan akan dipost pada %s akun <b>%s</b>."
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
-msgid "A depreciation entry will be posted on and including the date %s.<br/> A second entry will neutralize the original income and post the  outcome of this sale on account <b>%s</b>."
-msgstr "Entri depresiasi akan dipost pada dan termasuk tanggal %s.<br/> Entri kedua akan menetralisir income original dan post outcome dari sale ini pada akun <b>%s</b>."
+msgid ""
+"A depreciation entry will be posted on and including the date %s.<br/> A "
+"second entry will neutralize the original income and post the  outcome of "
+"this sale on account <b>%s</b>."
+msgstr ""
+"Entri depresiasi akan dipost pada dan termasuk tanggal %s.<br/> Entri kedua "
+"akan menetralisir income original dan post outcome dari sale ini pada akun "
+"<b>%s</b>."
 
 #. module: account_asset
 #. odoo-python
@@ -152,14 +149,16 @@ msgstr "Dokumen yang di-link ke pergerakan ini telah dihapus: %s"
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "A gross increase has been created: "
-msgstr ""
+msgstr "Peningkatan kotor telah dibuat:"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A non deductible tax value of %s was added to %s's initial value of %s"
-msgstr "Non deductible tax sejumlah %s telah ditambahkan ke nilai awal %s yang sejumlah %s"
+msgstr ""
+"Non deductible tax sejumlah %s telah ditambahkan ke nilai awal %s yang "
+"sejumlah %s"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_account
@@ -168,43 +167,35 @@ msgstr "Akun"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_type
-msgid "Account Type is used for information purpose, to generate country-specific legal reports, and set the rules to close a fiscal year and generate opening entries."
-msgstr "Tipe Akun berguna sebagai penyedia informasi, untuk membuat laporan akuntansi yang spesifik tiap negara, dan menyusun aturan untuk tutup buku tahunan dan membuat saldo awal."
+msgid ""
+"Account Type is used for information purpose, to generate country-specific "
+"legal reports, and set the rules to close a fiscal year and generate opening"
+" entries."
+msgstr ""
+"Tipe Akun berguna sebagai penyedia informasi, untuk membuat laporan "
+"akuntansi yang spesifik tiap negara, dan menyusun aturan untuk tutup buku "
+"tahunan dan membuat saldo awal."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_depreciation_id
 msgid "Account used in the depreciation entries, to decrease the asset value."
-msgstr "Akun yang digunakan di entri penyusutan, untuk mengurangi nilai aktiva."
+msgstr ""
+"Akun yang digunakan di entri penyusutan, untuk mengurangi nilai aktiva."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_depreciation_expense_id
-msgid "Account used in the periodical entries, to record a part of the asset as expense."
-msgstr "Akun yang digunakan di entri periode, untuk mencatat aktiva sebagai beban."
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-msgid "Account used to recognize the expense"
-msgstr "Akun yang digunakan untuk mengenali biaya"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "Account used to recognize the revenue"
-msgstr "Akun yang digunakan untuk mengenali pendapatan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-msgid "Account used to record the deferred expense"
-msgstr "Akun yang digunakan untuk mencatat biaya yang ditangguhkan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "Account used to record the deferred income"
-msgstr "Akun yang digunakan untuk mencatat penghasilan yang ditangguhkan"
+msgid ""
+"Account used in the periodical entries, to record a part of the asset as "
+"expense."
+msgstr ""
+"Akun yang digunakan di entri periode, untuk mencatat aktiva sebagai beban."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_asset_id
-msgid "Account used to record the purchase of the asset at its original price."
-msgstr "Akun yang digunakan untuk mencatat pembelian aktiva pada harga originalnya."
+msgid ""
+"Account used to record the purchase of the asset at its original price."
+msgstr ""
+"Akun yang digunakan untuk mencatat pembelian aktiva pada harga originalnya."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__gain_account_id
@@ -213,8 +204,12 @@ msgstr "Akun yang digunakan untuk menulis item jurnal jika terjadi keuntungan"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_res_company__gain_account_id
-msgid "Account used to write the journal item in case of gain while selling an asset"
-msgstr "Akun yang digunakan untuk menulis item jurnal jika terjadi keuntungan ketika menjual sebuah aset"
+msgid ""
+"Account used to write the journal item in case of gain while selling an "
+"asset"
+msgstr ""
+"Akun yang digunakan untuk menulis item jurnal jika terjadi keuntungan ketika"
+" menjual sebuah aset"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__loss_account_id
@@ -223,8 +218,12 @@ msgstr "Akun yang digunakan untuk menulis item jurnal jika terjadi kerugian"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_res_company__loss_account_id
-msgid "Account used to write the journal item in case of loss while selling an asset"
-msgstr "Akun yang digunakan untuk menulis item jurnal jika terjadi kerugian ketika menjual sebuah aset"
+msgid ""
+"Account used to write the journal item in case of loss while selling an "
+"asset"
+msgstr ""
+"Akun yang digunakan untuk menulis item jurnal jika terjadi kerugian ketika "
+"menjual sebuah aset"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -251,7 +250,7 @@ msgstr "Tindakan"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_needaction
 msgid "Action Needed"
-msgstr "Perlu Tindakan"
+msgstr "Tindakan Diperluka"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__active
@@ -307,7 +306,8 @@ msgstr "Import Jumlah yang Sudah Didepresiasi"
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__parent_id
 msgid "An asset has a parent when it is the result of gaining value"
-msgstr "Sebuah aset mempunyai induk ketika berupa hasil dari nilai yang diperoleh"
+msgstr ""
+"Sebuah aset mempunyai induk ketika berupa hasil dari nilai yang diperoleh"
 
 #. module: account_asset
 #. odoo-python
@@ -319,6 +319,7 @@ msgstr "Sebuah aset telah dibuat untuk pergerakan ini:"
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
+#: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "An asset will be created for the value increase of the asset. <br/>"
 msgstr "Aset akan dibuat untuk peninangkatan value aset. <br/>"
@@ -326,12 +327,12 @@ msgstr "Aset akan dibuat untuk peninangkatan value aset. <br/>"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution
 msgid "Analytic Distribution"
-msgstr ""
+msgstr "Analisa Distribusi"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution_search
 msgid "Analytic Distribution Search"
-msgstr ""
+msgstr "Pencarian Analytic Distribution"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_precision
@@ -342,7 +343,6 @@ msgstr "Ketelitian Analitik"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Archived"
 msgstr "Diarsipkan"
 
@@ -354,7 +354,6 @@ msgstr "Diarsipkan"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_id
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_id
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__asset_id
-#: model:ir.model.fields.selection,name:account_asset.selection__account_account__asset_type__purchase
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 #, python-format
@@ -368,6 +367,7 @@ msgstr "Akun Aktiva"
 
 #. module: account_asset
 #. odoo-python
+#: code:addons/account_asset/models/account_asset.py:0
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset Cancelled"
@@ -395,9 +395,7 @@ msgstr "Umur Hidup Aset Hari"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Asset Model"
 msgstr "Model Aset"
 
@@ -409,7 +407,7 @@ msgstr "Nama Model Aset"
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_asset_model_form
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_model_form
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_purchase_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_tree
 msgid "Asset Models"
 msgstr "Model Aset"
 
@@ -419,23 +417,9 @@ msgid "Asset Name"
 msgstr "Nama Aktiva"
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
-msgid "Asset Options"
-msgstr "Pilihan Aktiva"
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_paused_days
 msgid "Asset Paused Days"
 msgstr "Hari Aset yang Dipause"
-
-#. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_account__asset_type
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_type
-#: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_asset_type
-#: model:ir.model.fields,field_description:account_asset.field_account_move__asset_asset_type
-#: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_asset_type
-msgid "Asset Type"
-msgstr "Tipe Aktiva"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_value_change
@@ -455,6 +439,13 @@ msgstr "Nilai Aset"
 #, python-format
 msgid "Asset created"
 msgstr "Aktiva telah dibuat"
+
+#. module: account_asset
+#. odoo-python
+#: code:addons/account_asset/models/account_move.py:0
+#, python-format
+msgid "Asset created from invoice: %s"
+msgstr "Asset dibuat dari faktur: %s"
 
 #. module: account_asset
 #. odoo-python
@@ -487,12 +478,12 @@ msgstr "Aset Diunpause. %s"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Asset(s)"
-msgstr ""
+msgstr "Aset(s)"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
 msgid "Asset/Revenue Recognition"
-msgstr "Aktiva/Pengakuan Pendapatan"
+msgstr "Aset/Pengakuan Pendapatan"
 
 #. module: account_asset
 #. odoo-python
@@ -502,7 +493,7 @@ msgstr "Aktiva/Pengakuan Pendapatan"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_ids
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_ids
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_form
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_purchase_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_tree
 #, python-format
 msgid "Assets"
 msgstr "Aktiva"
@@ -510,7 +501,7 @@ msgstr "Aktiva"
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset_report_handler
 msgid "Assets Report Custom Handler"
-msgstr ""
+msgstr "Assets Report Custom Handler"
 
 #. module: account_asset
 #: model:ir.ui.menu,name:account_asset.menu_finance_config_assets
@@ -531,8 +522,12 @@ msgstr "Aktiva dalam status rancangan dan terbuka"
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
-msgid "Atleast one asset (%s) couldn't be set as running because it lacks any required information"
+msgid ""
+"Atleast one asset (%s) couldn't be set as running because it lacks any "
+"required information"
 msgstr ""
+"Setidaknya satu aset (%s) tidak dapat dijalankan karena kurang informasi "
+"yang dibutuhkan"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_attachment_count
@@ -543,16 +538,6 @@ msgstr "Hitungan Lampiran"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Automate Asset"
 msgstr "Otomatisasi Aset"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
-msgid "Automate Deferred Expense"
-msgstr "Otomatisasi Penangguhan Pengeluaran"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
-msgid "Automate Deferred Revenue"
-msgstr "Otomatisasi Penangguhan Pendapatan"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
@@ -651,16 +636,6 @@ msgid "Compute Depreciation"
 msgstr "Hitung Penyusutan"
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-msgid "Compute Expense"
-msgstr "Hitung Beban"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "Compute Revenue"
-msgstr "Hitung Pendapatan"
-
-#. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Confirm"
 msgstr "Konfirmasi"
@@ -675,21 +650,7 @@ msgstr "Periode Konstan"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__count_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__count_asset
 msgid "Count Asset"
-msgstr ""
-
-#. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__count_deferred_expense
-#: model:ir.model.fields,field_description:account_asset.field_account_move__count_deferred_expense
-#: model:ir.model.fields,field_description:account_asset.field_account_payment__count_deferred_expense
-msgid "Count Deferred Expense"
-msgstr ""
-
-#. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__count_deferred_revenue
-#: model:ir.model.fields,field_description:account_asset.field_account_move__count_deferred_revenue
-#: model:ir.model.fields,field_description:account_asset.field_account_payment__count_deferred_revenue
-msgid "Count Deferred Revenue"
-msgstr ""
+msgstr "Hitung Aset"
 
 #. module: account_asset
 #: model:ir.actions.server,name:account_asset.action_account_aml_to_asset
@@ -719,26 +680,6 @@ msgid "Create new asset model"
 msgstr "Buat model aset baru"
 
 #. module: account_asset
-#: model_terms:ir.actions.act_window,help:account_asset.action_account_expense_form
-msgid "Create new deferred expense"
-msgstr "Buat beban ditangguhkan baru"
-
-#. module: account_asset
-#: model_terms:ir.actions.act_window,help:account_asset.action_account_expense_model_form
-msgid "Create new deferred expense model"
-msgstr "Buat model beban ditangguhkan baru"
-
-#. module: account_asset
-#: model_terms:ir.actions.act_window,help:account_asset.action_account_revenue_form
-msgid "Create new deferred revenue"
-msgstr "Buat pendapatan ditangguhkan baru"
-
-#. module: account_asset
-#: model_terms:ir.actions.act_window,help:account_asset.action_account_revenue_model_form
-msgid "Create new deferred revenue model"
-msgstr "Buat model pendapatan ditangguhkan baru"
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__create_uid
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__create_uid
 msgid "Created by"
@@ -756,16 +697,6 @@ msgstr "Dibuat pada"
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_depreciated_value
 msgid "Cumulative Depreciation"
 msgstr "Akumulai Penyusutan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-msgid "Cumulative Expense"
-msgstr "Pengeluaran Kumulatif"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "Cumulative Revenue"
-msgstr "Pendapatan Kumulatif"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__currency_id
@@ -825,163 +756,6 @@ msgstr "Declining Factor"
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method__degressive_then_linear
 msgid "Declining then Straight Line"
 msgstr "Declining then Straight Line"
-
-#. module: account_asset
-#. odoo-python
-#: code:addons/account_asset/models/account_asset.py:0
-#: model:ir.model.fields.selection,name:account_asset.selection__account_account__asset_type__expense
-#: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__expense
-#, python-format
-msgid "Deferred Expense"
-msgstr "Pengeluaran yang Ditangguhkan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
-msgid "Deferred Expense Account"
-msgstr "Akun Pengeluaran yang Ditangguhkan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-msgid "Deferred Expense Amount"
-msgstr "Jumlah Pengeluaran yang Ditangguhkan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
-msgid "Deferred Expense Model"
-msgstr "Model Pengeluaran yang Ditangguhkan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-msgid "Deferred Expense Model name"
-msgstr "Nama Model Pengeluaran yang Ditangguhkan"
-
-#. module: account_asset
-#: model:ir.actions.act_window,name:account_asset.action_account_expense_model_form
-#: model:ir.ui.menu,name:account_asset.menu_action_account_expense_model_recognition
-msgid "Deferred Expense Models"
-msgstr "Model Pengeluaran yang Ditangguhkan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
-msgid "Deferred Expense Options"
-msgstr "Pilihan Beban Ditangguhkan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-msgid "Deferred Expense name"
-msgstr "Nama Pengeluaran yang Ditangguhkan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Deferred Expense(s)"
-msgstr ""
-
-#. module: account_asset
-#: model:ir.actions.act_window,name:account_asset.action_account_expense_form
-#: model:ir.ui.menu,name:account_asset.menu_action_account_expense_recognition
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_tree
-msgid "Deferred Expenses"
-msgstr "Pengeluaran yang Ditangguhkan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
-msgid "Deferred Expenses Models"
-msgstr "Model Pengeluaran  yang Ditangguhkan"
-
-#. module: account_asset
-#. odoo-python
-#: code:addons/account_asset/models/account_asset.py:0
-#: model:ir.model.fields.selection,name:account_asset.selection__account_account__asset_type__sale
-#, python-format
-msgid "Deferred Revenue"
-msgstr "Pendapatan yang Ditangguhkan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
-msgid "Deferred Revenue Account"
-msgstr "Akun Penangguhan Pendapatan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "Deferred Revenue Amount"
-msgstr "Jumlah Pendapatan yang Ditangguhkan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
-msgid "Deferred Revenue Model"
-msgstr "Model Pendapatan yang Ditangguhkan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "Deferred Revenue Model name"
-msgstr "Nama Model Pendapatan yang Ditangguhkan"
-
-#. module: account_asset
-#: model:ir.actions.act_window,name:account_asset.action_account_revenue_model_form
-#: model:ir.ui.menu,name:account_asset.menu_action_account_revenue_model_recognition
-msgid "Deferred Revenue Models"
-msgstr "Model Pendapatan yang Ditangguhkan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
-msgid "Deferred Revenue Options"
-msgstr "Pilihan Pendapatan Ditangguhkan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "Deferred Revenue name"
-msgstr "Nama Pendapatan yang Ditangguhkan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Deferred Revenue(s)"
-msgstr ""
-
-#. module: account_asset
-#: model:ir.actions.act_window,name:account_asset.action_account_revenue_form
-#: model:ir.ui.menu,name:account_asset.menu_action_account_revenue_recognition
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_sale_tree
-msgid "Deferred Revenues"
-msgstr "Penangguhan Pendapatan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
-msgid "Deferred Revenues Models"
-msgstr "Model Pendapatan yang Ditangguhkan"
-
-#. module: account_asset
-#. odoo-python
-#: code:addons/account_asset/models/account_move.py:0
-#, python-format
-msgid "Deferred expense"
-msgstr "Pengeluaran yang Ditangguhkan"
-
-#. module: account_asset
-#. odoo-python
-#: code:addons/account_asset/models/account_asset.py:0
-#, python-format
-msgid "Deferred expense created"
-msgstr "Pengeluaran yang Ditangguhkan dibuat"
-
-#. module: account_asset
-#. odoo-python
-#: code:addons/account_asset/models/account_move.py:0
-#, python-format
-msgid "Deferred revenue"
-msgstr "Pendapatan yang Ditangguhkan"
-
-#. module: account_asset
-#. odoo-python
-#: code:addons/account_asset/models/account_asset.py:0
-#, python-format
-msgid "Deferred revenue created"
-msgstr "Pendapatan yang Ditangguhkan dibuat"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__value_residual
@@ -1123,21 +897,7 @@ msgstr "Draft"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__draft_asset_exists
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__draft_asset_exists
 msgid "Draft Asset Exists"
-msgstr ""
-
-#. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__draft_deferred_expense_exists
-#: model:ir.model.fields,field_description:account_asset.field_account_move__draft_deferred_expense_exists
-#: model:ir.model.fields,field_description:account_asset.field_account_payment__draft_deferred_expense_exists
-msgid "Draft Deferred Expense Exists"
-msgstr ""
-
-#. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__draft_deferred_revenue_exists
-#: model:ir.model.fields,field_description:account_asset.field_account_move__draft_deferred_revenue_exists
-#: model:ir.model.fields,field_description:account_asset.field_account_payment__draft_deferred_revenue_exists
-msgid "Draft Deferred Revenue Exists"
-msgstr ""
+msgstr "Draft Aset Tersedia"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__method_number
@@ -1153,48 +913,11 @@ msgid "Duration / Rate"
 msgstr "Durasi / Nilai"
 
 #. module: account_asset
-#. odoo-python
-#: code:addons/account_asset/models/account_move.py:0
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_tree
-#, python-format
-msgid "Expense"
-msgstr "Pengeluaran"
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__account_depreciation_expense_id
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_depreciation_expense_id
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
 msgid "Expense Account"
 msgstr "Akun Beban"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-msgid "Expense Board"
-msgstr "Papan Pengeluaran"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-msgid "Expense Date"
-msgstr "Tanggal Pengeluaran"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-msgid "Expense Lines"
-msgstr "Baris Pengeluaran"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
-msgid "Expense Name"
-msgstr "Nama Pengeluaran"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-msgid "Expense Recognition"
-msgstr "Pengakuan Pengeluaran"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_first_depreciation
@@ -1281,8 +1004,6 @@ msgstr "Kelompokkan Berdasarkan Akun"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Group By..."
 msgstr "Kelompokkan Menurut..."
 
@@ -1320,13 +1041,24 @@ msgstr "Jika dicentang, beberapa pesan mempunyai kesalahan dalam pengiriman."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_account__asset_model
-msgid "If this is selected, an expense/revenue will be created automatically when Journal Items on this account are posted."
-msgstr "Bila ini dipilih, pengeluaran/pendapatan akan dibuat secara otomatis saat Item Jurnal pada akun ini dipost."
+msgid ""
+"If this is selected, an expense/revenue will be created automatically when "
+"Journal Items on this account are posted."
+msgstr ""
+"Bila ini dipilih, pengeluaran/pendapatan akan dibuat secara otomatis saat "
+"Item Jurnal pada akun ini dipost."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__already_depreciated_amount_import
-msgid "In case of an import from another software, you might need to use this field to have the right depreciation table report. This is the value that was already depreciated with entries not computed from this model"
-msgstr "Dalam kasus import dari software lain, Anda mungkin harus menggunakan field ini untuk memiliki laporan tabel depresiasi yang tepat. Field ini adalah nilai yang sudah didepresiasi dengan entri yang tidak dihitung dari model ini"
+msgid ""
+"In case of an import from another software, you might need to use this field"
+" to have the right depreciation table report. This is the value that was "
+"already depreciated with entries not computed from this model"
+msgstr ""
+"Dalam kasus import dari software lain, Anda mungkin harus menggunakan field "
+"ini untuk memiliki laporan tabel depresiasi yang tepat. Field ini adalah "
+"nilai yang sudah didepresiasi dengan entri yang tidak dihitung dari model "
+"ini"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__informational_text
@@ -1341,7 +1073,7 @@ msgstr "Baris Faktur"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_is_follower
 msgid "Is Follower"
-msgstr "Pengikut"
+msgstr "Adalah Follower"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__salvage_value
@@ -1351,8 +1083,6 @@ msgstr "Adalah besaran yang direncanakan tersisa setelah penyusutan selesai."
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__journal_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Journal"
 msgstr "Jurnal"
 
@@ -1380,26 +1110,29 @@ msgstr "Item Jurnal"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__original_move_line_ids
 #, python-format
 msgid "Journal Items"
-msgstr "Artikel Jurnal"
+msgstr "Item Jurnal"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
-msgid "Journal Items of {account} should have a label in order to generate an asset"
-msgstr "Item Jurnal dari {account} harus memiliki label supaya menghasilkan sebuah aset"
+msgid ""
+"Journal Items of %(account)s should have a label in order to generate an "
+"asset"
+msgstr ""
+"Item Jurnal %(account)s harusnya memiliki label agar dapat membuat asset"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__write_uid
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__write_uid
 msgid "Last Updated by"
-msgstr "Terakhir diperbarui oleh"
+msgstr "Terakhir Diperbarui oleh"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__write_date
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__write_date
 msgid "Last Updated on"
-msgstr "Terakhir diperbarui pada"
+msgstr "Terakhir Diperbarui pada"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
@@ -1472,16 +1205,6 @@ msgid "Modify Depreciation"
 msgstr "Penyusutan Bulanan"
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-msgid "Modify Expense"
-msgstr "Rubah Pengeluaran"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "Modify Revenue"
-msgstr "Ubah Pendapatan"
-
-#. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method_period__1
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__method_period__1
 msgid "Months"
@@ -1494,8 +1217,12 @@ msgstr "Lebih dari Satu Aset per Baris"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_account__multiple_assets_per_line
-msgid "Multiple asset items will be generated depending on the bill line quantity instead of 1 global asset."
-msgstr "Lebih dari satu item aset yang akan dibuat berdasarkan kuantitas baris tagihan alih-alih 1 aset global."
+msgid ""
+"Multiple asset items will be generated depending on the bill line quantity "
+"instead of 1 global asset."
+msgstr ""
+"Lebih dari satu item aset yang akan dibuat berdasarkan kuantitas baris "
+"tagihan alih-alih 1 aset global."
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__my_activity_date_deadline
@@ -1533,16 +1260,6 @@ msgid "Next Activity Type"
 msgstr "Tipe Aktivitas Berikutnya"
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-msgid "Next Period Expense"
-msgstr "Pengeluaran Periode Berikutnya"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "Next Period Revenue"
-msgstr "Pendapatan Periode Selanjutnya"
-
-#. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__create_asset__no
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__gain_or_loss__no
 msgid "No"
@@ -1577,10 +1294,10 @@ msgstr "Catatan"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_needaction_counter
 msgid "Number of Actions"
-msgstr "Jumlah Tindakan"
+msgstr "Jumlah Action"
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_purchase_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_tree
 msgid "Number of Depreciations"
 msgstr "Jumlah penyusutan"
 
@@ -1589,13 +1306,6 @@ msgstr "Jumlah penyusutan"
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__method_period
 msgid "Number of Months in a Period"
 msgstr "Jumlah Bulan dalam Satu Periode"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "Number of Recognitions"
-msgstr "Jumlah Pengenalan"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__gross_increase_count
@@ -1621,13 +1331,13 @@ msgstr "Jumlah kesalahan"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Jumlah pesan yang butuh tindakan"
+msgid "Number of messages requiring action"
+msgstr "Jumlah pesan yang membutuhkan tindakan"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "Jumlah dari pesan dengan kesalahan pengiriman"
+msgstr "Jumlah pesan dengan kesalahan pengiriman"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__paused
@@ -1654,6 +1364,14 @@ msgstr "Induk"
 
 #. module: account_asset
 #. odoo-python
+#: code:addons/account_asset/models/account_asset.py:0
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
+#, python-format
+msgid "Parent Asset"
+msgstr "Aset Induk"
+
+#. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #, python-format
@@ -1666,9 +1384,7 @@ msgid "Paused Prorata Date"
 msgstr "Tanggal Prorata Dipause"
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_purchase_tree
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_tree
 msgid "Period length"
 msgstr "Panjang periode"
 
@@ -1683,14 +1399,9 @@ msgid "Prorata Date"
 msgstr "Tanggal Prorata"
 
 #. module: account_asset
-#: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__purchase
-msgid "Purchase: Asset"
-msgstr "Pembelian: Aktiva"
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__rating_ids
 msgid "Ratings"
-msgstr ""
+msgstr "Rating"
 
 #. module: account_asset
 #. odoo-python
@@ -1700,21 +1411,10 @@ msgid "Re-evaluate"
 msgstr "Evaluasi ulang"
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "Recognition Values"
-msgstr "Recognition Value"
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_ids
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_line_form_asset_inherit
 msgid "Related Assets"
 msgstr "Aset Terkait"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-msgid "Related Expenses"
-msgstr "Pengeluaran Terkait"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__related_purchase_value
@@ -1722,22 +1422,11 @@ msgid "Related Purchase Value"
 msgstr "Nilai Pembelian Terkait"
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "Related Sales"
-msgstr "Sales Terkait"
-
-#. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Reset to running"
 msgstr "Reset menjadi running"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "Residual Amount to Recognize"
-msgstr "Jumlah Tersisa untuk Diakui"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_user_id
@@ -1759,51 +1448,14 @@ msgstr "Lanjutkan Depresiasi"
 
 #. module: account_asset
 #. odoo-python
-#: code:addons/account_asset/models/account_move.py:0
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-#, python-format
-msgid "Revenue"
-msgstr "Pendapatan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
-msgid "Revenue Account"
-msgstr "Akun Pendapatan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "Revenue Board"
-msgstr "Papan Pendapatan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "Revenue Date"
-msgstr "Tanggal Pendapatan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "Revenue Lines"
-msgstr "Baris Pendapatan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_sale_tree
-msgid "Revenue Name"
-msgstr "Nama Pendapatan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "Revenue Recognition"
-msgstr "Pengakuan Pendapatan"
-
-#. module: account_asset
-#. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
-msgid "Reverse the depreciation entries posted in the future in order to modify the depreciation"
-msgstr "Membalikkan entri depresiasi yang dipost di masa depan untuk memodifikasi depresiasi"
+msgid ""
+"Reverse the depreciation entries posted in the future in order to modify the"
+" depreciation"
+msgstr ""
+"Membalikkan entri depresiasi yang dipost di masa depan untuk memodifikasi "
+"depresiasi"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__open
@@ -1813,7 +1465,7 @@ msgstr "Sedang berjalan"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr "Kesalahan Pengiriman SMS"
+msgstr "Kesalahan Pengiriman SMS`"
 
 #. module: account_asset
 #. odoo-python
@@ -1821,11 +1473,6 @@ msgstr "Kesalahan Pengiriman SMS"
 #, python-format
 msgid "Sale"
 msgstr "Penjualan"
-
-#. module: account_asset
-#: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__sale
-msgid "Sale: Revenue Recognition"
-msgstr "Penjualan: Pengakuan Pendapatan"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -1871,8 +1518,8 @@ msgstr "Tampilkan semua dokumen dengan aksi berikut sebelum hari ini"
 #. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
-msgid "Some fields are missing {}"
-msgstr "Beberapa field hilang {}"
+msgid "Some fields are missing %s"
+msgstr "Beberapa field tidak ada %s"
 
 #. module: account_asset
 #. odoo-python
@@ -1906,15 +1553,25 @@ msgstr "Garis Lurus"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__book_value
-msgid "Sum of the depreciable value, the salvage value and the book value of all value increase items"
-msgstr "Jumlah dari nilai yang dapat depresiasi, salvage value dan book value dari semua value increase items"
+msgid ""
+"Sum of the depreciable value, the salvage value and the book value of all "
+"value increase items"
+msgstr ""
+"Jumlah dari nilai yang dapat depresiasi, salvage value dan book value dari "
+"semua value increase items"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
-msgid "The account %(exp_acc)s has been credited by %(exp_delta)s, while the account %(dep_acc)s has been debited by %(dep_delta)s. This corresponds to %(move_count)s cancelled %(word)s:<br>%(entries)s"
+msgid ""
+"The account %(exp_acc)s has been credited by %(exp_delta)s, while the "
+"account %(dep_acc)s has been debited by %(dep_delta)s. This corresponds to "
+"%(move_count)s cancelled %(word)s:<br>%(entries)s"
 msgstr ""
+"Akun %(exp_acc)s telah diberikan kredit oleh %(exp_delta)s, sementara akun "
+"%(dep_acc)s telah didebet oleh %(dep_delta)s. Ini sesuai dengan "
+"%(move_count)s yang dibatalkan %(word)s:<br>%(entries)s"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__method_period
@@ -1926,8 +1583,12 @@ msgstr "Jumlah waktu di antara dua depresiasi"
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
-msgid "The amount you have entered (%s) does not match the Related Purchase's value (%s). Please make sure this is what you want."
-msgstr "Jumlah yang Anda masukkan (%s) tidak sesuai dengan nilai Pembelian Terkait (%s). Mohon pastikkan ini adalah apa yang Anda inginkan."
+msgid ""
+"The amount you have entered (%s) does not match the Related Purchase's value"
+" (%s). Please make sure this is what you want."
+msgstr ""
+"Jumlah yang Anda masukkan (%s) tidak sesuai dengan nilai Pembelian Terkait "
+"(%s). Mohon pastikkan ini adalah apa yang Anda inginkan."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__asset_id
@@ -1941,7 +1602,9 @@ msgstr "The children are the gains in value of this asset"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__invoice_ids
-msgid "The disposal invoice is needed in order to generate the closing journal entry."
+msgid ""
+"The disposal invoice is needed in order to generate the closing journal "
+"entry."
 msgstr "Faktur pembuangan dibutuhkan untuk membuat entri penutupan jurnal."
 
 #. module: account_asset
@@ -1965,8 +1628,12 @@ msgstr "Terdapat lebih dari satu baris yang dapat terkait aset ini"
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
-msgid "There are unposted depreciations prior to the selected operation date, please deal with them first."
-msgstr "Terdapat depresiasi yang menunggu dipost sebelum tanggal operasi yang dipilih, mohon selesaikan depresiasi tersebut terlebih dahulu."
+msgid ""
+"There are unposted depreciations prior to the selected operation date, "
+"please deal with them first."
+msgstr ""
+"Terdapat depresiasi yang menunggu dipost sebelum tanggal operasi yang "
+"dipilih, mohon selesaikan depresiasi tersebut terlebih dahulu."
 
 #. module: account_asset
 #. odoo-javascript
@@ -1991,20 +1658,6 @@ msgstr "Total"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__total_depreciable_value
 msgid "Total Depreciable Value"
 msgstr "Total Depreciable Value"
-
-#. module: account_asset
-#. odoo-python
-#: code:addons/account_asset/models/account_move.py:0
-#, python-format
-msgid "Turn as a deferred expense"
-msgstr "Turn as a deferred expense"
-
-#. module: account_asset
-#. odoo-python
-#: code:addons/account_asset/models/account_move.py:0
-#, python-format
-msgid "Turn as a deferred revenue"
-msgstr "Turn as a deferred revenue"
 
 #. module: account_asset
 #. odoo-python
@@ -2037,6 +1690,7 @@ msgstr "Nilai diturunkan untuk: %(asset)s"
 
 #. module: account_asset
 #. odoo-python
+#: code:addons/account_asset/wizard/asset_modify.py:0
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Value increase for: %(asset)s"
@@ -2084,8 +1738,19 @@ msgstr "Tahun"
 #. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
-msgid "You can't post an entry related to a draft asset. Please post the asset before."
-msgstr "Anda tidak dapat post entri terkait draft aset. Mohon post aset tersebut sebelumnya."
+msgid ""
+"You can't post an entry related to a draft asset. Please post the asset "
+"before."
+msgstr ""
+"Anda tidak dapat post entri terkait draft aset. Mohon post aset tersebut "
+"sebelumnya."
+
+#. module: account_asset
+#. odoo-python
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid "You can't re-evaluate the asset before the lock date."
+msgstr "Anda tidak dapat mengevaluasi ulang aset sebelum tanggal kunci."
 
 #. module: account_asset
 #. odoo-python
@@ -2099,15 +1764,24 @@ msgstr " Anda tidak dapat mengarsipkan pencatatan yang tidak ditutup"
 #: code:addons/account_asset/models/account_asset.py:0
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
-msgid "You cannot automate the journal entry for an asset that has a running gross increase. Please use 'Dispose' on the increase(s)."
-msgstr "Anda tidak dapat mengotomatiskan entri jurnal untuk aset yang memiliki peningkatan gross yang sedang berlangsung. Mohon gunakan 'Buang' pada peningkatan."
+msgid ""
+"You cannot automate the journal entry for an asset that has a running gross "
+"increase. Please use 'Dispose' on the increase(s)."
+msgstr ""
+"Anda tidak dapat mengotomatiskan entri jurnal untuk aset yang memiliki "
+"peningkatan gross yang sedang berlangsung. Mohon gunakan 'Buang' pada "
+"peningkatan."
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
-msgid "You cannot create an asset from lines containing credit and debit on the account or with a null amount"
-msgstr "Anda tidak dapat membuat aset dari baris yang memiliki kredit dan debit pada akun atau dengan jumlah null"
+msgid ""
+"You cannot create an asset from lines containing credit and debit on the "
+"account or with a null amount"
+msgstr ""
+"Anda tidak dapat membuat aset dari baris yang memiliki kredit dan debit pada"
+" akun atau dengan jumlah null"
 
 #. module: account_asset
 #. odoo-python
@@ -2129,17 +1803,35 @@ msgstr ""
 
 #. module: account_asset
 #. odoo-python
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid "You cannot dispose of an asset before the lock date."
+msgstr "Anda tidak dapat membuang aset sebelum tanggal kunci."
+
+#. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "You cannot reset to draft an entry related to a posted asset"
-msgstr "Anda tidak dapat reset ke draft sebuah entri yang terkait aset yang sudah di-post"
+msgstr ""
+"Anda tidak dapat reset ke draft sebuah entri yang terkait aset yang sudah "
+"di-post"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "You cannot resume at a date equal to or before the pause date"
-msgstr "Anda tidak dapat melanjutkan pada tanggal yang sama dengan atau sebelum tanggal pause"
+msgstr ""
+"Anda tidak dapat melanjutkan pada tanggal yang sama dengan atau sebelum "
+"tanggal pause"
+
+#. module: account_asset
+#. odoo-python
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid "You cannot select the same account as the Depreciation Account"
+msgstr "Anda tidak dapat memilih akun yang sama dengan Akun Depresiasi"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_balance
@@ -2162,16 +1854,6 @@ msgstr "tanggal ke"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "depreciable)"
 msgstr "dapat depresiasi)"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "e.g. Annual Subscription"
-msgstr "contohnya Langganan Tahunan"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-msgid "e.g. Annually Paid Insurance"
-msgstr "contohnya :  Asuransi Yang Dibayar Setiap Tahun"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form

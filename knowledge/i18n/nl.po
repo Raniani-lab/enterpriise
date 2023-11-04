@@ -3,7 +3,11 @@
 # 	* knowledge
 # 
 # Translators:
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2023
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
+# Martin Trigaux, 2023
 # Wil Odoo, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1755,7 +1759,7 @@ msgstr "Toegang beperkt. Mag niet met iedereen worden gedeeld van"
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_account_management
 msgid "Account Management"
-msgstr ""
+msgstr "Rekeningenbeheer"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
@@ -2344,7 +2348,7 @@ msgstr "Context:"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_personal_organizer
 msgid "Backlog"
-msgstr ""
+msgstr "Backlog"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2717,7 +2721,7 @@ msgstr "Afsluiten"
 #: code:addons/knowledge/static/src/xml/knowledge_wysiwyg.xml:0
 #, python-format
 msgid "Comment"
-msgstr ""
+msgstr "Opmerking"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -2727,7 +2731,7 @@ msgstr "Bedrijfsafkortingen"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Company Details"
-msgstr ""
+msgstr "Bedrijfsgegevens"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
@@ -2737,7 +2741,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Company Name:"
-msgstr ""
+msgstr "Bedrijfsnaam:"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_company_newsletter
@@ -2790,7 +2794,7 @@ msgstr "Contact"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_product_catalog
 msgid "Contact Us"
-msgstr ""
+msgstr "Neem contact met ons op"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_shared_todos_contact_our_lawyer
@@ -2829,14 +2833,14 @@ msgstr "Omzetten naar artikelitem"
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
 msgid "Copy"
-msgstr ""
+msgstr "Kopieer"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
 msgid "Copy to Clipboard"
-msgstr ""
+msgstr "Kopieer naar het klembord."
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -3082,13 +3086,6 @@ msgstr ""
 "leden)"
 
 #. module: knowledge
-#. odoo-javascript
-#: code:addons/knowledge/static/src/components/topbar/topbar.xml:0
-#, python-format
-msgid "Delete"
-msgstr "Verwijderen"
-
-#. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
@@ -3175,7 +3172,7 @@ msgstr "Gereed"
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "Downloaden"
 
 #. module: knowledge
 #. odoo-javascript
@@ -3201,7 +3198,7 @@ msgstr "BEWERK"
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_manager.xml:0
 #, python-format
 msgid "Edit"
-msgstr ""
+msgstr "Bewerken"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_marketing_customer_personas
@@ -3546,12 +3543,12 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__html_field_history
 msgid "History data"
-msgstr ""
+msgstr "Gegevens geschiedenis"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__html_field_history_metadata
 msgid "History metadata"
-msgstr ""
+msgstr "Metadata geschiedenis"
 
 #. module: knowledge
 #. odoo-javascript
@@ -3800,7 +3797,7 @@ msgstr "Koppeling invoegen"
 #: code:addons/knowledge/static/src/components/video_selector_dialog/video_selector_dialog.xml:0
 #, python-format
 msgid "Insert Video"
-msgstr ""
+msgstr "Video invoegen"
 
 #. module: knowledge
 #. odoo-javascript
@@ -3998,12 +3995,12 @@ msgstr "Dit bepaalt de weergavevolgorde van de sjabloon binnen zijn categorie"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes_template
 msgid "Item 1"
-msgstr ""
+msgstr "Item 1"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes_template
 msgid "Item 2"
-msgstr ""
+msgstr "Item 2"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes_template
@@ -4325,7 +4322,7 @@ msgstr ""
 
 #. module: knowledge
 #: model:knowledge.article,template_description:knowledge.knowledge_article_template_sprint_calendar
-msgid "Manage your team schedule for the upcomming sprint."
+msgid "Manage your team schedule for the upcoming sprint."
 msgstr ""
 
 #. module: knowledge
@@ -4338,7 +4335,7 @@ msgstr ""
 #. module: knowledge
 #: model:knowledge.article.template.category,name:knowledge.knowledge_article_template_category_marketing
 msgid "Marketing"
-msgstr ""
+msgstr "Marketing"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_marketing_campaign_brief
@@ -4359,7 +4356,7 @@ msgstr "Media"
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_sprint_calendar_meeting
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sprint_calendar_meeting
 msgid "Meeting"
-msgstr ""
+msgstr "Afspraak"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_meeting_example_branding
@@ -4371,7 +4368,7 @@ msgstr ""
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_meeting_minutes_template
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_minutes
 msgid "Meeting Minutes"
-msgstr ""
+msgstr "Afspraak samenvatting"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_example_branding
@@ -4441,7 +4438,7 @@ msgstr "Ontbrekend bestand"
 #: code:addons/knowledge/static/src/components/topbar/topbar.xml:0
 #, python-format
 msgid "More actions"
-msgstr ""
+msgstr "Meer acties"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_company_newsletter
@@ -4512,7 +4509,7 @@ msgstr "Verplaatsen naar de prullenbak"
 #: code:addons/knowledge/static/src/components/sidebar/sidebar.js:0
 #, python-format
 msgid "Move to Workspace"
-msgstr ""
+msgstr "Naar werkruimte verplaatsen"
 
 #. module: knowledge
 #. odoo-python
@@ -4606,11 +4603,6 @@ msgstr ""
 #, python-format
 msgid "New property could not be created."
 msgstr "Nieuwe eigenschap kon niet worden gemaakt."
-
-#. module: knowledge
-#: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
-msgstr "Volgende activiteitenafspraak"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_date_deadline
@@ -4758,12 +4750,12 @@ msgstr ""
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_example_branding
 msgid "Odoo Brand Assets"
-msgstr ""
+msgstr "Odoo Brand Assets"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_company_newsletter
 msgid "Odoo Experience 🎉"
-msgstr ""
+msgstr "Odoo Experience 🎉"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_brand_assets
@@ -4778,7 +4770,7 @@ msgstr "Odoo Survival Guide"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_example_branding
 msgid "Odoo: Manage your SME online"
-msgstr ""
+msgstr "Odoo: Beheer je KMO online"
 
 #. module: knowledge
 #. odoo-javascript
@@ -4893,7 +4885,7 @@ msgstr "Open de prullenbak"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_meeting_example_branding
 msgid "OpenERP becomes Odoo"
-msgstr ""
+msgstr "OpenERP wordt Odoo"
 
 #. module: knowledge
 #. odoo-javascript
@@ -4933,7 +4925,7 @@ msgstr "Eigenaar Artikel"
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_company_newsletter
 msgid "PLANET ODOO"
-msgstr ""
+msgstr "PLANET ODOO"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sales_playbook
@@ -5114,7 +5106,7 @@ msgstr ""
 #. module: knowledge
 #: model:knowledge.article.template.category,name:knowledge.knowledge_article_template_category_productivity
 msgid "Productivity"
-msgstr ""
+msgstr "Productiviteit"
 
 #. module: knowledge
 #. odoo-javascript
@@ -5163,7 +5155,7 @@ msgstr ""
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_sprint_calendar_public_holiday
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_sprint_calendar_public_holiday
 msgid "Public Holidays"
-msgstr ""
+msgstr "Feestdagen"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_software_specification
@@ -5208,7 +5200,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #, python-format
 msgid "Refresh"
-msgstr ""
+msgstr "Vernieuwen"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_release_note
@@ -5282,7 +5274,7 @@ msgstr "Omslag vervangen"
 #: code:addons/knowledge/static/src/components/comment/comment.xml:0
 #, python-format
 msgid "Reply"
-msgstr ""
+msgstr "Beantwoorden"
 
 #. module: knowledge
 #. odoo-javascript
@@ -5321,6 +5313,7 @@ msgstr "Verantwoordelijke gebruiker"
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_trash
 #, python-format
 msgid "Restore"
 msgstr "Terugzetten"
@@ -5392,12 +5385,12 @@ msgstr "SMS fout bij versturen"
 #. module: knowledge
 #: model:knowledge.article.template.category,name:knowledge.knowledge_article_template_category_sales
 msgid "Sales"
-msgstr ""
+msgstr "Verkoop"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_account_management
 msgid "Sales Details"
-msgstr ""
+msgstr "Verkoopdetails"
 
 #. module: knowledge
 #: model:knowledge.article,template_name:knowledge.knowledge_article_template_sales_playbook
@@ -5517,6 +5510,14 @@ msgstr "Selecteer een artikel"
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
 msgid "Send as Message"
+msgstr "Verzenden als bericht"
+
+#. module: knowledge
+#. odoo-javascript
+#: code:addons/knowledge/static/src/components/topbar/topbar.xml:0
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
+#, python-format
+msgid "Send to Trash"
 msgstr ""
 
 #. module: knowledge
@@ -5560,14 +5561,14 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #, python-format
 msgid "Show All"
-msgstr ""
+msgstr "Alles weergaven"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #, python-format
 msgid "Show Less"
-msgstr ""
+msgstr "Minder tonen"
 
 #. module: knowledge
 #. odoo-javascript
@@ -5784,7 +5785,7 @@ msgstr "Einddatum"
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #, python-format
 msgid "Switch Mode"
-msgstr ""
+msgstr "Wissel van modus"
 
 #. module: knowledge
 #. odoo-javascript
@@ -5805,7 +5806,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_template_view_search
 msgid "Template"
-msgstr ""
+msgstr "Sjabloon"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__template_body
@@ -5821,7 +5822,7 @@ msgstr "Sjablooncategorieën"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__template_category_id
 msgid "Template Category"
-msgstr ""
+msgstr "Sjablooncategorie"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__template_category_sequence
@@ -5841,7 +5842,7 @@ msgstr "Sjabloonitems"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__template_preview
 msgid "Template Preview"
-msgstr ""
+msgstr "Sjabloon preview"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__template_sequence
@@ -6166,7 +6167,7 @@ msgstr "Geen titel"
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #, python-format
 msgid "Update"
-msgstr ""
+msgstr "Bijwerken"
 
 #. module: knowledge
 #. odoo-javascript
@@ -6193,7 +6194,7 @@ msgstr "Gebruik als %s"
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #, python-format
 msgid "Use as Attachment"
-msgstr ""
+msgstr "Gebruiken als bijlage"
 
 #. module: knowledge
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_brand_assets
@@ -6260,7 +6261,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Video"
-msgstr ""
+msgstr "Video"
 
 #. module: knowledge
 #. odoo-javascript

@@ -1,24 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* documents_account
-#
+# 
 # Translators:
-# Pornvibool Tippayawat <pornvibool.t@gmail.com>, 2022
-# Wichanon Jamwutthipreecha, 2022
-# Martin Trigaux, 2022
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:02+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
-"Language: th\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: th\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: documents_account
@@ -27,33 +25,39 @@ msgstr ""
 #, python-format
 msgid "<b>Deselect this page</b> as we plan to process all bills first."
 msgstr ""
+"<b>ยกเลิกการเลือกหน้านี้</b> "
+"เนื่องจากเราวางแผนจะประมวลผลใบเรียกเก็บเงินทั้งหมดก่อน"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_documents_workflow_rule
-msgid "A set of condition and actions which will be available to all attachments matching the conditions"
-msgstr "ชุดเงื่อนไขและการดำเนินการที่จะใช้ได้กับไฟล์แนบทั้งหมดที่ตรงกับเงื่อนไข"
+msgid ""
+"A set of condition and actions which will be available to all attachments "
+"matching the conditions"
+msgstr ""
+"ชุดเงื่อนไขและการดำเนินการที่จะใช้ได้กับไฟล์แนบทั้งหมดที่ตรงกับเงื่อนไข"
 
 #. module: documents_account
 #: model:ir.model.constraint,message:documents_account.constraint_documents_account_folder_setting_journal_unique
 msgid "A setting already exists for this journal"
-msgstr ""
+msgstr "มีการตั้งค่าสำหรับสมุดรายวันนี้แล้ว"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__documents_account_settings
 msgid "Accounting "
-msgstr ""
+msgstr "ระบบบัญชี"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_folder
 msgid "Accounting Workspace"
-msgstr ""
+msgstr "เวิร์กสเปซการบัญชี"
 
 #. module: documents_account
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
-msgid "As this PDF contains multiple documents, let's split and process in bulk."
-msgstr ""
+msgid ""
+"As this PDF contains multiple documents, let's split and process in bulk."
+msgstr "เนื่องจาก PDF นี้มีเอกสารหลายชุด เราจึงมาแยกและดำเนินการเป็นกลุ่ม"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_ir_attachment
@@ -63,12 +67,12 @@ msgstr "การแนบ"
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_bank_statement
 msgid "Bank Statement"
-msgstr ""
+msgstr "ใบแจ้งยอดจากธนาคาร"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
 msgid "Centralize accounting files and documents"
-msgstr ""
+msgstr "รวมศูนย์ไฟล์และเอกสารทางบัญชี"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.view_account_move_form_inherit_documents_account
@@ -80,31 +84,35 @@ msgstr "ตรวจสอบ"
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
 msgid "Click on a card to <b>select the document</b>."
-msgstr ""
+msgstr "คลิกที่การ์ดเพื่อ<b>เลือกเอกสาร</b>"
 
 #. module: documents_account
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
 msgid "Click on a thumbnail to <b>preview the document</b>."
-msgstr ""
+msgstr "คลิกที่ภาพขนาดย่อเพื่อ<b>ดูตัวอย่างเอกสาร</b>"
 
 #. module: documents_account
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
-msgid "Click on the <b>page separator</b>: we don't want to split these two pages as they belong to the same document."
+msgid ""
+"Click on the <b>page separator</b>: we don't want to split these two pages "
+"as they belong to the same document."
 msgstr ""
+"คลิกที่<b>ตัวแยกหน้า</b>: "
+"เราไม่ต้องการแยกสองหน้านี้เนื่องจากเป็นของเอกสารเดียวกัน"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_res_company
 msgid "Companies"
-msgstr "หลายบริษัท"
+msgstr "บริษัท"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__company_id
 msgid "Company"
-msgstr "บริษัทเดียว"
+msgstr "บริษัท"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_res_config_settings
@@ -119,27 +127,32 @@ msgstr "สร้าง"
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.credit_note_rule
 msgid "Create Customer Credit Note"
-msgstr ""
+msgstr "สร้างใบลดหนี้ของลูกค้า"
 
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.customer_invoice_rule
 msgid "Create Customer Invoice"
-msgstr ""
+msgstr "สร้างใบแจ้งหนี้ของลูกค้า"
 
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.misc_entry_rule
 msgid "Create Miscellaneous Operations"
-msgstr ""
+msgstr "สร้างการดำเนินงานเบ็ดเตล็ด"
 
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.vendor_bill_rule_financial
 msgid "Create Vendor Bill"
+msgstr "สร้างบิลผู้ขาย"
+
+#. module: documents_account
+#: model:documents.workflow.rule,name:documents_account.documents_vendor_receipt_rule
+msgid "Create Vendor Receipt"
 msgstr ""
 
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.vendor_refund_rule
 msgid "Create Vendor Refund"
-msgstr ""
+msgstr "สร้างการคืนเงินของผู้ขาย"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__create_uid
@@ -154,17 +167,17 @@ msgstr "สร้างเมื่อ"
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_out_refund
 msgid "Credit note"
-msgstr ""
+msgstr "ใบลดหนี้"
 
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_out_invoice
 msgid "Customer invoice"
-msgstr ""
+msgstr "ใบแจ้งหนี้ของลูกค้า"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_workflow_rule__display_journal_id
 msgid "Display Journal"
-msgstr ""
+msgstr "แสดงสมุดรายวัน"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__display_name
@@ -174,32 +187,32 @@ msgstr "แสดงชื่อ"
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__documents_account_settings
 msgid "Documents Account Settings"
-msgstr ""
+msgstr "การตั้งค่าเอกสารทางบัญชี"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_reports_export_wizard_format
 msgid "Export format for accounting's reports"
-msgstr ""
+msgstr "รูปแบบการส่งออกสำหรับรายงานทางบัญชี"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_reports_export_wizard
 msgid "Export wizard for accounting's reports"
-msgstr ""
+msgstr "โปรแกรมส่งออกสำหรับรายงานทางบัญชี"
 
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_fs
 msgid "Financial Statement"
-msgstr ""
+msgstr "งบการเงิน"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__folder_id
 msgid "Folder"
-msgstr ""
+msgstr "โฟลเดอร์"
 
 #. module: documents_account
 #: model:ir.model.fields,help:documents_account.field_account_reports_export_wizard__folder_id
 msgid "Folder where to save the generated file"
-msgstr ""
+msgstr "โฟลเดอร์ที่จะบันทึกไฟล์ที่สร้างขึ้น"
 
 #. module: documents_account
 #. odoo-python
@@ -216,7 +229,7 @@ msgstr "ไอดี"
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.bank_statement_rule
 msgid "Import Bank Statement"
-msgstr ""
+msgstr "นำเข้ารายการเดินบัญชี"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__journal_id
@@ -232,7 +245,7 @@ msgstr "รายการบันทึกประจำวัน"
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_documents_account_folder_setting
 msgid "Journal and Folder settings"
-msgstr ""
+msgstr "การตั้งค่าสมุดรายวันและโฟลเดอร์"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
@@ -242,7 +255,7 @@ msgstr "สมุดรายวัน"
 #. module: documents_account
 #: model:ir.actions.act_window,name:documents_account.action_folder_settings_installer
 msgid "Journals to synchronize"
-msgstr ""
+msgstr "สมุดรายวันที่จะซิงโครไนซ์"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__write_uid
@@ -258,8 +271,12 @@ msgstr "อัปเดตครั้งล่าสุดเมื่อ"
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
-msgid "Let's process documents in your Inbox.<br/><i>Tip: Use Tags to filter documents and structure your process.</i>"
+msgid ""
+"Let's process documents in your Inbox.<br/><i>Tip: Use Tags to filter "
+"documents and structure your process.</i>"
 msgstr ""
+"มาประมวลผลเอกสารใน Inbox ของคุณกันดีกว่า <br/><i>เคล็ดลับ: "
+"ใช้แท็กเพื่อกรองเอกสารและจัดโครงสร้างกระบวนการของคุณ</i>"
 
 #. module: documents_account
 #. odoo-javascript
@@ -267,49 +284,60 @@ msgstr ""
 #, python-format
 msgid "Let's process these bills: turn them into vendor bills."
 msgstr ""
+"มาประมวลผลใบเรียกเก็บเงินเหล่านี้กัน: เปลี่ยนให้เป็นใบเรียกเก็บเงินของผู้ขาย"
 
 #. module: documents_account
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
 msgid "Let's process this document, coming from our scanner."
-msgstr ""
+msgstr "มาประมวลผลเอกสารที่มาจากเครื่องสแกนของเรากันดีกว่า"
 
 #. module: documents_account
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
-msgid "Let's tag this mail as legal<br/> <i>Tips: actions can be tailored to your process, according to the workspace.</i>"
+msgid ""
+"Let's tag this mail as legal<br/> <i>Tips: actions can be tailored to your "
+"process, according to the workspace.</i>"
 msgstr ""
+"มาแท็กเมลนี้ว่าถูกกฎหมายไปด้วยกัน <br/> <i>เคล็ดลับ: "
+"การดำเนินการสามารถปรับให้เข้ากับกระบวนการของคุณได้ "
+"โดยขึ้นอยู่กับเวิร์กสเปซ</i>"
 
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_entry
 msgid "Miscellaneous Operations"
-msgstr ""
+msgstr "เบ็ดเตล็ด"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_workflow_rule__move_type
 msgid "Move Type"
-msgstr ""
+msgstr "ประเภทการย้าย"
+
+#. module: documents_account
+#: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_receipt
+msgid "Purchase Receipt"
+msgstr "ใบเสร็จซื้อ"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_bank_statement_line__suspense_statement_line_id
 #: model:ir.model.fields,field_description:documents_account.field_account_move__suspense_statement_line_id
 #: model:ir.model.fields,field_description:documents_account.field_account_payment__suspense_statement_line_id
 msgid "Request document from a bank statement line"
-msgstr ""
+msgstr "ขอเอกสารจากรายการใบแจ้งยอดธนาคาร"
 
 #. module: documents_account
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
 msgid "Send this letter to the legal department, by assigning the right tags."
-msgstr ""
+msgstr "ส่งจดหมายนี้ไปยังฝ่ายกฎหมายโดยกำหนดแท็กที่ถูกต้อง"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_workflow_rule__suitable_journal_ids
 msgid "Suitable Journal"
-msgstr ""
+msgstr "สมุดรายวันที่เหมาะสม"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__tag_ids
@@ -320,12 +348,12 @@ msgstr "แท็ก"
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_vat
 msgid "Tax Statement"
-msgstr ""
+msgstr "ใบแจ้งยอดภาษี"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.view_account_move_form_inherit_documents_account
 msgid "This invoice has been initiated by a bank transaction."
-msgstr ""
+msgstr "ใบแจ้งหนี้นี้เริ่มต้นโดยธุรกรรมธนาคาร"
 
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_refund
@@ -335,32 +363,38 @@ msgstr "ใบลดหนี้"
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_invoice
 msgid "Vendor bill"
-msgstr ""
+msgstr "บิลผู้ขาย"
 
 #. module: documents_account
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
-msgid "Want to become a <b>paperless company</b>? Let's discover Odoo Documents."
+msgid ""
+"Want to become a <b>paperless company</b>? Let's discover Odoo Documents."
 msgstr ""
+"ต้องการที่จะ <b>เป็นบริษัทไร้กระดาษ</b> หรือไม่? มาร่วมค้นพบ เอกสาร Odoo กัน"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__folder_id
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
 msgid "Workspace"
-msgstr "พื้นที่ทำงาน"
+msgstr "เวิร์กสเปซ"
 
 #. module: documents_account
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
-msgid "Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is complete. Try uploading your own documents now."
+msgid ""
+"Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is "
+"complete. Try uploading your own documents now."
 msgstr ""
+"ว้าว... ประมวลผลเอกสาร 6 รายการในไม่กี่วินาที "
+"เยี่ยมเลย<br/>ทัวร์เสร็จสิ้นแล้ว ลองอัปโหลดเอกสารของคุณเองตอนนี้"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_folder
 msgid "account default folder"
-msgstr ""
+msgstr "โฟลเดอร์เริ่มต้นของบัญชี"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.view_account_move_form_inherit_documents_account

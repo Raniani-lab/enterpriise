@@ -3,6 +3,7 @@
 # 	* iap_extract
 # 
 # Translators:
+# Jolien De Paepe, 2023
 # Wil Odoo, 2023
 # 
 msgid ""
@@ -59,7 +60,7 @@ msgstr "Er is een fout opgetreden"
 #: code:addons/iap_extract/models/extract_mixin.py:0
 #, python-format
 msgid "An error occurred during the upload"
-msgstr ""
+msgstr "Er is een fout opgetreden tijdens het opladen"
 
 #. module: iap_extract
 #: model:ir.model.fields,field_description:iap_extract.field_extract_mixin__message_attachment_count
@@ -89,7 +90,7 @@ msgstr "Voltooide flow"
 #: code:addons/iap_extract/models/extract_mixin.py:0
 #, python-format
 msgid "Document is being digitized"
-msgstr ""
+msgstr "Document wordt gedigitaliseerd"
 
 #. module: iap_extract
 #. odoo-python
@@ -158,6 +159,7 @@ msgstr "Indien aangevinkt vragen nieuwe berichten je aandacht."
 
 #. module: iap_extract
 #: model:ir.model.fields,help:iap_extract.field_extract_mixin__message_has_error
+#: model:ir.model.fields,help:iap_extract.field_extract_mixin__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr "Indien aangevinkt hebben sommige berichten een leveringsfout."
 
@@ -246,7 +248,12 @@ msgstr "Aantal berichten met leveringsfout"
 #. module: iap_extract
 #: model:ir.model.fields,field_description:iap_extract.field_extract_mixin__rating_ids
 msgid "Ratings"
-msgstr ""
+msgstr "Beoordelingen"
+
+#. module: iap_extract
+#: model:ir.model.fields,field_description:iap_extract.field_extract_mixin__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "SMS fout bij versturen"
 
 #. module: iap_extract
 #. odoo-python
@@ -268,6 +275,7 @@ msgstr "Server niet bereikbaar, probeer het later opnieuw"
 #, python-format
 msgid "Some documents were skipped as they were already digitized"
 msgstr ""
+"Sommige documenten werden overgeslagen omdat ze al gedigitaliseerd waren"
 
 #. module: iap_extract
 #. odoo-python
@@ -299,7 +307,7 @@ msgstr "Het document is afgewezen omdat het te klein is"
 #: code:addons/iap_extract/models/extract_mixin.py:0
 #, python-format
 msgid "The selected documents are already digitized"
-msgstr ""
+msgstr "De geselecteerde document zijn al gedigitaliseerd"
 
 #. module: iap_extract
 #: model:ir.model.fields.selection,name:iap_extract.selection__account_move__extract_state__to_validate
@@ -331,6 +339,16 @@ msgstr "Wachten op extractie"
 #: model:ir.model.fields.selection,name:iap_extract.selection__hr_expense__extract_state__waiting_validation
 msgid "Waiting validation"
 msgstr "Wachten op validatie"
+
+#. module: iap_extract
+#: model:ir.model.fields,field_description:iap_extract.field_extract_mixin__website_message_ids
+msgid "Website Messages"
+msgstr "Websiteberichten"
+
+#. module: iap_extract
+#: model:ir.model.fields,help:iap_extract.field_extract_mixin__website_message_ids
+msgid "Website communication history"
+msgstr "Website communicatie geschiedenis"
 
 #. module: iap_extract
 #. odoo-python

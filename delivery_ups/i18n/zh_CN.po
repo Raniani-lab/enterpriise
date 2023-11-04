@@ -1,37 +1,41 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery_ups
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
-#
+# Wil Odoo, 2023
+# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:20+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2023\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
-"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "A shipment cannot have a KGS/IN or LBS/CM as its unit of measurements. Configure it from the delivery method."
+msgid ""
+"A shipment cannot have a KGS/IN or LBS/CM as its unit of measurements. "
+"Configure it from the delivery method."
 msgstr "货物的计量单位不能是千克/英寸或磅/厘米。从传送方式进行配置。"
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "Access License number is Invalid. Provide a valid number (Length should be 0-35 alphanumeric characters)"
+msgid ""
+"Access License number is Invalid. Provide a valid number (Length should be "
+"0-35 alphanumeric characters)"
 msgstr "访问许可证号无效。提供有效数字（长度应为0-35个字母数字字符）"
 
 #. module: delivery_ups
@@ -137,7 +141,8 @@ msgstr ""
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "Exceeds Total Number of allowed pieces per World Wide Express Shipment."
+msgid ""
+"Exceeds Total Number of allowed pieces per World Wide Express Shipment."
 msgstr "超过了每批全球运输允许的总件数。"
 
 #. module: delivery_ups
@@ -197,9 +202,10 @@ msgstr "包裹%s没有正面的运输重量。"
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/delivery_ups.py:0
+#: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid "Packages:"
-msgstr ""
+msgstr "包裹："
 
 #. module: delivery_ups
 #. odoo-python
@@ -261,7 +267,9 @@ msgstr "请在托运人地址中提供有效的国家。"
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "Please provide a valid package type available for service and selected locations."
+msgid ""
+"Please provide a valid package type available for service and selected "
+"locations."
 msgstr "请提供可用于服务和选定位置的有效包类型。"
 
 #. module: delivery_ups
@@ -274,12 +282,15 @@ msgstr "请提供收件人的有效电话号码。"
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide a valid shipper Number/Carrier Account."
 msgstr "请提供有效的发货人编号/承运商帐户。"
 
 #. module: delivery_ups
 #. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide a valid shipper number/Carrier Account."
@@ -351,6 +362,7 @@ msgstr "请提供发货人地址中的有效邮政编码。"
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide a valid zip code in the warehouse address."
 msgstr "请在仓库地址中提供有效的邮政编码。"
@@ -372,9 +384,10 @@ msgstr "请至少提供一个要装运的项目"
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr "请至少提供一个发货项目"
+msgstr "请提供至少一件要运送的物品。"
 
 #. module: delivery_ups
 #. odoo-python
@@ -404,6 +417,7 @@ msgstr "在UPS数据库中找不到提供的访问许可证号码"
 
 #. module: delivery_ups
 #. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Provided Tracking Ref. Number is invalid."
@@ -445,7 +459,7 @@ msgstr "收件人电话分机只能包含数字。"
 #: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid "Return label generated"
-msgstr ""
+msgstr "已生成退货标签"
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__spl
@@ -479,7 +493,7 @@ msgstr "运输#%s已取消"
 #: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid "Shipment created into UPS"
-msgstr ""
+msgstr "在 UPS 中创建快件"
 
 #. module: delivery_ups
 #. odoo-python
@@ -550,8 +564,9 @@ msgstr "公司仓库的地址缺失或者错误（缺失字段：%s)"
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The delivery cannot be done because the weight of your product is missing."
-msgstr "因为产品重量缺失所以无法完成交货"
+msgid ""
+"The delivery cannot be done because the weight of your product is missing."
+msgstr "由于您的产品重量不足，因此无法送货。"
 
 #. module: delivery_ups
 #. odoo-python
@@ -568,7 +583,9 @@ msgstr ""
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The maximum number of user access attempts was exceeded. So please try again later"
+msgid ""
+"The maximum number of user access attempts was exceeded. So please try again"
+" later"
 msgstr "已超出用户访问尝试的最大次数。所以请稍后再试"
 
 #. module: delivery_ups
@@ -576,7 +593,7 @@ msgstr "已超出用户访问尝试的最大次数。所以请稍后再试"
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "The name of the customer should be no more than 35 characters."
-msgstr ""
+msgstr "客户名称不应超过 35 个字符。"
 
 #. module: delivery_ups
 #. odoo-python
@@ -592,6 +609,7 @@ msgstr ""
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
+#: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "The requested service is unavailable between the selected locations."
 msgstr "请求的服务在所选位置之间不可用。"
@@ -600,21 +618,27 @@ msgstr "请求的服务在所选位置之间不可用。"
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The selected service is invalid from the requested warehouse, please choose another service."
+msgid ""
+"The selected service is invalid from the requested warehouse, please choose "
+"another service."
 msgstr "从请求的仓库中选择的服务无效，请选择其他服务。"
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The selected service is invalid to the recipient address, please choose another service."
+msgid ""
+"The selected service is invalid to the recipient address, please choose "
+"another service."
 msgstr "所选服务对收件人地址无效，请选择其他服务。"
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "The selected service is not possible from your warehouse to the recipient address, please choose another service."
+msgid ""
+"The selected service is not possible from your warehouse to the recipient "
+"address, please choose another service."
 msgstr "所选服务无法从您的仓库发送到收件人地址，请选择其他服务。"
 
 #. module: delivery_ups
@@ -628,32 +652,42 @@ msgstr "所选服务对于所选打包无效。"
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "This measurement system is not valid for the selected country. Please switch from LBS/IN to KGS/CM (or vice versa). Configure it from delivery method"
+msgid ""
+"This measurement system is not valid for the selected country. Please switch"
+" from LBS/IN to KGS/CM (or vice versa). Configure it from delivery method"
 msgstr "此度量系统对所选国家/地区无效。请从磅/英寸切换到千克/厘米（反之亦然）。从传送方式配置"
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "This measurement system is not valid for the selected country. Please switch from LBS/IN to KGS/CM (or vice versa). Configure it from the delivery method."
+msgid ""
+"This measurement system is not valid for the selected country. Please switch"
+" from LBS/IN to KGS/CM (or vice versa). Configure it from the delivery "
+"method."
 msgstr "此度量系统对所选国家/地区无效。请从磅/英寸切换到千克/厘米（反之亦然）。从传送方式进行配置。"
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_cod
-msgid "This value added service enables UPS to collect the payment of the shipment from your customer."
+msgid ""
+"This value added service enables UPS to collect the payment of the shipment "
+"from your customer."
 msgstr "这种增值服务使 UPS 能够从客户那里收取装运付款。"
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_saturday_delivery
-msgid "This value added service will allow you to ship the package on saturday also."
+msgid ""
+"This value added service will allow you to ship the package on saturday "
+"also."
 msgstr "这种增值服务使您也可以在星期六运送包裹。"
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/delivery_ups.py:0
+#: code:addons/delivery_ups/models/delivery_ups.py:0
 #, python-format
 msgid "Tracking Numbers:"
-msgstr ""
+msgstr "追踪号码："
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__delivery_type__ups
@@ -746,7 +780,9 @@ msgstr "UPS帐号"
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
-msgid "UPS address lines can only contain a maximum of 35 characters. You can split the contacts addresses on multiple lines to try to avoid this limitation."
+msgid ""
+"UPS address lines can only contain a maximum of 35 characters. You can split"
+" the contacts addresses on multiple lines to try to avoid this limitation."
 msgstr "UPS地址行最多只能包含35个字符。您可以将联系人地址拆分为多行以避免此限制。"
 
 #. module: delivery_ups
@@ -761,6 +797,7 @@ msgstr "UPS 包裹重量单位"
 
 #. module: delivery_ups
 #. odoo-python
+#: code:addons/delivery_ups/models/ups_request.py:0
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Username/Password is invalid for this delivery provider."

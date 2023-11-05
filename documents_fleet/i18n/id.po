@@ -22,7 +22,7 @@ msgstr ""
 #. module: documents_fleet
 #: model:documents.tag,name:documents_fleet.documents_fine
 msgid "Fine"
-msgstr ""
+msgstr "Denda"
 
 #. module: documents_fleet
 #: model:documents.facet,name:documents_fleet.documents_fleet
@@ -33,4 +33,4 @@ msgstr "Armada"
 #. module: documents_fleet
 #: model:documents.tag,name:documents_fleet.documents_vehicles
 msgid "Vehicles Documents"
-msgstr ""
+msgstr "Dokumen Kendaraan"

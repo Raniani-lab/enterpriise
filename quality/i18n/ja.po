@@ -159,7 +159,7 @@ msgstr "確認"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__check_count
 msgid "Check Count"
-msgstr ""
+msgstr "チェック数"
 
 #. module: quality
 #. odoo-javascript
@@ -263,12 +263,12 @@ msgstr "品質管理ポイントのタイプを定義します。"
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Describe the quality check to do..."
-msgstr ""
+msgstr "行う品質チェックを説明..."
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Describe why you need to perform this quality check..."
-msgstr ""
+msgstr "この品質チェックを行う必要の理由を説明して下さい..."
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__description
@@ -575,6 +575,8 @@ msgid ""
 "No quality team found for this company.\n"
 "Please go to configuration and create one first."
 msgstr ""
+"この会社に品質チームがみつかりません。\n"
+"設定に移動して、作成して下さい。"
 
 #. module: quality
 #: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__0
@@ -780,7 +782,7 @@ msgstr "品質管理テストタイプ"
 msgid ""
 "Quality Point will apply to every Products in the selected Product "
 "Categories."
-msgstr ""
+msgstr "選択されたプロダクトカテゴリの全てのプロダクトに適用される品質ポイント"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_point__product_ids
@@ -795,7 +797,7 @@ msgstr "品質タグ"
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Quality Team"
-msgstr ""
+msgstr "品質チーム"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_force_thread_id
@@ -831,7 +833,7 @@ msgstr "根本原因"
 #. module: quality
 #: model:ir.model,name:quality.model_quality_reason
 msgid "Root Cause for Quality Failure"
-msgstr ""
+msgstr "品質不良の根本原因"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_has_sms_error
@@ -954,12 +956,12 @@ msgstr ""
 #. module: quality
 #: model:res.groups,comment:quality.group_quality_manager
 msgid "The quality manager manages the quality process"
-msgstr ""
+msgstr "品質マネジャーが品質処理を管理します"
 
 #. module: quality
 #: model:res.groups,comment:quality.group_quality_user
 msgid "The quality user uses the quality process"
-msgstr ""
+msgstr "品質ユーザが品質処理を使用します"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__title

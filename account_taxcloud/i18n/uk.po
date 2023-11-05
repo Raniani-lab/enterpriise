@@ -122,7 +122,7 @@ msgstr "Запис у журналі"
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_move_line
 msgid "Journal Item"
-msgstr "Запис у журналі"
+msgstr "Елемент журналу"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category____last_update

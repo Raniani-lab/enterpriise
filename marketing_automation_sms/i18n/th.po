@@ -137,7 +137,7 @@ msgstr "SMS"
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.mailing_mailing_view_form_marketing_activity
 msgid "SMS Content"
-msgstr ""
+msgstr "เนื้อหา SMS"
 
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.mailing_mailing_view_form_marketing_activity
@@ -185,7 +185,7 @@ msgstr ""
 #. module: marketing_automation_sms
 #: model:ir.model,name:marketing_automation_sms.model_sms_composer
 msgid "Send SMS Wizard"
-msgstr ""
+msgstr "โปรแกรมสร้างการส่งข้อความ SMS"
 
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form

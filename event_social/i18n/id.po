@@ -28,6 +28,8 @@ msgid ""
 "As social posts have no recipients, they cannot be triggered by "
 "registrations."
 msgstr ""
+"Karena post sosial tidak memiliki penerima, mereka tidak dapat dipicu dengan"
+" pendaftaran."
 
 #. module: event_social
 #: model:ir.model,name:event_social.model_event_mail

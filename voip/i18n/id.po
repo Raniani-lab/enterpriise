@@ -790,7 +790,7 @@ msgstr "Produksi"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Recent"
-msgstr ""
+msgstr "Terkini"
 
 #. module: voip
 #. odoo-javascript
@@ -1117,7 +1117,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:voip.res_users_view_form_preferences
 #, python-format
 msgid "VoIP"
-msgstr ""
+msgstr "VoIP"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.voip_res_users_settings_view_form

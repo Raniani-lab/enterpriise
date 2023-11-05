@@ -37,7 +37,7 @@ msgstr "Tidak ada komponen untuk didaftarkan"
 #: code:addons/stock_barcode_mrp_subcontracting/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Nothing to show"
-msgstr ""
+msgstr "Tidak ada yang dapat ditunjukkan"
 
 #. module: stock_barcode_mrp_subcontracting
 #: model:ir.model,name:stock_barcode_mrp_subcontracting.model_stock_move_line

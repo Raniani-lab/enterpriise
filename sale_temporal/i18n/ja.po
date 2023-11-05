@@ -455,4 +455,4 @@ msgstr "年ごとに"
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "This recurrence unit is not supported."
-msgstr ""
+msgstr "この定期ユニットはサポートされていません。"

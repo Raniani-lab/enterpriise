@@ -372,7 +372,7 @@ msgstr "提示"
 #, python-format
 msgid ""
 "Thank you, your registration was successful! Your database is valid until"
-msgstr ""
+msgstr "謝謝，你的註冊成功了！ 您的資料庫有效期至"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -381,7 +381,7 @@ msgstr ""
 msgid ""
 "Thank you, your registration was successful! Your database is valid until "
 "%s."
-msgstr ""
+msgstr "謝謝，您的註冊已成功！您的資料庫有效期至 %s。"
 
 #. module: web_enterprise
 #. odoo-javascript

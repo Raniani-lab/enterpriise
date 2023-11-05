@@ -1627,8 +1627,8 @@ msgid ""
 "If set, subscriptions with this template will invoice in this journal; "
 "otherwise the sales journal with the lowest sequence is used."
 msgstr ""
-"Nếu chọn, hợp đồng có mẫu này sẽ lập hóa đơn theo nhật kí này; nó được dùng "
-"cho các nhật kí bán hàng có thứ tự thấp hơn."
+"Nếu chọn, gói đăng ký có mẫu này sẽ lập hóa đơn trong sổ nhật ký này; nếu "
+"không, sổ nhật ký bán hàng có số thứ tự thấp nhất sẽ được sử dụng. "
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription

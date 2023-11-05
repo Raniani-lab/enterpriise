@@ -2804,18 +2804,14 @@ msgstr "Niveau du certificat"
 msgid ""
 "Certificate Relating To Annual Holidays For The Civil Year Ending The "
 "Contract Of Employment"
-msgstr ""
-"Attestation relative aux congés annuels de l'année civile mettant fin au "
-"contrat de travail"
+msgstr "Attestation de vacances"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_termination_holidays_n1
 msgid ""
 "Certificate Relating To Annual Vacations For The Calendar Year Preceding The"
 " End Of The Contract Of Employment"
-msgstr ""
-"Attestation relative aux congés annuels pour l'année civile précédant la fin"
-" du contrat de travail"
+msgstr "Attestation de vacances"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_res_company__onss_pem_certificate

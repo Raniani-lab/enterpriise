@@ -33,6 +33,9 @@ msgid ""
 "Merging some products is an important change that will impact your inventory"
 " valuation. You may have to manually rectify it once done."
 msgstr ""
+"Menggabungkan beberapa produk adalah perubahan penting yang akan berdampak "
+"pada valuasi inventaris Anda. Anda harus secara manual memperbaiki setelah "
+"selesai."
 
 #. module: data_merge_stock_account
 #. odoo-python

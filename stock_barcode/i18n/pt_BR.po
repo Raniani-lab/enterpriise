@@ -862,7 +862,7 @@ msgstr "Produto"
 #: model:ir.actions.act_window,name:stock_barcode.product_action_barcodes
 #: model_terms:ir.ui.view,arch_db:stock_barcode.product_view_list_barcodes
 msgid "Product Barcodes"
-msgstr "Os códigos de barras do produto"
+msgstr "Códigos de barras do produto"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_move_line

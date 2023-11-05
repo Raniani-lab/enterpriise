@@ -2079,7 +2079,7 @@ msgstr "Групи журналів"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_move_line
 msgid "Journal Item"
-msgstr "Запис у журналі"
+msgstr "Елемент журналу"
 
 #. module: account_reports
 #. odoo-python

@@ -449,12 +449,12 @@ msgstr "Layout"
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__manual_measurement
 msgid "Manual Measurement"
-msgstr ""
+msgstr "Pengukuran Manual"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__manual_measurement
 msgid "Manually read the measurement from the device"
-msgstr ""
+msgstr "Secara manual baca pengukuran dari perangkat"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__is_scanner

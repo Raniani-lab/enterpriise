@@ -62,7 +62,7 @@ msgstr "日付"
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__contract_start
 msgid "Date First Contract Started"
-msgstr ""
+msgstr "最初の契約開始日"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__date_end_contract

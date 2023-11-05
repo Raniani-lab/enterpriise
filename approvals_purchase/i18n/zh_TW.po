@@ -25,14 +25,12 @@ msgstr ""
 msgid ""
 "Allows you to define which documents you would like to create once the "
 "request has been approved"
-msgstr ""
-"Allows you to define which documents you would like to create once the "
-"request has been approved"
+msgstr "允許您定義請求獲得批准後要創建的文檔"
 
 #. module: approvals_purchase
 #: model:ir.model,name:approvals_purchase.model_approval_category
 msgid "Approval Category"
-msgstr "Approval Category"
+msgstr "審批類別"
 
 #. module: approvals_purchase
 #: model:ir.model,name:approvals_purchase.model_approval_request
@@ -49,12 +47,12 @@ msgstr "批核類型"
 #: model:ir.model.fields.selection,name:approvals_purchase.selection__approval_category__approval_type__purchase
 #: model_terms:ir.ui.view,arch_db:approvals_purchase.approval_purchase_request_view_form_inherit
 msgid "Create RFQ's"
-msgstr ""
+msgstr "創建詢價"
 
 #. module: approvals_purchase
 #: model_terms:ir.ui.view,arch_db:approvals_purchase.exception_approval_request_canceled
 msgid "Exception occurred: the Approval Request"
-msgstr ""
+msgstr "發生異常：批准請求"
 
 #. module: approvals_purchase
 #: model_terms:ir.ui.view,arch_db:approvals_purchase.exception_approval_request_canceled
@@ -65,7 +63,7 @@ msgstr "異常:"
 #: code:addons/approvals_purchase/models/approval_product_line.py:0
 #, python-format
 msgid "Please set a vendor on product(s) %s."
-msgstr ""
+msgstr "請為產品 %s 設定一個供應商。"
 
 #. module: approvals_purchase
 #: model:ir.model,name:approvals_purchase.model_approval_product_line
@@ -97,25 +95,25 @@ msgstr "採購訂單"
 #. module: approvals_purchase
 #: model:ir.model.fields,field_description:approvals_purchase.field_approval_product_line__po_uom_qty
 msgid "Purchase UoM Quantity"
-msgstr ""
+msgstr "採購計量單位數量"
 
 #. module: approvals_purchase
 #: model:ir.model.fields,help:approvals_purchase.field_approval_product_line__po_uom_qty
 msgid ""
 "The quantity converted into the UoM used by the product in Purchase Order."
-msgstr ""
+msgstr "轉換為採購訂單中產品使用的計量單位的數量。"
 
 #. module: approvals_purchase
 #: code:addons/approvals_purchase/models/approval_request.py:0
 #, python-format
 msgid "You cannot create an empty purchase request."
-msgstr ""
+msgstr "不可建立空的採購請求。"
 
 #. module: approvals_purchase
 #: code:addons/approvals_purchase/models/approval_request.py:0
 #, python-format
 msgid "You must select a product for each line of requested products."
-msgstr ""
+msgstr "必須為每個請求的產品系列選擇一個產品。"
 
 #. module: approvals_purchase
 #: model_terms:ir.ui.view,arch_db:approvals_purchase.exception_approval_request_canceled
@@ -128,6 +126,8 @@ msgid ""
 "has been canceled.\n"
 "            Manual actions may be needed."
 msgstr ""
+"已取消。\n"
+"            可能需要手動操作。"
 
 #. module: approvals_purchase
 #: model_terms:ir.ui.view,arch_db:approvals_purchase.exception_approval_request_canceled

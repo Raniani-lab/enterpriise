@@ -811,7 +811,7 @@ msgstr "Tạm dừng hẹn giờ"
 #: code:addons/timesheet_grid/static/src/js/timesheet_uom_timer.js:0
 #, python-format
 msgid "Play"
-msgstr ""
+msgstr "Mở"
 
 #. module: timesheet_grid
 #. odoo-javascript

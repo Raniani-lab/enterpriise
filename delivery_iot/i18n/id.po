@@ -32,6 +32,8 @@ msgid ""
 "Choose the scales you want to use for this operation type. Those scales can "
 "be used to weigh the packages created."
 msgstr ""
+"Pilih timbangan yang Anda ingin gunakan untuk tipe operasi ini. Timbangan "
+"tersebut dapat digunakan untuk menimbang paket yang dibuat."
 
 #. module: delivery_iot
 #: model:ir.model,name:delivery_iot.model_choose_delivery_package
@@ -61,17 +63,17 @@ msgstr ""
 #. module: delivery_iot
 #: model_terms:ir.ui.view,arch_db:delivery_iot.iot_device_view_form_inherit
 msgid "Linked Operation Types"
-msgstr ""
+msgstr "Tipe Operasi Terhubung"
 
 #. module: delivery_iot
 #: model:ir.model.fields,field_description:delivery_iot.field_choose_delivery_package__manual_measurement
 msgid "Manual Measurement"
-msgstr ""
+msgstr "Pengukuran Manual"
 
 #. module: delivery_iot
 #: model:ir.model.fields,help:delivery_iot.field_choose_delivery_package__manual_measurement
 msgid "Manually read the measurement from the device"
-msgstr ""
+msgstr "Secara manual baca pengukuran dari perangkat"
 
 #. module: delivery_iot
 #: model:ir.model.fields,field_description:delivery_iot.field_iot_device__picking_type_ids
@@ -88,7 +90,7 @@ msgstr "Tipe Picking"
 #: code:addons/delivery_iot/static/src/field_many2one_iot_scale.xml:0
 #, python-format
 msgid "Read weight"
-msgstr ""
+msgstr "Baca bobot"
 
 #. module: delivery_iot
 #: model:ir.model.fields,field_description:delivery_iot.field_choose_delivery_package__iot_device_id
@@ -99,7 +101,7 @@ msgstr "Timbangan"
 #: model:ir.model.fields,field_description:delivery_iot.field_choose_delivery_package__available_scale_ids
 #: model:ir.model.fields,field_description:delivery_iot.field_stock_picking_type__iot_scale_ids
 msgid "Scales"
-msgstr ""
+msgstr "Timbangan"
 
 #. module: delivery_iot
 #: model:ir.model.fields,field_description:delivery_iot.field_stock_picking_type__iot_printer_id

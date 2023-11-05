@@ -1532,7 +1532,7 @@ msgstr "不允許進行此類分組。"
 msgid ""
 "Thanks to your Appraisal Plan, without any new manual Appraisal, the new "
 "Appraisal will be automatically created on %s."
-msgstr ""
+msgstr "由於你的評估計劃，無需任何新的人工評估，新的評估將在%s上自動創建。"
 
 #. module: hr_appraisal
 #. odoo-python

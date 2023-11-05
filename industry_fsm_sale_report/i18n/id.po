@@ -43,7 +43,7 @@ msgstr "Kegiatan"
 #. module: industry_fsm_sale_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale_report.worksheet_custom_page
 msgid "Time &amp; Material"
-msgstr ""
+msgstr "Waktu &amp; Materi"
 
 #. module: industry_fsm_sale_report
 #: model:ir.model.fields,field_description:industry_fsm_sale_report.field_product_product__worksheet_template_id

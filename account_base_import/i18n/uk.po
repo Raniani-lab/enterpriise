@@ -202,7 +202,7 @@ msgstr "Встановити модуль"
 #. module: account_base_import
 #: model:ir.model,name:account_base_import.model_account_move_line
 msgid "Journal Item"
-msgstr "Запис у журналі"
+msgstr "Елемент журналу"
 
 #. module: account_base_import
 #. odoo-javascript

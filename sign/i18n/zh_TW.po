@@ -315,9 +315,9 @@ msgid ""
 "            They will be able to access this document and sign it as yourself.<br/>\n"
 "            <span>Your IP address and localization are associated to your signature to ensure traceability.</span>"
 msgstr ""
-"<strong>Warning</strong> do not forward this email to other people!<br/>\n"
-"            They will be able to access this document and sign it as yourself.<br/>\n"
-"            <span>Your IP address and localization are associated to your signature to ensure traceability.</span>"
+"<strong>警告</strong>：不要將此電郵轉發給其他人！<br/>\n"
+"            他們將能夠存取此文件，並以你自己的身份對其進行簽名。<br/>\n"
+"            <span>你的 IP 位址和本地化位置與你的簽名相關聯，以確保可追溯性。</span>"
 
 #. module: sign
 #. odoo-javascript
@@ -1257,7 +1257,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__favorited_ids
 msgid "Favorite of"
-msgstr "Favorite of"
+msgstr "最愛："
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__favorited_ids
@@ -2277,7 +2277,7 @@ msgstr "公眾使用者"
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Re-send SMS"
-msgstr "Re-send SMS"
+msgstr "重新傳送短訊"
 
 #. module: sign
 #. odoo-javascript
@@ -2374,7 +2374,7 @@ msgstr "重新發送"
 #: code:addons/sign/static/src/js/backend/sign_request.js:0
 #, python-format
 msgid "Resend the invitation"
-msgstr "Resend the invitation"
+msgstr "重新傳送邀請"
 
 #. module: sign
 #. odoo-javascript
@@ -2552,14 +2552,14 @@ msgstr "發送簡訊"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__signer_id
 msgid "Send To"
-msgstr "Send To"
+msgstr "傳送至"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/js/backend/sign_request.js:0
 #, python-format
 msgid "Send the invitation"
-msgstr "Send the invitation"
+msgstr "傳送邀請"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_request__state__sent
@@ -3603,7 +3603,7 @@ msgstr "UTC"
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Unable to send the SMS, please contact the sender of the document."
-msgstr "Unable to send the SMS, please contact the sender of the document."
+msgstr "未能傳送短訊。請聯絡文件寄件人。"
 
 #. module: sign
 #. odoo-python
@@ -3694,7 +3694,7 @@ msgstr "驗證"
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Validate & Send"
-msgstr "Validate & Send"
+msgstr "驗證並傳送"
 
 #. module: sign
 #. odoo-javascript
@@ -3706,7 +3706,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 msgid "Validate &amp; Send Completed Document"
-msgstr "Validate &amp; Send Completed Document"
+msgstr "驗證並傳送已完成的文件"
 
 #. module: sign
 #. odoo-javascript
@@ -3791,7 +3791,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "We will send you this document by email once everyone has signed."
-msgstr "We will send you this document by email once everyone has signed."
+msgstr "每個人都簽署後，我們會以電郵向你發送此文件。"
 
 #. module: sign
 #. odoo-javascript

@@ -28,11 +28,13 @@ msgid ""
 "<i class=\"fa fa-info-circle\" role=\"img\" aria-label=\"Warning\" title=\"The letter will be sent using the IAP service from Odoo.&#10;Make sure you have enough credits on your account or proceed to a recharge.\"/>\n"
 "                        <br/>"
 msgstr ""
+"<i class=\"fa fa-info-circle\" role=\"รูปภาพ\" aria-label=\"คำเตือน\" title=\"จดหมายจะถูกส่งโดยใช้บริการ IAP จาก Odoo ตรวจสอบให้แน่ใจว่าคุณมีเครดิตเพียงพอในบัญชีของคุณหรือดำเนินการเติมเงิน\"/>\n"
+"                        <br/>"
 
 #. module: snailmail_account_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_followup.manual_reminder_view_form_inherit_snailmail
 msgid "By post"
-msgstr ""
+msgstr "โดยโพสต์"
 
 #. module: snailmail_account_followup
 #: model:ir.model,name:snailmail_account_followup.model_res_partner
@@ -57,7 +59,7 @@ msgstr "ส่งจดหมาย"
 #. module: snailmail_account_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_followup.manual_reminder_view_form_inherit_snailmail
 msgid "Sending this document by post will cost"
-msgstr ""
+msgstr "การส่งเอกสารนี้ทางไปรษณีย์จะมีค่าใช้จ่าย"
 
 #. module: snailmail_account_followup
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_account_followup_manual_reminder__snailmail
@@ -67,7 +69,7 @@ msgstr "Snailmail"
 #. module: snailmail_account_followup
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_account_followup_manual_reminder__snailmail_cost
 msgid "Stamps"
-msgstr ""
+msgstr "แสตมป์"
 
 #. module: snailmail_account_followup
 #: model:ir.model,name:snailmail_account_followup.model_account_followup_manual_reminder
@@ -82,3 +84,5 @@ msgid ""
 "You are trying to send a letter by post, but no follow-up contact has any "
 "address set"
 msgstr ""
+"คุณกำลังพยายามส่งจดหมายทางไปรษณีย์ "
+"แต่ไม่มีผู้ติดต่อติดตามผลใดที่มีการกำหนดที่อยู่ไว้"

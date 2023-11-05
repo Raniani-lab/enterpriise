@@ -1717,7 +1717,7 @@ msgstr "Permissão interna"
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Invitation to access %s"
-msgstr ""
+msgstr "Convite para acessar %s"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form

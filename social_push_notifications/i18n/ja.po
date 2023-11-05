@@ -26,7 +26,7 @@ msgstr ""
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "<span class=\"ps-2\">seconds</span>"
-msgstr ""
+msgstr "<span class=\"ps-2\">秒</span>"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_marketing_campaign__social_post_ids
@@ -98,7 +98,7 @@ msgstr "ウェブプッシュ通知を有効にします"
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 #, python-format
 msgid "Enable push notifications to be notified about new features."
-msgstr ""
+msgstr "新機能について通知するプッシュ通知を有効にします。"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_res_config_settings__firebase_admin_key_file
@@ -165,7 +165,7 @@ msgstr "アイコン"
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.social_post_template_view_form
 msgid "Icon Image"
-msgstr ""
+msgstr "アイコン画像"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
@@ -180,7 +180,7 @@ msgstr "最終更新日"
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.social_post_view_form
 msgid "Local Time"
-msgstr ""
+msgstr "現地時間"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_media__media_type
@@ -229,7 +229,7 @@ msgstr "通知要求タイトル"
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.social_post_template_view_form
 msgid "Notification Title"
-msgstr ""
+msgstr "通知タイトル"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.utm_campaign_view_form
@@ -267,17 +267,17 @@ msgstr "アイコンイメージをプッシュ"
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.website_visitor_view_search
 msgid "Push Notification Off"
-msgstr ""
+msgstr "プッシュ通知オフ"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.website_visitor_view_search
 msgid "Push Notification On"
-msgstr ""
+msgstr "プッシュ通知オン"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.social_post_template_view_form
 msgid "Push Notification Options"
-msgstr ""
+msgstr "プッシュ通知オプション"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_post__push_notification_title
@@ -297,7 +297,7 @@ msgstr "プッシュ通知"
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor__has_push_notifications
 msgid "Push Notifications Enabled"
-msgstr ""
+msgstr "プッシュ通知が有効化されました"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_post__push_notifications_preview
@@ -313,12 +313,12 @@ msgstr "プッシュサブスクリプション"
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_website_visitor_push_subscription
 msgid "Push Subscription for a Website Visitor"
-msgstr ""
+msgstr "ウェブサイト訪問者用プッシュサブスクリプション"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor__push_subscription_ids
 msgid "Push Subscriptions"
-msgstr ""
+msgstr "プッシュサブスクリプション"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_post__push_notification_target_url
@@ -329,7 +329,7 @@ msgstr "ターゲットURLをプッシュ"
 #. module: social_push_notifications
 #: model:ir.model.constraint,message:social_push_notifications.constraint_website_visitor_push_subscription_push_token_uniq
 msgid "Push token can't be duplicated!"
-msgstr ""
+msgstr "プッシュトークンは重複できません！"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_live_post__reached_visitor_ids
@@ -363,7 +363,7 @@ msgstr "訪問者のタイムゾーンで送ります"
 msgid ""
 "Send push notifications and configure this website's notifications "
 "permission request"
-msgstr ""
+msgstr "プッシュ通知を有効にして、このウェブサイトの通知を許可要求を設定します"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
@@ -509,22 +509,22 @@ msgstr ""
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "e.g. \"280765099157\""
-msgstr ""
+msgstr "例: \"280765099157\""
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "e.g. \"BIzbSyXhhsFHEgphW55CSg5cV7h7c_S-AuTMKc9\""
-msgstr ""
+msgstr "例: \"BIzbSyXhhsFHEgphW55CSg5cV7h7c_S-AuTMKc9\""
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "e.g. \"CCSc77KP_LX8dTAogFakOoJ_VqNP15u0-43psDJe__a9B...\""
-msgstr ""
+msgstr "例: \"CCSc77KP_LX8dTAogFakOoJ_VqNP15u0-43psDJe__a9B...\""
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "e.g. \"my-project-id\""
-msgstr ""
+msgstr "例: \"my-project-id\""
 
 #. module: social_push_notifications
 #: model:ir.model.fields,help:social_push_notifications.field_social_post__use_visitor_timezone
@@ -532,4 +532,4 @@ msgstr ""
 msgid ""
 "e.g: If you post at 15:00 your time, all visitors will receive the post at "
 "15:00 their time."
-msgstr ""
+msgstr "例: 5:00に投稿する場合、訪問者は15:00に自分の時間をポストを受け取ることになります。"

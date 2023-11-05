@@ -5,9 +5,9 @@
 # Translators:
 # Martin Trigaux, 2022
 # JH CHOI <hwangtog@gmail.com>, 2022
-# Daye Jeong, 2023
 # Wil Odoo, 2023
 # Sarah Park, 2023
+# Daye Jeong, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Sarah Park, 2023\n"
+"Last-Translator: Daye Jeong, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3435,7 +3435,7 @@ msgstr ""
 #: code:addons/sign/wizard/sign_duplicate_template_with_pdf.py:0
 #, python-format
 msgid "The uploaded file is not a valid PDF. Please upload a valid PDF file."
-msgstr ""
+msgstr "이 파일은 올바른 PDF 형식이 아닙니다. 유효한 PDF 파일을 업로드 하세요."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests

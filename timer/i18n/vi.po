@@ -98,7 +98,7 @@ msgstr "Hoạt động không được hỗ trợ"
 #: code:addons/timer/static/src/js/timer_toggle_button.js:0
 #, python-format
 msgid "Play"
-msgstr ""
+msgstr "Mở"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__res_id

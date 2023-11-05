@@ -27,6 +27,8 @@ msgstr ""
 #, python-format
 msgid "<b>Deselect this page</b> as we plan to process all bills first."
 msgstr ""
+"<b>Batalkan memilih halaman ini</b> karena kami berencana untuk memproses "
+"semua tagihan terlebih dahulu."
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
@@ -51,17 +53,17 @@ msgstr ""
 #. module: documents_account
 #: model:ir.model.constraint,message:documents_account.constraint_documents_account_folder_setting_journal_unique
 msgid "A setting already exists for this journal"
-msgstr ""
+msgstr "Pengaturan sudah ada untuk jurnal ini"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__documents_account_settings
 msgid "Accounting "
-msgstr ""
+msgstr "Akuntansi"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_folder
 msgid "Accounting Workspace"
-msgstr ""
+msgstr "Ruang Kerja Akuntansi"
 
 #. module: documents_account
 #. odoo-javascript
@@ -70,6 +72,8 @@ msgstr ""
 msgid ""
 "As this PDF contains multiple documents, let's split and process in bulk."
 msgstr ""
+"Karena PDF ini memiliki lebih dari satu dokumen, mari pisahkan dan proses "
+"secara bulk."
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_ir_attachment
@@ -79,7 +83,7 @@ msgstr "Lampiran"
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
 msgid "Centralize accounting files and documents"
-msgstr ""
+msgstr "Sentralisasikan file dan dokumen akuntansi"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.view_account_move_form_inherit_documents_account
@@ -91,14 +95,14 @@ msgstr "Check them"
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
 msgid "Click on a card to <b>select the document</b>."
-msgstr ""
+msgstr "Klik pada kartu untuk <b>memilih dokumen</b>."
 
 #. module: documents_account
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
 msgid "Click on a thumbnail to <b>preview the document</b>."
-msgstr ""
+msgstr "Klik pada thumbnail untuk <b>pratinjau dokumen</b>."
 
 #. module: documents_account
 #. odoo-javascript
@@ -108,6 +112,8 @@ msgid ""
 "Click on the <b>page separator</b>: we don't want to split these two pages "
 "as they belong to the same document."
 msgstr ""
+"Klik pada <b>separator halaman</b>: kita tidak ingin memisahkan dua halaman "
+"ini karena mereka berasal dari dokumen yang sama."
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_res_company
@@ -142,7 +148,7 @@ msgstr ""
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.customer_invoice_rule
 msgid "Create Customer Invoice"
-msgstr ""
+msgstr "Buat Faktur Pelanggan"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__create_uid
@@ -157,12 +163,12 @@ msgstr "Dibuat pada"
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_out_refund
 msgid "Credit note"
-msgstr ""
+msgstr "Nota kredit"
 
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_out_invoice
 msgid "Customer invoice"
-msgstr ""
+msgstr "Faktur pelanggan"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__display_name
@@ -172,7 +178,7 @@ msgstr "Nama Tampilan"
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__documents_account_settings
 msgid "Documents Account Settings"
-msgstr ""
+msgstr "Pengaturan Akun Dokumen"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_reports_export_wizard_format
@@ -187,17 +193,17 @@ msgstr "Wizard ekspor untuk laporan akuntansi"
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_fs
 msgid "Financial Statement"
-msgstr ""
+msgstr "Laporan Keuangan"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__folder_id
 msgid "Folder"
-msgstr ""
+msgstr "Folder"
 
 #. module: documents_account
 #: model:ir.model.fields,help:documents_account.field_account_reports_export_wizard__folder_id
 msgid "Folder where to save the generated file"
-msgstr ""
+msgstr "Folder di mana untuk menyimpan file yang dibuat"
 
 #. module: documents_account
 #. odoo-python
@@ -224,7 +230,7 @@ msgstr "Entri Jurnal"
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_documents_account_folder_setting
 msgid "Journal and Folder settings"
-msgstr ""
+msgstr "Pengaturan Jurnal dan Folder"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
@@ -234,7 +240,7 @@ msgstr "Jurnal-jurnal"
 #. module: documents_account
 #: model:ir.actions.act_window,name:documents_account.action_folder_settings_installer
 msgid "Journals to synchronize"
-msgstr ""
+msgstr "Jurnal untuk disinkronisasi"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting____last_update
@@ -259,20 +265,22 @@ msgid ""
 "Let's process documents in your Inbox.<br/><i>Tip: Use Tags to filter "
 "documents and structure your process.</i>"
 msgstr ""
+"Ayo proses dokumen di Inbox Anda.<br/><i>Tip: Gunakan Tag untuk memfilter "
+"dokumen dan organisasikan proses Anda.</i>"
 
 #. module: documents_account
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
 msgid "Let's process these bills: turn them into vendor bills."
-msgstr ""
+msgstr "Mari memproses tagihan berikut: jadikan mereka tagihan vendor."
 
 #. module: documents_account
 #. odoo-javascript
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
 msgid "Let's process this document, coming from our scanner."
-msgstr ""
+msgstr "Ayo proses dokumen ini, datang dari scanner kami."
 
 #. module: documents_account
 #. odoo-javascript
@@ -282,6 +290,8 @@ msgid ""
 "Let's tag this mail as legal<br/> <i>Tips: actions can be tailored to your "
 "process, according to the workspace.</i>"
 msgstr ""
+"Ayo tag email ini sebagai legal<br/> <i>Tip: action dapat disesuaikan ke "
+"proses Anda, menurut ruang kerja.</i>"
 
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_md
@@ -293,7 +303,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_account.field_account_move__suspense_statement_line_id
 #: model:ir.model.fields,field_description:documents_account.field_account_payment__suspense_statement_line_id
 msgid "Request document from a bank statement line"
-msgstr ""
+msgstr "Minta dokumen dari baris laporan bank"
 
 #. module: documents_account
 #. odoo-javascript
@@ -301,6 +311,7 @@ msgstr ""
 #, python-format
 msgid "Send this letter to the legal department, by assigning the right tags."
 msgstr ""
+"Kirim surat ini ke departemen legal, dengan memberikan tag yang tepat."
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__tag_ids
@@ -311,12 +322,12 @@ msgstr "Label"
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_vat
 msgid "Tax Statement"
-msgstr ""
+msgstr "Laporan Pajak"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.view_account_move_form_inherit_documents_account
 msgid "This invoice has been initiated by a bank transaction."
-msgstr ""
+msgstr "Faktur ini telah diproses oleh transaksi bank."
 
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_refund
@@ -326,7 +337,7 @@ msgstr "Catatan Kredit Pemasok"
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_invoice
 msgid "Vendor bill"
-msgstr ""
+msgstr "Tagihan vendor"
 
 #. module: documents_account
 #. odoo-javascript
@@ -335,6 +346,7 @@ msgstr ""
 msgid ""
 "Want to become a <b>paperless company</b>? Let's discover Odoo Documents."
 msgstr ""
+"Ingin menjadi <b>perusahaan yang paperless</b>? Ayo gunakan Odoo Documents."
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__folder_id
@@ -350,11 +362,13 @@ msgid ""
 "Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is "
 "complete. Try uploading your own documents now."
 msgstr ""
+"Wow... 6 dokumen diproses dalam beberapa detik, Anda hebat.<br/>Tur sudah "
+"selesai. Coba unggah dokumen Anda sekarang."
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_folder
 msgid "account default folder"
-msgstr ""
+msgstr "folder default akun"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.view_account_move_form_inherit_documents_account

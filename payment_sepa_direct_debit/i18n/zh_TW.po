@@ -408,7 +408,7 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/static/src/js/payment_form.js:0
 #, python-format
 msgid "Re-send SMS"
-msgstr "Re-send SMS"
+msgstr "重新傳送短訊"
 
 #. module: payment_sepa_direct_debit
 #. odoo-python

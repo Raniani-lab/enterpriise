@@ -177,18 +177,18 @@ msgstr ""
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_update_ocr_status_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_update_ocr_status
 msgid "Recruitment OCR: Update All Status"
-msgstr ""
+msgstr "OCR Rekrutmen: Update Semua Status"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_ocr_validate_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_ocr_validate
 msgid "Recruitment OCR: Validate CV"
-msgstr ""
+msgstr "OCR Rekrutmen: Validasi CV"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_config_settings__recruitment_extract_show_ocr_option_selection
 msgid "Recruitment processing option"
-msgstr ""
+msgstr "Opsi pemrosesan rekrutmen"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_remote_id
@@ -204,7 +204,7 @@ msgstr "Kirim Untuk Digitalisasi"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_company__recruitment_extract_show_ocr_option_selection
 msgid "Send mode on applicant attachments"
-msgstr ""
+msgstr "Mode kirim pada lampiran pelamar"
 
 #. module: hr_recruitment_extract
 #. odoo-python
@@ -284,8 +284,11 @@ msgstr "Menunggu validasi"
 #, python-format
 msgid "You cannot send a CV for an applicant who's not in first stage!"
 msgstr ""
+"Anda tidak dapat mengirim CV untuk pelamar yang tidak dalam tahap pertama!"
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
-msgid "You don't have enough credit to extract data from your CV."
+msgid "You don't have enough credit to extract data from your Resume."
 msgstr ""
+"Anda tidak memiliki kredit yang mencukupi untuk mengekstrak data dari Resume"
+" Anda."

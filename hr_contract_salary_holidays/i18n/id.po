@@ -23,14 +23,14 @@ msgstr ""
 #. module: hr_contract_salary_holidays
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary_holidays.hr_contract_view_form
 msgid "<span>Allocations</span>"
-msgstr ""
+msgstr "<span>Alokasi</span>"
 
 #. module: hr_contract_salary_holidays
 #: model:ir.model.constraint,message:hr_contract_salary_holidays.constraint_res_company_auto_allocation
 msgid ""
 "A Time Off Type is required once the Extra Time Off automatic allocation is "
 "set."
-msgstr ""
+msgstr "Tipe Cuti dibutuhkan setelah alokasi otomatis Cuti Ekstra ditetapkan."
 
 #. module: hr_contract_salary_holidays
 #: model:ir.model.fields,field_description:hr_contract_salary_holidays.field_hr_contract__leave_allocation_id
@@ -41,7 +41,7 @@ msgstr "Alokasi"
 #: code:addons/hr_contract_salary_holidays/controllers/main.py:0
 #, python-format
 msgid "Allocation automatically created from Contract Signature."
-msgstr ""
+msgstr "Alokasi otomatis dibuat dari Tanda Tangan Kontrak."
 
 #. module: hr_contract_salary_holidays
 #: model:ir.model,name:hr_contract_salary_holidays.model_res_company
@@ -57,7 +57,7 @@ msgstr "Pengaturan Konfigurasi"
 #: code:addons/hr_contract_salary_holidays/models/hr_contract.py:0
 #, python-format
 msgid "Contract has been cancelled."
-msgstr ""
+msgstr "Kontrak telah dibatalkan."
 
 #. module: hr_contract_salary_holidays
 #: model:ir.model,name:hr_contract_salary_holidays.model_hr_contract
@@ -67,18 +67,18 @@ msgstr "Kontrak Karyawan"
 #. module: hr_contract_salary_holidays
 #: model:hr.leave.type,name:hr_contract_salary_holidays.holiday_status_eto
 msgid "Extra Time Off"
-msgstr ""
+msgstr "Cuti Tambahan"
 
 #. module: hr_contract_salary_holidays
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary_holidays.res_config_settings_view_form
 msgid "Extra Time Off Allocation"
-msgstr ""
+msgstr "Alokasi Cuti Ekstra"
 
 #. module: hr_contract_salary_holidays
 #: model:ir.model.fields,field_description:hr_contract_salary_holidays.field_res_company__hr_contract_timeoff_auto_allocation
 #: model:ir.model.fields,field_description:hr_contract_salary_holidays.field_res_config_settings__hr_contract_timeoff_auto_allocation
 msgid "Extra Time Off Allocation on contract signature"
-msgstr ""
+msgstr "Alokasi Cuti Ekstra pada tandatangan kontrak"
 
 #. module: hr_contract_salary_holidays
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary_holidays.res_config_settings_view_form
@@ -86,6 +86,8 @@ msgid ""
 "If the employee requested extra time off in his salary configurator, create "
 "automatically the allocation request"
 msgstr ""
+"Bila karyawan meminta cuti ekstra di konfigurator salary mereka, buat secara"
+" otomatis permintaan alokasi"
 
 #. module: hr_contract_salary_holidays
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary_holidays.res_config_settings_view_form
@@ -93,6 +95,8 @@ msgid ""
 "If the employee requested extra time off in his salary configurator, create "
 "automatically the allocation request."
 msgstr ""
+"Bila karyawan meminta cuti ekstra di konfigurator salary mereka, buat secara"
+" otomatis permintaan alokasi"
 
 #. module: hr_contract_salary_holidays
 #: model:ir.model.fields,field_description:hr_contract_salary_holidays.field_res_company__hr_contract_timeoff_auto_allocation_type_id

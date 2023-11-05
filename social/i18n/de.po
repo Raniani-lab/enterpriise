@@ -1076,7 +1076,7 @@ msgstr "Anzahl der Aktionen"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Number of Followers of your channel"
-msgstr "Anzahl der Followers Ihres Kanals"
+msgstr "Anzahl der Follower Ihres Kanals"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__click_count

@@ -23,12 +23,12 @@ msgstr ""
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__count_employee_exit
 msgid "# Departure Employee"
-msgstr ""
+msgstr "# Karyawan Keluar"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__count_new_employee
 msgid "# New Employees"
-msgstr ""
+msgstr "# Karyawan Baru"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__company_id
@@ -44,7 +44,7 @@ msgstr "Kontrak"
 #. module: hr_contract_reports
 #: model:ir.model,name:hr_contract_reports.model_hr_contract_employee_report
 msgid "Contract and Employee Analysis Report"
-msgstr ""
+msgstr "Laporan Analisis Kontrak dan Karyawan"
 
 #. module: hr_contract_reports
 #: model:ir.ui.menu,name:hr_contract_reports.menu_report_contract_employee_all
@@ -57,9 +57,14 @@ msgid "Date"
 msgstr "Tanggal"
 
 #. module: hr_contract_reports
+#: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__contract_start
+msgid "Date First Contract Started"
+msgstr "Tanggal Kontrak Pertama Dimulai"
+
+#. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__date_end_contract
 msgid "Date Last Contract Ended"
-msgstr ""
+msgstr "Tanggal Terakhir Kontrak Berakhir"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__department_id
@@ -80,7 +85,7 @@ msgstr "Nama Tampilan"
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__age_sum
 msgid "Duration Contract"
-msgstr ""
+msgstr "Durasi Kontrak"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__employee_id
@@ -95,7 +100,7 @@ msgstr "Karyawan"
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_search
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.hr_contract_employee_report_view_tree
 msgid "Employees Analysis"
-msgstr ""
+msgstr "Analisis Karyawan"
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_search
@@ -120,17 +125,17 @@ msgstr "Terakhir diubah pada"
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__start_date_months
 msgid "Months of first date of this month since 01/01/1970"
-msgstr ""
+msgstr "Bulan-bulan tanggal pertama bulan ini semenjak 01/01/1970"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__end_date_months
 msgid "Months of last date of this month since 01/01/1970"
-msgstr ""
+msgstr "Bulan-bulan tanggal terakhir bulan ini semenjak 01/01/1970"
 
 #. module: hr_contract_reports
 #: model_terms:ir.actions.act_window,help:hr_contract_reports.contract_employee_report_action
 msgid "This report performs analysis on your contracts."
-msgstr ""
+msgstr "Laporan ini melakukan analisis pada kontrak Anda."
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__wage

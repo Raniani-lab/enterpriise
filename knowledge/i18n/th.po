@@ -1384,7 +1384,7 @@ msgstr "กลุ่มโดย"
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Guest"
-msgstr ""
+msgstr "ลูกค้า"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_has_access

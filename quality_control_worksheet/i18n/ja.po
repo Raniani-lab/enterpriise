@@ -25,17 +25,17 @@ msgstr ""
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_inherit_worksheet
 msgid "Check Worksheet"
-msgstr ""
+msgstr "ワークシートをチェック"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_failure_worksheet
 msgid "Confirm Worksheet"
-msgstr ""
+msgstr "ワークシートを確認"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_failure_worksheet
 msgid "Correct Worksheet"
-msgstr ""
+msgstr "ワークシートを修正"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.x_quality_check_worksheet_template_1_ir_ui_view_3
@@ -62,7 +62,7 @@ msgstr "モデル名"
 #: code:addons/quality_control_worksheet/models/quality.py:0
 #, python-format
 msgid "Please fill in the worksheet."
-msgstr ""
+msgstr "ワークシートに記入して下さい。"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
@@ -90,13 +90,13 @@ msgstr "品質管理ポイント"
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.x_quality_check_worksheet_template_1_ir_model_1
 msgid "Quality Issues"
-msgstr ""
+msgstr "品質問題"
 
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check__worksheet_template_id
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check_wizard__worksheet_template_id
 msgid "Quality Template"
-msgstr ""
+msgstr "品質テンプレート"
 
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_report_quality_control_quality_worksheet
@@ -117,7 +117,7 @@ msgstr "担当者"
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_point__worksheet_success_conditions
 msgid "Success Conditions"
-msgstr ""
+msgstr "合格基準"
 
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_point__worksheet_template_id
@@ -132,7 +132,7 @@ msgstr "品質チェックポップアップ用ウィザード"
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
 msgid "Wood Texture"
-msgstr ""
+msgstr "木の質感"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_inherit_worksheet
@@ -144,7 +144,7 @@ msgstr "ワークシート"
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_inherit_worksheet
 msgid "Worksheet Completed"
-msgstr ""
+msgstr "ワークシート完了"
 
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check__worksheet_count

@@ -225,4 +225,4 @@ msgstr ""
 #. module: industry_fsm_stock
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.stock_product_product_kanban_material
 msgid "View Availability"
-msgstr ""
+msgstr "Lihat Ketersediaan"

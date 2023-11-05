@@ -38,7 +38,7 @@ msgstr "Tipe Pekerjaan"
 #. module: hr_contract_salary_payroll
 #: model:ir.model.fields.selection,name:hr_contract_salary_payroll.selection__hr_contract_salary_resume__value_type__payslip
 msgid "Payslip Value"
-msgstr ""
+msgstr "Value Payslip"
 
 #. module: hr_contract_salary_payroll
 #: model:ir.model,name:hr_contract_salary_payroll.model_hr_payslip_worked_days
@@ -53,11 +53,13 @@ msgid ""
 "Please note that this information may be inaccurate and should be used for "
 "reference only."
 msgstr ""
+"Mohon ingat bahwa informasi ini mungkin tidak akurat dan harus digunakan "
+"hanya sebagai referensi."
 
 #. module: hr_contract_salary_payroll
 #: model:ir.model,name:hr_contract_salary_payroll.model_hr_contract_salary_resume
 msgid "Salary Package Resume"
-msgstr ""
+msgstr "Resume Paket Gaji"
 
 #. module: hr_contract_salary_payroll
 #: model:ir.ui.menu,name:hr_contract_salary_payroll.hr_payroll_menu_contract_templates
@@ -69,7 +71,7 @@ msgstr "Contoh"
 #: code:addons/hr_contract_salary_payroll/static/src/xml/brut2net_modal.xml:0
 #, python-format
 msgid "The amounts are calculated  based on a full time permanent contract."
-msgstr ""
+msgstr "Jumlah yang dihitung berdasarkan kontrak full time permanen."
 
 #. module: hr_contract_salary_payroll
 #. odoo-javascript
@@ -79,6 +81,8 @@ msgid ""
 "There is no defined payroll structure for your contract. Please contact a "
 "responsible for more information."
 msgstr ""
+"Tidak ada struktur payroll yang didefinisikan untuk kontrak Anda. Mohon "
+"hubungi penanggungjawab untuk informasi lebih lanjut."
 
 #. module: hr_contract_salary_payroll
 #. odoo-python
@@ -87,8 +91,9 @@ msgstr ""
 msgid ""
 "This is the gross calculated for the current month with a total of %s hours."
 msgstr ""
+"Ini adalah jumlah kotor yang dihitung untuk bulan ini dengan total %s jam."
 
 #. module: hr_contract_salary_payroll
 #: model:ir.model.fields,field_description:hr_contract_salary_payroll.field_hr_contract_salary_resume__value_type
 msgid "Value Type"
-msgstr ""
+msgstr "Tipe Value"

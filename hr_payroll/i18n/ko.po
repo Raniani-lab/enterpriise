@@ -1601,7 +1601,7 @@ msgstr "생성된 급여 명세서"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "Give insurance card to new registered employees"
-msgstr ""
+msgstr "신규 직원에게 보험 카드 제공"
 
 #. module: hr_payroll
 #. odoo-python

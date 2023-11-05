@@ -749,14 +749,14 @@ msgstr "สเปรดชีต"
 #: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/odoo_bar/odoo_bar_config_panel.xml:0
 #, python-format
 msgid "Stacked barchart"
-msgstr ""
+msgstr "แผนภูมิแท่งแบบซ้อน"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/odoo_line/odoo_line_config_panel.xml:0
 #, python-format
 msgid "Stacked linechart"
-msgstr ""
+msgstr "แผนภูมิเส้นแบบซ้อน"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -836,7 +836,7 @@ msgstr "ลิงก์"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "list"
-msgstr ""
+msgstr "รายการ"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -868,4 +868,4 @@ msgstr ""
 #. module: spreadsheet_edition
 #: model:ir.model,name:spreadsheet_edition.model_ir_websocket
 msgid "websocket message handling"
-msgstr ""
+msgstr "การจัดการข้อความของ websocket"

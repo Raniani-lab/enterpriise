@@ -2360,7 +2360,7 @@ msgstr "จำเป็น"
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
 #, python-format
 msgid "Resend"
-msgstr ""
+msgstr "ส่งซ้ำ"
 
 #. module: sign
 #. odoo-javascript

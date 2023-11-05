@@ -284,7 +284,7 @@ msgstr "Media Type"
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_user_mentions
 msgid "Mentions"
-msgstr ""
+msgstr "Đề cập"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__name

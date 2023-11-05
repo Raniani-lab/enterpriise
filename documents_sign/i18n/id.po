@@ -38,12 +38,12 @@ msgstr "Buat"
 #: code:addons/documents_sign/models/workflow.py:0
 #, python-format
 msgid "New templates"
-msgstr ""
+msgstr "Templat-Templat baru"
 
 #. module: documents_sign
 #: model:ir.model.fields.selection,name:documents_sign.selection__documents_workflow_rule__create_model__sign_template_direct
 msgid "PDF to Sign"
-msgstr ""
+msgstr "PDF ke Tanda Tanga"
 
 #. module: documents_sign
 #: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_directly
@@ -53,7 +53,7 @@ msgstr "Sign"
 #. module: documents_sign
 #: model:ir.model.fields.selection,name:documents_sign.selection__documents_workflow_rule__create_model__sign_template_new
 msgid "Signature PDF Template"
-msgstr ""
+msgstr "Templat Tanda Tangan PDF"
 
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_request
@@ -63,14 +63,14 @@ msgstr "Permintaan Tanda Tangan"
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_template
 msgid "Signature Template"
-msgstr ""
+msgstr "Templat Tanda Tangan"
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_template__documents_tag_ids
 msgid "Signed Document Tags"
-msgstr ""
+msgstr "Tag Dokumen yang Ditandatangani"
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_template__folder_id
 msgid "Signed Document Workspace"
-msgstr ""
+msgstr "Ruang Kerja Dokumen Ditandatangani"

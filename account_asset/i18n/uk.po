@@ -1393,7 +1393,7 @@ msgstr "Запис у журналі"
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_move_line
 msgid "Journal Item"
-msgstr "Запис у журналі"
+msgstr "Елемент журналу"
 
 #. module: account_asset
 #. odoo-python

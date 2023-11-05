@@ -1417,7 +1417,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:planning.selection__planning_recurrency__repeat_type__x_times
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__repeat_type__x_times
 msgid "Number of Repetitions"
-msgstr ""
+msgstr "Jumlah Pengulangan"
 
 #. module: planning
 #. odoo-javascript

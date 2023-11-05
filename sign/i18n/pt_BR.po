@@ -3524,7 +3524,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 msgid "There are no signatures request."
-msgstr "Não há solicitação de assinaturas."
+msgstr "Não há solicitações de assinatura."
 
 #. module: sign
 #. odoo-python

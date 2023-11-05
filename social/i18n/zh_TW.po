@@ -1321,7 +1321,7 @@ msgstr "已排程"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__scheduled_date
 msgid "Scheduled Date"
-msgstr "預定交貨日期"
+msgstr "預定日期"
 
 #. module: social
 #. odoo-python

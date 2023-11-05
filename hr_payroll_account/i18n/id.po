@@ -28,7 +28,7 @@ msgstr "Template Bagan Akun"
 #. module: hr_payroll_account
 #: model:account.account,name:hr_payroll_account.demo_account
 msgid "Account Payslip Houserental"
-msgstr ""
+msgstr "Akun Payslip Rental Rumah"
 
 #. module: hr_payroll_account
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_salary_rule_view_form
@@ -70,7 +70,7 @@ msgstr "Sejarah Kontrak"
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_run_view_form
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_view_form
 msgid "Create Draft Entry"
-msgstr ""
+msgstr "Buat Entri Draft"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__account_credit
@@ -80,7 +80,7 @@ msgstr "Rekening kredit"
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payslip__date
 msgid "Date Account"
-msgstr ""
+msgstr "Tanggal Akun"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__account_debit
@@ -99,6 +99,8 @@ msgstr "Kontrak Karyawan"
 msgid ""
 "Incorrect journal: The journal must be in the same currency as the company"
 msgstr ""
+"Jurnal tidak tepat: jurnal harus memiliki mata uang yang sama dengan "
+"perusahaan"
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_account_journal
@@ -113,14 +115,14 @@ msgstr "Biarkan tetap kosong untuk menggunakan periode tanggal  validasi"
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__not_computed_in_net
 msgid "Not computed in net accountably"
-msgstr ""
+msgstr "Tidak dihitung di akuntabilitas net"
 
 #. module: hr_payroll_account
 #. odoo-python
 #: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
 #, python-format
 msgid "One of the contract for these payslips has no structure type."
-msgstr ""
+msgstr "Salah satu kontrak untuk payslip ini tidak memiliki tipe struktur."
 
 #. module: hr_payroll_account
 #. odoo-python
@@ -128,6 +130,8 @@ msgstr ""
 #, python-format
 msgid "One of the payroll structures has no account journal defined on it."
 msgstr ""
+"Salah satu struktur payroll tidak memiliki jurnal akun yang didefinisikan "
+"padanya."
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_payslip
@@ -137,7 +141,7 @@ msgstr "Slip Gaji"
 #. module: hr_payroll_account
 #: model:account.journal,name:hr_payroll_account.hr_payroll_account_journal
 msgid "Salaries"
-msgstr ""
+msgstr "Gaji-Gaji"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payroll_structure__journal_id
@@ -162,6 +166,8 @@ msgstr "Struktur Gaji"
 msgid ""
 "The Expense Journal \"%s\" has not properly configured the default Account!"
 msgstr ""
+"Jurnal Pengeluaran \"%s\" tidak dikonfigurasi dengan tepat pada Akun "
+"default!"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,help:hr_payroll_account.field_hr_salary_rule__not_computed_in_net
@@ -171,3 +177,7 @@ msgid ""
 "in the accounting. For example, if you want to display the value of your "
 "representation fees, you can check this field."
 msgstr ""
+"Field ini memungkinkan Anda untuk menghapus value dari peraturan ini di "
+"peraturan \"Gaji Bersih\" pada level akuntansi ini untuk menampilkan secara "
+"eksplisit nilai peraturan ini di akuntansi. Contohnya, bila Anda ingin "
+"menampilkan nilai biaya representasi, Anda harus mencetang field ini."

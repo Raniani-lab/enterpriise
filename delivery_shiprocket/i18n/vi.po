@@ -141,7 +141,7 @@ msgstr "Tên kênh"
 #: model_terms:ir.ui.view,arch_db:delivery_shiprocket.res_config_settings_view_form_sale_shiprocket
 #: model_terms:ir.ui.view,arch_db:delivery_shiprocket.res_config_settings_view_form_stock_shiprocket
 msgid "Compute shipping costs and ship with Shiprocket"
-msgstr ""
+msgstr "Tính toán phí vận chuyển và vận chuyển bằng. Shiprocket"
 
 #. module: delivery_shiprocket
 #: model:ir.model,name:delivery_shiprocket.model_res_config_settings
@@ -488,7 +488,7 @@ msgstr ""
 #. module: delivery_shiprocket
 #: model:ir.model.fields,field_description:delivery_shiprocket.field_res_config_settings__module_delivery_shiprocket
 msgid "Shiprocket Connector"
-msgstr ""
+msgstr "Kết nối Shiprocket"
 
 #. module: delivery_shiprocket
 #: model:ir.model,name:delivery_shiprocket.model_shiprocket_courier

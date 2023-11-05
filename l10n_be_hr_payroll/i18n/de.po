@@ -6101,7 +6101,7 @@ msgstr "Pdf-Dateiname"
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45_line__pdf_to_generate
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_line__pdf_to_generate
 msgid "Pdf To Generate"
-msgstr ""
+msgstr "Zu generierendes PDF"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
@@ -6354,7 +6354,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_departure_reason__reason_code
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payslip_employee_depature_notice__departure_reason_code
 msgid "Reason Code"
-msgstr ""
+msgstr "Code für Grund"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__l10n_be_holiday_pay_recovered_n

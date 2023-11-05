@@ -1637,7 +1637,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Else"
-msgstr ""
+msgstr "else（其他情況）"
 
 #. module: web_studio
 #. odoo-python
@@ -3150,7 +3150,7 @@ msgstr "記錄 ID"
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.xml:0
 #, python-format
 msgid "Redo"
-msgstr "復原"
+msgstr "取消復原"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__reference
@@ -3238,7 +3238,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Remove rule"
-msgstr ""
+msgstr "移除規則"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4187,7 +4187,7 @@ msgstr "下劃線"
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.xml:0
 #, python-format
 msgid "Undo"
-msgstr "取消"
+msgstr "復原"
 
 #. module: web_studio
 #. odoo-javascript

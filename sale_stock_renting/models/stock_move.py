@@ -62,13 +62,3 @@ class StockMove(models.Model):
                         move.sale_line_id._generate_delay_line(current_qty_returned)
                     move.sale_line_id.qty_returned += current_qty_returned
         return res
-
-    def _set_quantities_to_reservation(self):
-        """ Directly set the reserved quantities when available for return pickings of rental orders if the product is tracked. """
-        if self.env.user.has_group('sale_stock_renting.group_rental_stock_picking'):
-            rental_return_moves = self.filtered(lambda m: m.location_id == m.company_id.rental_loc_id and m.has_tracking == 'serial' and m.state in ('partially_available', 'assigned'))
-            for move_line in rental_return_moves.move_line_ids:
-                move_line.qty_done = move_line.reserved_uom_qty
-            super(StockMove, self - rental_return_moves)._set_quantities_to_reservation()
-        else:
-            super()._set_quantities_to_reservation()

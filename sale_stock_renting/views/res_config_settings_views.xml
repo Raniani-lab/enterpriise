@@ -15,7 +15,7 @@
                         </div>
                     </div>
                 </setting>
-                <setting string="Rental pickings" help="Use stock pickings for rental orders">
+                <setting string="Rental Transfers" help="Activate to use stock deliveries and receipts for rental orders">
                     <field name="group_rental_stock_picking"/>
                 </setting>
             </setting>

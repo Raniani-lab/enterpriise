@@ -17,13 +17,13 @@ class StockWarehouse(models.Model):
         result = super().get_rules_dict()
         if self.env.user.has_group('sale_stock_renting.group_rental_stock_picking'):
             for warehouse in self:
-                # result[warehouse.id].update(warehouse._get_receive_rules_dict())
                 rental_location_id = warehouse.company_id.rental_loc_id
-                result[warehouse.id].update({
-                    'one_step': result[warehouse.id]['one_step'] + [self.Routing(rental_location_id, warehouse.lot_stock_id, warehouse.in_type_id, 'push')],
-                    'two_steps': result[warehouse.id]['two_steps'] + [self.Routing(rental_location_id, warehouse.wh_input_stock_loc_id, warehouse.in_type_id, 'push')],
-                    'three_steps': result[warehouse.id]['three_steps'] + [self.Routing(rental_location_id, warehouse.wh_input_stock_loc_id, warehouse.in_type_id, 'push')],
-                })
+                if self.Routing(rental_location_id, warehouse.lot_stock_id, warehouse.in_type_id, 'push') not in result[warehouse.id].get('one_step'):
+                    result[warehouse.id].update({
+                        'one_step': result[warehouse.id]['one_step'] + [self.Routing(rental_location_id, warehouse.lot_stock_id, warehouse.in_type_id, 'push')],
+                        'two_steps': result[warehouse.id]['two_steps'] + [self.Routing(rental_location_id, warehouse.wh_input_stock_loc_id, warehouse.in_type_id, 'push')],
+                        'three_steps': result[warehouse.id]['three_steps'] + [self.Routing(rental_location_id, warehouse.wh_input_stock_loc_id, warehouse.in_type_id, 'push')],
+                    })
         return result
 
     def _get_receive_rules_dict(self):

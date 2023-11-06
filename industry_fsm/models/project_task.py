@@ -23,47 +23,6 @@ class Task(models.Model):
                 result['stage_id'] = self.stage_find(fsm_project.id, [('fold', '=', False)])
                 result['project_id'] = fsm_project.id
                 result['company_id'] = company_id
-
-        date_begin = result.get('planned_date_begin')
-        date_end = result.get('date_deadline')
-        if is_fsm_mode and (date_begin or date_end):
-            if not date_begin:
-                date_begin = date_end.replace(hour=0, minute=0, second=1)
-            if not date_end:
-                date_end = date_begin.replace(hour=23, minute=59, second=59)
-            date_diff = date_end - date_begin
-            if date_diff.total_seconds() / 3600 > 23.5:
-                # if the interval between both dates are more than 23 hours and 30 minutes
-                # then we changes those dates to fit with the working schedule of the assigned user or the current company
-                # because we assume here, the planned dates are not the ones chosen by the current user.
-                user_tz = pytz.timezone(self.env.context.get('tz') or 'UTC')
-                date_begin = pytz.utc.localize(date_begin).astimezone(user_tz)
-                date_end = pytz.utc.localize(date_end).astimezone(user_tz)
-                user_ids_list = [res[2] for res in result.get('user_ids', []) if len(res) == 3 and res[0] == Command.SET]  # user_ids = [(Command.SET, 0, <user_ids>)]
-                user_ids = user_ids_list[-1] if user_ids_list else []
-                users = self.env['res.users'].sudo().browse(user_ids)
-                user = len(users) == 1 and users
-                if user and user.employee_id:  # then the default start/end hours correspond to what is configured on the employee calendar
-                    resource_calendar = user.resource_calendar_id
-                else:  # Otherwise, the default start/end hours correspond to what is configured on the company calendar
-                    company = self.env['res.company'].sudo().browse(result.get('company_id')) if result.get(
-                        'company_id') else self.env.user.company_id
-                    resource_calendar = company.resource_calendar_id
-                if resource_calendar:
-                    resources_work_intervals = resource_calendar._work_intervals_batch(date_begin, date_end)
-                    work_intervals = [(start, stop) for start, stop, meta in resources_work_intervals[False]]
-                    if work_intervals:
-                        planned_date_begin = work_intervals[0][0]
-                        date_deadline = work_intervals[0][1]
-                        for dummy, stop in work_intervals[1:]:
-                            if stop.date() != planned_date_begin.date():  # when it is no longer the case we keep the previous stop date.
-                                break
-                            date_deadline = stop
-                        result['planned_date_begin'] = planned_date_begin.astimezone(pytz.utc).replace(tzinfo=None)
-                        result['date_deadline'] = date_deadline.astimezone(pytz.utc).replace(tzinfo=None)
-                else:
-                    result['planned_date_begin'] = date_begin.replace(hour=9, minute=0, second=1).astimezone(pytz.utc).replace(tzinfo=None)
-                    result['date_deadline'] = date_end.astimezone(pytz.utc).replace(tzinfo=None)
         return result
 
     is_fsm = fields.Boolean(related='project_id.is_fsm', search='_search_is_fsm')

@@ -60,7 +60,7 @@ class Task(models.Model):
         result = super().default_get(fields_list)
         planned_date_begin = result.get('planned_date_begin', self.env.context.get('planned_date_begin', False))
         date_deadline = result.get('date_deadline', self.env.context.get('date_deadline', False))
-        if planned_date_begin and date_deadline and not self.env.context.get('fsm_mode', False):
+        if planned_date_begin and date_deadline:
             user_id = result.get('user_id', None)
             planned_date_begin, date_deadline = self._calculate_planned_dates(planned_date_begin, date_deadline, user_id)
             result.update(planned_date_begin=planned_date_begin, date_deadline=date_deadline)

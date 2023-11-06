@@ -27,13 +27,17 @@ class StockPicking(models.Model):
                         continue
                     receipt_move = self._find_corresponding_move(move, receipts)
                     if receipt_move:
-                        receipt_move.write({'move_line_ids': [Command.create(ml_vals) for ml_vals in self._prepare_move_lines(move, receipt_move)]})
+                        receipt_move.write({
+                            'move_line_ids': [
+                                *[Command.delete(ml.id) for ml in receipt_move.move_line_ids],
+                                *[Command.create(ml_vals) for ml_vals in self._prepare_move_lines(move, receipt_move)],
+                            ]})
         return res
 
     @api.model
     def _find_corresponding_move(self, move_orig, candidate_pickings):
         for move in candidate_pickings.move_ids:
-            if move.product_id == move_orig.product_id and float_is_zero(move.quantity, precision_rounding=move.product_uom.rounding):
+            if move.product_id == move_orig.product_id and not move.picked:
                 return move
         return False
 
@@ -44,7 +48,7 @@ class StockPicking(models.Model):
             ml_vals = receipt_move._prepare_move_line_vals(quantity=0)
             if move_line.lot_id:
                 ml_vals['lot_name'] = move_line.lot_id.name
-            ml_vals['product_uom_id'] = delivery_move.product_id.uom_id.id
-            ml_vals['qty_done'] = move_line.qty_done
+            ml_vals['quantity'] = move_line.quantity
+            ml_vals['picked'] = True
             move_lines_vals.append(ml_vals)
         return move_lines_vals

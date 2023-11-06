@@ -485,10 +485,20 @@ class Article(models.Model):
         if self.env.user._is_public():
             self.is_user_favorite = False
             return
-        for article in self:
-            favorite = article.favorite_ids.filtered(lambda f: f.user_id == self.env.user)
-            article.is_user_favorite = bool(favorite)
-            article.user_favorite_sequence = favorite.sequence if favorite else -1
+        favorites = self.env['knowledge.article.favorite'].search([
+            ("article_id", "in", self.ids),
+            ("user_id", "=", self.env.user.id),
+        ])
+        not_fav_articles = self - favorites.article_id
+        fav_articles = self - not_fav_articles
+        fav_sequence_by_article = {f.article_id.id: f.sequence for f in favorites}
+        if not_fav_articles:
+            not_fav_articles.is_user_favorite = False
+            not_fav_articles.user_favorite_sequence = -1
+        if fav_articles:
+            fav_articles.is_user_favorite = True
+        for fav_article in fav_articles:
+            fav_article.user_favorite_sequence = fav_sequence_by_article[fav_article.id]
 
     def _inverse_is_user_favorite(self):
         """ Read access is sufficient for toggling its own favorite status.
@@ -1227,26 +1237,62 @@ class Article(models.Model):
             - root.name = query & Favorite count
         and returned result mimic a search_read result structure.
         """
-        search_query = search_query.casefold()
         search_domain = [
-            "&",
-                ('user_has_access', '=', True), # Admins won't see other's private articles.
-                "|", ("name", "ilike", search_query), ("root_article_id.name", "ilike", search_query)
+            ("user_has_access", "=", True), # Admins won't see other's private articles.
         ]
+        if search_query:
+            search_domain = expression.AND([search_domain, [
+                "|",
+                    ("name", "ilike", search_query),
+                    ("root_article_id.name", "ilike", search_query),
+            ]])
 
-        matching_articles = self.search(search_domain)
-        sorted_articles = matching_articles.sorted(
-            key=lambda a: (search_query in a.name.casefold(),
-                           a.is_user_favorite,
-                           -1 * a.user_favorite_sequence,
-                           a.favorite_count,
-                           a.write_date,
-                           a.id),
-            reverse=True
-        )[:limit]
-
-        return sorted_articles.read(['id', 'name', 'is_user_favorite',
-                                     'favorite_count', 'root_article_id', 'icon'])
+        articles_query = self._search(search_domain)
+        _, where_clause, params = articles_query.get_sql()
+        self.env.cr.execute(f"""
+       SELECT knowledge_article.id,
+              knowledge_article.name,
+              COALESCE(CAST(fav.id AS BOOLEAN), FALSE) AS is_user_favorite,
+              knowledge_article.favorite_count,
+              knowledge_article.root_article_id,
+              root_article.icon AS root_article_icon,
+              root_article.name AS root_article_name,
+              knowledge_article.icon
+         FROM knowledge_article
+    LEFT JOIN knowledge_article_favorite AS fav
+           ON knowledge_article.id = fav.article_id AND fav.user_id = %s
+    LEFT JOIN knowledge_article AS root_article
+           ON knowledge_article.root_article_id = root_article.id
+        WHERE {where_clause}
+     ORDER BY CASE
+                  WHEN knowledge_article.name IS NOT NULL THEN
+                      POSITION(LOWER(%s) IN LOWER(knowledge_article.name)) > 0
+                  ELSE
+                      FALSE
+              END DESC,
+              is_user_favorite DESC,
+              COALESCE(fav.sequence, -1),
+              knowledge_article.favorite_count DESC,
+              knowledge_article.write_date DESC,
+              knowledge_article.id DESC
+     {("LIMIT %d" % limit) if limit else ""}
+            """, [self.env.user.id] + params + [search_query])
+        sorted_articles = self.env.cr.dictfetchall()
+        # Create a tuple with the id and name_get for root_article_id to
+        # mimic the result of a read.
+        for sorted_article in sorted_articles:
+            # Get the display name of the root article using the same logic as
+            # in name_get.
+            sorted_article['root_article_id'] = (
+                sorted_article['root_article_id'],
+                "%s %s" % (
+                    sorted_article['root_article_icon'] or self._get_no_icon_placeholder(),
+                    sorted_article['root_article_name']
+                )
+            )
+            del sorted_article['root_article_icon']
+            del sorted_article['root_article_name']
+        return sorted_articles
 
     # ------------------------------------------------------------
     # PERMISSIONS / MEMBERS MANAGEMENT

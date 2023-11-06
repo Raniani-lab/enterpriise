@@ -3,7 +3,9 @@
 
 import json
 
+from datetime import datetime
 from lxml import html
+from unittest.mock import patch
 from urllib import parse
 
 from odoo import exceptions
@@ -741,10 +743,21 @@ class TestKnowledgeArticleBusiness(KnowledgeCommonBusinessCase):
     @users('employee')
     def test_article_sort_for_user(self):
         """ Testing the sort + custom info returned by get_user_sorted_articles """
-        self.workspace_children.write({
+        # Add workspace_children as favorite for some users to test the ordering
+        # by `favorite_count` and change their name so that they don't match the
+        # test query
+        self.workspace_children[0].write({
+            'name': 'Pg Child1',
             'favorite_ids': [
                 (0, 0, {'user_id': user.id})
                 for user in self.user_admin + self.user_employee2 + self.user_employee_manager
+            ],
+        })
+        self.workspace_children[1].write({
+            'name': 'Pg Child2',
+            'favorite_ids': [
+                (0, 0, {'user_id': user.id})
+                for user in self.user_admin + self.user_employee2
             ],
         })
 
@@ -752,44 +765,86 @@ class TestKnowledgeArticleBusiness(KnowledgeCommonBusinessCase):
         workspace_children = self.workspace_children.with_env(self.env)
         wkspace_grandchildren = self.wkspace_grandchildren.with_env(self.env)
         wkspace_grandgrandchildren = self.wkspace_grandgrandchildren.with_env(self.env)
-        (article_workspace + workspace_children[1] + wkspace_grandchildren[2]).action_toggle_favorite()
+        (wkspace_grandchildren[2] + wkspace_grandgrandchildren[1]).action_toggle_favorite()
+
+        # Artificially alter `write_date` for each article to test the ordering
+        # by that field.
+        before = datetime(2023, 10, 5, 2, 30, 30)
+        before_articles = (
+            self.article_workspace + self.workspace_children +
+            self.wkspace_grandchildren[1:3] + self.wkspace_grandgrandchildren
+        )
+        with patch.object(type(self.env.cr), 'now', return_value=before):
+            for article in before_articles:
+                article.write({
+                    'name': article.name + " time traveled"
+                })
+        # One article was written on later than the others.
+        after = datetime(2023, 10, 5, 2, 30, 31)
+        with patch.object(type(self.env.cr), 'now', return_value=after):
+            self.wkspace_grandchildren[0].write({
+                'name': self.wkspace_grandchildren[0].name + " time traveled"
+            })
 
         # ensure initial values
-        self.assertTrue(article_workspace.is_user_favorite)
-        self.assertEqual(article_workspace.favorite_count, 2)
-        self.assertEqual(article_workspace.user_favorite_sequence, 1)
+        self.assertFalse(article_workspace.is_user_favorite)
+        self.assertEqual(article_workspace.favorite_count, 1)
+        self.assertEqual(article_workspace.user_favorite_sequence, -1)
         self.assertFalse(workspace_children[0].is_user_favorite)
         self.assertEqual(workspace_children[0].favorite_count, 3)
         self.assertEqual(workspace_children[0].user_favorite_sequence, -1)
-        self.assertTrue(workspace_children[1].is_user_favorite)
-        self.assertEqual(workspace_children[1].favorite_count, 4)
-        self.assertEqual(workspace_children[1].user_favorite_sequence, 2)
+        self.assertFalse(workspace_children[1].is_user_favorite)
+        self.assertEqual(workspace_children[1].favorite_count, 2)
+        self.assertEqual(workspace_children[1].user_favorite_sequence, -1)
         self.assertTrue(wkspace_grandchildren[2].is_user_favorite)
         self.assertEqual(wkspace_grandchildren[2].favorite_count, 1)
-        self.assertEqual(wkspace_grandchildren[2].user_favorite_sequence, 3)
-        for other in wkspace_grandchildren[0:2] + wkspace_grandgrandchildren:
+        self.assertEqual(wkspace_grandchildren[2].user_favorite_sequence, 1)
+        self.assertTrue(wkspace_grandgrandchildren[1].is_user_favorite)
+        self.assertEqual(wkspace_grandgrandchildren[1].favorite_count, 1)
+        self.assertEqual(wkspace_grandgrandchildren[1].user_favorite_sequence, 2)
+        for other in wkspace_grandchildren[0:2] + wkspace_grandgrandchildren[0]:
             self.assertFalse(other.is_user_favorite)
             self.assertEqual(other.favorite_count, 0)
             self.assertEqual(other.user_favorite_sequence, -1)
+        for before_article in before_articles:
+            self.assertEqual(before_article.write_date, before)
+        self.assertEqual(wkspace_grandchildren[0].write_date, after)
 
         # search also includes descendants of articles having the term in their name
-        result = self.env['knowledge.article'].get_user_sorted_articles('laygroun', limit=4)
-        expected = self.article_workspace + self.workspace_children[1] + self.workspace_children[0] + self.wkspace_grandchildren[2]
+        # verify that the search is case insensitive
+        result = self.env['knowledge.article'].get_user_sorted_articles('playgroun', limit=4)
+        expected = self.article_workspace + self.wkspace_grandchildren[2] + self.wkspace_grandgrandchildren[1] + self.workspace_children[0]
         found_ids = [a['id'] for a in result]
         self.assertEqual(found_ids, expected.ids)
+
         # check returned result once (just to be sure)
         workspace_info = next(article_result for article_result in result if article_result['id'] == article_workspace.id)
-        self.assertTrue(workspace_info['is_user_favorite'], article_workspace.name)
+        self.assertFalse(workspace_info['is_user_favorite'], article_workspace.name)
         self.assertFalse(workspace_info['icon'])
-        self.assertEqual(workspace_info['favorite_count'], 2)
+        self.assertEqual(workspace_info['favorite_count'], 1)
         self.assertEqual(workspace_info['name'], article_workspace.name)
         self.assertEqual(workspace_info['root_article_id'], (article_workspace.id, f'📄 {article_workspace.name}'))
 
         # test with bigger limit, both favorites and unfavorites
+        # result ordering explanation:
+        # article_workspace VS wkspace_grandchildren[2]
+        # -> checks [match query] prevails over [is_user_favorite=True]
+        # wkspace_grandchildren[2] VS wkspace_grandgrandchildren[1]
+        # -> checks [favorite_sequence ASC] prevails over [id DESC]
+        # wkspace_grandgrandchildren[1] VS workspace_children[1]
+        # -> checks [is_user_favorite=True] prevails over [favorite_count DESC]
+        # workspace_children[0] VS workspace_children[1]
+        # -> checks [favorite_count DESC] prevails over [id DESC]
+        # workspace_children[1] VS wkspace_grandchildren[0]
+        # -> checks [favorite_count DESC] prevails over [write_date DESC]
+        # wkspace_grandchildren[0] VS wkspace_grandgrandchildren[0]
+        # -> checks [write_date DESC] prevails over [id DESC]
+        # wkspace_grandgrandchildren[0] VS wkspace_grandchildren[1]
+        # -> checks [id DESC] is true (proving all previous DESC or ASC assumptions)
         result = self.env['knowledge.article'].get_user_sorted_articles('laygroun', limit=10)
-        expected = self.article_workspace + self.workspace_children[1] + self.workspace_children[0] + \
-                   self.wkspace_grandchildren[2] + self.wkspace_grandgrandchildren[1] + self.wkspace_grandgrandchildren[0] + \
-                   self.wkspace_grandchildren[1] + self.wkspace_grandchildren[0]
+        expected = self.article_workspace + self.wkspace_grandchildren[2] + self.wkspace_grandgrandchildren[1] + \
+                   self.workspace_children[0] + self.workspace_children[1] + self.wkspace_grandchildren[0] + \
+                   self.wkspace_grandgrandchildren[0] + self.wkspace_grandchildren[1]
         self.assertEqual([a['id'] for a in result], expected.ids)
 
         # test corner case: search with less than favorite, sequence might not be taken into account

@@ -23,7 +23,7 @@ KnowledgeExtraCommand.template = 'KnowledgeExtraCommandTemplate';
 
 const commandSetupRegistry = registry.category("command_setup");
 commandSetupRegistry.add("?", {
-    debounceDelay: 200,
+    debounceDelay: 500,
     emptyMessage: _lt("No article found."),
     name: _lt("articles"),
     placeholder: _lt("Search for an article..."),
@@ -31,7 +31,7 @@ commandSetupRegistry.add("?", {
 
 const commandProviderRegistry = registry.category("command_provider");
 commandProviderRegistry.add("knowledge", {
-    debounceDelay: 200,
+    debounceDelay: 500,
     namespace: "?",
     async provide(env, options) {
         const articlesData = await Component.env.services.rpc({

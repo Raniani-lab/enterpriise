@@ -73,7 +73,7 @@ class AccountEdiFormat(models.Model):
                 'IMPS': [],
             }
             if tax_type.code == '05':
-                imp_2 = abs(tax_detail['base_amount_currency'] * 100 / 15)
+                imp_2 = abs(tax_detail['tax_amount_currency'] * 100 / 15)
             elif tax_type.code == '34':
                 imp_2 = sum(line.product_id.volume * line.quantity
                             for line in tax_detail['records'])  # Volume

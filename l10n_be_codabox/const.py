@@ -21,7 +21,7 @@ CODABOX_ERROR_CODES = {
     "timeout": _lt("Codabox is not responding. Please try again later."),
 }
 
-DEFAULT_IAP_ENDPOINT = "https://l10n_be_codabox.api.odoo.com/api/l10n_be_codabox/1"
+DEFAULT_IAP_ENDPOINT = "https://l10n-be-codabox.api.odoo.com/api/l10n_be_codabox/1"
 
 
 def get_error_msg(error):

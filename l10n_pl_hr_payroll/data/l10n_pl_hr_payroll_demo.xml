@@ -3,9 +3,9 @@
     <record id="res_company_pl" model="res.company">
         <field name="name">My Polish Company</field>
         <field name="currency_id" ref="base.EUR"/>
-        <field name="street">34A, Vilijos g.</field>
+        <field name="street">34A, ul. Grodzka</field>
         <field name="zip">02243</field>
-        <field name="city">Vilnius</field>
+        <field name="city">Krakow</field>
         <field name="country_id" ref="base.pl"/>
     </record>
 

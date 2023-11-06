@@ -142,11 +142,9 @@
         </t>
 
         <!-- Extra options -->
-        <t t-if="not options.get('closing_entry')">
-            <div class="row" name="pdf_options_header">
-                <t t-call="{{custom_templates.get('pdf_export_filter_extra_options_template', 'account_reports.pdf_export_filter_extra_options_template')}}"/>
-            </div>
-        </t>
+        <div class="row" name="pdf_options_header">
+            <t t-call="{{custom_templates.get('pdf_export_filter_extra_options_template', 'account_reports.pdf_export_filter_extra_options_template')}}"/>
+        </div>
     </template>
 
     <template id="pdf_export_filter_extra_options_template">

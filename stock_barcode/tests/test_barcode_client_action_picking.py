@@ -362,6 +362,51 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             self.assertEqual(receipt_picking.move_line_ids[0].location_dest_id.id, shelf1.id)
             self.assertEqual(receipt_picking.move_line_ids[1].location_dest_id.id, shelf1.id)
 
+    def test_receipt_reserved_2_partial_put_in_pack(self):
+        """ For a planned receipt, check put in pack a uncompleted move line will split it. """
+        self.clean_access_rights()
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+        # Create a receipt and confirm it.
+        receipt_form = Form(self.env['stock.picking'])
+        receipt_form.picking_type_id = self.picking_type_in
+        with receipt_form.move_ids_without_package.new() as move:
+            move.product_id = self.product1
+            move.product_uom_qty = 3
+        with receipt_form.move_ids_without_package.new() as move:
+            move.product_id = self.product2
+            move.product_uom_qty = 3
+        receipt_picking = receipt_form.save()
+        receipt_picking.action_confirm()
+        receipt_picking.action_assign()
+        receipt_picking.name = "receipt_test"
+
+        # Set packages' sequence to 1000 to find it easily during the tour.
+        package_sequence = self.env['ir.sequence'].search([('code', '=', 'stock.quant.package')], limit=1)
+        package_sequence.write({'number_next_actual': 1000})
+
+        # Opens the barcode main menu to be able to open the pickings by scanning their name.
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+        self.start_tour(url, "test_receipt_reserved_2_partial_put_in_pack", login="admin", timeout=180)
+
+        package1 = self.env['stock.quant.package'].search([('name', '=', 'PACK0001000')])
+        package2 = self.env['stock.quant.package'].search([('name', '=', 'PACK0001001')])
+        self.assertRecordValues(receipt_picking.move_ids, [
+            {'product_id': self.product1.id, 'product_uom_qty': 3, 'quantity': 3, 'picked': True},
+            {'product_id': self.product2.id, 'product_uom_qty': 1, 'quantity': 1, 'picked': True},
+        ])
+        self.assertRecordValues(receipt_picking.move_line_ids.sorted(), [
+            {'product_id': self.product2.id, 'quantity': 1, 'picked': True, 'result_package_id': package2.id},
+            {'product_id': self.product1.id, 'quantity': 1, 'picked': True, 'result_package_id': package2.id},
+            {'product_id': self.product1.id, 'quantity': 2, 'picked': True, 'result_package_id': package1.id},
+        ])
+        # Since the receipt wasn't complete, a backorder should be created.
+        receipt_backorder = receipt_picking.backorder_ids
+        self.assertRecordValues(receipt_backorder.move_ids, [
+            {'product_id': self.product2.id, 'product_uom_qty': 2, 'quantity': 2, 'picked': False},
+        ])
+
     def test_receipt_product_not_consecutively(self):
         """ Check that there is no new line created when scanning the same product several times but not consecutively."""
         self.clean_access_rights()

@@ -521,6 +521,105 @@ registry.category("web_tour.tours").add('test_receipt_reserved_1', {test: true, 
     ...stepUtils.discardBarcodeForm(),
 ]});
 
+registry.category("web_tour.tours").add('test_receipt_reserved_2_partial_put_in_pack', {test: true, steps: () => [
+    // Scan the picking's name to open it.
+    { trigger: '.o_stock_barcode_main_menu', run: 'scan receipt_test' },
+    {
+        trigger: '.o_barcode_line',
+        run: function() {
+            helper.assertLinesCount(2);
+            helper.assertLineProduct(0, "product1");
+            helper.assertLineQty(0, "0 / 3");
+            helper.assertLineProduct(1, "product2");
+            helper.assertLineQty(1, "0 / 3");
+        },
+    },
+
+    // Scan 2x product1 then put in pack.
+    { trigger: '.o_barcode_client_action', run: 'scan product1'},
+    { trigger: '.o_barcode_client_action', run: 'scan product1'},
+    {
+        trigger: '.o_barcode_line.o_selected .qty-done:contains("2")',
+        run: function() {
+            helper.assertLinesCount(2);
+            helper.assertLineProduct(0, "product1");
+            helper.assertLineQty(0, "2 / 3");
+            helper.assertLineProduct(1, "product2");
+            helper.assertLineQty(1, "0 / 3");
+        },
+    },
+    { trigger: '.o_barcode_client_action', run: 'scan O-BTN.pack'},
+    {
+        trigger: '.o_barcode_line:contains("PACK0001000")',
+        run: function() {
+            const lines = helper.getLines();
+            helper.assert(lines.length, 3);
+
+            helper.assertLineProduct(lines[0], "product1");
+            helper.assertLineQty(lines[0], "0 / 1");
+            helper.assert(lines[0].querySelector('.result-package'), null);
+
+            helper.assertLineProduct(lines[1], "product2");
+            helper.assertLineQty(lines[1], "0 / 3");
+            helper.assert(lines[1].querySelector('.result-package'), null);
+
+            helper.assertLineProduct(lines[2], "product1");
+            helper.assertLineQty(lines[2], "2 / 2");
+            helper.assert(lines[2].querySelector('.result-package').innerText, "PACK0001000");
+        },
+    },
+
+    // Scan product1 and product2 then put in pack.
+    { trigger: '.o_barcode_client_action', run: 'scan product1'},
+    { trigger: '.o_barcode_line.o_selected.o_line_completed', run: 'scan product2'},
+    {
+        trigger: '.o_barcode_line.o_selected .qty-done:contains("1")',
+        run: function() {
+            const lines = helper.getLines();
+            helper.assert(lines.length, 3);
+
+            helper.assertLineProduct(lines[0], "product1");
+            helper.assertLineQty(lines[0], "1 / 1");
+            helper.assert(lines[0].querySelector('.result-package'), null);
+
+            helper.assertLineProduct(lines[1], "product2");
+            helper.assertLineQty(lines[1], "1 / 3");
+            helper.assert(lines[1].querySelector('.result-package'), null);
+
+            helper.assertLineProduct(lines[2], "product1");
+            helper.assertLineQty(lines[2], "2 / 2");
+            helper.assert(lines[2].querySelector('.result-package').innerText, "PACK0001000");
+        },
+    },
+    { trigger: '.o_put_in_pack' },
+    {
+        trigger: '.o_barcode_line:contains("PACK0001001")',
+        run: function() {
+            const lines = helper.getLines();
+            helper.assert(lines.length, 4);
+
+            helper.assertLineProduct(lines[0], "product2");
+            helper.assertLineQty(lines[0], "0 / 2");
+            helper.assert(lines[0].querySelector('.result-package'), null);
+
+            helper.assertLineProduct(lines[1], "product1");
+            helper.assertLineQty(lines[1], "2 / 2");
+            helper.assert(lines[1].querySelector('.result-package').innerText, "PACK0001000");
+
+            helper.assertLineProduct(lines[2], "product1");
+            helper.assertLineQty(lines[2], "1 / 1");
+            helper.assert(lines[2].querySelector('.result-package').innerText, "PACK0001001");
+
+            helper.assertLineProduct(lines[3], "product2");
+            helper.assertLineQty(lines[3], "1 / 1");
+            helper.assert(lines[3].querySelector('.result-package').innerText, "PACK0001001");
+        },
+    },
+    // Close the receipt.
+    { trigger: '.btn.o_validate_page' },
+    { trigger: '.o_notification.border-success', isCheck: true },
+]});
+
 registry.category("web_tour.tours").add('test_receipt_product_not_consecutively', {test: true, steps: () => [
     // Scan two products (product1 - product2 - product1)
     { trigger: '.o_barcode_client_action', run: 'scan product1' },

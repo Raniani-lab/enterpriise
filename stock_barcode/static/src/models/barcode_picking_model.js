@@ -1383,6 +1383,19 @@ export default class BarcodePickingModel extends BarcodeModel {
                 { type: 'danger'}
             );
         }
+        // Before the put in pack, create a new empty move line with the remaining
+        // quantity for each uncompleted move line who will be packaged.
+        for (const line of this.pageLines) {
+            const remainingQty = line.reserved_uom_qty - line.qty_done;
+            if (line.result_package_id || !line.reserved_uom_qty || !line.qty_done || !remainingQty) {
+                continue; // Line is already in a package or no quantity to process.
+            }
+            // Decrease the move line's quantity and create a new one for the remaining quantity.
+            line.reserved_uom_qty = line.qty_done;
+            const newLine = await this._createNewLine({ copyOf: line, fieldsParams: {} });
+            newLine.qty_done = 0;
+            newLine.reserved_uom_qty = remainingQty;
+        }
         await this.save();
         const result = await this.orm.call(
             this.resModel,

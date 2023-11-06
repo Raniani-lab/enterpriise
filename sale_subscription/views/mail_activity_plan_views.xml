@@ -15,7 +15,7 @@
     </record>
 
     <menuitem id="mail_activity_plan_menu_config_subscription"
-        name="Activity Plan"
+        name="Activity Plans"
         action="mail_activity_plan_action_subscription"
         parent="sale_subscription.menu_sale_subscription_config"
         sequence="110"

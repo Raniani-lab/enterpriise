@@ -999,7 +999,7 @@
             groups="industry_fsm.group_fsm_manager"/>
 
         <menuitem id="mail_activity_plan_menu_config_task"
-            name="Activity Plan"
+            name="Activity Plans"
             sequence="50"
             action="project.mail_activity_plan_action_config_task_plan"
             groups="industry_fsm.group_fsm_manager"/>

@@ -164,7 +164,8 @@ class PosConfig(models.Model):
         if not self.iface_print_skip_screen:
             raise ValidationError(_("Skip Preview Screen must be activated"))
 
-    def _get_special_products_ids(self):
-        res = super()._get_special_products_ids()
-        res += [self.env.ref('pos_blackbox_be.product_product_work_in').id, self.env.ref('pos_blackbox_be.product_product_work_out').id]
-        return res
+    def _get_special_products(self):
+        empty_product = self.env['product.product']
+        work_in_product = self.env.ref('pos_blackbox_be.product_product_work_in', raise_if_not_found=False) or empty_product
+        work_out_product = self.env.ref('pos_blackbox_be.product_product_work_out', raise_if_not_found=False) or empty_product
+        return super()._get_special_products() | work_in_product | work_out_product

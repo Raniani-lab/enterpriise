@@ -1394,6 +1394,7 @@ class SaleOrder(models.Model):
 
         lines_to_reset_qty = self.env['sale.order.line']
         account_moves = self.env['account.move']
+        move_to_send_ids = []
         # Set quantity to invoice before the invoice creation. If something goes wrong, the line will appear as "to invoice"
         # It prevents the use of _compute method and compare the today date and the next_invoice_date in the compute which would be bad for perfs
         all_invoiceable_lines._reset_subscription_qty_to_invoice()
@@ -1458,14 +1459,18 @@ class SaleOrder(models.Model):
                     continue
                 self._subscription_commit_cursor(auto_commit)
                 # Handle automatic payment or invoice posting
-                account_moves |= subscription.with_context(recurring_automatic=True)._handle_automatic_invoices(invoice, auto_commit) or self.env['account.move']
+
+                existing_invoices = subscription.with_context(recurring_automatic=True)._handle_automatic_invoices(invoice, auto_commit) or self.env['account.move']
+                account_moves |= existing_invoices
                 subscription.with_context(mail_notrack=True).payment_exception = False
+                if not subscription.mapped('payment_token_id'): # _get_auto_invoice_grouping_keys groups by token too
+                    move_to_send_ids += existing_invoices.ids
             except Exception:
                 name_list = [f"{sub.name} {sub.client_order_ref}" for sub in subscription]
                 _logger.exception("Error during renewal of contract %s", "; ".join(name_list))
                 self._subscription_rollback_cursor(auto_commit)
         self._subscription_commit_cursor(auto_commit)
-        self._process_invoices_to_send(account_moves)
+        self._process_invoices_to_send(self.env['account.move'].browse(move_to_send_ids))
         # There is still some subscriptions to process. Then, make sure the CRON will be triggered again asap.
         if need_cron_trigger:
             self._subscription_launch_cron_parallel(batch_size)

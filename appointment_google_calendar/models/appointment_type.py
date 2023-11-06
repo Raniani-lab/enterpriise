@@ -22,4 +22,4 @@ class AppointmentType(models.Model):
             if users_not_synchronized:
                 appointment_type.users_wo_google_calendar_msg = _(
                     '%(user_names)s did not synchronize their Google Calendar account yet, Google Meeting links won\'t be added to their meetings.',
-                    user_names=', '.join(Markup('<b>%s</b>') % user.name for user in users_not_synchronized))
+                    user_names=Markup(', ').join(Markup('<b>%s</b>') % user.name for user in users_not_synchronized))

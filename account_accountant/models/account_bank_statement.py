@@ -178,10 +178,10 @@ class AccountBankStatementLine(models.Model):
                             "This bank transaction has been automatically validated using the reconciliation model '%s'.",
                             ', '.join(st_line.move_id.line_ids.reconcile_model_id.mapped('name')),
                         ))
+                        nb_auto_reconciled_lines += 1
                 except UserError:
                     continue
 
-                nb_auto_reconciled_lines += 1
         st_lines.write({'cron_last_check': start_time})
 
         # The configuration seems effective since some lines has been automatically reconciled right now and there is

@@ -391,7 +391,6 @@ class TestDeliverySendCloud(TransactionCase):
             picking = sale_order.picking_ids[0]
             # Assign Qty Done
             picking.action_assign()
-            picking.action_set_quantities_to_reservation()
             for move_line in picking.move_line_ids:
                 move_line.quantity = move_line.quantity / 2.0
             picking.move_ids.picked = True

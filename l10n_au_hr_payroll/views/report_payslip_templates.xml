@@ -27,6 +27,7 @@
                                 t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
                         </span><br/>
                         <span>
+                            <strong>Hourly Rate: </strong>
                             <t t-set="attendance_hours" t-value="o._get_worked_days_line_number_of_hours('WORK100')"/>
                             <t t-esc="o._get_worked_days_line_amount('WORK100') / attendance_hours if attendance_hours else 0"
                                 t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>

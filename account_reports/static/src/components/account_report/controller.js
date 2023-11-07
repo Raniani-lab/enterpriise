@@ -22,7 +22,7 @@ export class AccountReportController {
         this.lastOpenedSectionByReport = {};
         this.actionReportId = this.action.context.report_id;
 
-        const mainReportOptions = await this.loadReportOptions(this.actionReportId);
+        const mainReportOptions = await this.loadReportOptions(this.actionReportId, false, this.action.params?.ignore_session);
         const cacheKey = this.getCacheKey(mainReportOptions['sections_source_id'], mainReportOptions['report_id']);
 
         // We need the options to be set and saved in order for the loading to work properly
@@ -128,8 +128,8 @@ export class AccountReportController {
         return cacheKey;
     }
 
-    async loadReportOptions(reportId, preloading=false) {
-        const loadOptions = this.hasSessionOptions() ? this.sessionOptions() : (this.action.params?.options || {});
+    async loadReportOptions(reportId, preloading=false, ignore_session=false) {
+        const loadOptions = (ignore_session || !this.hasSessionOptions()) ? (this.action.params?.options || {}) : this.sessionOptions();
         const cacheKey = this.getCacheKey(loadOptions['sections_source_id'] || reportId, reportId);
 
         if (!this.reportOptionsMap[cacheKey]) {
@@ -349,17 +349,12 @@ export class AccountReportController {
         return `account.report:${ this.actionReportId }:${ session.user_companies.current_company }`;
     }
 
-    useSessionOptions(type) {
-        return !Boolean(this.action.params?.ignore_session);
-    }
-
     hasSessionOptions() {
-        return this.useSessionOptions() && Boolean(browser.sessionStorage.getItem(this.sessionOptionsID()));
+        return Boolean(browser.sessionStorage.getItem(this.sessionOptionsID()))
     }
 
     saveSessionOptions(options) {
-        if (this.useSessionOptions())
-            browser.sessionStorage.setItem(this.sessionOptionsID(), JSON.stringify(options));
+        browser.sessionStorage.setItem(this.sessionOptionsID(), JSON.stringify(options));
     }
 
     sessionOptions() {

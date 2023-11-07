@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="delivery_sendcloud.functionalities" owl="1">
+    <t t-name="delivery_sendcloud.functionalities">
         <div class="o_inner_group grid col-lg-6" style="grid-column: span 2;width: 100%;">
             <t t-foreach="filterableFunc" t-as="func" t-key="func">
                 <div class="o_wrap_field d-flex d-sm-contents flex-column mb-3 mb-sm-0">

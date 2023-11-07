@@ -46,7 +46,7 @@
         </xpath>
     </t>
 
-    <t t-name="project_enterprise.TaskGanttRenderer.Pill" t-inherit="web_gantt.GanttRenderer.Pill" owl="1">
+    <t t-name="project_enterprise.TaskGanttRenderer.Pill" t-inherit="web_gantt.GanttRenderer.Pill">
         <xpath expr="//div[hasclass('o_gantt_lock')]" position="before">
             <div t-if="!renderConnectors" class="o_gantt_forbidden fa fa-ban ms-auto me-2" />
         </xpath>

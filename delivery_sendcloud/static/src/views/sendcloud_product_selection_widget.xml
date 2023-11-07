@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="delivery_sendcloud.SendcloudProductWidget" owl="1">
+    <t t-name="delivery_sendcloud.SendcloudProductWidget">
     <div class="d-flex flex-column gap-1">
         <div class="row">
             <Dropdown t-if="products" class="'btn-group col-12'" togglerClass="'btn btn-primary'" showCaret="true">

@@ -14,7 +14,7 @@ odoo.define("documents_spreadsheet.open_pivot_sheet_tour", function (require) {
         tour._consume_tour(tour.running_tour, errorMessage);
     }
 
-    const SHEETNAME = "Partner Spreadsheet Test";
+    const SHEETNAME = "Res Partner Test Spreadsheet";
     tour.register(
         "spreadsheet_open_pivot_sheet",
         {
@@ -24,6 +24,11 @@ odoo.define("documents_spreadsheet.open_pivot_sheet_tour", function (require) {
             {
                 trigger: '.o_app[data-menu-xmlid="documents.menu_root"]',
                 content: "Open document app",
+                run: "click",
+            },
+            {
+                trigger: 'li[title="Test folder"] header',
+                content: "Open the test folder",
                 run: "click",
             },
             {
@@ -61,7 +66,7 @@ odoo.define("documents_spreadsheet.open_pivot_sheet_tour", function (require) {
                     assert(
                         Boolean(
                             pivot.querySelector(
-                                'div.o_field_many2many_tags span.badge[title="Azure Interior"]'
+                                'div.o_field_many2many_tags span.badge[title="AdminDude"]'
                             )
                         ),
                         true,
@@ -75,7 +80,7 @@ odoo.define("documents_spreadsheet.open_pivot_sheet_tour", function (require) {
                 content: "Check filter values",
                 run: function () {
                     const defaultFilterValue = document.querySelectorAll(
-                        'div.o_field_many2many_tags span.badge[title="Azure Interior"]'
+                        'div.o_field_many2many_tags span.badge[title="AdminDude"]'
                     );
                     assert(
                         defaultFilterValue.length,
@@ -84,14 +89,14 @@ odoo.define("documents_spreadsheet.open_pivot_sheet_tour", function (require) {
                     );
                     assert(
                         document.querySelector(".o_side_panel_related_model input").value,
-                        "Contact",
+                        "User",
                         "Wrong model selected"
                     );
 
                     const fieldsValue = document.querySelector(
                         "div.o_field_selector_value span.o_field_selector_chain_part"
                     );
-                    assert(fieldsValue.textContent.trim(), "Related Company");
+                    assert(fieldsValue.textContent.trim(), "Users");
                 },
             },
             {

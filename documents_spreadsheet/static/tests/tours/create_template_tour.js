@@ -2,7 +2,7 @@
 
 import tour from "web_tour.tour";
 
-const SHEET_NAME = "Partner Spreadsheet Test";
+const SHEET_NAME = "Res Partner Test Spreadsheet";
 const TEMPLATE_NAME = `${SHEET_NAME} - Template`;
 
 tour.register(
@@ -13,6 +13,11 @@ tour.register(
     },
     [
         ...tour.stepUtils.goToAppSteps("documents.menu_root", "Open Document app"),
+        {
+            trigger: 'li[title="Test folder"] header',
+            content: "Open the test folder",
+            run: "click",
+        },
         {
             trigger: `div[title="${SHEET_NAME}"]`,
             content: "Select Test Sheet",

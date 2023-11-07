@@ -144,7 +144,7 @@ class AccountMove(models.Model):
 
                     self.create(self._prepare_move_for_asset_depreciation({
                         'asset_id': move.asset_id,
-                        'amount': move.depreciation_value,
+                        'amount': move.depreciation_value if move.asset_id.asset_type != 'sale' else -move.depreciation_value,
                         'depreciation_beginning_date': last_date + (relativedelta(months=1) if method_period == "1" else relativedelta(years=1)),
                         'date': last_date + (relativedelta(months=1) if method_period == "1" else relativedelta(years=1)),
                         'asset_number_days': 0

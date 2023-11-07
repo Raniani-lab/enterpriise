@@ -1247,6 +1247,29 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.assertEqual(max(self.truck.depreciation_move_ids, key=lambda m: m.date).asset_remaining_value, 0)
         self.assertEqual(max(self.truck.depreciation_move_ids, key=lambda m: m.date).asset_depreciated_value, 7500)
 
+    def test_closed_sale_asset_reverse_depreciation(self):
+        sale_asset = self.env['account.asset'].create({
+            'account_asset_id': self.company_data['default_account_assets'].id,
+            'account_depreciation_id': self.company_data['default_account_assets'].id,
+            'account_depreciation_expense_id': self.company_data['default_account_expense'].id,
+            'journal_id': self.company_data['default_journal_misc'].id,
+            'asset_type': 'sale',
+            'name': 'Boeing 747',
+            'acquisition_date': fields.Date.today() - relativedelta(months=6),
+            'original_value': 5000,
+            'method_number': 5,
+            'method_period': '1',
+            'method': 'linear',
+        })
+        sale_asset.validate()
+        self.assertEqual(sale_asset.state, 'close')
+
+        sale_asset.depreciation_move_ids[1]._reverse_moves()
+
+        last_depreciation_move = max(sale_asset.depreciation_move_ids, key=lambda m: m.date)
+        self.assertEqual(last_depreciation_move.asset_remaining_value, 0)
+        self.assertEqual(last_depreciation_move.asset_depreciated_value, 5000)
+
     def test_credit_note_out_refund(self):
         """
         Test the behaviour of the asset creation when a credit note is created.

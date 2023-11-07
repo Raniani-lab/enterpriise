@@ -2,6 +2,7 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
+from odoo.tools.sql import column_exists, create_column
 
 
 class ResPartner(models.Model):
@@ -23,6 +24,13 @@ class ResPartner(models.Model):
         "If this identifier is not set, the database id of the partner will be added to a multiple of ten starting by the number 1."
         "The account code's length can be specified in the company settings."
     )
+
+    def _auto_init(self):
+        cr = self.env.cr
+        if not column_exists(cr, "res_partner", "l10n_de_datev_identifier_customer") and column_exists(cr, "res_partner", "l10n_de_datev_identifier"):
+            create_column(cr, "res_partner", "l10n_de_datev_identifier_customer", "int4")
+            cr.execute("UPDATE res_partner SET l10n_de_datev_identifier_customer = l10n_de_datev_identifier")
+        return super()._auto_init()
 
     @api.constrains('l10n_de_datev_identifier_customer')
     def _check_datev_identifier_customer(self):

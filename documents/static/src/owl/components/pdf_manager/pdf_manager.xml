@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="documents.component.PdfManager">
-        <div role="dialog" class="modal d-block o_technical_modal o_dialog_split_tools" tabindex="-1">
+        <div role="dialog" class="modal d-block o_technical_modal o_dialog_split_tools position-fixed" tabindex="-1">
             <div class='o_documents_pdf_manager' t-ref="root" t-att-class="{'pe-none': state.isSelecting}">
                 <div class="o_documents_pdf_manager_top_bar">
                     <input type="file" t-ref="addFileInput" class="o_input_file o_hidden" t-on-change.stop="onFileInputChange"/>

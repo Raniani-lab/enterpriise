@@ -1870,13 +1870,13 @@ msgid ""
 "1. Linked Digiflow as OSE.\n"
 "2. Authorize Digiflow as PSE.\n"
 "Reference: \n"
-"https://www.odoo.com/documentation/master/applications/finance/accounting/fiscal_localizations/localizations/peru.html#what-do-you-need-to-do"
+"https://www.odoo.com/documentation/17.0/applications/finance/accounting/fiscal_localizations/localizations/peru.html#what-do-you-need-to-do"
 msgstr ""
 "Su RUC no está vinculado a Digiflow como OSE, por favor asegúrese de haber seguido este proceso en el portal de la SUNAT:\n"
 "1. Vincular Digiflow como OSE.\n"
 "2. Autorizar Digiflow como PSE.\n"
 "Referencia: \n"
-"https://www.odoo.com/documentation/master/applications/finance/accounting/fiscal_localizations/localizations/peru.html#what-do-you-need-to-do"
+"https://www.odoo.com/documentation/17.0/applications/finance/accounting/fiscal_localizations/localizations/peru.html#what-do-you-need-to-do"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__account_move__l10n_pe_edi_operation_type__0101

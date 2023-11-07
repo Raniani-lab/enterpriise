@@ -1729,7 +1729,7 @@ msgid ""
 "1. Linked Digiflow as OSE.\n"
 "2. Authorize Digiflow as PSE.\n"
 "Reference: \n"
-"https://www.odoo.com/documentation/master/applications/finance/accounting/fiscal_localizations/localizations/peru.html#what-do-you-need-to-do"
+"https://www.odoo.com/documentation/17.0/applications/finance/accounting/fiscal_localizations/localizations/peru.html#what-do-you-need-to-do"
 msgstr ""
 
 #. module: l10n_pe_edi

@@ -19,7 +19,7 @@
                             If you connect your scales through the IoT App, the
                             weight of the package will be set automatically when
                             you do a "Put in Pack" operation.
-                            <a href="https://www.odoo.com/documentation/master/applications/productivity/iot/devices/scale.html"
+                            <a href="https://www.odoo.com/documentation/17.0/applications/productivity/iot/devices/scale.html"
                                 target="_blank" class="fa fa-arrow-right">
                                 How to connect scales?
                             </a>

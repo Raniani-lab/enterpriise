@@ -235,7 +235,7 @@
                             </div>
                         </setting>
                     </div>
-                    <h2>After-Sales <a href="https://www.odoo.com/documentation/master/applications/services/helpdesk/advanced/after_sales.html" title="Documentation" class="o_doc_link" target="_blank"></a></h2>
+                    <h2>After-Sales <a href="https://www.odoo.com/documentation/17.0/applications/services/helpdesk/advanced/after_sales.html" title="Documentation" class="o_doc_link" target="_blank"></a></h2>
                     <div class="row mt32 o_settings_container" id="after-sales">
                         <setting help="Issue credits notes">
                             <field name="use_credit_notes"/>

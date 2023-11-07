@@ -150,7 +150,7 @@ class AccountEdiFormat(models.Model):
                        "1. Linked Digiflow as OSE.\n"
                        "2. Authorize Digiflow as PSE.\n"
                        "Reference: \n"
-                       "https://www.odoo.com/documentation/master/applications/finance/accounting/fiscal_localizations/localizations/peru.html#what-do-you-need-to-do"),
+                       "https://www.odoo.com/documentation/17.0/applications/finance/accounting/fiscal_localizations/localizations/peru.html#what-do-you-need-to-do"),
             '98': _lt("The cancellation request has not yet finished processing by SUNAT. Please retry in a few minutes.")
         }
 

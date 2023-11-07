@@ -24,7 +24,7 @@
                         </button>
                     </div>
                     <div class="mt16" invisible="taxcloud_api_id != '' and taxcloud_api_key != ''">
-                        <a href="https://www.odoo.com/documentation/master/applications/finance/accounting/taxation/taxes/taxcloud.html" target="_new">
+                        <a href="https://www.odoo.com/documentation/17.0/applications/finance/accounting/taxation/taxes/taxcloud.html" target="_new">
                             <i class="oi oi-fw oi-arrow-right"/>How to Get Credentials</a>
                     </div>
                 </div>

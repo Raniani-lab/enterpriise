@@ -2073,6 +2073,55 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             {'quantity': 1, 'picked': True, 'location_id': self.shelf1.id},
         ])
 
+    def test_gs1_delivery_ambiguous_serial_number(self):
+        """
+        Have a delivery for a product tracked by SN then scan a SN who exists for
+        two different products and check the move line has the right SN.
+        """
+        self.clean_access_rights()
+        self.env.company.nomenclature_id = self.env.ref('barcodes_gs1_nomenclature.default_gs1_nomenclature')
+        product_a, product_b = self.env['product.product'].create([{
+            'name': f'product{i}',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': barcode,
+            'tracking': 'serial',
+        } for i, barcode in enumerate(['05711544001952', '05711544001969'])])
+        # Creates 2 serial numbers (same name different product).
+        lot_b, lot_a = self.env['stock.lot'].create([
+            {'name': '304', 'product_id': product.id} for product in [product_b, product_a]
+        ])
+        # For the purpose of the test, lot for product_b has to be created first.
+        for [product, lot] in [[product_b, lot_b], [product_a, lot_a]]:
+            self.env['stock.quant'].with_context(inventory_mode=True).create({
+                'product_id': product.id,
+                'inventory_quantity': 1,
+                'lot_id': lot.id,
+                'location_id': self.stock_location.id,
+            }).action_apply_inventory()
+        # Creates and confirms the delivery.
+        delivery_picking = self.env['stock.picking'].create({
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'picking_type_id': self.picking_type_out.id,
+        })
+        self.env['stock.move'].create({
+            'name': product_a.name,
+            'product_id': product_a.id,
+            'product_uom_qty': 1,
+            'product_uom': product_a.uom_id.id,
+            'picking_id': delivery_picking.id,
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+        })
+        delivery_picking.action_confirm()
+        delivery_picking.action_assign()
+        # Run the tour.
+        url = self._get_client_action_url(delivery_picking.id)
+        self.start_tour(url, 'test_gs1_delivery_ambiguous_serial_number', login='admin', timeout=180)
+        self.assertEqual(delivery_picking.move_line_ids.lot_id, lot_a)
+        self.assertEqual(delivery_picking.move_line_ids.product_id, product_a)
+
     def test_gs1_reserved_delivery(self):
         """ Process a delivery by scanning multiple quantity multiple times.
         """

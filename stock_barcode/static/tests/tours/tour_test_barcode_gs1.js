@@ -637,6 +637,27 @@ registry.category("web_tour.tours").add('test_gs1_receipt_conflicting_barcodes_1
     ...stepUtils.validateBarcodeOperation(".o_validate_page.btn-success"),
 ]});
 
+registry.category("web_tour.tours").add('test_gs1_delivery_ambiguous_serial_number', {test:true, steps: () => [
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-00-00',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan 01057115440019521524071010304',
+    },
+    {
+        trigger: '.o_barcode_line .qty-done:contains(1)',
+        run: function () {
+            helper.assertLinesCount(1);
+            const $line = helper.getLine({barcode: '05711544001952'});
+            helper.assertLineIsHighlighted($line, true);
+            helper.assertLineQty($line, "1 / 1");
+        }
+    },
+    // Validates the transfer.
+    ...stepUtils.validateBarcodeOperation(".o_validate_page.btn-success"),
+]});
 registry.category("web_tour.tours").add('test_gs1_receipt_conflicting_barcodes_2', {test: true, steps: () => [
     {
         trigger: '.o_barcode_client_action',

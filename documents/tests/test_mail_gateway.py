@@ -55,8 +55,7 @@ class TestMailGateway(MailCommon):
 
     def test_set_contact_non_existing_partner(self):
         for document in self.send_test_mail_with_attachment(self.email_with_no_partner):
-            self.assertTrue(document.partner_id)
-            self.assertEqual(document.partner_id.email, self.email_with_no_partner)
+            self.assertFalse(document.partner_id)
 
     def test_set_contact_existing_partner(self):
         for document in self.send_test_mail_with_attachment(self.pre_existing_partner.email):

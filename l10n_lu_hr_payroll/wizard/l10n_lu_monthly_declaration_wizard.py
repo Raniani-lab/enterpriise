@@ -119,8 +119,7 @@ class L10nLuMonthlyDeclarationWizard(models.TransientModel):
 
         line_values = payslips._get_line_values(self._get_declaration_codes())
         declaration_values = self._get_monthly_declaration_values(payslips, line_values)
-        fiduciary_matr_number = company.account_representative_id.l10n_lu_agent_matr_number or company.l10n_lu_official_social_security
-        company_values = [f"0;{fiduciary_matr_number};{company.l10n_lu_seculine}"]
+        company_values = [f"0;{company.l10n_lu_official_social_security};{company.l10n_lu_seculine}"]
 
         declaration = "\r\n".join(company_values + [
             ";".join([

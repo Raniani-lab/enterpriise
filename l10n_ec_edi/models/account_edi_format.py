@@ -194,7 +194,7 @@ class AccountEdiFormat(models.Model):
                     ),
                 )
             else:
-                _, auth_num, auth_date, errors, warnings = self._l10n_ec_get_authorization_status(move)
+                _auth_state, auth_num, auth_date, errors, warnings = self._l10n_ec_get_authorization_status(move)
                 if auth_num:
                     errors.append(
                         _("You cannot cancel a document that is still authorized (%s, %s), check the SRI portal",

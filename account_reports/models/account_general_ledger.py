@@ -123,7 +123,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
 
         # Call the generic tax report
         generic_tax_report = self.env.ref('account.generic_tax_report')
-        tax_report_options = generic_tax_report.get_options({**options, 'report_id': generic_tax_report.id, 'forced_domain': [('tax_line_id.type_tax_use', '=', tax_type)]})
+        tax_report_options = generic_tax_report.get_options({**options, 'selected_variant_id': generic_tax_report.id, 'forced_domain': [('tax_line_id.type_tax_use', '=', tax_type)]})
         tax_report_lines = generic_tax_report._get_lines(tax_report_options)
         tax_type_parent_line_id = generic_tax_report._get_generic_line_id(None, None, markup=tax_type)
 

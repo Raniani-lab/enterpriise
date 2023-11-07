@@ -339,7 +339,7 @@ export class KnowledgeSidebar extends Component {
         article.category = category;
         if (article.id === this.props.record.id) {
             // Reload current record to propagate changes
-            if (this.props.record.isDirty) {
+            if (await this.props.record.isDirty()) {
                 await this.props.record.save();
             } else {
                 await this.props.record.model.load();
@@ -565,7 +565,7 @@ export class KnowledgeSidebar extends Component {
      */
     async moveArticle(article, currentPosition, newPosition) {
         const confirmMove = async (article, position) => {
-            if (this.props.record.resId === article.id && this.props.record.isDirty) {
+            if (this.props.record.resId === article.id && await this.props.record.isDirty()) {
                 await this.props.record.save();
             }
             try {

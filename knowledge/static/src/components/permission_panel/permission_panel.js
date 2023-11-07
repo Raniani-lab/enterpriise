@@ -304,7 +304,7 @@ export class PermissionPanel extends Component {
                 body: result.error,
             });
         } else if (reloadAll && reloadArticleId) {  // Lose write access
-            if (this.props.record.isDirty) {
+            if (await this.props.record.isDirty()) {
                 await this.props.record.save({ reload: false });
             }
             await this.env.model.root.load();
@@ -312,7 +312,7 @@ export class PermissionPanel extends Component {
         } else if (reloadAll) {  // Lose access -> Hard Reload
             window.location.replace('/knowledge/home');
         } else if (result.new_category) {
-            if (this.props.record.isDirty) {
+            if (await this.props.record.isDirty()) {
                 await this.props.record.save();
             }
             await this.env.model.root.load();

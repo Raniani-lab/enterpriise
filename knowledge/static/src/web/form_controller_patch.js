@@ -177,7 +177,7 @@ const FormControllerPatch = {
         }
     },
     async onClickSearchKnowledgeArticle() {
-        if (this.model.root.isDirty || this.model.root.isNew) {
+        if (await this.model.root.isDirty() || this.model.root.isNew) {
             const saved = await this.model.root.save();
             if (!saved) {
                 return;

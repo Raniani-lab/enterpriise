@@ -97,6 +97,7 @@ const TimerHeaderM2O = Widget.extend(StandaloneFieldManagerMixin, {
         const timerProjectId = this.el.querySelector('.timer_project_id');
         await projectMany2one.appendTo(timerProjectId);
         this.projectMany2one = projectMany2one;
+        timerProjectId.classList.add('o_required_modifier');
         projectMany2one.el.classList.add('w-100');
 
         const taskRecord = this.model.get(this.task);
@@ -115,7 +116,6 @@ const TimerHeaderM2O = Widget.extend(StandaloneFieldManagerMixin, {
         const timerTaskId = this.el.querySelector('.timer_task_id');
         await taskMany2one.appendTo(timerTaskId);
         this.taskMany2one = taskMany2one;
-        timerTaskId.classList.add('o_required_modifier');
         taskMany2one.el.classList.add('w-100');
 
         _super.apply(...arguments);

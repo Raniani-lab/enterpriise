@@ -7,6 +7,7 @@ import { Component, useState } from "@odoo/owl";
 
 export class AccountReportButtonsBar extends Component {
     static template = "account_reports.AccountReportButtonsBar";
+    static props = {};
 
     static components = {
         Dropdown,

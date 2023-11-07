@@ -44,9 +44,15 @@ patch(PlanningGanttRenderer.prototype, {
     /**
      * @override
      */
-    onPlan(rowId) {
+    async onPlan(rowId, columnStart, columnStop) {
         const currentRow = this.rows.find((row) => row.id === rowId);
         this.roleIds = (currentRow.progressBar && currentRow.progressBar.role_ids) || [];
-        super.onPlan(...arguments);
+        const existsShiftToPlan = await this.props.model.existsShiftToPlan(
+            this.getPlanDialogDomain()
+        );
+        if (!existsShiftToPlan) {
+            return this.onCreate(rowId, columnStart, columnStop);
+        }
+        super.onPlan(rowId, columnStart, columnStop);
     },
 });

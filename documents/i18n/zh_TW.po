@@ -3,8 +3,8 @@
 # 	* documents
 # 
 # Translators:
-# Tony Ng, 2023
 # Wil Odoo, 2023
+# Tony Ng, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Tony Ng, 2023\n"
 "Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -807,7 +807,7 @@ msgstr "別名域名"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_full_name
 msgid "Alias Email"
-msgstr ""
+msgstr "別名電子郵件"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_name
@@ -2078,7 +2078,7 @@ msgstr "生效"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_incoming_local
 msgid "Local-part based incoming detection"
-msgstr ""
+msgstr "基於本地部件的來件檢測"
 
 #. module: documents
 #. odoo-javascript

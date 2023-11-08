@@ -3,8 +3,8 @@
 # 	* sale_renting
 # 
 # Translators:
-# Malaz Abuidris <msea@odoo.com>, 2023
 # Wil Odoo, 2023
+# Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,14 +41,14 @@ msgstr "%(amount)s (ثابت)"
 #: code:addons/sale_renting/models/product_pricing.py:0
 #, python-format
 msgid "%(amount)s / %(duration)s"
-msgstr ""
+msgstr "%(amount)s / %(duration)s"
 
 #. module: sale_renting
 #. odoo-python
 #: code:addons/sale_renting/models/sale_order_recurrence.py:0
 #, python-format
 msgid "%(duration)s %(unit)s"
-msgstr ""
+msgstr "%(duration)s %(unit)s"
 
 #. module: sale_renting
 #. odoo-python
@@ -70,7 +70,7 @@ msgstr ""
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
 msgid "123 Main St"
-msgstr ""
+msgstr "123 Main St"
 
 #. module: sale_renting
 #: model:sale.temporal.recurrence,name:sale_renting.recurrence_2_weeks
@@ -80,12 +80,12 @@ msgstr "أسبوعين 2 "
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
 msgid "2023-08-01"
-msgstr ""
+msgstr "2023-08-01"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
 msgid "2023-08-10"
-msgstr ""
+msgstr "2023-08-10"
 
 #. module: sale_renting
 #: model:sale.temporal.recurrence,name:sale_renting.recurrence_3_hours
@@ -100,7 +100,7 @@ msgstr "3 سنوات "
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
 msgid "456 Other St"
-msgstr ""
+msgstr "456 Other St"
 
 #. module: sale_renting
 #: model:sale.temporal.recurrence,name:sale_renting.recurrence5_year
@@ -945,7 +945,7 @@ msgstr "المنتج"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
 msgid "Product A"
-msgstr ""
+msgstr "المنتج أ "
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__categ_id
@@ -1128,7 +1128,7 @@ msgstr "بند معالج التأجير "
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
 msgid "Rental period"
-msgstr ""
+msgstr "فترة التأجير "
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_sale_renting_periods

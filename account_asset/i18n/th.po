@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Rasareeyar Lappiam, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Rasareeyar Lappiam, 2023\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -436,7 +437,7 @@ msgstr "สร้างสินทรัพย์แล้ว"
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Asset created from invoice: %s"
-msgstr ""
+msgstr "สินทรัพย์ที่สร้างจากใบแจ้งหนี้:%s"
 
 #. module: account_asset
 #. odoo-python
@@ -1109,7 +1110,7 @@ msgstr "รายการสมุดรายวัน"
 msgid ""
 "Journal Items of %(account)s should have a label in order to generate an "
 "asset"
-msgstr ""
+msgstr "รายการสมุดรายวันของ %(account)s ควรมีป้ายกำกับเพื่อสร้างสินทรัพย์"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__write_uid
@@ -1357,7 +1358,7 @@ msgstr "หลัก"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 #, python-format
 msgid "Parent Asset"
-msgstr ""
+msgstr "สินทรัพย์หลัก"
 
 #. module: account_asset
 #. odoo-python
@@ -1506,7 +1507,7 @@ msgstr "แสดงระเบียนทั้งหมดที่มีว
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Some fields are missing %s"
-msgstr ""
+msgstr "บางช่องหายไป %s"
 
 #. module: account_asset
 #. odoo-python

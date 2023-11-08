@@ -5,6 +5,7 @@
 # Translators:
 # Wil Odoo, 2023
 # Daye Jeong, 2023
+# Sarah Park, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Daye Jeong, 2023\n"
+"Last-Translator: Sarah Park, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -112,6 +113,8 @@ msgid ""
 "<br/>\n"
 "                    is sharing content with you"
 msgstr ""
+"<br/>\n"
+"                    콘텐츠를 공유하고 있습니다."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -121,7 +124,7 @@ msgstr "<br/>제공"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "<i class=\"fa fa fa-folder text-primary me-2\" title=\"Workspace\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa fa-folder text-primary me-2\" title=\"Workspace\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_workspace_page
@@ -131,7 +134,7 @@ msgstr "<i class=\"fa fa-download fa-fw\"/> 전체 다운로드"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 msgid "<i class=\"fa fa-lock oe_inline\" title=\"Locked\" invisible=\"not lock_uid\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-lock oe_inline\" title=\"Locked\" invisible=\"not lock_uid\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -139,6 +142,8 @@ msgid ""
 "<i class=\"fa fa-tag o_documents_tag_color ms-2\" invisible=\"not tag_ids\" "
 "title=\"Tags\"/>"
 msgstr ""
+"<i class=\"fa fa-tag o_documents_tag_color ms-2\" invisible=\"not tag_ids\" "
+"title=\"Tags\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_workspace_page
@@ -901,7 +906,7 @@ msgstr "보관됨"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_search
 msgid "Archived Workspace"
-msgstr ""
+msgstr "보관된 작업 공간"
 
 #. module: documents
 #. odoo-javascript
@@ -929,14 +934,14 @@ msgstr "이 페이지를 정말로 삭제하시겠습니까?"
 #: code:addons/documents/static/src/views/documents_model_mixin.js:0
 #, python-format
 msgid "Are you sure you want to permanently erase the document?"
-msgstr ""
+msgstr "이 문서를 완전히 삭제할까요?"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/documents_model_mixin.js:0
 #, python-format
 msgid "Are you sure you want to permanently erase the documents?"
-msgstr ""
+msgstr "이 문서를 완전히 삭제할까요?"
 
 #. module: documents
 #. odoo-javascript
@@ -1044,7 +1049,7 @@ msgstr "업로드 가능"
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "Can't share documents of different workspaces."
-msgstr ""
+msgstr "다른 작업 공간의 문서는 공유할 수 없습니다."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_link_to_record_form_view
@@ -1058,7 +1063,7 @@ msgstr "취소"
 msgid ""
 "Cannot move folder under the given parent as this would create a recursive "
 "hierarchy"
-msgstr ""
+msgstr "해당 상위 폴더 아래로 폴더를 이동할 수 없습니다. 순환 구조가 생성됩니다."
 
 #. module: documents
 #: model_terms:documents.folder,description:documents.documents_internal_folder
@@ -1091,7 +1096,7 @@ msgstr "연결할 레코드 선택"
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Choose or Configure Email Servers"
-msgstr ""
+msgstr "이메일 서버를 선택 또는 설정하세요."
 
 #. module: documents
 #. odoo-javascript
@@ -1268,7 +1273,7 @@ msgstr "업로드한 문서의 기본값"
 #: model:ir.model.fields,help:documents.field_documents_folder__deletion_delay
 #: model:ir.model.fields,help:documents.field_res_config_settings__deletion_delay
 msgid "Delay after permanent deletion of the document in the trash (days)"
-msgstr ""
+msgstr "휴지통에 있는 문서를 완전히 삭제하기까지의 기간 (날짜 수)"
 
 #. module: documents
 #. odoo-javascript
@@ -1297,22 +1302,22 @@ msgstr "포커스 또는 선택된 페이지 삭제"
 #: code:addons/documents/static/src/views/documents_model_mixin.js:0
 #, python-format
 msgid "Delete permanently"
-msgstr ""
+msgstr "완전히 삭제하기"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_res_config_settings__deletion_delay
 msgid "Deletion Delay"
-msgstr ""
+msgstr "삭제 대기"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__deletion_delay
 msgid "Deletion delay"
-msgstr ""
+msgstr "삭제 대기"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 msgid "Deletion delay (days)"
-msgstr ""
+msgstr "삭제 대기 (날짜 수)"
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_deprecate
@@ -1530,7 +1535,7 @@ msgstr "다운로드 및 업로드"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_files_page
 msgid "Download file"
-msgstr ""
+msgstr "파일 다운로드"
 
 #. module: documents
 #. odoo-javascript
@@ -1696,7 +1701,7 @@ msgstr "파일 중앙화"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_deletion_form
 msgid "Files will be sent to trash and deleted forever after"
-msgstr ""
+msgstr "파일을 휴지통으로 이동하여 다음 날짜 이후 완전히 삭제합니다."
 
 #. module: documents
 #. odoo-javascript
@@ -1704,7 +1709,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/list/folder_list_controller.js:0
 #, python-format
 msgid "Files will be sent to trash and deleted forever after %s days."
-msgstr ""
+msgstr "파일을 휴지통으로 이동하여 %s일 이후 완전히 삭제합니다."
 
 #. module: documents
 #: model:documents.folder,name:documents.documents_finance_folder
@@ -1791,7 +1796,7 @@ msgstr "하나의 문서로 모으기"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "Gb"
-msgstr ""
+msgstr "Gb"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1953,19 +1958,19 @@ msgstr "페이지가 여러 장 있는 것으로 간주합니다."
 #: code:addons/documents/static/src/views/search/documents_search_model.js:0
 #, python-format
 msgid "Items in trash will be deleted forever after %s days."
-msgstr ""
+msgstr "휴지통에 있는 항목은 %s일 후 완전히 삭제됩니다."
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/documents_model_mixin.js:0
 #, python-format
 msgid "Items moved to the trash will be deleted forever after %s days."
-msgstr ""
+msgstr "휴지통으로 이동된 항목은 %s일 후 완전히 삭제됩니다."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "Kb"
-msgstr ""
+msgstr "Kb"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_internal_knowledge
@@ -2136,7 +2141,7 @@ msgstr "마케팅"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "Mb"
-msgstr ""
+msgstr "Mb"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_note
@@ -2212,7 +2217,7 @@ msgstr "저장공간으로 이동"
 #: model_terms:ir.ui.view,arch_db:documents.folder_deletion_form
 #, python-format
 msgid "Move to trash"
-msgstr ""
+msgstr "휴지통으로 이동"
 
 #. module: documents
 #. odoo-python
@@ -2222,7 +2227,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/list/folder_list_controller.js:0
 #, python-format
 msgid "Move to trash?"
-msgstr ""
+msgstr "휴지통으로 이동할까요?"
 
 #. module: documents
 #. odoo-javascript
@@ -2657,6 +2662,8 @@ msgid ""
 "Requested\n"
 "                                ∙"
 msgstr ""
+"요청됨\n"
+"                                ∙"
 
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_md
@@ -2831,7 +2838,7 @@ msgstr "태그 설정"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 msgid "Set deletion delay for documents in the Trash"
-msgstr ""
+msgstr "휴지통에 있는 문서에 대한 삭제 대기 설정"
 
 #. module: documents
 #: model:mail.template,description:documents.mail_template_document_request_reminder
@@ -3101,14 +3108,14 @@ msgstr "이 태그 범주 또는 해당 태그를 가리킬 때 표시되는 문
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_res_config_settings_check_deletion_delay
 msgid "The deletion delay should be positive."
-msgstr ""
+msgstr "삭제 대기 항목은 양수여야 합니다."
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "The links and requested documents are not shareable."
-msgstr ""
+msgstr "링크 및 요청 문서는 공유할 수 없습니다."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_model_id
@@ -3172,7 +3179,7 @@ msgstr ""
 #: code:addons/documents/models/documents_document.py:0
 #, python-format
 msgid "This file has been restored"
-msgstr ""
+msgstr "파일 복원이 완료되었습니다."
 
 #. module: documents
 #. odoo-python
@@ -3180,7 +3187,7 @@ msgstr ""
 #, python-format
 msgid ""
 "This file has been sent to the trash and will be deleted forever on the %s"
-msgstr ""
+msgstr "해당 파일을 휴지통으로 이동하여 %s 항목에서 완전히 삭제합니다."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__company_id
@@ -3376,7 +3383,7 @@ msgstr "승인됨"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_files_page
 msgid "Validity date:"
-msgstr ""
+msgstr "유효 기간:"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_Videos
@@ -3482,7 +3489,7 @@ msgstr "컴퓨터에서 파일을 업로드하거나 인터넷 링크를 복사�
 #: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
 #, python-format
 msgid "You cannot upload content in this workspace"
-msgstr ""
+msgstr "이 작업 공간에서는 콘텐츠를 업로드할 수 없습니다."
 
 #. module: documents
 #. odoo-python
@@ -3608,7 +3615,7 @@ msgstr "file_extension"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_files_page
 msgid "files"
-msgstr ""
+msgstr "파일"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__is_readonly_model

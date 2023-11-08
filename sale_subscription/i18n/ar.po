@@ -3,9 +3,9 @@
 # 	* sale_subscription
 # 
 # Translators:
-# Malaz Abuidris <msea@odoo.com>, 2023
 # Martin Trigaux, 2023
 # Wil Odoo, 2023
+# Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1084,7 +1084,7 @@ msgstr "النشاط"
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.mail_activity_plan_menu_config_subscription
 msgid "Activity Plan"
-msgstr ""
+msgstr "خطة النشاط "
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_type_id
@@ -1313,19 +1313,19 @@ msgstr ""
 #: model:ir.model,name:sale_subscription.model_base_automation
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__automation_id
 msgid "Automation Rule"
-msgstr ""
+msgstr "قاعدة الأتمتة "
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__name
 msgid "Automation Rule Name"
-msgstr ""
+msgstr "اسم قاعدة الأتمتة "
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_alert_action
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_alert
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_tree
 msgid "Automation Rules"
-msgstr ""
+msgstr "قواعد الأتمتة "
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_avg
@@ -1840,6 +1840,8 @@ msgid ""
 "delay before the trigger date, like sending a reminder 15 minutes before a "
 "meeting."
 msgstr ""
+"التأخير بعد تاريخ التشغيل. يمكنك وضع عدد سالب إذا أردت أن يكون التأخير قبل "
+"تاريخ التشغيل، كإرسال تذكير قبل 15 دقيقة من بدء الاجتماع. "
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_range
@@ -2182,7 +2184,7 @@ msgstr "إذا لم يكن محدداً، ستفشل عملية الدفع ال�
 msgid ""
 "If present, this condition must be satisfied before executing the automation"
 " rule."
-msgstr ""
+msgstr "إذا كان موجودًا، يتوجب استيفاء هذا الشرط قبل تنفيذ قاعدة الأتمتة. "
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__filter_pre_domain
@@ -2437,7 +2439,7 @@ msgstr "فلنذهب إلى الكتالوج لإنشاء أول منتجات ا
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__log_webhook_calls
 msgid "Log Calls"
-msgstr ""
+msgstr "تسجيل المكالمات "
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__log_currency_id
@@ -2630,7 +2632,7 @@ msgstr "اسم النموذج "
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__model_id
 msgid "Model on which the automation rule runs."
-msgstr ""
+msgstr "النموذج الذي تعمل فيه قواعد الأتمتة. "
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__trigger_condition__on_create_or_write
@@ -3264,7 +3266,7 @@ msgstr "السبب"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__record_getter
 msgid "Record Getter"
-msgstr ""
+msgstr "أداة جلب السجلات "
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__is_subscription
@@ -3728,14 +3730,14 @@ msgstr "عرض حالة الاشتراك "
 msgid ""
 "Some triggers need a reference to a selection field. This field is used to "
 "store it."
-msgstr ""
+msgstr "تحتاج بعض المشغلات إلى مرجع لحقل اختيار. يُستخدَم هذا الحقل لتخزينه. "
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_field_ref
 msgid ""
 "Some triggers need a reference to another field. This field is used to store"
 " it."
-msgstr ""
+msgstr "تحتاج بعض المشغلات إلى مرجع لحقل آخر. يُستخدَم هذا الحقل لتخزينه. "
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__source_id
@@ -4120,6 +4122,8 @@ msgid ""
 "The automation rule will be triggered if and only if one of these fields is "
 "updated.If empty, all fields are watched."
 msgstr ""
+"سوف يتم تشغيل قاعدة الأتمتة فقط إذا كانت إحدى تلك الحقول محدثة. إذا كانت "
+"فارغة، فستتم مراقبة كافة الحقول. "
 
 #. module: sale_subscription
 #. odoo-python
@@ -4282,6 +4286,8 @@ msgid ""
 "This code will be run to find on which record the automation rule should be "
 "run."
 msgstr ""
+"سيتم تشغيل هذا الكود للعثور على أي السجلات يجب أن يتم تشغيل قاعدة الأتمتة "
+"عليها. "
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_form
@@ -4410,12 +4416,12 @@ msgstr "تاريخ التشغيل  "
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_selection_field_id
 msgid "Trigger Field"
-msgstr ""
+msgstr "تشغيل الحقل "
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_field_ref_model_name
 msgid "Trigger Field Model"
-msgstr ""
+msgstr "تشغيل نموذج الحقل "
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trigger_field_ids
@@ -4435,12 +4441,12 @@ msgstr "التشغيل عند "
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_field_ref
 msgid "Trigger Reference"
-msgstr ""
+msgstr "تشغيل المرجع "
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_field_ref_display_name
 msgid "Trigger Reference Display Name"
-msgstr ""
+msgstr "تشغيل اسم عرض المرجع "
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_alert_action
@@ -4642,7 +4648,7 @@ msgstr "لا نريدك أن تغادر هكذا. "
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__webhook_uuid
 msgid "Webhook UUID"
-msgstr ""
+msgstr "Webhook UUID"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__website_id
@@ -4670,6 +4676,8 @@ msgid ""
 "When calculating a day-based timed condition, it is possibleto use a "
 "calendar to compute the date based on working days."
 msgstr ""
+"عند حساب شروط زمنية تعتمد على الأيام، من الممكن استخدام التقويم لحساب "
+"التاريخ المطلوب وفقًا لأيام العمل."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_id

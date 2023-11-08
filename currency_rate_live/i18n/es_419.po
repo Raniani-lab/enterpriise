@@ -37,7 +37,7 @@ msgstr "Banco de Canadá"
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__bbr
 msgid "Central Bank of Brazil"
-msgstr " Banco Central de Brasil"
+msgstr "Banco Central de Brasil"
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__cbegy
@@ -72,7 +72,7 @@ msgstr "Banco Nacional Checo"
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__daily
 msgid "Daily"
-msgstr "Diariamente"
+msgstr "Diario"
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__ecb
@@ -113,7 +113,7 @@ msgstr "Mensual"
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__bnr
 msgid "National Bank Of Romania"
-msgstr "Banco Nacional de Rumanía"
+msgstr "Banco Nacional de Rumania"
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__nbp
@@ -171,7 +171,7 @@ msgstr ""
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__weekly
 msgid "Weekly"
-msgstr "Semanalmente"
+msgstr "Semanal"
 
 #. module: currency_rate_live
 #. odoo-python

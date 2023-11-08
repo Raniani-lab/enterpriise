@@ -167,7 +167,7 @@ msgstr "別名域名"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_full_name
 msgid "Alias Email"
-msgstr ""
+msgstr "別名電子郵件"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_name
@@ -1094,7 +1094,7 @@ msgstr "最新用料清單（BOM）"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_incoming_local
 msgid "Local-part based incoming detection"
-msgstr ""
+msgstr "基於本地部件的來件檢測"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action

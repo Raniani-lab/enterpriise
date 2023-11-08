@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Rasareeyar Lappiam, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Rasareeyar Lappiam, 2023\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,7 +55,7 @@ msgstr "<span class=\"o_stat_text\">คำแนะนำ</span>"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "<span invisible=\"employee_name\">Log In </span>"
-msgstr ""
+msgstr "<span invisible=\"employee_name\">เข้าสู่ระบบ </span>"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_bom__activity_ids
@@ -164,7 +165,7 @@ msgstr "อนุญาตสำหรับพนักงานทุกคน
 #: code:addons/mrp_workorder/static/src/mrp_display/control_panel.js:0
 #, python-format
 msgid "All MO"
-msgstr ""
+msgstr "All MO"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__allow_producing_quantity_change
@@ -306,7 +307,7 @@ msgstr "ปิด"
 #: code:addons/mrp_workorder/static/src/mrp_display/mrp_display_record.xml:0
 #, python-format
 msgid "Close Production"
-msgstr ""
+msgstr "ปิดการผลิต"
 
 #. module: mrp_workorder
 #: model:product.attribute,name:mrp_workorder.product_attribute_color_radio
@@ -382,14 +383,14 @@ msgstr "ต่อไป"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_check_view_form_tablet
 msgid "Continue Consumption"
-msgstr ""
+msgstr "บริโภคต่อ"
 
 #. module: mrp_workorder
 #. odoo-javascript
 #: code:addons/mrp_workorder/static/src/mrp_display/dialog/mrp_quality_check_confirmation_dialog.xml:0
 #, python-format
 msgid "Continue consumption"
-msgstr ""
+msgstr "บริโภคต่อ"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,help:mrp_workorder.field_mrp_workorder_additional_product__product_uom_category_id
@@ -410,7 +411,7 @@ msgstr "ต้นทุน"
 #: code:addons/mrp_workorder/static/src/components/viewer.js:0
 #, python-format
 msgid "Could not display the selected %s"
-msgstr ""
+msgstr "ไม่สามารถแสดง %s ที่เลือกได้"
 
 #. module: mrp_workorder
 #: model_terms:ir.actions.act_window,help:mrp_workorder.mrp_stock_picking_type_action
@@ -561,7 +562,7 @@ msgstr "ล้มเหลว"
 #: code:addons/mrp_workorder/static/src/mrp_display/dialog/mrp_quality_check_confirmation_dialog.xml:0
 #, python-format
 msgid "Fill in worksheet"
-msgstr ""
+msgstr "กรอกใบงาน"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__finished_lot_id
@@ -622,6 +623,8 @@ msgid ""
 "If this checkbox is ticked, the serial numbers lines for this operation type"
 " will be pre-filled in the shop floor."
 msgstr ""
+"หากทำเครื่องหมายในช่องนี้ "
+"รายการหมายเลขซีเรียลสำหรับประเภทการดำเนินการนี้จะถูกกรอกไว้ล่วงหน้าที่ฝ่ายผลิต"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__worksheet_document
@@ -740,17 +743,17 @@ msgstr "รายงานภาพรวม MO"
 #. module: mrp_workorder
 #: model:res.groups,name:mrp_workorder.group_mrp_wo_tablet_timer
 msgid "Manage Work Order timer on Shop Floor"
-msgstr ""
+msgstr "จัดการตัวจับเวลาการสั่งงานบนพื้นที่ร้านค้า"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.res_config_settings_view_form
 msgid "Manage your manufacturing orders from the shop floor app"
-msgstr ""
+msgstr "จัดการใบสั่งผลิตของคุณจากแอปการขายหน้าร้าน"
 
 #. module: mrp_workorder
 #: model:res.groups,name:mrp_workorder.group_mrp_wo_shop_floor
 msgid "Manage your manufacturing orders from the shop floor display app"
-msgstr ""
+msgstr "จัดการคำสั่งซื้อการผลิตของคุณจากแอปแสดงพื้นที่ร้านค้า"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
@@ -814,7 +817,7 @@ msgstr "วันครบกำหนดกิจกรรมของฉัน
 #: code:addons/mrp_workorder/static/src/mrp_display/control_panel.js:0
 #, python-format
 msgid "My WO"
-msgstr ""
+msgstr "WO ของฉัน"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_mrp_production_workorder_form_view_filter_my_work_orders
@@ -1040,7 +1043,7 @@ msgstr "โปรดกำหนดจำนวนที่คุณกำลั
 #: code:addons/mrp_workorder/models/mrp_workorder.py:0
 #, python-format
 msgid "Please unblock the work center to start the work order"
-msgstr ""
+msgstr "โปรดปลดบล็อคศูนย์งานเพื่อเริ่มใบสั่งงาน"
 
 #. module: mrp_workorder
 #. odoo-python
@@ -1052,7 +1055,7 @@ msgstr "กรุณาอัปโหลดรูปภาพ"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_stock_picking_type__prefill_lot_tablet
 msgid "Pre-fill Lot/Serial Numbers in Shop Floor"
-msgstr ""
+msgstr "กรอกล็อต/หมายเลขซีเรียลล่วงหน้าในพื้นที่ร้านค้า"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__previous_check_id
@@ -1228,7 +1231,7 @@ msgstr "ลงทะเบียนการผลิต"
 #: code:addons/mrp_workorder/static/src/mrp_display/mrp_display_record.js:0
 #, python-format
 msgid "Register Production: %s"
-msgstr ""
+msgstr "ลงทะเบียนการผลิต: %s"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__additional
@@ -1276,14 +1279,14 @@ msgstr "ผลลัพธ์"
 #: code:addons/mrp_workorder/static/src/mrp_display/mrp_display.js:0
 #, python-format
 msgid "STARTED work on workorder %s"
-msgstr ""
+msgstr "เริ่มงานตามคำสั่งงานแล้ว %s"
 
 #. module: mrp_workorder
 #. odoo-javascript
 #: code:addons/mrp_workorder/static/src/mrp_display/mrp_display.js:0
 #, python-format
 msgid "STOPPED work on workorder %s"
-msgstr ""
+msgstr "หยุดงานตามคำสั่งงานแล้ว %s"
 
 #. module: mrp_workorder
 #. odoo-javascript
@@ -1305,7 +1308,7 @@ msgstr "เลือกพนักงาน"
 #: code:addons/mrp_workorder/static/src/mrp_display/mrp_display.js:0
 #, python-format
 msgid "Select Work Centers for this station"
-msgstr ""
+msgstr "เลือกศูนย์งานสำหรับสถานีนี้"
 
 #. module: mrp_workorder
 #. odoo-javascript
@@ -1351,7 +1354,7 @@ msgstr "พื้นที่ร้านค้า"
 #: code:addons/mrp_workorder/static/src/mrp_display/mrp_display.xml:0
 #, python-format
 msgid "Shop Floor Control Panel"
-msgstr ""
+msgstr "แผงควบคุมพื้นที่ร้านค้า"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_routing_workcenter_tree_view_inherited
@@ -1546,6 +1549,8 @@ msgid ""
 "Track work orders, show instructions and record operations: quality control,"
 " serial numbers, quantities consumed, etc. from here"
 msgstr ""
+"ติดตามคำสั่งงาน แสดงคำแนะนำ และบันทึกการดำเนินการ เช่น การควบคุมคุณภาพ "
+"หมายเลขซีเรียล ปริมาณที่ใช้และอื่นๆ จากที่นี่"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_additional_product__product_tracking
@@ -1821,6 +1826,7 @@ msgid ""
 "You need to complete Quality Checks using the Shop Floor before marking Work"
 " Order as Done."
 msgstr ""
+"คุณต้องดำเนินการตรวจสอบคุณภาพให้เสร็จสิ้นโดยใช้พื้นที่ร้านค้าก่อนที่จะทำเครื่องหมายคำสั่งงานว่าเสร็จสิ้น"
 
 #. module: mrp_workorder
 #. odoo-python
@@ -1847,7 +1853,7 @@ msgstr "คุณต้องเข้าสู่ระบบเพื่อด
 #: code:addons/mrp_workorder/models/mrp_production.py:0
 #, python-format
 msgid "You need to supply a Lot/Serial Number for the final product."
-msgstr ""
+msgstr "คุณต้องระบุล็อต/หมายเลขซีเรียลสำหรับสินค้าขั้นสุดท้าย"
 
 #. module: mrp_workorder
 #. odoo-python
@@ -1869,7 +1875,7 @@ msgstr "คุณยังต้องทำการตรวจสอบคุ
 #: code:addons/mrp_workorder/static/src/mrp_display/dialog/mrp_menu_dialog.js:0
 #, python-format
 msgid "Your suggestion to delete the %s step was succesfully created."
-msgstr ""
+msgstr "คำแนะนำของคุณในการลบขั้นตอน %s ถูกสร้างขึ้นเรียบร้อยแล้ว"
 
 #. module: mrp_workorder
 #: model:ir.model.fields.selection,name:mrp_workorder.selection__quality_point__test_report_type__zpl

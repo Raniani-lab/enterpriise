@@ -3,8 +3,8 @@
 # 	* account_bacs
 # 
 # Translators:
-# Junko Augias, 2023
 # Wil Odoo, 2023
+# Junko Augias, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Junko Augias, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,12 +23,12 @@ msgstr ""
 #. module: account_bacs
 #: model_terms:ir.ui.view,arch_db:account_bacs.ddi_form
 msgid "<span class=\"bacs-garantee-text\">The Direct Debit Guarantee</span>"
-msgstr ""
+msgstr "<span class=\"bacs-garantee-text\">口座振替保証</span>"
 
 #. module: account_bacs
 #: model_terms:ir.ui.view,arch_db:account_bacs.ddi_form
 msgid "<span class=\"float-end font-small postcode\">Postcode</span>"
-msgstr ""
+msgstr "<span class=\"float-end font-small postcode\">郵便番号</span>"
 
 #. module: account_bacs
 #: model_terms:ir.ui.view,arch_db:account_bacs.ddi_form
@@ -36,21 +36,23 @@ msgid ""
 "<span class=\"float-start font-small\">To:</span>\n"
 "                            <span class=\"float-end font-small\">Bank/building society</span>"
 msgstr ""
+"<span class=\"float-start font-small\">以下へ:</span>\n"
+"                            <span class=\"float-end font-small\">銀行/銀行協会</span>"
 
 #. module: account_bacs
 #: model_terms:ir.ui.view,arch_db:account_bacs.ddi_form
 msgid "<span class=\"font-small\">Address</span>"
-msgstr ""
+msgstr "<span class=\"font-small\">住所</span>"
 
 #. module: account_bacs
 #: model_terms:ir.ui.view,arch_db:account_bacs.ddi_form
 msgid "<span class=\"font-small\">Date</span>"
-msgstr ""
+msgstr "<span class=\"font-small\">日付</span>"
 
 #. module: account_bacs
 #: model_terms:ir.ui.view,arch_db:account_bacs.ddi_form
 msgid "<span class=\"font-small\">signature(s)</span>"
-msgstr ""
+msgstr "<span class=\"font-small\">署名</span>"
 
 #. module: account_bacs
 #: model_terms:ir.ui.view,arch_db:account_bacs.ddi_form

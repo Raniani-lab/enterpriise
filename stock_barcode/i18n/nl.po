@@ -660,7 +660,7 @@ msgstr "Voorraadlocaties"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__is_barcode_picking_type
 msgid "Is Barcode Picking Type"
-msgstr ""
+msgstr "Pickingtype barcode"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation__write_uid
@@ -771,7 +771,7 @@ msgstr "Geen picking of product dat overeenkomt met barcode %(barcode)s"
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #, python-format
 msgid "No product, lot or package found for barcode %s"
-msgstr ""
+msgstr "Geen product, partij of pakket gevonden voor barcode %s"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__barcode_nomenclature_id
@@ -904,7 +904,7 @@ msgstr "Druk op Bevestigen of scan een ander product"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Print Barcodes"
-msgstr ""
+msgstr "Barcodes afdrukken"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -964,7 +964,7 @@ msgstr "Productverpakkingen"
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_reference_code
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_quant__product_reference_code
 msgid "Product Reference Code"
-msgstr ""
+msgstr "Referentiecode product"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_stock_quant_ids
@@ -1177,6 +1177,8 @@ msgstr "Scan een product en vervolgens de bestemmingslocatie"
 msgid ""
 "Scan a product, a lot/serial number or a package to filter the transfers."
 msgstr ""
+"Scan een product, een partij/serienummer of een pakket om de transfers te "
+"filteren."
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1419,6 +1421,8 @@ msgid ""
 "Technical field indicating if should be used in barcode app and used to "
 "control visibility in the related UI."
 msgstr ""
+"Technisch veld dat aangeeft of het moet worden gebruikt in de Barcodeapp en "
+"dat wordt gebruikt om de zichtbaarheid in de gerelateerde UI te regelen."
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_picking_type__show_barcode_validation
@@ -1618,6 +1622,8 @@ msgid ""
 "You are about to take the product %(productName)s from the location %(locationName)s but this product isn't reserved in this location.\n"
 "Scan the current location to confirm that."
 msgstr ""
+"Je staat op het punt het product %(productName)s uit locatie %(locationName)s te nemen, maar dit product is niet gereserveerd in deze locatie. \n"
+"Scan de huidige locatie om te bevestigen."
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1684,7 +1690,7 @@ msgstr "Je moet een product scannen"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "[${product.code}] "
-msgstr ""
+msgstr "[${product.code}] "
 
 #. module: stock_barcode
 #. odoo-javascript

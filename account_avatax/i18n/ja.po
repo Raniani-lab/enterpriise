@@ -422,7 +422,7 @@ msgstr "Avatax 用の一意な ID を生成する Mixin"
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_account_external_tax_mixin
 msgid "Mixin to manage common parts of external tax calculation"
-msgstr ""
+msgstr "外部税計算の共通部分を管理するミキシン"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_exemption__name
@@ -533,7 +533,7 @@ msgstr "処理の検索はサポートされていません"
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_connection_test_result__server_response
 msgid "Server Response"
-msgstr ""
+msgstr "サーバ回答"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__state_id
@@ -567,12 +567,12 @@ msgstr "Avataxから免税コードを同期する"
 #: code:addons/account_avatax/models/res_company.py:0
 #, python-format
 msgid "Test Result"
-msgstr ""
+msgstr "テスト結果"
 
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_avatax_connection_test_result
 msgid "Test connection with avatax"
-msgstr ""
+msgstr "avataxとの接続テスト"
 
 #. module: account_avatax
 #: model:ir.model.fields,help:account_avatax.field_res_config_settings__avalara_partner_code

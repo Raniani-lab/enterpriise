@@ -777,7 +777,7 @@ msgstr "ดัชนีสี"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 msgid "Communication history"
-msgstr ""
+msgstr "ประวัติการติดต่อสื่อสาร"
 
 #. module: sign
 #: model:ir.model,name:sign.model_res_company
@@ -1896,7 +1896,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Marc Demo"
-msgstr ""
+msgstr "Marc Demo"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__message

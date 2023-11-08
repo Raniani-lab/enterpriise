@@ -25,7 +25,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "%s days"
-msgstr ""
+msgstr "%s วัน"
 
 #. module: web_enterprise
 #. odoo-javascript

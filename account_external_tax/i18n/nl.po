@@ -47,6 +47,8 @@ msgstr "Boeking"
 #: model:ir.model,name:account_external_tax.model_account_external_tax_mixin
 msgid "Mixin to manage common parts of external tax calculation"
 msgstr ""
+"Mixin om algemene onderdelen van externe belastingberekening te beherenMixin"
+" om algemene onderdelen van externe belastingberekening te beheren"
 
 #. module: account_external_tax
 #: model:ir.model.fields,help:account_external_tax.field_account_bank_statement_line__is_tax_computed_externally

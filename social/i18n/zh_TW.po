@@ -595,7 +595,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__is_hatched
 msgid "Hatched"
-msgstr ""
+msgstr "Hatched"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__id

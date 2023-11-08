@@ -4626,7 +4626,7 @@ msgstr ""
 #. module: knowledge
 #: model:knowledge.article,template_description:knowledge.knowledge_article_template_sprint_calendar
 msgid "Manage your team schedule for the upcoming sprint."
-msgstr ""
+msgstr "Gestisci gli orari del tuo team per gli sprint in arrivo."
 
 #. module: knowledge
 #. odoo-python

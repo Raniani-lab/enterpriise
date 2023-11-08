@@ -261,7 +261,7 @@ msgstr ""
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_booking__stop_datetime
 msgid "End Datetime"
-msgstr ""
+msgstr "Einddatetime"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_booking__message_follower_ids
@@ -572,7 +572,7 @@ msgstr "Start"
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_booking__start_datetime
 msgid "Start Datetime"
-msgstr ""
+msgstr "Begindatetime"
 
 #. module: room
 #. odoo-javascript

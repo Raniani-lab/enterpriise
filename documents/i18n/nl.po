@@ -118,6 +118,8 @@ msgid ""
 "<br/>\n"
 "                    is sharing content with you"
 msgstr ""
+"<br/>\n"
+"                    deelt inhoud met jou"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -127,7 +129,7 @@ msgstr "<br/>Aangeboden door"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "<i class=\"fa fa fa-folder text-primary me-2\" title=\"Workspace\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa fa-folder text-primary me-2\" title=\"Werkruimte\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_workspace_page
@@ -138,6 +140,8 @@ msgstr "<i class=\"fa fa-download fa-fw\"/>  Download alle"
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 msgid "<i class=\"fa fa-lock oe_inline\" title=\"Locked\" invisible=\"not lock_uid\"/>"
 msgstr ""
+"<i class=\"fa fa-lock oe_inline\" title=\"Vergrendeld\" invisible=\"not "
+"lock_uid\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -145,6 +149,8 @@ msgid ""
 "<i class=\"fa fa-tag o_documents_tag_color ms-2\" invisible=\"not tag_ids\" "
 "title=\"Tags\"/>"
 msgstr ""
+"<i class=\"fa fa-tag o_documents_tag_color ms-2\" invisible=\"not tag_ids\" "
+"title=\"Labels\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_workspace_page
@@ -918,7 +924,7 @@ msgstr "Gearchiveerd"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_search
 msgid "Archived Workspace"
-msgstr ""
+msgstr "Gearchiveerde werkruimte"
 
 #. module: documents
 #. odoo-javascript
@@ -946,14 +952,14 @@ msgstr "Weet je zeker dat je deze pagina wilt verwijderen?"
 #: code:addons/documents/static/src/views/documents_model_mixin.js:0
 #, python-format
 msgid "Are you sure you want to permanently erase the document?"
-msgstr ""
+msgstr "Weet je zeker dat je dit document definitief wilt wissen?"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/documents_model_mixin.js:0
 #, python-format
 msgid "Are you sure you want to permanently erase the documents?"
-msgstr ""
+msgstr "Weet je zeker dat je deze documenten definitief wilt wissen?"
 
 #. module: documents
 #. odoo-javascript
@@ -1065,7 +1071,7 @@ msgstr "Kan uploaden"
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "Can't share documents of different workspaces."
-msgstr ""
+msgstr "Kan documenten van verschillende werkruimtes niet delen."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_link_to_record_form_view
@@ -1080,6 +1086,8 @@ msgid ""
 "Cannot move folder under the given parent as this would create a recursive "
 "hierarchy"
 msgstr ""
+"Kan het bestand niet verplaatsen onder het opgegeven bovenliggend bestand, "
+"omdat dit een recursieve hiërarchie zou creëren"
 
 #. module: documents
 #: model_terms:documents.folder,description:documents.documents_internal_folder
@@ -1112,7 +1120,7 @@ msgstr "Kies een record om te linken"
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Choose or Configure Email Servers"
-msgstr ""
+msgstr "Kies of configureer e-mailservers"
 
 #. module: documents
 #. odoo-javascript
@@ -1293,6 +1301,8 @@ msgstr "Standaardwaarden voor geüploade documenten"
 #: model:ir.model.fields,help:documents.field_res_config_settings__deletion_delay
 msgid "Delay after permanent deletion of the document in the trash (days)"
 msgstr ""
+"Termijn na het definitieve verwijderen van het document in de prullenbak "
+"(dagen)"
 
 #. module: documents
 #. odoo-javascript
@@ -1321,22 +1331,22 @@ msgstr "Verwijder gerichte of geselecteerde pagina's"
 #: code:addons/documents/static/src/views/documents_model_mixin.js:0
 #, python-format
 msgid "Delete permanently"
-msgstr ""
+msgstr "Definitief verwijderen"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_res_config_settings__deletion_delay
 msgid "Deletion Delay"
-msgstr ""
+msgstr "Verwijdertermijn"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__deletion_delay
 msgid "Deletion delay"
-msgstr ""
+msgstr "Verwijdertermijn"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 msgid "Deletion delay (days)"
-msgstr ""
+msgstr "Verwijdertermijn (dagen)"
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_deprecate
@@ -1557,7 +1567,7 @@ msgstr "Download en upload"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_files_page
 msgid "Download file"
-msgstr ""
+msgstr "Bestand downloaden"
 
 #. module: documents
 #. odoo-javascript
@@ -1724,6 +1734,7 @@ msgstr "Bestandencentralisatie"
 #: model_terms:ir.ui.view,arch_db:documents.folder_deletion_form
 msgid "Files will be sent to trash and deleted forever after"
 msgstr ""
+"Bestanden worden naar de prullenbak verstuurd en definitief verwijderd na"
 
 #. module: documents
 #. odoo-javascript
@@ -1732,6 +1743,8 @@ msgstr ""
 #, python-format
 msgid "Files will be sent to trash and deleted forever after %s days."
 msgstr ""
+"Bestanden worden naar de prullenbak verstuurd en definitief verwijderd na %s"
+" dagen."
 
 #. module: documents
 #: model:documents.folder,name:documents.documents_finance_folder
@@ -1818,7 +1831,7 @@ msgstr "Verzamelen in één document"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "Gb"
-msgstr ""
+msgstr "Gb"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1989,19 +2002,19 @@ msgstr "Wordt beschouwd als meerdere pagina's"
 #: code:addons/documents/static/src/views/search/documents_search_model.js:0
 #, python-format
 msgid "Items in trash will be deleted forever after %s days."
-msgstr ""
+msgstr "Items in de prullenbak worden definitief verwijderd na %s dagen."
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/documents_model_mixin.js:0
 #, python-format
 msgid "Items moved to the trash will be deleted forever after %s days."
-msgstr ""
+msgstr "Items in de prullenbak worden definitief verwijderd na %s dagen."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "Kb"
-msgstr ""
+msgstr "Kb"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_internal_knowledge
@@ -2177,7 +2190,7 @@ msgstr "Marketing"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "Mb"
-msgstr ""
+msgstr "Mb"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_note
@@ -2253,7 +2266,7 @@ msgstr "Naar werkruimte verplaatsen"
 #: model_terms:ir.ui.view,arch_db:documents.folder_deletion_form
 #, python-format
 msgid "Move to trash"
-msgstr ""
+msgstr "Verplaatsen naar de prullenbak"
 
 #. module: documents
 #. odoo-python
@@ -2263,7 +2276,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/list/folder_list_controller.js:0
 #, python-format
 msgid "Move to trash?"
-msgstr ""
+msgstr "Verplaatsen naar de prullenbak?"
 
 #. module: documents
 #. odoo-javascript
@@ -2706,6 +2719,8 @@ msgid ""
 "Requested\n"
 "                                ∙"
 msgstr ""
+"Aangevraagd\n"
+"                                ∙"
 
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_md
@@ -2882,7 +2897,7 @@ msgstr "Labels Instellen"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 msgid "Set deletion delay for documents in the Trash"
-msgstr ""
+msgstr "Bepaal verwijdertermijn voor documenten in de prullenbak"
 
 #. module: documents
 #: model:mail.template,description:documents.mail_template_document_request_reminder
@@ -3155,14 +3170,14 @@ msgstr ""
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_res_config_settings_check_deletion_delay
 msgid "The deletion delay should be positive."
-msgstr ""
+msgstr "De verwijdertermijn moet positief zijn."
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "The links and requested documents are not shareable."
-msgstr ""
+msgstr "De links en de aangevraagde documenten kunnen niet worden gedeeld."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_model_id
@@ -3230,7 +3245,7 @@ msgstr ""
 #: code:addons/documents/models/documents_document.py:0
 #, python-format
 msgid "This file has been restored"
-msgstr ""
+msgstr "Dit bestand is hersteld"
 
 #. module: documents
 #. odoo-python
@@ -3239,6 +3254,8 @@ msgstr ""
 msgid ""
 "This file has been sent to the trash and will be deleted forever on the %s"
 msgstr ""
+"Dit bestand is naar de prullenbak verstuurd en wordt definitief verwijderd "
+"op %s"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__company_id
@@ -3437,7 +3454,7 @@ msgstr "Bevestigd"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_files_page
 msgid "Validity date:"
-msgstr ""
+msgstr "Geldigheidsdatum:"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_Videos
@@ -3548,7 +3565,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
 #, python-format
 msgid "You cannot upload content in this workspace"
-msgstr ""
+msgstr "Je kan geen inhoud in deze werkruimte uploaden"
 
 #. module: documents
 #. odoo-python
@@ -3676,7 +3693,7 @@ msgstr "file_extension"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_files_page
 msgid "files"
-msgstr ""
+msgstr "bestanden"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__is_readonly_model

@@ -52,6 +52,9 @@ msgid ""
 "                Or create templates here and send them for approval.\n"
 "                Please refer the"
 msgstr ""
+".\n"
+"                O crea modelli qui e inviali per l'approvazione.\n"
+"                Fai riferimento a"
 
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_kanban
@@ -158,7 +161,7 @@ msgstr "Tutti gli URL dinamici devono avere un segnaposto."
 #. module: whatsapp
 #: model_terms:ir.ui.view,arch_db:whatsapp.whatsapp_template_view_form
 msgid "Allow Multi"
-msgstr ""
+msgstr "Consenti multi"
 
 #. module: whatsapp
 #: model:ir.model.fields,field_description:whatsapp.field_whatsapp_account__allowed_company_ids

@@ -6,6 +6,7 @@
 # Wil Odoo, 2023
 # Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2023
 # Fernanda Alvarez, 2023
+# Lucia Pacheco, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-31 14:34+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Fernanda Alvarez, 2023\n"
+"Last-Translator: Lucia Pacheco, 2023\n"
 "Language-Team: Spanish (Latin America) (https://app.transifex.com/odoo/teams/41243/es_419/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -914,12 +915,12 @@ msgstr "Seleccione las primeras transacciones que desea importar"
 #. module: account_online_synchronization
 #: model:ir.model.fields.selection,name:account_online_synchronization.selection__account_bank_statement_line_transient__state__posted
 msgid "Posted"
-msgstr "Publicado"
+msgstr "Registrar"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.missing_bank_statement_line_search
 msgid "Posted Transactions"
-msgstr "Transacciones publicadas"
+msgstr "Transacciones registradas"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields.selection,name:account_online_synchronization.selection__account_online_account__fetching_status__processing
@@ -1136,7 +1137,7 @@ msgid ""
 "True if that connection still has accounts that are not linked to an Odoo "
 "journal"
 msgstr ""
-"Es \"true\" si la conexión aún tiene cuentas que no están vinculadas a un "
+"Es verdadero si la conexión aún tiene cuentas que no están vinculadas a un "
 "diario de Odoo"
 
 #. module: account_online_synchronization
@@ -1185,7 +1186,7 @@ msgstr ""
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "You can contact Odoo support"
-msgstr "Puede ponerse en contacto con el soporte de Odoo"
+msgstr "Puede ponerse en contacto con el equipo de soporte de Odoo"
 
 #. module: account_online_synchronization
 #. odoo-python

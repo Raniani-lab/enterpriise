@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:21+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -161,7 +162,7 @@ msgstr "Toon Twitter voorvertoning"
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Empty tweet"
-msgstr ""
+msgstr "Lege tweet"
 
 #. module: social_twitter
 #. odoo-javascript
@@ -452,7 +453,7 @@ msgstr "Deze tweet is verwijderd."
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "This tweet is outdated, please refresh the stream and try again."
-msgstr ""
+msgstr "Deze tweet is verouderd, vernieuw de stream en probeer het opnieuw."
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_follow
@@ -496,7 +497,7 @@ msgstr "Twitter consument geheime sleutel"
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_conversation_id
 msgid "Twitter Conversation ID"
-msgstr ""
+msgstr "ID twittergesprek"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.res_config_settings_view_form

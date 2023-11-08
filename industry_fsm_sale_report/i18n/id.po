@@ -33,7 +33,7 @@ msgstr ""
 #. module: industry_fsm_sale_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale_report.worksheet_custom_page
 msgid "Field Service Report:"
-msgstr ""
+msgstr "Laporan Layanan Lapangan:"
 
 #. module: industry_fsm_sale_report
 #: model:ir.model.fields,field_description:industry_fsm_sale_report.fsm_template_field4

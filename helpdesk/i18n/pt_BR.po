@@ -366,6 +366,10 @@ msgid ""
 " this by navigating to the General Settings and configuring the "
 "corresponding field.</span>"
 msgstr ""
+"<i class=\"fa fa-lightbulb-o\" role=\"img\"/><span class=\"ms-2\">Para usar "
+"um alias de e-mail, a primeira etapa é configurar um domínio de alias. Você "
+"pode fazer isso acessando as Configurações gerais e configurando o campo "
+"correspondente.</span>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -402,7 +406,7 @@ msgstr "<small class=\"text-end\">Estágio:</small>"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<small class=\"text-muted\">Assigned to</small>"
-msgstr ""
+msgstr "<small class=\"text-muted\">Atribuído a</small>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
@@ -421,11 +425,14 @@ msgid ""
 "title=\"By saving this change, the customer phone number will also be "
 "updated.\" invisible=\"not is_partner_phone_update\"/>"
 msgstr ""
+"<span class=\"fa fa-exclamation-triangle text-warning oe_edit_only\" "
+"title=\"By saving this change, the customer phone number will also be "
+"updated.\" invisible=\"not is_partner_phone_update\"/>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_activity
 msgid "<span class=\"m-1\"/>#"
-msgstr ""
+msgstr "<span class=\"m-1\"/>#"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
@@ -536,7 +543,7 @@ msgstr "<strong class=\"col-lg-2\">Gerenciado por</strong>"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<strong class=\"col-lg-3\">Reported on</strong>"
-msgstr ""
+msgstr "<strong class=\"col-lg-3\">Reportado em</strong>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -964,7 +971,7 @@ msgstr "Ruim"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Bill the time spent on your tickets to your customers"
-msgstr "Faturar o tempo gasto em seus chamados para seus clientes"
+msgstr "Fature o tempo gasto em seus chamados para seus clientes"
 
 #. module: helpdesk
 #. odoo-python
@@ -999,6 +1006,9 @@ msgid ""
 "Centralize, manage, share and grow your knowledge library. Allow customers "
 "to search your articles in the help center for answers to their questions."
 msgstr ""
+"Centralize, gerencie, compartilhe e amplie sua biblioteca de conhecimento. "
+"Permita que os clientes pesquisem seus artigos na central de ajuda para "
+"obter respostas."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -1032,7 +1042,7 @@ msgstr "Data de fechamento"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Close inactive tickets automatically"
-msgstr "Feche automaticamente os chamados inativos"
+msgstr "Fechar automaticamente os chamados inativos"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
@@ -1079,7 +1089,7 @@ msgstr "Fechado nos últimos 7 dias"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__allow_portal_ticket_closing
 msgid "Closure by Customers"
-msgstr "Fechamento por clientes"
+msgstr "Fechamento por cliente"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_tag__color
@@ -1173,7 +1183,7 @@ msgstr "Data de criação"
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.email_template_action_helpdesk
 msgid "Create a new template"
-msgstr "Criar um novo template"
+msgstr "Criar um novo modelo"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_team_action
@@ -1350,8 +1360,7 @@ msgid ""
 "Day to reach the stage of the SLA, without taking the working calendar into "
 "account"
 msgstr ""
-"Dia para chegar ao estágio do SLA, sem levar em conta o calendário de "
-"trabalho"
+"Dia para chegar ao estágio do SLA, sem considerar o calendário de trabalho"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_status__deadline
@@ -1366,7 +1375,7 @@ msgstr "Prazo final"
 #: code:addons/helpdesk/static/src/views/helpdesk_ticket_pivot/helpdesk_ticket_pivot_model.js:0
 #, python-format
 msgid "Deadline reached"
-msgstr ""
+msgstr "Prazo atingido"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_defaults
@@ -1535,7 +1544,7 @@ msgid ""
 "Enter the <b>subject</b> of your ticket <br/><i>(e.g. Problem with my "
 "installation, Wrong order, etc.).</i>"
 msgstr ""
-"Digite o <b>assunto</b> de seu chamado<br/><i> ( ex.: Problema com minha "
+"Digite o <b>assunto</b> do seu chamado<br/><i> (ex.: Problema com minha "
 "instalação, pedido errado, etc.).</i>"
 
 #. module: helpdesk
@@ -1606,7 +1615,7 @@ msgstr "Acompanhe os chamados de todas as equipes"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.portal_my_home_helpdesk_ticket
 msgid "Follow all your helpdesk tickets"
-msgstr ""
+msgstr "Acompanhe todos os seus chamados da central de ajuda"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search_base
@@ -1662,7 +1671,7 @@ msgstr "Obter chamados por meio de um formulário online"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Grant discounts, free products or free shipping"
-msgstr ""
+msgstr "Conceda descontos, produtos gratuitos ou frete grátis"
 
 #. module: helpdesk
 #. odoo-python
@@ -1955,7 +1964,7 @@ msgstr "Ícone para indicar uma atividade excepcional."
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_needaction
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Se marcado, novas mensagens solicitarão sua atenção."
+msgstr "Se marcado, há novas mensagens precisando de sua atenção."
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_has_error
@@ -1963,7 +1972,7 @@ msgstr "Se marcado, novas mensagens solicitarão sua atenção."
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__message_has_error
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr "Se marcado, algumas mensagens têm um erro de entrega."
+msgstr "Se marcado, há mensagens com erros de entrega."
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__portal_show_rating
@@ -2047,7 +2056,7 @@ msgid ""
 "team so that they can be displayed on the portal."
 msgstr ""
 "É necessário habilitar as avaliações de clientes nas configurações da sua "
-"equipe de central de ajuda para que elas possam ser exibidas no portal."
+"equipe da central de ajuda para que elas possam ser exibidas no portal."
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__duration_tracking
@@ -2074,7 +2083,7 @@ msgstr "Status no Kanban"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__kanban_state_label
 msgid "Kanban State Label"
-msgstr "Rótulo da situação no Kanban"
+msgstr "Rótulo do status no Kanban"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__legend_done
@@ -2089,7 +2098,7 @@ msgstr "Conhecimento"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_digest_digest__kpi_helpdesk_tickets_closed_value
 msgid "Kpi Helpdesk Tickets Closed Value"
-msgstr "Kpi de valor de fechamento dos chamados da central de ajuda"
+msgstr "KPI – Valor de fechamento dos chamados da central de ajuda"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_data
@@ -2160,6 +2169,9 @@ msgid ""
 " to search your forum posts in the help center for answers to their "
 "questions."
 msgstr ""
+"Permita que seus clientes respondam às perguntas uns dos outros em um fórum."
+" Permita que os clientes pesquisem publicações do seu fórum na central de "
+"ajuda para obter respostas."
 
 #. module: helpdesk
 #. odoo-javascript
@@ -2176,7 +2188,7 @@ msgid ""
 "Let's go back to the <b>kanban view</b> to get an overview of your next "
 "tickets."
 msgstr ""
-"Vamos voltar ao <b>modo de exibição kanban</b> para obter uma visão geral "
+"Vamos voltar ao <b>modo de exibição Kanban</b> para obter uma visão geral "
 "dos seus próximos chamados."
 
 #. module: helpdesk
@@ -2506,7 +2518,7 @@ msgstr "Número de erros"
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_needaction_counter
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr "Número de mensagens que requerem ação"
+msgstr "Número de mensagens que requerem uma ação"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_has_error_counter
@@ -2748,9 +2760,9 @@ msgid ""
 "- followers: only followers of the related document or members of following channels\n"
 msgstr ""
 "Política para publicar uma mensagem no documento usando o MailGateway.\n"
-"- Todos: qualquer um pode escrever\n"
-"- Usuários: somente usuários autenticados\n"
-"- Seguidores: apenas seguidores do documento relacionado ou membros dos seguintes canais\n"
+"– Todos: qualquer um pode escrever\n"
+"– Usuários: somente usuários autenticados\n"
+"– Seguidores: apenas seguidores do documento relacionado ou membros dos seguintes canais\n"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__access_url
@@ -2860,7 +2872,7 @@ msgstr "Avaliações no site"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_tree
 msgid "Reach Stage"
-msgstr "Alcance o estágio"
+msgstr "Atinja o estágio"
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_sla_status__status__reached
@@ -2870,7 +2882,7 @@ msgstr "Atingido"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_status__reached_datetime
 msgid "Reached Date"
-msgstr "Data alcançada"
+msgstr "Data em que foi atingido"
 
 #. module: helpdesk
 #. odoo-python
@@ -2920,7 +2932,7 @@ msgstr "Referência"
 #. module: helpdesk
 #: model:mail.message.subtype,name:helpdesk.mt_ticket_refund_status
 msgid "Refund Status"
-msgstr ""
+msgstr "Status do reembolso"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_credit_notes
@@ -2935,7 +2947,7 @@ msgstr "Reparo"
 #. module: helpdesk
 #: model:mail.message.subtype,name:helpdesk.mt_ticket_repair_status
 msgid "Repair Status"
-msgstr ""
+msgstr "Status do reparo"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_product_repairs
@@ -2965,7 +2977,7 @@ msgstr "Restaurar"
 #. module: helpdesk
 #: model:mail.message.subtype,name:helpdesk.mt_ticket_return_status
 msgid "Return Status"
-msgstr ""
+msgstr "Status da devolução"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -3071,7 +3083,7 @@ msgstr "Status do SLA: sucesso"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search_base
 msgid "SLA Success"
-msgstr "Sucesso do SLA"
+msgstr "Sucesso de SLA"
 
 #. module: helpdesk
 #. odoo-javascript
@@ -3132,7 +3144,7 @@ msgstr "Agende sua <b>atividade</b>."
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Search <span class=\"nolabel\"> (in Content)</span>"
-msgstr "Procurar <span class=\"nolabel\"> (no conteúdo)</span>"
+msgstr "Buscar <span class=\"nolabel\">(no conteúdo)</span>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_search
@@ -3158,7 +3170,7 @@ msgstr "Buscar em mensagens"
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Search in Reference"
-msgstr "Buscar em referência"
+msgstr "Buscar na referência"
 
 #. module: helpdesk
 #. odoo-python
@@ -3256,6 +3268,9 @@ msgid ""
 "customers to search your eLearning courses in the help center for answers to"
 " their questions."
 msgstr ""
+"Compartilhe apresentações e vídeos e organize-os em cursos. Permita que os "
+"clientes pesquisem seus cursos de e-Learning na central de ajuda para obter "
+"respostas."
 
 #. module: helpdesk
 #: model:res.groups,name:helpdesk.group_use_rating
@@ -3281,7 +3296,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_status__sla_id
 msgid "Sla"
-msgstr "Sla"
+msgstr "SLA"
 
 #. module: helpdesk
 #: model:helpdesk.stage,name:helpdesk.stage_solved
@@ -3588,7 +3603,7 @@ msgstr ""
 #: code:addons/helpdesk/models/helpdesk_ticket.py:0
 #, python-format
 msgid "This ticket was closed %s hours after its SLA deadline."
-msgstr ""
+msgstr "Esse chamado foi encerrado %s horas após o prazo de SLA."
 
 #. module: helpdesk
 #. odoo-python
@@ -3596,6 +3611,7 @@ msgstr ""
 #, python-format
 msgid "This ticket was successfully closed %s hours before its SLA deadline."
 msgstr ""
+"Esse chamado foi encerrado com sucesso %s horas antes do prazo de SLA."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_confirmation_wizard
@@ -3959,7 +3975,7 @@ msgstr "Utilize as <b>atividades</b> para organizar seu trabalho diário."
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_alias
 msgid "Use Alias"
-msgstr ""
+msgstr "Usar alias"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__use_coupons
@@ -4047,7 +4063,7 @@ msgid ""
 "            Support is mainly provided in English. We can also assist in Spanish, French, and Dutch."
 msgstr ""
 "Oferecemos suporte 24 horas por dia, 7 dias por semana. As respostas aos chamados geralmente são fornecidas em até dois dias úteis.<br>\n"
-"O suporte é fornecido principalmente em inglês. Também podemos prestar assistência em espanhol, francês e holandês."
+"O suporte é fornecido principalmente em inglês. Também podemos prestar assistência em português, espanhol, francês e holandês."
 
 #. module: helpdesk
 #: model:helpdesk.tag,name:helpdesk.tag_website

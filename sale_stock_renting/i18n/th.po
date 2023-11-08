@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Rasareeyar Lappiam, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:21+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Rasareeyar Lappiam, 2023\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,6 +55,8 @@ msgid ""
 "A new rental period will not propagate to stock pickings. You may need to "
 "manually change that."
 msgstr ""
+"ระยะเวลาการเช่าใหม่จะไม่เผยแพร่ไปยังการเลือกหุ้น "
+"คุณอาจต้องเปลี่ยนสิ่งนั้นด้วยตนเอง"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,help:sale_stock_renting.field_res_company__padding_time
@@ -234,7 +237,7 @@ msgstr "ย้ายการเช่า:"
 #: model:ir.model.fields,field_description:sale_stock_renting.field_res_config_settings__group_rental_stock_picking
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form
 msgid "Rental pickings"
-msgstr ""
+msgstr "การเลือกเช่า"
 
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_rental_order_wizard_line
@@ -343,12 +346,12 @@ msgstr "ล็อตไม่พร้อมใช้งาน"
 #. module: sale_stock_renting
 #: model:res.groups,name:sale_stock_renting.group_rental_stock_picking
 msgid "Use pickings for rental orders"
-msgstr ""
+msgstr "ใช้การเบิกสินค้าสำหรับใบสั่งเช่า"
 
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form
 msgid "Use stock pickings for rental orders"
-msgstr ""
+msgstr "ใช้การเบิกสินค้าในสต๊อกสำหรับใบสั่งเช่า"
 
 #. module: sale_stock_renting
 #. odoo-javascript

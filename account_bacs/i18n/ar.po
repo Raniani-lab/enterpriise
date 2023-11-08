@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Wil Odoo, 2023
+# Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -988,6 +989,11 @@ msgid ""
 "- 'active' means that this DDI can be used to pay invoices. \n"
 "- 'closed' designates a DDI that has been marked as not to use anymore without invalidating the previous transactions done with it.- 'revoked' means the DDI has been signaled as fraudulent by the customer. It cannot be used anymore, and should not ever have been. You will probably need to refund the related invoices, if any.\n"
 msgstr ""
+"حالة التوكيل المختار.\n"
+"- 'مسودة' تعني أن DDI لا يزال بحاجة للتأكيد قبل أن يُستخدم.\n"
+"- 'نشط' تعني أنه من الممكن استخدام DDI لدفع الفواتير.\n"
+"- 'مغلق' ترمز لـ DDI الذي لم يعد من الممكن استخدامه، دون إبطال صلاحية المعاملات التي تمت من خلاله.\n"
+"- 'ملغي' تعني أن العميل أشار إلى DDI مزيف. لم يعد من الممكن استخدامه، ولم يكن ينبغي أن يُستخدم أبداً. سوف تحتاج إلى مراجعة قيم كافة الفواتير المرتبطة به إن وُجدت.\n"
 
 #. module: account_bacs
 #: model:ir.model.fields,help:account_bacs.field_bacs_ddi__name

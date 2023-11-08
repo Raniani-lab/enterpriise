@@ -28,7 +28,7 @@ msgstr "Aktif"
 #. module: product_unspsc
 #: model:ir.model.fields,field_description:product_unspsc.field_product_unspsc_code__applies_to
 msgid "Applies To"
-msgstr ""
+msgstr "Diterapkan Ke"
 
 #. module: product_unspsc
 #: model:ir.model.fields,field_description:product_unspsc.field_product_unspsc_code__code
@@ -59,6 +59,7 @@ msgstr "ID"
 #: model:ir.model.fields,help:product_unspsc.field_product_unspsc_code__applies_to
 msgid "Indicate if this code could be used in products or in UoM"
 msgstr ""
+"Indikasikan bila kode ini dapat digunakan di produk atau di Satuan Ukuran"
 
 #. module: product_unspsc
 #: model:ir.model.fields,field_description:product_unspsc.field_product_unspsc_code__write_uid
@@ -89,12 +90,12 @@ msgstr "Satuan Produk"
 #. module: product_unspsc
 #: model:ir.model,name:product_unspsc.model_product_unspsc_code
 msgid "Product and UOM Codes from UNSPSC"
-msgstr ""
+msgstr "Kode Produk dan Satuan Ukuran dari UNSPSC"
 
 #. module: product_unspsc
 #: model:ir.model.fields,help:product_unspsc.field_uom_uom__unspsc_code_id
 msgid "The UNSPSC code related to this UoM. "
-msgstr ""
+msgstr "Kode UNSPSC terkait ke Satuan Ukuran ini."
 
 #. module: product_unspsc
 #: model:ir.model.fields,help:product_unspsc.field_product_product__unspsc_code_id
@@ -103,11 +104,13 @@ msgid ""
 "The UNSPSC code related to this product.  Used for edi in Colombia, Peru, "
 "Mexico and Denmark"
 msgstr ""
+"Kode UNSPSC terkait produk ini. Digunakan untuk edi di Kolombia, Peru, "
+"Meksiko dan Denmark"
 
 #. module: product_unspsc
 #: model_terms:ir.ui.view,arch_db:product_unspsc.product_template_unspsc
 msgid "UNSPSC"
-msgstr ""
+msgstr "UNSPSC"
 
 #. module: product_unspsc
 #: model:ir.model.fields,field_description:product_unspsc.field_product_product__unspsc_code_id
@@ -116,7 +119,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:product_unspsc.view_product_unspsc_code_form
 #: model_terms:ir.ui.view,arch_db:product_unspsc.view_product_uom_categ_tree_unspsc
 msgid "UNSPSC Category"
-msgstr ""
+msgstr "KategoriUNSPSC"
 
 #. module: product_unspsc
 #: model:ir.model.fields.selection,name:product_unspsc.selection__product_unspsc_code__applies_to__uom

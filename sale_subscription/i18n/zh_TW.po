@@ -1083,7 +1083,7 @@ msgstr "活動"
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.mail_activity_plan_menu_config_subscription
 msgid "Activity Plan"
-msgstr ""
+msgstr "活動計劃"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_type_id
@@ -1303,19 +1303,19 @@ msgstr "自動續訂成功。免費訂購。下次發票：%(inv)s。沒有發�
 #: model:ir.model,name:sale_subscription.model_base_automation
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__automation_id
 msgid "Automation Rule"
-msgstr ""
+msgstr "自動化規則"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__name
 msgid "Automation Rule Name"
-msgstr ""
+msgstr "自動化規則名稱"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_alert_action
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_alert
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_tree
 msgid "Automation Rules"
-msgstr ""
+msgstr "自動化規則"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_avg
@@ -1827,7 +1827,7 @@ msgid ""
 "Delay after the trigger date. You can put a negative number if you need a "
 "delay before the trigger date, like sending a reminder 15 minutes before a "
 "meeting."
-msgstr ""
+msgstr "觸發日期之後延遲多久才執行操作。若想在觸發日期之前執行操作，可以輸入負數，例如在會議開始前 15 分鐘發送提醒。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_range
@@ -2170,7 +2170,7 @@ msgstr "若不設置，自動付款將會失敗。"
 msgid ""
 "If present, this condition must be satisfied before executing the automation"
 " rule."
-msgstr ""
+msgstr "如果存在，則在執行自動化規則前必須滿足該條件。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__filter_pre_domain
@@ -2422,7 +2422,7 @@ msgstr "讓我們前往產品目錄，建立我們的第一個定期訂購產品
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__log_webhook_calls
 msgid "Log Calls"
-msgstr ""
+msgstr "通話記錄"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log_report__log_currency_id
@@ -2608,7 +2608,7 @@ msgstr "模型名稱"
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__model_id
 msgid "Model on which the automation rule runs."
-msgstr ""
+msgstr "運行自動化規則的模型。"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__trigger_condition__on_create_or_write
@@ -3242,7 +3242,7 @@ msgstr "原因"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__record_getter
 msgid "Record Getter"
-msgstr ""
+msgstr "記錄獲取器"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__is_subscription
@@ -3697,14 +3697,14 @@ msgstr "顯示健康度狀態"
 msgid ""
 "Some triggers need a reference to a selection field. This field is used to "
 "store it."
-msgstr ""
+msgstr "某些觸發器需要選擇欄位的引用。這個欄位就是用來儲存的。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_field_ref
 msgid ""
 "Some triggers need a reference to another field. This field is used to store"
 " it."
-msgstr ""
+msgstr "某些觸發器需要另一個欄位的引用。這個欄位就是用來儲存它的。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__source_id
@@ -4087,7 +4087,7 @@ msgstr ""
 msgid ""
 "The automation rule will be triggered if and only if one of these fields is "
 "updated.If empty, all fields are watched."
-msgstr ""
+msgstr "如果為空，則所有欄位都會被監視。"
 
 #. module: sale_subscription
 #. odoo-python
@@ -4241,7 +4241,7 @@ msgstr "這個工具條允許您根據安排的事件來過濾商機。"
 msgid ""
 "This code will be run to find on which record the automation rule should be "
 "run."
-msgstr ""
+msgstr "該代碼將用於查找應在哪條記錄上運行自動化規則。"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_form
@@ -4366,12 +4366,12 @@ msgstr "觸發日期"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_selection_field_id
 msgid "Trigger Field"
-msgstr ""
+msgstr "觸發欄位"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_field_ref_model_name
 msgid "Trigger Field Model"
-msgstr ""
+msgstr "觸發欄位模型"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trigger_field_ids
@@ -4391,12 +4391,12 @@ msgstr "觸發時間"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_field_ref
 msgid "Trigger Reference"
-msgstr ""
+msgstr "觸發參考"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_field_ref_display_name
 msgid "Trigger Reference Display Name"
-msgstr ""
+msgstr "觸發參考顯示名稱"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_alert_action
@@ -4592,7 +4592,7 @@ msgstr "我們不希望你就這樣離開我們。"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__webhook_uuid
 msgid "Webhook UUID"
-msgstr ""
+msgstr "Webhook 唯一識別碼UUID"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__website_id
@@ -4619,7 +4619,7 @@ msgstr "星期"
 msgid ""
 "When calculating a day-based timed condition, it is possibleto use a "
 "calendar to compute the date based on working days."
-msgstr ""
+msgstr "在計算以天為單位的定時條件時，可以使用日曆來計算以工作日為單位的日期。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_id

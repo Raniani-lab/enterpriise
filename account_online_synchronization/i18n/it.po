@@ -37,7 +37,7 @@ msgstr ""
 #: code:addons/account_online_synchronization/static/src/components/refresh_spin_journal_widget/refresh_spin_journal_widget.xml:0
 #, python-format
 msgid "0 transaction fetched"
-msgstr ""
+msgstr "0 transazioni recuperate"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_form
@@ -206,7 +206,7 @@ msgstr "Account Online Link"
 #. module: account_online_synchronization
 #: model:ir.actions.server,name:account_online_synchronization.online_sync_cron_waiting_synchronization_ir_actions_server
 msgid "Account: Journal online Waiting Synchronization"
-msgstr ""
+msgstr "Conto: registro online in attesa di sincronizzazione"
 
 #. module: account_online_synchronization
 #: model:ir.actions.server,name:account_online_synchronization.online_sync_cron_ir_actions_server
@@ -968,7 +968,7 @@ msgstr "Token di aggiornamento"
 #: code:addons/account_online_synchronization/models/account_journal.py:0
 #, python-format
 msgid "Report Issue"
-msgstr ""
+msgstr "Segnala problema"
 
 #. module: account_online_synchronization
 #. odoo-python
@@ -1007,7 +1007,7 @@ msgstr ""
 #: code:addons/account_online_synchronization/static/src/components/refresh_spin_journal_widget/refresh_spin_journal_widget.xml:0
 #, python-format
 msgid "See error"
-msgstr ""
+msgstr "Vedi errore"
 
 #. module: account_online_synchronization
 #. odoo-python
@@ -1187,6 +1187,7 @@ msgstr "Puoi contattare l'assistenza Odoo"
 #, python-format
 msgid "You can only execute this action for bank-synchronized journals."
 msgstr ""
+"Puoi eseguire l'azione solo per i registri sincronizzati con la banca."
 
 #. module: account_online_synchronization
 #. odoo-python
@@ -1261,7 +1262,7 @@ msgstr "Rappresentazione di un conto bancario online"
 #: code:addons/account_online_synchronization/static/src/components/refresh_spin_journal_widget/refresh_spin_journal_widget.xml:0
 #, python-format
 msgid "transactions fetched"
-msgstr ""
+msgstr "transazioni recuperate"
 
 #. module: account_online_synchronization
 #. odoo-javascript

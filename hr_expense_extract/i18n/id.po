@@ -476,7 +476,7 @@ msgstr "Rating"
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.expense_sample_register_view_form
 msgid "Register Payment"
-msgstr "Daftarkan Pembayara"
+msgstr "Daftarkan Pembayaran"
 
 #. module: hr_expense_extract
 #: model:ir.actions.act_window,name:hr_expense_extract.action_expense_sample_register

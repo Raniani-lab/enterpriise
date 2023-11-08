@@ -3,8 +3,8 @@
 # 	* appointment
 # 
 # Translators:
-# Malaz Abuidris <msea@odoo.com>, 2023
 # Wil Odoo, 2023
+# Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1286,7 +1286,7 @@ msgstr "صناديق الاختيار (إجابات متعددة) "
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
 msgid "Choose your appointment"
-msgstr ""
+msgstr "اختر موعدك "
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_resource__company_id
@@ -1394,7 +1394,7 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
 msgid "Continue <span class=\"oi oi-arrow-right\"/>"
-msgstr ""
+msgstr "استمرار <span class=\"oi oi-arrow-right\"/> "
 
 #. module: appointment
 #. odoo-javascript
@@ -1482,7 +1482,7 @@ msgstr "التاريخ"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Date &amp; time"
-msgstr ""
+msgstr "الوقت والتاريخ "
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_manage_leaves_view_form
@@ -1520,6 +1520,8 @@ msgid ""
 "Defines the type of video call link that will be used for the generated "
 "events. Keep it empty to prevent generating meeting url."
 msgstr ""
+"يحدد نوع رابط مكالمة الفيديو الذي سيتم استخدامه للأحداث التي تم إنشاؤها. "
+"أبقه فارغًا لمنع إنشاء عنوان url للاجتماع. "
 
 #. module: appointment
 #: model:appointment.type,name:appointment.appointment_type_dental_care
@@ -1602,7 +1604,7 @@ msgstr "المدة"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Email*"
-msgstr ""
+msgstr "البريد الإلكتروني* "
 
 #. module: appointment
 #. odoo-python
@@ -1626,7 +1628,7 @@ msgstr "تاريخ الانتهاء"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__end_datetime
 msgid "End Datetime"
-msgstr ""
+msgstr "وقت وتاريخ الانتهاء "
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_slot__end_datetime
@@ -1693,7 +1695,7 @@ msgstr "العرض في الواجعة الخلفية "
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Full name*"
-msgstr ""
+msgstr "الاسم الكامل* "
 
 #. module: appointment
 #. odoo-javascript
@@ -1762,7 +1764,7 @@ msgstr "يحتوي على رسالة "
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "How to join"
-msgstr ""
+msgstr "كيفية الانضمام "
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__assign_method
@@ -1827,6 +1829,7 @@ msgid ""
 "If set an email will be sent to the customer when the appointment is "
 "canceled."
 msgstr ""
+"إذا كان محدداً، سيتم إرسال رسالة بريد الكتروني إلى العميل عند إلغاء الموعد. "
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__booked_mail_template_id
@@ -1834,6 +1837,8 @@ msgid ""
 "If set an email will be sent to the customer when the appointment is "
 "confirmed."
 msgstr ""
+"إذا كان محدداً، سيتم إرسال رسالة بريد الكتروني إلى العميل عند تأكيد الموعد."
+"  "
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_resource__active
@@ -1912,7 +1917,7 @@ msgstr "روابط الدعوة "
 #. module: appointment
 #: model:mail.template,description:appointment.attendee_invitation_mail_template
 msgid "Invitation email to new attendees of an appointment"
-msgstr ""
+msgstr "بريد إلكتروني لدعوة الحاضرين الجدد للموعد "
 
 #. module: appointment
 #: model:mail.template,subject:appointment.attendee_invitation_mail_template
@@ -1999,7 +2004,7 @@ msgstr "آخر تحديث في"
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__allow_guests
 msgid "Let attendees invite guests when registering a meeting."
-msgstr ""
+msgstr "أتح للحاضرين دعوة الضيوف عند تسجيل اجتماع. "
 
 #. module: appointment
 #. odoo-javascript
@@ -2063,7 +2068,7 @@ msgstr "يبدو رائعًا!"
 #: code:addons/appointment/static/src/xml/appointment_resources.xml:0
 #, python-format
 msgid "Make your choice"
-msgstr ""
+msgstr "اتخذ قرارك "
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__resource_manage_capacity
@@ -2113,7 +2118,7 @@ msgstr "اجتمع معي "
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_calendar_event__videocall_redirection
 msgid "Meeting redirection URL"
-msgstr ""
+msgstr "رابط URL لإعادة توجيه الاجتماع "
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
@@ -2128,7 +2133,7 @@ msgstr "خطأ في تسليم الرسائل"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Message from the Organizer"
-msgstr ""
+msgstr "رسائل من المنظم "
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_ids
@@ -2253,12 +2258,12 @@ msgstr "عدد الرسائل الحادث بها خطأ في التسليم"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
 msgid "Number of people"
-msgstr ""
+msgstr "عدد الأشخاص "
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__event_videocall_source__discuss
 msgid "Odoo Discuss"
-msgstr ""
+msgstr "تطبيق مناقشة أودو "
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_onboarding_onboarding
@@ -2364,12 +2369,12 @@ msgstr "الماضي "
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_calendar_event__appointment_booker_id
 msgid "Person who is booking the appointment"
-msgstr ""
+msgstr "الشخص الذي يقوم بحجز الموعد "
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Phone number*"
-msgstr ""
+msgstr "رقم الهاتف* "
 
 #. module: appointment
 #. odoo-python
@@ -2383,7 +2388,7 @@ msgstr "رقم الهاتف: %(phone)s "
 #: code:addons/appointment/controllers/appointment.py:0
 #, python-format
 msgid "Phone: %s"
-msgstr ""
+msgstr "الهاتف: %s "
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__assign_method__resource_time
@@ -2398,14 +2403,14 @@ msgstr "اختر جدول عمل... "
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_resource_view_form
 msgid "Pick a work schedule to further restrict opening hours."
-msgstr ""
+msgstr "اختر جدول عمل لتقييد ساعات العمل بشكل أكبر. "
 
 #. module: appointment
 #. odoo-javascript
 #: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Pick your availabilities"
-msgstr ""
+msgstr "قم باختيار أوقات التوافر "
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_question__placeholder
@@ -2440,7 +2445,7 @@ msgstr "معاينة"
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__category__punctual
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_search
 msgid "Punctual"
-msgstr ""
+msgstr "منضبط "
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer__question_id
@@ -2527,7 +2532,7 @@ msgstr "تقويم المَوْرد "
 #. module: appointment
 #: model:ir.ui.menu,name:appointment.menu_appointment_resource_leaves
 msgid "Resource Leaves"
-msgstr ""
+msgstr "إجازات المورِد "
 
 #. module: appointment
 #: model:ir.actions.act_window,name:appointment.appointment_resource_action
@@ -2545,12 +2550,12 @@ msgstr "الموارد"
 #. module: appointment
 #: model:ir.ui.menu,name:appointment.menu_appointment_schedule_resource_booking
 msgid "Resources Bookings"
-msgstr ""
+msgstr "حجوزات الموارد "
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_calendar_event__resources_on_leave
 msgid "Resources intersecting with leave time"
-msgstr ""
+msgstr "الموارد المتقاطعة مع وقت الإجازة "
 
 #. module: appointment
 #. odoo-python
@@ -2562,7 +2567,7 @@ msgstr "المسؤول "
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_tree
 msgid "Restrict to Resource"
-msgstr ""
+msgstr "التقييد للمورد "
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__restrict_to_resource_ids
@@ -2572,7 +2577,7 @@ msgstr "التقييد للموارد فقط "
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_tree
 msgid "Restrict to User"
-msgstr ""
+msgstr "التقييد للمستخدم "
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__restrict_to_user_ids
@@ -2686,14 +2691,14 @@ msgstr "قم بتحديد الوقت ثم عيّن تلقائياً "
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
 msgid "Select a date &amp; time"
-msgstr ""
+msgstr "اختر التاريخ والوقت "
 
 #. module: appointment
 #. odoo-javascript
 #: code:addons/appointment/static/src/xml/appointment_slots.xml:0
 #, python-format
 msgid "Select a time"
-msgstr ""
+msgstr "اختر وقتاً "
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.calendar_event_view_form_gantt_booking
@@ -2887,7 +2892,7 @@ msgstr "المستخدمون/الموارد المحددون "
 #: model:ir.actions.server,name:appointment.calendar_event_action_all_users_appointments
 #: model:ir.ui.menu,name:appointment.menu_appointment_schedule_staff_appointment
 msgid "Staff Bookings"
-msgstr ""
+msgstr "حجوزات الموظفين "
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_manage_leaves__leave_start_dt
@@ -2897,7 +2902,7 @@ msgstr "تاريخ البدء "
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__start_datetime
 msgid "Start Datetime"
-msgstr ""
+msgstr "وقت وتاريخ البدء "
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_booking_line__event_start
@@ -3056,7 +3061,7 @@ msgstr "أول فترة متاحة هي "
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
 msgid "There is currently no appointment available"
-msgstr ""
+msgstr "لا يوجد موعد متاح حالياً "
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_appointments
@@ -3267,6 +3272,17 @@ msgid ""
 "\n"
 "            - Anytime: the user will create and share to another user an appointment type covering all their time slots"
 msgstr ""
+"يُستخدم لتحديد فئة نوع الموعد هذا.\n"
+"\n"
+"        يمكن أن يكون واحدًا من:\n"
+"\n"
+"            - المتكررة: الفئة الافتراضية، فتحات متكررة أسبوعية. يمكن الوصول إليها من الموقع\n"
+"\n"
+"            - المنضبطة: فتحات متكررة محدودة بين تاريخين. يمكن الوصول إليها من الموقع\n"
+"\n"
+"            - مخصص: سيقوم المستخدم بإنشاء نوع موعد مخصص ومشاركته مع مستخدم آخر مع فترات زمنية منتقاة بعناية\n"
+"\n"
+"            - في أي وقت: سيقوم المستخدم بإنشاء نوع موعد يغطي جميع الفترات الزمنية الخاصة به ومشاركته مع مستخدم آخر "
 
 #. module: appointment
 #: model:res.groups,name:appointment.group_appointment_user
@@ -3283,7 +3299,7 @@ msgstr "المستخدمون"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__event_videocall_source
 msgid "Videoconference Link"
-msgstr ""
+msgstr "رابط مؤتمر الفيديو "
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__website_message_ids
@@ -3311,6 +3327,8 @@ msgid ""
 "When set, only the time slots that match both the appointment type configuration and the work schedule\n"
 "        will appear as available"
 msgstr ""
+"عند التعيين، يتم فقط الفترات الزمنية التي تتطابق مع تكوين نوع الموعد وجدول العمل\n"
+"        سوف تظهر كما هو متاح "
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.staff_user_select
@@ -3333,12 +3351,12 @@ msgstr "ساعات العمل"
 #: code:addons/appointment/static/src/js/appointment_validation.js:0
 #, python-format
 msgid "You cannot invite more than 10 people"
-msgstr ""
+msgstr "لا يمكنك دعوة أكثر من 10 أشخاص "
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_details_column
 msgid "Your Appointment"
-msgstr ""
+msgstr "موعدك "
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
@@ -3349,7 +3367,7 @@ msgstr "لقد تم حجز موعدك! سنقوم بالتواصل معك قري
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Your appointment has successfully been booked!"
-msgstr ""
+msgstr "لقد تم حجز موعدك بنجاح! "
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
@@ -3394,7 +3412,7 @@ msgstr "مثال: \"ما هي الأعراض؟\" "
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "e.g. +1(605)691-3277"
-msgstr ""
+msgstr "مثال: +1(605)691-3277 "
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.calendar_event_view_form_gantt_booking
@@ -3423,6 +3441,9 @@ msgid ""
 "e.g. jane.doe@example.com\r\n"
 "..."
 msgstr ""
+"مثال: john.doe@email.com\r\n"
+"مثال: jane.doe@example.com\r\n"
+"..."
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
@@ -3431,11 +3452,14 @@ msgid ""
 "e.g. jane.doe@example.com\r\n"
 "..."
 msgstr ""
+"مثال: john.doe@email.com \r\n"
+"مثال: jane.doe@example.com\r\n"
+"..."
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "e.g. john.smith@example.com"
-msgstr ""
+msgstr "مثال: john.smith@example.com "
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form

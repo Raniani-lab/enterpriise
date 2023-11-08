@@ -5,6 +5,7 @@
 # Translators:
 # Wil Odoo, 2023
 # Iran Villalobos López, 2023
+# Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Iran Villalobos López, 2023\n"
+"Last-Translator: Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2023\n"
 "Language-Team: Spanish (Latin America) (https://app.transifex.com/odoo/teams/41243/es_419/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -318,7 +319,7 @@ msgstr ""
 "                <t t-out=\"format_datetime(dt=object.event_id.start, tz=object.mail_tz if not object.event_id.allday else None, dt_format='d', lang_code=object.env.lang) or ''\">4</t>\n"
 "            </div>\n"
 "            <div style=\"font-size: 12px; text-align: center; font-weight: bold; color: #ffffff; background-color: #875A7B;\">\n"
-"                <t t-out=\"format_datetime(dt=object.event_id.start, tz=object.mail_tz if not object.event_id.allday else None, dt_format='MMMM y', lang_code=object.env.lang) or ''\">Mayo2021</t>\n"
+"                <t t-out=\"format_datetime(dt=object.event_id.start, tz=object.mail_tz if not object.event_id.allday else None, dt_format='MMMM y', lang_code=object.env.lang) or ''\">Mayo 2021</t>\n"
 "            </div>\n"
 "            <div style=\"border-collapse: separate; color: #5F5F5F; text-align: center; font-size: 12px; border-bottom-end-radius: 3px; font-weight: bold ; border: 1px solid #875A7B; border-bottom-start-radius: 3px;\">\n"
 "                <t t-if=\"not object.event_id.allday\">\n"
@@ -530,7 +531,7 @@ msgstr ""
 "                    <li t-if=\"object.location\">Ubicación: <t t-out=\"object.location or ''\">Bruselas</t>\n"
 "                        (<a target=\"_blank\" t-attf-href=\"http://maps.google.com/maps?oi=map&amp;q={{ object.location }}\">Ver mapa</a>)\n"
 "                    </li>\n"
-"                    <li t-if=\"recurrent\">Cupando: <t t-out=\"object.recurrence_id.name or ''\">Cada 1 semanas, por 3 eventos</t></li>\n"
+"                    <li t-if=\"recurrent\">Cuándo: <t t-out=\"object.recurrence_id.name or ''\">Cada 1 semanas, por 3 eventos</t></li>\n"
 "                    <li t-if=\"not object.allday and object.duration\">Duración: <t t-out=\"('%dH%02d' % (object.duration,round(object.duration*60)%60)) or ''\">0H30</t></li>\n"
 "                    <li>Asistentes\n"
 "                    <ul>\n"
@@ -722,7 +723,7 @@ msgid ""
 "title=\"Create custom questions in backend\"/>Add Custom Questions"
 msgstr ""
 "<i class=\"fa fa-pencil me-2\" role=\"img\" aria-label=\"Edit\" "
-"title=\"Create custom questions in backend\"/>Agregar preguntas "
+"title=\"Crear preguntas personalizadas en el backend\"/>Agregar preguntas "
 "personalizadas"
 
 #. module: appointment
@@ -1673,7 +1674,7 @@ msgstr "Conecte su calendario"
 #. module: appointment
 #: model:onboarding.onboarding.step,title:appointment.appointment_onboarding_configure_calendar_provider_step
 msgid "Connect your calendar"
-msgstr "Conectar su calendario"
+msgstr "Conecte su calendario"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_res_partner
@@ -1962,12 +1963,12 @@ msgstr "Cada"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Extra Message on Confirmation"
-msgstr "Mensaje extra al confirmar"
+msgstr "Mensaje adicional al confirmar"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_confirmation
 msgid "Extra information provided once the appointment is booked."
-msgstr "Información extra que se indica una vez que se agenda la cita."
+msgstr "Información adicional que se muestra una vez que se agenda la cita."
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_home_appointment
@@ -1988,7 +1989,7 @@ msgstr "Para"
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__5
 msgid "Friday"
-msgstr "Viernes"
+msgstr "viernes"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__start_datetime
@@ -2402,7 +2403,7 @@ msgid ""
 "persons, ...)"
 msgstr ""
 "Gestionar la cantidad máxima de personas que un recurso puede manejar (por "
-"ejemplo, una meswa para 6 personas, ...) "
+"ejemplo, una mesa para 6 personas, ...) "
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__resource_manual_confirmation
@@ -2469,7 +2470,7 @@ msgstr "Mínimo"
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__1
 msgid "Monday"
-msgstr "Lunes"
+msgstr "lunes"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_question__question_type__text
@@ -2541,7 +2542,7 @@ msgstr "¡No se ha creado ningún tipo de cita personalizada!"
 #: model_terms:ir.actions.act_window,help:appointment.calendar_event_action_appointment_reporting
 #: model_terms:ir.actions.act_window,help:appointment.calendar_event_action_report_all
 msgid "No data yet!"
-msgstr "¡No hay datos aún!"
+msgstr "¡Todavía no hay datos!"
 
 #. module: appointment
 #. odoo-python
@@ -2718,7 +2719,7 @@ msgstr "Teléfono: %s"
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__assign_method__resource_time
 msgid "Pick User/Resource then Time"
-msgstr "Seleccione un usuario/recurso y luego el tiempo "
+msgstr "Seleccione un usuario o recurso y luego el tiempo "
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_manage_leaves_view_form
@@ -2928,7 +2929,7 @@ msgstr "Error al enviar SMS"
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__6
 msgid "Saturday"
-msgstr "Sábado"
+msgstr "sábado"
 
 #. module: appointment
 #: model:ir.ui.menu,name:appointment.menu_appointment_schedule_resources
@@ -3067,7 +3068,7 @@ msgstr "Secuencia"
 #. module: appointment
 #: model:onboarding.onboarding.step,title:appointment.appointment_onboarding_create_appointment_type_step
 msgid "Set your availabilities"
-msgstr "Configura tus disponibilidades"
+msgstr "Configure su disponibilidad"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -3483,12 +3484,12 @@ msgid ""
 "        When choosing amongst several possibilities, a selection screen will also be used, if website is installed."
 msgstr ""
 "Esta opción activa la visualización de los avatares de los miembros del personal o recursos durante el proceso de agendar la cita en el frontend.\n"
-"        Al elegir entre varias posibilidades, también se usará una pantalla de selección si tiene instalado Sitio Web."
+"        Al elegir entre varias posibilidades, también se usará una pantalla de selección si tiene instalado Sitio web."
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__4
 msgid "Thursday"
-msgstr "Jueves"
+msgstr "jueves"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_resource__tz
@@ -3557,7 +3558,7 @@ msgstr "Total:"
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__2
 msgid "Tuesday"
-msgstr "Martes"
+msgstr "martes"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_search
@@ -3655,7 +3656,7 @@ msgstr "Historial de comunicación del sitio web"
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__3
 msgid "Wednesday"
-msgstr "Miércoles"
+msgstr "miércoles"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__weekday
@@ -3729,7 +3730,7 @@ msgstr "días"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "e.g. \"During this meeting, we will...\""
-msgstr "por ejemplo:  \"Durante esta cita, veremos...\""
+msgstr "por ejemplo,  \"Durante esta cita, veremos...\""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -3744,12 +3745,12 @@ msgstr "por ejemplo, \"Demostración técnica\""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "e.g. \"Thank you for your trust, we look forward to meeting you!\""
-msgstr "por ejemplo: \"Gracias por confiar en nosotros, ¡nos vemos en el cita!\""
+msgstr "por ejemplo, \"Gracias por confiar en nosotros, ¡nos vemos en el cita!\""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "e.g. \"What are your symptoms?\""
-msgstr "por ejemplo: \"¿Cuáles son sus síntomas? "
+msgstr "por ejemplo, \"¿Cuáles son sus síntomas? "
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form

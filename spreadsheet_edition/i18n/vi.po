@@ -191,7 +191,7 @@ msgstr "Được tạo vào"
 #: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/odoo_line/odoo_line_config_panel.xml:0
 #, python-format
 msgid "Cumulative data"
-msgstr ""
+msgstr "Dữ liệu tích lũy"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

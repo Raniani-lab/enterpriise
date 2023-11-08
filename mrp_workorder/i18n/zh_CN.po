@@ -620,7 +620,7 @@ msgstr "指示异常活动的图标。"
 msgid ""
 "If this checkbox is ticked, the serial numbers lines for this operation type"
 " will be pre-filled in the shop floor."
-msgstr "如果勾选该复选框，则该操作类型的序列号行将预先填入车间。"
+msgstr "如果勾选该复选框，则该操作类型的序列号行将预先填入车间现场。"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__worksheet_document
@@ -738,17 +738,17 @@ msgstr "MO 概览报告"
 #. module: mrp_workorder
 #: model:res.groups,name:mrp_workorder.group_mrp_wo_tablet_timer
 msgid "Manage Work Order timer on Shop Floor"
-msgstr "管理车间的工单计时器"
+msgstr "管理车间现场的工单计时器"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.res_config_settings_view_form
 msgid "Manage your manufacturing orders from the shop floor app"
-msgstr "从车间应用程序管理生产订单"
+msgstr "从车间现场应用程序管理生产订单"
 
 #. module: mrp_workorder
 #: model:res.groups,name:mrp_workorder.group_mrp_wo_shop_floor
 msgid "Manage your manufacturing orders from the shop floor display app"
-msgstr "通过车间显示屏应用程序管理生产订单"
+msgstr "通过车间现场显示屏应用程序管理生产订单"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
@@ -911,7 +911,7 @@ msgstr "完成操作所需的员工人数。"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 msgid "Open Shop Floor"
-msgstr "开放商店楼层"
+msgstr "打开车间现场"
 
 #. module: mrp_workorder
 #. odoo-javascript
@@ -1050,7 +1050,7 @@ msgstr "请上传图片。"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_stock_picking_type__prefill_lot_tablet
 msgid "Pre-fill Lot/Serial Numbers in Shop Floor"
-msgstr "在车间预填批号/序列号"
+msgstr "在车间现场预填批号/序列号"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__previous_check_id
@@ -1342,14 +1342,14 @@ msgstr "设置新图片"
 #: model:ir.model.fields,field_description:mrp_workorder.field_res_config_settings__group_mrp_wo_shop_floor
 #: model:ir.ui.menu,name:mrp_workorder.menu_mrp_workorder_root
 msgid "Shop Floor"
-msgstr "商店楼层"
+msgstr "车间现场"
 
 #. module: mrp_workorder
 #. odoo-javascript
 #: code:addons/mrp_workorder/static/src/mrp_display/mrp_display.xml:0
 #, python-format
 msgid "Shop Floor Control Panel"
-msgstr "车间控制面板"
+msgstr "车间现场控制面板"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_routing_workcenter_tree_view_inherited
@@ -1643,9 +1643,9 @@ msgid ""
 "            The tablet provides worksheets for your workers and allow them to scrap products, track time,\n"
 "            launch a maintenance request, perform quality tests, etc."
 msgstr ""
-"使用桌面工作中心控制面板，直接在车间登记操作。\n"
-"            平板电脑为工人提供工作表，用于报废产品、追踪日期、\n"
-"            发送维护保养请求、进行质量测试等。"
+"使用工作台工作中心控制面板直接登记车间内的操作。\n"
+"            平板电脑为工人提供工作表，允许他们报废产品、跟踪时间、\n"
+"            启动维护请求、执行质量测试等。"
 
 #. module: mrp_workorder
 #. odoo-javascript

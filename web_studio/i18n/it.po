@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Sergio Zanchetta <primes2h@gmail.com>, 2023
-# Marianna Ciofani, 2023
 # Wil Odoo, 2023
+# Marianna Ciofani, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -107,7 +107,7 @@ msgstr "\"."
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "%(rule_string)s (%(model_name)s)"
-msgstr ""
+msgstr "%(rule_string)s (%(model_name)s)"
 
 #. module: web_studio
 #. odoo-python
@@ -237,7 +237,7 @@ msgstr "Azione da approvare:"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
 #, python-format
 msgid "Action to run"
-msgstr ""
+msgstr "Azione da eseguire"
 
 #. module: web_studio
 #. odoo-javascript
@@ -438,13 +438,15 @@ msgstr ""
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__group_id
 #, python-format
 msgid "Allowed Group"
-msgstr ""
+msgstr "Gruppo autorizzato"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_studio_approval_rule__responsible_id
 msgid ""
 "An activity will be assigned to this user when an approval is requested"
 msgstr ""
+"Un'attività verrà assegnata a questo utente quando viene richiesta "
+"un'approvazione."
 
 #. module: web_studio
 #. odoo-python
@@ -452,6 +454,7 @@ msgstr ""
 #, python-format
 msgid "An approval for '%(rule_name)s' has been requested on %(record_name)s"
 msgstr ""
+"È stata richiesta un'approvazione per \"%(rule_name)s\" in %(record_name)s"
 
 #. module: web_studio
 #. odoo-javascript
@@ -498,7 +501,7 @@ msgstr ""
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "Approvals missing"
-msgstr ""
+msgstr "Approvazioni mancanti"
 
 #. module: web_studio
 #. odoo-javascript
@@ -707,7 +710,7 @@ msgstr "Intestazione/piè di pagina commerciale"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.js:0
 #, python-format
 msgid "Buttons Properties"
-msgstr ""
+msgstr "Proprietà pulsanti"
 
 #. module: web_studio
 #. odoo-javascript
@@ -722,7 +725,7 @@ msgstr "Calendario"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
 #, python-format
 msgid "Call a method"
-msgstr ""
+msgstr "Chiama un metodo"
 
 #. module: web_studio
 #. odoo-javascript
@@ -761,14 +764,14 @@ msgstr "Può essere approvato"
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "Can't patch 'create', 'write' and 'unlink'."
-msgstr ""
+msgstr "Impossibile applicare patch \"crea\", \"scrivi\" e \"scollega\"."
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "Can't patch private methods."
-msgstr ""
+msgstr "Impossibile applicare patch metodi privati."
 
 #. module: web_studio
 #. odoo-javascript
@@ -839,7 +842,7 @@ msgstr "Scegliere un nome per l'applicazione"
 #: code:addons/web_studio/static/src/client_action/menu_creator/menu_creator.xml:0
 #, python-format
 msgid "Choose the name of the menu"
-msgstr ""
+msgstr "Scegli il nome del menu"
 
 #. module: web_studio
 #. odoo-javascript
@@ -952,7 +955,7 @@ msgstr "Configura modello"
 #: code:addons/web_studio/static/src/client_action/menu_creator/menu_creator.xml:0
 #, python-format
 msgid "Configure model"
-msgstr ""
+msgstr "Configura modello"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1175,7 +1178,7 @@ msgstr "Personalizzazioni"
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_xml/report_editor_xml.xml:0
 #, python-format
 msgid "DIFF"
-msgstr ""
+msgstr "DIFF"
 
 #. module: web_studio
 #. odoo-python
@@ -1559,12 +1562,12 @@ msgstr "Errore"
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
 #, python-format
 msgid "Exclusive Approval"
-msgstr ""
+msgstr "Approvazione esclusiva"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__exclusive_user
 msgid "Exclusive approval"
-msgstr ""
+msgstr "Approvazione esclusiva"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1710,6 +1713,8 @@ msgid ""
 "For compatibility purpose with base_automation,approvals on 'create', "
 "'write' and 'unlink' methods are forbidden."
 msgstr ""
+"Per motivi di compatibilità con base_automation, le approvazioni sui metodi "
+"\"crea\", \"scrivi\" e \"scollega\" sono vietate"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1882,6 +1887,8 @@ msgid ""
 "Header and footer are shared with other reports which may be impacted by the"
 " reset."
 msgstr ""
+"L'intestazione e il piè di pagina sono condivisi con altri report che "
+"possono essere influenzati dal reset."
 
 #. module: web_studio
 #. odoo-javascript
@@ -2013,7 +2020,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
 #, python-format
 msgid "Include header and footer"
-msgstr ""
+msgstr "Includi intestazione e piè di pagina"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_ui_menu__is_studio_configuration
@@ -2084,7 +2091,7 @@ msgstr "È la vista predefinita"
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "It lacks a method to check."
-msgstr ""
+msgstr "Manca un metodo di controllo."
 
 #. module: web_studio
 #. odoo-javascript
@@ -2120,7 +2127,7 @@ msgstr "Etichetta"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
 #, python-format
 msgid "Label of the button"
-msgstr ""
+msgstr "Etichetta del pulsante"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__write_uid
@@ -2141,7 +2148,7 @@ msgstr "Ultimo aggiornamento il"
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_xml/report_editor_xml.xml:0
 #, python-format
 msgid "Leave DIFF"
-msgstr ""
+msgstr "Lascia"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2271,7 +2278,7 @@ msgstr "Metodo"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
 #, python-format
 msgid "Method to run"
-msgstr ""
+msgstr "Metodo da eseguire"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2330,7 +2337,7 @@ msgstr "Modelli"
 #: code:addons/web_studio/static/src/client_action/xml_resource_editor/xml_resource_editor.xml:0
 #, python-format
 msgid "Modified by:"
-msgstr ""
+msgstr "Modificato da:"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_module_module
@@ -2563,7 +2570,7 @@ msgstr "Note"
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__notification_order
 #, python-format
 msgid "Notification Order"
-msgstr ""
+msgstr "Ordine di notifica"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__entries_count
@@ -2925,7 +2932,7 @@ msgstr "Nome resoconto"
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
 #, python-format
 msgid "Report preview not available"
-msgstr ""
+msgstr "Anteprima resoconto non disponibile"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3071,7 +3078,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
 #, python-format
 msgid "Run a Server Action"
-msgstr ""
+msgstr "Esegui azione server"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3297,6 +3304,8 @@ msgid ""
 "Some records were skipped because approvals were missing to"
 "                                    proceed with your request: "
 msgstr ""
+"Alcuni record sono stati saltati perché mancavano le approvazioni per poter"
+"                                    procedere con la tua richiesta:"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3420,7 +3429,7 @@ msgstr "Regola approvazione Studio"
 #: model:ir.actions.act_window,name:web_studio.studio_approval_rule_action
 #: model:ir.ui.menu,name:web_studio.menu_studio_approval_rule
 msgid "Studio Approval Rules"
-msgstr ""
+msgstr "Regole approvazione studio"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_ir_ui_menu__is_studio_configuration
@@ -3549,14 +3558,14 @@ msgstr "L'icona non è collegata a un allegato"
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The method %s does not exist on the model %s."
-msgstr ""
+msgstr "Il metodo %s non esiste nel modello %s."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.js:0
 #, python-format
 msgid "The method %s is private."
-msgstr ""
+msgstr "Il metodo %s è privato."
 
 #. module: web_studio
 #. odoo-python
@@ -3573,7 +3582,7 @@ msgstr "Il modello %s non esiste."
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The model %s doesn't exist."
-msgstr ""
+msgstr "Il modello %s non esiste."
 
 #. module: web_studio
 #. odoo-python
@@ -3601,7 +3610,7 @@ msgstr "Il campo correlato di un pulsante deve essere un molti a uno a %s."
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_model.js:0
 #, python-format
 msgid "The report is in error. Only editing the XML sources is permitted"
-msgstr ""
+msgstr "Il resoconto ha un errore. È possibile modificare solo le fonti XML"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3640,13 +3649,15 @@ msgid ""
 "There is no record on which this report can be previewed. Create at least "
 "one record to preview the report."
 msgstr ""
+"Non c'è nessun record su cui è possibile visualizzare l'anteprima di questo "
+"rapporto. Crea almeno un record per visualizzare l'anteprima del report."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
 #, python-format
 msgid "There is no record to preview"
-msgstr ""
+msgstr "Non c'è nessun record id cui visualizzare l'anteprima"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_studio_approval_rule__users_to_notify
@@ -3654,6 +3665,8 @@ msgid ""
 "These users will receive a notification via internal note when an approval "
 "is requested"
 msgstr ""
+"Questi utenti riceveranno una notifica tramite nota interna quando viene "
+"richiesta un'approvazione"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3708,6 +3721,8 @@ msgid ""
 "This message will be displayed to users that cannot proceed without this "
 "approval"
 msgstr ""
+"Questo messaggio verrà visualizzato dagli utenti che non possono procedere "
+"senza questa approvazione"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3789,6 +3804,9 @@ msgid ""
 "notifications for an approval request will only be sent once rules from "
 "previous levels have been validated"
 msgstr ""
+"Utilizzare questo campo per impostare la convalida a più livelli. Le "
+"attività successive e le notifiche per una richiesta di approvazione saranno"
+" inviate solo dopo la convalida delle regole dei livelli precedenti"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
@@ -3822,14 +3840,14 @@ msgstr "L'utente non è un membro del gruppo selezionato."
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__users_to_notify
 #, python-format
 msgid "Users to notify"
-msgstr ""
+msgstr "Utenti da notificare"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/xml_resource_editor/xml_resource_editor.xml:0
 #, python-format
 msgid "Uses:"
-msgstr ""
+msgstr "Usa:"
 
 #. module: web_studio
 #. odoo-python
@@ -3875,14 +3893,14 @@ msgstr "In attesa di approvazione"
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "Webhook Automations"
-msgstr ""
+msgstr "Automazioni webhook"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Webhooks"
-msgstr ""
+msgstr "Webhook"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3910,7 +3928,7 @@ msgstr "Benvenuto in"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/action_button/action_button.xml:0
 #, python-format
 msgid "What should the button do"
-msgstr ""
+msgstr "Cosa dovrebbe fare il pulsante"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4082,4 +4100,4 @@ msgstr "x_studio_"
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog.xml:0
 #, python-format
 msgid "{{ item.isInEdition ? 'Add selection' : 'Edit selection' }}"
-msgstr ""
+msgstr "{{ item.isInEdition ? 'Aggiungi selezione' : 'Modifica selezione' }}"

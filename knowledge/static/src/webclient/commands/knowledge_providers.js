@@ -21,7 +21,7 @@ KnowledgeExtraCommand.template = 'KnowledgeExtraCommandTemplate';
 
 const commandSetupRegistry = registry.category("command_setup");
 commandSetupRegistry.add("?", {
-    debounceDelay: 200,
+    debounceDelay: 500,
     emptyMessage: _t("No article found."),
     name: _t("articles"),
     placeholder: _t("Search for an article..."),
@@ -130,18 +130,18 @@ const fn = (hidden) => {
 };
 
 commandProviderRegistry.add("knowledge", {
-    debounceDelay: 200,
+    debounceDelay: 500,
     namespace: "?",
     provide: fn(false),
 });
 
 commandSetupRegistry.add("$", {
-    debounceDelay: 200,
+    debounceDelay: 500,
     emptyMessage: _t("No hidden articles found"),
     placeholder: _t("Search a hidden article to join"),
 });
 commandProviderRegistry.add("knowledge_members_only_articles", {
-    debounceDelay: 200,
+    debounceDelay: 500,
     namespace: "$",
     provide: fn(true),
 });

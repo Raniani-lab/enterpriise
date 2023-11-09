@@ -13,6 +13,8 @@ from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.exceptions import ValidationError
 from odoo.tests import Form, tagged, users, HttpCase
 from odoo.tools import mute_logger
+from odoo.fields import Command
+
 
 
 @tagged('appointment_slots')
@@ -32,7 +34,7 @@ class AppointmentTest(AppointmentCommon, HttpCase):
                 "start": datetime(2023, 6, 5, 8, 0),
                 "stop": datetime(2023, 6, 5, 9, 0),
                 "show_as": 'free',
-                "partner_ids": employee.partner_id,
+                "partner_ids": [(Command.set(employee.partner_id.ids))],
                 "attendee_ids": [(0, 0, {
                     "state": "accepted",
                     "availability": "free",
@@ -43,7 +45,7 @@ class AppointmentTest(AppointmentCommon, HttpCase):
                 "start": datetime(2023, 6, 5, 12, 0),
                 "stop": datetime(2023, 6, 5, 13, 0),
                 "show_as": 'busy',
-                "partner_ids": employee.partner_id,
+                "partner_ids": [(Command.set(employee.partner_id.ids))],
                 "attendee_ids": [(0, 0, {
                     "state": "accepted",
                     "availability": "busy",

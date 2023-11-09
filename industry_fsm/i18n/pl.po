@@ -79,7 +79,7 @@ msgstr "Aktywne"
 
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.mail_activity_plan_menu_config_task
-msgid "Activity Plan"
+msgid "Activity Plans"
 msgstr ""
 
 #. module: industry_fsm

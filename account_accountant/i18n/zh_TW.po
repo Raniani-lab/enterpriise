@@ -1379,11 +1379,6 @@ msgid "Open balance: %s"
 msgstr "未付清結餘：%s"
 
 #. module: account_accountant
-#: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
-msgid "Operations"
-msgstr "製程"
-
-#. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__account_auto_reconcile_wizard__search_mode__one_to_one
 msgid "Opposite balances one by one"
 msgstr "相反結餘逐項對賬"
@@ -1995,6 +1990,11 @@ msgstr "幣種餘額總計"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Transaction"
+msgstr "交易"
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
+msgid "Transactions"
 msgstr "交易"
 
 #. module: account_accountant

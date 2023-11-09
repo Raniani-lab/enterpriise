@@ -103,8 +103,8 @@ msgstr "Aktif"
 
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.mail_activity_plan_menu_config_task
-msgid "Activity Plan"
-msgstr "Rencana Kegiatan"
+msgid "Activity Plans"
+msgstr "Rencana-Rencana Kegiatan"
 
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_config_activity_type

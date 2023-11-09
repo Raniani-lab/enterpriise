@@ -3,8 +3,8 @@
 # 	* social_youtube
 # 
 # Translators:
-# Wil Odoo, 2023
 # Wichanon Jamwutthipreecha, 2023
+# Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:21+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wichanon Jamwutthipreecha, 2023\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -117,6 +117,13 @@ msgstr "ช่อง"
 #, python-format
 msgid "Clear"
 msgstr "ล้าง"
+
+#. module: social_youtube
+#. odoo-javascript
+#: code:addons/social_youtube/static/src/xml/social_youtube_templates.xml:0
+#, python-format
+msgid "Comments"
+msgstr "ความคิดเห็น"
 
 #. module: social_youtube
 #. odoo-python
@@ -266,6 +273,13 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model.fields,help:social_youtube.field_social_post__youtube_video_privacy
 msgid "Once posted, set the video as Public/Private/Unlisted"
+msgstr ""
+
+#. module: social_youtube
+#: model_terms:ir.ui.view,arch_db:social_youtube.social_account_view_form
+msgid ""
+"Our YouTube Social application uses YouTube API Services.\n"
+"                        By using it, you implicitly agree to the:"
 msgstr ""
 
 #. module: social_youtube

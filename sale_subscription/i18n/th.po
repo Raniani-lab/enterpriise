@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Wichanon Jamwutthipreecha, 2023
-# Wil Odoo, 2023
 # Rasareeyar Lappiam, 2023
+# Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Rasareeyar Lappiam, 2023\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1099,8 +1099,8 @@ msgstr "กิจกรรม"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.mail_activity_plan_menu_config_subscription
-msgid "Activity Plan"
-msgstr "แผนกิจกรรม"
+msgid "Activity Plans"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_type_id
@@ -4617,6 +4617,11 @@ msgid "Use Calendar"
 msgstr "ใช้ปฏิทิน"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
+msgid "Use employee work schedule"
+msgstr "ใช้กำหนดเวลาทำงานของพนักงาน"
+
+#. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_filtered
 msgid ""
 "Use subscriptions to follow tasks, issues, timesheets or invoicing based on\n"
@@ -4626,6 +4631,11 @@ msgstr ""
 "ใช้การสมัครรับข้อมูลเพื่อติดตามงาน ปัญหา ไทม์ชีท หรือการออกใบแจ้งหนี้ตาม\n"
 "                งานที่ทำเสร็จแล้ว ค่าใช้จ่ายและ/หรือใบสั่งขาย Odoo จะจัดการโดยอัตโนมัติ\n"
 "                การแจ้งเตือนสำหรับการต่ออายุการสมัครรับข้อมูลพนักงานขายที่ถูกต้อง"
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
+msgid "Use the user's working schedule."
+msgstr "ใช้กำหนดเวลาทำงานของผู้ใช้"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
@@ -4652,6 +4662,11 @@ msgid ""
 msgstr ""
 "ต้องการการเรียกเก็บเงินแบบประจำผ่านการจัดการการสมัครสมาชิกหรือไม่? "
 "เริ่มต้นโดยคลิกที่นี่"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__warehouse_id
+msgid "Warehouse"
+msgstr "โกดังสินค้า"
 
 #. module: sale_subscription
 #. odoo-python

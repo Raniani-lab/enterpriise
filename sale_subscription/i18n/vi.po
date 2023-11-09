@@ -5,8 +5,8 @@
 # Translators:
 # Martin Trigaux, 2023
 # Vo Thanh Thuy, 2023
-# Wil Odoo, 2023
 # Thi Huong Nguyen, 2023
+# Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Thi Huong Nguyen, 2023\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1102,7 +1102,7 @@ msgstr "Hoạt động"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.mail_activity_plan_menu_config_subscription
-msgid "Activity Plan"
+msgid "Activity Plans"
 msgstr "Kế hoạch hoạt động"
 
 #. module: sale_subscription
@@ -4641,6 +4641,11 @@ msgid "Use Calendar"
 msgstr "Dùng lịch"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
+msgid "Use employee work schedule"
+msgstr "Sử dụng lịch làm việc của nhân viên"
+
+#. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_filtered
 msgid ""
 "Use subscriptions to follow tasks, issues, timesheets or invoicing based on\n"
@@ -4650,6 +4655,11 @@ msgstr ""
 "Sử dụng đăng ký để theo dõi các nhiệm vụ, vấn đề, thời gian biểu hoặc hóa đơn đươc lập dựa trên\n"
 "                công việc hoàn thành, chi phí và/hoặc đơn hàng. Hệ thống sẽ tự động quản lý\n"
 "                cảnh báo để gia hạn đăng ký này tới đúng người."
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
+msgid "Use the user's working schedule."
+msgstr "Sử dụng lịch làm việc của người dùng."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
@@ -4676,6 +4686,11 @@ msgid ""
 msgstr ""
 "Bạn muốn thanh toán định kỳ thông qua quản lý đăng ký? Hãy bắt đầu bằng cách"
 " nhấp vào đây"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__warehouse_id
+msgid "Warehouse"
+msgstr "Kho hàng"
 
 #. module: sale_subscription
 #. odoo-python

@@ -3,8 +3,8 @@
 # 	* web_studio
 # 
 # Translators:
-# Jolien De Paepe, 2023
 # Wil Odoo, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -120,13 +120,6 @@ msgstr "%s Rapport"
 #, python-format
 msgid "'My model'"
 msgstr "'Mon modèle'"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
-#, python-format
-msgid "('doc' or 'o' are recommended)"
-msgstr "('doc' ou 'o' sont recommandés)"
 
 #. module: web_studio
 #. odoo-python
@@ -881,8 +874,8 @@ msgid "Cohort"
 msgstr "Cohorte"
 
 #. module: web_studio
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/calendar/calendar_editor_sidebar.xml:0
@@ -911,8 +904,8 @@ msgid "Companies"
 msgstr "Sociétés"
 
 #. module: web_studio
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
@@ -1105,6 +1098,13 @@ msgid "Currency"
 msgstr "Devise"
 
 #. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
+#, python-format
+msgid "Current model:"
+msgstr "Modèle actuel :"
+
+#. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_ui_menu.py:0
 #, python-format
@@ -1187,8 +1187,8 @@ msgid "DIFF"
 msgstr "DIFF"
 
 #. module: web_studio
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
@@ -1325,8 +1325,8 @@ msgid "Descending"
 msgstr "Descendant"
 
 #. module: web_studio
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
@@ -1427,6 +1427,13 @@ msgstr "Menu déroulant"
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 msgid "Duplicate"
 msgstr "Dupliquer"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
+#, python-format
+msgid "Dynamic Table"
+msgstr "Tableau dynamique"
 
 #. module: web_studio
 #. odoo-python
@@ -1676,8 +1683,8 @@ msgid "Filter"
 msgstr "Filtrer"
 
 #. module: web_studio
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/web_studio/controllers/main.py:0
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
@@ -1802,26 +1809,10 @@ msgstr "Graphique"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/client_action/view_editor/editors/search/search_editor.xml:0
-#: code:addons/web_studio/static/src/client_action/view_editor/editors/search/search_editor.xml:0
-#, python-format
-msgid "Graph View"
-msgstr "Vue graphique"
-
-#. module: web_studio
-#. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/rainbow_effect.xml:0
 #, python-format
 msgid "Great !"
 msgstr "Parfait!"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/client_action/view_editor/editors/search/search_editor.xml:0
-#: code:addons/web_studio/static/src/client_action/view_editor/editors/search/search_editor.xml:0
-#, python-format
-msgid "Grid View"
-msgstr "Vue grille"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__group_id
@@ -1989,8 +1980,8 @@ msgstr ""
 "sélectionné."
 
 #. module: web_studio
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
 #, python-format
@@ -2047,6 +2038,20 @@ msgstr ""
 #, python-format
 msgid "Insert a field"
 msgstr "Insérer un champ"
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
+#, python-format
+msgid "Insert a field..."
+msgstr "Insérer un champ..."
+
+#. module: web_studio
+#. odoo-javascript
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
+#, python-format
+msgid "Insert a table based on a relational field."
+msgstr "Insérer un tableau basé sur un champ associé."
 
 #. module: web_studio
 #. odoo-javascript
@@ -2196,14 +2201,6 @@ msgstr "Activité associée"
 #, python-format
 msgid "List"
 msgstr "Liste"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/client_action/view_editor/editors/search/search_editor.xml:0
-#: code:addons/web_studio/static/src/client_action/view_editor/editors/search/search_editor.xml:0
-#, python-format
-msgid "List View"
-msgstr "Vue liste"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2566,8 +2563,8 @@ msgid "None"
 msgstr "Aucun"
 
 #. module: web_studio
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
@@ -2918,6 +2915,7 @@ msgstr "Signaler l'action"
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
+#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
 #, python-format
 msgid "Report Tools"
 msgstr "Outils du rapport"
@@ -2952,8 +2950,8 @@ msgid "Reporting views"
 msgstr "Vues d'analyse"
 
 #. module: web_studio
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/web_studio/controllers/main.py:0
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
@@ -3001,8 +2999,8 @@ msgid "Reset report"
 msgstr "Réinitialiser le rapport"
 
 #. module: web_studio
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/editors/form/form_editor_sidebar/properties/button_properties/button_properties.xml:0
@@ -3194,13 +3192,6 @@ msgstr "Sélectionnez le modèle associé à celui-ci"
 #, python-format
 msgid "Select the reciprocal ManyToOne field"
 msgstr "Sélectionnez le champ ManyToOne réciproque"
-
-#. module: web_studio
-#. odoo-javascript
-#: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
-#, python-format
-msgid "Select the report's variable for the field:"
-msgstr "Sélectionnez le variable du rapport pour le champ :"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3489,8 +3480,8 @@ msgid "Tabs"
 msgstr "Onglets"
 
 #. module: web_studio
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #: code:addons/web_studio/static/src/client_action/view_editor/view_structures/view_structures.js:0
@@ -3539,8 +3530,8 @@ msgid "The field %s does not exist."
 msgstr "Le champ %s n'existe pas."
 
 #. module: web_studio
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
 #: code:addons/web_studio/static/src/approval/approval_hook.js:0
 #, python-format
@@ -3870,8 +3861,8 @@ msgid "Uses:"
 msgstr "Utilise :"
 
 #. module: web_studio
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog.xml:0
 #, python-format

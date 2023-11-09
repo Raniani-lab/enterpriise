@@ -60,6 +60,11 @@ msgid "<small class=\"pe-1\">Clicks:</small>"
 msgstr "<small class=\"pe-1\">クリック:</small>"
 
 #. module: social
+#: model_terms:ir.ui.view,arch_db:social.social_post_view_kanban
+msgid "<small class=\"pe-1\">Engagement:</small>"
+msgstr ""
+
+#. module: social
 #. odoo-javascript
 #: code:addons/social/static/src/js/tours/social.js:0
 #, python-format

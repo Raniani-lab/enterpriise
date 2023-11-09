@@ -1398,11 +1398,6 @@ msgid "Open balance: %s"
 msgstr "الرصيد المفتوح: %s "
 
 #. module: account_accountant
-#: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
-msgid "Operations"
-msgstr "العمليات"
-
-#. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__account_auto_reconcile_wizard__search_mode__one_to_one
 msgid "Opposite balances one by one"
 msgstr "الأرصدة المتقابلة واحد تلو الآخر "
@@ -2031,6 +2026,11 @@ msgstr "إجمالي المتبقي بالعملة "
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Transaction"
 msgstr "معاملة"
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
+msgid "Transactions"
+msgstr "المعاملات "
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__transaction_currency_id

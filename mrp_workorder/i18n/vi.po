@@ -3,8 +3,8 @@
 # 	* mrp_workorder
 # 
 # Translators:
-# Thi Huong Nguyen, 2023
 # Wil Odoo, 2023
+# Thi Huong Nguyen, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Thi Huong Nguyen, 2023\n"
 "Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -94,8 +94,8 @@ msgid "Add By-product"
 msgstr "Thêm phụ phẩm"
 
 #. module: mrp_workorder
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/mrp_workorder/models/mrp_production.py:0
 #: code:addons/mrp_workorder/models/mrp_workorder.py:0
 #: code:addons/mrp_workorder/static/src/mrp_display/dialog/mrp_menu_dialog.xml:0
@@ -127,8 +127,8 @@ msgid "Add Workorder"
 msgstr "Thêm công đoạn"
 
 #. module: mrp_workorder
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/mrp_workorder/models/mrp_workorder.py:0
 #: code:addons/mrp_workorder/static/src/mrp_display/dialog/mrp_menu_dialog.xml:0
 #, python-format
@@ -916,7 +916,7 @@ msgstr "Số lượng nhân viên cần để hoàn thành hoạt động"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 msgid "Open Shop Floor"
-msgstr "Mở khu vực sản xuất"
+msgstr "Mở xưởng"
 
 #. module: mrp_workorder
 #. odoo-javascript
@@ -1347,7 +1347,7 @@ msgstr "Đặt một hình ảnh mới"
 #: model:ir.model.fields,field_description:mrp_workorder.field_res_config_settings__group_mrp_wo_shop_floor
 #: model:ir.ui.menu,name:mrp_workorder.menu_mrp_workorder_root
 msgid "Shop Floor"
-msgstr "Khu vực sản xuất"
+msgstr "Xưởng"
 
 #. module: mrp_workorder
 #. odoo-javascript
@@ -1652,7 +1652,7 @@ msgid ""
 "            The tablet provides worksheets for your workers and allow them to scrap products, track time,\n"
 "            launch a maintenance request, perform quality tests, etc."
 msgstr ""
-"Sử dụng bảng điều khiển khu vực sản xuất để bàn để ghi nhận trực tiếp hoạt động tại khu vực sản xuất.\n"
+"Sử dụng bảng điều khiển khu vực sản xuất để bàn để ghi nhận trực tiếp hoạt động tại xưởng.\n"
 "            Máy tính bảng cung cấp bảng công tác cho công nhân và cho phép họ loại bỏ sản phẩm, theo dõi thời gian, \n"
 "            kích hoạt yêu cầu bảo trì, tiến hành kiểm tra chất lượng,..."
 

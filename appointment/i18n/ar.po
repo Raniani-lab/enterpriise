@@ -704,7 +704,7 @@ msgstr "أضف رسالة افتتاحية هنا... "
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Add more details about you"
-msgstr ""
+msgstr "أضف المزيد من التفاصيل عنك "
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_manage_leaves
@@ -755,7 +755,7 @@ msgstr "السماح بالإلغاء"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__allow_guests
 msgid "Allow Guests"
-msgstr ""
+msgstr "السماح للضيوف "
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__country_ids
@@ -999,7 +999,7 @@ msgstr "أنواع المواعيد "
 #: code:addons/appointment/models/calendar_event.py:0
 #, python-format
 msgid "Appointment canceled"
-msgstr ""
+msgstr "تم إلغاء الموعد "
 
 #. module: appointment
 #. odoo-python
@@ -1013,7 +1013,7 @@ msgstr "تم إلغاء الموعد بواسطة: %(partners)s "
 #: code:addons/appointment/models/calendar_event.py:0
 #, python-format
 msgid "Appointment re-booked"
-msgstr ""
+msgstr "تم إعادة حجز الموعد "
 
 #. module: appointment
 #: model:mail.template,name:appointment.appointment_booked_mail_template
@@ -1028,7 +1028,7 @@ msgstr "الموعد: تم إلغاء الموعد "
 #. module: appointment
 #: model:mail.template,name:appointment.attendee_invitation_mail_template
 msgid "Appointment: Attendee Invitation"
-msgstr ""
+msgstr "الموعد: دعوة الحاضر "
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_slot
@@ -1153,7 +1153,7 @@ msgstr "الصورة الرمزية 512 "
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Back to edit mode"
-msgstr ""
+msgstr "العودة إلى وضع التحرير "
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__base_book_url
@@ -1241,7 +1241,7 @@ msgstr "إلغاء/إعادة جدولة "
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__canceled_mail_template_id
 msgid "Cancelation Email"
-msgstr ""
+msgstr "البريد الإلكتروني للإلغاء "
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_resource__capacity
@@ -1335,12 +1335,12 @@ msgstr "تأكيد الموعد "
 #: code:addons/appointment/static/src/views/gantt/gantt_popover.xml:0
 #, python-format
 msgid "Confirm Check-In"
-msgstr ""
+msgstr "تأكيد تسجيل الدخول "
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__booked_mail_template_id
 msgid "Confirmation Email"
-msgstr ""
+msgstr "البريد الإلكتروني للتأكيد "
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_confirmation
@@ -2760,8 +2760,8 @@ msgid "Share Availabilities"
 msgstr "مشاركة الإتاحات "
 
 #. module: appointment
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/appointment/models/appointment_type.py:0
 #: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.js:0
 #, python-format

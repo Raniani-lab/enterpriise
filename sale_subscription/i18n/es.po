@@ -729,7 +729,7 @@ msgstr "Actividad"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.mail_activity_plan_menu_config_subscription
-msgid "Activity Plan"
+msgid "Activity Plans"
 msgstr ""
 
 #. module: sale_subscription
@@ -4232,6 +4232,11 @@ msgid "Use Calendar"
 msgstr "Usar calendario"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
+msgid "Use employee work schedule"
+msgstr "Usar el calendario de trabajo del empleado"
+
+#. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_filtered
 msgid ""
 "Use subscriptions to follow tasks, issues, timesheets or invoicing based on\n"
@@ -4241,6 +4246,11 @@ msgstr ""
 "Use suscripciones para seguir tareas, incidencias, partes de horas o facturaciones basadas en\n"
 " trabajo realizado, gastos y/o pedidos de venta. Odoo derivará automáticamente\n"
 " las alertas de renovación de las suscripciones al comercial apropiado."
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
+msgid "Use the user's working schedule."
+msgstr "Usar el calendario de trabajo del usuario"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
@@ -4265,6 +4275,11 @@ msgid ""
 "Want recurring billing via subscription management? Get started by clicking "
 "here"
 msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__warehouse_id
+msgid "Warehouse"
+msgstr "Almacén"
 
 #. module: sale_subscription
 #. odoo-python

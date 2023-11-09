@@ -3,9 +3,9 @@
 # 	* documents
 # 
 # Translators:
-# Wil Odoo, 2023
-# Daye Jeong, 2023
 # Sarah Park, 2023
+# Daye Jeong, 2023
+# Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Sarah Park, 2023\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -685,8 +685,8 @@ msgid "Action Needed"
 msgstr "조치 필요"
 
 #. module: documents
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #: model:ir.ui.menu,name:documents.workflow_rules_menu
@@ -727,6 +727,11 @@ msgid "Activity Note"
 msgstr "활동 노트"
 
 #. module: documents
+#: model:ir.ui.menu,name:documents.mail_activity_plan_menu
+msgid "Activity Plans"
+msgstr "활동 계획"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_state
 msgid "Activity State"
 msgstr "활동 상태"
@@ -740,6 +745,12 @@ msgstr "활동 유형"
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_type_icon
 msgid "Activity Type Icon"
 msgstr "활동 유형 아이콘"
+
+#. module: documents
+#: model:ir.actions.act_window,name:documents.mail_activity_type_action_document
+#: model:ir.ui.menu,name:documents.mail_activity_type_menu
+msgid "Activity Types"
+msgstr "활동 유형"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_type_id
@@ -772,6 +783,11 @@ msgstr "URL 추가"
 #, python-format
 msgid "Add a Link"
 msgstr "링크 추가"
+
+#. module: documents
+#: model_terms:ir.actions.act_window,help:documents.mail_activity_plan_action_document
+msgid "Add a new plan"
+msgstr "신규 계획 추가"
 
 #. module: documents
 #. odoo-javascript
@@ -1401,6 +1417,11 @@ msgid "Document Owner"
 msgstr "문서 소유자"
 
 #. module: documents
+#: model:ir.actions.act_window,name:documents.mail_activity_plan_action_document
+msgid "Document Plans"
+msgstr ""
+
+#. module: documents
 #: model:ir.model,name:documents.model_documents_request_wizard
 msgid "Document Request"
 msgstr "문서 요청"
@@ -1451,8 +1472,8 @@ msgid "Document: Document Request"
 msgstr "문서: 문서 요청"
 
 #. module: documents
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/models/res_partner.py:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
@@ -2220,8 +2241,8 @@ msgid "Move to trash"
 msgstr "휴지통으로 이동"
 
 #. module: documents
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/static/src/views/form/folder_form_controller.js:0
 #: code:addons/documents/static/src/views/list/folder_list_controller.js:0
@@ -2327,6 +2348,11 @@ msgstr "다음 활동 요약"
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_type_id
 msgid "Next Activity Type"
 msgstr "다음 활동 유형"
+
+#. module: documents
+#: model_terms:ir.actions.act_window,help:documents.mail_activity_type_action_document
+msgid "No activity types found. Let's create one!"
+msgstr "활동 유형이 없습니다. 지금 생성해 주세요."
 
 #. module: documents
 #. odoo-javascript
@@ -3194,6 +3220,13 @@ msgstr "해당 파일을 휴지통으로 이동하여 %s 항목에서 완전히 
 #: model:ir.model.fields,help:documents.field_documents_folder__company_id
 msgid "This workspace will only be available to the selected company"
 msgstr "이 저장공간은 선택한 회사에서만 사용할 수 있습니다"
+
+#. module: documents
+#: model_terms:ir.actions.act_window,help:documents.mail_activity_type_action_document
+msgid ""
+"Those represent the different categories of things you have to do (e.g. "
+"\"Call\" or \"Send email\")."
+msgstr "이는 수행해야 하는 작업에 대한 다양한 카테고리를 나타냅니다 (예: \"전화\" 또는 \"이메일 전송\")."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail

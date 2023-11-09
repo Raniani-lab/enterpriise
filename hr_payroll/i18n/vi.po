@@ -3675,8 +3675,8 @@ msgid ""
 "Set a specific department if you wish to select all the employees from this "
 "department (and subdepartments) at once."
 msgstr ""
-"Chọn một bộ phận cụ thể nếu bạn muốn chọn tất cả nhân viên từ bộ phận này "
-"(và các bộ phận con) cùng một lúc."
+"Chọn một phòng ban cụ thể nếu bạn muốn chọn tất cả nhân viên từ phòng ban "
+"này (và các phòng ban con) cùng một lúc."
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_by_employees

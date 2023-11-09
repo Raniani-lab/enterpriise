@@ -5,8 +5,8 @@
 # Translators:
 # Mustafa Rawi <mustafa@cubexco.com>, 2023
 # Martin Trigaux, 2023
-# Wil Odoo, 2023
 # Malaz Abuidris <msea@odoo.com>, 2023
+# Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3068,7 +3068,7 @@ msgstr "تواصل مع محامينا "
 
 #. module: knowledge
 #. odoo-javascript
-#: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
+#: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.js:0
 #, python-format
 msgid "Content copied to clipboard."
 msgstr "تم نسخ العميل إلى الحافظة. "
@@ -4869,6 +4869,11 @@ msgstr "هناك إشارة جديدة في %s "
 #, python-format
 msgid "New property could not be created."
 msgstr "يمكن إنشاء خاصية جديدة. "
+
+#. module: knowledge
+#: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "الفعالية التالية في تقويم الأنشطة "
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_date_deadline
@@ -6793,6 +6798,13 @@ msgstr "اكتبه دون أي أداة تعريف (<em><s></s> شركتك، <s>
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_shared_todos_write_the_next_newsletter
 msgid "Write the next Newsletter"
 msgstr "اكتب النشرة الإخبارية التالية "
+
+#. module: knowledge
+#. odoo-javascript
+#: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
+#, python-format
+msgid "You"
+msgstr "أنت "
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_member_unique_article_partner

@@ -2980,7 +2980,7 @@ msgstr "联系我们的律师"
 
 #. module: knowledge
 #. odoo-javascript
-#: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
+#: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.js:0
 #, python-format
 msgid "Content copied to clipboard."
 msgstr "内容已复制到剪贴板。"
@@ -4760,6 +4760,11 @@ msgstr "%s 中的新提法"
 #, python-format
 msgid "New property could not be created."
 msgstr "无法创建新属性。"
+
+#. module: knowledge
+#: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "下一个活动日历事件"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_date_deadline
@@ -6650,6 +6655,13 @@ msgstr "不带任何冠词（<em><s>the</s> YourCompany、<s>a</s> YourCompany�
 #: model_terms:knowledge.article,template_body:knowledge.knowledge_article_template_shared_todos_write_the_next_newsletter
 msgid "Write the next Newsletter"
 msgstr "撰写下一期通讯"
+
+#. module: knowledge
+#. odoo-javascript
+#: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
+#, python-format
+msgid "You"
+msgstr "您"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_member_unique_article_partner

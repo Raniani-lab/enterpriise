@@ -5,8 +5,8 @@
 # Translators:
 # Martin Trigaux, 2023
 # Sergio Zanchetta <primes2h@gmail.com>, 2023
-# Wil Odoo, 2023
 # Marianna Ciofani, 2023
+# Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Marianna Ciofani, 2023\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1103,8 +1103,8 @@ msgstr "Attività"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.mail_activity_plan_menu_config_subscription
-msgid "Activity Plan"
-msgstr "Piano attività"
+msgid "Activity Plans"
+msgstr "Piani attività"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_type_id
@@ -4665,6 +4665,11 @@ msgid "Use Calendar"
 msgstr "Utilizza calendario"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
+msgid "Use employee work schedule"
+msgstr "Utilizza schedulazione lavoro del dipendente"
+
+#. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_filtered
 msgid ""
 "Use subscriptions to follow tasks, issues, timesheets or invoicing based on\n"
@@ -4674,6 +4679,11 @@ msgstr ""
 "Usare gli abbonamenti per seguire le attività, i problemi, i fogli ore o la fatturazione in base al \n"
 "                lavoro svolto, alle spese e/o agli ordini di vendita. Odoo gestirà automaticamente\n"
 "               le segnalazioni per il rinnovo degli abbonamenti del venditore adeguato. "
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
+msgid "Use the user's working schedule."
+msgstr "Usa la schedulazione di lavoro dell'utente"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
@@ -4700,6 +4710,11 @@ msgid ""
 msgstr ""
 "Vuoi una fatturazione ricorrente tramite la gestione degli abbonamenti? Fai "
 "clic qui per iniziare"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__warehouse_id
+msgid "Warehouse"
+msgstr "Magazzino"
 
 #. module: sale_subscription
 #. odoo-python

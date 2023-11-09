@@ -1411,11 +1411,6 @@ msgid "Open balance: %s"
 msgstr "Số dư mở: %s"
 
 #. module: account_accountant
-#: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
-msgid "Operations"
-msgstr "Hoạt động"
-
-#. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__account_auto_reconcile_wizard__search_mode__one_to_one
 msgid "Opposite balances one by one"
 msgstr "Số dư đối lập lần lượt"
@@ -2049,6 +2044,11 @@ msgstr "Tổng còn lại theo loại tiền tệ"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Transaction"
+msgstr "Giao dịch"
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
+msgid "Transactions"
 msgstr "Giao dịch"
 
 #. module: account_accountant

@@ -3,8 +3,10 @@
 # 	* documents
 # 
 # Translators:
-# Wil Odoo, 2023
 # Iran Villalobos López, 2023
+# Lucia Pacheco, 2023
+# Fernanda Alvarez, 2023
+# Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Iran Villalobos López, 2023\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Spanish (Latin America) (https://app.transifex.com/odoo/teams/41243/es_419/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -700,8 +702,8 @@ msgid "Action Needed"
 msgstr "Se requiere una acción"
 
 #. module: documents
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #: model:ir.ui.menu,name:documents.workflow_rules_menu
@@ -742,6 +744,11 @@ msgid "Activity Note"
 msgstr "Nota de actividad"
 
 #. module: documents
+#: model:ir.ui.menu,name:documents.mail_activity_plan_menu
+msgid "Activity Plans"
+msgstr "Planes de actividades"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_state
 msgid "Activity State"
 msgstr "Estado de la actividad"
@@ -755,6 +762,12 @@ msgstr "Tipo de actividad"
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_type_icon
 msgid "Activity Type Icon"
 msgstr "Icono del tipo de actividad"
+
+#. module: documents
+#: model:ir.actions.act_window,name:documents.mail_activity_type_action_document
+#: model:ir.ui.menu,name:documents.mail_activity_type_menu
+msgid "Activity Types"
+msgstr "Tipos de actividad"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_type_id
@@ -787,6 +800,11 @@ msgstr "Agregar URL"
 #, python-format
 msgid "Add a Link"
 msgstr "Agregar un enlace"
+
+#. module: documents
+#: model_terms:ir.actions.act_window,help:documents.mail_activity_plan_action_document
+msgid "Add a new plan"
+msgstr "Agregar un nuevo plan"
 
 #. module: documents
 #. odoo-javascript
@@ -1436,6 +1454,11 @@ msgid "Document Owner"
 msgstr "Propietario del documento"
 
 #. module: documents
+#: model:ir.actions.act_window,name:documents.mail_activity_plan_action_document
+msgid "Document Plans"
+msgstr ""
+
+#. module: documents
 #: model:ir.model,name:documents.model_documents_request_wizard
 msgid "Document Request"
 msgstr "Solicitud de documento"
@@ -1488,8 +1511,8 @@ msgid "Document: Document Request"
 msgstr "Documento: solicitud de documento"
 
 #. module: documents
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/models/res_partner.py:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
@@ -2283,8 +2306,8 @@ msgid "Move to trash"
 msgstr "Mover a la papelera"
 
 #. module: documents
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/static/src/views/form/folder_form_controller.js:0
 #: code:addons/documents/static/src/views/list/folder_list_controller.js:0
@@ -2390,6 +2413,11 @@ msgstr "Resumen de la siguiente actividad"
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_type_id
 msgid "Next Activity Type"
 msgstr "Tipo de la siguiente actividad"
+
+#. module: documents
+#: model_terms:ir.actions.act_window,help:documents.mail_activity_type_action_document
+msgid "No activity types found. Let's create one!"
+msgstr "No se encontraron tipos de actividad. ¡Creemos uno!"
 
 #. module: documents
 #. odoo-javascript
@@ -3280,6 +3308,15 @@ msgstr ""
 msgid "This workspace will only be available to the selected company"
 msgstr ""
 "Este espacio de trabajo solo estará disponible para la empresa seleccionada"
+
+#. module: documents
+#: model_terms:ir.actions.act_window,help:documents.mail_activity_type_action_document
+msgid ""
+"Those represent the different categories of things you have to do (e.g. "
+"\"Call\" or \"Send email\")."
+msgstr ""
+"Representan las diferentes categorías de cosas por hacer (por ejemplo, "
+"\"llamar\" o \"enviar correo electrónico\")."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail

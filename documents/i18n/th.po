@@ -3,8 +3,8 @@
 # 	* documents
 # 
 # Translators:
-# Wil Odoo, 2023
 # Rasareeyar Lappiam, 2023
+# Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Rasareeyar Lappiam, 2023\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -689,8 +689,8 @@ msgid "Action Needed"
 msgstr "จำเป็นต้องดำเนินการ"
 
 #. module: documents
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #: model:ir.ui.menu,name:documents.workflow_rules_menu
@@ -731,6 +731,11 @@ msgid "Activity Note"
 msgstr "โน๊ตของกิจกรรม"
 
 #. module: documents
+#: model:ir.ui.menu,name:documents.mail_activity_plan_menu
+msgid "Activity Plans"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_state
 msgid "Activity State"
 msgstr "สถานะกิจกรรม"
@@ -744,6 +749,12 @@ msgstr "ประเภทกิจกรรม"
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_type_icon
 msgid "Activity Type Icon"
 msgstr "ไอคอนประเภทกิจกรรม"
+
+#. module: documents
+#: model:ir.actions.act_window,name:documents.mail_activity_type_action_document
+#: model:ir.ui.menu,name:documents.mail_activity_type_menu
+msgid "Activity Types"
+msgstr "ประเภทกิจกรรม"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_type_id
@@ -776,6 +787,11 @@ msgstr "เพิ่ม URL"
 #, python-format
 msgid "Add a Link"
 msgstr "เพิ่มลิงค์"
+
+#. module: documents
+#: model_terms:ir.actions.act_window,help:documents.mail_activity_plan_action_document
+msgid "Add a new plan"
+msgstr "เพิ่มแผนการใหม่"
 
 #. module: documents
 #. odoo-javascript
@@ -1411,6 +1427,11 @@ msgid "Document Owner"
 msgstr "เจ้าของเอกสาร"
 
 #. module: documents
+#: model:ir.actions.act_window,name:documents.mail_activity_plan_action_document
+msgid "Document Plans"
+msgstr ""
+
+#. module: documents
 #: model:ir.model,name:documents.model_documents_request_wizard
 msgid "Document Request"
 msgstr "การขอเอกสาร"
@@ -1461,8 +1482,8 @@ msgid "Document: Document Request"
 msgstr "เอกสาร: การขอเอกสาร"
 
 #. module: documents
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/models/res_partner.py:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
@@ -2238,8 +2259,8 @@ msgid "Move to trash"
 msgstr ""
 
 #. module: documents
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/static/src/views/form/folder_form_controller.js:0
 #: code:addons/documents/static/src/views/list/folder_list_controller.js:0
@@ -2345,6 +2366,11 @@ msgstr "สรุปกิจกรรมถัดไป"
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_type_id
 msgid "Next Activity Type"
 msgstr "ประเภทกิจกรรมถัดไป"
+
+#. module: documents
+#: model_terms:ir.actions.act_window,help:documents.mail_activity_type_action_document
+msgid "No activity types found. Let's create one!"
+msgstr "ไม่พบประเภทกิจกรรม มาสร้างกันเถอะ!"
 
 #. module: documents
 #. odoo-javascript
@@ -3220,6 +3246,15 @@ msgstr ""
 #: model:ir.model.fields,help:documents.field_documents_folder__company_id
 msgid "This workspace will only be available to the selected company"
 msgstr "เวิร์กสเปซนี้จะพร้อมใช้งานสำหรับบริษัทที่เลือกเท่านั้น"
+
+#. module: documents
+#: model_terms:ir.actions.act_window,help:documents.mail_activity_type_action_document
+msgid ""
+"Those represent the different categories of things you have to do (e.g. "
+"\"Call\" or \"Send email\")."
+msgstr ""
+"สิ่งเหล่านี้แสดงถึงหมวดหมู่ต่างๆ ของสิ่งที่คุณต้องทำ (เช่น \"โทร\" หรือ "
+"\"ส่งอีเมล\")"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail

@@ -4,9 +4,10 @@
 # 
 # Translators:
 # Fernanda Alvarez, 2023
-# Wil Odoo, 2023
 # Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2023
 # Iran Villalobos López, 2023
+# Lucia Pacheco, 2023
+# Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Iran Villalobos López, 2023\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Spanish (Latin America) (https://app.transifex.com/odoo/teams/41243/es_419/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1103,8 +1104,8 @@ msgstr "Actividad"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.mail_activity_plan_menu_config_subscription
-msgid "Activity Plan"
-msgstr "Plan de actividad"
+msgid "Activity Plans"
+msgstr "Planes de actividades"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_type_id
@@ -4672,6 +4673,11 @@ msgid "Use Calendar"
 msgstr "Usar calendario"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
+msgid "Use employee work schedule"
+msgstr "Usar el calendario de trabajo del empleado"
+
+#. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_filtered
 msgid ""
 "Use subscriptions to follow tasks, issues, timesheets or invoicing based on\n"
@@ -4681,6 +4687,11 @@ msgstr ""
 "Utilice las suscripciones para llevar un seguimiento de las tareas, asuntos, hojas de horas, facturación basada en\n"
 "el trabajo realizado, gastos y órdenes de venta. Odoo gestionará automáticamente\n"
 "las alertas para la renovación de las suscripciones al vendedor correspondiente."
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
+msgid "Use the user's working schedule."
+msgstr "Usar el calendario de trabajo del usuario"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
@@ -4707,6 +4718,11 @@ msgid ""
 msgstr ""
 "¿Desea realizar facturaciones recurrentes a través de la gestión de "
 "suscripciones? Empiece haciendo clic aquí"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__warehouse_id
+msgid "Warehouse"
+msgstr "Almacén"
 
 #. module: sale_subscription
 #. odoo-python

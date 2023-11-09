@@ -259,7 +259,7 @@ msgstr "Hôm nay"
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Top Departments"
-msgstr "Bộ phận tiêu biểu"
+msgstr "Phòng ban tiêu biểu"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript

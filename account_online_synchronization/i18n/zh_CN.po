@@ -531,8 +531,8 @@ msgid "Fetching..."
 msgstr "正在获取..."
 
 #. module: account_online_synchronization
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_journal.py:0
 #: code:addons/account_online_synchronization/static/src/components/bank_reconciliation/fetch_missing_transactions_cog_menu.xml:0
 #: model:ir.actions.server,name:account_online_synchronization.account_journal_action_fetch_missing_transactions
@@ -767,6 +767,11 @@ msgid "Name"
 msgstr "名称"
 
 #. module: account_online_synchronization
+#: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "下一个活动日历事件"
+
+#. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr "下一活动截止日期"
@@ -923,6 +928,11 @@ msgstr "服务提供商数据"
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__provider_type
 msgid "Provider Type"
 msgstr "提供商类型"
+
+#. module: account_online_synchronization
+#: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__rating_ids
+msgid "Ratings"
+msgstr "评级"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_online_link_view_form

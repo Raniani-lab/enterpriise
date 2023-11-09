@@ -3,8 +3,8 @@
 # 	* sale_subscription
 # 
 # Translators:
-# Wil Odoo, 2023
 # Abe Manyo, 2023
+# Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:10+0000\n"
-"Last-Translator: Abe Manyo, 2023\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Indonesian (https://app.transifex.com/odoo/teams/41243/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1100,8 +1100,8 @@ msgstr "Aktivitas"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.mail_activity_plan_menu_config_subscription
-msgid "Activity Plan"
-msgstr "Rencana Kegiatan"
+msgid "Activity Plans"
+msgstr "Rencana-Rencana Kegiatan"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_type_id
@@ -4648,6 +4648,11 @@ msgid "Use Calendar"
 msgstr "Gunakan Kalender"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
+msgid "Use employee work schedule"
+msgstr "Menggunakan jadwal kerja Pengurus"
+
+#. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_filtered
 msgid ""
 "Use subscriptions to follow tasks, issues, timesheets or invoicing based on\n"
@@ -4657,6 +4662,11 @@ msgstr ""
 "Gunakan langganan untuk mengikuti task, masalah, timesheet atau faktur berdasarkan pada\n"
 "                pekerjaan yang selesai, pengeluaran dan/atau sales orders. Odoo akan secara otomatis mengelola\n"
 "                peringatan untuk pembaruan langganan ke salesperson yang tepat."
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
+msgid "Use the user's working schedule."
+msgstr "Menggunakan jadwal kerja pengguna."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription_portal_content
@@ -4682,6 +4692,11 @@ msgid ""
 "here"
 msgstr ""
 "Ingin billing berulang via manajemen langganan? Mulai dari mengeklik di sini"
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__warehouse_id
+msgid "Warehouse"
+msgstr "Gudang"
 
 #. module: sale_subscription
 #. odoo-python

@@ -945,7 +945,8 @@ class AccountMove(models.Model):
             for key in ('retenciones_list', 'traslados_list'):
                 for tax_values in inv_cfdi_values[key]:
                     for tax_key in ('base', 'importe'):
-                        tax_values[tax_key] = invoice.currency_id.round(tax_values[tax_key] * percentage_paid)
+                        if tax_values[tax_key] is not None:
+                            tax_values[tax_key] = invoice.currency_id.round(tax_values[tax_key] * percentage_paid)
 
             # 'equivalencia' (rate) is a conditional attribute used to express the exchange rate according to the currency
             # registered in the document related. It is required when the currency of the related document is different
@@ -1042,7 +1043,7 @@ class AccountMove(models.Model):
             return (
                 tax_values['impuesto'] == tag
                 and tax_values['tipo_factor'] == tax_class
-                and company_curr.compare_amounts(tax_values['tasa_o_cuota'], amount) == 0
+                and company_curr.compare_amounts(tax_values['tasa_o_cuota'] or 0.0, amount) == 0
             )
 
         withholding_values_map = defaultdict(lambda: {'importe': 0.0})
@@ -1069,12 +1070,13 @@ class AccountMove(models.Model):
                     'tipo_factor': tax_values['tipo_factor'],
                     'tasa_o_cuota': tax_values['tasa_o_cuota']
                 })
+                tax_amount = tax_values['importe'] or 0.0
                 transferred_values_map[key]['base'] += self.currency_id.round(tax_values['base'] / inv_rate)
-                transferred_values_map[key]['importe'] += self.currency_id.round(tax_values['importe'] / inv_rate)
+                transferred_values_map[key]['importe'] += self.currency_id.round(tax_amount / inv_rate)
 
                 base_amount_mxn = company_curr.round(tax_values['base'] * to_mxn_rate)
-                tax_amount_mxn = company_curr.round(tax_values['importe'] * to_mxn_rate)
-                if check_transferred_tax_values(tax_values, '001', 'Tasa', 0.0):
+                tax_amount_mxn = company_curr.round(tax_amount * to_mxn_rate)
+                if check_transferred_tax_values(tax_values, '002', 'Tasa', 0.0):
                     update_tax_amount('total_traslados_base_iva0', base_amount_mxn)
                     update_tax_amount('total_traslados_impuesto_iva0', tax_amount_mxn)
                 elif check_transferred_tax_values(tax_values, '002', 'Exento', 0.0):
@@ -1085,6 +1087,7 @@ class AccountMove(models.Model):
                 elif check_transferred_tax_values(tax_values, '002', 'Tasa', 0.16):
                     update_tax_amount('total_traslados_base_iva16', base_amount_mxn)
                     update_tax_amount('total_traslados_impuesto_iva16', tax_amount_mxn)
+
         cfdi_values['retenciones_list'] = [
             {**k, **v}
             for k, v in withholding_values_map.items()
@@ -1093,6 +1096,12 @@ class AccountMove(models.Model):
             {**k, **v}
             for k, v in transferred_values_map.items()
         ]
+
+        # Cleanup attributes for Exento taxes.
+        for key in ('retenciones_list', 'traslados_list'):
+            for tax_values in cfdi_values[key]:
+                if tax_values['tipo_factor'] == 'Exento':
+                    tax_values['importe'] = None
 
     # -------------------------------------------------------------------------
     # CFDI: DOCUMENTS

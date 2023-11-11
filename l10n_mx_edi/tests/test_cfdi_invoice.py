@@ -328,8 +328,15 @@ class TestCFDIInvoice(TestMxEdiCommon):
         )
         with self.with_mocked_pac_sign_success():
             invoice._l10n_mx_edi_cfdi_invoice_try_send()
-        self._assert_invoice_cfdi(invoice, 'test_invoice_tax_0_exento')
+        self._assert_invoice_cfdi(invoice, 'test_invoice_tax_0_exento_1')
 
+        payment = self._create_payment(invoice)
+        with self.with_mocked_pac_sign_success():
+            payment.move_id._l10n_mx_edi_cfdi_payment_try_send()
+        self._assert_invoice_payment_cfdi(
+            payment.move_id,
+            'test_invoice_tax_0_exento_2',
+        )
 
     @freeze_time('2017-01-01')
     def test_invoice_tax_0_tasa(self):
@@ -344,7 +351,15 @@ class TestCFDIInvoice(TestMxEdiCommon):
         )
         with self.with_mocked_pac_sign_success():
             invoice._l10n_mx_edi_cfdi_invoice_try_send()
-        self._assert_invoice_cfdi(invoice, 'test_invoice_tax_0_tasa')
+        self._assert_invoice_cfdi(invoice, 'test_invoice_tax_0_tasa_1')
+
+        payment = self._create_payment(invoice)
+        with self.with_mocked_pac_sign_success():
+            payment.move_id._l10n_mx_edi_cfdi_payment_try_send()
+        self._assert_invoice_payment_cfdi(
+            payment.move_id,
+            'test_invoice_tax_0_tasa_2',
+        )
 
     @freeze_time('2017-01-01')
     def test_invoice_company_branch(self):

@@ -1091,7 +1091,7 @@ msgstr "Mata Uang"
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
 #, python-format
 msgid "Current model:"
-msgstr ""
+msgstr "Model saat ini:"
 
 #. module: web_studio
 #. odoo-python
@@ -1419,7 +1419,7 @@ msgstr "Gandakan"
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
 #, python-format
 msgid "Dynamic Table"
-msgstr ""
+msgstr "Tabel Dinamik"
 
 #. module: web_studio
 #. odoo-python
@@ -2027,14 +2027,14 @@ msgstr "Masukkan field"
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
 #, python-format
 msgid "Insert a field..."
-msgstr ""
+msgstr "Masukkan field..."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
 #, python-format
 msgid "Insert a table based on a relational field."
-msgstr ""
+msgstr "Masukkan tabel berdasarkan field relational."
 
 #. module: web_studio
 #. odoo-javascript

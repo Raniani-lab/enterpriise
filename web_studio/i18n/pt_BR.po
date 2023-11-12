@@ -4582,7 +4582,7 @@ msgstr "dia"
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "e.g. Properties"
-msgstr ""
+msgstr "ex.: Propriedades"
 
 #. module: web_studio
 #. odoo-javascript

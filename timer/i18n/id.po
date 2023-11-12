@@ -84,7 +84,7 @@ msgstr "Terakhir diperbarui pada"
 #. module: timer
 #: model:ir.model.constraint,message:timer.constraint_timer_timer_unique_timer
 msgid "Only one timer occurrence by model, record and user"
-msgstr ""
+msgstr "Hanya occurence satu kali berdasarkan mdoel, record dan user"
 
 #. module: timer
 #. odoo-python
@@ -103,7 +103,7 @@ msgstr "Main"
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__res_id
 msgid "Res"
-msgstr ""
+msgstr "Res"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__res_model
@@ -136,12 +136,12 @@ msgstr "Timer Jeda Terakhir"
 #. module: timer
 #: model:ir.model,name:timer.model_timer_mixin
 msgid "Timer Mixin"
-msgstr ""
+msgstr "Timer Mixin"
 
 #. module: timer
 #: model:ir.model,name:timer.model_timer_timer
 msgid "Timer Module"
-msgstr ""
+msgstr "Timer Module"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__timer_start

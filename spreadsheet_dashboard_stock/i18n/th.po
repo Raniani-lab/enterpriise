@@ -194,7 +194,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Products"
-msgstr ""
+msgstr "สินค้ายอดนิยม"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
@@ -238,11 +238,11 @@ msgstr "ตั้งแต่ช่วงที่แล้ว"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "stats - current"
-msgstr ""
+msgstr "สถิติ - ปัจจุบัน"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "stats - previous"
-msgstr ""
+msgstr "สถิติ - ก่อนหน้า"

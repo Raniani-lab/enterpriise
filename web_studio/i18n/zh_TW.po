@@ -628,7 +628,7 @@ msgstr "自動的動作"
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Automations"
-msgstr ""
+msgstr "自動化"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2582,7 +2582,7 @@ msgstr "模組卸載"
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 msgid "Module file (.zip)"
-msgstr ""
+msgstr "模組檔案(.zip)"
 
 #. module: web_studio
 #. odoo-javascript

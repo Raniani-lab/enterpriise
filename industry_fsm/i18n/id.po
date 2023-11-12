@@ -1222,7 +1222,7 @@ msgstr ""
 #: code:addons/industry_fsm/controllers/portal.py:0
 #, python-format
 msgid "The worksheet has been signed"
-msgstr ""
+msgstr "Worksheet telah ditandatangani"
 
 #. module: industry_fsm
 #. odoo-python
@@ -1230,13 +1230,14 @@ msgstr ""
 #, python-format
 msgid "The worksheet is not in a state requiring customer signature."
 msgstr ""
+"Worksheet ini tidak dalam status yang membutuhkan tanda tangan pelanggan."
 
 #. module: industry_fsm
 #. odoo-python
 #: code:addons/industry_fsm/models/project_task.py:0
 #, python-format
 msgid "There are no reports to send."
-msgstr ""
+msgstr "Tidak ada laporan untuk dikirim."
 
 #. module: industry_fsm
 #. odoo-python
@@ -1342,7 +1343,7 @@ msgstr "Pengguna"
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Validate the <b>signature</b>."
-msgstr ""
+msgstr "Validasikan <b>tanda tangan</b>."
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard_line__wizard_id
@@ -1352,7 +1353,7 @@ msgstr "Wisaya"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
 msgid "Worker"
-msgstr ""
+msgstr "Pekerja"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__working_days_open

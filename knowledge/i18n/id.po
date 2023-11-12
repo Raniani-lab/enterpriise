@@ -42,7 +42,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__favorite_count
 msgid "#Is Favorite"
-msgstr ""
+msgstr "#Apakah Favorit"
 
 #. module: knowledge
 #. odoo-python
@@ -58,7 +58,7 @@ msgstr "%s (salinan)"
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "%s has been sent to Trash"
-msgstr ""
+msgstr "%s telah dikirim ke Tong Sampah"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite
@@ -69,7 +69,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
 msgid "<i class=\"fa fa-circle-o-notch fa-2x fa-spin\" title=\"loader\" role=\"img\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-circle-o-notch fa-2x fa-spin\" title=\"loader\" role=\"img\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -211,6 +211,8 @@ msgid ""
 "<i class=\"fa fa-w fa-info-circle\"/> All external users you selected won't "
 "be added to the members."
 msgstr ""
+"<i class=\"fa fa-w fa-info-circle\"/> Semua user eksternal yang dipilih "
+"tidak akan ditambahkan ke anggota."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
@@ -323,6 +325,17 @@ msgid ""
 "            (<span style=\"font-style: italic;\">Drafts, Todo lists, ...</span>)\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">Pribadi</font>\n"
+"            </span>\n"
+"        </span>\n"
+"        <span style=\"font-size: 14px;\">\n"
+"            — Ini adalah\n"
+"            <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">barang Anda</font></span>,\n"
+"            barang-barang yang Anda simpan untuk diri Anda sendiri\n"
+"            (<span style=\"font-style: italic;\">Draft, daftar Todo, ...</span>)\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -339,6 +352,17 @@ msgid ""
 "            </span>\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">Dibagikan</font>\n"
+"            </span>\n"
+"        </span>\n"
+"        <span style=\"font-size: 14px;\">\n"
+"            — Ini adalah mereka yang Anda\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">undang atau yang mengundang Anda</font>\n"
+"            </span>\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -355,6 +379,17 @@ msgid ""
 "        </span>\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">Ruang kerja</font>\n"
+"            </span>\n"
+"        </span>\n"
+"        <span style=\"font-size: 14px;\">\n"
+"            — Artikel-artikel di sana dapat diakses oleh\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">tim Anda</font>\n"
+"        </span>\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -390,6 +425,13 @@ msgid ""
 "            (<span style=\"font-style: italic;\">documentation, tips, reports, ...</span>)\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            Konten — Cukup klik dan\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">mulai mengetik</font>\n"
+"            </span>\n"
+"            (<span style=\"font-style: italic;\">dokumentasi, tip, laporan, ...</span>)\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -405,6 +447,16 @@ msgid ""
 "            (<span style=\"font-style: italic;\">per team, topic, project, ...</span>)\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            Folder —\n"
+"        </span>\n"
+"        <span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">Kumpulkan Artikel lain</font>\n"
+"            </span>\n"
+"            dibawah folder untuk mengelompokkan mereka\n"
+"            (<span style=\"font-style: italic;\">per tim, topik, project, ...</span>)\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -436,6 +488,11 @@ msgid ""
 "            to share documents that are frequently needed\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            Gunakan\n"
+"            /<span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">file</font></span>\n"
+"            untuk membagikkan dokumen yang sering dibutuhkan\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -462,6 +519,13 @@ msgid ""
 "        <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">Sections</font></span>:\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Artikel</font>\n"
+"        </span>\n"
+"        disimpan ke\n"
+"        <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">Bagian</font></span> yang berbeda-beda:\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -482,6 +546,21 @@ msgid ""
 "        to share it with everyone.\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        Workflow yang bagus adalah menulis draft Anda di\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Pribadi</font>\n"
+"        </span>\n"
+"        dan, setelah selesai, memindahkannya darionce done,\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Pribadi</font>\n"
+"        </span>\n"
+"        ke\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Ruang kerja</font>\n"
+"        </span>\n"
+"        untuk dibagi dengan semua orang.\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -502,6 +581,21 @@ msgid ""
 "        it.\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        Dan lagi, untuk memindahkan\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Artikel</font>\n"
+"        </span>\n"
+"        dari\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Bagian</font>\n"
+"        </span>\n"
+"        ke yang lain, cukup\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Tarik &amp; Lepas</font>\n"
+"        </span>\n"
+"        .\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -533,6 +627,10 @@ msgid ""
 "        <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">Articles</font></span>.\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        Mereka adalah\n"
+"        <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">Artikel Anda</font></span>.\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -587,7 +685,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "<span style=\"font-size: 14px;\">And voilà, it is that simple.</span>"
-msgstr ""
+msgstr "<span style=\"font-size: 14px;\">Voilà, semudah itu.</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -610,6 +708,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "<span style=\"font-size: 14px;\">Each of them can be used both as:</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Masing-masing mereka dapat digunakan "
+"sebagai:</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -653,6 +753,9 @@ msgid ""
 "    <br/>\n"
 "    <span style=\"font-size: 14px;\">Ready to give it a spin?</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Halaman pribadi ini siap untuk Anda otak-atik.</span>\n"
+"    <br/>\n"
+"    <span style=\"font-size: 14px;\">Siap untuk memulai?</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -673,6 +776,9 @@ msgid ""
 "            <font class=\"text-o-color-1\">YouTube</font>\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-1\">YouTube</font>\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -680,6 +786,8 @@ msgid ""
 "<span style=\"font-weight: bolder;\"><font class=\"text-o-"
 "color-1\">Facebook</font></span>"
 msgstr ""
+"<span style=\"font-weight: bolder;\"><font class=\"text-o-"
+"color-1\">Facebook</font></span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -687,13 +795,15 @@ msgid ""
 "<span style=\"font-weight: bolder;\"><font class=\"text-o-"
 "color-1\">Twitter</font></span>"
 msgstr ""
+"<span style=\"font-weight: bolder;\"><font class=\"text-o-"
+"color-1\">Twitter</font></span>"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Access Restricted. May not be shared with everyone from"
-msgstr ""
+msgstr "Akses Dibatasi. Mungkin tidak dapat dibagikan dengan semua orang dari"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_needaction
@@ -745,23 +855,25 @@ msgid ""
 "Add articles in your list of favorites by clicking on the <i class=\"fa fa-"
 "star-o\"></i> next to the article name."
 msgstr ""
+"Tambahkan artikel di daftar favorit Anda dengan mengeklik pada <i class=\"fa"
+" fa-star-o\"></i> di sebelah nama artikel."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/table_of_content_behavior/table_of_content_behavior.xml:0
 #, python-format
 msgid "Add headings in this Article to create a Table of Content"
-msgstr ""
+msgstr "Tambahkan heading di Artikel ini untuk membuat Daftar Isi"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
 msgid "Add people or email addresses"
-msgstr ""
+msgstr "Tambahkan orang atau alamat email"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "Add people or email addresses..."
-msgstr ""
+msgstr "Tambahkan orang atau alamat email..."
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_member_action
@@ -769,6 +881,8 @@ msgid ""
 "Adding members allows you to share Articles while granting specific access "
 "rights<br>(can write, can read, ...)."
 msgstr ""
+"Menambahkan anggota memungkinkan Anda untuk membagikan Artikel selagi "
+"memberikan hak akses tertentu<br>(dapat menulis, dapat membaca, ...)."
 
 #. module: knowledge
 #. odoo-javascript
@@ -789,7 +903,7 @@ msgstr "Administrator"
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "Advanced Search"
-msgstr ""
+msgstr "Pencarian Advanced"
 
 #. module: knowledge
 #. odoo-javascript
@@ -856,6 +970,8 @@ msgid ""
 "Are you sure you want to remove your member? By leaving an article, you may "
 "lose access to it."
 msgstr ""
+"Apakah Anda yakin ingin menghapus keanggotaam Anda? Dengan meninggalkan "
+"artikel, Anda mungkin kehilangan akses ke artikel tersebut."
 
 #. module: knowledge
 #. odoo-javascript
@@ -872,6 +988,8 @@ msgid ""
 "Are you sure you want to restore access? This means this article will now "
 "inherit any access set on its parent articles."
 msgstr ""
+"Apakah Anda yakin ingin memulihkan akses? Ini berarti artikel ini sekarang "
+"akan mewarisi akses apapun yang ditetapkan oleh artikel induknya."
 
 #. module: knowledge
 #. odoo-javascript
@@ -899,6 +1017,8 @@ msgid ""
 "Are you sure you want to set your permission to \"none\"? If you do, you "
 "will no longer have access to the article."
 msgstr ""
+"Apakah Anda yakin ingin menetapkan izin Anda menjadi \"tidak ada\"? Bila "
+"Anda melakukan ini, Anda tidak akan lagi memiliki akses ke artikel ini."
 
 #. module: knowledge
 #. odoo-javascript
@@ -920,22 +1040,24 @@ msgid ""
 "Article '%s' should always have a writer: inherit write permission, or have "
 "a member with write access"
 msgstr ""
+"Artikel '%s' harus selalu memiliki penulis: warisi izin menulis, atau "
+"berikan akses menulis ke anggota"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_properties_definition
 msgid "Article Item Properties"
-msgstr ""
+msgstr "Properti Item Artikel"
 
 #. module: knowledge
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_item_action
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
 msgid "Article Items"
-msgstr ""
+msgstr "Item Artik"
 
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_article_member
 msgid "Article Member"
-msgstr ""
+msgstr "Anggota Artikel"
 
 #. module: knowledge
 #. odoo-javascript
@@ -947,22 +1069,22 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_url
 msgid "Article URL"
-msgstr ""
+msgstr "URL Artikel"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__cover_image_id
 msgid "Article cover"
-msgstr ""
+msgstr "Sampul artikel"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_article_item_parent
 msgid "Article items must have a parent."
-msgstr ""
+msgstr "Item artikel harus memiliki induk."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
 msgid "Article not found"
-msgstr ""
+msgstr "Artikel tidak ditemukan"
 
 #. module: knowledge
 #. odoo-javascript
@@ -984,18 +1106,19 @@ msgstr "Artikel"
 msgid ""
 "Articles %s cannot be updated as this would create a recursive hierarchy."
 msgstr ""
+"Artikel %s tidak dapat diperbarui karena ini akan membuat hierarki rekursif."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__article_ids
 msgid "Articles using cover"
-msgstr ""
+msgstr "Artikel menggunakan sampul"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "As a reader, you can't leave a Workspace article"
-msgstr ""
+msgstr "Sebagai pembaca, Anda tidak dapat meninggalkan artikel Ruangkerja"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1004,6 +1127,8 @@ msgstr ""
 msgid ""
 "As an administrator, you can always modify this article and its members."
 msgstr ""
+"Sebagai administrator, Anda dapat selalu memodifikasi artikel ini dan "
+"anggotanya."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_attachment_count
@@ -1031,7 +1156,7 @@ msgstr "Badan"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_can_read
 msgid "Can Read"
-msgstr ""
+msgstr "Dapat Membaca"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_can_write
@@ -1043,14 +1168,14 @@ msgstr "Dapat Menulis"
 #: code:addons/knowledge/models/knowledge_article_member.py:0
 #, python-format
 msgid "Can not update the article or partner of a member."
-msgstr ""
+msgstr "Tidak dapat mengupdate artikel atau partner dari anggota."
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/models/knowledge_article_favorite.py:0
 #, python-format
 msgid "Can not update the article or user of a favorite."
-msgstr ""
+msgstr "Tidak dapat mengupdate artikel atau user favorit."
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__inherited_permission__read
@@ -1058,7 +1183,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article_member__permission__read
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_invite__permission__read
 msgid "Can read"
-msgstr ""
+msgstr "Dapat membaca"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__inherited_permission__write
@@ -1085,6 +1210,8 @@ msgid ""
 "Cannot create an article under article %(parent_name)s which is a non-"
 "private parent"
 msgstr ""
+"Tidak dapat membuat artikel di bawah artikel %(parent_name)s yang merupakan "
+"induk tidak-pribadi"
 
 #. module: knowledge
 #. odoo-python
@@ -1094,6 +1221,8 @@ msgid ""
 "Cannot move %(article_name)s as a root of the 'shared' section since access "
 "rights can not be inferred without a parent."
 msgstr ""
+"Tidak dapat memindahkan %(article_name)s sebagai root dari bagian 'shared' "
+"karena hak akses tidak dapat di-infertanpa induk."
 
 #. module: knowledge
 #. odoo-javascript
@@ -1107,12 +1236,12 @@ msgstr "Kategori"
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Change Permission"
-msgstr ""
+msgstr "Ubah Izin"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__child_ids
 msgid "Child Articles and Items"
-msgstr ""
+msgstr "Artikel dan Item Anak"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1156,35 +1285,35 @@ msgstr "Salin ke Clipboard"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__attachment_url
 msgid "Cover URL"
-msgstr ""
+msgstr "URL Sampul"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__attachment_id
 msgid "Cover attachment"
-msgstr ""
+msgstr "Lampiran sampul"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__cover_image_url
 msgid "Cover url"
-msgstr ""
+msgstr "Url sampul"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/xml/knowledge_command_palette.xml:0
 #, python-format
 msgid "Create \""
-msgstr ""
+msgstr "Buat \""
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_item_action
 msgid "Create a new article item"
-msgstr ""
+msgstr "Buat item artikel baru"
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_action
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "Create an article"
-msgstr ""
+msgstr "Buat artikel"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
@@ -1230,21 +1359,23 @@ msgid ""
 "Default permission for all internal users. (External users can still have "
 "access to this article if they are added to its members)"
 msgstr ""
+"Izin default untuk semua user internal. (User eksternal masih dapat "
+"mengakses artikel ini bila mereka ditambahkan ke anggota)"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__deletion_date
 msgid "Deletion Date"
-msgstr ""
+msgstr "Tanggal Penghapusan"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_permission_on_desync
 msgid "Desynchronized articles must have internal permission."
-msgstr ""
+msgstr "Artikel yang dihapus sinkronisasinya harus memiliki izin internal."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_desynchronized
 msgid "Desyncronized with parents"
-msgstr ""
+msgstr "Sinkronisasi dibatalkan dengan induk"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1266,7 +1397,7 @@ msgstr "Nama Tampilan"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Diving in"
-msgstr ""
+msgstr "Masuk ke dalam"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1288,7 +1419,7 @@ msgstr "Gandakan"
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Embed a View"
-msgstr ""
+msgstr "Embed Tampilan"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1336,12 +1467,12 @@ msgstr "Favorit"
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_article_favorite
 msgid "Favorite Article"
-msgstr ""
+msgstr "Artikel Favorit"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__favorite_ids
 msgid "Favorite Articles"
-msgstr ""
+msgstr "Artikel-Artikel Favorit"
 
 #. module: knowledge
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_favorite_action
@@ -1376,7 +1507,7 @@ msgstr "Ikon font awesome, misalnya fa-tasks"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__full_width
 msgid "Full width"
-msgstr ""
+msgstr "Lebar penuh"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite
@@ -1400,7 +1531,7 @@ msgstr "Tamu"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_has_access
 msgid "Has Access"
-msgstr ""
+msgstr "Memiliki Akses"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__has_message
@@ -1410,22 +1541,22 @@ msgstr "Memiliki Pesan"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_has_write_access
 msgid "Has Write Access"
-msgstr ""
+msgstr "Memiliki Akses Menulis"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__has_item_children
 msgid "Has article item children?"
-msgstr ""
+msgstr "Has article item children?"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__has_article_children
 msgid "Has normal article children?"
-msgstr ""
+msgstr "Has normal article children?"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__have_share_partners
 msgid "Have Share Partners"
-msgstr ""
+msgstr "Memiliki Share Partner"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -1487,6 +1618,8 @@ msgstr "Jika dicentang, beberapa pesan mempunyai kesalahan dalam pengiriman."
 msgid ""
 "If set, this article won't inherit access rules from its parents anymore."
 msgstr ""
+"Bila ditetapkan, artikel ini tidak akan mewarisi peraturan aset dari "
+"induknya lagi."
 
 #. module: knowledge
 #. odoo-javascript
@@ -1499,12 +1632,12 @@ msgstr "Indeks"
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__inherited_permission
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__article_permission
 msgid "Inherited Permission"
-msgstr ""
+msgstr "Izin yang Diwarisi"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__inherited_permission_parent_id
 msgid "Inherited Permission Parent Article"
-msgstr ""
+msgstr "Induk Artikel Izin yang Diwarisi"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1518,49 +1651,49 @@ msgstr "Insert"
 #: code:addons/knowledge/static/src/js/wysiwyg/knowledge_article_link.js:0
 #, python-format
 msgid "Insert Link"
-msgstr ""
+msgstr "Masukkan Link"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Insert a Kanban View"
-msgstr ""
+msgstr "Masukkan Tampilan Kanban"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Insert a Kanban view of article items"
-msgstr ""
+msgstr "Masukkan tampilan Kanban dari item artikel"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Insert a List View"
-msgstr ""
+msgstr "Masukkan Tampilan Daftar"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Insert a List view of article items"
-msgstr ""
+msgstr "Masukkan tampilan Daftar dari item artikel"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/external_embedded_view_favorite_menu/insert_embedded_view.xml:0
 #, python-format
 msgid "Insert link in article"
-msgstr ""
+msgstr "Masukkan link di artikel"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/external_embedded_view_favorite_menu/insert_embedded_view.xml:0
 #, python-format
 msgid "Insert view in article"
-msgstr ""
+msgstr "Masukkan tampilan di artikel"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1575,7 +1708,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__internal_permission
 #, python-format
 msgid "Internal Permission"
-msgstr ""
+msgstr "Izin Internal"
 
 #. module: knowledge
 #. odoo-python
@@ -1598,7 +1731,7 @@ msgstr "Undang orang-orang"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_favorite__is_article_active
 msgid "Is Article Active"
-msgstr ""
+msgstr "Apakah Artikel Aktif"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_user_favorite
@@ -1613,7 +1746,7 @@ msgstr "Pengikut"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_article_item
 msgid "Is Item?"
-msgstr ""
+msgstr "Apakah Item?"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_properties_is_empty
@@ -1625,14 +1758,14 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Item Kanban"
-msgstr ""
+msgstr "Item Kanban"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Item List"
-msgstr ""
+msgstr "Item Daftar"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1657,24 +1790,24 @@ msgstr "Artikel Pengetahuan"
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_cover
 msgid "Knowledge Cover"
-msgstr ""
+msgstr "Sampul Pengetahuan"
 
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_invite
 msgid "Knowledge Invite Wizard"
-msgstr ""
+msgstr "Alat Bantu Undang Pengetahuan"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_trash
 msgid "Last Edit Date"
-msgstr ""
+msgstr "Tanggal Edit Terakhir"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__last_edition_uid
 msgid "Last Edited by"
-msgstr ""
+msgstr "Diedit Terakhir oleh"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -1684,7 +1817,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__last_edition_date
 msgid "Last Edited on"
-msgstr ""
+msgstr "Diedit Terakhir pada"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article____last_update
@@ -1720,14 +1853,14 @@ msgstr "Terakhir diperbarui pada"
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Leave Article"
-msgstr ""
+msgstr "Tinggalkan Artikel"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg/knowledge_article_link.js:0
 #, python-format
 msgid "Link an Article"
-msgstr ""
+msgstr "Link Artikel"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1761,6 +1894,8 @@ msgid ""
 "Logging changes from %(partner_name)s without write access on article "
 "%(article_name)s due to hierarchy tree update"
 msgstr ""
+"Mencatat perubahan dari %(partner_name)s tanpa akses menulis pada artikel "
+"%(article_name)s oleh karena update pohon hierarki"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_main_attachment_id
@@ -1790,12 +1925,12 @@ msgstr "Anggota"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_member_ids
 msgid "Members Information"
-msgstr ""
+msgstr "Informasi Anggota"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__root_article_id
 msgid "Menu Article"
-msgstr ""
+msgstr "Artikel Menu"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_has_error
@@ -1812,7 +1947,7 @@ msgstr "Pesan"
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.js:0
 #, python-format
 msgid "Missing File"
-msgstr ""
+msgstr "File Hilan"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1826,14 +1961,14 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.xml:0
 #, python-format
 msgid "Move Article"
-msgstr ""
+msgstr "Pindahkan Artikel"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.js:0
 #, python-format
 msgid "Move an Article"
-msgstr ""
+msgstr "Pindahkan Artikel"
 
 #. module: knowledge
 #. odoo-python
@@ -1843,6 +1978,8 @@ msgid ""
 "Move to target of %(article_name)s is ambiguous, you should specify the "
 "category."
 msgstr ""
+"Pindahkan ke target dari %(article_name)s bersifat ambigu, Anda harus "
+"menentukan kategori."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__my_activity_date_deadline
@@ -1871,7 +2008,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/xml/knowledge_editor.xml:0
 #, python-format
 msgid "Nest articles under this one to generate a structure"
-msgstr ""
+msgstr "Nest articles di bawah ini untuk membuat struktur"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_calendar_event_id
@@ -1898,31 +2035,31 @@ msgstr "Tipe Aktivitas Berikutnya"
 #: code:addons/knowledge/static/src/xml/knowledge_command_palette.xml:0
 #, python-format
 msgid "No Article found."
-msgstr ""
+msgstr "Tidak ada Artikel yang ditemukan."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "No Article found. Create \"%s\""
-msgstr ""
+msgstr "Tidak ada Artikel yang ditemukan. Buat \"%s\""
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "No Article in Trash"
-msgstr ""
+msgstr "Tidak ada Artikel di Tong Sampah"
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_favorite_action
 msgid "No Favorites yet!"
-msgstr ""
+msgstr "Belum ada Favorit!"
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_member_action
 msgid "No Members yet!"
-msgstr ""
+msgstr "Belum ada Anggota!"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__inherited_permission__none
@@ -1930,24 +2067,24 @@ msgstr ""
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article_member__permission__none
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_invite__permission__none
 msgid "No access"
-msgstr ""
+msgstr "Tidak ada akses"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree_frontend
 msgid "No article found"
-msgstr ""
+msgstr "Tidak ada artikel yang ditemukan"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "No article found."
-msgstr ""
+msgstr "Tidak ada artikel yang ditemukan."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "No article yet."
-msgstr ""
+msgstr "Belum ada artikel."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_needaction_counter
@@ -1972,7 +2109,7 @@ msgstr "Jumlah dari pesan dengan kesalahan pengiriman"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Odoo Survival Guide"
-msgstr ""
+msgstr "Odoo Survival Guide"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1985,7 +2122,7 @@ msgstr "Ok"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Onboarding.pdf"
-msgstr ""
+msgstr "Onboarding.pdf"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1995,6 +2132,8 @@ msgid ""
 "Oops, the file %s could not be found. Please replace this file box by a new "
 "one to re-upload the file."
 msgstr ""
+"Oops, file %s tidak dapat ditemukan. Mohon ganti kotak file ini dengan yang "
+"baru untuk mengunggah ulang file."
 
 #. module: knowledge
 #. odoo-javascript
@@ -2007,7 +2146,7 @@ msgstr "Terbuka"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__parent_id
 msgid "Parent Article"
-msgstr ""
+msgstr "Artikel Induk"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__parent_path
@@ -2024,7 +2163,7 @@ msgstr "Rekanan"
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__permission
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__permission
 msgid "Permission"
-msgstr ""
+msgstr "Izin"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2063,14 +2202,14 @@ msgstr "Refresh"
 #: code:addons/knowledge/static/src/components/knowledge_emoji_picker_remove_action_view/knowledge_emoji_picker_remove_action_view.xml:0
 #, python-format
 msgid "Remove Icon"
-msgstr ""
+msgstr "Hapus Ikon"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Remove Member"
-msgstr ""
+msgstr "Hapus Anggota"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2099,24 +2238,24 @@ msgstr "Pulihkan"
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Restore Access"
-msgstr ""
+msgstr "Pulihkan Akses"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Restrict Access"
-msgstr ""
+msgstr "Batasi Akses"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_desync_on_root
 msgid "Root articles cannot be desynchronized."
-msgstr ""
+msgstr "Artikel root tidak dapat dibatalkan sinkronisasinya."
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_permission_on_root
 msgid "Root articles must have internal permission."
-msgstr ""
+msgstr "Artikel root harus memiliki izin internal.;"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_has_sms_error
@@ -2131,19 +2270,19 @@ msgstr "Pencarian"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_favorite_view_search
 msgid "Search Favorites"
-msgstr ""
+msgstr "Cari Favorit-Favorit"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/xml/chatter_topbar.xml:0
 #, python-format
 msgid "Search Knowledge Articles"
-msgstr ""
+msgstr "Cari Artikel Pengetahuan"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_member_view_search
 msgid "Search Members"
-msgstr ""
+msgstr "Cari Anggota-Anggota"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2156,14 +2295,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
 msgid "Search an article..."
-msgstr ""
+msgstr "Cari artikel..."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "Search for an article..."
-msgstr ""
+msgstr "Cari artikel..."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__category
@@ -2182,7 +2321,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/external_embedded_view_insertion/views_renderers_patches.js:0
 #, python-format
 msgid "Select an article"
-msgstr ""
+msgstr "Pilih artikel"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2192,7 +2331,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
 msgid "Send as Message"
-msgstr ""
+msgstr "Kirimkan sebagai Pesan"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__sequence
@@ -2231,14 +2370,14 @@ msgstr ""
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Some articles have been sent to Trash"
-msgstr ""
+msgstr "Beberapa artikel telah dikirim ke Tong Sampah"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0
 #, python-format
 msgid "Something went wrong!"
-msgstr ""
+msgstr "Terjadi kesalahan!"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__activity_state
@@ -2258,7 +2397,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Table Of Content"
-msgstr ""
+msgstr "Daftar Isi"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2281,7 +2420,7 @@ msgstr ""
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "The Article you are trying to access has been deleted"
-msgstr ""
+msgstr "Artikel yang Anda sedang coba untuk akses telah dihapus"
 
 #. module: knowledge
 #. odoo-python
@@ -2289,6 +2428,7 @@ msgstr ""
 #, python-format
 msgid "The article '%s' needs at least one member with 'Write' access."
 msgstr ""
+"Artikel '%s' membutuhkan setidaknya satu anggota dengan akses 'Tulis'."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
@@ -2296,6 +2436,8 @@ msgid ""
 "The article you are trying the read has either been removed or you do not "
 "have access to it."
 msgstr ""
+"Artikel yang Anda coba baca antara sudah dihapus atau Anda tidak memiliki "
+"akses ke artikel tersebut"
 
 #. module: knowledge
 #. odoo-python
@@ -2321,26 +2463,27 @@ msgstr ""
 #: code:addons/knowledge/controllers/main.py:0
 #, python-format
 msgid "The selected member does not exists or has been already deleted."
-msgstr ""
+msgstr "Anggota yang dipilih tidak tersedia atau sudah dihapus."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__sequence
 msgid ""
 "The sequence is computed only among the articles that have the same parent."
 msgstr ""
+"Urutan dihitung hanya di antara artikel yang memiliki induk yang sama."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__root_article_id
 msgid ""
 "The subject is the title of the highest parent in the article hierarchy."
-msgstr ""
+msgstr "Subject adalah judul induk tertinggi di hirarki artikel."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0
 #, python-format
 msgid "The view does not exist or you are not allowed to access to it."
-msgstr ""
+msgstr "tampilan tidak tersedia atau Anda tidak diizinkan untuk mengaksesnya."
 
 #. module: knowledge
 #. odoo-python
@@ -2350,30 +2493,32 @@ msgid ""
 "This Article cannot be unfolded. Either you lost access to it or it has been"
 " deleted."
 msgstr ""
+"Artikel ini tidak dapat dibuka. Antara Anda kehilangan akses atau artikelnya"
+" sudah dihapus."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "This Article is in Trash and will be deleted on the"
-msgstr ""
+msgstr "Artikel ini di Tong Sampah dan akan dihapus pada"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "This article is archived."
-msgstr ""
+msgstr "Artikel ini diarsip."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/article_behavior/article_behavior.js:0
 #, python-format
 msgid "This article was deleted or you don't have the rights to access it."
-msgstr ""
+msgstr "Artikel ini dihapus atau Anda tidak memiliki hak untuk mengaksesnya."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/xml/knowledge_frontend.xml:0
 #, python-format
 msgid "This view is only available for internal users"
-msgstr ""
+msgstr "Tampilan ini hanya tersedia untuk user internal."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__name
@@ -2383,7 +2528,7 @@ msgstr "Judul"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "To be sure to stay updated, follow us on"
-msgstr ""
+msgstr "Agar tetap diupdate, ikuti kami pada"
 
 #. module: knowledge
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_action_trashed
@@ -2395,12 +2540,12 @@ msgstr "Sampah"
 #: model:ir.ui.menu,name:knowledge.knowledge_article_menu_trashed
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
 msgid "Trashed"
-msgstr ""
+msgstr "Dibuang"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_trash
 msgid "Trashed articles must be archived."
-msgstr ""
+msgstr "Artikel yang dibuang harus diarsip."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
@@ -2412,7 +2557,7 @@ msgstr "Coba Odoo"
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Trying to remove wrong member."
-msgstr ""
+msgstr "Mencoba menghapus anggota yang salah."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__activity_exception_decoration
@@ -2459,7 +2604,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #, python-format
 msgid "Use as Attachment"
-msgstr ""
+msgstr "Gunakan sebagai Lampiran"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2474,6 +2619,8 @@ msgid ""
 "Used to categozie articles in UI, depending on their main permission "
 "definitions."
 msgstr ""
+"Digunakan untuk mengkategorikan artikel di UI, tergantung pada definisi izin"
+" utama."
 
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_res_users
@@ -2485,24 +2632,24 @@ msgstr "Pengguna"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_favorite_sequence
 msgid "User Favorite Sequence"
-msgstr ""
+msgstr "Urutan User Favorit"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "User Permission"
-msgstr ""
+msgstr "Izin User"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_favorite_unique_article_user
 msgid "User already has this article in favorites."
-msgstr ""
+msgstr "User sudah memiliki artikel ini di favorit."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_permission
 msgid "User permission"
-msgstr ""
+msgstr "Izin user"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__website_message_ids
@@ -2519,14 +2666,14 @@ msgstr "Sejarah komunikasi situs"
 #: code:addons/knowledge/models/res_users.py:0
 #, python-format
 msgid "Welcome %s"
-msgstr ""
+msgstr "Selamat Datang %s"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.xml:0
 #, python-format
 msgid "What do you want to manage?"
-msgstr ""
+msgstr "Apa yang ingin Anda kelola?"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__is_locked
@@ -2534,6 +2681,8 @@ msgid ""
 "When locked, users cannot write on the body or change the title, even if "
 "they have write access on the article."
 msgstr ""
+"Saat dikunci, user tidak dapat menulis pada badan atau mengganti judul, "
+"bahan bila mereka memiliki akses menulis pada artikel."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__to_delete
@@ -2543,6 +2692,10 @@ msgid ""
 "                parameter can be used to modify the number of days. \n"
 "                (default is 30)"
 msgstr ""
+"Saat dikirim ke tong sampah, artikel akan ditandai sebagai untuk dihapus\n"
+"                beberapa hari setelah edit terakhir. Parameter knowledge_article_trash_limit_days config\n"
+"                dapat digunakan untuk memodifikasi jumlah hari. \n"
+"                (default 30 hari)"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__full_width
@@ -2550,6 +2703,9 @@ msgid ""
 "When set, the article body will take the full width available on the article"
 " page. Otherwise, the body will have large horizontal margins."
 msgstr ""
+"Saat ditetapkan, badan artikel akan mengambil lebar penuh yang tersedia pada"
+" halaman artikel. Jika tidak, badan akan memiliki margin horisontal yang "
+"besar."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -2569,7 +2725,7 @@ msgstr "Ruang Kerja"
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_member_unique_article_partner
 msgid "You already added this partner on this article."
-msgstr ""
+msgstr "Anda sudah menambahkan partner ini ke artikel ini."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
@@ -2582,6 +2738,7 @@ msgstr ""
 #, python-format
 msgid "You are not allowed to make '%(article_name)s' private."
 msgstr ""
+"Anda tidak diizinkan untuk membuat '%(article_name)s' menjadi pribadi."
 
 #. module: knowledge
 #. odoo-python
@@ -2590,6 +2747,8 @@ msgstr ""
 msgid ""
 "You are not allowed to move '%(article_name)s' under '%(parent_name)s'."
 msgstr ""
+"Anda tidak diizinkan untuk memindahkan '%(article_name)s' ke bawah "
+"'%(parent_name)s'."
 
 #. module: knowledge
 #. odoo-javascript
@@ -2597,13 +2756,15 @@ msgstr ""
 #, python-format
 msgid "You can't leave an article for which you are the last writer"
 msgstr ""
+"Anda tidak boleh meninggalkan artikel saat Anda merupakan penulis "
+"terakhirnya"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "You can't remove the last writer of the article"
-msgstr ""
+msgstr "Anda tidak dapat menghapus penulis terakhir artikel"
 
 #. module: knowledge
 #. odoo-python
@@ -2611,27 +2772,28 @@ msgstr ""
 #, python-format
 msgid "You cannot add or remove this article to your favorites"
 msgstr ""
+"Anda tidak boleh menambahkan atau menghapus artikel ini ke/dari favorit Anda"
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/controllers/main.py:0
 #, python-format
 msgid "You cannot change the internal permission of this article."
-msgstr ""
+msgstr "Anda tidak boleh mengubah izin internal artikel ini."
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/controllers/main.py:0
 #, python-format
 msgid "You cannot change the permission of this member."
-msgstr ""
+msgstr "Anda tidak dapat mengubah izin anggota ini."
 
 #. module: knowledge
 #. odoo-python
 #: code:addons/knowledge/models/knowledge_cover.py:0
 #, python-format
 msgid "You cannot create a new Knowledge Cover from here."
-msgstr ""
+msgstr "Anda tidak dapat membuat Sampul Pengetahuan baru dari sini."
 
 #. module: knowledge
 #. odoo-python
@@ -2639,6 +2801,8 @@ msgstr ""
 #, python-format
 msgid "You cannot create an article under articles on which you cannot write"
 msgstr ""
+"Anda tidak dapat membuat artikel di bawah artikel pada mana Anda tidak dapat"
+" menulis"
 
 #. module: knowledge
 #. odoo-python
@@ -2647,6 +2811,8 @@ msgstr ""
 msgid ""
 "You cannot move an article under %(parent_name)s as you cannot write on it"
 msgstr ""
+"Anda tidak dapat memindahkan artikel ke bawah %(parent_name)s selama Anda "
+"tidak dapat menulis pada artikel tersebut"
 
 #. module: knowledge
 #. odoo-python
@@ -2654,6 +2820,7 @@ msgstr ""
 #, python-format
 msgid "You have to be editor on %(article_name)s to add members."
 msgstr ""
+"Anda harus merupakan editor pada %(article_name)s untuk menambahkan anggota."
 
 #. module: knowledge
 #. odoo-python
@@ -2662,6 +2829,8 @@ msgstr ""
 msgid ""
 "You have to be editor on %(article_name)s to change its internal permission."
 msgstr ""
+"Anda harus merupakan editor pada %(article_name)s untuk mengubah izin "
+"internalnya."
 
 #. module: knowledge
 #. odoo-python
@@ -2670,6 +2839,8 @@ msgstr ""
 msgid ""
 "You have to be editor on %(article_name)s to modify members permissions."
 msgstr ""
+"Anda harus merupakan editor pada %(article_name)s untuk memodifikasi izin "
+"anggota."
 
 #. module: knowledge
 #. odoo-python
@@ -2679,6 +2850,8 @@ msgid ""
 "You have to be editor on %(article_name)s to remove or exclude member "
 "%(member_name)s."
 msgstr ""
+"Anda harus merupakan editor pada %(article_name)s untuk menghapus atau "
+"mengecualikan anggota %(member_name)s."
 
 #. module: knowledge
 #. odoo-python
@@ -2686,23 +2859,24 @@ msgstr ""
 #, python-format
 msgid "You have to be editor on %(article_name)s to restore it."
 msgstr ""
+"anda harus merupakan editor pada %(article_name)s untuk memulihkannya."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "and the following child article(s) have"
-msgstr ""
+msgstr "dan artikel anak berikutnya yang memiliki"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "articles"
-msgstr ""
+msgstr "artikel-artikel"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "been sent to Trash.<br/><br/>"
-msgstr ""
+msgstr "telah dikirim ke Tong Sampah.<br/><br/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -2714,24 +2888,24 @@ msgstr "cover"
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "e.g. Buildings"
-msgstr ""
+msgstr "contoh Bangunan"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "e.g. Todos"
-msgstr ""
+msgstr "contoh Todo"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "has"
-msgstr ""
+msgstr "memiliki"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "have"
-msgstr ""
+msgstr "memiliki"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite
@@ -2746,7 +2920,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "loader"
-msgstr ""
+msgstr "loader"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__none
@@ -2761,7 +2935,7 @@ msgstr "atau"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "pdf"
-msgstr ""
+msgstr "pdf"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__read
@@ -2771,7 +2945,7 @@ msgstr "baca"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "to unleash the power of Knowledge !"
-msgstr ""
+msgstr "untuk menggunakan kemampuan Pengetahuan !"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__write

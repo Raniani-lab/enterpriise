@@ -47,7 +47,7 @@ msgstr "Kontrak Karyawan"
 #. module: hr_work_entry_contract_planning
 #: model:ir.model.fields,field_description:hr_work_entry_contract_planning.field_resource_resource__flexible_hours
 msgid "Flexible Hours"
-msgstr ""
+msgstr "Jam-Jam Fleksibel"
 
 #. module: hr_work_entry_contract_planning
 #: model:ir.model,name:hr_work_entry_contract_planning.model_hr_work_entry

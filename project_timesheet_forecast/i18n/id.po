@@ -107,7 +107,7 @@ msgstr "Encode Satuan Ukuran Dalam Hari"
 #. module: project_timesheet_forecast
 #: model:ir.actions.server,name:project_timesheet_forecast.planning_slot_generate_timesheet_action
 msgid "Generate Timesheets"
-msgstr ""
+msgstr "Buat Timesheet"
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search

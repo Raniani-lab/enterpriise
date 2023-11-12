@@ -23,27 +23,27 @@ msgstr ""
 #. module: marketing_automation_sms
 #: model:ir.model.fields,field_description:marketing_automation_sms.field_marketing_campaign__mailing_sms_count
 msgid "# SMS Mailings"
-msgstr ""
+msgstr "# Mailing SMS"
 
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form
 msgid "<i class=\"fa fa-exclamation-circle\"/> Bounced after"
-msgstr ""
+msgstr "<i class=\"fa fa-exclamation-circle\"/> Bounced setelah"
 
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form
 msgid "<i class=\"fa fa-hand-pointer-o\"/> Clicked after"
-msgstr ""
+msgstr "<i class=\"fa fa-hand-pointer-o\"/> Diklik setelah"
 
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form
 msgid "<i class=\"fa fa-hand-pointer-o\"/> Not clicked within"
-msgstr ""
+msgstr "<i class=\"fa fa-hand-pointer-o\"/> Tidak diklik dalam"
 
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form
 msgid "<i class=\"fa fa-pie-chart\"/> Details"
-msgstr ""
+msgstr "<i class=\"fa fa-pie-chart\"/> Detail"
 
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form
@@ -72,7 +72,7 @@ msgstr "Diklik"
 #: code:addons/marketing_automation_sms/models/marketing_activity.py:0
 #, python-format
 msgid "Exception in SMS Marketing: %s"
-msgstr ""
+msgstr "Pengecualian di SMS Marketing: %s"
 
 #. module: marketing_automation_sms
 #: model:ir.model,name:marketing_automation_sms.model_mailing_trace
@@ -88,22 +88,22 @@ msgstr "Tipe Mailing"
 #: model:ir.model,name:marketing_automation_sms.model_marketing_activity
 #: model:ir.model.fields,field_description:marketing_automation_sms.field_sms_composer__marketing_activity_id
 msgid "Marketing Activity"
-msgstr ""
+msgstr "Kegiatan Marketing"
 
 #. module: marketing_automation_sms
 #: model:ir.actions.act_window,name:marketing_automation_sms.mail_mass_mailing_action_marketing_automation_sms
 msgid "Marketing Automation SMS"
-msgstr ""
+msgstr "SMS Otomatisasi Marketing"
 
 #. module: marketing_automation_sms
 #: model:ir.model,name:marketing_automation_sms.model_marketing_campaign
 msgid "Marketing Campaign"
-msgstr ""
+msgstr "Kampanye Marketing"
 
 #. module: marketing_automation_sms
 #: model:ir.model,name:marketing_automation_sms.model_marketing_trace
 msgid "Marketing Trace"
-msgstr ""
+msgstr "Lacak Marketing"
 
 #. module: marketing_automation_sms
 #: model:ir.model,name:marketing_automation_sms.model_mailing_mailing
@@ -114,13 +114,13 @@ msgstr "Pengiriman Massal"
 #: code:addons/marketing_automation_sms/models/marketing_trace.py:0
 #, python-format
 msgid "Parent activity SMS bounced"
-msgstr ""
+msgstr " SMS kegiatan induk dibounce"
 
 #. module: marketing_automation_sms
 #: code:addons/marketing_automation_sms/models/marketing_trace.py:0
 #, python-format
 msgid "Parent activity SMS clicked"
-msgstr ""
+msgstr "SMS kegiatan induk diklik"
 
 #. module: marketing_automation_sms
 #: model:ir.model.fields.selection,name:marketing_automation_sms.selection__marketing_activity__activity_type__sms
@@ -140,12 +140,12 @@ msgstr "Konten SMS"
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.mailing_mailing_view_form_marketing_activity
 msgid "SMS Options"
-msgstr ""
+msgstr "Opsi SMS"
 
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_campaign_view_form
 msgid "SMS Sent"
-msgstr ""
+msgstr "Kirim SMS"
 
 #. module: marketing_automation_sms
 #: model_terms:ir.ui.view,arch_db:marketing_automation_sms.marketing_activity_view_form
@@ -156,29 +156,29 @@ msgstr "Templat SMS"
 #: code:addons/marketing_automation_sms/models/marketing_activity.py:0
 #, python-format
 msgid "SMS canceled"
-msgstr ""
+msgstr "SMS dibatalkan"
 
 #. module: marketing_automation_sms
 #: code:addons/marketing_automation_sms/models/mailing_trace.py:0
 #: code:addons/marketing_automation_sms/models/marketing_activity.py:0
 #, python-format
 msgid "SMS failed"
-msgstr ""
+msgstr "SMS gagal"
 
 #. module: marketing_automation_sms
 #: model:ir.model.fields.selection,name:marketing_automation_sms.selection__marketing_activity__trigger_type__sms_bounce
 msgid "SMS: bounced"
-msgstr ""
+msgstr "SMS: dibounce"
 
 #. module: marketing_automation_sms
 #: model:ir.model.fields.selection,name:marketing_automation_sms.selection__marketing_activity__trigger_type__sms_click
 msgid "SMS: clicked"
-msgstr ""
+msgstr "SMS: diklik"
 
 #. module: marketing_automation_sms
 #: model:ir.model.fields.selection,name:marketing_automation_sms.selection__marketing_activity__trigger_type__sms_not_click
 msgid "SMS: not clicked"
-msgstr ""
+msgstr "SMS: tidak diklik"
 
 #. module: marketing_automation_sms
 #: model:ir.model,name:marketing_automation_sms.model_sms_composer
@@ -197,11 +197,13 @@ msgid ""
 "To use this feature you should be an administrator or belong to the "
 "marketing automation group."
 msgstr ""
+"Untuk menggunakan fitur ini Anda harus merupakan administrator atau berasal "
+"dari kelompok automation marketing."
 
 #. module: marketing_automation_sms
 #: model:ir.model.fields,field_description:marketing_automation_sms.field_marketing_activity__trigger_category
 msgid "Trigger Category"
-msgstr ""
+msgstr "Kategori Pemicu"
 
 #. module: marketing_automation_sms
 #: model:ir.model.fields,field_description:marketing_automation_sms.field_marketing_activity__trigger_type

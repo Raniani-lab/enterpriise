@@ -2332,7 +2332,7 @@ msgstr "Selecionar um artigo"
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
 msgid "Send as Message"
-msgstr ""
+msgstr "Enviar a mensagem"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__sequence
@@ -2606,7 +2606,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #, python-format
 msgid "Use as Attachment"
-msgstr ""
+msgstr "Usar como anexo"
 
 #. module: knowledge
 #. odoo-javascript

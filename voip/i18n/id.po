@@ -37,14 +37,14 @@ msgstr ""
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "1 missed call"
-msgstr ""
+msgstr "1 panggilan yang tidak dijawab"
 
 #. module: voip
 #. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "2 missed calls"
-msgstr ""
+msgstr "2 panggilan yang tidak dijawab"
 
 #. module: voip
 #. odoo-javascript
@@ -76,7 +76,7 @@ msgstr "Aktivitas"
 #: code:addons/voip/static/src/models/call_queue_switch_view.js:0
 #, python-format
 msgid "Add to Call Queue"
-msgstr ""
+msgstr "Tambahkan ke Antrian Panggilan Telepon"
 
 #. module: voip
 #: model:ir.actions.server,name:voip.action_add_to_call_queue
@@ -166,7 +166,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_res_users__should_call_from_another_device
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__should_call_from_another_device
 msgid "Call from another device"
-msgstr ""
+msgstr "Panggilan dari perangkat lain"
 
 #. module: voip
 #. odoo-javascript
@@ -210,7 +210,7 @@ msgstr "Batal"
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #, python-format
 msgid "Cancel the activity"
-msgstr ""
+msgstr "Batalkan kegiatan"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__cancel
@@ -239,6 +239,11 @@ msgid ""
 "            • Ask: Always ask whether the softphone or the device's phone must be used\n"
 "        "
 msgstr ""
+"Pilih metode untuk digunakan untuk memanggil nomor saat menggunakan aplikasi mobile:\n"
+"            • VoIP: Selalu gunakan Odoo softphone\n"
+"            • Telepon perangkat: Selalu gunakan telepon perangkat\n"
+"            • Tanya: Selalu tanya apakah softphone atau telepon perangkat yang akan digunakan\n"
+"        "
 
 #. module: voip
 #. odoo-javascript
@@ -320,7 +325,7 @@ msgstr "Demo"
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_users_settings__how_to_call_on_mobile__phone
 msgid "Device's phone"
-msgstr ""
+msgstr "Telepon perangkat"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__direction
@@ -384,14 +389,14 @@ msgstr "Edit"
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "End Call"
-msgstr ""
+msgstr "Tutup Panggilan"
 
 #. module: voip
 #. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Enter number or name"
-msgstr ""
+msgstr "Masukkan angka atau nama"
 
 #. module: voip
 #. odoo-javascript
@@ -404,7 +409,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_res_users__external_device_number
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__external_device_number
 msgid "External device number"
-msgstr ""
+msgstr "Angka perangkat eksternal"
 
 #. module: voip
 #. odoo-javascript
@@ -432,7 +437,7 @@ msgstr "Dikelompokkan berdasarkan"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Hang up but keep call in queue"
-msgstr ""
+msgstr "Tutup panggilan tapi tetap simpan dalam antrian"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__done
@@ -444,7 +449,7 @@ msgstr "Diadakan"
 #: model:ir.model.fields,field_description:voip.field_res_users__how_to_call_on_mobile
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__how_to_call_on_mobile
 msgid "How to place calls on mobile"
-msgstr ""
+msgstr "Cara memulai panggilan telepon pada mobile"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__id
@@ -458,6 +463,7 @@ msgstr "ID"
 #: model:ir.model.fields,help:voip.field_res_users_settings__should_auto_reject_incoming_calls
 msgid "If enabled, incoming calls will be automatically declined in Odoo."
 msgstr ""
+"Bila diaktifkan, panggilan masuk akan secara otomatis ditolak di Odoo."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__should_call_from_another_device
@@ -467,6 +473,9 @@ msgid ""
 "device number\". Use this option to place the call in Odoo but handle it "
 "from another device - e.g. your desk phone."
 msgstr ""
+"Bila diaktifkan, memulai panggilan di Odoo akan mentransfer call ke \"Nomor "
+"perangkat eksternal\". Gunakan opsi ini untuk memulai panggilan di Odoo tapi"
+" menanganinya dari perangkat lain - contoh telepon meja Anda."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__external_device_number
@@ -475,6 +484,8 @@ msgid ""
 "If the \"Call from another device\" option is enabled, calls placed in Odoo "
 "will be transfered to this phone number."
 msgstr ""
+"Bila opsi \"Panggil dari perangkat lain\" diaktifkan, panggilan yang "
+"dipasang di Odoo akan ditransfer ke nomor telepon ini."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__7d
@@ -545,7 +556,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_res_users__has_call_in_queue
 #: model:ir.model.fields,field_description:voip.field_voip_queue_mixin__has_call_in_queue
 msgid "Is in the Call Queue"
-msgstr ""
+msgstr "Apakah dalam Antrian Panggilan"
 
 #. module: voip
 #. odoo-javascript
@@ -565,7 +576,7 @@ msgstr "Terakhir diubah pada"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__last_seen_phone_call
 msgid "Last Seen Phone Call"
-msgstr ""
+msgstr "Panggilan Telepon Terakhir Terlihat"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__write_uid
@@ -623,7 +634,7 @@ msgstr "Tandai sebagai selesai"
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__missed
 msgid "Missed"
-msgstr ""
+msgstr "Tidak dijawab"
 
 #. module: voip
 #. odoo-python
@@ -679,6 +690,8 @@ msgid ""
 "No audio recording device available. The application requires a microphone "
 "in order to be used."
 msgstr ""
+"Tidak ada perangkat perekam audio yang tersedia. Aplikasi membutuhkan "
+"mikrofon agar dapat digunakan."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__pending
@@ -708,14 +721,14 @@ msgstr "Keluar"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__pbx_ip
 msgid "PBX Server IP"
-msgstr ""
+msgstr "PBX Server IP"
 
 #. module: voip
 #. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "PBX or Websocket address is missing. Please check your settings."
-msgstr ""
+msgstr "Kurang alamat PBX atau Websocket. Mohon periksa pengaturan Anda."
 
 #. module: voip
 #. odoo-javascript
@@ -769,7 +782,7 @@ msgstr "Panggilan telepon"
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "Please accept the use of the microphone."
-msgstr ""
+msgstr "Silakan terima penggunaan mikrofon."
 
 #. module: voip
 #. odoo-javascript
@@ -779,6 +792,8 @@ msgid ""
 "Please try again later. If the problem persists, you may want to ask an "
 "administrator to check the configuration."
 msgstr ""
+"Silakan coba lagi nanti. Bila masalah berlanjut, Anda mungkin ingin meminta "
+"administrator untuk memeriksa konfigurasi."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_config_settings__mode__prod
@@ -805,7 +820,7 @@ msgstr ""
 #: code:addons/voip/static/src/models/registerer.js:0
 #, python-format
 msgid "Registration rejected: %(statusCode)s %(reasonPhrase)s."
-msgstr ""
+msgstr "Pendaftaran ditolak: %(statusCode)s %(reasonPhrase)s."
 
 #. module: voip
 #. odoo-javascript
@@ -825,7 +840,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_res_users__should_auto_reject_incoming_calls
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__should_auto_reject_incoming_calls
 msgid "Reject incoming calls"
-msgstr ""
+msgstr "Tolak panggilan masuk"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__rejected
@@ -851,7 +866,7 @@ msgstr ""
 #: code:addons/voip/static/src/models/call_queue_switch_view.js:0
 #, python-format
 msgid "Remove from Call Queue"
-msgstr ""
+msgstr "Hapus dari Antrian Panggilan"
 
 #. module: voip
 #. odoo-javascript
@@ -932,6 +947,8 @@ msgid ""
 "Some documents cannot be added to the call queue as they do not have a phone"
 " number set: %(record_names)s"
 msgstr ""
+"Beberapa dokumen tidak dapat ditambahkan ke antrian telepon karena mereka "
+"tidak memiliki nomor telepon: %(record_names)s"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__reschedule_date
@@ -965,12 +982,12 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__pbx_ip
 msgid "The IP address of your PBX Server"
-msgstr ""
+msgstr "Alamat IP dari Server PBX Anda"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__wsServer
 msgid "The URL of your WebSocket"
-msgstr ""
+msgstr "URL dari WebSocket Anda"
 
 #. module: voip
 #. odoo-javascript
@@ -988,6 +1005,9 @@ msgid ""
 "verify the websocket server URL in the General Settings. If the problem "
 "persists, this is probably an issue with the server."
 msgstr ""
+"Error mungkin datang dari transport layer. Administrator harus memverifikasi"
+" URL server websocket di Pengaturan Umum. Bila masalah berlanjut, ini "
+"kemungkinan masalah dengan server."
 
 #. module: voip
 #. odoo-javascript
@@ -1003,14 +1023,14 @@ msgstr ""
 #: model:ir.model.fields,help:voip.field_res_users__voip_secret
 #: model:ir.model.fields,help:voip.field_res_users_settings__voip_secret
 msgid "The password that will be used to register with the PBX server."
-msgstr ""
+msgstr "Password yang akan digunakan untuk mendaftar dengan server PBX"
 
 #. module: voip
 #. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "The person you try to contact is currently unavailable."
-msgstr ""
+msgstr "Orang yang Anda ingin hubungi saat ini tidak tersedia."
 
 #. module: voip
 #. odoo-javascript
@@ -1028,6 +1048,9 @@ msgid ""
 "that you are reaching the right server (PBX server IP in the General "
 "Settings) and that the credentials in your user preferences are correct."
 msgstr ""
+"Server gagal mengautentikasi Anda. Administrator harus memverifikasi bahwa "
+"Anda sedang mencoba mencapai server yang tepat (Server IP PBX di Pengaturan "
+"Umum) dan bahwa kredensial di preferensi user Anda benar."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__state
@@ -1044,6 +1067,8 @@ msgid ""
 "The username (typically the extension number) that will be used to register "
 "with the PBX server."
 msgstr ""
+"Username (biasanya nomor ekstensi) akan digunakan untuk mendaftar dengan "
+"server PBX."
 
 #. module: voip
 #. odoo-javascript
@@ -1052,7 +1077,7 @@ msgstr ""
 msgid ""
 "The websocket connection with the server has been lost. Please try to "
 "refresh the page."
-msgstr ""
+msgstr "Hubungan websocket dengan server hilang. Mohon refresh halaman."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__open
@@ -1107,7 +1132,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model,name:voip.model_voip_queue_mixin
 msgid "VOIP Queue support"
-msgstr ""
+msgstr "Bantuan antrian QOIP"
 
 #. module: voip
 #. odoo-javascript
@@ -1122,24 +1147,24 @@ msgstr "VoIP"
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.voip_res_users_settings_view_form
 msgid "VoIP Configuration"
-msgstr ""
+msgstr "Konfigurasi VoIP"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__mode
 msgid "VoIP Environment"
-msgstr ""
+msgstr "Environment VoIP"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__voip_secret
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__voip_secret
 msgid "VoIP secret"
-msgstr ""
+msgstr "Secret VoIP"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__voip_username
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__voip_username
 msgid "VoIP username / Extension number"
-msgstr ""
+msgstr "Username / nomor ekstensi VoIP"
 
 #. module: voip
 #. odoo-javascript
@@ -1151,7 +1176,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__wsServer
 msgid "WebSocket"
-msgstr ""
+msgstr "WebSocket"
 
 #. module: voip
 #. odoo-javascript

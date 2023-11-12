@@ -372,7 +372,7 @@ msgstr "刪除"
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_form
 msgid "Describe your activity"
-msgstr ""
+msgstr "說明你的活動"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -807,7 +807,7 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/js/timesheet_uom_timer.js:0
 #, python-format
 msgid "Play"
-msgstr ""
+msgstr "播放"
 
 #. module: timesheet_grid
 #. odoo-javascript

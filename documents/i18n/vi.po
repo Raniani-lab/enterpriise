@@ -27,7 +27,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid " + Add a tag"
-msgstr ""
+msgstr " + Thêm một thẻ"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
@@ -67,16 +67,19 @@ msgid ""
 "your documents in bulk with the split tool: launch user defined actions, "
 "request a signature, convert to vendor bills with AI, etc."
 msgstr ""
+". Các tệp được quét sẽ hiện tự động trong không gian làm việc. Sau đó, xử lý"
+" tài liệu hàng loạt bằng công cụ tách: khởi chạy tác vụ do người dùng xác "
+"định, yêu cầu chữ ký, chuyển thành hóa đơn mua hàng bằng AI,..."
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
 msgid "2022"
-msgstr ""
+msgstr "2022"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2018
 msgid "2023"
-msgstr ""
+msgstr "2023"
 
 #. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
@@ -571,6 +574,8 @@ msgid ""
 "An easy way to process incoming mails is to configure your scanner to send "
 "PDFs to"
 msgstr ""
+"Một cách dễ dàng để xử lý thư đến là cấu hình máy quét của bạn để gửi tệp "
+"PDF tới"
 
 #. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
@@ -983,7 +988,7 @@ msgstr "Tên hiển thị"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "Do you really want to unlink this record?"
-msgstr ""
+msgstr "Bạn có thực sự muốn hủy liên kết tập dữ liệu này không?"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_document
@@ -1034,7 +1039,7 @@ msgstr "Document Request: %s Uploaded by: %s"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__has_write_access
 msgid "Document User Upload Rights"
-msgstr ""
+msgstr "Quyền tải lên tài liệu của người dùng"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_action
@@ -1049,7 +1054,7 @@ msgstr "Danh sách tài liệu"
 #. module: documents
 #: model:mail.template,name:documents.mail_template_document_request
 msgid "Document: Document Request"
-msgstr ""
+msgstr "Tài liệu: Yêu cầu tài liệu"
 
 #. module: documents
 #. odoo-javascript
@@ -1164,7 +1169,7 @@ msgstr "Sửa"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "Edit the linked record"
-msgstr ""
+msgstr "Sửa tập dữ liệu được liên kết"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -1411,7 +1416,7 @@ msgstr "Hộp thư đến"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__include_sub_folders
 msgid "Include Sub Folders"
-msgstr ""
+msgstr "Bao gồm các thư mục con"
 
 #. module: documents
 #: model_terms:documents.folder,description:documents.documents_internal_folder
@@ -1451,7 +1456,7 @@ msgstr "Trở thành người theo dõi"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__is_shared
 msgid "Is Shared"
-msgstr ""
+msgstr "Được chia sẻ"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_internal_knowledge
@@ -1755,14 +1760,14 @@ msgstr "Nhóm mới"
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "New Tag"
-msgstr ""
+msgstr "Thẻ mới"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "New Workspace"
-msgstr ""
+msgstr "Không gian làm việc mới"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_calendar_event_id
@@ -1923,7 +1928,7 @@ msgstr "Người phụ trách"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "Owner: #{document.owner_id.name}"
-msgstr ""
+msgstr "Người sở hữu: #{document.owner_id.name}"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1972,7 +1977,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "Partial transfer"
-msgstr ""
+msgstr "Chuyển một phần"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_contact
@@ -2181,7 +2186,7 @@ msgstr "Send to Legal"
 #. module: documents
 #: model:mail.template,description:documents.mail_template_document_request
 msgid "Sent to partner when requesting a document from them"
-msgstr ""
+msgstr "Gửi cho đối tác khi yêu cầu tài liệu từ họ"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
@@ -2194,7 +2199,7 @@ msgstr "Trình tự"
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_2018contracts
 msgid "Set As 2023 Contracts"
-msgstr ""
+msgstr "Đặt làm Hợp đồng năm 2023"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id
@@ -2254,14 +2259,14 @@ msgstr "Chia sẻ liên kết"
 #: code:addons/documents/models/share.py:0
 #, python-format
 msgid "Share selected files"
-msgstr ""
+msgstr "Chia sẻ tệp đã chọn"
 
 #. module: documents
 #. odoo-python
 #: code:addons/documents/models/share.py:0
 #, python-format
 msgid "Share selected workspace"
-msgstr ""
+msgstr "Chia sẻ không gian làm việc đã chọn"
 
 #. module: documents
 #. odoo-javascript
@@ -2477,7 +2482,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "The share url has been copied to your clipboard."
-msgstr ""
+msgstr "Url chia sẻ đã được sao chép vào bộ nhớ tạm của bạn."
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_share_share_unique
@@ -2522,7 +2527,7 @@ msgstr "Hình nhỏ"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail_status
 msgid "Thumbnail Status"
-msgstr ""
+msgstr "Trạng thái hình thu nhỏ"
 
 #. module: documents
 #. odoo-javascript
@@ -2619,6 +2624,8 @@ msgid ""
 "Upload <span class=\"fw-normal\">a file or</span> drag <span class=\"fw-"
 "normal\">it here.</span>"
 msgstr ""
+"Tải lên <span class=\"fw-normal\">một tệp hoặc</span> kéo <span class=\"fw-"
+"normal\">nó vào đây.</span>"
 
 #. module: documents
 #. odoo-javascript
@@ -2635,7 +2642,7 @@ msgstr "Tải lên bằng email"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Upload by email"
-msgstr ""
+msgstr "Tải lên bằng email"
 
 #. module: documents
 #. odoo-python
@@ -2783,14 +2790,14 @@ msgstr "You cannot create recursive folders."
 #: code:addons/documents/models/document.py:0
 #, python-format
 msgid "You don't have the right to move documents to that workspace."
-msgstr ""
+msgstr "Bạn không có quyền di chuyển tài liệu đến không gian làm việc đó."
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "You don't have the rights to move documents to that workspace"
-msgstr ""
+msgstr "Bạn không có quyền di chuyển tài liệu đến không gian làm việc đó"
 
 #. module: documents
 #. odoo-javascript

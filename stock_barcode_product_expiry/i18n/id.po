@@ -23,7 +23,7 @@ msgstr ""
 #. module: stock_barcode_product_expiry
 #: model_terms:ir.ui.view,arch_db:stock_barcode_product_expiry.stock_move_line_product_selector
 msgid "<i class=\"fa fa-fw fa-lg fa-calendar me-3\" title=\"Expiration Date\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-calendar me-3\" title=\"Tanggal Kadaluwarsa\"/>"
 
 #. module: stock_barcode_product_expiry
 #: model_terms:ir.ui.view,arch_db:stock_barcode_product_expiry.stock_move_line_product_selector

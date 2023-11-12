@@ -508,7 +508,7 @@ msgstr "等待驗證"
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "Wasting time recording your receipts? Let’s try a better way."
-msgstr ""
+msgstr "浪費了記錄收據的時間？讓我們嘗試一個更好的方法。"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__word_page

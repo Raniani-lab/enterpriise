@@ -372,7 +372,7 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/static/src/js/payment_form.js:0
 #, python-format
 msgid "SMS Sent"
-msgstr ""
+msgstr "Kirim SMS"
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -615,7 +615,7 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid "Your confirmation code is %s"
-msgstr ""
+msgstr "Kode konfirmasi Anda adalah %s"
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.inline_form

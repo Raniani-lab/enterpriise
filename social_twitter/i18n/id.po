@@ -90,7 +90,7 @@ msgstr "Terjadi error (%s)"
 #: code:addons/social_twitter/controllers/main.py:0
 #, python-format
 msgid "Authentication failed. Please enter valid credentials."
-msgstr ""
+msgstr "Autentikasi gagal. Silakan masukkan kredensial yang valid."
 
 #. module: social_twitter
 #. openerp-web
@@ -107,6 +107,8 @@ msgid ""
 "Can not like / unlike the tweet\n"
 "%s."
 msgstr ""
+"Tidak dapat like / membatalkan like tweet\n"
+"%s."
 
 #. module: social_twitter
 #. odoo-javascript
@@ -195,6 +197,8 @@ msgid ""
 "Failed to delete the Tweet\n"
 "%s."
 msgstr ""
+"Gagal menghapus Tweet\n"
+"%s."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
@@ -207,13 +211,13 @@ msgstr ""
 #, python-format
 msgid ""
 "Failed to fetch the tweets in the same thread: '%s' using the account %s."
-msgstr ""
+msgstr "Gagal mengambil tweet di thread yang sama: '%s' menggunakan akun %s."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Failed to post comment: %s with the account %s."
-msgstr ""
+msgstr "Gagal memposting komentar: %s dengan akun %s."
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_likes
@@ -383,6 +387,7 @@ msgstr "Retweets"
 #, python-format
 msgid "Replies from Tweets older than 7 days must be accessed on Twitter.com"
 msgstr ""
+"Balasan dari Tweet yang lebih tua dari 7 hari harus diakses pada Twitter.com"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream__twitter_searched_keyword
@@ -466,6 +471,13 @@ msgid ""
 "author of the app."
 msgstr ""
 "Url yang layanan ini minta mengembalikkan error. Mohon kontak pencipta app."
+
+#. module: social_twitter
+#. odoo-python
+#: code:addons/social_twitter/controllers/main.py:0
+#, python-format
+msgid "This Tweet has been deleted."
+msgstr "Tweet ini telah dihapus."
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_follow
@@ -664,6 +676,8 @@ msgid ""
 "We could not upload your image, try reducing its size and posting it again "
 "(error: %s)."
 msgstr ""
+"Kita tidak dapat mengunggah gambar Anda, coba kurangi ukurannya dan post "
+"lagi (error: %s)."
 
 #. module: social_twitter
 #. odoo-python

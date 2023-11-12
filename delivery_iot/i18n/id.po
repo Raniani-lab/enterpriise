@@ -58,7 +58,7 @@ msgstr "Identifier"
 #. module: delivery_iot
 #: model_terms:ir.ui.view,arch_db:delivery_iot.view_picking_type_form_inherit
 msgid "IoT"
-msgstr ""
+msgstr "IoT"
 
 #. module: delivery_iot
 #: model_terms:ir.ui.view,arch_db:delivery_iot.iot_device_view_form_inherit

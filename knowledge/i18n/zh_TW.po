@@ -1433,7 +1433,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Hello there"
-msgstr ""
+msgstr "你好"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -2778,4 +2778,4 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__write
 msgid "write"
-msgstr ""
+msgstr "寫入"

@@ -16,8 +16,8 @@
 # Uuganbayar Batbaatar <uuganaaub33@gmail.com>, 2022
 # Батмөнх Ганбат <batmunkh2522@gmail.com>, 2022
 # Martin Trigaux, 2022
-# Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2022
 # Sanjaajamts Badamjunai <b.sanjaajamtsfc@gmail.com>, 2023
+# Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -25,7 +25,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Sanjaajamts Badamjunai <b.sanjaajamtsfc@gmail.com>, 2023\n"
+"Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2023\n"
 "Language-Team: Mongolian (https://app.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -137,6 +137,9 @@ msgid ""
 "                            Save your Salary Rule in order to add Parameter Values.\n"
 "                        </span>"
 msgstr ""
+"<span class=\"bg-white opacity-75 w-100 h-100 o_salary_rule_overlay position-absolute top-0 end-0 w-100 h-100 text-center d-flex justify-content-center flex-column fs-3\">\n"
+"                            Оролтын утгуудыг нэмэхийн тулд эхлээд цалингийн дүрмээ хадгална уу.\n"
+"                        </span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_resource_calendar_view_form
@@ -427,6 +430,8 @@ msgid ""
 "Amount to pay for this month, Monthly Amount or less depending on the "
 "Remaining Amount."
 msgstr ""
+"Энэ сард төлөгдөхөөр хүлээгдэж буй дүн, Сарын бүтэн дүн эсвэл төлөгдөөгүй "
+"үлдэгдэл дүн."
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -615,7 +620,7 @@ msgstr "Тооцоолол"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__calendar_changed
 msgid "Calendar Changed"
-msgstr ""
+msgstr "Хуанли өөрчлөгдлөө"
 
 #. module: hr_payroll
 #: model:ir.actions.server,name:hr_payroll.action_hr_payroll_cancel_payroll
@@ -727,6 +732,8 @@ msgstr "Энд дарж шинээр үүсгэнэ үү <strong>Гэрээ</str
 msgid ""
 "Click here to generate a <strong>Batch</strong> for the displayed Employees."
 msgstr ""
+"Энд дарснаар дэлгэцэнд харагдаж буй ажилчдын хувьд<strong>Багц</strong> "
+"цалингийн хуудас үүсгэх болно."
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -742,6 +749,8 @@ msgstr "-руу буцахын тулд энд дарна уу <strong>Ажил�
 msgid ""
 "Click on <strong>Salary Information</strong> to access additional fields."
 msgstr ""
+"Дараах <strong>Цалингийн мэдээлэл</strong> дээр дарснаар нэмэлт талбарууд "
+"руу хандах болно."
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -749,6 +758,8 @@ msgstr ""
 #, python-format
 msgid "Click on Employees to pick one of your <strong>Employees</strong>."
 msgstr ""
+"Ажилчид дээр дарснаар та өөрийн <strong>Ажилчдаас</strong>нэгийг сонгох "
+"боломжтой."
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -758,13 +769,16 @@ msgid ""
 "Click on Payroll to manage your employee's <strong>Work Entries</strong>, "
 "<strong>Contracts</strong> and <strong>Payslips</strong>."
 msgstr ""
+"Цалин цэс дээр дарснаар та ажилчдынхаа <strong>Ажлын цагийн тооцоо</strong>,"
+" <strong>Гэрээнүүд</strong> болон <strong>Цалингийн "
+"хуудсуудыг</strong>удирдан бүртгэх болно."
 
 #. module: hr_payroll
 #. odoo-javascript
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Click on the <strong>Payslip</strong>."
-msgstr ""
+msgstr "<strong>Цалингийн хуудас</strong>дээр дарна."
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -787,7 +801,7 @@ msgstr "Хаах"
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Close the window."
-msgstr ""
+msgstr "Цонхыг хаах."
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_work_entry_type__round_days_type__half-up
@@ -808,7 +822,7 @@ msgstr "Хамгийн ойр"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule_category__code
 #: model_terms:ir.ui.view,arch_db:hr_payroll.contribution_register
 msgid "Code"
-msgstr "Дансны код"
+msgstr "Код"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_salary_rule_view_kanban
@@ -1335,7 +1349,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__edited
 msgid "Edited"
-msgstr ""
+msgstr "Засварлагдсан"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_edit_payslip_lines_form_wizard
@@ -1496,7 +1510,7 @@ msgstr "Алдаа! Өөрийгөө агуулсан цалингийн дүр�
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__date_estimated_end
 msgid "Estimated End Date"
-msgstr ""
+msgstr "Тооцоолсон дуусах огноо"
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip_line__partner_id
@@ -1507,7 +1521,7 @@ msgstr "Ажилтны цалингийн төлбөрт холбогдсон э
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 msgid "Export Payslip"
-msgstr ""
+msgstr "Цалингийн хуудас экспорт"
 
 #. module: hr_payroll
 #. odoo-javascript

@@ -3301,7 +3301,7 @@ msgstr ""
 #. module: helpdesk
 #: model:res.groups,name:helpdesk.group_use_rating
 msgid "Show Customer Ratings"
-msgstr "Kundenbwertung anzeigen"
+msgstr "Kundenbewertung anzeigen"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__show_knowledge_base

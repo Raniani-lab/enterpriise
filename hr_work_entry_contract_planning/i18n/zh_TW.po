@@ -31,6 +31,13 @@ msgid ""
 "        Planning: Work entries will be generated from the employee's planning. (requires Planning app)\n"
 "    "
 msgstr ""
+"\n"
+"        定義了工作記錄生成的來源\n"
+"\n"
+"        工作安排：工作記錄將從以下的工作時間生成。\n"
+"        出勤：工作記錄將從員工的出勤生成。(需要出勤應用程序)\n"
+"        計劃：工作記錄將從員工的計劃生成。(需要計劃應用程序)\n"
+"    "
 
 #. module: hr_work_entry_contract_planning
 #: model:ir.model,name:hr_work_entry_contract_planning.model_hr_contract
@@ -75,4 +82,4 @@ msgstr "資源"
 #. module: hr_work_entry_contract_planning
 #: model:ir.model.fields,field_description:hr_work_entry_contract_planning.field_hr_contract__work_entry_source
 msgid "Work Entry Source"
-msgstr ""
+msgstr "工作記錄來源"

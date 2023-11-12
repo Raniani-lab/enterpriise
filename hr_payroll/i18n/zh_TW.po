@@ -622,7 +622,7 @@ msgstr ""
 msgid ""
 "Careful, the Code is used in many references, changing it could lead to "
 "unwanted changes."
-msgstr ""
+msgstr "小心，該代碼在許多參考中使用，改變它可能會導致不必要的變化。"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__category_id
@@ -1978,7 +1978,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_report__master_department_id
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_report_view_search
 msgid "Master Department"
-msgstr ""
+msgstr "主部門"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__condition_range_max
@@ -2136,7 +2136,7 @@ msgstr ""
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "New Employees"
-msgstr ""
+msgstr "新員工"
 
 #. module: hr_payroll
 #. odoo-python
@@ -3839,7 +3839,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_report__work_entry_source
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_work_entry_report__work_entry_source
 msgid "Work Entry Source"
-msgstr ""
+msgstr "工作記錄來源"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_worked_days_line__work_entry_type_id

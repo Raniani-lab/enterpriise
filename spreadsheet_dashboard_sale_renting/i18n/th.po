@@ -194,7 +194,7 @@ msgstr "พนักงานขาย"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Customers"
-msgstr ""
+msgstr "ลูกค้าชั้นนำ"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -208,7 +208,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Products"
-msgstr ""
+msgstr "สินค้ายอดนิยม"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript

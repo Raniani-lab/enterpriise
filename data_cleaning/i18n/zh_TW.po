@@ -30,7 +30,7 @@ msgstr ""
 #. module: data_cleaning
 #: model_terms:ir.ui.view,arch_db:data_cleaning.view_data_merge_model_form
 msgid "<span class=\"me-1\">Every</span>"
-msgstr ""
+msgstr "<span class=\"me-1\">每</span>"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_rule__action
@@ -141,7 +141,7 @@ msgstr "公司"
 #: model_terms:ir.actions.act_window,help:data_cleaning.action_data_cleaning_record
 #: model_terms:ir.actions.act_window,help:data_cleaning.action_data_cleaning_record_notification
 msgid "Configure rules to identify records to clean"
-msgstr ""
+msgstr "配置規則以標識要清理的記錄"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__country_id
@@ -275,7 +275,7 @@ msgstr "最後修改於"
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_model__last_notification
 msgid "Last Notification"
-msgstr ""
+msgstr "上次通知"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_model__write_uid
@@ -329,22 +329,22 @@ msgstr "名稱"
 #: model_terms:ir.actions.act_window,help:data_cleaning.action_data_cleaning_record
 #: model_terms:ir.actions.act_window,help:data_cleaning.action_data_cleaning_record_notification
 msgid "No cleaning suggestions"
-msgstr ""
+msgstr "無清理建議"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_model__notify_frequency
 msgid "Notify"
-msgstr ""
+msgstr "通知"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_model__notify_frequency_period
 msgid "Notify Frequency Period"
-msgstr ""
+msgstr "通知頻率期間"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_model__notify_user_ids
 msgid "Notify Users"
-msgstr ""
+msgstr "通知用戶"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__res_id
@@ -433,7 +433,7 @@ msgstr ""
 #. module: data_cleaning
 #: model:ir.model.constraint,message:data_cleaning.constraint_data_cleaning_model_check_notif_freq
 msgid "The notification frequency should be greater than 0"
-msgstr ""
+msgstr "通知頻率應大於 0"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_rule__action_trim
@@ -453,7 +453,7 @@ msgstr ""
 #: code:addons/data_cleaning/static/src/views/data_cleaning_list_view.xml:0
 #, python-format
 msgid "Unselect"
-msgstr ""
+msgstr "取消選擇"
 
 #. module: data_cleaning
 #. odoo-javascript
@@ -483,4 +483,4 @@ msgstr "這裡"
 #. module: data_cleaning
 #: model_terms:ir.ui.view,arch_db:data_cleaning.notification
 msgid "records to clean with the '"
-msgstr ""
+msgstr "記錄要清理，連同「"

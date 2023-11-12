@@ -50,12 +50,12 @@ msgstr "Đã xảy ra lỗi."
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.res_config_settings_view_form
 msgid "App ID"
-msgstr ""
+msgstr "ID ứng dụng"
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.res_config_settings_view_form
 msgid "App Secret"
-msgstr ""
+msgstr "Bí mật ứng dụng"
 
 #. module: social_facebook
 #. odoo-javascript

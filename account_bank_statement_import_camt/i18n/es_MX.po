@@ -1810,7 +1810,7 @@ msgstr "Pago con tarjeta inteligente "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Spots"
-msgstr "Puntos"
+msgstr "Al contado"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

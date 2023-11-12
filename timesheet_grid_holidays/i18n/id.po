@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Abe Manyo, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:30+0000\n"
 "PO-Revision-Date: 2022-12-16 09:35+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Abe Manyo, 2023\n"
 "Language-Team: Indonesian (https://app.transifex.com/odoo/teams/41243/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,7 +33,7 @@ msgstr "Karyawan"
 #. module: timesheet_grid_holidays
 #: model:ir.model,name:timesheet_grid_holidays.model_hr_timesheet_merge_wizard
 msgid "Merge Timesheets"
-msgstr ""
+msgstr "Gabung Timesheet-Timesheet"
 
 #. module: timesheet_grid_holidays
 #. odoo-python
@@ -43,3 +44,6 @@ msgid ""
 " the Time Off application to modify or cancel your time off requests "
 "instead."
 msgstr ""
+"Anda tidak dapat menggabungkan timesheet yang di-link ke permintaan cuti. "
+"Mohon gunakan aplikasi Cuti untuk memodifikasi atau membatalkan permintaan "
+"cuti Anda."

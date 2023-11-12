@@ -43,12 +43,12 @@ msgstr ""
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_res_config_settings__linkedin_app_id
 msgid "App ID"
-msgstr ""
+msgstr "ID ứng dụng"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_res_config_settings__linkedin_client_secret
 msgid "App Secret"
-msgstr ""
+msgstr "Bí mật ứng dụng"
 
 #. module: social_linkedin
 #. odoo-javascript

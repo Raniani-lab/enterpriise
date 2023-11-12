@@ -4550,7 +4550,7 @@ msgstr ""
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "You just like to break things, don't you?"
-msgstr ""
+msgstr "Anda suka merusak segala sesuatu, ya?"
 
 #. module: web_studio
 #. odoo-javascript

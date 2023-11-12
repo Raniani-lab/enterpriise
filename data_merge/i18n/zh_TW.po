@@ -51,7 +51,7 @@ msgstr ""
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_model_form
 msgid "<span class=\"me-1\">Every</span>"
-msgstr ""
+msgstr "<span class=\"me-1\">每</span>"
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_model_form
@@ -391,7 +391,7 @@ msgstr "最後修改於"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__last_notification
 msgid "Last Notification"
-msgstr ""
+msgstr "上次通知"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__write_uid
@@ -537,17 +537,17 @@ msgstr ""
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__notify_frequency
 msgid "Notify"
-msgstr ""
+msgstr "通知"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__notify_frequency_period
 msgid "Notify Frequency Period"
-msgstr ""
+msgstr "通知頻率期間"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__notify_user_ids
 msgid "Notify Users"
-msgstr ""
+msgstr "通知用戶"
 
 #. module: data_merge
 #. odoo-python
@@ -646,7 +646,7 @@ msgstr ""
 #. module: data_merge
 #: model:ir.model.constraint,message:data_merge.constraint_data_merge_model_check_notif_freq
 msgid "The notification frequency should be greater than 0"
-msgstr ""
+msgstr "通知頻率應大於 0"
 
 #. module: data_merge
 #. odoo-python
@@ -691,7 +691,7 @@ msgstr ""
 #: code:addons/data_merge/static/src/views/data_merge_list_view.xml:0
 #, python-format
 msgid "Unselect"
-msgstr ""
+msgstr "取消選擇"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__record_write_uid

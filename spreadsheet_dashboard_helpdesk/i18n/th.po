@@ -27,7 +27,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Agent"
-msgstr ""
+msgstr "ตัวแทน"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -50,21 +50,21 @@ msgstr "ลูกค้า"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to assign"
-msgstr ""
+msgstr "ชั่วโมงที่จะมอบหมาย"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to close"
-msgstr ""
+msgstr "ชั่วโมงจะปิด"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to respond"
-msgstr ""
+msgstr "ชั่วโมงในการตอบกลับ"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -109,28 +109,28 @@ msgstr "ทีม"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Assigned To"
-msgstr ""
+msgstr "การวิเคราะห์ทิกเก็ตตามการมอบหมายให้"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Customer"
-msgstr ""
+msgstr "การวิเคราะห์ทิกเก็ตตามลูกค้า"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Team"
-msgstr ""
+msgstr "การวิเคราะห์ทิกเก็ตตามทีมงาน"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Ticket Type"
-msgstr ""
+msgstr "การวิเคราะห์ทิกเก็ตตามประเภททิกเก็ต"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -157,35 +157,35 @@ msgstr "ทิกเก็ต"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Tickets by Stage"
-msgstr ""
+msgstr "ทิกเก็ตตามขั้นตอน"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Tickets by Type"
-msgstr ""
+msgstr "ทิกเก็ตตามประเภท"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Assign"
-msgstr ""
+msgstr "ถึงเวลามอบหมาย"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Close"
-msgstr ""
+msgstr "ถึงเวลาปิด"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Respond"
-msgstr ""
+msgstr "ถึงเวลาตอบกลับ"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -199,21 +199,21 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Customers"
-msgstr ""
+msgstr "ลูกค้าชั้นนำ"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Teams"
-msgstr ""
+msgstr "ทีมงานยอดนิยม"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Ticket Types"
-msgstr ""
+msgstr "ประเภททิกเก็ตยอดนิยม"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -237,11 +237,11 @@ msgstr "ตั้งแต่ช่วงที่แล้ว"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "stats - current"
-msgstr ""
+msgstr "สถิติ - ปัจจุบัน"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "stats - previous"
-msgstr ""
+msgstr "สถิติ - ก่อนหน้า"

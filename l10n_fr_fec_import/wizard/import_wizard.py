@@ -264,7 +264,7 @@ class FecImportWizard(models.TransientModel):
                     "account_id": debit_account.id if balance > 0 else credit_account.id,
                     "credit": 0.0 if balance > 0 else abs(balance),
                     "debit": balance if balance > 0 else 0.0,
-                    "fec_matching_number": matching or False,
+                    "matching_number": matching and f"I{matching}" or False,
                 }
                 move["line_ids"].append(fields.Command.create(data))
 
@@ -458,7 +458,7 @@ class FecImportWizard(models.TransientModel):
                 "name": move_line_name,
                 "ref": piece_ref,
                 "account_id": self._make_xml_id('account', account_code),
-                "fec_matching_number": matching or False,
+                "matching_number": matching and f"I{matching}" or False,
                 "tax_ids": [],  # Avoid default taxes on the accounts to be set
             }
 
@@ -640,35 +640,6 @@ class FecImportWizard(models.TransientModel):
         # Set default suspense account on the Bank Journal
         journal.suspense_account_id = self.company_id.account_journal_suspense_account_id
 
-    def _reconcile_imported_move_lines(self, moves):
-        """ Reconcile imported move lines, the matching is done between the fields ['account_id', 'matching_number'] """
-
-        # Ensure that the database is aligned
-        self.env.flush_all()
-
-        # Retrieve the move lines
-        sql = """ SELECT ARRAY_AGG(id) ids,
-                         account_id
-                    FROM account_move_line
-                   WHERE account_id IS NOT NULL
-                         AND fec_matching_number IS NOT NULL
-                         AND reconciled = False
-                         AND move_id in %s
-                GROUP BY account_id, fec_matching_number
-                  HAVING COUNT(*) > 1 """
-
-        # Set the account as reconcilable and actively reconcile the lines
-        self.env.cr.execute(sql, (tuple(moves.ids), ))
-        for record in self.env.cr.fetchall():
-            matched_move_line_ids, account_id = record
-            self.env["account.account"].browse(account_id).reconcile = True
-            lines = self.env["account.move.line"].browse(matched_move_line_ids)
-
-            # Since the accounts are now 'reconcile', we need to force the update of the residual amounts.
-            self.env.add_to_compute(lines._fields['amount_residual'], lines)
-
-            lines.with_context(no_exchange_difference=True, no_cash_basis=True).reconcile()
-
     def _build_import_cache(self):
         """ Build a cache with all the data needed by the generators, so that the query is done just one time """
 
@@ -763,20 +734,9 @@ class FecImportWizard(models.TransientModel):
 
         created_vals = self.env['account.chart.template']._load_data(data)
 
-        # If there are moves, post them
         moves = created_vals.get("account.move", [])
-        if moves:
-            _logger.info("Posting moves...")
-            moves.action_post()
-
-            _logger.info("Reconciling move_lines...")
-            self._reconcile_imported_move_lines(moves)
-
-            for move in moves:
-                for move_line in move.line_ids:
-                    if move_line.partner_id:
-                        move.partner_id = move_line.partner_id
-                        break
+        for move in moves:
+            move.partner_id = move.line_ids.partner_id[:1]
 
         journals = created_vals.get("account.journal", [])
         if journals:

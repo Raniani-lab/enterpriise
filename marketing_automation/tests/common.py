@@ -49,17 +49,20 @@ class MarketingAutomationCase(MassMailCase):
             if info.get('trace_status'):
                 if activity.mass_mailing_id.mailing_type == 'mail':
                     self.assertMailTraces(
-                        [{'partner': self.env['res.partner'],  # TDE FIXME: make it generic and check why partner seems unset
-                          'email': record.email_normalized,  # TDE FIXME: make it generic and check for aprtner
-                          'failure_type': info.get('trace_failure_type', False),
-                          'trace_status': info['trace_status'],
-                          'record': record,
-                         } for record in info['records']],
+                        [{
+                            'partner': self.env['res.partner'],  # TDE FIXME: make it generic and check why partner seems unset
+                            'email': record.email_normalized,  # TDE FIXME: make it generic and check for aprtner
+                            'failure_type': info.get('trace_failure_type', False),
+                            'trace_status': info['trace_status'],
+                            'record': record,
+                         } for record in info['records']
+                        ],
                         activity.mass_mailing_id,
-                        info['records']
+                        info['records'],
                     )
             else:
                 self.assertEqual(linked_traces.mailing_trace_ids, self.env['mailing.trace'])
+
             if info.get('participants'):
                 self.assertEqual(traces.participant_id, info['participants'])
 

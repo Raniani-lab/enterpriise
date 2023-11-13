@@ -6,7 +6,7 @@ from odoo.addons.test_marketing_automation.tests.common import TestMACommon
 from odoo.tests import tagged
 
 
-@tagged('post_install', '-at_install')
+@tagged('post_install', '-at_install', 'marketing_automation', 'mass_mailing')
 class TestMassMailing(CronMixinCase, TestMACommon):
 
     @classmethod

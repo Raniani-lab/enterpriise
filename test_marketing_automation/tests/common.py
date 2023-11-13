@@ -24,30 +24,33 @@ class TestMACommon(MarketingAutomationSMSCommon):
           * 1 record without partner w email and mobile;
           * 1 record without partner, wo email and mobile
         """
-        records = cls.env[model]
-        for x in range(0, count):
-            for inner_x in range(0, 5):
-                current_idx = x * 5 + inner_x
-                if inner_x < 3:
-                    name = 'Customer_%02d' % (current_idx)
+        record_vals = []
+        for idx in range(0, count):
+            for inner_idx in range(0, 5):
+                current_idx = idx * 5 + inner_idx
+                customer_name = f'Customer_{current_idx}'
+                record_name = f'Test_{current_idx:02d}'
+
+                if inner_idx < 3:
+                    email = f'email_{current_idx:02d}@customer.example.com'
                     partner = cls.env['res.partner'].create({
-                        'name': name,
-                        'mobile': '045600%04d' % (current_idx),
                         'country_id': cls.env.ref('base.be').id,
-                        'email': '"%s" <email_%02d@example.com>' % (name, current_idx),
+                        'email': f'"{customer_name}" <{email}>',
+                        'mobile': f'045600{current_idx:04d}',
+                        'name': customer_name,
                     })
                 else:
                     partner = cls.env['res.partner']
 
-                record_name = 'Test_%02d' % current_idx
                 vals = {
-                    'name': record_name,
                     'customer_id': partner.id,
-                    'description': 'Linked to partner %s' % partner.name if partner else '',
+                    'description': f'Linked to partner {partner.name}' if partner else '',
+                    'name': record_name,
                 }
-                if inner_x == 3:
-                    vals['email_from'] = '"%s" <nopartner.email_%02d@example.com>' % (name, current_idx)
-                    vals['mobile'] = '+3245600%04d' % (current_idx)
+                if inner_idx == 3:
+                    vals['email_from'] = f'"{customer_name}" <nopartner.email_{current_idx:02d}@customer.example.com>'
+                    vals['mobile'] = f'+3245600{current_idx:04d}'
 
-                records += records.create(vals)
-        return records
+                record_vals.append(vals)
+
+        return cls.env[model].create(record_vals)

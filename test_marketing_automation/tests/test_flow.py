@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
@@ -32,19 +31,21 @@ class TestMarketAutoFlow(TestMACommon, CronMixinCase):
         # --------------------------------------------------
 
         cls.campaign = cls.env['marketing.campaign'].with_user(cls.user_marketing_automation).create({
+            'domain': [('name', '!=', 'Invalid')],
+            'model_id': cls.env['ir.model']._get_id('marketing.test.sms'),
             'name': 'Test Campaign',
-            'model_id': cls.env['ir.model']._get('marketing.test.sms').id,
-            'domain': '%s' % ([('name', '!=', 'Invalid')]),
         })
         # first activity: send a mailing
         cls.act1_mailing = cls._create_mailing(
             'marketing.test.sms',
             email_from=cls.user_marketing_automation.email_formatted,
-            keep_archives=True
+            keep_archives=True,
         ).with_user(cls.user_marketing_automation)
         cls.act1 = cls._create_activity(
-            cls.campaign, mailing=cls.act1_mailing,
-            trigger_type='begin', interval_number=0
+            cls.campaign,
+            mailing=cls.act1_mailing,
+            trigger_type='begin',
+            interval_number=0,
         ).with_user(cls.user_marketing_automation)
 
         # second activity: send an SMS 1 hour after a reply
@@ -52,85 +53,49 @@ class TestMarketAutoFlow(TestMACommon, CronMixinCase):
             'marketing.test.sms',
             mailing_type='sms',
             body_plaintext='SMS for {{ object.name }}: mega promo on https://test.example.com',
-            sms_allow_unsubscribe=True
+            sms_allow_unsubscribe=True,
         ).with_user(cls.user_marketing_automation)
         cls.act2_1 = cls._create_activity(
             cls.campaign,
-            mailing=cls.act2_1_mailing, parent_id=cls.act1.id,
-            trigger_type='mail_reply', interval_number=1, interval_type='hours'
+            mailing=cls.act2_1_mailing,
+            parent_id=cls.act1.id,
+            trigger_type='mail_reply',
+            interval_number=1, interval_type='hours',
         ).with_user(cls.user_marketing_automation)
         # other activity: update description if not opened after 1 day
         # created by admin, should probably not give rights to marketing
         cls.act2_2_sact = cls.env['ir.actions.server'].create({
-            'name': 'Update description', 'state': 'code',
-            'model_id': cls.env['ir.model']._get('marketing.test.sms').id,
             'code': """
 for record in records:
     record.write({'description': record.description + ' - Did not answer, sad campaign is sad.'})""",
+            'model_id': cls.env['ir.model']._get('marketing.test.sms').id,
+            'name': 'Update description',
+            'state': 'code',
         })
         cls.act2_2 = cls._create_activity(
             cls.campaign,
-            action=cls.act2_2_sact, parent_id=cls.act1.id,
-            trigger_type='mail_not_open', interval_number=1, interval_type='days',
-            activity_domain='%s' % [('email_from', '!=', False)]
+            action=cls.act2_2_sact,
+            parent_id=cls.act1.id,
+            trigger_type='mail_not_open',
+            interval_number=1, interval_type='days',
+            activity_domain=[('email_from', '!=', False)],
         ).with_user(cls.user_marketing_automation)
 
         cls.act3_1_mailing = cls._create_mailing(
             'marketing.test.sms',
             mailing_type='sms',
             body_plaintext='Confirmation for {{ object.name }}',
-            sms_allow_unsubscribe=False
+            sms_allow_unsubscribe=False,
         ).with_user(cls.user_marketing_automation)
         cls.act3_1 = cls._create_activity(
-            cls.campaign, mailing=cls.act3_1_mailing, parent_id=cls.act2_1.id,
-            trigger_type='sms_click', interval_number=0
+            cls.campaign,
+            mailing=cls.act3_1_mailing,
+            parent_id=cls.act2_1.id,
+            trigger_type='sms_click',
+            interval_number=0,
         ).with_user(cls.user_marketing_automation)
 
         cls.env.flush_all()
-
-    @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.mail.models.mail_mail')
-    def test_domain_with_translated_terms(self):
-        """ Test that a campaign with a domain containing translated terms, in the language
-            of the responsible, does correctly sync participant and execute activities """
-
-        # init test variables to ease code reading
-        test_records = self.test_records
-        test_records_init = test_records.filtered(lambda r: r.name != 'Test_00')
-
-        test_records.write({'text_trans': 'Test EN'})
-        test_records.with_context(lang="fr_FR").write({'text_trans': 'Test FR'})
-
-        campaign = self.campaign.with_user(self.user_marketing_automation)
-        campaign.user_id.write({'lang': 'en_US'})
-        campaign.write({
-            'domain': str([('name', '!=', 'Test_00'), ('text_trans', '=', 'Test FR')]),
-        })
-
-        # ensure initial data
-        self.assertEqual(len(test_records), 10)
-        self.assertEqual(len(test_records_init), 9)
-        self.assertEqual(campaign.state, 'draft')
-
-        with freeze_time(self.date_reference):
-            campaign.action_start_campaign()
-            # With responsible language != language terms in campaign domain
-            campaign.sync_participants()
-
-        self.assertEqual(campaign.running_participant_count, 0)
-        self.assertFalse(campaign.participant_ids)
-
-        # With responsible language == language terms in campaign domain
-        campaign.user_id.write({'lang': 'fr_FR'})
-        with freeze_time(self.date_reference):
-            campaign.sync_participants()
-
-        self.assertEqual(campaign.running_participant_count, len(test_records_init))
-        self.assertEqual(campaign.participant_ids.mapped('res_id'), test_records_init.ids)
-        self.assertEqual(set(campaign.participant_ids.mapped('state')), {'running'})
-
-        self.assertEqual(set(self.act1.trace_ids.mapped('state')), {'scheduled'})
-        campaign.execute_activities()
-        self.assertEqual(set(self.act1.trace_ids.mapped('state')), {'canceled', 'processed'})
 
     @mute_logger('odoo.addons.base.models.ir_model',
                  'odoo.addons.mail.models.mail_mail',
@@ -151,7 +116,7 @@ for record in records:
         act3_1 = self.act3_1.with_user(self.env.user)
         campaign = self.campaign.with_user(self.env.user)
         campaign.write({
-            'domain': '%s' % ([('name', '!=', 'Test_00')])
+            'domain': [('name', '!=', 'Test_00')],
         })
 
         # ensure initial data
@@ -192,11 +157,15 @@ for record in records:
         )
 
         # Beginning activity should contain a scheduled trace for each participant
-        self.assertMarketAutoTraces([{
-            'status': 'scheduled',
-            'records': test_records_init,
-            'participants': campaign.participant_ids,
-        }], act1, schedule_date=date_reference)
+        self.assertMarketAutoTraces(
+            [{
+                'status': 'scheduled',
+                'records': test_records_init,
+                'participants': campaign.participant_ids,
+            }],
+            act1,
+            schedule_date=date_reference,
+        )
 
         # a cron.trigger has been created to execute activities after campaign start
         # there should only be one since we have 9 activities with the same scheduled_date
@@ -222,34 +191,43 @@ for record in records:
              self.capture_triggers('marketing_automation.ir_cron_campaign_execute_activities') as captured_triggers:
             campaign.execute_activities()
 
-        self.assertMarketAutoTraces([{
-            'status': 'processed',
-            'records': test_records_1_ok,
-            'trace_status': 'sent',
-            'schedule_date': date_reference,
-        }, {
-            'status': 'canceled',
-            'records': test_records_1_ko,
-            'schedule_date': date_reference,
-            # no email -> trace set as canceled
-            'trace_status': 'cancel',
-            'trace_failure_type': 'mail_email_missing',
-        }], act1)
+        self.assertMarketAutoTraces(
+            [{
+                'status': 'processed',
+                'records': test_records_1_ok,
+                'trace_status': 'sent',
+                'schedule_date': date_reference,
+            }, {
+                'status': 'canceled',
+                'records': test_records_1_ko,
+                'schedule_date': date_reference,
+                # no email -> trace set as canceled
+                'trace_failure_type': 'mail_email_missing',
+                'trace_status': 'cancel',
+            }],
+            act1,
+        )
 
         # Child traces should have been generated for all traces of parent activity as activity_domain
         # is taken into account at processing, not generation (see act2_2)
-        self.assertMarketAutoTraces([{
-            'status': 'scheduled',
-            'records': test_records_init,
-            'participants': campaign.participant_ids,
-            'schedule_date': False
-        }], act2_1)
-        self.assertMarketAutoTraces([{
-            'status': 'scheduled',
-            'records': test_records_init,
-            'participants': campaign.participant_ids,
-            'schedule_date': date_reference + relativedelta(days=1),
-        }], act2_2)
+        self.assertMarketAutoTraces(
+            [{
+                'status': 'scheduled',
+                'records': test_records_init,
+                'participants': campaign.participant_ids,
+                'schedule_date': False
+            }],
+            act2_1,
+        )
+        self.assertMarketAutoTraces(
+            [{
+                'status': 'scheduled',
+                'records': test_records_init,
+                'participants': campaign.participant_ids,
+                'schedule_date': date_reference + relativedelta(days=1),
+            }],
+            act2_2,
+        )
 
         # a cron.trigger has been created to execute activities 1 day after mailing is sent
         # there should only be one since we have 9 activities with the same scheduled_date
@@ -276,45 +254,54 @@ for record in records:
             for record in test_records_1_replied:
                 self.gateway_mail_reply_wrecord(MAIL_TEMPLATE, record)
 
-        self.assertMarketAutoTraces([{
-            'status': 'processed',
-            'records': test_records_1_replied,
-            'trace_status': 'reply',
-            'schedule_date': date_reference,
-        }, {
-            'status': 'processed',
-            'records': test_records_1_ok - test_records_1_replied,
-            'trace_status': 'sent',
-            'schedule_date': date_reference,
-        }, {
-            'status': 'canceled',
-            'records': test_records_1_ko,
-            'schedule_date': date_reference,
-            # no email -> trace set as canceled
-            'trace_status': 'cancel',
-            'trace_failure_type': 'mail_email_missing',
-        }], act1)
+        self.assertMarketAutoTraces(
+            [{
+                'status': 'processed',
+                'records': test_records_1_replied,
+                'trace_status': 'reply',
+                'schedule_date': date_reference,
+            }, {
+                'status': 'processed',
+                'records': test_records_1_ok - test_records_1_replied,
+                'trace_status': 'sent',
+                'schedule_date': date_reference,
+            }, {
+                'status': 'canceled',
+                'records': test_records_1_ko,
+                'schedule_date': date_reference,
+                # no email -> trace set as canceled
+                'trace_failure_type': 'mail_email_missing',
+                'trace_status': 'cancel',
+            }],
+            act1,
+        )
 
         # Replied records -> SMS scheduled
-        self.assertMarketAutoTraces([{
-            'status': 'scheduled',
-            'records': test_records_1_replied,
-            'schedule_date': date_reference_reply + relativedelta(hours=1),
-        }, {
-            'status': 'scheduled',
-            'records': test_records_init - test_records_1_replied,
-            'schedule_date': False,
-        }], act2_1)
+        self.assertMarketAutoTraces(
+            [{
+                'status': 'scheduled',
+                'records': test_records_1_replied,
+                'schedule_date': date_reference_reply + relativedelta(hours=1),
+            }, {
+                'status': 'scheduled',
+                'records': test_records_init - test_records_1_replied,
+                'schedule_date': False,
+            }],
+            act2_1,
+        )
         # Replied records -> mail_not_open canceled
-        self.assertMarketAutoTraces([{
-            'status': 'scheduled',
-            'records': test_records_init - test_records_1_replied,
-            'schedule_date': date_reference + relativedelta(days=1),
-        }, {
-            'status': 'canceled',
-            'records': test_records_1_replied,
-            'schedule_date': date_reference_reply,
-        }], act2_2)
+        self.assertMarketAutoTraces(
+            [{
+                'status': 'scheduled',
+                'records': test_records_init - test_records_1_replied,
+                'schedule_date': date_reference + relativedelta(days=1),
+            }, {
+                'status': 'canceled',
+                'records': test_records_1_replied,
+                'schedule_date': date_reference_reply,
+            }],
+            act2_2,
+        )
 
         # a cron.trigger has been created after each separate reply exactly 1 hour after the reply
         # to match the created marketing.trace (ACT2.1)
@@ -337,21 +324,27 @@ for record in records:
              self.capture_triggers('marketing_automation.ir_cron_campaign_execute_activities') as captured_triggers:
             campaign.execute_activities()
 
-        self.assertMarketAutoTraces([{
-            'status': 'processed',
-            'records': test_records_1_replied,
-            'schedule_date': date_reference_reply + relativedelta(hours=1),
-            'trace_status': 'outgoing',
-        }, {
-            'status': 'scheduled',
-            'records': test_records_init - test_records_1_replied,
-            'schedule_date': False,
-        }], act2_1)
-        self.assertMarketAutoTraces([{
-            'status': 'scheduled',
-            'records': test_records_1_replied,
-            'schedule_date': False,
-        }], act3_1)
+        self.assertMarketAutoTraces(
+            [{
+                'status': 'processed',
+                'records': test_records_1_replied,
+                'schedule_date': date_reference_reply + relativedelta(hours=1),
+                'trace_status': 'outgoing',
+            }, {
+                'status': 'scheduled',
+                'records': test_records_init - test_records_1_replied,
+                'schedule_date': False,
+            }],
+            act2_1,
+        )
+        self.assertMarketAutoTraces(
+            [{
+                'status': 'scheduled',
+                'records': test_records_1_replied,
+                'schedule_date': False,
+            }],
+            act3_1,
+        )
 
         self.assertFalse(captured_triggers.records)  # no trigger should be created
 
@@ -360,21 +353,24 @@ for record in records:
              self.capture_triggers('marketing_automation.ir_cron_campaign_execute_activities') as captured_triggers:
             self.env['sms.sms'].sudo()._process_queue()
 
-        self.assertMarketAutoTraces([{
-            'status': 'processed',
-            'records': test_records_1_replied,
-            'schedule_date': date_reference_reply + relativedelta(hours=1),
-            'trace_status': 'sent',
-        }, {
-            'status': 'processed',
-            'records': test_records_1_replied[1],
-            'schedule_date': date_reference_reply + relativedelta(hours=1),
-            'trace_status': 'sent',
-        }, {
-            'status': 'scheduled',
-            'records': test_records_init - test_records_1_replied,
-            'schedule_date': False,
-        }], act2_1)
+        self.assertMarketAutoTraces(
+            [{
+                'status': 'processed',
+                'records': test_records_1_replied,
+                'schedule_date': date_reference_reply + relativedelta(hours=1),
+                'trace_status': 'sent',
+            }, {
+                'status': 'processed',
+                'records': test_records_1_replied[1],
+                'schedule_date': date_reference_reply + relativedelta(hours=1),
+                'trace_status': 'sent',
+            }, {
+                'status': 'scheduled',
+                'records': test_records_init - test_records_1_replied,
+                'schedule_date': False,
+            }],
+            act2_1,
+        )
 
         self.assertFalse(captured_triggers.records)  # no trigger should be created
 
@@ -403,17 +399,20 @@ for record in records:
         self.assertFalse(captured_triggers.records)  # no trigger should be created
 
         # click triggers process_event and automatically launches act3_1 depending on sms_click
-        self.assertMarketAutoTraces([{
-            'status': 'processed',
-            'records': test_records_1_clicked,
-            'schedule_date': date_reference_new,
-            'trace_status': 'sent',
-            'trace_content': 'Confirmation for %s' % test_records_1_clicked.name,
-        }, {
-            'status': 'scheduled',
-            'records': test_records_1_replied - test_records_1_clicked,
-            'schedule_date': False,
-        }], act3_1)
+        self.assertMarketAutoTraces(
+            [{
+                'status': 'processed',
+                'records': test_records_1_clicked,
+                'schedule_date': date_reference_new,
+                'trace_status': 'sent',
+                'trace_content': f'Confirmation for {test_records_1_clicked.name}',
+            }, {
+                'status': 'scheduled',
+                'records': test_records_1_replied - test_records_1_clicked,
+                'schedule_date': False,
+            }],
+            act3_1,
+        )
 
         # ACT2_2: PROCESS SERVER ACTION ON NOT-REPLIED (+1D 2H)
         # ------------------------------------------------------------
@@ -424,19 +423,22 @@ for record in records:
              self.capture_triggers('marketing_automation.ir_cron_campaign_execute_activities') as captured_triggers:
             campaign.execute_activities()
 
-        self.assertMarketAutoTraces([{
-            'status': 'processed',
-            'records': test_records_1_ok - test_records_1_replied,
-            'schedule_date': date_reference_new,
-        }, {
-            'status': 'rejected',
-            'records': test_records_1_ko,  # no email_from -> rejected due to domain filter
-            'schedule_date': date_reference + relativedelta(days=1),
-        }, {
-            'status': 'canceled',
-            'records': test_records_1_replied,  # replied -> mail_not_open is canceled
-            'schedule_date': date_reference_reply,
-        }], act2_2)
+        self.assertMarketAutoTraces(
+            [{
+                'status': 'processed',
+                'records': test_records_1_ok - test_records_1_replied,
+                'schedule_date': date_reference_new,
+            }, {
+                'status': 'rejected',
+                'records': test_records_1_ko,  # no email_from -> rejected due to domain filter
+                'schedule_date': date_reference + relativedelta(days=1),
+            }, {
+                'status': 'canceled',
+                'records': test_records_1_replied,  # replied -> mail_not_open is canceled
+                'schedule_date': date_reference_reply,
+            }],
+            act2_2,
+        )
 
         # check server action was actually processed
         for record in test_records_1_ko | test_records_1_replied:

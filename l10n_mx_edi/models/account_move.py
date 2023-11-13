@@ -83,6 +83,7 @@ class AccountMove(models.Model):
         string="CFDI",
         store=True,
         copy=False,
+        index=True,
         compute='_compute_l10n_mx_edi_cfdi_state_and_attachment',
     )
     # Technical field indicating if the "Update Payments" button needs to be displayed on invoice view.

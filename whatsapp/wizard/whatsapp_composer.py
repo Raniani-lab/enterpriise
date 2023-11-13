@@ -38,7 +38,7 @@ class WhatsAppComposer(models.TransientModel):
         return result
 
     # documents
-    attachment_id = fields.Many2one('ir.attachment')
+    attachment_id = fields.Many2one('ir.attachment', index=True)
     res_ids = fields.Char('Document IDs', required=True)
     res_model = fields.Char('Document Model Name', required=True)
     batch_mode = fields.Boolean("Is Multiple Records")

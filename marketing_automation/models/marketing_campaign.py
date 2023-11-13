@@ -221,7 +221,9 @@ class MarketingCampaign(models.Model):
                     trace.schedule_date = Datetime.from_string(process_dt) + trace_offset
 
             # Action 2: On activity creation
-            created_activities = campaign.marketing_activity_ids.filtered(lambda a: a.create_date >= campaign.last_sync_date)
+            created_activities = campaign.marketing_activity_ids.filtered(
+                lambda a: campaign.last_sync_date and a.create_date >= campaign.last_sync_date
+            )
             for activity in created_activities:
                 activity_offset = relativedelta(**{activity.interval_type: activity.interval_number})
                 # Case 1: Trigger = begin

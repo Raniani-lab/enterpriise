@@ -253,7 +253,7 @@ class TestSyncing(SyncingCase):
         with self.mock_datetime_and_now(self.date_reference + timedelta(days=1)):
             new_campaign = campaign.copy()
             new_campaign.action_start_campaign()
-        self.assertEqual(new_campaign.last_sync_date, self.date_reference)
+        self.assertFalse(new_campaign.last_sync_date, "Copying a campaign should not copy its sync date")
         self.assertEqual(len(new_campaign.marketing_activity_ids), 2)
         new_activity_1 = new_campaign.marketing_activity_ids.filtered(
             lambda a: a.trigger_type == 'begin'

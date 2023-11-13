@@ -49,7 +49,7 @@ class MarketingCampaign(models.Model):
     marketing_activity_ids = fields.One2many('marketing.activity', 'campaign_id', string='Activities', copy=False)
     mass_mailing_count = fields.Integer('# Mailings', compute='_compute_mass_mailing_count')
     link_tracker_click_count = fields.Integer('# Clicks', compute='_compute_link_tracker_click_count')
-    last_sync_date = fields.Datetime(string='Last activities synchronization')
+    last_sync_date = fields.Datetime(string='Last activities synchronization', copy=False)
     require_sync = fields.Boolean(string="Sync of participants is required", compute='_compute_require_sync')
     # participants
     participant_ids = fields.One2many('marketing.participant', 'campaign_id', string='Participants', copy=False)

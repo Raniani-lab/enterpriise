@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 
-from datetime import datetime, date
+from datetime import datetime
 
 from .common import TestCommonPlanning
 
@@ -524,20 +524,13 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
                 'repeat_type': 'until',
                 'repeat_until': datetime(2020, 2, 29, 17, 0, 0),
                 'repeat_interval': 1,
+                'repeat_unit': 'week',
             })
-
-            slot.update({'repeat_until': datetime(2020, 2, 29, 17, 0, 0) })
-
-            self.assertEqual(slot.recurrency_id.repeat_type, 'until', 'Changing the date should not change the repeat_type')
+            self.assertEqual(len(self.get_by_employee(self.employee_bert)), 9, 'There are 9 weeks between start_datetime and repeat_until')
 
             slot.update({'repeat_type': 'forever'})
             self.assertEqual(slot.recurrency_id.repeat_until, False, 'Repeat forever should not have a date')
-
-            slot.update({'repeat_until': datetime(2020, 5, 25, 17, 0, 0)})
-            self.assertEqual(len(self.get_by_employee(self.employee_bert)), 27, 'After modify the slot count for recurring shift who have repeat type forever should be 27')
-
-            slot.unlink()
-            self.assertEqual(len(self.get_by_employee(self.employee_bert)), 26, 'After delete the slot count for recurring shift who have repeat type forever should be 26')
+            self.assertEqual(len(self.get_by_employee(self.employee_bert)), 26, 'There are 26 weeks in 6 months (max duration of shift generation)')
 
     def test_recurrency_past(self):
         with self._patch_now('2020-01-01 08:00:00'):

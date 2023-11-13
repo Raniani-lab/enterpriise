@@ -82,9 +82,11 @@ class PlanningRecurrency(models.Model):
                     recurrence_end_dt = recurrency._get_recurrence_last_datetime()
 
                 # find end of generation period (either the end of recurrence (if this one ends before the cron period), or the given `stop_datetime` (usually the cron period))
-                if not stop_datetime:
-                    stop_datetime = fields.Datetime.now() + get_timedelta(recurrency.company_id.planning_generation_interval, 'month')
-                range_limit = min([dt for dt in [recurrence_end_dt, stop_datetime] if dt])
+                recurrency_stop_datetime = stop_datetime or PlanningSlot._add_delta_with_dst(
+                    fields.Datetime.now(),
+                    get_timedelta(recurrency.company_id.planning_generation_interval, 'month')
+                )
+                range_limit = min([dt for dt in [recurrence_end_dt, recurrency_stop_datetime] if dt])
                 slot_duration = slot.end_datetime - slot.start_datetime
 
                 def get_all_next_starts():

@@ -3,6 +3,7 @@
 
 
 from dateutil.relativedelta import relativedelta
+from freezegun import freeze_time
 
 from odoo.addons.base.tests.test_ir_cron import CronMixinCase
 from odoo.addons.test_mail.data.test_mail_data import MAIL_TEMPLATE
@@ -19,7 +20,6 @@ class TestMarketAutoFlow(TestMACommon, CronMixinCase):
     def setUpClass(cls):
         super(TestMarketAutoFlow, cls).setUpClass()
         cls.date_reference = Datetime.from_string('2014-08-01 15:02:32')  # so long, little task
-        cls._set_mock_datetime_now(cls.date_reference)
         cls.env['res.lang']._activate_lang('fr_FR')
 
         # --------------------------------------------------
@@ -111,19 +111,18 @@ for record in records:
         self.assertEqual(len(test_records_init), 9)
         self.assertEqual(campaign.state, 'draft')
 
-        campaign.action_start_campaign()
-
-        # With responsible language != language terms in campaign domain
-        campaign.sync_participants()
+        with freeze_time(self.date_reference):
+            campaign.action_start_campaign()
+            # With responsible language != language terms in campaign domain
+            campaign.sync_participants()
 
         self.assertEqual(campaign.running_participant_count, 0)
         self.assertFalse(campaign.participant_ids)
 
         # With responsible language == language terms in campaign domain
-
         campaign.user_id.write({'lang': 'fr_FR'})
-
-        campaign.sync_participants()
+        with freeze_time(self.date_reference):
+            campaign.sync_participants()
 
         self.assertEqual(campaign.running_participant_count, len(test_records_init))
         self.assertEqual(campaign.participant_ids.mapped('res_id'), test_records_init.ids)
@@ -133,10 +132,13 @@ for record in records:
         campaign.execute_activities()
         self.assertEqual(set(self.act1.trace_ids.mapped('state')), {'canceled', 'processed'})
 
-    @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.mail.models.mail_mail')
+    @mute_logger('odoo.addons.base.models.ir_model',
+                 'odoo.addons.mail.models.mail_mail',
+                 'odoo.addons.mass_mailing.models.mailing',
+                 'odoo.addons.mass_mailing_sms.models.mailing_mailing')
     @users('user_marketing_automation')
-    def test_simple_flow(self):
-        """ Test a maketing automation flow """
+    def test_marketing_automation_flow(self):
+        """ Test a maketing automation flow involving several steps. """
         # init test variables to ease code reading
         date_reference = self.date_reference
         test_records = self.test_records.with_user(self.env.user)
@@ -162,19 +164,20 @@ for record in records:
 
         # User starts and syncs its campaign
         self.assertEqual(campaign.state, 'draft')
-        with self.capture_triggers('marketing_automation.ir_cron_campaign_sync_participants') as captured_triggers:
+        with freeze_time(self.date_reference), \
+             self.capture_triggers('marketing_automation.ir_cron_campaign_sync_participants') as captured_triggers:
             campaign.action_start_campaign()
         self.assertEqual(campaign.state, 'running')
 
         # a cron.trigger has been created to sync participants after campaign start
-        self.assertEqual(1, len(captured_triggers.records))
-        captured_trigger = captured_triggers.records[0]
+        self.assertEqual(len(captured_triggers.records), 1)
         self.assertEqual(
-            self.env.ref('marketing_automation.ir_cron_campaign_sync_participants'),
-            captured_trigger.cron_id)
-        self.assertEqual(self.date_reference, captured_trigger.call_at)
+            captured_triggers.records[0].cron_id,
+            self.env.ref('marketing_automation.ir_cron_campaign_sync_participants'))
+        self.assertEqual(captured_triggers.records[0].call_at, self.date_reference)
 
-        with self.capture_triggers('marketing_automation.ir_cron_campaign_execute_activities') as captured_triggers:
+        with freeze_time(date_reference), \
+             self.capture_triggers('marketing_automation.ir_cron_campaign_execute_activities') as captured_triggers:
             campaign.sync_participants()
 
         # All records not containing Test_00 should be added as participants
@@ -197,12 +200,11 @@ for record in records:
 
         # a cron.trigger has been created to execute activities after campaign start
         # there should only be one since we have 9 activities with the same scheduled_date
-        self.assertEqual(1, len(captured_triggers.records))
-        captured_trigger = captured_triggers.records[0]
+        self.assertEqual(len(captured_triggers.records), 1)
         self.assertEqual(
-            self.env.ref('marketing_automation.ir_cron_campaign_execute_activities'),
-            captured_trigger.cron_id)
-        self.assertEqual(self.date_reference, captured_trigger.call_at)
+            captured_triggers.records[0].cron_id,
+            self.env.ref('marketing_automation.ir_cron_campaign_execute_activities'))
+        self.assertEqual(captured_triggers.records[0].call_at, self.date_reference)
 
         # No other trace should have been created as the first one are waiting to be processed
         self.assertEqual(act2_1.trace_ids, self.env['marketing.trace'])
@@ -215,7 +217,8 @@ for record in records:
         test_records_1_ko = test_records_init.filtered(lambda r: not r.email_from)
 
         # First traces are processed, emails are sent (or failed)
-        with self.mock_mail_gateway(), \
+        with freeze_time(self.date_reference), \
+             self.mock_mail_gateway(), \
              self.capture_triggers('marketing_automation.ir_cron_campaign_execute_activities') as captured_triggers:
             campaign.execute_activities()
 
@@ -258,7 +261,8 @@ for record in records:
         self.assertEqual(self.date_reference + relativedelta(days=1), captured_trigger.call_at)
 
         # Processing does not change anything (not time yet)
-        campaign.execute_activities()
+        with freeze_time(self.date_reference):
+            campaign.execute_activities()
         self.assertEqual(set(act2_1.trace_ids.mapped('state')), set(['scheduled']))
         self.assertEqual(set(act2_2.trace_ids.mapped('state')), set(['scheduled']))
 
@@ -266,10 +270,9 @@ for record in records:
         # ------------------------------------------------------------
 
         date_reference_reply = date_reference + relativedelta(hours=1)
-        self._set_mock_datetime_now(date_reference_reply)
-
         test_records_1_replied = test_records_1_ok[:2]
-        with self.capture_triggers('marketing_automation.ir_cron_campaign_execute_activities') as captured_triggers:
+        with freeze_time(date_reference_reply), \
+             self.capture_triggers('marketing_automation.ir_cron_campaign_execute_activities') as captured_triggers:
             for record in test_records_1_replied:
                 self.gateway_mail_reply_wrecord(MAIL_TEMPLATE, record)
 
@@ -317,21 +320,20 @@ for record in records:
         # to match the created marketing.trace (ACT2.1)
         # (here we have 2 replies considered at the exact same time but real use cases will most
         # likely not)
-        self.assertEqual(2, len(captured_triggers.records))
+        self.assertEqual(len(captured_triggers.records), 2)
         for captured_trigger in captured_triggers.records:
-            captured_trigger = captured_triggers.records[0]
             self.assertEqual(
-                self.env.ref('marketing_automation.ir_cron_campaign_execute_activities'),
-                captured_trigger.cron_id)
-            self.assertEqual(date_reference_reply + relativedelta(hours=1), captured_trigger.call_at)
+                captured_trigger.cron_id,
+                self.env.ref('marketing_automation.ir_cron_campaign_execute_activities'))
+            self.assertEqual(captured_trigger.call_at, date_reference_reply + relativedelta(hours=1))
 
         # ACT2_1: REPLIED GOT AN SMS (+2 H)
         # ------------------------------------------------------------
 
         date_reference_new = date_reference + relativedelta(hours=2)
-        self._set_mock_datetime_now(date_reference_new)
 
-        with self.mockSMSGateway(), \
+        with freeze_time(date_reference_new), \
+             self.mockSMSGateway(), \
              self.capture_triggers('marketing_automation.ir_cron_campaign_execute_activities') as captured_triggers:
             campaign.execute_activities()
 
@@ -351,9 +353,10 @@ for record in records:
             'schedule_date': False,
         }], act3_1)
 
-        self.assertEqual(0, len(captured_triggers.records))  # no trigger should be created
+        self.assertFalse(captured_triggers.records)  # no trigger should be created
 
-        with self.mockSMSGateway(), \
+        with freeze_time(date_reference_new), \
+             self.mockSMSGateway(), \
              self.capture_triggers('marketing_automation.ir_cron_campaign_execute_activities') as captured_triggers:
             self.env['sms.sms'].sudo()._process_queue()
 
@@ -373,7 +376,7 @@ for record in records:
             'schedule_date': False,
         }], act2_1)
 
-        self.assertEqual(0, len(captured_triggers.records))  # no trigger should be created
+        self.assertFalse(captured_triggers.records)  # no trigger should be created
 
         # ACT2_1 FOLLOWUP: CLICK ON LINKS -> ACT3_1: CONFIRMATION SMS SENT
         # ------------------------------------------------------------
@@ -385,17 +388,19 @@ for record in records:
         sms_sent = self._find_sms_sent(test_records_1_clicked.customer_id, test_records_1_clicked.phone_sanitized)
 
         # mock SMS gateway as in the same transaction, next activity is processed
-        with self.mockSMSGateway(), \
+        with freeze_time(date_reference_new), \
+             self.mockSMSGateway(), \
              self.capture_triggers('marketing_automation.ir_cron_campaign_execute_activities') as captured_triggers:
             self.gateway_sms_sent_click(sms_sent)
 
-        self.assertEqual(0, len(captured_triggers.records))  # no trigger should be created
+        self.assertFalse(captured_triggers.records)  # no trigger should be created
 
-        with self.mockSMSGateway(), \
+        with freeze_time(date_reference_new), \
+             self.mockSMSGateway(), \
              self.capture_triggers('marketing_automation.ir_cron_campaign_execute_activities') as captured_triggers:
             self.env['sms.sms'].sudo()._process_queue()
 
-        self.assertEqual(0, len(captured_triggers.records))  # no trigger should be created
+        self.assertFalse(captured_triggers.records)  # no trigger should be created
 
         # click triggers process_event and automatically launches act3_1 depending on sms_click
         self.assertMarketAutoTraces([{
@@ -413,12 +418,10 @@ for record in records:
         # ACT2_2: PROCESS SERVER ACTION ON NOT-REPLIED (+1D 2H)
         # ------------------------------------------------------------
 
-        with self.capture_triggers('marketing_automation.ir_cron_campaign_execute_activities') as captured_triggers:
-            self._clear_outoing_sms()
-
-            date_reference_new = date_reference + relativedelta(days=1, hours=2)
-            self._set_mock_datetime_now(date_reference_new)
-
+        date_reference_new = date_reference + relativedelta(days=1, hours=2)
+        self._clear_outoing_sms()
+        with freeze_time(date_reference_new), \
+             self.capture_triggers('marketing_automation.ir_cron_campaign_execute_activities') as captured_triggers:
             campaign.execute_activities()
 
         self.assertMarketAutoTraces([{
@@ -441,4 +444,4 @@ for record in records:
         for record in test_records_1_ok - test_records_1_replied:
             self.assertIn('Did not answer, sad campaign is sad', record.description)
 
-        self.assertEqual(0, len(captured_triggers.records))  # no trigger should be created
+        self.assertFalse(captured_triggers.records)  # no trigger should be created

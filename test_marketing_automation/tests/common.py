@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from unittest.mock import patch
-
 from odoo.addons.marketing_automation_sms.tests.common import MarketingAutomationSMSCommon
-from odoo.fields import Datetime
 
 
 class TestMACommon(MarketingAutomationSMSCommon):
@@ -14,26 +11,6 @@ class TestMACommon(MarketingAutomationSMSCommon):
         super().setUpClass()
 
         cls.test_records = cls._create_marketauto_records(model='marketing.test.sms', count=2)
-
-        cls.patcher = patch('odoo.addons.marketing_automation.models.marketing_campaign.Datetime', wraps=Datetime)
-        cls.patcher2 = patch('odoo.addons.marketing_automation.models.marketing_activity.Datetime', wraps=Datetime)
-        cls.patcher3 = patch('odoo.addons.marketing_automation.models.marketing_participant.Datetime', wraps=Datetime)
-        cls.patcher4 = patch('odoo.addons.marketing_automation.models.marketing_trace.Datetime', wraps=Datetime)
-        cls.patcher5 = patch('odoo.addons.marketing_automation_sms.models.marketing_activity.Datetime', wraps=Datetime)
-
-        cls.mock_datetime = cls.startClassPatcher(cls.patcher)
-        cls.mock_datetime2 = cls.startClassPatcher(cls.patcher2)
-        cls.mock_datetime3 = cls.startClassPatcher(cls.patcher3)
-        cls.mock_datetime4 = cls.startClassPatcher(cls.patcher4)
-        cls.mock_datetime5 = cls.startClassPatcher(cls.patcher5)
-
-    @classmethod
-    def _set_mock_datetime_now(cls, datetime):
-        cls.mock_datetime.now.return_value = datetime
-        cls.mock_datetime2.now.return_value = datetime
-        cls.mock_datetime3.now.return_value = datetime
-        cls.mock_datetime4.now.return_value = datetime
-        cls.mock_datetime5.now.return_value = datetime
 
     # ------------------------------------------------------------
     # RECORDS TOOLS

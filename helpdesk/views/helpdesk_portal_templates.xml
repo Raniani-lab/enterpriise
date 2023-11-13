@@ -69,7 +69,7 @@
                                     <span t-field="ticket.create_date" t-options='{"widget": "datetime", "hide_seconds": True}'/>
                                 </td>
                                 <td id="ticket_user_body" t-if="groupby != 'user'">
-                                    <img t-if="ticket.user_id" class="rounded-circle o_portal_contact_img" t-attf-src="#{image_data_uri(ticket.user_id.sudo().avatar_1024)}" alt="Contact" style="width: 20px; height: 20px;"/>
+                                    <img t-if="ticket.user_id" class="rounded-circle o_portal_contact_img" t-attf-src="#{image_data_uri(ticket.user_id.sudo().avatar_128)}" alt="Contact" style="width: 20px; height: 20px;"/>
                                     <span t-field="ticket.user_id"/>
                                 </td>
                                 <td t-if="groupby != 'stage'" class="text-end">
@@ -154,7 +154,7 @@
                                 <div class="col-12 col-md-12 pb-2" t-if="ticket.user_id">
                                     <strong>Assigned to</strong>
                                     <div class="d-flex ps-3 flex-nowrap">
-                                        <img class="rounded-circle mt-1 o_portal_contact_img" t-att-src="image_data_uri(ticket.user_id.avatar_1024)" alt="Contact"/>
+                                        <img class="rounded-circle mt-1 o_portal_contact_img" t-att-src="image_data_uri(ticket.user_id.avatar_128)" alt="Contact"/>
                                         <div class="ms-2">
                                             <div t-out="ticket.user_id" t-options='{"widget": "contact", "fields": ["name"]}' class="mt-2"/>
                                         </div>
@@ -163,7 +163,7 @@
                                 <div class="col-12 col-md-12 pb-2" t-if="ticket.partner_id">
                                     <strong>Customer</strong>
                                     <div class="d-flex ps-3 flex-nowrap">
-                                        <img class="rounded-circle mt-1 o_portal_contact_img" t-att-src="image_data_uri(ticket.partner_id.avatar_1024)" alt="Contact"/>
+                                        <img class="rounded-circle mt-1 o_portal_contact_img" t-att-src="image_data_uri(ticket.partner_id.avatar_128)" alt="Contact"/>
                                         <div class="ms-2">
                                             <div t-field="ticket.partner_id" t-options='{"widget": "contact", "fields": ["name"]}'/>
                                             <a t-attf-href="mailto:{{ticket.partner_id.email}}" t-if="ticket.partner_id.email"><div t-field="ticket.partner_id" t-options='{"widget": "contact", "fields": ["email"]}'/></a>

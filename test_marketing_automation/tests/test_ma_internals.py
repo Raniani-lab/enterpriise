@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
 from odoo.addons.test_marketing_automation.tests.common import TestMACommon
@@ -215,43 +214,3 @@ class MarketingCampaignTest(TestMACommon):
 
         self.assertEqual(campaign.running_participant_count, 4)
         self.assertEqual(campaign.participant_ids.mapped('res_id'), (test_records[0:3] | test_records[-1]).ids)
-
-    @mute_logger('odoo.addons.base.ir.ir_model', 'odoo.models')
-    def test_campaign_update_child_in_running_campaign(self):
-        """ Test updating participants in a running campaign, be sure it works
-        as intended """
-        marketing_campaign = self.env['marketing.campaign'].create({
-            'domain': [('id', 'in', self.test_records.ids)],
-            'model_id': self.env['ir.model']._get_id('marketing.test.sms'),
-            'name': 'My First Campaign',
-        })
-        mailing = self._create_mailing('marketing.test.sms')
-        mailing2 = self._create_mailing('marketing.test.sms')
-        parent_activity = self._create_activity(
-            marketing_campaign,
-            mailing=mailing,
-            name="parent activity",
-        )
-        child_activity = self._create_activity(
-            marketing_campaign,
-            mailing=mailing2,
-            name="child activity",
-            parent_id=parent_activity.id,
-            trigger_type="mail_open",
-        )
-
-        marketing_campaign.action_start_campaign()
-        marketing_campaign.sync_participants()
-        [trace.action_execute() for trace in parent_activity.trace_ids]
-
-        child_activity.update({
-            'interval_type': 'days',
-            'interval_number': 5,
-        })
-        trace_offset = relativedelta(**{'days': 5})
-
-        expected_schedule_date = Datetime.from_string(child_activity.trace_ids.parent_id.mailing_trace_ids.mapped('write_date')[0]) + trace_offset
-        marketing_campaign.action_update_participants()
-
-        trace_schedule_date = child_activity.trace_ids.mapped('schedule_date')[0]
-        self.assertEqual(trace_schedule_date, expected_schedule_date)

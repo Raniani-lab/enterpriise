@@ -104,8 +104,8 @@ class PlanningRecurrency(models.Model):
                 occurring_slots = PlanningSlot.search_read([
                     ('resource_id', '=', resource.id),
                     ('company_id', '=', resource.company_id.id),
-                    ('start_datetime', '>=', slot.start_datetime),
-                    ('end_datetime', '<=', range_limit)
+                    ('end_datetime', '>=', slot.start_datetime),
+                    ('start_datetime', '<=', range_limit)
                 ], ['start_datetime', 'end_datetime'])
 
                 slot_values_list = []

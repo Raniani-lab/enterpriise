@@ -698,3 +698,28 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
             ],
             'The slots should occur at the last day of each month'
         )
+
+    def test_recurrency_occurring_slots(self):
+        self.configure_recurrency_span(1)
+        self.env.user.tz = 'UTC'
+        slot = self.env['planning.slot'].create([{
+            'name': 'coucou',
+            'start_datetime': datetime(2020, 1, 31, 8, 0),
+            'end_datetime': datetime(2020, 1, 31, 9, 0),
+            'resource_id': self.resource_bert.id,
+            'repeat': True,
+            'repeat_type': 'x_times',
+            'repeat_number': 2,
+            'repeat_interval': 1,
+            'repeat_unit': 'month',
+        }, {
+            'name': 'concurrent slot',
+            'start_datetime': datetime(2020, 2, 29, 8, 0),
+            'end_datetime': datetime(2020, 2, 29, 11, 0),
+            'resource_id': self.resource_bert.id,
+        }])
+
+        self.assertFalse(
+            slot.recurrency_id.slot_ids[1].resource_id,
+            'The second slot should be an open shift as the resource has a concurrent shift'
+        )

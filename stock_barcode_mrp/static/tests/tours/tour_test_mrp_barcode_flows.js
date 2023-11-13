@@ -504,6 +504,61 @@ registry.category("web_tour.tours").add("test_barcode_production_reserved_from_m
     ...stepUtils.validateBarcodeOperation(),
 ]});
 
+registry.category("web_tour.tours").add('test_barcode_production_reserved_tracked_product', {test: true, steps: () => [
+    // scan the not tracked component
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan compo01'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan compo01'
+    },
+    // scan the tracked comp and the non-reserved lot
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan compo_lot'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot_02'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot_02'
+    },
+
+    // Unfold grouped lines for tracked component
+    { trigger: '.o_line_button.o_toggle_sublines' },
+    {
+        trigger: '.o_barcode_client_action:contains("lot_01")',
+        run: function() {
+            helper.assertLinesCount(3);
+            helper.assertSublinesCount(2);
+            helper.assertScanMessage('scan_final_product');
+            const [ line1, line2 ] = helper.getSublines();
+            helper.assert(line1.querySelector('.o_line_lot_name').innerText, "lot_01");
+            helper.assert(line1.querySelector('.qty-done').innerText, "0");
+            helper.assert(line2.querySelector('.o_line_lot_name').innerText, "lot_02");
+            helper.assert(line2.querySelector('.qty-done').innerText, "2");
+        }
+    },
+    // scan the final product + its lot name
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan final_lot'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan finished_lot'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan finished_lot'
+    },
+    ...stepUtils.validateBarcodeOperation(),
+]});
+
 registry.category("web_tour.tours").add("test_barcode_production_component_no_stock", {test: true, steps: () => [
     // Creates a new production from the Barcode App.
     { trigger: ".o_kanban_card_header:contains('Manufacturing')" },

@@ -2,8 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import timedelta
-from freezegun import freeze_time
-from unittest.mock import patch
 
 from odoo.addons.marketing_automation.tests.common import MarketingAutomationCommon
 from odoo.fields import Datetime
@@ -169,7 +167,7 @@ class TestSyncing(SyncingCase):
         self.assertTrue(campaign.require_sync)
 
         # manually set as synchronized
-        with freeze_time(self.date_reference):
+        with self.mock_datetime_and_now(self.date_reference):
             campaign.action_set_synchronized()
         self.assertFalse(activity.require_sync)
         self.assertEqual(campaign.last_sync_date, self.date_reference)
@@ -195,8 +193,7 @@ class TestSyncing(SyncingCase):
 
         marketing_campaign.action_start_campaign()
         marketing_campaign.sync_participants()
-        with freeze_time(self.date_reference), \
-             patch.object(self.env.cr, 'now', lambda: self.date_reference):
+        with self.mock_datetime_and_now(self.date_reference):
             [trace.action_execute() for trace in parent_activity.trace_ids]
         self.assertEqual(len(child_activity.trace_ids), len(self.test_contacts))
 
@@ -235,7 +232,7 @@ class TestSyncing(SyncingCase):
         campaign = self.campaign.with_env(self.env)
         self.assertFalse(campaign.last_sync_date)
 
-        with freeze_time(self.date_reference):
+        with self.mock_datetime_and_now(self.date_reference):
             campaign.action_update_participants()
         self.assertEqual(campaign.last_sync_date, self.date_reference)
         self.assertFalse(campaign.participant_ids)
@@ -248,13 +245,12 @@ class TestSyncing(SyncingCase):
         to bad synchronization propagation. """
         # generate participants
         campaign = self.campaign.with_env(self.env)
-        with freeze_time(self.date_reference):
+        with self.mock_datetime_and_now(self.date_reference):
             campaign.sync_participants()
         self.assertEqual(len(campaign.participant_ids), len(self.test_contacts))
 
         # copy campaign: should not generate duplicates
-        with freeze_time(self.date_reference + timedelta(days=1)), \
-             patch.object(self.env.cr, 'now', lambda: self.date_reference + timedelta(days=1)):
+        with self.mock_datetime_and_now(self.date_reference + timedelta(days=1)):
             new_campaign = campaign.copy()
             new_campaign.action_start_campaign()
         self.assertEqual(new_campaign.last_sync_date, self.date_reference)
@@ -270,7 +266,7 @@ class TestSyncing(SyncingCase):
 
         # launch duplicated campaign participants and update: should not generate
         # duplicate traces (notably due to old sync date of campaign)
-        with freeze_time(self.date_reference + timedelta(days=1)):
+        with self.mock_datetime_and_now(self.date_reference + timedelta(days=1)):
             new_campaign.sync_participants()
             new_campaign.action_update_participants()
 
@@ -291,7 +287,7 @@ class TestSyncing(SyncingCase):
         traces for beginning activities. """
         # generate participants
         campaign = self.campaign.with_env(self.env)
-        with freeze_time(self.date_reference):
+        with self.mock_datetime_and_now(self.date_reference):
             campaign.sync_participants()
 
         # 'sync_participants': creates participant / record, with a trace for begin
@@ -352,7 +348,7 @@ class TestSyncing(SyncingCase):
         campaign = self.campaign.with_env(self.env)
 
         # init participants and traces
-        with freeze_time(self.date_reference):
+        with self.mock_datetime_and_now(self.date_reference):
             campaign.action_start_campaign()
             campaign.sync_participants()
             campaign.action_update_participants()
@@ -400,7 +396,7 @@ class TestSyncing(SyncingCase):
             'email': 'ma.test.new.1@example.com',
             'name': 'MATest_new_1',
         })
-        with freeze_time(self.date_reference + timedelta(hours=2)):
+        with self.mock_datetime_and_now(self.date_reference + timedelta(hours=2)):
             campaign.sync_participants()
 
         # should have generated one trace / begin activity for the new participant
@@ -422,7 +418,7 @@ class TestSyncing(SyncingCase):
         self.assertActivityWoTrace(new_activity_mail)
 
         # run first activity
-        with freeze_time(self.date_reference + timedelta(hours=3)), self.mock_mail_gateway():
+        with self.mock_datetime_and_now(self.date_reference + timedelta(hours=3)), self.mock_mail_gateway():
             campaign.execute_activities()
         self.assertMarketAutoTraces(
             [{
@@ -453,7 +449,7 @@ class TestSyncing(SyncingCase):
 
         # campaign should require an update, update it
         self.assertTrue(campaign.require_sync, 'Campaign should require an update')
-        with freeze_time(self.date_reference + timedelta(hours=4)):
+        with self.mock_datetime_and_now(self.date_reference + timedelta(hours=4)):
             campaign.action_update_participants()
         # should have synchronized traces for all participants / all begin activities
         # without dupes for the new_record (already had one, don't create again)

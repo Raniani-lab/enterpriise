@@ -187,7 +187,7 @@ class MarketingCampaign(models.Model):
         return super().write(vals)
 
     def action_set_synchronized(self):
-        self.write({'last_sync_date': Datetime.now()})
+        self.write({'last_sync_date': self.env.cr.now()})
         self.mapped('marketing_activity_ids').write({'require_sync': False})
 
     def action_update_participants(self):
@@ -222,8 +222,11 @@ class MarketingCampaign(models.Model):
 
             # Action 2: On activity creation
             created_activities = campaign.marketing_activity_ids.filtered(
-                lambda a: campaign.last_sync_date and a.create_date >= campaign.last_sync_date
+                lambda activity: (
+                    campaign.last_sync_date and activity.create_date >= campaign.last_sync_date
+                )
             )
+
             for activity in created_activities:
                 activity_offset = relativedelta(**{activity.interval_type: activity.interval_number})
                 # Case 1: Trigger = begin
@@ -317,10 +320,10 @@ class MarketingCampaign(models.Model):
             return [x for x in seq if x not in seen and not seen.add(x)]
 
         participants = self.env['marketing.participant']
+        now = self.env.cr.now()
         # auto-commit except in testing mode
         auto_commit = not getattr(threading.current_thread(), 'testing', False)
         for campaign in self.filtered(lambda c: c.marketing_activity_ids):
-            now = Datetime.now()
             if not campaign.last_sync_date:
                 campaign.last_sync_date = now
 

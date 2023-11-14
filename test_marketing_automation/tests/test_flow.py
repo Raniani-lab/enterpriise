@@ -360,11 +360,6 @@ for record in records:
                 'schedule_date': date_reference_reply + relativedelta(hours=1),
                 'trace_status': 'sent',
             }, {
-                'status': 'processed',
-                'records': test_records_1_replied[1],
-                'schedule_date': date_reference_reply + relativedelta(hours=1),
-                'trace_status': 'sent',
-            }, {
                 'status': 'scheduled',
                 'records': test_records_init - test_records_1_replied,
                 'schedule_date': False,

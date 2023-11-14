@@ -22,6 +22,31 @@ class TestMarketAutoFlow(TestMACommon, CronMixinCase):
         cls.env['res.lang']._activate_lang('fr_FR')
 
         # --------------------------------------------------
+        # TEST RECORDS, using marketing.test.sms (customers)
+        #
+        # 2 times
+        # - 3 records with partners
+        # - 1 records wo partner, but email/mobile
+        # - 1 record wo partner/email/mobile
+        # 1 wrong email
+        # 1 duplicate)
+        # --------------------------------------------------
+        cls.test_records_base = cls._create_marketauto_records(model='marketing.test.sms', count=2)
+        cls.test_records_failure = cls.env['marketing.test.sms'].create([
+            {
+                'email_from': 'wrong',
+                'mobile': '0455990000',
+                'name': 'Wrong Email',
+            }, {
+                'email_from': cls.test_records_base[1].email_from,
+                'mobile': '0455990011',
+                'name': 'Email dupe record1'
+            },
+        ])
+        (cls.test_records_failure_wrong, cls.test_records_failure_dupe) = cls.test_records_failure
+        cls.test_records = cls.test_records_base + cls.test_records_failure
+
+        # --------------------------------------------------
         # CAMPAIGN, based on marketing.test.sms (customers)
         #
         # ACT1           MAIL mailing
@@ -97,13 +122,20 @@ for record in records:
 
         cls.env.flush_all()
 
+    def test_assert_initial_values(self):
+        """ Test initial values to have a common ground for other tests """
+        # ensure initial data
+        self.assertEqual(len(self.test_records), 12)
+        self.assertEqual(len(self.test_records.filtered(lambda r: r.name != 'Test_00')), 11)
+        self.assertEqual(self.campaign.state, 'draft')
+
     @mute_logger('odoo.addons.base.models.ir_model',
                  'odoo.addons.mail.models.mail_mail',
                  'odoo.addons.mass_mailing.models.mailing',
                  'odoo.addons.mass_mailing_sms.models.mailing_mailing')
     @users('user_marketing_automation')
     def test_marketing_automation_flow(self):
-        """ Test a maketing automation flow involving several steps. """
+        """ Test a marketing automation flow involving several steps. """
         # init test variables to ease code reading
         date_reference = self.date_reference
         test_records = self.test_records.with_user(self.env.user)
@@ -119,16 +151,10 @@ for record in records:
             'domain': [('name', '!=', 'Test_00')],
         })
 
-        # ensure initial data
-        self.assertEqual(len(test_records), 10)
-        self.assertEqual(len(test_records_init), 9)
-        self.assertEqual(campaign.state, 'draft')
-
         # CAMPAIGN START
         # ------------------------------------------------------------
 
         # User starts and syncs its campaign
-        self.assertEqual(campaign.state, 'draft')
         with freeze_time(self.date_reference), \
              self.capture_triggers('marketing_automation.ir_cron_campaign_sync_participants') as captured_triggers:
             campaign.action_start_campaign()
@@ -162,9 +188,11 @@ for record in records:
                 'status': 'scheduled',
                 'records': test_records_init,
                 'participants': campaign.participant_ids,
+                'fields_values': {
+                    'schedule_date': date_reference,
+                },
             }],
             act1,
-            schedule_date=date_reference,
         )
 
         # a cron.trigger has been created to execute activities after campaign start
@@ -182,8 +210,10 @@ for record in records:
 
         # ACT1: LAUNCH MAILING
         # ------------------------------------------------------------
-        test_records_1_ok = test_records_init.filtered(lambda r: r.email_from)
-        test_records_1_ko = test_records_init.filtered(lambda r: not r.email_from)
+        test_records_1_ko = test_records_init.filtered(
+            lambda r: not r.email_from or r.email_from == 'wrong'
+        ) + self.test_records_failure_dupe
+        test_records_1_ok = test_records_init.filtered(lambda r: r not in test_records_1_ko)
 
         # First traces are processed, emails are sent (or failed)
         with freeze_time(self.date_reference), \
@@ -196,12 +226,39 @@ for record in records:
                 'status': 'processed',
                 'records': test_records_1_ok,
                 'trace_status': 'sent',
-                'schedule_date': date_reference,
+                'fields_values': {
+                    'schedule_date': date_reference,
+                },
             }, {
                 'status': 'canceled',
-                'records': test_records_1_ko,
-                'schedule_date': date_reference,
-                # no email -> trace set as canceled
+                'records': self.test_records_failure_wrong,
+                'fields_values': {
+                    'schedule_date': date_reference,
+                    'state_msg': 'Email canceled',
+                },
+                # wrong email -> trace set as ignored
+                'trace_email': self.test_records_failure_wrong.email_from,
+                'trace_failure_type': 'mail_email_invalid',
+                'trace_status': 'cancel',
+            }, {
+                'status': 'canceled',
+                'records': self.test_records_failure_dupe,
+                'fields_values': {
+                    'schedule_date': date_reference,
+                    'state_msg': 'Email canceled',
+                },
+                # wrong email -> trace set as ignored
+                'trace_email': self.test_records_failure_dupe.email_normalized,
+                'trace_failure_type': 'mail_dup',
+                'trace_status': 'cancel',
+            }, {
+                'status': 'canceled',
+                'records': (test_records_1_ko - self.test_records_failure_wrong - self.test_records_failure_dupe),
+                'fields_values': {
+                    'schedule_date': date_reference,
+                    'state_msg': 'Email canceled',
+                },
+                # no email -> trace set as ignored
                 'trace_failure_type': 'mail_email_missing',
                 'trace_status': 'cancel',
             }],
@@ -215,7 +272,9 @@ for record in records:
                 'status': 'scheduled',
                 'records': test_records_init,
                 'participants': campaign.participant_ids,
-                'schedule_date': False
+                'fields_values': {
+                    'schedule_date': False,
+                },
             }],
             act2_1,
         )
@@ -224,7 +283,9 @@ for record in records:
                 'status': 'scheduled',
                 'records': test_records_init,
                 'participants': campaign.participant_ids,
-                'schedule_date': date_reference + relativedelta(days=1),
+                'fields_values': {
+                    'schedule_date': date_reference + relativedelta(days=1),
+                },
             }],
             act2_2,
         )
@@ -259,17 +320,46 @@ for record in records:
                 'status': 'processed',
                 'records': test_records_1_replied,
                 'trace_status': 'reply',
-                'schedule_date': date_reference,
+                'fields_values': {
+                    'schedule_date': date_reference,
+                },
             }, {
                 'status': 'processed',
                 'records': test_records_1_ok - test_records_1_replied,
                 'trace_status': 'sent',
-                'schedule_date': date_reference,
+                'fields_values': {
+                    'schedule_date': date_reference,
+                },
             }, {
                 'status': 'canceled',
-                'records': test_records_1_ko,
-                'schedule_date': date_reference,
-                # no email -> trace set as canceled
+                'records': self.test_records_failure_wrong,
+                'fields_values': {
+                    'schedule_date': date_reference,
+                    'state_msg': 'Email canceled',
+                },
+                # wrong email -> trace set as ignored
+                'trace_email': self.test_records_failure_wrong.email_from,
+                'trace_failure_type': 'mail_email_invalid',
+                'trace_status': 'cancel',
+            }, {
+                'status': 'canceled',
+                'records': self.test_records_failure_dupe,
+                'fields_values': {
+                    'schedule_date': date_reference,
+                    'state_msg': 'Email canceled',
+                },
+                # wrong email -> trace set as ignored
+                'trace_email': self.test_records_failure_dupe.email_normalized,
+                'trace_failure_type': 'mail_dup',
+                'trace_status': 'cancel',
+            }, {
+                'status': 'canceled',
+                'records': (test_records_1_ko - self.test_records_failure_wrong - self.test_records_failure_dupe),
+                'fields_values': {
+                    'schedule_date': date_reference,
+                    'state_msg': 'Email canceled',
+                },
+                # no email -> trace set as ignored
                 'trace_failure_type': 'mail_email_missing',
                 'trace_status': 'cancel',
             }],
@@ -281,11 +371,15 @@ for record in records:
             [{
                 'status': 'scheduled',
                 'records': test_records_1_replied,
-                'schedule_date': date_reference_reply + relativedelta(hours=1),
+                'fields_values': {
+                    'schedule_date': date_reference_reply + relativedelta(hours=1),
+                },
             }, {
                 'status': 'scheduled',
                 'records': test_records_init - test_records_1_replied,
-                'schedule_date': False,
+                'fields_values': {
+                    'schedule_date': False,
+                },
             }],
             act2_1,
         )
@@ -294,11 +388,15 @@ for record in records:
             [{
                 'status': 'scheduled',
                 'records': test_records_init - test_records_1_replied,
-                'schedule_date': date_reference + relativedelta(days=1),
+                'fields_values': {
+                    'schedule_date': date_reference + relativedelta(days=1),
+                },
             }, {
                 'status': 'canceled',
                 'records': test_records_1_replied,
-                'schedule_date': date_reference_reply,
+                'fields_values': {
+                    'schedule_date': date_reference_reply,
+                },
             }],
             act2_2,
         )
@@ -328,12 +426,16 @@ for record in records:
             [{
                 'status': 'processed',
                 'records': test_records_1_replied,
-                'schedule_date': date_reference_reply + relativedelta(hours=1),
+                'fields_values': {
+                    'schedule_date': date_reference_reply + relativedelta(hours=1),
+                },
                 'trace_status': 'outgoing',
             }, {
                 'status': 'scheduled',
                 'records': test_records_init - test_records_1_replied,
-                'schedule_date': False,
+                'fields_values': {
+                    'schedule_date': False,
+                },
             }],
             act2_1,
         )
@@ -341,7 +443,9 @@ for record in records:
             [{
                 'status': 'scheduled',
                 'records': test_records_1_replied,
-                'schedule_date': False,
+                'fields_values': {
+                    'schedule_date': False,
+                },
             }],
             act3_1,
         )
@@ -357,12 +461,16 @@ for record in records:
             [{
                 'status': 'processed',
                 'records': test_records_1_replied,
-                'schedule_date': date_reference_reply + relativedelta(hours=1),
+                'fields_values': {
+                    'schedule_date': date_reference_reply + relativedelta(hours=1),
+                },
                 'trace_status': 'sent',
             }, {
                 'status': 'scheduled',
                 'records': test_records_init - test_records_1_replied,
-                'schedule_date': False,
+                'fields_values': {
+                    'schedule_date': False,
+                },
             }],
             act2_1,
         )
@@ -398,13 +506,18 @@ for record in records:
             [{
                 'status': 'processed',
                 'records': test_records_1_clicked,
-                'schedule_date': date_reference_new,
-                'trace_status': 'sent',
+                'fields_values': {
+                    'schedule_date': date_reference_new,
+                },
+                # mailing trace
                 'trace_content': f'Confirmation for {test_records_1_clicked.name}',
+                'trace_status': 'sent',
             }, {
                 'status': 'scheduled',
                 'records': test_records_1_replied - test_records_1_clicked,
-                'schedule_date': False,
+                'fields_values': {
+                    'schedule_date': False,
+                },
             }],
             act3_1,
         )
@@ -415,6 +528,7 @@ for record in records:
         date_reference_new = date_reference + relativedelta(days=1, hours=2)
         self._clear_outoing_sms()
         with freeze_time(date_reference_new), \
+             mute_logger('odoo.addons.marketing_automation.models.marketing_activity'), \
              self.capture_triggers('marketing_automation.ir_cron_campaign_execute_activities') as captured_triggers:
             campaign.execute_activities()
 
@@ -422,23 +536,35 @@ for record in records:
             [{
                 'status': 'processed',
                 'records': test_records_1_ok - test_records_1_replied,
-                'schedule_date': date_reference_new,
+                'fields_values': {
+                    'schedule_date': date_reference_new,
+                },
+            }, {
+                'status': 'error',
+                'records': (self.test_records_failure_wrong + self.test_records_failure_dupe),  # server action did crash, description is False (see muted logger)
+                'fields_values': {
+                    'schedule_date': date_reference_new,
+                    'state_msg_content': 'Exception in server action',
+                },
             }, {
                 'status': 'rejected',
-                'records': test_records_1_ko,  # no email_from -> rejected due to domain filter
-                'schedule_date': date_reference + relativedelta(days=1),
+                'records': (test_records_1_ko - self.test_records_failure_wrong - self.test_records_failure_dupe),  # no email_from -> rejected due to domain filter
+                'fields_values': {
+                    'schedule_date': date_reference + relativedelta(days=1),
+                },
             }, {
                 'status': 'canceled',
                 'records': test_records_1_replied,  # replied -> mail_not_open is canceled
-                'schedule_date': date_reference_reply,
+                'fields_values': {
+                    'schedule_date': date_reference_reply,
+                },
             }],
             act2_2,
         )
 
         # check server action was actually processed
         for record in test_records_1_ko | test_records_1_replied:
-            self.assertNotIn('Did not answer, sad campaign is sad', record.description)
+            self.assertNotIn('Did not answer, sad campaign is sad', (record.description or ''))
         for record in test_records_1_ok - test_records_1_replied:
-            self.assertIn('Did not answer, sad campaign is sad', record.description)
-
+            self.assertIn('Did not answer, sad campaign is sad', (record.description or ''))
         self.assertFalse(captured_triggers.records)  # no trigger should be created

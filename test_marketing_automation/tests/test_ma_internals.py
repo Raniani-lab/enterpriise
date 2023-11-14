@@ -17,6 +17,7 @@ class MarketingCampaignTest(TestMACommon):
     def setUpClass(cls):
         super(MarketingCampaignTest, cls).setUpClass()
         cls.date_reference = Datetime.from_string('2023-11-08 08:00:00')
+        cls.test_records = cls._create_marketauto_records(model='marketing.test.sms', count=2)
         cls.env['res.lang']._activate_lang('fr_FR')
 
     @users('user_marketing_automation')
@@ -28,9 +29,7 @@ class MarketingCampaignTest(TestMACommon):
             'model_id': self.env['ir.model']._get_id('marketing.test.sms'),
             'name': 'Test Campaign',
         })
-
-        mailing = self._create_mailing('marketing.test.sms')
-        self._create_activity(campaign, mailing=mailing, interval_number=0)
+        self._create_activity_mail(campaign, act_values={'interval_number': 0})
 
         campaign.action_start_campaign()
         self.assertEqual(campaign.state, 'running')

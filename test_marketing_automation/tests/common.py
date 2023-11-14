@@ -6,12 +6,6 @@ from odoo.addons.marketing_automation_sms.tests.common import MarketingAutomatio
 
 class TestMACommon(MarketingAutomationSMSCommon):
 
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-
-        cls.test_records = cls._create_marketauto_records(model='marketing.test.sms', count=2)
-
     # ------------------------------------------------------------
     # RECORDS TOOLS
     # ------------------------------------------------------------

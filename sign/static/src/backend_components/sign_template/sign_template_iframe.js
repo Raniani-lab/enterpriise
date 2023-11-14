@@ -178,8 +178,10 @@ export class SignTemplateIframe extends EditablePDFIframeMixin(PDFIframe) {
      * @param {SignItem} signItem
      */
     enableCustom(signItem) {
-        startResize(signItem, this.onResizeItem.bind(this));
-        this.registerDragEventsForSignItem(signItem);
+        if(this.allowEdit){
+            startResize(signItem, this.onResizeItem.bind(this));
+            this.registerDragEventsForSignItem(signItem);
+        }
     }
 
     /**
@@ -237,6 +239,7 @@ export class SignTemplateIframe extends EditablePDFIframeMixin(PDFIframe) {
                 zIndex: 110,
                 opacity: 0.75,
             });
+            this.root.querySelector("#viewer").style.position = "relative";
             this.root.querySelector("#viewer").prepend(div);
         }
         this.insertRotatePDFButton();

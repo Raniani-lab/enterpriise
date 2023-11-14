@@ -234,11 +234,11 @@ class HrApplicant(models.Model):
             phone_ocr = ocr_results['phone']['selected_value']['content'] if 'phone' in ocr_results else ""
             mobile_ocr = ocr_results['mobile']['selected_value']['content'] if 'mobile' in ocr_results else ""
 
-            self.name = _("%s's Application", name_ocr)
-            self.partner_name = name_ocr
-            self.email_from = email_from_ocr
-            self.partner_phone = phone_ocr
-            self.partner_mobile = mobile_ocr
+            self.name = self.name or _("%s's Application", name_ocr)
+            self.partner_name = self.partner_name or name_ocr
+            self.email_from = self.email_from or email_from_ocr
+            self.partner_phone = self.partner_phone or phone_ocr
+            self.partner_mobile = self.partner_mobile or mobile_ocr
 
         elif result['status_code'] == NOT_READY:
             self.extract_state = 'extract_not_ready'

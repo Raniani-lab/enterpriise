@@ -353,7 +353,7 @@ class MarketingCampaign(models.Model):
 
             BATCH_SIZE = 100
             for to_create_batch in tools.split_every(BATCH_SIZE, to_create, piece_maker=list):
-                participants |= participants.create([{
+                participants += participants.create([{
                     'campaign_id': campaign.id,
                     'res_id': rec_id,
                 } for rec_id in to_create_batch])

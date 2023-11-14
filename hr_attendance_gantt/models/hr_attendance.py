@@ -77,7 +77,7 @@ class HrAttendance(models.Model):
 
         open_ended_gantt_data = super().get_gantt_data(domain, groupby, read_specification, limit=limit, offset=offset)
 
-        if groupby and groupby[0] == 'employee_id':
+        if start_date and groupby and groupby[0] == 'employee_id':
             active_employees_domain = expression.AND([
                 user_domain,
                 [

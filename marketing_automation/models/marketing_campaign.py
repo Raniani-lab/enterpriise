@@ -227,13 +227,22 @@ class MarketingCampaign(models.Model):
                 )
             )
 
+            # pre-fetch existing traces to avoid duplicates
+            existing_traces = self.env['marketing.trace']
+            if created_activities:
+                existing_traces = self.env['marketing.trace'].search([
+                    ('activity_id', 'in', created_activities.ids),
+                ])
             for activity in created_activities:
                 activity_offset = relativedelta(**{activity.interval_type: activity.interval_number})
                 # Case 1: Trigger = begin
                 # Create new root traces for all running participants -> consider campaign begin date is now to avoid spamming participants
                 if activity.trigger_type == 'begin':
+                    participants_with_traces = existing_traces.filtered(lambda trace: trace.activity_id == activity).participant_id
                     participants = self.env['marketing.participant'].search([
-                        ('state', '=', 'running'), ('campaign_id', '=', campaign.id)
+                        ('state', '=', 'running'),
+                        ('campaign_id', '=', campaign.id),
+                        ('id', 'not in', participants_with_traces.ids),
                     ])
                     for participant in participants:
                         schedule_date = Datetime.from_string(Datetime.now()) + activity_offset

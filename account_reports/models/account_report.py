@@ -5088,7 +5088,7 @@ class AccountReport(models.Model):
         return {
             "type": "ir.actions.act_url",
             "url": f"/web/content/{attachment_id.id}",
-            "target": "self",
+            "target": "download",
         }
 
     def _generate_accounts_coverage_report_xlsx_lines(self):

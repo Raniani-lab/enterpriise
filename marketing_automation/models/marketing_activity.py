@@ -22,7 +22,7 @@ class MarketingActivity(models.Model):
     _name = 'marketing.activity'
     _description = 'Marketing Activity'
     _inherit = ['utm.source.mixin']
-    _order = 'interval_standardized'
+    _order = 'interval_standardized, id ASC'
 
     # definition and UTM
     activity_type = fields.Selection([

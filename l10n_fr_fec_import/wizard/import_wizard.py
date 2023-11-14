@@ -211,9 +211,10 @@ class FecImportWizard(models.TransientModel):
 
     def _generator_fec_res_partner(self, rows, cache):
         """ Import the partners from FEC data files """
+        template_data = self.env['account.chart.template']._get_chart_template_data('fr').get('template_data')
         for record in rows:
             partner_ref = record.get("CompAuxNum", "")
-            partner_name = record.get("CompAuxLib", "")
+            partner_name = record.get("CompAuxLib") or partner_ref
             account_code = record.get("CompteNum", "")
             if partner_ref:
                 partner_ref = partner_ref.replace(' ', '_')
@@ -225,7 +226,6 @@ class FecImportWizard(models.TransientModel):
 
                 # Setup account properties
                 if account_code:
-                    template_data = self.env['account.chart.template']._get_chart_template_data('fr').get('template_data')
                     digits = template_data['code_digits']
                     account_code = account_code[:digits] + account_code[digits:].rstrip('0')
                     account = cache['account.account'].get(account_code.rstrip('0'))
@@ -396,6 +396,7 @@ class FecImportWizard(models.TransientModel):
             Sens must be in ['C', 'D'] which mean Credit/Debit).
         """
 
+        template_data = self.env['account.chart.template']._get_chart_template_data('fr').get('template_data')
         moves_dict = {}
 
         # Keeps track of moves grouped by journal_id and move_date, it helps with imbalances
@@ -424,7 +425,6 @@ class FecImportWizard(models.TransientModel):
             journal_code = record.get("JournalCode", "")
 
             # Move line data ------------------------------------
-            template_data = self.env['account.chart.template']._get_chart_template_data('fr').get('template_data')
             digits = template_data['code_digits']
             move_line_name = record.get("EcritureLib", "")
             account_code_orig = record.get("CompteNum", "")

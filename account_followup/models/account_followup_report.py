@@ -268,6 +268,13 @@ class AccountFollowupReport(models.AbstractModel):
         return self._get_rendered_body(partner.id, template_src, default_body, post_process=True)
 
     @api.model
+    def _get_email_reply_to(self, options):
+        partner = self.env['res.partner'].browse(options.get('partner_id'))
+        followup_line = options.get('followup_line', partner.followup_line_id)
+        mail_template = options.get('mail_template', followup_line.mail_template_id)
+        return mail_template.reply_to
+
+    @api.model
     def _get_main_body(self, options):
         # Manual follow-up: return body from options
         if options.get('body'):
@@ -376,11 +383,12 @@ Best Regards,
 
                 attachment_ids = options.get('attachment_ids', partner._get_invoices_to_print(options).message_main_attachment_id.ids)
 
-                partner.with_context(mail_post_autofollow=True, lang=partner.lang or self.env.user.lang).message_post(
+                partner.with_context(mail_post_autofollow=True, mail_notify_author=True, lang=partner.lang or self.env.user.lang).message_post(
                     partner_ids=[to_send_partner.id],
                     author_id=partner._get_followup_responsible().partner_id.id,
                     body=body_html,
                     subject=self._get_email_subject(options),
+                    reply_to=self._get_email_reply_to(options),
                     subtype_id=self.env.ref('mail.mt_note').id,
                     model_description=_('payment reminder'),
                     email_layout_xmlid='mail.mail_notification_light',

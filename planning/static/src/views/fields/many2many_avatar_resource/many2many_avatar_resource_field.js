@@ -7,6 +7,7 @@ import {
 } from "@web/views/fields/many2many_tags_avatar/many2many_tags_avatar_field";
 import { AvatarMany2XAutocomplete } from "@web/views/fields/relational_utils";
 import { Domain } from "@web/core/domain";
+import { _lt } from "@web/core/l10n/translation";
 
 class AvatarResourceMany2XAutocomplete extends AvatarMany2XAutocomplete {
     get optionsSource() {
@@ -79,7 +80,14 @@ export const many2ManyAvatarResourceField = {
     relatedFields: (fieldInfo) => {
         return [
             ...many2ManyTagsAvatarField.relatedFields(fieldInfo),
-            { name: "resource_type", type: "selection" },
+            {
+                name: "resource_type",
+                type: "selection",
+                selection: [
+                    ["user", _lt("Human")],
+                    ["material", _lt("Material")],
+                ],
+            },
         ];
     },
 };

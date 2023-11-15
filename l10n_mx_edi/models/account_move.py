@@ -2011,17 +2011,12 @@ class AccountMove(models.Model):
         # fill the invoice
         invoice._l10n_mx_edi_import_cfdi_fill_invoice(tree)
         # create the document
-        attachment = self.env['ir.attachment'].create({
-            'name': file_data['filename'],
-            'raw': file_data['content'],
-            'description': "CFDI",
-        })
         self.env['l10n_mx_edi.document'].create({
             'move_id': invoice.id,
             'invoice_ids': [Command.set(invoice.ids)],
             'state': 'invoice_sent' if invoice.is_sale_document() else 'invoice_received',
             'sat_state': 'not_defined',
-            'attachment_id': attachment.id,
+            'attachment_id': file_data['attachment'].id,
             'datetime': fields.Datetime.now(),
         })
         return True

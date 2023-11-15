@@ -83,6 +83,12 @@ class ExtractMixin(models.AbstractModel):
         """ Compute the is_in_extractable_state field. This method is meant to be overridden """
         return None
 
+    def _get_iap_account(self):
+        if self.company_id:
+            return self.env['iap.account'].with_context(allowed_company_ids=[self.company_id.id]).get('invoice_ocr')
+        else:
+            return self.env['iap.account'].get('invoice_ocr')
+
     @api.model
     def check_all_status(self):
         for record in self.search(self._get_to_check_domain()):
@@ -228,7 +234,7 @@ class ExtractMixin(models.AbstractModel):
             return False
         attachment = self.message_main_attachment_id
         if attachment and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status']:
-            account_token = self.env['iap.account'].get('invoice_ocr')
+            account_token = self._get_iap_account()
 
             if not account_token.account_token:
                 self.extract_state = 'error_status'
@@ -291,7 +297,7 @@ class ExtractMixin(models.AbstractModel):
         except ValueError:
             #if the mail template has not been created by an upgrade of the module
             return
-        iap_account = self.env['iap.account'].search([('service_name', '=', "invoice_ocr")], limit=1)
+        iap_account = self._get_iap_account()
         if iap_account:
             # Get the email address of the creators of the records
             res = self.env['res.users'].search_read([('id', '=', 2)], ['email'])

@@ -324,6 +324,7 @@ class UPSRequest():
             product.Description = [line for line in [name[35 * i:35 * (i + 1)] for i in range(3)] if line]
             product.Unit = unit_type
             product.OriginCountryCode = commodity.country_of_origin
+            product.CommodityCode = commodity.product_id.hs_code or ''
 
             invoice_products.append(product)
 

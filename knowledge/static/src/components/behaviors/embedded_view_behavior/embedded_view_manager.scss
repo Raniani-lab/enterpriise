@@ -19,6 +19,12 @@
         position: absolute;
         visibility: hidden;
         height: 2rem;
+        top: -2rem;
+        right: 0rem;
+
+        > div {
+            height: 2rem;
+        }
     }
     &:hover {
         .o_knowledge_toolbar {
@@ -97,22 +103,5 @@
     }
     .o_calendar_filter .ui-menu-item a {
         color: $o-gray-700 !important;
-    }
-}
-
-@include media-breakpoint-up(md) {
-    .o_knowledge_behavior_type_embedded_view {
-        .o_knowledge_toolbar {
-            top: -2rem;
-            right: 0;
-        }
-    }
-}
-@include media-breakpoint-down(md) {
-    .o_knowledge_behavior_type_embedded_view {
-        .o_knowledge_toolbar {
-            top: -2rem;
-            right: 0rem;
-        }
     }
 }

@@ -107,6 +107,9 @@ class HrExpense(models.Model):
     # We want to see the records that are just processed by OCR at the top of the list
     state_processed = fields.Boolean(string='Status regarding OCR status', compute=_compute_state_processed, store=True)
 
+    def _get_iap_account(self):
+        return self.env['iap.account'].with_context(allowed_company_ids=[self.company_id.id]).get('invoice_ocr')
+
     def attach_document(self, **kwargs):
         """when an attachment is uploaded, send the attachment to iap-extract if this is the first attachment"""
         self._autosend_for_digitization()
@@ -139,7 +142,7 @@ class HrExpense(models.Model):
         """Send user corrected values to the ocr"""
         exp_to_validate = self.search([('extract_state', '=', 'to_validate')])
         if exp_to_validate:
-            account = self.env['iap.account'].get('invoice_ocr')
+            account = self._get_iap_account()
             endpoint = self.env['ir.config_parameter'].sudo().get_param(
                 'hr_expense_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/expense/2/validate'
             for record in exp_to_validate:
@@ -213,7 +216,7 @@ class HrExpense(models.Model):
         params = {
                 'version': CLIENT_OCR_VERSION,
                 'document_token': self.extract_remote_id,
-                'account_token': self.env['iap.account'].get('invoice_ocr').account_token,
+                'account_token': self._get_iap_account().account_token,
             }
         result = iap_tools.iap_jsonrpc(endpoint, params=params)
         self.extract_status_code = result['status_code']
@@ -320,7 +323,7 @@ class HrExpense(models.Model):
                 attachments.exists() and
                 self.extract_state in ['no_extract_requested', 'waiting_upload', 'not_enough_credit', 'error_status']
         ):
-            account_token = self.env['iap.account'].get('invoice_ocr')
+            account_token = self._get_iap_account()
             endpoint = self.env['ir.config_parameter'].sudo().get_param(
                     'hr_expense_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/expense/2/parse'
 

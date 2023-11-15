@@ -115,6 +115,12 @@ class HrApplicant(models.Model):
         for applicant in self:
             applicant.state_processed = applicant.extract_state in ['waiting_extraction', 'waiting_upload']
 
+    def _get_iap_account(self):
+        if self.company_id:
+            return self.env['iap.account'].with_context(allowed_company_ids=[self.company_id.id]).get('invoice_ocr')
+        else:
+            return self.env['iap.account'].get('invoice_ocr')
+
     def get_validation(self, field):
         text_to_send = {}
         if field == "email":
@@ -131,7 +137,7 @@ class HrApplicant(models.Model):
         """Send user corrected values to the ocr"""
         app_to_validate = self.search([('extract_state', '=', 'to_validate')])
         if app_to_validate:
-            account = self.env['iap.account'].get('invoice_ocr')
+            account = self._get_iap_account()
             endpoint = self.env['ir.config_parameter'].sudo().get_param(
                 'hr_recruitment_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/applicant/2/validate'
             for record in app_to_validate:
@@ -215,7 +221,7 @@ class HrApplicant(models.Model):
         params = {
             'version': CLIENT_OCR_VERSION,
             'document_token': self.extract_remote_id,
-            'account_token': self.env['iap.account'].get('invoice_ocr').account_token,
+            'account_token': self._get_iap_account().account_token,
         }
         result = iap_tools.iap_jsonrpc(endpoint, params=params)
         self.extract_status_code = result['status_code']
@@ -293,7 +299,7 @@ class HrApplicant(models.Model):
                 attachments and
                 self.extract_state in ['no_extract_requested', 'waiting_upload', 'not_enough_credit', 'error_status']
         ):
-            account_token = self.env['iap.account'].get('invoice_ocr')
+            account_token = self._get_iap_account()
             endpoint = self.env['ir.config_parameter'].sudo().get_param(
                     'hr_recruitment_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/applicant/2/parse'
 

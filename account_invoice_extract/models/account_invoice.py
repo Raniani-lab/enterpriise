@@ -150,6 +150,9 @@ class AccountMove(models.Model):
             _logger.warning("Error while reloading AI data on account.move %d: %s", self.id, e)
             raise AccessError(_lt("Couldn't reload AI data."))
 
+    def _get_iap_account(self):
+        return self.env['iap.account'].with_context(allowed_company_ids=[self.company_id.id]).get('invoice_ocr')
+
     def _domain_company(self):
         return ['|', ('company_id', '=', False), ('company_id', '=', self.company_id.id)]
 
@@ -257,7 +260,7 @@ class AccountMove(models.Model):
                 self.is_invoice() and
                 self.extract_state in ['no_extract_requested', 'waiting_upload', 'not_enough_credit', 'error_status']
         ):
-            account_token = self.env['iap.account'].get('invoice_ocr')
+            account_token = self._get_iap_account()
             user_infos = self.get_user_infos()
             #this line contact iap to create account if this is the first request. This allow iap to give free credits if the database is elligible
             self.env['iap.account'].get_credits('invoice_ocr')
@@ -308,7 +311,7 @@ class AccountMove(models.Model):
         except ValueError:
             #if the mail template has not been created by an upgrade of the module
             return
-        iap_account = self.env['iap.account'].search([('service_name', '=', "invoice_ocr")], limit=1)
+        iap_account = self._get_iap_account()
         if iap_account:
             # Get the email address of the creators of the records
             res = self.env['res.users'].search_read([('id', '=', 2)], ['email'])
@@ -405,7 +408,7 @@ class AccountMove(models.Model):
         inv_to_validate = self.search([('extract_state', '=', 'to_validate'), ('state', '=', 'posted')])
 
         if inv_to_validate:
-            account = self.env['iap.account'].get('invoice_ocr')
+            account = self._get_iap_account()
             for record in inv_to_validate:
                 values = {
                     'total': record.get_validation('total'),
@@ -799,7 +802,7 @@ class AccountMove(models.Model):
         if self.state == 'draft':
             params = {
                 'document_token': self.extract_remote_id,
-                'account_token': self.env['iap.account'].get('invoice_ocr').account_token,
+                'account_token': self._get_iap_account().account_token,
             }
             result = self._contact_iap_extract('/api/extract/invoice/2/get_result', params=params)
             self.extract_status_code = result['status_code']

@@ -55,3 +55,22 @@ class TestQuality(TransactionCase):
         # Product should be replaced by the product linked to the bom
         self.assertEqual(len(quality_point_form.product_ids), 1)
         self.assertEqual(quality_point_form.product_ids[0].id, self.bom.product_id.id)
+
+    def test_delete_move_linked_to_quality_check(self):
+        """
+        Test that a quality check is deleted when its linked move is deleted.
+        """
+        self.bom.bom_line_ids.product_id.tracking = 'lot'
+        self.bom.bom_line_ids.product_id.type = 'product'
+        mo_form = Form(self.env['mrp.production'])
+        mo_form.bom_id = self.bom
+        mo = mo_form.save()
+        mo.action_confirm()
+        qc = self.env['quality.check'].search([('product_id', '=', self.bom.product_id.id)])[-1]
+        move = qc.move_id
+        self.assertEqual(len(qc), 1)
+        self.assertFalse(move.move_line_ids)
+        move.state = 'draft'
+        move.unlink()
+        self.assertFalse(move.exists())
+        self.assertFalse(qc.exists())

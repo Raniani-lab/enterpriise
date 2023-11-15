@@ -62,6 +62,18 @@
                 <field name="name">VAT Perc</field>
                 <field name="expression_label">vat_per</field>
             </record>
+            <record id="l10n_ar_vat_book_report_column_perc_iibb" model="account.report.column">
+                <field name="name">Perc. IIBB</field>
+                <field name="expression_label">perc_iibb</field>
+            </record>
+            <record id="l10n_ar_vat_book_report_column_perc_earnings" model="account.report.column">
+                <field name="name">Perc. Earnings</field>
+                <field name="expression_label">perc_earnings</field>
+            </record>
+            <record id="l10n_ar_vat_book_report_column_city_tax" model="account.report.column">
+                <field name="name">City Tax</field>
+                <field name="expression_label">city_tax</field>
+            </record>
             <record id="l10n_ar_vat_book_report_column_other_taxes" model="account.report.column">
                 <field name="name">Other Taxes</field>
                 <field name="expression_label">other_taxes</field>

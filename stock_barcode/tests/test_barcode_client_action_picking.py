@@ -570,8 +570,6 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         picking_write_orig = odoo.addons.stock.models.stock_picking.Picking.write
         url = self._get_client_action_url(delivery_picking.id)
 
-        pg_1 = self.env['procurement.group'].create({'name': 'ProcurementGroup1'})
-        pg_2 = self.env['procurement.group'].create({'name': 'ProcurementGroup2'})
         partner_1 = self.env['res.partner'].create({'name': 'Parter1'})
         partner_2 = self.env['res.partner'].create({'name': 'Partner2'})
         self.env['stock.move'].create({
@@ -582,7 +580,6 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'product_uom': self.uom_unit.id,
             'product_uom_qty': 2,
             'picking_id': delivery_picking.id,
-            'group_id': pg_1.id,
             'restrict_partner_id': partner_1.id
         })
         self.env['stock.move'].create({
@@ -593,7 +590,6 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'product_uom': self.uom_unit.id,
             'product_uom_qty': 2,
             'picking_id': delivery_picking.id,
-            'group_id': pg_2.id,
             'restrict_partner_id': partner_2.id
         })
 

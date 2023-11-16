@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { _t } from "@web/core/l10n/translation";
-import { UIPlugin } from "@odoo/o-spreadsheet";
+import { UIPlugin, tokenize } from "@odoo/o-spreadsheet";
 import { getNumberOfPivotFormulas, makePivotFormula } from "@spreadsheet/pivot/pivot_helpers";
 import { pivotTimeAdapter } from "@spreadsheet/pivot/pivot_time_adapters";
 
@@ -37,10 +37,11 @@ export class PivotAutofillPlugin extends UIPlugin {
      * @returns {string}
      */
     getPivotNextAutofillValue(formula, isColumn, increment) {
-        if (getNumberOfPivotFormulas(formula) !== 1) {
+        const tokens = tokenize(formula);
+        if (getNumberOfPivotFormulas(tokens) !== 1) {
             return formula;
         }
-        const { functionName, args } = this.getters.getFirstPivotFunction(formula);
+        const { functionName, args } = this.getters.getFirstPivotFunction(tokens);
         const evaluatedArgs = args.map((arg) => arg.toString());
         const pivotId = evaluatedArgs[0];
         if (!this.getters.isExistingPivot(pivotId)) {
@@ -103,10 +104,11 @@ export class PivotAutofillPlugin extends UIPlugin {
      * @returns {Array<TooltipFormula>}
      */
     getTooltipFormula(formula, isColumn) {
-        if (getNumberOfPivotFormulas(formula) !== 1) {
+        const tokens = tokenize(formula);
+        if (getNumberOfPivotFormulas(tokens) !== 1) {
             return [];
         }
-        const { functionName, args } = this.getters.getFirstPivotFunction(formula);
+        const { functionName, args } = this.getters.getFirstPivotFunction(tokens);
         const pivotId = args[0];
         if (!this.getters.isExistingPivot(pivotId)) {
             return [{ title: _t("Missing pivot"), value: _t("Missing pivot #%s", pivotId) }];

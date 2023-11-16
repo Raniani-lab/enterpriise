@@ -235,10 +235,11 @@ class MarketingCampaign(models.Model):
                 ])
             for activity in created_activities:
                 activity_offset = relativedelta(**{activity.interval_type: activity.interval_number})
+                participants_with_traces = existing_traces.filtered(lambda trace: trace.activity_id == activity).participant_id
+
                 # Case 1: Trigger = begin
                 # Create new root traces for all running participants -> consider campaign begin date is now to avoid spamming participants
                 if activity.trigger_type == 'begin':
-                    participants_with_traces = existing_traces.filtered(lambda trace: trace.activity_id == activity).participant_id
                     participants = self.env['marketing.participant'].search([
                         ('state', '=', 'running'),
                         ('campaign_id', '=', campaign.id),
@@ -254,7 +255,8 @@ class MarketingCampaign(models.Model):
                 else:
                     valid_parent_traces = self.env['marketing.trace'].search([
                         ('state', '=', 'processed'),
-                        ('activity_id', '=', activity.parent_id.id)
+                        ('activity_id', '=', activity.parent_id.id),
+                        ('participant_id', 'not in', participants_with_traces.ids),
                     ])
 
                     # avoid creating new traces that would have processed brother traces already processed

@@ -4595,7 +4595,7 @@ class AccountReport(models.Model):
             currency = None
             digits = 0
         elif figure_type == 'boolean':
-            return bool(value)
+            return _("Yes") if bool(value) else _("No")
         elif figure_type in ('date', 'datetime'):
             return format_date(self.env, value)
         else:

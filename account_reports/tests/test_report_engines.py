@@ -1196,7 +1196,7 @@ class TestReportEngines(TestAccountReportsCommon):
             report._get_lines(options),
             [   0,                          1],
             [
-                ('test_line_1',         False),
+                ('test_line_1',          'No'),
             ],
             options,
         )
@@ -1207,7 +1207,7 @@ class TestReportEngines(TestAccountReportsCommon):
             report._get_lines(options),
             [   0,                          1],
             [
-                ('test_line_1',          True),
+                ('test_line_1',         'Yes'),
             ],
             options,
         )
@@ -1218,7 +1218,7 @@ class TestReportEngines(TestAccountReportsCommon):
             report._get_lines(options),
             [   0,                          1],
             [
-                ('test_line_1',          True),
+                ('test_line_1',         'Yes'),
             ],
             options,
         )
@@ -1229,7 +1229,7 @@ class TestReportEngines(TestAccountReportsCommon):
             report._get_lines(options),
             [   0,                          1],
             [
-                ('test_line_1',         False),
+                ('test_line_1',          'No'),
             ],
             options,
         )
@@ -1240,7 +1240,7 @@ class TestReportEngines(TestAccountReportsCommon):
             report._get_lines(options),
             [   0,                          1],
             [
-                ('test_line_1',         False),
+                ('test_line_1',          'No'),
             ],
             options,
         )

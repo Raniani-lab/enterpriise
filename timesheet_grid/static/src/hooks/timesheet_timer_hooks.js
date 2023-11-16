@@ -23,7 +23,6 @@ export class TimesheetTimerRendererHook {
         this.env = env;
         this.setup();
         this._setProjectTaskDebounce = useDebounced(this._setProjectTask.bind(this), 500);
-        this.showTimer = propsList.records.some((record) => record.data.display_timer);
     }
 
     setup() {
@@ -38,6 +37,10 @@ export class TimesheetTimerRendererHook {
             timerRunning: false,
             headerReadonly: false,
         });
+    }
+
+    get showTimer() {
+        return this.timesheetUOMService.timesheetWidget === "float_time";
     }
 
     get fields() {

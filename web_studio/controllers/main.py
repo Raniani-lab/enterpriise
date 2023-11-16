@@ -135,7 +135,8 @@ class WebStudioController(http.Controller):
                 '&',
                 ("model_id.transient", "=", False),
                 ("model_id.abstract", "=", False),
-                ("report_type", "not in", ['qweb-text'])
+                ("report_type", "not in", ['qweb-text']),
+                ("report_name", "not in", ["account_followup.report_followup_print_all"])
             ],
             'context': {
                 'default_model': model.model,

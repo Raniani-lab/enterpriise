@@ -46,7 +46,7 @@
                     >
                         <Field
                             name="'project_id'"
-                            class="!props.timesheet.isInEdition and 'd-inline align-middle pt-1'"
+                            class="!props.timesheet.isInEdition ? 'd-inline align-middle pt-1 o_required_modifier' : 'o_required_modifier'"
                             record="props.timesheet"
                             attrs="props.fields['project_id'].attrs"
                             placeholder="props.fields['project_id'].placeholder"

@@ -26,14 +26,7 @@
                         </p>
                     </div>
                     <h4 class="py-3">
-                        <t t-if="appointment_type">
-                            <span t-out="appointment_type.name"/> Appointment
-                            <span t-if="based_on_users and staff_user and staff_user.name not in appointment_type.name"> with <span t-out="staff_user.name"/> </span>
-                        </t>
-                        <t t-else="">
-                            <span t-out="event.name"/>
-                            <span t-if="staff_user and staff_user.name not in event.name"> with <span t-out="staff_user.name"/> </span>
-                        </t>
+                        <span t-out="event.name"/>
                     </h4>
                     <div class="oe_structure"/>
                     <div class="o_appointment_validation_details row justify-content-between">

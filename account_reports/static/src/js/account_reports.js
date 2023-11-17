@@ -836,6 +836,9 @@ var accountReportsWidget = AbstractAction.extend({
                         context: self.odoo_context,
                     })
                     .then(function(result){
+                        if (result.help) {
+                            result.help = owl.markup(result.help)
+                        }
                         var doActionProm = self.do_action(result);
                         self.$buttons.attr('disabled', false);
                         return doActionProm;

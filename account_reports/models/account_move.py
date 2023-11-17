@@ -13,8 +13,7 @@ class AccountMove(models.Model):
 
     # used for VAT closing, containing the end date of the period this entry closes
     tax_closing_end_date = fields.Date()
-    # technical field used to know if there was a failed control check
-    tax_report_control_error = fields.Boolean()
+    tax_report_control_error = fields.Boolean() # DEPRECATED; will be removed in master
     # technical field used to know whether to show the tax closing alert or not
     tax_closing_alert = fields.Boolean(compute='_compute_tax_closing_alert')
 
@@ -189,11 +188,6 @@ class AccountMove(models.Model):
             company_ids = self.env.company.ids
 
         report_options = tax_report.with_context(allowed_company_ids=company_ids).get_options(previous_options=options)
-        if 'tax_report_control_error' in report_options:
-            # This key will be set to False in the options by a custom init_options for reports adding control lines to themselves.
-            # Its presence indicate that we need to compute the report in order to run the actual checks. The options dictionary will then be
-            # modified in place (by a dynamic lines function) to contain the right check value under that key (see l10n_be_reports for an example).
-            tax_report._get_lines(report_options)
 
         return tax_report, report_options
 

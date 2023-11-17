@@ -143,8 +143,6 @@ class AccountTaxReportHandler(models.AbstractModel):
                 if line_ids_vals:
                     move_vals['line_ids'] = line_ids_vals
 
-                move_vals['tax_report_control_error'] = bool(move_options.get('tax_report_control_error'))
-
                 move.write(move_vals)
 
         return closing_moves

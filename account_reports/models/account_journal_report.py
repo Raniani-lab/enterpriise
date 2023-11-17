@@ -492,7 +492,7 @@ class JournalReportCustomHandler(models.AbstractModel):
                     if column.get('expression_label') == 'account':
                         col_value = '%s %s' % (values['account_code'], values['partner_name'] or values['account_name'])
                     elif column.get('expression_label') == 'label':
-                        col_value = values['debit']
+                        col_value = values['name']
                     elif column.get('expression_label') == 'invoice_date':
                         if values['journal_type'] == 'sale':
                             col_value = values['invoice_date'] if values['debit'] else ''

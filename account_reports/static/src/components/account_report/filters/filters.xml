@@ -96,7 +96,7 @@
             </div>
         </t>
 
-        <t t-if="this.controller.hasDebugColumn">
+        <t t-if="env.debug">
             <div id="filter_configuration" class="o-dropdown dropdown o-dropdown--no-caret">
                 <button
                         class="dropdown-toggle btn btn-secondary"

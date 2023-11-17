@@ -142,7 +142,7 @@ class SpreadsheetCollaborativeMixin(models.AbstractModel):
 
     def _get_spreadsheet_snapshot(self):
         if not self.spreadsheet_snapshot:
-            self.sudo().spreadsheet_snapshot = base64.encodebytes(self.raw)
+            return self.raw
         return base64.decodebytes(self.spreadsheet_snapshot)
 
     def _should_be_snapshotted(self):

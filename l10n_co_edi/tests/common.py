@@ -207,6 +207,66 @@ class TestCoEdiCommon(AccountEdiTestCommon):
         ]
         cls.sugar_tax_invoice = cls.env['account.move'].create(invoice_data)
 
+        cls.tax_iva_19 = cls.env['account.tax'].create({
+            'name': "IVA Ventas 19%",
+            'amount': 19,
+            'l10n_co_edi_type': cls.env.ref('l10n_co_edi.tax_type_0').id,
+        })
+        cls.tax_iva_5 = cls.env['account.tax'].create({
+            'name': "IVA Ventas 5%",
+            'amount': 5,
+            'l10n_co_edi_type': cls.env.ref('l10n_co_edi.tax_type_0').id,
+        })
+        cls.tax_iva_excento_0 = cls.env['account.tax'].create({
+            'name': "IVA Excento",
+            'amount': 0,
+            'l10n_co_edi_type': cls.env.ref('l10n_co_edi.tax_type_0').id,
+        })
+        cls.tax_iva_excluido_0 = cls.env['account.tax'].create({
+            'name': "IVA Excluido",
+            'amount': 0,
+            'l10n_co_edi_type': cls.env.ref('l10n_co_edi.tax_type_0').id,
+        })
+
+        # Testing the grouping inside the TIM sections: invoice with 2 IVA taxes with different rates and 1 Bolsas
+        invoice_data['invoice_line_ids'] = [
+            # IVA 5% and IVA 19% should be grouped inside the same TIM section
+            Command.create({
+                'product_id': cls.product_a.id,
+                'quantity': 1,
+                'price_unit': 100,
+                'tax_ids': [Command.set([cls.tax_iva_19.id])],
+            }),
+            Command.create({
+                'product_id': cls.product_a.id,
+                'quantity': 1,
+                'price_unit': 200,
+                'tax_ids': [Command.set([cls.tax_iva_5.id])],
+            }),
+            # The Bolsas tax should be in another TIM section
+            Command.create({
+                'product_id': cls.product_a.id,
+                'quantity': 1,
+                'price_unit': 200,
+                'tax_ids': [Command.set([cls.tax_iva_19.id, cls.retention_tax.id])],
+            }),
+            # IVA Excento (IVA, 0%) and IVA Excluido (IVA, 0%): both should be grouped together (same rate and CO type)
+            Command.create({
+                'product_id': cls.product_a.id,
+                'quantity': 1,
+                'price_unit': 400,
+                'tax_ids': [Command.set([cls.tax_iva_excento_0.id])],
+            }),
+            Command.create({
+                'product_id': cls.product_a.id,
+                'quantity': 1,
+                'price_unit': 500,
+                'tax_ids': [Command.set([cls.tax_iva_excluido_0.id])],
+            }),
+        ]
+        cls.invoice_tim = cls.env['account.move'].create(invoice_data)
+
         cls.expected_invoice_xml = misc.file_open('l10n_co_edi/tests/accepted_invoice.xml', 'rb').read()
         cls.expected_sugar_tax_invoice_xml = misc.file_open('l10n_co_edi/tests/accepted_sugar_tax_invoice.xml', 'rb').read()
         cls.expected_credit_note_xml = misc.file_open('l10n_co_edi/tests/accepted_credit_note.xml', 'rb').read()
+        cls.expected_invoice_tim_xml = misc.file_open('l10n_co_edi/tests/accepted_invoice_tim.xml', 'rb').read()

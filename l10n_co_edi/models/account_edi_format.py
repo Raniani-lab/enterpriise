@@ -56,22 +56,24 @@ class AccountEdiFormat(models.Model):
 
     def _l10n_co_edi_prepare_tim_sections(self, taxes_dict, invoice_currency, retention, tax_details=None, actual_tax_details=None):
         # taxes_dict is no longer used and will be removed in master
-        new_taxes_dict = defaultdict(list)
         tax_details = tax_details or {}
         actual_tax_details = actual_tax_details or {}
 
+        # Mapping CO tax type -> TIM section
+        new_taxes_dict = defaultdict(lambda: {
+            'TIM_1': bool(retention),
+            'TIM_2': 0.0,
+            'TIM_3': invoice_currency.name,
+            'TIM_4': 0.0,
+            'TIM_5': invoice_currency.name,
+            'IMPS': [],
+        })
         for grouping_key, tax_detail in actual_tax_details['tax_details'].items():
-            if grouping_key['l10n_co_edi_type'].retention != retention:
-                continue
             tax_type = grouping_key['l10n_co_edi_type']
-            tim = {
-                'TIM_1': bool(retention),
-                'TIM_2': 0.0,
-                'TIM_3': invoice_currency.name,
-                'TIM_4': 0.0,
-                'TIM_5': invoice_currency.name,
-                'IMPS': [],
-            }
+            if tax_type.retention != retention:
+                continue
+            # Construct the IMP and add it to the TIM section (one IMP per tax *rate*)
+            tim = new_taxes_dict[tax_type.code]
             if tax_type.code == '05':
                 imp_2 = abs(tax_detail['tax_amount_currency'] * 100 / 15)
             elif tax_type.code == '34':
@@ -101,7 +103,7 @@ class AccountEdiFormat(models.Model):
                     imp.update({
                         'IMP_7': imp['IMP_2'],
                         'IMP_8': 'MLT',
-                        'IMP_9': imp['IMP_2'] and abs(tax_detail['tax_amount_currency']) * 100 / imp['IMP_2'],
+                        'IMP_9': imp['IMP_2'] and float_round(abs(tax_detail['tax_amount_currency']) * 100 / imp['IMP_2'], 2),
                     })
             else:
                 imp.update({
@@ -111,62 +113,9 @@ class AccountEdiFormat(models.Model):
                     'IMP_9': '',
                     'IMP_10': '',
                 })
-                tim['TIM_4'] = float_round((imp['IMP_6'] / 100.0 * imp['IMP_2']) - imp['IMP_4'], 2)
-            tim['TIM_2'] = imp['IMP_4']
+                tim['TIM_4'] += float_round((imp['IMP_6'] / 100.0 * imp['IMP_2']) - imp['IMP_4'], 2)
+            tim['TIM_2'] += imp['IMP_4']
             tim['IMPS'].append(imp)
-            if tax_details.get(tax_type.code):
-                tim['IMPS'].append({
-                    'IMP_1': tax_type.code,
-                    'IMP_2': tax_details[tax_type.code],
-                    'IMP_3': invoice_currency.name,
-                    'IMP_4': 0,
-                    'IMP_5': invoice_currency.name,
-                    'IMP_6': 0,
-                    'IMP_7': '',
-                    'IMP_8': '',
-                    'IMP_9': '',
-                    'IMP_10': '',
-                    'IMP_11': '',
-                })
-                tax_details.pop(tax_type.code)
-            new_taxes_dict[grouping_key] = tim
-
-        # Special case for taxes with code 34: they should all be inside a single TIM section
-        ibua_tim_keys = [key for key in new_taxes_dict if key['l10n_co_edi_type'].code == '34']
-        # aggregate the tim sections for the IBUA tax
-        for key in ibua_tim_keys:
-            vals = new_taxes_dict[key]
-            if not new_taxes_dict['34']:
-                new_taxes_dict['34'] = vals
-            else:
-                new_taxes_dict['34']['TIM_2'] += vals['TIM_2']
-                new_taxes_dict['34']['TIM_4'] += vals['TIM_4']
-                new_taxes_dict['34']['IMPS'] += vals['IMPS']
-        # remove the old tim sections
-        for key in ibua_tim_keys:
-            new_taxes_dict.pop(key)
-
-        for tax_code, _values in tax_details.items():
-            new_taxes_dict[tax_code] = {
-                'TIM_1': bool(retention),
-                'TIM_2': 0,
-                'TIM_3': invoice_currency.name,
-                'TIM_4': 0,
-                'TIM_5': invoice_currency.name,
-                'IMPS': [{
-                    'IMP_1': tax_code,
-                    'IMP_2': tax_details[tax_code],
-                    'IMP_3': invoice_currency.name,
-                    'IMP_4': 0,
-                    'IMP_5': invoice_currency.name,
-                    'IMP_6': 0,
-                    'IMP_7': '',
-                    'IMP_8': '',
-                    'IMP_9': '',
-                    'IMP_10': '',
-                    'IMP_11': '',
-                }]
-            }
         return new_taxes_dict
 
     # -------------------------------------------------------------------------
@@ -264,10 +213,7 @@ class AccountEdiFormat(models.Model):
             return {'tax': tax, 'l10n_co_edi_type': tax.l10n_co_edi_type}
 
         def group_tax_tim(base_line, tax_values):
-            """ Tax details to be used for the TIM section:
-            In theory: group by CO tax type
-            In practice: sugar taxes have the same CO tax type but different rates so can't be grouped together
-            Solution: add `amount` and `amount_type` to the grouping_key
+            """ Tax details to be used for the TIM section: taxes should be grouped per CO tax type, then per tax rate.
             """
             tax = tax_values['tax_repartition_line'].tax_id
             return {
@@ -519,6 +465,11 @@ class AccountEdiFormat(models.Model):
             edi_result.append(_("The Identification Number Type on the company\'s partner should be 'NIT'."))
         if not move.partner_id.commercial_partner_id.l10n_latam_identification_type_id.l10n_co_document_code:
             edi_result.append(_("The Identification Number Type on the customer\'s partner should be 'NIT'."))
+
+        # Sugar taxes
+        for line in move.invoice_line_ids:
+            if "IBUA" in line.tax_ids.l10n_co_edi_type.mapped('name') and line.product_id.volume == 0:
+                edi_result.append(_("You should set a volume on product: %s when using IBUA taxes.", line.product_id.name))
 
         return edi_result
 

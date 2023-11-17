@@ -100,7 +100,7 @@
             <div id="filter_configuration" class="o-dropdown dropdown o-dropdown--no-caret">
                 <button
                         class="dropdown-toggle btn btn-secondary"
-                        t-on-click="(ev) => this.controller.reportAction(ev, 'action_open_report_form', {})"
+                        t-on-click="(ev) => this.controller.reportAction(ev, 'action_open_report_form', {}, true)"
                 >
                     <i class="fa fa-cogs me-1"/>
                 </button>

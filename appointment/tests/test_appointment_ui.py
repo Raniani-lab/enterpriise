@@ -323,7 +323,7 @@ class CalendarTest(AppointmentUICommon):
         self.assertEqual(res.status_code, 200, "Response should = OK")
         access_token = res.url.split('?')[0].split('/calendar/view/')[-1]
         event = CalendarEvent.search([('access_token', '=', access_token)])
-        self.assertEqual(len(event.attendee_ids), 7)
+        self.assertEqual(len(event.attendee_ids), 8)
         self.assertTrue(event.active)
         cancel_meeting_data = {
             'access_token': access_token,

@@ -48,7 +48,7 @@ class PlanningTemplate(models.Model):
                 raise ValidationError(_('The start hour must be greater or equal to 0 and lower than 24.'))
             start_time = time(hour=int(shift_template.start_time), minute=round(math.modf(shift_template.start_time)[0] / (1 / 60.0)))
             start_datetime = user_tz.localize(datetime.combine(today, start_time))
-            shift_template.duration_days, shift_template.end_time = shift_template._get_company_work_duration_data(calendar, start_datetime, shift_template.duration)
+            shift_template.duration_days, shift_template.end_time = self._get_company_work_duration_data(calendar, start_datetime, shift_template.duration)
             end_time = time(hour=int(shift_template.end_time), minute=round(math.modf(shift_template.end_time)[0] / (1 / 60.0)))
             shift_template.name = '%s - %s %s' % (
                 format_time(shift_template.env, start_time, time_format='short').replace(':00 ', ' '),
@@ -66,9 +66,9 @@ class PlanningTemplate(models.Model):
 
             Returns a tuple (duration, end_time) expressed as days and as hours.
         """
-        if not calendar.plan_hours(duration, start_datetime, compute_leaves=True):
+        end_datetime = calendar.plan_hours(duration, start_datetime, compute_leaves=True)
+        if end_datetime is False:
             raise ValidationError(_('The duration is too long.'))
-        end_datetime = start_datetime + self._get_duration()
         if duration == 0 and start_datetime.hour == 0:
             end_datetime = end_datetime.replace(hour=0)
         return (

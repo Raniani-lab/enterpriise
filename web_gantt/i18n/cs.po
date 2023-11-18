@@ -1,25 +1,24 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* web_gantt
-#
+# 
 # Translators:
-# karolína schusterová <karolina.schusterova@vdp.sk>, 2022
-# Jiří Podhorecký, 2022
-# Martin Trigaux, 2022
-# Michal Veselý <michal@veselyberanek.net>, 2023
-#
+# Ivana Bartonkova, 2023
+# Jakub Smolka, 2023
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:03+0000\n"
-"PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Michal Veselý <michal@veselyberanek.net>, 2023\n"
+"POT-Creation-Date: 2023-10-26 22:22+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Czech (https://app.transifex.com/odoo/teams/41243/cs/)\n"
-"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: cs\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #. module: web_gantt
@@ -32,7 +31,7 @@ msgstr "Opravdu chcete tento záznam smazat?"
 #. module: web_gantt
 #: model:ir.model,name:web_gantt.model_base
 msgid "Base"
-msgstr "Základní část"
+msgstr "Jádro"
 
 #. module: web_gantt
 #. odoo-javascript
@@ -43,7 +42,6 @@ msgstr "Sbalit řádky"
 
 #. module: web_gantt
 #. odoo-javascript
-#: code:addons/web_gantt/static/src/gantt_cell_buttons.xml:0
 #: code:addons/web_gantt/static/src/gantt_controller.js:0
 #, python-format
 msgid "Create"
@@ -61,7 +59,7 @@ msgstr "Den"
 #: code:addons/web_gantt/static/src/gantt_renderer.js:0
 #, python-format
 msgid "Edit"
-msgstr ""
+msgstr "Upravit"
 
 #. module: web_gantt
 #. odoo-javascript
@@ -109,7 +107,9 @@ msgstr ""
 #. odoo-python
 #: code:addons/web_gantt/models/ir_ui_view.py:0
 #, python-format
-msgid "Gantt must have a 'dependency_inverted_field' attribute once the 'dependency_field' is specified"
+msgid ""
+"Gantt must have a 'dependency_inverted_field' attribute once the "
+"'dependency_field' is specified"
 msgstr ""
 
 #. module: web_gantt
@@ -118,13 +118,6 @@ msgstr ""
 #, python-format
 msgid "Gantt view can contain only one templates tag"
 msgstr ""
-
-#. module: web_gantt
-#. odoo-javascript
-#: code:addons/web_gantt/static/src/gantt_model.js:0
-#, python-format
-msgid "Grouping by date is not supported"
-msgstr "Seskupování podle data není podporováno"
 
 #. module: web_gantt
 #. odoo-python
@@ -159,7 +152,7 @@ msgstr "Měsíc"
 #: code:addons/web_gantt/static/src/gantt_popover.xml:0
 #, python-format
 msgid "Name"
-msgstr ""
+msgstr "Název"
 
 #. module: web_gantt
 #. odoo-javascript
@@ -180,7 +173,7 @@ msgstr "Další"
 #: code:addons/web_gantt/static/src/gantt_controller.js:0
 #, python-format
 msgid "Open"
-msgstr "Otevřít"
+msgstr "Volný"
 
 #. module: web_gantt
 #. odoo-javascript
@@ -188,13 +181,6 @@ msgstr "Otevřít"
 #, python-format
 msgid "Plan"
 msgstr "Plán"
-
-#. module: web_gantt
-#. odoo-javascript
-#: code:addons/web_gantt/static/src/gantt_cell_buttons.xml:0
-#, python-format
-msgid "Plan existing"
-msgstr ""
 
 #. module: web_gantt
 #. odoo-javascript
@@ -207,7 +193,9 @@ msgstr "Předchozí"
 #. odoo-python
 #: code:addons/web_gantt/models/models.py:0
 #, python-format
-msgid "Records that are in the past cannot be automatically rescheduled. They should be manually rescheduled instead."
+msgid ""
+"Records that are in the past cannot be automatically rescheduled. They "
+"should be manually rescheduled instead."
 msgstr ""
 
 #. module: web_gantt
@@ -215,17 +203,20 @@ msgstr ""
 #: code:addons/web_gantt/static/src/gantt_popover.xml:0
 #, python-format
 msgid "Start"
-msgstr ""
+msgstr "Začít"
 
 #. module: web_gantt
 #. odoo-javascript
 #: code:addons/web_gantt/static/src/gantt_popover.xml:0
 #, python-format
 msgid "Stop"
-msgstr ""
+msgstr "Zastavit"
 
 #. module: web_gantt
 #. odoo-javascript
+#: code:addons/web_gantt/static/src/gantt_renderer.xml:0
+#: code:addons/web_gantt/static/src/gantt_renderer.xml:0
+#: code:addons/web_gantt/static/src/gantt_renderer.xml:0
 #: code:addons/web_gantt/static/src/gantt_renderer.xml:0
 #, python-format
 msgid "Today"
@@ -236,7 +227,7 @@ msgstr "Dnes"
 #: code:addons/web_gantt/static/src/gantt_renderer.js:0
 #, python-format
 msgid "Total"
-msgstr ""
+msgstr "Celkem"
 
 #. module: web_gantt
 #. odoo-javascript
@@ -251,7 +242,7 @@ msgstr ""
 #: model:ir.model,name:web_gantt.model_ir_ui_view
 #, python-format
 msgid "View"
-msgstr "Pohled"
+msgstr "Zobrazení"
 
 #. module: web_gantt
 #. odoo-javascript
@@ -278,26 +269,29 @@ msgstr ""
 #. odoo-python
 #: code:addons/web_gantt/models/models.py:0
 #, python-format
-msgid "You cannot reschedule tasks that do not follow a direct dependency path. Only the first task has been automatically rescheduled."
+msgid ""
+"You cannot reschedule tasks that do not follow a direct dependency path. "
+"Only the first task has been automatically rescheduled."
 msgstr ""
 
 #. module: web_gantt
 #. odoo-javascript
 #: code:addons/web_gantt/static/src/gantt_arch_parser.js:0
+#: code:addons/web_gantt/static/src/gantt_arch_parser.js:0
 #, python-format
 msgid "hours"
-msgstr ""
+msgstr "hodin"
 
 #. module: web_gantt
 #. odoo-javascript
 #: code:addons/web_gantt/static/src/gantt_arch_parser.js:0
 #, python-format
 msgid "minutes"
-msgstr ""
+msgstr "minut"
 
 #. module: web_gantt
 #. odoo-javascript
 #: code:addons/web_gantt/static/src/gantt_arch_parser.js:0
 #, python-format
 msgid "months"
-msgstr ""
+msgstr "měsíce"

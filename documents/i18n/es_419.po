@@ -637,7 +637,7 @@ msgid ""
 "order to avoid a recursion issue."
 msgstr ""
 "Un espacio de trabajo no puede tener uno de sus subespacios definido como el"
-" espacio de trabajo principal para así evitar un problema de recursión."
+" espacio de trabajo principal. Así evitamos problemas de recursión."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__parent_folder_id
@@ -911,7 +911,7 @@ msgid ""
 "launch user defined actions, request a signature, convert to vendor bills "
 "with AI, etc."
 msgstr ""
-"Una forma sencilla de procesar los correos entrantes es configurando su "
+"Una forma sencilla de procesar los correos entrantes es configurar su "
 "escáner para que envíe archivos PDF al correo electrónico de su espacio de "
 "trabajo. Los archivos escaneados aparecerán de forma automática en su "
 "espacio de trabajo. Luego, procese sus documentos por lotes con la "

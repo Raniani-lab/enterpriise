@@ -476,7 +476,7 @@ msgid ""
 msgstr ""
 "Verkaufsauftragsposition, zu der die für diese Aufgabe aufgewendete Zeit hinzugefügt wird, um sie Ihrem Kunden in Rechnung zu stellen.\n"
 "Standardmäßig wird die für das Projekt festgelegte Verkaufsauftragsposition ausgewählt. Ist dies nicht der Fall, wird die letzte vorausbezahlte Verkaufsauftragsposition verwendet, die noch Zeit übrig hat.\n"
-"Entfernen Sie die Verkaufsauftragsposition, um diese Aufgabe nichtabrechenbar zu machen. Sie können die Verkaufsauftragsposition auch für jeden Zeiterfassungseintrag einzeln ändern oder entfernen."
+"Entfernen Sie die Verkaufsauftragsposition, um diese Aufgabe nicht abrechenbar zu machen. Sie können die Verkaufsauftragsposition auch für jeden Zeiterfassungseintrag einzeln ändern oder entfernen."
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_sale_order_line

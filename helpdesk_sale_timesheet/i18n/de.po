@@ -145,7 +145,7 @@ msgstr "Rechnungen"
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_sale_timesheet
 msgid "Non-billable"
-msgstr "Nichtabrechenbar"
+msgstr "Nicht abrechenbar"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.helpdesk_sla_view_form_inherit_sale_timesheet
@@ -264,7 +264,7 @@ msgid ""
 msgstr ""
 "Verkaufsauftragsposition, zu der die für dieses Ticket aufgewendete Zeit hinzugefügt wird, um sie Ihrem Kunden in Rechnung zu stellen.\n"
 "Standardmäßig wird die letzte vorausbezahlte Verkaufsauftragsposition ausgewählt, die noch Zeit übrig hat.\n"
-"Entfernen Sie die Verkaufsauftragsposition, um diese Aufgabe nichtabrechenbar zu machen. Sie können die Verkaufsauftragsposition auch für jeden Zeiterfassungseintrag einzeln ändern oder entfernen."
+"Entfernen Sie die Verkaufsauftragsposition, um diese Aufgabe nicht abrechenbar zu machen. Sie können die Verkaufsauftragsposition auch für jeden Zeiterfassungseintrag einzeln ändern oder entfernen."
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_sla__sale_line_ids

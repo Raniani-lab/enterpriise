@@ -1095,7 +1095,7 @@ msgstr "Moeda"
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.xml:0
 #, python-format
 msgid "Current model:"
-msgstr ""
+msgstr "Modelo atual:"
 
 #. module: web_studio
 #. odoo-python
@@ -1425,7 +1425,7 @@ msgstr "Duplicar"
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
 #, python-format
 msgid "Dynamic Table"
-msgstr ""
+msgstr "Tabela dinâmica"
 
 #. module: web_studio
 #. odoo-python
@@ -2030,14 +2030,14 @@ msgstr "Inserir um campo"
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
 #, python-format
 msgid "Insert a field..."
-msgstr ""
+msgstr "Inserir um campo…"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/report_editor/report_editor_wysiwyg/report_editor_wysiwyg.js:0
 #, python-format
 msgid "Insert a table based on a relational field."
-msgstr ""
+msgstr "Insira uma tabela com base em um campo relacional."
 
 #. module: web_studio
 #. odoo-javascript
@@ -3942,7 +3942,7 @@ msgstr "Widget"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Write additional notes or comments"
-msgstr "Escreva notas ou comentários adiiconais"
+msgstr "Escreva notas ou comentários adicionais"
 
 #. module: web_studio
 #. odoo-javascript

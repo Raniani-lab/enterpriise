@@ -161,7 +161,7 @@ msgstr "Menús"
 #. module: website_studio
 #: model:ir.model,name:website_studio.model_website_controller_page
 msgid "Model Page"
-msgstr ""
+msgstr "Página del modelo"
 
 #. module: website_studio
 #. odoo-javascript

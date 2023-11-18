@@ -355,6 +355,8 @@ msgid ""
 "Some of your rental products cannot be rented during the selected period and"
 " your cart must be updated. We're sorry for the inconvenience."
 msgstr ""
+"بعض منتجات التأجير الخاصة بك لا يمكن تأجيرها أثناء الفترة المحددة ويجب تحديث"
+" عربة التسوق الخاصة بك نحن نعتذر لذلك. "
 
 #. module: website_sale_renting
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_company__renting_forbidden_sun

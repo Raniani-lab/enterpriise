@@ -97,6 +97,7 @@ msgid ""
 "The following bookings were not confirmed due to insufficient availability "
 "or configuration changes: %s"
 msgstr ""
+"لم يتم تأكيد الحجوزات التالية بسبب عدم كفاية التوفر أو تغييرات التكوين: %s "
 
 #. module: website_appointment_sale
 #: model_terms:ir.ui.view,arch_db:website_appointment_sale.appointment_sale_confirmation_cards

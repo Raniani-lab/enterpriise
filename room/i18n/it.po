@@ -352,7 +352,7 @@ msgstr "Gestisci stanze"
 #. module: room
 #: model:ir.ui.menu,name:room.room_menu_root
 msgid "Meeting Rooms"
-msgstr "Stanze riunioni"
+msgstr "Sale riunioni"
 
 #. module: room
 #: model_terms:ir.ui.view,arch_db:room.room_booking_view_search

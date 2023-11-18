@@ -3,8 +3,8 @@
 # 	* account_accountant
 # 
 # Translators:
-# Abe Manyo, 2023
 # Wil Odoo, 2023
+# Abe Manyo, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 22:20+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Wil Odoo, 2023\n"
+"Last-Translator: Abe Manyo, 2023\n"
 "Language-Team: Indonesian (https://app.transifex.com/odoo/teams/41243/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -882,7 +882,7 @@ msgstr ""
 "Dari tampilan daftar manapun, pilih lebih dari satu record dan daftar akan "
 "dapat diedit. Bila Anda mengupdate sebuah cell, record yang dipilih akan "
 "semuanya diperbarui bersamaan. Gunakan fitur ini untuk mengupdate lebih dari"
-" satu entri jurnal dari Buku Besar, atau dari tampilan Jurnal apapun."
+" satu entri jurnal dari Buku Besar Umum, atau dari tampilan Jurnal apapun."
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_company__generate_deferred_expense_entries_method

@@ -349,7 +349,7 @@ msgstr ""
 #. module: room
 #: model:ir.ui.menu,name:room.room_menu_root
 msgid "Meeting Rooms"
-msgstr ""
+msgstr "ミーティングルーム"
 
 #. module: room
 #: model_terms:ir.ui.view,arch_db:room.room_booking_view_search
@@ -432,7 +432,7 @@ msgstr "配信エラーが発生されたメッセージ数"
 #: model:ir.model.fields,field_description:room.field_room_booking__office_id
 #: model:ir.model.fields,field_description:room.field_room_room__office_id
 msgid "Office"
-msgstr ""
+msgstr "オフィス"
 
 #. module: room
 #: model:ir.model.fields,field_description:room.field_room_office__name
@@ -494,7 +494,7 @@ msgstr "評価"
 #: model:ir.module.category,name:room.module_category_room
 #: model_terms:ir.ui.view,arch_db:room.room_room_view_search
 msgid "Room"
-msgstr ""
+msgstr "ルーム"
 
 #. module: room
 #. odoo-python

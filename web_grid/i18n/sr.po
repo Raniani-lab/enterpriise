@@ -1,24 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* web_grid
-#
+# 
 # Translators:
-# Uros Kalajdzic <ukalajdzic@gmail.com>, 2022
-# Martin Trigaux, 2022
-# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
-#
+# Milan Bojovic, 2023
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:03+0000\n"
-"PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
+"POT-Creation-Date: 2023-10-26 22:22+0000\n"
+"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"Last-Translator: Milan Bojovic, 2023\n"
 "Language-Team: Serbian (https://app.transifex.com/odoo/teams/41243/sr/)\n"
-"Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: sr\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #. module: web_grid
@@ -39,12 +37,19 @@ msgstr ""
 #: code:addons/web_grid/static/src/views/grid_renderer.xml:0
 #, python-format
 msgid "Add a line"
-msgstr "Novi red"
+msgstr ""
 
 #. module: web_grid
 #: model:ir.model,name:web_grid.model_base
 msgid "Base"
-msgstr "Osnova"
+msgstr ""
+
+#. module: web_grid
+#. odoo-javascript
+#: code:addons/web_grid/static/src/views/grid_arch_parser.js:0
+#, python-format
+msgid "Count"
+msgstr ""
 
 #. module: web_grid
 #. odoo-javascript
@@ -53,13 +58,14 @@ msgstr "Osnova"
 #: model:ir.model.fields.selection,name:web_grid.selection__ir_ui_view__type__grid
 #, python-format
 msgid "Grid"
-msgstr "Mreža"
+msgstr ""
 
 #. module: web_grid
 #. odoo-javascript
 #: code:addons/web_grid/static/src/views/grid_model.js:0
 #, python-format
-msgid "Grouping by the field used in the column of the grid view is not possible."
+msgid ""
+"Grouping by the field used in the column of the grid view is not possible."
 msgstr ""
 
 #. module: web_grid
@@ -72,9 +78,10 @@ msgstr ""
 #. module: web_grid
 #. odoo-javascript
 #: code:addons/web_grid/static/src/views/grid_renderer.xml:0
+#: code:addons/web_grid/static/src/views/grid_renderer.xml:0
 #, python-format
 msgid "Next"
-msgstr "Sledeće"
+msgstr ""
 
 #. module: web_grid
 #. odoo-javascript
@@ -85,24 +92,26 @@ msgstr ""
 
 #. module: web_grid
 #. odoo-javascript
-#: code:addons/web_grid/static/src/views/grid_renderer.xml:0
+#: code:addons/web_grid/static/src/components/grid_row/grid_row.xml:0
+#: code:addons/web_grid/static/src/components/many2one_grid_row/many2one_grid_row.xml:0
 #, python-format
 msgid "None"
-msgstr "Ništa"
+msgstr ""
 
 #. module: web_grid
 #. odoo-javascript
 #: code:addons/web_grid/static/src/views/grid_renderer.xml:0
+#: code:addons/web_grid/static/src/views/grid_renderer.xml:0
 #, python-format
 msgid "Previous"
-msgstr "Prethodno"
+msgstr ""
 
 #. module: web_grid
 #. odoo-javascript
 #: code:addons/web_grid/static/src/views/grid_renderer.xml:0
 #, python-format
 msgid "Today"
-msgstr "Danas"
+msgstr ""
 
 #. module: web_grid
 #. odoo-javascript
@@ -114,10 +123,12 @@ msgstr "Ukupno"
 #. module: web_grid
 #: model:ir.model,name:web_grid.model_ir_ui_view
 msgid "View"
-msgstr "Pregled"
+msgstr ""
 
 #. module: web_grid
 #: model:ir.model.fields,field_description:web_grid.field_ir_actions_act_window_view__view_mode
 #: model:ir.model.fields,field_description:web_grid.field_ir_ui_view__type
+#: model:ir.model.fields,field_description:web_grid.field_website_controller_page__type
+#: model:ir.model.fields,field_description:web_grid.field_website_page__type
 msgid "View Type"
-msgstr "Vrsta pregleda"
+msgstr ""

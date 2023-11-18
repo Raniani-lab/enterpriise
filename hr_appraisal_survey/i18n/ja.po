@@ -651,7 +651,7 @@ msgstr "プロジェクト目標"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_12
 msgid "Promptness and attendance record"
-msgstr "迅速な対応と出勤記録"
+msgstr "迅速な対応と勤怠記録"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_2

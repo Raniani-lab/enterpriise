@@ -23,7 +23,7 @@ msgstr ""
 #. module: hr_attendance_gantt
 #: model:ir.model,name:hr_attendance_gantt.model_hr_attendance
 msgid "Attendance"
-msgstr "出席"
+msgstr "勤怠"
 
 #. module: hr_attendance_gantt
 #: model:ir.model.fields,field_description:hr_attendance_gantt.field_hr_attendance__color

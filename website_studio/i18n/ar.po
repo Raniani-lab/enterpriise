@@ -70,7 +70,7 @@ msgstr "أيقونة التطبيق "
 #. module: website_studio
 #: model_terms:ir.ui.view,arch_db:website_studio.website_controller_page_form_dialog
 msgid "Basic parameters"
-msgstr ""
+msgstr "المعايير الأساسية "
 
 #. module: website_studio
 #. odoo-javascript
@@ -82,12 +82,12 @@ msgstr "تهيئة "
 #. module: website_studio
 #: model:ir.model.fields,field_description:website_studio.field_website_controller_page__auto_single_page
 msgid "Create Single Page"
-msgstr ""
+msgstr "إنشاء صفحة مفردة "
 
 #. module: website_studio
 #: model:ir.model.fields,field_description:website_studio.field_website_controller_page__use_menu
 msgid "Create Website Menu"
-msgstr ""
+msgstr "إنشاء قائمة للموقع الإلكتروني "
 
 #. module: website_studio
 #. odoo-javascript
@@ -101,14 +101,14 @@ msgstr "حذف"
 #: code:addons/website_studio/static/src/website_integrator/website_integrator.js:0
 #, python-format
 msgid "Display a detailed page for a single record on a page of your website"
-msgstr ""
+msgstr "قم بعرض صفحة تفصيلية لسجل واحد في صفحة من صفحات موقعك الإلكتروني "
 
 #. module: website_studio
 #. odoo-javascript
 #: code:addons/website_studio/static/src/website_integrator/website_integrator.js:0
 #, python-format
 msgid "Display records on your website, in a list or card format"
-msgstr ""
+msgstr "قم بعرض السجلات على موقعك الإلكتروني، بتنسيق القائمة أو البطاقة "
 
 #. module: website_studio
 #. odoo-python
@@ -116,6 +116,7 @@ msgstr ""
 #, python-format
 msgid "Drag building blocks to edit the website description of this record."
 msgstr ""
+"قم بسحب وإفلات الكتل الإنشائية لتحرير وصف الموقع الإلكتروني لهذا السجل. "
 
 #. module: website_studio
 #. odoo-javascript
@@ -139,7 +140,7 @@ msgstr "الشبكة"
 #. module: website_studio
 #: model:ir.model.fields,help:website_studio.field_website_controller_page__auto_single_page
 msgid "If checked, a single page will be created along with your listing page"
-msgstr ""
+msgstr "إذا كان محدداً، سيتم إنشاء صفحة واحدة بالإضافة إلى صفحة تسجيلاتك "
 
 #. module: website_studio
 #: model_terms:ir.ui.view,arch_db:website_studio.listing_layout_switcher
@@ -151,7 +152,7 @@ msgstr "القائمة"
 #: code:addons/website_studio/static/src/website_integrator/website_integrator.js:0
 #, python-format
 msgid "Listings"
-msgstr ""
+msgstr "التسجيلات "
 
 #. module: website_studio
 #: model_terms:ir.ui.view,arch_db:website_studio.website_controller_page_form_dialog
@@ -168,14 +169,14 @@ msgstr "صفحة النموذج "
 #: code:addons/website_studio/static/src/website_integrator/website_integrator.xml:0
 #, python-format
 msgid "New Form"
-msgstr ""
+msgstr "استمارة جديدة "
 
 #. module: website_studio
 #. odoo-javascript
 #: code:addons/website_studio/static/src/website_integrator/website_integrator.xml:0
 #, python-format
 msgid "New Listing"
-msgstr ""
+msgstr "تسجيل جديد "
 
 #. module: website_studio
 #. odoo-javascript
@@ -234,7 +235,7 @@ msgstr "عرض الاستمارة "
 #: code:addons/website_studio/static/src/website_integrator/website_integrator.xml:0
 #, python-format
 msgid "View in website"
-msgstr ""
+msgstr "عرض على الموقع الإلكتروني "
 
 #. module: website_studio
 #. odoo-javascript
@@ -265,4 +266,4 @@ msgstr "النتائج)"
 #: code:addons/website_studio/static/src/website_integrator/website_integrator.xml:0
 #, python-format
 msgid "— Allow visitors of your website to create records themselves"
-msgstr ""
+msgstr "— أتح لزوار موقعك الإلكتروني بإنشاء السجلات بأنفسهم "

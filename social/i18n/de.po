@@ -63,7 +63,7 @@ msgstr "<small class=\"pe-1\">Klicks:</small>"
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_kanban
 msgid "<small class=\"pe-1\">Engagement:</small>"
-msgstr ""
+msgstr "<small class=\"pe-1\">Interaktion:</small>"
 
 #. module: social
 #. odoo-javascript

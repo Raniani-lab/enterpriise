@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2023
+# Milan Bojovic, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2023\n"
+"Last-Translator: Milan Bojovic, 2023\n"
 "Language-Team: Serbian (https://app.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -98,6 +99,9 @@ msgid ""
 "when confirming the Sales Order. Only employees with this role will "
 "automatically be assigned shifts for Sales Orders containing this service."
 msgstr ""
+"Ako je omogućeno, smena će se automatski generisati za izabranu ulogu kada"
+" se potvrdi prodajni nalog. Samo zaposlenima sa ovom ulogom će automatski "
+"biti dodeljene smene za prodajne naloge koji sadrže ovu uslugu."
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
@@ -148,7 +152,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_planning.field_product_product__planning_enabled
 #: model:ir.model.fields,field_description:sale_planning.field_product_template__planning_enabled
 msgid "Plan Services"
-msgstr ""
+msgstr "Planirajte usluge"
 
 #. module: sale_planning
 #. odoo-python
@@ -203,7 +207,7 @@ msgstr ""
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_planning_slot
 msgid "Planning Shift"
-msgstr ""
+msgstr "Planiranje smene"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order_line__planning_slot_ids

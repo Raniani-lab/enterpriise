@@ -170,7 +170,7 @@ msgstr ""
 #. module: worksheet
 #: model:ir.model,name:worksheet.model_worksheet_template
 msgid "Worksheet Template"
-msgstr ""
+msgstr "Šablon radnog lista"
 
 #. module: worksheet
 #: model_terms:ir.ui.view,arch_db:worksheet.worksheet_template_view_search
@@ -180,7 +180,7 @@ msgstr ""
 #. module: worksheet
 #: model_terms:ir.ui.view,arch_db:worksheet.worksheet_template_view_list
 msgid "Worksheets"
-msgstr ""
+msgstr "Radni listovi"
 
 #. module: worksheet
 #: model_terms:ir.ui.view,arch_db:worksheet.worksheet_template_view_form

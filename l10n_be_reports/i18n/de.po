@@ -1,41 +1,37 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* l10n_be_reports
-#
+# 
 # Translators:
-# Felix Schubert <felix.schubert@go-erp.com>, 2023
 # Friederike Fasterling-Nesselbosch, 2023
 # Martin Trigaux, 2023
-# Wil Odoo, 2023
 # Larissa Manderfeld, 2023
-#
+# Wil Odoo, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-11-14 08:57+0000\n"
-"PO-Revision-Date: 2023-11-14 10:00+0100\n"
-"Last-Translator: Dylan Kiss <dyki@odoo.com>\n"
+"PO-Revision-Date: 2023-02-03 07:08+0000\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: \n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.1\n"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_a_plcf
 msgid "(14) - Profit (Loss) to Be Carried Forward (+)/(-)"
-msgstr "(14) - Vorzutragender Gewinn (Verlust) (+)/(-)"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_a_pltba_plpafa
 msgid ""
 "(9905) - Profit (Loss) of the Period Available for Appropriation (+)/(-)"
 msgstr ""
-"(9905) - Zu verwendender Gewinn (anzurechnender Verlust) des Geschäftsjahres "
-"(+)/(-)"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -48,12 +44,10 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
 msgid ""
 ",\n"
-"                                                enter the amount actually "
-"paid in"
+"                                                enter the amount actually paid in"
 msgstr ""
 ",\n"
-"                                                tatsächlich gezahlten Betrag "
-"übereinstimmt, tragen Sie hier den"
+"                                                tatsächlich gezahlten Betrag übereinstimmt, tragen Sie hier den"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -88,240 +82,238 @@ msgstr "10 - Kapital"
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_c
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_e_c
 msgid "10/11 - Contributions"
-msgstr "10/11 - Einlage"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_e
 msgid "10/15 - Equity"
-msgstr "10/15 - Eigenkapital"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_tot
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_tot
 msgid "10/49 - TOTAL LIABILITIES"
-msgstr "10/49 - SUMME DER PASSIVA"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_c_c_ic
 msgid "100 - Issued Capital"
-msgstr "100 - Gezeichnetes Kapital"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_c_c_uc
 msgid "101 - Uncalled Capital"
-msgstr "101 - Nicht eingefordertes Kapital"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_c_bc
 msgid "11 - Beyond Capital"
-msgstr "11 - Sacheinlage"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_e_c_a
 msgid "110 - Available"
-msgstr "110 - Verfügbar"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_c_bc_spa
 msgid "1100/10 - Share Premium Account"
-msgstr "1100/10 - Agio"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_c_bc_o
 msgid "1109/19 - Other"
-msgstr "1109/19 - Sonstige"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_e_c_na
 msgid "111 - Not Available"
-msgstr "111 - Nicht verfügbar"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_rs
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_e_rs
 msgid "12 - Revaluation Surpluses"
-msgstr "12 - Neubewertungsrücklagen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_r
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_e_r
 msgid "13 - Reserves"
-msgstr "13 - Rücklagen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_r_rno_lr
 msgid "130 - Legal Reserve"
-msgstr "130 - Gesetzliche Rücklage"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_r_rno
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_e_r_rno
 msgid "130/1 - Reserves Not Available"
-msgstr "130/1 - Nicht verfügbare Rücklagen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_r_rno_rnos
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_e_r_rno_rnos
 msgid "1311 - Reserves Not Available Statutorily"
-msgstr "1311 - Satzungsgemäße nicht verfügbare Rücklagen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_r_rno_pos
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_e_r_rno_pos
 msgid "1312 - Purchase of Own Shares"
-msgstr "1312 - Erwerb eigener Aktien"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_r_rno_fs
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_e_r_rno_fs
 msgid "1313 - Financial Support"
-msgstr "1313 - Finanzielle Unterstützung"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_r_rno_o
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_e_r_rno_o
 msgid "1319 - Other"
-msgstr "1319 - Sonstige"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_r_ur
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_e_r_ur
 msgid "132 - Untaxed Reserves"
-msgstr "132 - Steuerfreie Rücklagen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_r_ar
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_e_r_ar
 msgid "133 - Available Reserves"
-msgstr "133 - Verfügbare Rücklagen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_apl
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_e_apl
 msgid "14 - Accumulated Profits (Losses) (+)/(-)"
-msgstr "14 - Gewinnvortrag (Verlustvortrag) (+)/(-)"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_a_pltba_plppbf
 msgid "14P - Profit (Loss) of the Preceding Period Brought Forward (+)/(-)"
-msgstr "14P - Gewinnvortrag (Verlustvortrag) aus dem Vorjahr (+)/(-)"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_cs
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_e_cs
 msgid "15 - Capital Subsidies"
-msgstr "15 - Kapitalsubventionen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_pdt
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_pdt
 msgid "16 - Provisions and Deferred Taxes"
-msgstr "16 - Rückstellungen und aufgeschobene Steuern"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_pdt_plc_pso
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_pdt_plc_pso
 msgid "160 - Pensions and Similar Obligations"
-msgstr "160 - Pensionen und ähnliche Verpflichtungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_pdt_plc
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_pdt_plc
 msgid "160/5 - Provisions for Liabilities and Charges"
-msgstr "160/5 - Rückstellungen für Risiken und Aufwendungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_pdt_plc_t
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_pdt_plc_t
 msgid "161 - Taxes"
-msgstr "161 - Steuern"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_pdt_plc_mrm
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_pdt_plc_mrm
 msgid "162 - Major Repairs and Maintenance"
-msgstr "162 - Große Reparaturen und Instandhaltungsarbeiten"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_pdt_plc_eo
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_pdt_plc_eo
 msgid "163 - Environmental Obligations"
-msgstr "163 - Umweltschutzverpflichtungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_pdt_plc_olc
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_pdt_plc_olc
 msgid "164/5 - Other Liabilities and Charges"
-msgstr "164/5 - Sonstige Risiken und Aufwendungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_pdt_dt
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_pdt_dt
 msgid "168 - Deferred Taxes"
-msgstr "168 - Aufgeschobene Steuern"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apamtoy
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apamtoy
 msgid "17 - Amounts Payable After More Than One Year"
-msgstr "17 - Verbindlichkeiten mit einer Restlaufzeit von mehr als einem Jahr"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap
 msgid "17/49 - Amounts Payable"
-msgstr "17/49 - Verbindlichkeiten"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apamtoy_fd
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apamtoy_fd
 msgid "170/4 - Financial Debts"
-msgstr "170/4 - Finanzverbindlichkeiten"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apamtoy_fd_ciloso
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apamtoy_fd_ciloso
 msgid "172/3 - Credit Institutions, Leasing and Other Similar Obligations"
 msgstr ""
-"172/3 - Kreditinstitute, Verbindlichkeiten aufgrund von Leasing- und "
-"ähnlichen Verträgen"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apamtoy_fd_ol
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apamtoy_fd_ol
 msgid "174/0 - Other Loans"
-msgstr "174/0 - Sonstige Anleihen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apamtoy_td
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apamtoy_td
 msgid "175 - Trade Debts"
-msgstr "175 - Verbindlichkeiten aus Lieferungen und Leistungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apamtoy_apcp
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apamtoy_apcp
 msgid "176 - Advance Payments on Contracts in Progress"
-msgstr "176 - Anzahlungen auf Bestellungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apamtoy_oap
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apamtoy_oap
 msgid "178/9 - Other Amounts Payable"
-msgstr "178/9 - Sonstige Verbindlichkeiten"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_asdna
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_e_asdna
 msgid "19 - Advance to Shareholders on the Distribution of Net Assets"
 msgstr ""
-"19 - Vorschuss an die Gesellschafter auf der Verteilung des Nettoaktiva"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
 msgid "2. Name (or denomination) and address of the debtor of the income:"
-msgstr "2. Name (oder Bezeichnung) und Anschrift des Schuldners der Einkünfte:"
+msgstr ""
+"2. Name (oder Bezeichnung) und Anschrift des Schuldners der Einkünfte:"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -332,73 +324,73 @@ msgstr "2. Telefonnummer:"
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_fe
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_fe
 msgid "20 - Formation Expenses"
-msgstr "20 - Errichtungs- und Erweiterungsaufwendungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_tot
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_tot
 msgid "20/58 - TOTAL ASSETS"
-msgstr "20/58 - SUMME DER AKTIVA"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_fa_ifa
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_fa_ifa
 msgid "21 - Intangible Fixed Assets"
-msgstr "21 - Immaterielle Anlagewerte"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_fa
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_fa
 msgid "21/28 - Fixed Assets"
-msgstr "21/28 - Anlagevermögen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_fa_tfa_lb
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_fa_tfa_lb
 msgid "22 - Land and Buildings"
-msgstr "22 - Grundstücke und Bauten"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_fa_tfa
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_fa_tfa
 msgid "22/27 - Tangible Fixed Assets"
-msgstr "22/27 - Sachanlagen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_fa_tfa_pme
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_fa_tfa_pme
 msgid "23 - Plant, Machinery and Equipment"
-msgstr "23 - Anlagen, Maschinen und Betriebsausstattung"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_fa_tfa_fv
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_fa_tfa_fv
 msgid "24 - Furniture and Vehicles"
-msgstr "24 - Geschäftsausstattung und Fuhrpark"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_fa_tfa_losr
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_fa_tfa_losr
 msgid "25 - Leasing and Other Similar Rights"
-msgstr "25 - Leasing und ähnliche Rechte"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_fa_tfa_otfa
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_fa_tfa_otfa
 msgid "26 - Other Tangible Fixed Assets"
-msgstr "26 - Sonstige Sachanlagen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_fa_tfa_aucap
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_fa_tfa_aucap
 msgid "27 - Assets Under Construction and Advance Payments"
-msgstr "27 - Anlagen im Bau und geleistete Anzahlungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_fa_ffa
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_fa_ffa
 msgid "28 - Financial Fixed Assets"
-msgstr "28 - Finanzanlagen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -510,31 +502,31 @@ msgstr "Karten 281.50"
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_ca_aramtoy
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_ca_aramtoy
 msgid "29 - Amounts Receivable After More Than One Year"
-msgstr "29 - Forderungen mit einer Restlaufzeit von mehr als einem Jahr"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_ca
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_ca
 msgid "29/58 - Current Assets"
-msgstr "29/58 - Umlaufvermögen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_ca_aramtoy_td
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_ca_aramtoy_td
 msgid "290 - Trade Debtors"
-msgstr "290 - Forderungen aus Lieferungen und Leistungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_ca_aramtoy_oar
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_ca_aramtoy_oar
 msgid "291 - Other Amounts Receivable"
-msgstr "291 - Sonstige Forderungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_ca_scp
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_ca_scp
 msgid "3 - Stocks and Contracts in Progress"
-msgstr "3 - Vorräte und in Ausführung befindliche Bestellungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -577,7 +569,7 @@ msgstr "Verzeichnisse 325"
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_ca_scp_cp
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_ca_scp_cp
 msgid "37 - Contracts in Progress"
-msgstr "37 - In Ausführung befindliche Bestellungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -588,164 +580,153 @@ msgstr "4. Kommentar:"
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid ""
 "4. Domicile (natural persons), registered office or main administrative\n"
-"                                                office (companies and other "
-"institutions)"
+"                                                office (companies and other institutions)"
 msgstr ""
-"4. Wohnsitz (natürliche Personen), Gesellschaftssitz oder "
-"Hauptniederlassung\n"
-"                                                (Gesellschaften und andere "
-"Einrichtungen):"
+"4. Wohnsitz (natürliche Personen), Gesellschaftssitz oder Hauptniederlassung\n"
+"                                                (Gesellschaften und andere Einrichtungen):"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_ca_arwoy_td
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_ca_arwoy_td
 msgid "40 - Trade Debtors"
-msgstr "40 - Forderungen aus Lieferungen und Leistungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_ca_arwoy
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_ca_arwoy
 msgid "40/41 - Amounts Receivable Within One Year"
-msgstr "40/41 - Forderungen mit einer Restlaufzeit bis zu einem Jahr"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_ca_arwoy_oar
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_ca_arwoy_oar
 msgid "41 - Other Amounts Receivable"
-msgstr "41 - Sonstige Forderungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apwoy_cpapdwoy
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apwoy_cpapdwoy
 msgid ""
-"42 - Current Portion of Amounts Payable After More Than One Year Falling Due "
-"Within One Year"
+"42 - Current Portion of Amounts Payable After More Than One Year Falling Due"
+" Within One Year"
 msgstr ""
-"42 - Innerhalb eines Jahres fällig werdende Verbindlichkeiten mit einer "
-"ursprünglichen Laufzeit von mehr als 1 Jahr"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apwoy
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apwoy
 msgid "42/48 - Amounts Payable Within One Year"
-msgstr "42/48 - Verbindlichkeiten mit einer Restlaufzeit bis zu 1 Jahr"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apwoy_fd
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apwoy_fd
 msgid "43 - Financial Debts"
-msgstr "43 - Finanzverbindlichkeiten"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apwoy_fd_ci
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apwoy_fd_ci
 msgid "430/8 - Credit Institutions"
-msgstr "430/8 - Kreditinstitute"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apwoy_fd_ol
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apwoy_fd_ol
 msgid "439 - Other Loans"
-msgstr "439 - Sonstige Anleihen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apwoy_td
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apwoy_td
 msgid "44 - Trade Debts"
-msgstr "44 - Verbindlichkeiten aus Lieferungen und Leistungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apwoy_td_s
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apwoy_td_s
 msgid "440/4 - Suppliers"
-msgstr "440/4 - Lieferanten"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apwoy_td_bep
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apwoy_td_bep
 msgid "441 - Bills of Exchange Payable"
-msgstr "441 - Verbindlichkeiten aus Wechseln"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apwoy_trss
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apwoy_trss
 msgid "45 - Taxes, Remuneration and Social Security"
 msgstr ""
-"45 - Verbindlichkeiten aufgrund von Steuern, Arbeitsentgelten und "
-"Soziallasten"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apwoy_trss_t
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apwoy_trss_t
 msgid "450/3 - Taxes"
-msgstr "450/3 - Steuern"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apwoy_trss_rss
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apwoy_trss_rss
 msgid "454/9 - Remuneration and Social Security"
-msgstr "454/9 - Arbeitsentgelte und Soziallasten"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apwoy_apcp
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apwoy_apcp
 msgid "46 - Advance Payments on Contracts in Progress"
-msgstr "46 - Anzahlungen auf Bestellungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_apwoy_oap
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_apwoy_oap
 msgid "47/48 - Other Amounts Payable"
-msgstr "47/48 - Sonstige Verbindlichkeiten"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_ca_adi
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_ca_adi
 msgid "490/1 - Accruals and Deferred Income"
-msgstr "490/1 - Rechnungsabgrenzungsposten"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_adi
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_adi
 msgid "492/3 - Accruals and Deferred Income"
-msgstr "492/3 - Rechnungsabgrenzungsposten"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_ap_sa
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_ap_sa
 msgid "499 - Suspense Accounts"
-msgstr "499 - Wartekonten"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid ""
 "5. Administrative or operating headquarters (companies and other\n"
 "                                                institutions)\n"
-"                                                or operating headquarters "
-"(natural persons who have more than one such\n"
-"                                                headquarters) when it is a "
-"statement specific to that administrative or\n"
+"                                                or operating headquarters (natural persons who have more than one such\n"
+"                                                headquarters) when it is a statement specific to that administrative or\n"
 "                                                operating headquarters:"
 msgstr ""
 "5. Verwaltungs- oder Betriebssitz (Gesellschaften und andere\n"
 "                                                Einrichtungen)\n"
-"                                                oder Betriebssitz "
-"(natürliche Personen die über mehrere solcher Sitze\n"
-"                                                verfügen), wenn es sich um "
-"ein Verzeichnis dieses Verwaltungs- oder\n"
+"                                                oder Betriebssitz (natürliche Personen die über mehrere solcher Sitze\n"
+"                                                verfügen), wenn es sich um ein Verzeichnis dieses Verwaltungs- oder\n"
 "                                                Betriebssitzes handelt:"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_ca_ci
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_ca_ci
 msgid "50/53 - Current Investments"
-msgstr "50/53 - Geldanlagen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a_ca_cbh
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_a_ca_cbh
 msgid "54/58 - Cash at Bank and in Hand"
-msgstr "54/58 - Flüssige Mittel"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_oioc_gm_grrmcsog
@@ -753,22 +734,18 @@ msgid ""
 "60/61 - Goods for Resale, Raw Materials, Consumables, Services and Other "
 "Goods"
 msgstr ""
-"60/61 - Waren, Roh-, Hilfs- und Betriebsstoffe, übrige Lieferungen und "
-"Leistungen"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_oioc_rssp
 msgid "62 - Remuneration, Social Security and Pensions (+)/(-)"
-msgstr "62 - Arbeitsentgelte, Soziallasten und Pensionen (+)/(-)"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_oioc_aoawdfefa
 msgid ""
-"630 - Amortisations of and Other Amounts Written Down on Formation Expenses, "
-"Intangible and Tangible Fixed Assets"
+"630 - Amortisations of and Other Amounts Written Down on Formation Expenses,"
+" Intangible and Tangible Fixed Assets"
 msgstr ""
-"630 - Abschreibungen und Wertminderungen auf Errichtungs- und "
-"Erweiterungsaufwendungen, auf immaterielle Anlagewerte und Sachanlagen"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_oioc_awdscptd
@@ -776,9 +753,6 @@ msgid ""
 "631/4 - Amounts Written Down on Stocks, Contracts in Progress and Trade "
 "Debtors: Additions (Write-Backs) (+)/(-)"
 msgstr ""
-"631/4 - Wertminderungen von Vorräten, in Ausführung befindlichen "
-"Bestellungen und Forderungen aus Lieferungen und Leistungen: Zuführungen "
-"(Rücknahmen) (+)/(-)"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_oioc_plca
@@ -786,193 +760,187 @@ msgid ""
 "635/8 - Provisions for Liabilities and Charges: Appropriations (Uses and "
 "Write-Backs) (+)/(-)"
 msgstr ""
-"635/8 - Rückstellungen für Risiken und Aufwendungen: Zuführungen (Verbrauch "
-"und Auflösungen) (+)/(-)"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_oioc_ooc
 msgid "640/8 - Other Operating Charges"
-msgstr "640/8 - Sonstige betriebliche Aufwendungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_oioc_ocraurc
 msgid ""
 "649 - Operating Charges Reported as Assets Under Restructuring Costs (-)"
 msgstr ""
-"649 - Auf der Aktivseite als Restrukturierungskosten ausgewiesene "
-"betriebliche Aufwendungen (-)"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_fc_rfc
 msgid "65 - Recurring Financial Charges"
-msgstr "65 - Wiederkehrende Finanzaufwendungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_fc
 msgid "65/66B - Financial Charges"
-msgstr "65/66B - Finanzaufwendungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_oioc_nroc
 msgid "66A - Non-Recurring Operating Charges"
-msgstr "66A - Nicht wiederkehrende betriebliche Aufwendungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_fc_nrfc
 msgid "66B - Non-Recurring Financial Charges"
-msgstr "66B - Nicht wiederkehrende Finanzaufwendungen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_itor
 msgid "67/77 - Income Taxes on the Result (+)/(-)"
-msgstr "67/77 - Steuern auf das Ergebnis (+)/(-)"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_ttdt
 msgid "680 - Transfer to Deferred Taxes"
-msgstr "680 - Zuführung zu aufgeschobenen Steuern"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_ttur
 msgid "689 - Transfer to Untaxed Reserves"
-msgstr "689 - Einstellung in die steuerfreien Rücklagen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_a_ate_tc
 msgid "691 - To Contributions"
-msgstr "691 - an der Einlage"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_a_ate
 msgid "691/2 - Appropriations to Equity"
-msgstr "691/2 - Zuweisungen an das Eigenkapital"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_a_ate_tlr
 msgid "6920 - To Legal Reserve"
-msgstr "6920 - an die gesetzliche Rücklage"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_a_ate_tor
 msgid "6921 - To Other Reserves"
-msgstr "6921 - an die sonstigen Rücklagen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_a_ptbd_cfc
 msgid "694 - Compensation for Contributions"
-msgstr "694 - Vergütung der Einlage"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_a_ptbd
 msgid "694/7 - Profit to Be Distributed"
-msgstr "694/7 - Zu verteilender Gewinn"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_a_ptbd_dom
 msgid "695 - Directors or Managers"
-msgstr "695 - Verwalter oder Geschäftsführer"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_a_ptbd_e
 msgid "696 - Employees"
-msgstr "696 - Arbeitnehmer"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_a_ptbd_ob
 msgid "697 - Other Beneficiaries"
-msgstr "697 - Andere Berechtigte"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_oioc_gm_t
 msgid "70 - Turnover"
-msgstr "70 - Umsatzerlöse"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_fi_rfi
 msgid "75 - Recurring Financial Income"
-msgstr "75 - Wiederkehrende Finanzerträge"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_fi
 msgid "75/76B - Financial Income"
-msgstr "75/76B - Finanzerträge"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_fi_rfi_cis
 msgid "753 - Of Which: Capital and Interest Subsidies"
-msgstr "753 - Wovon: Kapital- und Zinssubventionen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_oioc_gm_nroi
 msgid "76A - Of Which: Non-Recurring Operating Income"
-msgstr "76A - Wovon: nicht wiederkehrende betriebliche Erträge"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_fi_nrfi
 msgid "76B - Non-Recurring Financial Income"
-msgstr "76B - Nicht wiederkehrende Finanzerträge"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_tfdt
 msgid "780 - Transfer From Deferred Taxes"
-msgstr "780 - Auflösung von aufgeschobenen Steuern"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_tfur
 msgid "789 - Transfer From Untaxed Reserves"
-msgstr "789 - Entnahmen aus den steuerfreien Rücklagen"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_a_tfe
 msgid "791/2 - Transfers From Equity"
-msgstr "791/2 - Entnahmen aus dem Eigenkapital"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_a_scirol
 msgid "794 - Shareholders' Contribution in Respect of Losses"
-msgstr "794 - Teilnahme der Gesellschafter am Verlust"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_oioc_gm
 msgid "9900 - Gross Margin (+)/(-)"
-msgstr "9900 - Brutto-Betriebsmarge (+)/(-)"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_opl
 msgid "9901 - Operating Profit (Loss) (+)/(-)"
-msgstr "9901 - Betriebsgewinn (Betriebsverlust) (+)/(-)"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_plpbt
 msgid "9903 - Profit (Loss) for the Period Before Taxes (+)/(-)"
-msgstr "9903 - Gewinn (Verlust) des Geschäftsjahres vor Steuern (+)/(-)"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_plp
 msgid "9904 - Profit (Loss) of the Period (+)/(-)"
-msgstr "9904 - Gewinn (Verlust) des Geschäftsjahres (+)/(-)"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl_plpafa
 msgid "9905 - Profit (Loss) of the Period Available for Appropriation (+)/(-)"
 msgstr ""
-"9905 - Zu verwendender Gewinn (anzurechnender Verlust) des Geschäftsjahres "
-"(+)/(-)"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_a_pltba
 msgid "9906 - Profit (Loss) to Be Appropriated (+)/(-)"
 msgstr ""
-"9906 - Zu verwendender Gewinnsaldo (anzurechnender Verlustsaldo) (+)/(-)"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.sales_report_main_template
 msgid ""
-"<span>EC Sales taxes report total does not match Tax Report lines 44 + 46L + "
-"46T - 48s44 - 48s46L - 48s46T.</span>"
+"<span>EC Sales taxes report total does not match Tax Report lines 44 + 46L +"
+" 46T - 48s44 - 48s46L - 48s46T.</span>"
 msgstr ""
 "<span>Gesamtbetrag der innergemeinschaftlichen Liste stimmt nicht mit den "
-"Steuerberichtszeilen 44 + 46L + 46T - 48s44 - 48s46L - 48s46T überein.</span>"
+"Steuerberichtszeilen 44 + 46L + 46T - 48s44 - 48s46L - 48s46T "
+"überein.</span>"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -982,7 +950,7 @@ msgstr "GESAMTBETRAG"
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_a
 msgid "APPROPRIATION ACCOUNT"
-msgstr "ERGEBNISVERWENDUNG"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_a
@@ -1072,12 +1040,12 @@ msgstr "Saldo"
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.account_financial_report_bs_comp_acap
 msgid "Balance Sheet (Abbr Cap)"
-msgstr "Bilanz (Verk/Mikro-K)"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.account_financial_report_bs_comp_acon
 msgid "Balance Sheet (Abbr Con)"
-msgstr "Bilanz (Verk/Mikro-E)"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_ec_sales_report_handler
@@ -1092,7 +1060,7 @@ msgstr "Belgischer Assistent für den Export periodischer MwSt.-Berichte"
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_tax_report_handler
 msgid "Belgian Tax Report Custom Handler"
-msgstr ""
+msgstr "Belgischer Steuerbericht Benutzerdefinierter Handler"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -1377,16 +1345,14 @@ msgstr "Prüfung der EG-Verkaufsliste"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.tax_report_main_template
-#, fuzzy
-#| msgid "EC Sales List"
 msgid "EC Sales list report."
-msgstr "EG-Verkaufsliste"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el
 msgid "EQUITY AND LIABILITIES"
-msgstr "PASSIVA"
+msgstr ""
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -1396,8 +1362,8 @@ msgid ""
 "Either there isn't any account nor partner with a 281.50 tag or there isn't "
 "any amount to report for this period."
 msgstr ""
-"Entweder gibt es keinen Partner oder Konto mit einem 281.50-Tag oder es gibt "
-"keinen Betrag zu berichten für diesen Zeitraum."
+"Entweder gibt es keinen Partner oder Konto mit einem 281.50-Tag oder es gibt"
+" keinen Betrag zu berichten für diesen Zeitraum."
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -1682,8 +1648,7 @@ msgid ""
 "                                    Zip code and city"
 msgstr ""
 "Name und Vorname (oder Bezeichnung) der Begünstigten\n"
-"                                    <br stra=\"\" nr.=\"\" ggf.=\"\" "
-"feld=\"\"/>\n"
+"                                    <br stra=\"\" nr.=\"\" ggf.=\"\" feld=\"\"/>\n"
 "                                    Postleitzahl und Gemeinde"
 
 #. module: l10n_be_reports
@@ -1901,7 +1866,7 @@ msgstr "BERUFSSTEUERVORABZUG"
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_pl_comp_a_pl
 msgid "PROFIT AND LOSS ACCOUNT"
-msgstr "SCHEMA DER ERGEBNISRECHNUNG"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__paid_amount
@@ -1960,36 +1925,34 @@ msgstr "Ausgeübte Tätigkeit:"
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_apl_ply
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_e_apl_ply
 msgid "Profit (Loss) of the Year"
-msgstr "Gewinne (Verluste) des Geschäftsjahres"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:ir.actions.client,name:l10n_be_reports.action_account_report_be_pl_comp_a
 msgid "Profit and Loss"
-msgstr "Schema der Ergebnisrechnung"
+msgstr "Gewinn- und Verlustrechnung"
 
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.account_financial_report_pl_comp_a
 msgid "Profit and Loss (Abbr)"
-msgstr "Schema der Ergebnisrechnung (Verk/Mikro)"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acap_el_e_apl_plpy
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_bs_comp_acon_el_e_apl_plpy
 msgid "Profits (Losses) from Previous Years"
-msgstr "Gewinne (Verluste) aus den Vorjahren"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid ""
 "RECEPTION DATE\n"
 "                                                        <br/>\n"
-"                                                        (For administration "
-"use only)"
+"                                                        (For administration use only)"
 msgstr ""
 "EMPFANGSDATUM\n"
 "                                                        <br/>\n"
-"                                                        (der Verwaltung "
-"vorbehaltener Rahmen)"
+"                                                        (der Verwaltung vorbehaltener Rahmen)"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__reference_year
@@ -2104,8 +2067,8 @@ msgstr ""
 #, python-format
 msgid ""
 "Some partners are not correctly configured. Please be sure that the "
-"following pieces of information are set: street, zip code, country%s and vat "
-"or citizen identification."
+"following pieces of information are set: street, zip code, country%s and vat"
+" or citizen identification."
 msgstr ""
 "Einige Partner sind nicht richtig konfiguriert. Bitte stellen Sie sicher, "
 "dass die folgenden Informationen gesetzt sind: Straße, Postleitzahl, Land%s "
@@ -2136,10 +2099,8 @@ msgstr "GESAMTBETRAG"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
-#, fuzzy
-#| msgid "TOTALS"
 msgid "TOTAUX"
-msgstr "GESAMTBETRAG"
+msgstr "TOTAUX"
 
 #. module: l10n_be_reports
 #: model:account.report.column,name:l10n_be_reports.account_financial_report_ec_sales_tax
@@ -2183,8 +2144,8 @@ msgstr ""
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325__sending_type
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325_wizard__sending_type
 msgid ""
-"This field allows to make an original sending(correspond to first send) or a "
-"grouped corrections(if you have made some mistakes before)."
+"This field allows to make an original sending(correspond to first send) or a"
+" grouped corrections(if you have made some mistakes before)."
 msgstr ""
 "Dieses Feld erlaubt es, eine Original-Sendung(entspricht dem ersten Senden) "
 "oder eine Gruppierte Korrektur(wenn Sie Fehler gemacht haben)."
@@ -2200,7 +2161,8 @@ msgstr "Dieses Feld repräsentiert die Art des Formulars."
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_50_divider_pdf
 msgid "To be completed only if this divider is not the first or the only one"
 msgstr ""
-"Nur auszufüllen, wenn diese Zwischenlage nicht der erste oder der einzige ist"
+"Nur auszufüllen, wenn diese Zwischenlage nicht der erste oder der einzige "
+"ist"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_50_divider_pdf
@@ -2276,7 +2238,10 @@ msgstr "Website-Kommunikationsverlauf"
 #. module: l10n_be_reports
 #. odoo-python
 #: code:addons/l10n_be_reports/models/account_report.py:0
+#: code:addons/l10n_be_reports/models/account_report.py:0
 #: code:addons/l10n_be_reports/models/account_sales_report.py:0
+#: code:addons/l10n_be_reports/models/account_sales_report.py:0
+#: code:addons/l10n_be_reports/models/partner_vat_listing.py:0
 #: code:addons/l10n_be_reports/models/partner_vat_listing.py:0
 #, python-format
 msgid "XML"
@@ -2306,7 +2271,8 @@ msgstr "Sie haben bereits Karten 281.50 für dieses Verzeichnis 325 generiert."
 #: code:addons/l10n_be_reports/models/account_281_50_form.py:0
 #: code:addons/l10n_be_reports/models/account_325_form.py:0
 #, python-format
-msgid "You can't delete a 281.50 for which its form 325 xml has been generated"
+msgid ""
+"You can't delete a 281.50 for which its form 325 xml has been generated"
 msgstr ""
 "Sie können eine 281.50 nicht löschen, für die ihr Verzeichnis 325 XML "
 "generiert wurde"
@@ -2347,8 +2313,8 @@ msgid ""
 "[44] < ([00] + [01] + [02] + [03] + [45] + [46] + [47] + [48] + [49]) * 200 "
 "if [88] > 99.999"
 msgstr ""
-"[44] < ([00] + [01] + [02] + [03] + [45] + [46] + [47] + [48] + [49]) * 200, "
-"wenn [88] > 99.999"
+"[44] < ([00] + [01] + [02] + [03] + [45] + [46] + [47] + [48] + [49]) * 200,"
+" wenn [88] > 99.999"
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -2378,28 +2344,21 @@ msgid ""
 "                                                <br/>\n"
 "                                                b) Fees or vacations:\n"
 "                                                <br/>\n"
-"                                                c) Benefits in kind "
-"(nature : ................)\n"
+"                                                c) Benefits in kind (nature : ................)\n"
 "                                                <br/>\n"
-"                                                d) Expenses incurred on "
-"behalf of the beneficiary:\n"
+"                                                d) Expenses incurred on behalf of the beneficiary:\n"
 "                                                <br/>\n"
-"                                                e) Total (see also in "
-"sections f and g below):"
+"                                                e) Total (see also in sections f and g below):"
 msgstr ""
 "a) Provisionen, Maklergebühren, Handelsrabatte usw.:\n"
 "                                                <br/>\n"
-"                                                b) Sitzungsgelder oder "
-"Honorare:\n"
+"                                                b) Sitzungsgelder oder Honorare:\n"
 "                                                <br/>\n"
-"                                                c) Vorteile jeglicher Art "
-"(Art: ................)\n"
+"                                                c) Vorteile jeglicher Art (Art: ................)\n"
 "                                                <br/>\n"
-"                                                d) Für Rechnung des "
-"Empfängers ausgelegte Kosten:\n"
+"                                                d) Für Rechnung des Empfängers ausgelegte Kosten:\n"
 "                                                <br/>\n"
-"                                                e) Gesamtbetrag (siehe auch "
-"Rubriken f und g hier unten):"
+"                                                e) Gesamtbetrag (siehe auch Rubriken f und g hier unten):"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.res_partner_view_form_inherit
@@ -2420,26 +2379,18 @@ msgstr "ausgestellt durch:"
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
 msgid ""
 "f) Enter here, if applicable, the amount included in item e\n"
-"                                            above relates to compensation "
-"paid to:\n"
+"                                            above relates to compensation paid to:\n"
 "                                            <br/>\n"
-"                                            - athletes for their sports "
-"performances:\n"
+"                                            - athletes for their sports performances:\n"
 "                                            <br/>\n"
-"                                            - trainers, coaches and "
-"accompaniers for their activity for the\n"
+"                                            - trainers, coaches and accompaniers for their activity for the\n"
 "                                            benefit of the athletes:"
 msgstr ""
-"f) Falls der in Rubrik e eingetragene Betrag Entschädigungen an Sportier für "
-"sportliche Aktivitäten oder Entschädigungen an Ausbilder, Trainer oder "
-"Betreuer für ihre Tätigkeit zugunsten von Sportlern enthält, tragen Sie hier "
-"den in diesen Entschädigungen enthaltenen Betrag ein, der gezahlt wurde an:\n"
+"f) Falls der in Rubrik e eingetragene Betrag Entschädigungen an Sportier für sportliche Aktivitäten oder Entschädigungen an Ausbilder, Trainer oder Betreuer für ihre Tätigkeit zugunsten von Sportlern enthält, tragen Sie hier den in diesen Entschädigungen enthaltenen Betrag ein, der gezahlt wurde an:\n"
 "                                            <br/>\n"
-"                                            - Sportler für ihre sportlichen "
-"Aktivitäten:\n"
+"                                            - Sportler für ihre sportlichen Aktivitäten:\n"
 "                                            <br/>\n"
-"                                            - Ausbilder, Trainer oder "
-"Begleiter für ihre Tätigkeiten zu Gunsten von Sportlern:"
+"                                            - Ausbilder, Trainer oder Begleiter für ihre Tätigkeiten zu Gunsten von Sportlern:"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf

@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
+# Milan Bojovic, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-08 11:15+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
-"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
+"Last-Translator: Milan Bojovic, 2023\n"
 "Language-Team: Serbian (https://app.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -675,7 +676,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Other Income"
-msgstr ""
+msgstr "Ostali prihodi"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -700,7 +701,7 @@ msgstr "Plativo"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Payables"
-msgstr ""
+msgstr "Obaveze"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -715,7 +716,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Performance"
-msgstr ""
+msgstr "Performanse"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -730,7 +731,7 @@ msgstr "Pozicija"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Prepayments"
-msgstr ""
+msgstr "Pretplate"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -752,7 +753,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Profitability"
-msgstr ""
+msgstr "Profitabilnost"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -795,7 +796,7 @@ msgstr "Potraživanja"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Receivables"
-msgstr ""
+msgstr "Potraživanja"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -825,7 +826,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Short term cash forecast"
-msgstr ""
+msgstr "Kratkoročna gotovinska prognoza"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

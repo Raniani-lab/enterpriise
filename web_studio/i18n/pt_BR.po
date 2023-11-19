@@ -4456,7 +4456,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Write additional notes or comments"
-msgstr "Escreva notas ou comentários adiiconais"
+msgstr "Escreva notas ou comentários adicionais"
 
 #. module: web_studio
 #. odoo-javascript

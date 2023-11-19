@@ -1690,7 +1690,7 @@ msgstr "内部許可"
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Invitation to access %s"
-msgstr ""
+msgstr " %sへのアクセス招待"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form

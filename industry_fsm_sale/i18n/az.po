@@ -79,7 +79,7 @@ msgstr "<strong class=\"mr16\">Yekun</strong>"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "<strong>Taxes</strong>"
-msgstr ""
+msgstr "<strong>Vergilər</strong>"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material

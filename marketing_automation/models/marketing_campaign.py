@@ -49,7 +49,7 @@ class MarketingCampaign(models.Model):
     marketing_activity_ids = fields.One2many('marketing.activity', 'campaign_id', string='Activities', copy=False)
     mass_mailing_count = fields.Integer('# Mailings', compute='_compute_mass_mailing_count')
     link_tracker_click_count = fields.Integer('# Clicks', compute='_compute_link_tracker_click_count')
-    last_sync_date = fields.Datetime(string='Last activities synchronization')
+    last_sync_date = fields.Datetime(string='Last activities synchronization', copy=False)
     require_sync = fields.Boolean(string="Sync of participants is required", compute='_compute_require_sync')
     # participants
     participant_ids = fields.One2many('marketing.participant', 'campaign_id', string='Participants', copy=False)
@@ -187,7 +187,7 @@ class MarketingCampaign(models.Model):
         return super().write(vals)
 
     def action_set_synchronized(self):
-        self.write({'last_sync_date': Datetime.now()})
+        self.write({'last_sync_date': self.env.cr.now()})
         self.mapped('marketing_activity_ids').write({'require_sync': False})
 
     def action_update_participants(self):
@@ -203,6 +203,7 @@ class MarketingCampaign(models.Model):
           * we consider scheduling to be done after parent processing, independently of other time considerations
           * for 'not' triggers take into account brother traces that could be already processed
         """
+        now = self.env.cr.now()
         for campaign in self:
             # Action 1: On activity modification
             modified_activities = campaign.marketing_activity_ids.filtered(lambda activity: activity.require_sync)
@@ -217,21 +218,39 @@ class MarketingCampaign(models.Model):
                 elif trigger_type in ['activity', 'mail_not_open', 'mail_not_click', 'mail_not_reply'] and trace.parent_id:
                     trace.schedule_date = Datetime.from_string(trace.parent_id.schedule_date) + trace_offset
                 elif trace.parent_id:
-                    process_dt = (trace.parent_id.mailing_trace_ids.mapped('write_date') + [fields.Datetime().now()])[0]
-                    trace.schedule_date = Datetime.from_string(process_dt) + trace_offset
+                    if trace.parent_id.mailing_trace_ids.mapped('write_date'):
+                        process_dt = Datetime.from_string(trace.parent_id.mailing_trace_ids.mapped('write_date')[0])
+                    else:
+                        process_dt = now
+                    trace.schedule_date = process_dt + trace_offset
 
             # Action 2: On activity creation
-            created_activities = campaign.marketing_activity_ids.filtered(lambda a: a.create_date >= campaign.last_sync_date)
+            created_activities = campaign.marketing_activity_ids.filtered(
+                lambda activity: (
+                    campaign.last_sync_date and activity.create_date >= campaign.last_sync_date
+                )
+            )
+
+            # pre-fetch existing traces to avoid duplicates
+            existing_traces = self.env['marketing.trace']
+            if created_activities:
+                existing_traces = self.env['marketing.trace'].search([
+                    ('activity_id', 'in', created_activities.ids),
+                ])
             for activity in created_activities:
                 activity_offset = relativedelta(**{activity.interval_type: activity.interval_number})
+                participants_with_traces = existing_traces.filtered(lambda trace: trace.activity_id == activity).participant_id
+
                 # Case 1: Trigger = begin
                 # Create new root traces for all running participants -> consider campaign begin date is now to avoid spamming participants
                 if activity.trigger_type == 'begin':
                     participants = self.env['marketing.participant'].search([
-                        ('state', '=', 'running'), ('campaign_id', '=', campaign.id)
+                        ('state', '=', 'running'),
+                        ('campaign_id', '=', campaign.id),
+                        ('id', 'not in', participants_with_traces.ids),
                     ])
                     for participant in participants:
-                        schedule_date = Datetime.from_string(Datetime.now()) + activity_offset
+                        schedule_date = now + activity_offset
                         self.env['marketing.trace'].create({
                             'activity_id': activity.id,
                             'participant_id': participant.id,
@@ -240,7 +259,8 @@ class MarketingCampaign(models.Model):
                 else:
                     valid_parent_traces = self.env['marketing.trace'].search([
                         ('state', '=', 'processed'),
-                        ('activity_id', '=', activity.parent_id.id)
+                        ('activity_id', '=', activity.parent_id.id),
+                        ('participant_id', 'not in', participants_with_traces.ids),
                     ])
 
                     # avoid creating new traces that would have processed brother traces already processed
@@ -315,10 +335,10 @@ class MarketingCampaign(models.Model):
             return [x for x in seq if x not in seen and not seen.add(x)]
 
         participants = self.env['marketing.participant']
+        now = self.env.cr.now()
         # auto-commit except in testing mode
         auto_commit = not getattr(threading.current_thread(), 'testing', False)
         for campaign in self.filtered(lambda c: c.marketing_activity_ids):
-            now = Datetime.now()
             if not campaign.last_sync_date:
                 campaign.last_sync_date = now
 
@@ -353,7 +373,7 @@ class MarketingCampaign(models.Model):
 
             BATCH_SIZE = 100
             for to_create_batch in tools.split_every(BATCH_SIZE, to_create, piece_maker=list):
-                participants |= participants.create([{
+                participants += participants.create([{
                     'campaign_id': campaign.id,
                     'res_id': rec_id,
                 } for rec_id in to_create_batch])

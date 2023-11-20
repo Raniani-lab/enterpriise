@@ -33,6 +33,13 @@ msgstr ""
 
 #. module: whatsapp
 #. odoo-python
+#: code:addons/whatsapp/models/whatsapp_template.py:0
+#, python-format
+msgid "%(template_name)s [%(account_name)s]"
+msgstr ""
+
+#. module: whatsapp
+#. odoo-python
 #: code:addons/whatsapp/wizard/whatsapp_composer.py:0
 #, python-format
 msgid ", ... (%s Others)"

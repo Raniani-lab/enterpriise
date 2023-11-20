@@ -304,9 +304,13 @@ class WhatsAppTemplate(models.Model):
             default['template_name'] = f'{self.template_name}_copy'
         return super().copy(default)
 
+    @api.depends('name', 'wa_account_id')
     def _compute_display_name(self):
         for template in self:
-            template.display_name = "%s [%s]" % (template.name, template.wa_account_id.name)
+            template.display_name = _('%(template_name)s [%(account_name)s]',
+                                        template_name=template.name,
+                                        account_name=template.wa_account_id.name
+                                    ) if template.wa_account_id.name else template.name
 
     #===================================================================
     #                 Register template to whatsapp

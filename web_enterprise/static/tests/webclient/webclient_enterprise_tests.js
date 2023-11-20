@@ -81,6 +81,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await createEnterpriseWebClient({ fixture, serverData, mockRPC });
             assert.verifySteps(["/web/webclient/load_menus"]);
             await click(fixture.querySelector(".o_app.o_menuitem"));
+            await nextTick();
             assert.verifySteps([
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
@@ -88,9 +89,6 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             ]);
             assert.notOk(document.body.classList.contains("o_home_menu_background"));
             assert.containsNone(fixture, ".o_home_menu");
-            // web client display empty action before kanban view is loaded
-            assert.containsNone(fixture, ".o_kanban_view");
-            await nextTick();
             assert.containsOnce(fixture, ".o_kanban_view");
             const menuToggle = fixture.querySelector(".o_menu_toggle");
             assert.isVisible(menuToggle);
@@ -101,13 +99,12 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await createEnterpriseWebClient({ fixture, serverData, mockRPC });
             assert.verifySteps(["/web/webclient/load_menus"]);
             await click(fixture.querySelector(".o_app.o_menuitem"));
+            await nextTick();
             assert.verifySteps([
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
                 "/web/dataset/call_kw/partner/web_search_read",
             ]);
-            assert.containsNone(fixture, ".o_kanban_view");
-            await nextTick();
             assert.containsOnce(fixture, ".o_kanban_view");
             await click(fixture.querySelector(".o_kanban_record"));
             await nextTick(); // there is another tick to update navbar and destroy HomeMenu
@@ -124,13 +121,12 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await createEnterpriseWebClient({ fixture, serverData, mockRPC });
             assert.verifySteps(["/web/webclient/load_menus"]);
             await click(fixture.querySelector(".o_app.o_menuitem"));
+            await nextTick();
             assert.verifySteps([
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
                 "/web/dataset/call_kw/partner/web_search_read",
             ]);
-            assert.containsNone(fixture, ".o_kanban_view");
-            await nextTick();
             assert.containsOnce(fixture, ".o_kanban_view");
             await click(fixture.querySelector(".o_kanban_record"));
             assert.verifySteps(["/web/dataset/call_kw/partner/web_read"]);
@@ -155,13 +151,12 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 await createEnterpriseWebClient({ fixture, serverData, mockRPC });
                 assert.verifySteps(["/web/webclient/load_menus"]);
                 await click(fixture.querySelector(".o_app.o_menuitem"));
+                await nextTick();
                 assert.verifySteps([
                     "/web/action/load",
                     "/web/dataset/call_kw/partner/get_views",
                     "/web/dataset/call_kw/partner/web_search_read",
                 ]);
-                assert.containsNone(fixture, ".o_kanban_view");
-                await nextTick();
                 assert.containsOnce(fixture, ".o_kanban_view");
                 await click(fixture.querySelector(".o_kanban_record"));
                 assert.verifySteps(["/web/dataset/call_kw/partner/web_read"]);
@@ -184,13 +179,12 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await createEnterpriseWebClient({ fixture, serverData, mockRPC });
             assert.verifySteps(["/web/webclient/load_menus"]);
             await click(fixture.querySelector(".o_app.o_menuitem"));
+            await nextTick();
             assert.verifySteps([
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
                 "/web/dataset/call_kw/partner/web_search_read",
             ]);
-            assert.containsNone(fixture, ".o_kanban_view");
-            await nextTick();
             assert.containsOnce(fixture, ".o_kanban_view");
             await click(fixture.querySelector(".o_kanban_record"));
             assert.verifySteps(["/web/dataset/call_kw/partner/web_read"]);

@@ -203,6 +203,7 @@ class MarketingCampaign(models.Model):
           * we consider scheduling to be done after parent processing, independently of other time considerations
           * for 'not' triggers take into account brother traces that could be already processed
         """
+        now = self.env.cr.now()
         for campaign in self:
             # Action 1: On activity modification
             modified_activities = campaign.marketing_activity_ids.filtered(lambda activity: activity.require_sync)
@@ -217,8 +218,11 @@ class MarketingCampaign(models.Model):
                 elif trigger_type in ['activity', 'mail_not_open', 'mail_not_click', 'mail_not_reply'] and trace.parent_id:
                     trace.schedule_date = Datetime.from_string(trace.parent_id.schedule_date) + trace_offset
                 elif trace.parent_id:
-                    process_dt = (trace.parent_id.mailing_trace_ids.mapped('write_date') + [fields.Datetime().now()])[0]
-                    trace.schedule_date = Datetime.from_string(process_dt) + trace_offset
+                    if trace.parent_id.mailing_trace_ids.mapped('write_date'):
+                        process_dt = Datetime.from_string(trace.parent_id.mailing_trace_ids.mapped('write_date')[0])
+                    else:
+                        process_dt = now
+                    trace.schedule_date = process_dt + trace_offset
 
             # Action 2: On activity creation
             created_activities = campaign.marketing_activity_ids.filtered(
@@ -246,7 +250,7 @@ class MarketingCampaign(models.Model):
                         ('id', 'not in', participants_with_traces.ids),
                     ])
                     for participant in participants:
-                        schedule_date = Datetime.from_string(Datetime.now()) + activity_offset
+                        schedule_date = now + activity_offset
                         self.env['marketing.trace'].create({
                             'activity_id': activity.id,
                             'participant_id': participant.id,

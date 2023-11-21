@@ -138,6 +138,9 @@ export class MrpDisplayAction extends Component {
             const searchViews = await this.viewService.loadViews({
                 resModel: this.resModel,
                 views: [[false, "search"]],
+            }, {
+                load_filters: true,
+                action_id: this.props.action.id
             });
             const domain = [
                 ["state", "in", ["confirmed", "progress", "to_close"]],
@@ -154,6 +157,7 @@ export class MrpDisplayAction extends Component {
                 searchViewId: searchViews.views.search.id,
                 searchViewFields: searchViews.fields,
                 searchMenuTypes: ["filter", "favorite"],
+                irFilters: searchViews.views.search.irFilters,
                 context,
                 domain,
                 orderBy: [

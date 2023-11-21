@@ -72,6 +72,18 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         })
         self.assertEqual(st_line._retrieve_partner(), self.env['res.partner'])
 
+    def test_retrieve_partner_from_account_number_in_other_company(self):
+        st_line = self._create_st_line(1000.0, partner_id=None, account_number="014 474 8555")
+        self.env['res.partner.bank'].create({
+            'acc_number': '0144748555',
+            'partner_id': self.partner_a.id,
+        })
+
+        # Bank account is owned by another company.
+        new_company = self.env['res.company'].create({'name': "test_retrieve_partner_from_account_number_in_other_company"})
+        self.partner_a.company_id = new_company
+        self.assertEqual(st_line._retrieve_partner(), self.env['res.partner'])
+
     def test_retrieve_partner_from_partner_name(self):
         """ Ensure the partner having a name fitting exactly the 'partner_name' is retrieved first.
         This test create two partners that will be ordered in the lexicographic order when performing

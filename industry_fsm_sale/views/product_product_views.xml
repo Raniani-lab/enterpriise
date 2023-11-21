@@ -44,7 +44,7 @@
                                     <div class="d-flex w-100 justify-content-between">
                                         <ul>
                                             <li><t t-if="record.default_code.value">[<field name="default_code"/>]</t></li>
-                                            <li>Price: <field name="fsm_partner_price" widget="monetary" options="{'currency_field': 'fsm_partner_price_currency_id'}"></field></li>
+                                            <li>Price: <field name="fsm_partner_price" widget="monetary" options="{'currency_field': 'fsm_partner_price_currency_id', 'field_digits': True}"></field></li>
                                             <field name="currency_id" invisible="True"/>
                                         </ul>
                                     </div>
